@@ -18,6 +18,7 @@ from rfad.domain.pcb_features import COMMAND, REPLAY_COMMAND, empty_pcb, make_pa
 from rfad.domain.project import apply_command, validate_project
 from rfad.domain.units import Quantity
 from test_design import build_design, quantity, unknown, identity
+from test_pcb_solver import build_pcb_plan, fixture_document, runtime_identity, SETTINGS, snapshot_for
 
 
 def pcb_document():
@@ -59,8 +60,46 @@ def candidate(document, operation, values):
     return review, patch, data
 
 
+def keepout_record(document, *, x, y, all_layers):
+    """! @brief 기존 폼이 저장하는 비어 있는 선택/전층 금지 원본을 생성한다."""
+    row = service_api.new_record(document, "keepout")
+    row.update(all_conductor_layers=all_layers)
+    row["shape"] = {"kind": "circle", "center": [quantity(x, "mm"), quantity(y, "mm")], "diameter": quantity(2, "mm")}
+    row["prohibit"]["tracks"] = True
+    return row
+
+
 class PcbFeatureDomainTests(unittest.TestCase):
     """! @brief 프로젝트 스키마, 소유권, 수량과 정확한 역명령을 검사한다."""
+
+    def test_all_layers_keepout_blocks_planning_without_target_constraints(self):
+        """! @brief 명시한 전 도체층 금지는 별도 목표가 없는 PCB에도 적용한다."""
+        document = fixture_document()
+        row = keepout_record(document, x=11, y=6, all_layers=True)
+        document["pcb"] = {**empty_pcb(), "keepouts": [row]}
+        view = service_api.get(document, {"section": "keepout", "record_id": row["id"]})
+        self.assertIn(["all_conductor_layers"], [field["path"] for field in view["form"]["fields"]])
+        self.assertEqual(view["form"]["original_record"], row)
+        with self.assertRaises(ProjectError) as caught:
+            build_pcb_plan(document, snapshot_for(document), runtime_identity(), SETTINGS)
+        self.assertEqual(caught.exception.details["rule"], "pcb_keepout")
+        self.assertIn(row["id"], caught.exception.details["object_ids"])
+        self.assertEqual(caught.exception.details["details"]["scope"], "all_conductors")
+
+    def test_selected_layers_keepout_detects_via_end_layer(self):
+        """! @brief 시작층 밖의 관통 비아도 실제 통과 도체층에서 검사한다."""
+        from test_pcb_ifa import via_document
+
+        document = via_document()
+        row = keepout_record(document, x=3, y=6, all_layers=False)
+        row["layer_ids"] = [document["stackup"][-1]["id"]]
+        row["prohibit"]["tracks"] = False
+        row["prohibit"]["vias"] = True
+        document["pcb"] = {**empty_pcb(), "keepouts": [row]}
+        result = check_design(document)
+        via = next(item["id"] for item in document["geometry"] if item["kind"] == "via")
+        self.assertTrue(any(issue["rule"] == "pcb_keepout" and issue["status"] == "failed" and via in issue["object_ids"]
+                            for issue in result["issues"]))
 
     def test_old_named_schema_query_unchanged_and_first_undo_removes_absent_container(self):
         document = pcb_document()

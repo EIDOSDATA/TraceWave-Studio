@@ -41,6 +41,7 @@ def fixture(workspace):
     context=api.get(document,{"section":"hole","record_id":None})
     preview,_=api.preview(document,{"expected_revision":document["revision_id"],"operation":"hole.set","values":{"record":context["form"]["record"]},"reason":""})
     data={"project_id":document["project_id"],"revision_id":document["revision_id"],"context":context,"preview":preview,"scope":"real Windows controls and preservation; no native solver or manufacturing validation"}
+    data["keepout_context"] = api.get(document, {"section": "keepout", "record_id": None})
     state=service.journal.read()
     original={path.relative_to(workspace).as_posix():hashlib.sha256(path.read_bytes()).hexdigest() for path in (workspace/"projects").rglob("*") if path.is_file()}
     service.close()
@@ -66,7 +67,7 @@ class GuiPcbFeatureTests(unittest.TestCase):
             self.assertEqual(process.returncode,0,report)
             self.assertTrue(report["passed"],report)
             self.assertGreaterEqual(report["service_sessions"],2)
-            self.assertEqual(set(report["setup_checks"]),{"features_late_preview_and_destroy_safe","features_uncertain_receipt_preserves_key","features_native_missing_values_preserved","features_invalid_input_recovery_and_visible_review","features_changed_input_invalidates_review","features_unit_only_keeps_si_and_review","features_atomic_apply_and_typed_selection","features_first_undo_absence_and_exact_redo","features_save_service_restart_same_source"})
+            self.assertEqual(set(report["setup_checks"]),{"features_late_preview_and_destroy_safe","features_uncertain_receipt_preserves_key","features_all_conductor_layers_native_field","features_native_missing_values_preserved","features_invalid_input_recovery_and_visible_review","features_changed_input_invalidates_review","features_unit_only_keeps_si_and_review","features_atomic_apply_and_typed_selection","features_first_undo_absence_and_exact_redo","features_save_service_restart_same_source"})
             with ProjectService(workspace,auto_run=False) as service:
                 after_state=service.journal.read();project=after_state["projects"][before["project_id"]];after=service._load(project)
                 self.assertEqual(project["current"],project["saved"])

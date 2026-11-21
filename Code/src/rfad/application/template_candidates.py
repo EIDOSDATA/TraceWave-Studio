@@ -151,6 +151,11 @@ class TemplateCandidateCoordinator:
                 raise ProjectError("E_RESOURCE", "템플릿 출처를 포함한 프로젝트가 문서 크기 상한을 초과했습니다.")
             digest = canonical_hash({"project_id": document["project_id"], "expected_revision": data["expected_revision"], "payload": payload})
             diagnostics = preflight_design(candidate, "em")
+            generated = {row["id"] for row in additions["geometry"]}
+            for issue in diagnostics:
+                if (issue.get("details", {}).get("rule") == "pcb_keepout"
+                        and generated.intersection(issue["entity_ids"])):
+                    raise ProjectError("E_DESIGN_CONSTRAINT", issue["message_ko"], details=issue["details"])
             issues = [] if data["port"] is not None else [{"severity": "warning", "code": "E_PORT_UNKNOWN", "message": "포트 미정의 geometry-only 후보입니다. 저항과 급전 조건을 자동 생성하지 않습니다."}]
             if card["schema"] == "rfad.template-card/0.3":
                 issues.append({"severity": "warning", "code": "W_PARTIAL_REFERENCE",

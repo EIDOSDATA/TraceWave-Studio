@@ -68,7 +68,8 @@ def check_design(document, *, inclusion="all", target_ids=None, manufacturing_pr
 def declared_diagnostics(document, purpose):
     """! @brief 선언된 강제 제약의 확인된 위반을 기존 입력 차단 경로에 연결한다."""
     declared = document["connections"] or any("constraints" in target for target in document["targets"])
-    if not declared:
+    if not declared and not document.get("pcb", {}).get("keepouts"):
         return []
     report = check_design(document,inclusion={"geometry":"all","em":"em","step":"export"}[purpose])
-    return blocking_diagnostics(report)
+    failures = blocking_diagnostics(report)
+    return failures if declared else [row for row in failures if row["details"]["rule"] == "pcb_keepout"]

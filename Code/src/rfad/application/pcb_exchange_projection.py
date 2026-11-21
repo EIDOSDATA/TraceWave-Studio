@@ -210,16 +210,21 @@ def extra_diagnostics(document, shapes, report):
         return Footprint(row, edges, lambda value: _inside(value, loops), None)
     model = document.get("pcb", empty_pcb())
     budget = [200000]
+    orders = {layer["id"]: layer["order"] for layer in document["stackup"] if layer["role"] == "conductor"}
     for row in model["holes"]:
         if row["plating"]["state"] != "unplated":
             report.add("mechanical_plated_connectivity", "not_evaluated", "새 도금 홀/슬롯의 수직 접합은 전용 native 검수와 별도 평가가 필요합니다.", objects=[row["id"]], paths=["pcb.holes"])
     for row in model["keepouts"]:
         try:
             guard = footprint_of(row, shape_projection(document, row["shape"]))
+            selected_layers = orders if row.get("all_conductor_layers") else row["layer_ids"]
+            selected_orders = {orders[identity] for identity in selected_layers}
             candidates = []
             for shape in shapes.values():
                 role = {"line_path": "tracks", "arc_path": "tracks", "pad": "pads", "via": "vias", "planar_region": "copper_pours"}[shape.source["kind"]]
-                if shape.source["layer_id"] in row["layer_ids"] and row["prohibit"][role]:
+                start = orders.get(shape.source["layer_id"])
+                stop = orders.get(shape.source.get("end_layer_id"), start)
+                if start is not None and any(start <= order <= stop for order in selected_orders) and row["prohibit"][role]:
                     candidates.append(shape)
             if row["prohibit"]["footprints"]:
                 for owner in model["footprints"]:
@@ -230,6 +235,10 @@ def extra_diagnostics(document, shapes, report):
             for candidate in candidates:
                 distance, left, right = separation(guard, candidate, budget)
                 status = "failed" if distance == 0 else "not_evaluated" if distance <= max(guard.guard, candidate.guard) else "passed"
-                report.add("pcb_keepout", status, "명시 금지 영역과 실제 제거 후 경계를 비교했습니다.", objects=[row["id"], candidate.source["id"]], measured=distance, limit=0.0, location=list(left))
+                report.add("pcb_keepout", status,
+                           "금지 영역을 침범했습니다." if status == "failed" else "명시 금지 영역과 실제 제거 후 경계를 비교했습니다.",
+                           objects=[row["id"], candidate.source["id"]], paths=["pcb.keepouts." + row["id"]],
+                           measured=distance, limit=0.0, location=list(left),
+                           details={"scope": "all_conductors" if row.get("all_conductor_layers") else "selected_layers"})
         except ProjectError as error:
             report.add("pcb_keepout", "not_evaluated", error.message, objects=[row["id"]], paths=["pcb.keepouts"])

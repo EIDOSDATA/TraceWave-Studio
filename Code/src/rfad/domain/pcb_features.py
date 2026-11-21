@@ -272,12 +272,16 @@ def _validate_pcb(document):
                 else:
                     fail("개구의 명시 형상/패드 여유값 모드를 하나만 선택하십시오.", field + ".definition")
             elif key == "keepouts":
-                _fields(row, common | {"frame_id", "shape", "layer_ids", "prohibit"}, field)
+                optional = {"all_conductor_layers"} if "all_conductor_layers" in row else set()
+                _fields(row, common | {"frame_id", "shape", "layer_ids", "prohibit"} | optional, field)
                 _ids(row["layer_ids"], layers, field + ".layer_ids")
+                if type(row.get("all_conductor_layers", False)) is not bool:
+                    fail("모든 도체층의 적용 여부를 명시하십시오.", field + ".all_conductor_layers")
                 _fields(row["prohibit"], {"tracks", "vias", "pads", "copper_pours", "footprints"}, field + ".prohibit")
                 if any(type(flag) is not bool for flag in row["prohibit"].values()) or not any(row["prohibit"].values()):
                     fail("금지할 객체 종류를 하나 이상 명시하십시오.", field + ".prohibit")
-                if not row["layer_ids"] and any(flag for name, flag in row["prohibit"].items() if name != "footprints"):
+                if (not row.get("all_conductor_layers") and not row["layer_ids"]
+                        and any(flag for name, flag in row["prohibit"].items() if name != "footprints")):
                     fail("도체 금지 규칙에는 명시 도체층이 필요합니다.", field + ".layer_ids")
             elif key == "footprints":
                 _fields(row, common | {"reference", "value", "library_id", "placement", "members", "pins", "edit_state", "placement_envelope"}, field)

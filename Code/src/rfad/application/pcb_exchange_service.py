@@ -205,7 +205,8 @@ def form_fields(document, record, section, context):
             for key, label in (("margin", "둘레 여유값"), ("size_ratio", "크기 부가 비율 (0은 원래 크기)")):
                 numeric(["definition", key], record["definition"][key], label)
     elif section == "keepout":
-        field(["layer_ids"], "대상 도체층", "reference_list", choices=_choices(context["layers"]))
+        field(["all_conductor_layers"], "모든 도체층에 적용", "boolean")
+        field(["layer_ids"], "개별 도체층 (모든 도체층을 선택하면 보존)", "reference_list", choices=_choices(context["layers"]))
         for key, label in (("tracks", "선 / 원호"), ("vias", "비아 / 도금 홀"), ("pads", "패드"), ("copper_pours", "도체 영역"), ("footprints", "풋프린트")):
             field(["prohibit", key], label + " 금지", "boolean")
     elif section == "footprint":
@@ -246,7 +247,8 @@ def get(document, data):
               "holes": [{"id": row["id"], "label": row["name"]} for row in model["holes"]] + [{"id": row["id"], "label": labels[row["id"]]} for row in document["geometry"] if row["kind"] == "via"],
               "artwork_layers": deepcopy(model["artwork_layers"]), "form": None, "operation_inputs": {},
               "scene": build_canvas_dto(document),
-              "preflight": {"manufacturing_verified": False, "measurement_verified": False, "solver_mechanical_supported": False}}
+              "preflight": {"manufacturing_verified": False, "measurement_verified": False,
+                            "solver_mechanical_supported": True, "solver_mechanical_scope": "declared_unplated_and_internal_cutouts"}}
     result["member_choices"] = [{"value": {"collection": "geometry", "id": row["id"]}, "label": labels[row["id"]]} for row in document["geometry"]]
     result["member_choices"] += [{"value": {"collection": key, "id": row["id"]}, "label": row["name"]} for key in ("holes", "apertures", "keepouts") for row in model[key]]
     result["operations"] = [{"id": op, "label": SECTIONS[op.split(".")[0]] + " " + {"set": "저장", "remove": "삭제", "place": "배치", "member_edit": "멤버 편집", "detach": "그룹 해제"}[op.split(".")[1]],
@@ -259,6 +261,8 @@ def get(document, data):
             row = new_record(document, section, data.get("shape_kind", "circle"))
         original = deepcopy(row)
         row = deepcopy(row)
+        if section == "keepout":
+            row.setdefault("all_conductor_layers", False)
         if section == "aperture" and data.get("definition_mode", row["definition"]["mode"]) != row["definition"]["mode"]:
             row["definition"] = {"mode": "pad_margin", "pad_id": None, "margin": _missing(), "size_ratio": _missing("dimensionless", "1")} if data["definition_mode"] == "pad_margin" else {"mode": "explicit_shape", "shape": _shape(data.get("shape_kind", "circle"))}
         if "shape_kind" in data:

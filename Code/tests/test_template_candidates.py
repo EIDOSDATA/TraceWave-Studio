@@ -103,6 +103,24 @@ def apply_payload(document, payload):
 class TemplateDomainTests(unittest.TestCase):
     """! @brief 기하/물성/출처의 경계와 의미 있는 실패 반례를 검사한다."""
 
+    def test_candidate_blocks_only_a_keepout_hit_created_by_its_geometry(self):
+        """! @brief 전층 금지를 위반한 후보에는 적용 해시 대신 위치와 원본 ID를 돌려준다."""
+        from rfad.domain.pcb_features import empty_pcb
+        from test_pcb_features import keepout_record
+
+        document = base_document()
+        row = keepout_record(document, x=4, y=0, all_layers=True)
+        document["pcb"] = {**empty_pcb(), "keepouts": [row]}
+        data = specification(document)
+        blocked, patch = preview(document, data)
+        self.assertFalse(blocked["can_apply"])
+        self.assertIsNone(patch)
+        self.assertEqual(blocked["issues"][0]["details"]["rule"], "pcb_keepout")
+        self.assertIn(row["id"], blocked["issues"][0]["details"]["object_ids"])
+        row["shape"]["center"] = [quantity(-4, "mm"), quantity(-4, "mm")]
+        allowed, _ = preview(document, data)
+        self.assertTrue(allowed["can_apply"], allowed)
+
     def test_two_cards_preview_is_read_only_repeatable_and_preserves_missing_materials(self):
         """! @brief 후보는 실제 canvas/CAD 입력이며 미정 물성이나 저항을 채우지 않는다."""
         for kind in (ARC, IFA):

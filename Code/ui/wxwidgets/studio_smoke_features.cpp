@@ -64,6 +64,25 @@ void StudioSmokeDriver::FeaturesSafetyChecks()
     dialog.reset();
     ReviewedRequestStore::Clear("pcb_features", workspace, project);
     m_setupChecks.push_back("features_uncertain_receipt_preserves_key");
+    dialog = std::make_unique<PcbFeatureDialog>(&m_frame, m_featuresFixture.at("keepout_context"), gateway,
+                                               std::make_shared<PcbFeatureRecovery>());
+    for (const auto& field : dialog->m_form->m_fields)
+    {
+        if (field->descriptor.at("path") == Json::array({"all_conductor_layers"}))
+        {
+            CanvasAssert(field->check != nullptr && !field->check->GetValue(), "전 도체층 기본값이 선택되어 있습니다.");
+            field->check->SetValue(true);
+            wxCommandEvent event(wxEVT_CHECKBOX, field->check->GetId());
+            event.SetEventObject(field->check);
+            event.SetInt(1);
+            field->check->GetEventHandler()->ProcessEvent(event);
+            CanvasAssert(dialog->m_form->Record().at("all_conductor_layers") == true &&
+                             dialog->m_form->Record().at("layer_ids").empty(),
+                         "전 도체층 토글을 적용하며 대상 층 원본을 변경했습니다.");
+            m_setupChecks.push_back("features_all_conductor_layers_native_field");
+            break;
+        }
+    }
 }
 
 void StudioSmokeDriver::FeaturesSmokeTick()
