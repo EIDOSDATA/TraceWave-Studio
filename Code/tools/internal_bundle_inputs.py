@@ -28,7 +28,7 @@ NOTICE = "third-party-notices/"
 WINDOWS_DLLS = frozenset(name.lower() for name in (
     "ADVAPI32.dll", "bcrypt.dll", "COMCTL32.dll", "comdlg32.dll", "GDI32.dll", "KERNEL32.dll",
     "ntdll.dll", "ole32.dll", "OLEACC.dll", "OLEAUT32.dll", "OPENGL32.dll", "SHELL32.dll", "SHLWAPI.dll",
-    "USER32.dll", "UxTheme.dll", "VERSION.dll", "WINSPOOL.DRV", "ucrtbase.dll",
+    "USER32.dll", "UxTheme.dll", "VERSION.dll", "WINMM.dll", "WINSPOOL.DRV", "ucrtbase.dll",
 ))
 
 
