@@ -183,6 +183,41 @@ class NetworkServiceTests(unittest.TestCase):
         self.save_reopen()
         self.assertEqual(len(self.read("network.library")["circuits"]), 2)
 
+    def test_complex_load_conditions_and_loss_survive_assessment_reopen(self):
+        """! @brief 독립 Z 입력과 목표 평가의 기준면/진단 파일/원본 보존을 확인한다."""
+        port = self.document()["ports"][0]["id"]
+        target = deepcopy(self.document()["targets"][0])
+        parameters = import_parameters(port)
+        raw = b"Hz,R,X\n1000000000,25,25\n1500000000,25,25\n2000000000,25,25\n"
+        parameters.update(file_name="명시 복소 부하.csv", format="csv", source_base64=base64.b64encode(raw).decode("ascii"),
+            mapping={"delimiter": ",", "header": True, "frequency_column": 0, "frequency_unit": "Hz",
+                "parameter_kind": "Z", "complex_format": "RI", "value_unit": "ohm", "port_count": 1, "z0_ohm": [50],
+                "pairs": [{"row": 0, "column": 0, "first_column": 1, "second_column": 2}], "ignored_columns": []})
+        source = self.apply("import", parameters)
+        definition = circuit_definition()
+        definition["elements"][0]["value"]["text"] = "25"
+        circuit = self.apply("circuit_save", {"name": "직렬 25 ohm", "definition": definition})
+        coupling = {"name": "명시 복소 Z의 정합 결과", "dataset_id": source, "circuit_id": circuit}
+        preview = self.preview("circuit_apply", coupling)
+        self.assertTrue(preview["can_apply"], preview)
+        self.assertEqual(preview["load_page"]["parameter_kind"], "S")
+        self.assertAlmostEqual(preview["power_budget_preview"][0]["ideal_circuit_loss_fraction"], 8 / 17)
+        result = self.apply("circuit_apply", coupling)
+        evaluation = self.apply("evaluate", {"name": "정합 후 표본 평가", "dataset_id": result, "target_id": target["id"],
+            "context": {"port_id": port, "target_port_id": target["port_id"], "reference_plane": "입력 기준면", "frequency_policy": "exact_only"}})
+        saved = self.read("network.assessment", assessment_id=evaluation)["assessment"]
+        matching = saved["evidence"]["matching"]
+        self.assertEqual(matching["load_dataset_id"], source)
+        self.assertEqual(matching["load_reference_plane"], "시험 기준면")
+        self.assertEqual(matching["input_reference_plane"], "입력 기준면")
+        diagnostics = json.loads(self.service.journal.read_artifact(matching["diagnostics"]))
+        self.assertAlmostEqual(diagnostics["samples"][2]["power_budget"]["ideal_circuit_loss_fraction"], 8 / 17)
+        self.assertFalse(saved["continuous_band_verified"])
+        self.save_reopen()
+        self.assertEqual(saved, self.read("network.assessment", assessment_id=evaluation)["assessment"])
+        entry = self.read("network.get", dataset_id=source, offset=0, limit=201, row=0, column=0)["entry"]
+        self.assertEqual(self.service.journal.read_artifact(entry["raw"]), raw)
+
     def test_1001_sample_pages_and_target_revision_retention(self):
         """! @brief 많은 표본은 페이지로 조회하고 평가 때의 목표/개정 사본을 보존한다."""
         target = deepcopy(self.document()["targets"][0])

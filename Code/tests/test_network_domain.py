@@ -233,6 +233,30 @@ class NetworkCircuitTests(unittest.TestCase):
             self.assertAlmostEqual(result["values_ri"][0][0][0][0], expected)
             self.assertAlmostEqual(result["values_ri"][0][0][0][1], 0)
 
+    def test_complex_impedance_load_and_ideal_power_budget(self):
+        """! @brief 독립 임피던스와 전압 분배에서 구한 실수 전력으로 손실을 검증한다."""
+        original = network([25 + 25j])
+        original.update(parameter_kind="Z", unit="ohm")
+        before = deepcopy(original)
+        response = apply_circuit(original, circuit(component(value=25)))
+        self.assertEqual(response["dataset"]["reference_planes"], ["회로 입력"])
+        self.assertAlmostEqual(abs(complex(*response["dataset"]["values_ri"][0][0][0])) ** 2, 1 / 17)
+        self.assertAlmostEqual(abs(complex(*response["converted_load"]["values_ri"][0][0][0])) ** 2, 1 / 5)
+        power = response["diagnostics"][0]["power_budget"]
+        self.assertEqual(power["status"], "valid")
+        self.assertAlmostEqual(power["before_load_fraction"], 4 / 5)
+        self.assertAlmostEqual(power["after_load_fraction"], 8 / 17)
+        self.assertAlmostEqual(power["after_reflected_fraction"], 1 / 17)
+        self.assertAlmostEqual(power["ideal_circuit_loss_fraction"], 8 / 17)
+        self.assertEqual(response["dataset"]["provenance"]["matching_conditions"]["source_hash"], canonical_hash(original))
+        self.assertEqual(original, before)
+
+    def test_active_load_keeps_reflection_without_passive_loss_estimate(self):
+        """! @brief 능동 부하를 수동 전력 수지로 해석하지 않는다."""
+        response = apply_circuit(network([1.2 + 0j]), circuit())
+        self.assertTrue(response["dataset"]["valid_mask"][0][0][0])
+        self.assertIsNone(response["diagnostics"][0]["power_budget"]["ideal_circuit_loss_fraction"])
+
     def test_reactive_sequence_and_phasor_sign_match_independent_rlc(self):
         """! @brief 입력->부하 순서를 유지하고 시간 규약 반전은 허수 부호를 반전한다."""
         definition = circuit(component("L", 5, "nH"), component("C", 2, "pF", "shunt", number=11))

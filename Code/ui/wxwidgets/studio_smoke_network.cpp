@@ -55,7 +55,7 @@ void StudioSmokeDriver::OpenNetworkSmokeDialog(int kind)
                                 dialog = std::make_unique<NetworkImportDialog>(&m_frame, context,
                                                                                m_frame.ObjectToolGateway());
                             }
-                            else if (kind == 1)
+                            else if (kind == 1 || kind == 4)
                             {
                                 dialog = std::make_unique<NetworkCircuitDialog>(&m_frame, context, selection,
                                                                                 m_frame.ObjectToolGateway());
@@ -86,7 +86,17 @@ void StudioSmokeDriver::OpenNetworkSmokeDialog(int kind)
             }
             else
             {
-                const auto& identity = kind == 2 ? m_networkDerivedId : m_networkImportedId;
+                std::string identity = kind == 2 ? m_networkDerivedId : m_networkImportedId;
+                if (kind == 4)
+                {
+                    const auto& datasets = context.at("datasets");
+                    const auto converted = std::find_if(datasets.begin(), datasets.end(), [](const Json& row)
+                    {
+                        return row.at("name") == "GUI Z 변환";
+                    });
+                    CanvasAssert(converted != datasets.end(), "결합 시험에 사용할 명시 Z 자료가 없습니다.");
+                    identity = converted->at("id").get<std::string>();
+                }
                 m_frame.Send("network.get",
                              {{"expected_revision", m_frame.m_revision},
                               {"dataset_id", identity},
@@ -250,6 +260,28 @@ void StudioSmokeDriver::NetworkSmokeTick()
             m_setupStage = 14;
             SetupSmoke::Click(circuit->m_apply);
         }
+        else if (m_setupStage == 30)
+        {
+            SetupSmoke::Choose(circuit->m_circuits, 1);
+            m_setupStage = 31;
+            SetupSmoke::Click(circuit->m_reviewCalculation);
+        }
+        else if (m_setupStage == 31)
+        {
+            const auto& review = circuit->m_review;
+            CanvasAssert(review.value("can_apply", false) && review.at("load_page").at("parameter_kind") == "S" &&
+                             review.at("matching_conditions").at("source_kind") == "Z" &&
+                             review.at("power_budget_preview").at(0).at("ideal_circuit_loss_fraction").is_number() &&
+                             circuit->m_results->GetItemText(0, 5) != Display("미평가") &&
+                             circuit->m_resultDetails->GetValue().Contains(Display("시험 기준면")) &&
+                             circuit->m_resultDetails->GetValue().Contains(Display("입력 기준면")),
+                         "명시 복소 Z의 정합 전후 곡선, 기준면 또는 회로 손실이 표시되지 않았습니다.");
+            m_setupChecks.push_back("network_z_load_plane_and_ideal_loss_display");
+            m_setupStage = 32;
+            SetupSmoke::DiscardHook discard(wxID_YES);
+            circuit->CloseDialog();
+            CanvasAssert(discard.count == 1, "정합 검토 초안 취소가 확인되지 않았습니다.");
+        }
         return;
     }
     if (assessment)
@@ -266,6 +298,7 @@ void StudioSmokeDriver::NetworkSmokeTick()
         {
             CanvasAssert(assessment->m_review.value("can_apply", false) &&
                              assessment->m_review.at("assessment").at("context").at("reference_plane") == "입력 기준면" &&
+                             assessment->m_review.at("assessment").at("evidence").at("matching").at("circuit_id") == m_networkCircuitId &&
                              !assessment->m_review.at("assessment").at("physics_validated").get<bool>() &&
                              !assessment->m_review.at("assessment").at("continuous_band_verified").get<bool>(),
                          "표본 평가를 연속 대역/실물 검증으로 확대했습니다.");
@@ -351,6 +384,11 @@ void StudioSmokeDriver::NetworkSmokeTick()
         OpenNetworkSmokeDialog(3);
     }
     else if (m_setupStage == 26)
+    {
+        m_setupStage = 30;
+        OpenNetworkSmokeDialog(4);
+    }
+    else if (m_setupStage == 32)
     {
         m_setupStage = 18;
         OpenNetworkSmokeDialog(0);

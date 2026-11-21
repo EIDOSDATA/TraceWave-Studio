@@ -7,7 +7,7 @@ from uuid import UUID, uuid5
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.project_contract import _fields, _uuid
-from rfad.application.network_records import assessment_summary, descriptor, find_record, read_dataset, reference, samples
+from rfad.application.network_records import MAX_PAGE, assessment_summary, descriptor, find_record, read_dataset, reference, samples
 from rfad.domain.design import resolve_scalar
 from rfad.domain.network_data import validate_dataset
 from rfad.domain.network_library import fail, library, validate_library
@@ -134,6 +134,11 @@ def build_candidate(service, state, project, document, request):
             circuit_id = circuit["id"]
             derived, execution = service.calculate("network.circuit", {"dataset": source, "circuit": circuit["definition"]})
         data = derived["dataset"]
+        if operation == "circuit_apply":
+            converted_load = derived["converted_load"]
+            output["matching_conditions"] = deepcopy(data["provenance"]["matching_conditions"])
+            output["load_page"] = None if converted_load is None else samples(converted_load)
+            output["power_budget_preview"] = [row.get("power_budget") for row in derived["diagnostics"][:MAX_PAGE]]
         diagnostics_payload = canonical_bytes({"schema": "rfad.network-diagnostics/0.1", "samples": derived["diagnostics"]})
         diagnostics_path = folder + "/diagnostics.json"
         artifacts[diagnostics_path] = diagnostics_payload
@@ -167,6 +172,11 @@ def build_candidate(service, state, project, document, request):
         assessment["evidence"] = {"dataset": deepcopy(source_entry["dataset"]), "target_original": deepcopy(target),
                                   "project_revision": document["revision_id"], "context": deepcopy(parameters["context"]),
                                   "host_execution": execution, "host_source": deepcopy(host_source)}
+        matching = source["provenance"].get("matching_conditions") if source_entry["circuit_id"] is not None else None
+        if matching is not None and source_entry["inputs"] and source_entry["diagnostics"] is not None:
+            assessment["evidence"]["matching"] = {**deepcopy(matching), "circuit_id": source_entry["circuit_id"],
+                                                  "load_dataset_id": source_entry["inputs"][0],
+                                                  "diagnostics": deepcopy(source_entry["diagnostics"])}
         output["engine"] = {"host_execution": execution}
         payload = canonical_bytes(assessment)
         path = folder + "/assessment.json"

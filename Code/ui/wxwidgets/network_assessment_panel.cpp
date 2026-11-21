@@ -529,6 +529,14 @@ void NetworkAssessmentPanel::ShowConditions()
                      : "원문 있음 / 확정 여부는 출처 확인");
         }
     }
+    const auto& evidence = assessment.at("evidence");
+    if (evidence.contains("matching"))
+    {
+        const auto& matching = evidence.at("matching");
+        summary += "\n\n정합 전 부하 기준면: " + Text(matching.at("load_reference_plane")) +
+                   "\n정합 후 입력 기준면: " + Text(matching.at("input_reference_plane")) +
+                   "\n이상 RLC 손실: 입사전력 대비. 표본별 회로 진단을 참조하세요.";
+    }
     summary += "\n\n연속 대역 / 수치 수렴 / 실측 검증: 이 표본 평가로 확립하지 않음";
     m_conditionSummary->SetLabel(Display(summary));
     m_conditionSummary->Wrap(FromDIP(278));

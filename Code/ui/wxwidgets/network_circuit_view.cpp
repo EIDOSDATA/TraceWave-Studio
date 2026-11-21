@@ -346,8 +346,9 @@ void NetworkCircuitDialog::BuildInterface()
     resultLayout->Add(m_resultGraph, 1, wxEXPAND | wxBOTTOM, FromDIP(12));
     m_results =
         new wxListCtrl(result, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 150)), wxLC_REPORT | wxLC_SINGLE_SEL);
-    const std::array<std::pair<const char*, int>, 5> resultColumns{
-        {{"주파수 (Hz)", 180}, {"원본 S11 (dB)", 155}, {"결합 S11 (dB)", 155}, {"VSWR", 130}, {"표본 상태", 160}}};
+    const std::array<std::pair<const char*, int>, 6> resultColumns{
+        {{"주파수 (Hz)", 145}, {"부하 S11 (dB)", 129}, {"결합 S11 (dB)", 129}, {"VSWR", 85},
+         {"표본 상태", 110}, {"회로 손실 (%)", 130}}};
     for (std::size_t index = 0; index < resultColumns.size(); ++index)
     {
         m_results->InsertColumn(static_cast<int>(index), Display(resultColumns[index].first), wxLIST_FORMAT_LEFT,
@@ -579,9 +580,12 @@ void NetworkCircuitDialog::RenderResult(const Json& result)
     wxListItem frequencyColumn;
     frequencyColumn.SetText(Display("주파수 (" + frequencyScale.unit + ")"));
     m_results->SetColumn(0, frequencyColumn);
-    if (!m_selection.is_null())
+    const Json& converted = result.at("load_page");
+    const Json* load = !converted.is_null() ? &converted : m_selection.is_null() ? nullptr : &m_selection.at("page");
+    if (load != nullptr)
     {
-        m_resultGraph->SetComparison(m_selection.at("page"), page, Display("원본 부하"), Display("외부 정합 후"));
+        m_resultGraph->SetComparison(*load, page, Display(converted.is_null() ? "원본 부하" : "Z 부하의 S11"),
+                                     Display("외부 정합 후"));
     }
     else
     {
@@ -592,9 +596,9 @@ void NetworkCircuitDialog::RenderResult(const Json& result)
         const long row = m_results->InsertItem(
             m_results->GetItemCount(), Display(StudioFrequency::Value(sample.at("frequency_hz"), frequencyScale)));
         std::string original = "범위 밖";
-        if (!m_selection.is_null())
+        if (load != nullptr)
         {
-            for (const auto& source : m_selection.at("page").at("samples"))
+            for (const auto& source : load->at("samples"))
             {
                 if (source.at("frequency_hz") == sample.at("frequency_hz"))
                 {
@@ -614,10 +618,18 @@ void NetworkCircuitDialog::RenderResult(const Json& result)
                                    : vswrState == "undefined_active" ? "정의 불가"
                                                                      : Number(sample.at("vswr"))));
         m_results->SetItem(row, 4, Display(sample.at("status").get<std::string>()));
+        const auto& power = result.at("power_budget_preview").at(row);
+        const auto loss = power.is_null() ? Json(nullptr) : power.at("ideal_circuit_loss_fraction");
+        m_results->SetItem(row, 5, loss.is_null() ? Display("미평가") : wxString::Format("%.5g", 100 * loss.get<double>()));
     }
     m_pageLabel->SetLabel(Display("읽기 전용 후보 / 앞 " + std::to_string(page.at("samples").size()) + " / " +
                                   Number(page.at("total")) + "개 표본. 저장 후 결과 화면에서 전체 표본을 조회합니다."));
-    m_resultDetails->ChangeValue(
-        Display("원본과 결합 결과는 동일 주파수의 실제 표본입니다. 보간/기준면 자동 보정 없음.\n"
-                "외부 회로의 입력 기준면에서 계산한 반사입니다. 부품 Q/ESR/ESL/SRF와 실제 방사 성능은 미검증입니다."));
+    const auto& conditions = result.at("matching_conditions");
+    m_resultDetails->ChangeValue(Display(
+        "부하 기준면: " + Number(conditions.at("load_reference_plane")) +
+        "\n정합 후 입력 기준면: " + Number(conditions.at("input_reference_plane")) +
+        "\nZ0 (실수, 허수): " + Number(result.at("descriptor").at("z0_ohm")) + " ohm" +
+        (result.at("descriptor").value("z0_frequency_dependent", false) ? " (첫 표본, 주파수별 적용)" : "") +
+        "\n같은 주파수 표본을 각 기준면에서 표시합니다. 회로 손실은 입사전력 대비 이상 RLC 소산입니다. "
+        "부품 Q/ESR/ESL/SRF 및 방사 성능은 미평가입니다."));
 }

@@ -7,13 +7,14 @@ from rfad.adapters import network_backend
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.domain.design import _fields, _strings, _uuid, resolve_scalar
 from rfad.domain.network_data import complex_value, fail, text, validate_dataset
-from rfad.domain.network_transform import derived, real_references, require_basis
+from rfad.domain.network_transform import derived, real_references, require_basis, transform_dataset
 from rfad.domain.units import QuantityError
 
 
 SCHEMA = "rfad.ideal-rlc/0.1"
 MAX_ELEMENTS = 16
 DIMENSIONS = {"R": "impedance", "L": "inductance", "C": "capacitance"}
+POWER_TOLERANCE = 1e-8
 
 
 def validate_circuit(definition):
@@ -82,13 +83,36 @@ def _impedance(element, frequency, sign):
     return "finite", value
 
 
+def _power_budget(original, combined, delivered):
+    """! @brief 실수 Z0와 입력 입사전력 1의 동일 정규화에서 외부망의 순손실을 구한다."""
+    response = {"status": "active_or_unresolved", "before_load_fraction": None,
+                "after_load_fraction": None, "after_reflected_fraction": None,
+                "ideal_circuit_loss_fraction": None}
+    original_magnitude, combined_magnitude = abs(original), abs(combined)
+    if original_magnitude > 1 + POWER_TOLERANCE or combined_magnitude > 1 + POWER_TOLERANCE:
+        return response
+    if delivered is None or not math.isfinite(delivered):
+        return response
+    reflected = min(1.0, combined_magnitude * combined_magnitude)
+    accepted = 1 - reflected
+    loss = accepted - delivered
+    if loss < -POWER_TOLERANCE:
+        return response
+    response.update(status="valid", before_load_fraction=max(0.0, 1 - original_magnitude * original_magnitude),
+                    after_load_fraction=min(accepted, delivered), after_reflected_fraction=reflected,
+                    ideal_circuit_loss_fraction=max(0.0, loss))
+    return response
+
+
 def _sample(data, definition, index, np, skrf):
     """! @brief 동일 Z0의 2포트 요소를 부하 쪽부터 결합하고 연결 분모와 잔차를 기록한다."""
     z0 = real_references(data, index)[0]
     frequency = data["frequency_hz"][index]
     if not data["valid_mask"][index][0][0]:
-        return None, {"status": "missing", "elements": []}
-    reflection = complex_value(data["values_ri"][index][0][0], "values_ri")
+        return None, {"status": data["sample_status"][index][0][0], "elements": []}
+    reflection = original = complex_value(data["values_ri"][index][0][0], "values_ri")
+    original_magnitude = abs(original)
+    delivered = max(0.0, 1 - original_magnitude * original_magnitude) if original_magnitude <= 1 + POWER_TOLERANCE else None
     sign = 1 if data["phasor_convention"] == "exp(+j*omega*t)" else -1
     diagnostics = []
     for element in reversed(definition["elements"]):
@@ -101,8 +125,10 @@ def _sample(data, definition, index, np, skrf):
         if state in ("open", "short"):
             if connection == "series" and state == "open":
                 reflection = complex(1)
+                delivered = 0.0
             elif connection == "shunt" and state == "short":
                 reflection = complex(-1)
+                delivered = 0.0
             continue
         try:
             with np.errstate(all="raise"):
@@ -135,37 +161,50 @@ def _sample(data, definition, index, np, skrf):
                     row["status"] = "ill_conditioned"
                     return None, {"status": "ill_conditioned", "elements": diagnostics}
                 row["status"] = "valid"
+                if delivered is not None:
+                    forward = abs(complex(scattering[1, 0]) / denominator)
+                    delivered *= forward * forward
                 reflection = result
         except (FloatingPointError, OverflowError, ZeroDivisionError, ValueError, np.linalg.LinAlgError):
             row["status"] = "nonfinite"
             return None, {"status": "nonfinite", "elements": diagnostics}
-    return reflection, {"status": "valid", "elements": diagnostics}
+    return reflection, {"status": "valid", "elements": diagnostics,
+                        "power_budget": _power_budget(original, reflection, delivered)}
 
 
 def apply_circuit(data, definition):
     """! @brief 원본 EM/측정 자료와 소자 출처를 바꾸지 않고 외부 정합 결과만 반환한다."""
     validate_dataset(data)
     validate_circuit(definition)
-    if data["parameter_kind"] != "S" or len(data["port_ids"]) != 1:
-        fail("현재 외부 RLC 결합에는 1포트 S 부하가 필요합니다.", "network", "E_UNSUPPORTED")
+    if data["parameter_kind"] not in ("S", "Z") or len(data["port_ids"]) != 1:
+        fail("현재 외부 RLC 결합에는 1포트 복소 S 또는 Z 부하가 필요합니다.", "network", "E_UNSUPPORTED")
     require_basis(data, phasor=True)
     if definition["input_reference_plane"] is None or definition["load_reference_plane"] != data["reference_planes"][0]:
         fail("회로 입출력 기준면과 부하 자료 기준면을 명시적으로 일치시키십시오.", "circuit.load_reference_plane", "E_CONFLICT")
     for element in definition["elements"]:
         if element["state"] == "connected" and element["value"]["value_si"] is None:
             fail("연결 소자의 값이 미정입니다.", "circuit.elements.value", "E_CONFLICT")
+    conversion = transform_dataset(data, {"operation": "convert", "parameter_kind": "S"}) if data["parameter_kind"] == "Z" else None
+    load = data if conversion is None else conversion["dataset"]
     np, _, skrf, engine = network_backend.runtime()
     values, masks, statuses, diagnostics = [], [], [], []
-    for index, frequency in enumerate(data["frequency_hz"]):
-        result, diagnostic = _sample(data, definition, index, np, skrf)
+    for index, frequency in enumerate(load["frequency_hz"]):
+        result, diagnostic = _sample(load, definition, index, np, skrf)
+        if conversion is not None:
+            diagnostic["load_conversion"] = conversion["diagnostics"][index]
         valid = result is not None
         values.append([[[float(result.real), float(result.imag)]] if valid else [None]])
         masks.append([[valid]])
         statuses.append([[diagnostic["status"]]])
         diagnostics.append({"frequency_hz": frequency, **diagnostic})
-    result = derived(data, values, masks, statuses,
+    conditions = {"source_kind": data["parameter_kind"], "source_hash": canonical_hash(data),
+                  "load_reference_plane": definition["load_reference_plane"], "input_reference_plane": definition["input_reference_plane"],
+                  "power_basis": "unit_incident_power_at_each_input", "loss_model": "ideal_rlc_only"}
+    result = derived(load, values, masks, statuses,
                      {"operation": "ideal_rlc", "definition_hash": canonical_hash(definition), "definition": deepcopy(definition),
                       "field_metrics_carried": False, "actual_component_parasitics": "not_supplied"}, engine)
     result["reference_planes"] = [definition["input_reference_plane"]]
+    result["provenance"]["matching_conditions"] = conditions
     validate_dataset(result)
-    return {"dataset": result, "diagnostics": diagnostics, "engine": engine}
+    return {"dataset": result, "diagnostics": diagnostics, "engine": engine,
+            "converted_load": None if conversion is None else load}
