@@ -46,10 +46,14 @@ void PcbCatalogTable::StorePage(long offset, const Json& rows)
         m_pageOrder.push_back(offset);
     }
     m_pages.insert_or_assign(offset, rows);
-    const long last = std::min<long>(GetItemCount() - 1, offset + static_cast<long>(rows.size()) - 1);
-    if (offset <= last)
+    // @brief 이미 읽은 페이지가 화면 밖에 있으면 스크롤에서 다시 조회할 때 그린다.
+    const long top = GetTopItem();
+    const long first = std::max(offset, top);
+    const long last = std::min<long>({GetItemCount() - 1, offset + static_cast<long>(rows.size()) - 1,
+                                     top + GetCountPerPage()});
+    if (first <= last)
     {
-        RefreshItems(offset, last);
+        RefreshItems(first, last);
     }
 }
 

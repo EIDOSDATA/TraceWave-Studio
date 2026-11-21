@@ -65,13 +65,14 @@ public:
     /** @brief 화면이 보이는 상태의 첫 그리기 후 한 번만 호출한다. */
     std::function<void()> onFirstVisiblePaint;
     /** @brief 계측 창에서만 장면과 같은 버퍼에 진단 표식을 그린다. */
-    std::function<void(wxDC&)> onDrawDisplayMarker;
+    void SetDisplayMarker(wxRect bounds, std::function<void(wxDC&)> draw);
 
 private:
     using Shape = CanvasScene::Shape;
 
     void OnPaint(wxPaintEvent& event);
-    void PaintScene(wxDC& dc);
+    void PaintScene(wxDC& dc, const wxRect& damage);
+    void RefreshDragPreview(const Shape& shape, const wxPoint2DDouble& offset);
     void OnLeftDown(wxMouseEvent& event);
     void OnLeftUp(wxMouseEvent& event);
     void OnMotion(wxMouseEvent& event);
@@ -131,4 +132,6 @@ private:
     std::vector<wxPoint2DDouble> m_points;
     std::string m_pendingId;
     wxPoint2DDouble m_pendingOffset{0.0, 0.0};
+    wxRect m_displayMarkerBounds;
+    std::function<void(wxDC&)> m_drawDisplayMarker;
 };

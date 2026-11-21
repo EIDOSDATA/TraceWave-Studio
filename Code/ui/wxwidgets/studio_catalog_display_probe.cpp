@@ -7,6 +7,7 @@
 #include <mmsystem.h>
 #include <thread>
 #include <vector>
+#include <wx/utils.h>
 #include <wx/weakref.h>
 #include <wx/window.h>
 
@@ -15,6 +16,7 @@ namespace
 namespace Marker = WindowsDisplayMarker;
 constexpr int InputPeriodMs = 10;
 constexpr int RunSeconds = 35;
+constexpr int ScrollEventId = wxID_HIGHEST + 2;
 
 std::int64_t Counter()
 {
@@ -87,13 +89,14 @@ struct StudioCatalogDisplayProbe::State
     HWND window;
     POINT origin;
     Marker::Reader reader;
-    std::thread capture;
+    std::thread capture, source;
     std::atomic<bool> stop{false}, ready{false}, readerFailed{false};
-    std::exception_ptr readerError, inputError;
+    std::atomic<bool> pending{false}, sourceFailed{false};
+    std::exception_ptr readerError, inputError, sourceError;
     std::int64_t frequency = 0, readerDeadline = 0, start = 0, end = 0;
-    bool fineTimer = false;
+    bool fineTimer = false, useWaitableTimer = false;
     unsigned unloaded = 0;
-    std::vector<std::int64_t> inputs;
+    std::vector<std::int64_t> offers, inputs;
     std::vector<Marker::Frame> frames;
     Json painted = Json::array();
 };
@@ -107,6 +110,18 @@ StudioCatalogDisplayProbe::StudioCatalogDisplayProbe(PcbCatalogTable& table)
         throw std::runtime_error("자료 표에서 스크롤 시험의 표시 영역을 확보하지 못했습니다.");
     }
     m_state = std::make_unique<State>(table, window, POINT{bounds.right - Marker::Width - 5, bounds.bottom - 7});
+    wxString timer;
+    m_state->useWaitableTimer = wxGetEnv("RFAD_TEST_CATALOG_WAITABLE_TIMER", &timer) && timer == "1";
+    Bind(wxEVT_THREAD, [this](wxThreadEvent&)
+    {
+        auto& state = *m_state;
+        state.pending.store(false);
+        const auto now = Counter();
+        if (IsRunning() && now < state.end)
+        {
+            Scroll(now);
+        }
+    }, ScrollEventId);
     m_state->painted.push_back({0, Counter()});
     m_state->PaintMarker(0);
     m_state->capture = std::thread([state = m_state.get()]() { state->ReadDesktop(); });
@@ -121,6 +136,10 @@ StudioCatalogDisplayProbe::~StudioCatalogDisplayProbe()
 {
     Stop();
     m_state->stop.store(true);
+    if (m_state->source.joinable())
+    {
+        m_state->source.join();
+    }
     if (m_state->capture.joinable())
     {
         m_state->capture.join();
@@ -129,6 +148,49 @@ StudioCatalogDisplayProbe::~StudioCatalogDisplayProbe()
     {
         timeEndPeriod(1);
     }
+}
+
+/** @brief 화면 스레드와 독립된 제안을 기록하면서 대기 중인 입력은 하나만 유지한다. */
+void StudioCatalogDisplayProbe::StartInputOffers()
+{
+    auto& state = *m_state;
+    state.source = std::thread([this, &state]()
+    {
+        try
+        {
+            const std::unique_ptr<void, decltype(&CloseHandle)> timer(
+                CreateWaitableTimerExW(nullptr, nullptr, CREATE_WAITABLE_TIMER_HIGH_RESOLUTION,
+                                       SYNCHRONIZE | TIMER_MODIFY_STATE), &CloseHandle);
+            LARGE_INTEGER due{};
+            due.QuadPart = -10000LL * InputPeriodMs;
+            if (!timer || !SetWaitableTimer(timer.get(), &due, InputPeriodMs, nullptr, nullptr, FALSE))
+            {
+                throw std::runtime_error("표 스크롤용 고해상도 타이머를 열지 못했습니다.");
+            }
+            while (!state.stop.load())
+            {
+                if (WaitForSingleObject(timer.get(), 150) != WAIT_OBJECT_0)
+                {
+                    throw std::runtime_error("표 스크롤 타이머의 대기 시간이 초과됐습니다.");
+                }
+                const auto now = Counter();
+                if (now >= state.end || state.stop.load())
+                {
+                    break;
+                }
+                state.offers.push_back(now);
+                if (!state.pending.exchange(true))
+                {
+                    wxQueueEvent(this, new wxThreadEvent(wxEVT_THREAD, ScrollEventId));
+                }
+            }
+        }
+        catch (...)
+        {
+            state.sourceError = std::current_exception();
+            state.sourceFailed.store(true);
+        }
+    });
 }
 
 void StudioCatalogDisplayProbe::Notify()
@@ -154,11 +216,37 @@ void StudioCatalogDisplayProbe::Notify()
         {
             state.start = now;
             state.end = now + RunSeconds * state.frequency;
+            if (state.useWaitableTimer)
+            {
+                StartInputOffers();
+            }
         }
         if (now >= state.end)
         {
             Stop();
             return;
+        }
+        if (!state.useWaitableTimer)
+        {
+            Scroll(now);
+        }
+    }
+    catch (...)
+    {
+        Stop();
+        state.inputError = std::current_exception();
+    }
+}
+
+/** @brief 같은 native 목록에서 행을 한 줄 이동하고 그리기 및 표식 시각을 기록한다. */
+void StudioCatalogDisplayProbe::Scroll(std::int64_t now)
+{
+    auto& state = *m_state;
+    try
+    {
+        if (!state.table)
+        {
+            throw std::runtime_error("계측 중 자료 표가 닫혔습니다.");
         }
         if (state.inputs.size() >= 6000)
         {
@@ -189,7 +277,7 @@ void StudioCatalogDisplayProbe::Notify()
 
 bool StudioCatalogDisplayProbe::Complete() const
 {
-    return !IsRunning() || m_state->readerFailed.load();
+    return !IsRunning() || m_state->readerFailed.load() || m_state->sourceFailed.load();
 }
 
 Json StudioCatalogDisplayProbe::Finish()
@@ -198,6 +286,10 @@ Json StudioCatalogDisplayProbe::Finish()
     auto& state = *m_state;
     state.stop.store(true);
     state.capture.join();
+    if (state.source.joinable())
+    {
+        state.source.join();
+    }
     if (state.readerError)
     {
         std::rethrow_exception(state.readerError);
@@ -205,6 +297,10 @@ Json StudioCatalogDisplayProbe::Finish()
     if (state.inputError)
     {
         std::rethrow_exception(state.inputError);
+    }
+    if (state.sourceError)
+    {
+        std::rethrow_exception(state.sourceError);
     }
     if (!state.table)
     {
@@ -217,11 +313,17 @@ Json StudioCatalogDisplayProbe::Finish()
     {
         frames.push_back({frame.presented, frame.accumulated, frame.sequence ? Json(*frame.sequence) : Json()});
     }
-    return {{"schema", "rfad.windows-canvas-display-trace/0.1"}, {"ok", true}, {"workload", "catalog_scroll"},
+    Json trace = {{"schema", "rfad.windows-canvas-display-trace/0.1"}, {"ok", true}, {"workload", "catalog_scroll"},
             {"shapes", 10000}, {"layers", 4}, {"catalog_rows", state.table->GetItemCount()},
             {"top_rows_not_yet_loaded", state.unloaded}, {"qpc_frequency", state.frequency},
             {"start_qpc", state.start}, {"end_qpc", state.end}, {"requested_timer_ms", InputPeriodMs},
-            {"timer", "wx-timer-1ms-resolution"}, {"refresh_hz", state.reader.RefreshRate()},
+            {"timer", state.useWaitableTimer ? "high-resolution-waitable" : "wx-timer-1ms-resolution"},
+            {"refresh_hz", state.reader.RefreshRate()},
             {"dpi", state.table->GetDPI().x}, {"canvas", {bounds.x, bounds.y}}, {"display", {display.cx, display.cy}},
             {"inputs_qpc", state.inputs}, {"painted", std::move(state.painted)}, {"desktop_updates", std::move(frames)}};
+    if (state.useWaitableTimer)
+    {
+        trace["offers_qpc"] = std::move(state.offers);
+    }
+    return trace;
 }

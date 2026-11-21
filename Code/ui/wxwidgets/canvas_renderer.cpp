@@ -8,8 +8,9 @@ using Point = CanvasGeometry::Point;
 }
 
 CanvasRenderer::CanvasRenderer(wxWindow& window, wxDC& dc, CanvasViewport viewport,
-                               StudioAppearance::CanvasColours colours)
-    : m_window(window), m_dc(dc), m_viewport(viewport), m_colours(std::move(colours)), m_pathPadding(window.FromDIP(8))
+                               StudioAppearance::CanvasColours colours, wxRect damage)
+    : m_window(window), m_dc(dc), m_viewport(viewport), m_colours(std::move(colours)), m_pathPadding(window.FromDIP(8)),
+      m_damage(damage.IsEmpty() ? wxRect(0, 0, viewport.width, viewport.height) : damage)
 {
 }
 
@@ -137,6 +138,16 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     {
         start = m_viewport.Project(shape.start, offset);
         end = m_viewport.Project(shape.end, offset);
+        if (m_damage.width != m_viewport.width || m_damage.height != m_viewport.height)
+        {
+            Point first = start;
+            Point last = end;
+            if (!CanvasGeometry::ClipSegment(first, last, m_damage.x - padding, m_damage.y - padding,
+                                             m_damage.x + m_damage.width + padding, m_damage.y + m_damage.height + padding))
+            {
+                return true;
+            }
+        }
         if (!outline && !CanvasGeometry::ClipSegment(start, end, -padding, -padding, m_viewport.width + padding,
                                                      m_viewport.height + padding))
         {
@@ -147,8 +158,8 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
     {
         arcCenter = m_viewport.Project(shape.center, offset);
         const double extent = shape.radius * m_viewport.pixelsPerMm + padding;
-        if (arcCenter.x + extent < 0.0 || arcCenter.x - extent > m_viewport.width ||
-            arcCenter.y + extent < 0.0 || arcCenter.y - extent > m_viewport.height)
+        if (arcCenter.x + extent < m_damage.x || arcCenter.x - extent > m_damage.x + m_damage.width ||
+            arcCenter.y + extent < m_damage.y || arcCenter.y - extent > m_damage.y + m_damage.height)
         {
             return true;
         }
@@ -162,7 +173,7 @@ bool CanvasRenderer::DrawShape(const CanvasScene::Shape& shape, Point offset, co
         m_graphics.reset(wxGraphicsContext::CreateFromUnknownDC(m_dc));
         if (m_graphics)
         {
-            m_graphics->Clip(0, 0, m_viewport.width, m_viewport.height);
+            m_graphics->Clip(m_damage.x, m_damage.y, m_damage.width, m_damage.height);
         }
     }
     auto* graphics = m_graphics.get();

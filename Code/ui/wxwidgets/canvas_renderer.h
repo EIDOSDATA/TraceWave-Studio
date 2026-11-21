@@ -10,7 +10,8 @@
 class CanvasRenderer final
 {
 public:
-    CanvasRenderer(wxWindow& window, wxDC& dc, CanvasViewport viewport, StudioAppearance::CanvasColours colours = {});
+    CanvasRenderer(wxWindow& window, wxDC& dc, CanvasViewport viewport, StudioAppearance::CanvasColours colours = {},
+                   wxRect damage = {});
     ~CanvasRenderer();
     void DrawGrid(bool visible);
     void DrawBoard(const CanvasScene::Model& scene);
@@ -28,6 +29,7 @@ private:
     StudioAppearance::CanvasColours m_colours;
     /** @brief 선택 강조와 안티앨리어싱을 포함하며 한 paint의 DPI에서 고정한다. */
     int m_pathPadding;
+    wxRect m_damage;
     std::unique_ptr<wxGraphicsContext> m_graphics;
     bool m_unflushed = false;
     wxGraphicsPen m_linePen;

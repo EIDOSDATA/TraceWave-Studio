@@ -4,6 +4,8 @@
 #include "large_display_fixture.h"
 #include "model_view.h"
 #include "windows_display_marker.h"
+#include <wx/dcclient.h>
+#include <wx/dcmemory.h>
 
 #include <GL/gl.h>
 #include <atomic>
@@ -100,10 +102,10 @@ public:
             m_canvas = new DesignCanvas(this);
             m_surface = m_canvas;
             sizer->Add(m_canvas, 1, wxEXPAND);
-            m_canvas->onDrawDisplayMarker = [this](wxDC& dc)
+            m_canvas->SetDisplayMarker(wxRect(MarkerX, MarkerY, Marker::Width, MarkerHeight), [this](wxDC& dc)
             {
                 DrawMarker(dc);
-            };
+            });
         }
         else
         {
@@ -477,6 +479,35 @@ private:
         m_modelVisibleTriangles = {fit, outside, restored};
     }
 
+    /** @brief 마지막 드래그의 부분 갱신 화면을 같은 위치에서 전체 그리기와 비교한다. */
+    void CheckDragPixels()
+    {
+        m_canvas->Update();
+        const auto snapshot = [this]()
+        {
+            wxBitmap bitmap(m_size);
+            wxClientDC screen(m_canvas);
+            wxMemoryDC target(bitmap);
+            if (!target.Blit(0, 0, m_size.x, m_size.y, &screen, 0, 0))
+            {
+                throw std::runtime_error("드래그의 실제 화면을 읽지 못했습니다.");
+            }
+            target.SelectObject(wxNullBitmap);
+            return bitmap.ConvertToImage();
+        };
+        const auto before = snapshot();
+        m_canvas->Refresh(false);
+        m_canvas->Update();
+        const auto after = snapshot();
+        const auto bytes = static_cast<std::size_t>(m_size.x) * m_size.y * 3;
+        m_dragRasterMatchesFullPaint = before.IsOk() && after.IsOk() &&
+            std::memcmp(before.GetData(), after.GetData(), bytes) == 0;
+        if (!m_dragRasterMatchesFullPaint)
+        {
+            throw std::runtime_error("드래그의 마지막 부분과 전체 그리기 픽셀이 다릅니다.");
+        }
+    }
+
     void OnTimer(wxTimerEvent&)
     {
         try
@@ -519,6 +550,11 @@ private:
             }
             if (now - m_end >= m_frequency / 4)
             {
+                if (m_drag)
+                {
+                    StopThreads();
+                    CheckDragPixels();
+                }
                 if (m_knownPickingFixture)
                 {
                     StopThreads();
@@ -575,6 +611,7 @@ private:
                           {"shapes", model ? 0 : m_shapes}, {"layers", model ? m_model->BodyCount() : m_layers},
                           {"model_clicks_after_navigation", m_modelClicks},
                           {"model_visible_triangles", m_modelVisibleTriangles},
+                          {"drag_raster_matches_full_paint", m_dragRasterMatchesFullPaint},
                           {"triangles", model ? m_model->TriangleCount() : 0}, {"target_fps", m_modelTriangles == LargeModelTriangles ? 30 : 60},
                           {"workload", model ? "model-rotate-pan" : (m_pan ? "canvas-middle-pan" : (m_drag ? "canvas-geometry-drag" : "canvas-wheel-zoom"))},
                           {"renderer", model ? m_model->RendererDescription() : "wxGraphicsContext"},
@@ -603,6 +640,7 @@ private:
     Json m_modelVisibleTriangles = Json::array();
     bool m_pan;
     bool m_drag;
+    bool m_dragRasterMatchesFullPaint = false;
     wxPoint m_dragAnchor;
     std::string m_dragIdentity;
     std::size_t m_modelTriangles;

@@ -2,6 +2,7 @@
 #pragma once
 
 #include "studio_types.h"
+#include <cstdint>
 #include <memory>
 #include <wx/timer.h>
 
@@ -20,4 +21,6 @@ private:
     struct State;
     std::unique_ptr<State> m_state;
     void Notify() override;
+    void StartInputOffers();
+    void Scroll(std::int64_t now);
 };

@@ -448,14 +448,30 @@ void DesignCanvas::Status(const std::string& message)
     }
 }
 
+void DesignCanvas::SetDisplayMarker(wxRect bounds, std::function<void(wxDC&)> draw)
+{
+    m_displayMarkerBounds = bounds;
+    m_drawDisplayMarker = std::move(draw);
+}
+
 void DesignCanvas::OnPaint(wxPaintEvent&)
 {
     {
         wxAutoBufferedPaintDC dc(this);
-        PaintScene(dc);
-        if (onDrawDisplayMarker)
+        wxRegion damage = GetUpdateRegion();
+        if (m_drawDisplayMarker)
         {
-            onDrawDisplayMarker(dc);
+            damage.Subtract(m_displayMarkerBounds);
+        }
+        if (!damage.IsEmpty())
+        {
+            const wxRect bounds = damage.GetBox();
+            wxDCClipper clip(dc, bounds);
+            PaintScene(dc, bounds);
+        }
+        if (m_drawDisplayMarker && GetUpdateRegion().Contains(m_displayMarkerBounds) == wxInRegion)
+        {
+            m_drawDisplayMarker(dc);
         }
     }
     if (!onFirstVisiblePaint || !IsShownOnScreen())
@@ -471,11 +487,11 @@ void DesignCanvas::OnPaint(wxPaintEvent&)
     }
 }
 
-void DesignCanvas::PaintScene(wxDC& dc)
+void DesignCanvas::PaintScene(wxDC& dc, const wxRect& damage)
 {
     dc.SetBackground(wxBrush(m_colours.background));
     dc.Clear();
-    CanvasRenderer renderer(*this, dc, Viewport(), m_colours);
+    CanvasRenderer renderer(*this, dc, Viewport(), m_colours, damage);
     renderer.DrawGrid(m_showGrid);
     if (m_showBoard)
     {
@@ -781,6 +797,43 @@ void DesignCanvas::Emit(const Json& action)
     }
 }
 
+/** @brief 드래그 중 단순 도형의 이전 위치와 새 위치 및 강조 테두리만 다시 그린다. */
+void DesignCanvas::RefreshDragPreview(const Shape& shape, const Point& offset)
+{
+    const auto view = Viewport();
+    const auto previous = GeometryPoint(m_dragOffset);
+    const auto next = GeometryPoint(offset);
+    const bool line = shape.kind == "line_path";
+    if (!m_gesture.Dragging() || shape.selectionKind != "geometry" || (!line && shape.kind != "arc_path") ||
+        !view.Renderable(shape, previous) || !view.Renderable(shape, next))
+    {
+        Refresh(false);
+        return;
+    }
+    const auto a = view.Project(line ? shape.start : shape.center, previous);
+    const auto b = view.Project(line ? shape.end : shape.center, previous);
+    const auto c = view.Project(line ? shape.start : shape.center, next);
+    const auto d = view.Project(line ? shape.end : shape.center, next);
+    const double padding = std::max(shape.width * view.pixelsPerMm, 1.0) / 2.0 + FromDIP(8) +
+                           (line ? 0.0 : shape.radius * view.pixelsPerMm);
+    const auto bound = [](double value, int size)
+    {
+        return static_cast<int>(std::clamp(value, 0.0, static_cast<double>(size)));
+    };
+    const int left = bound(std::floor(std::min({a.x, b.x, c.x, d.x}) - padding), view.width);
+    const int right = bound(std::ceil(std::max({a.x, b.x, c.x, d.x}) + padding), view.width);
+    const int top = bound(std::floor(std::min({a.y, b.y, c.y, d.y}) - padding), view.height);
+    const int bottom = bound(std::ceil(std::max({a.y, b.y, c.y, d.y}) + padding), view.height);
+    if (left < right && top < bottom)
+    {
+        RefreshRect(wxRect(left, top, right - left, bottom - top), false);
+        if (m_drawDisplayMarker)
+        {
+            RefreshRect(m_displayMarkerBounds, false);
+        }
+    }
+}
+
 void DesignCanvas::OnMotion(wxMouseEvent& event)
 {
     const wxPoint point = event.GetPosition();
@@ -805,9 +858,10 @@ void DesignCanvas::OnMotion(wxMouseEvent& event)
             (m_gesture.Dragging() ||
              std::hypot(static_cast<double>(distance.x), static_cast<double>(distance.y)) >= FromDIP(3)))
         {
+            const auto offset = Subtract(m_cursor, m_dragAnchor);
+            RefreshDragPreview(*shape, offset);
             m_gesture.BeginDrag();
-            m_dragOffset = Subtract(m_cursor, m_dragAnchor);
-            Refresh(false);
+            m_dragOffset = offset;
         }
         else if (shape != nullptr && !shape->movable)
         {

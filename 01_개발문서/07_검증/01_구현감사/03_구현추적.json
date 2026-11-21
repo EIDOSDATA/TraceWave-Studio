@@ -10346,7 +10346,11 @@
         "src/rfad/application/wsl_process.py",
         "ui/wxwidgets/service_client.cpp",
         "ui/wxwidgets/canvas_renderer.cpp",
+        "ui/wxwidgets/design_canvas.cpp",
         "ui/wxwidgets/pcb_catalog_table.h",
+        "ui/wxwidgets/pcb_catalog_table.cpp",
+        "ui/wxwidgets/studio_catalog_display_probe.cpp",
+        "tools/canvas_display_probe.cpp",
         "tools/mcp_stdio.py",
         "tools/build_internal_bundle.py",
         "tools/internal_bundle_inputs.py",
@@ -10366,6 +10370,7 @@
         "../01_개발문서/07_검증/49_윈도우_에프영_시작시간_검증.md",
         "../01_개발문서/07_검증/283_윈도우_연속표시_유효표본_검증.md",
         "../01_개발문서/07_검증/288_대형_이차원과_표_스크롤_성능_대조.md",
+        "../01_개발문서/07_검증/291_드래그_부분갱신과_표_지연_검증.md",
         "../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md"
       ],
       "gaps": [
@@ -14119,8 +14124,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "af720dbdbfa3896b6cf2da12d6ebf070b7e2b108074bb1a7fb121dfbf8b33559",
-      "utf8_bytes": 65789
+      "text_sha256": "11262363d937bc395e5fcb2ebd3dd335ac135bb29cb33c2a34741942c3666068",
+      "utf8_bytes": 66057
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14451,6 +14456,11 @@
       "path": "01_개발문서/07_검증/289_수용전력_변화와_관통홀_접합_대조.md",
       "text_sha256": "c32c1e810e9a966320a33db272a077b4e9b99dcf88ab33543a2885eff80544b3",
       "utf8_bytes": 6380
+    },
+    {
+      "path": "01_개발문서/07_검증/291_드래그_부분갱신과_표_지연_검증.md",
+      "text_sha256": "7103559074d5bb8dd83d1afa2e00f1fc91c401b2985e3e0a1738f5e074b0cc8d",
+      "utf8_bytes": 4898
     },
     {
       "path": "01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
@@ -16083,6 +16093,11 @@
       "utf8_bytes": 9303
     },
     {
+      "path": "Code/tools/canvas_display_probe.cpp",
+      "text_sha256": "d12234580ace6efd7b72d8ec673a4414da80f1aae1af2dc20792b75240e8bc12",
+      "utf8_bytes": 28649
+    },
+    {
       "path": "Code/tools/internal_bundle_inputs.py",
       "text_sha256": "9bc3926e5d770378e4f06a233dbaa00a30820b44723a65a8677af2bbbda3de4e",
       "utf8_bytes": 8157
@@ -16141,6 +16156,11 @@
       "path": "Code/ui/wxwidgets/canvas_renderer.cpp",
       "text_sha256": "5dbf47a2f5e91fa3cd8a61fad0f5bd65444eaadbade719db85ff9b976f5b169b",
       "utf8_bytes": 13592
+    },
+    {
+      "path": "Code/ui/wxwidgets/design_canvas.cpp",
+      "text_sha256": "024b8efdf3d2dbf679014b7f09f692a50e8c35b6a1dbadd5ef3a53e2bc179926",
+      "utf8_bytes": 31211
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_dimensions.cpp",
@@ -16271,6 +16291,11 @@
       "path": "Code/ui/wxwidgets/pcb_cam_output_view.cpp",
       "text_sha256": "29cb5812cad0b3c6e3580c2383aab8dc0caaa04e86e7793f892d3142bdac9c6f",
       "utf8_bytes": 10629
+    },
+    {
+      "path": "Code/ui/wxwidgets/pcb_catalog_table.cpp",
+      "text_sha256": "cc9846375a34c52a1526752e2668950628b04311d6e838fce9a22a96a3aed2d2",
+      "utf8_bytes": 4099
     },
     {
       "path": "Code/ui/wxwidgets/pcb_catalog_table.h",
@@ -16421,6 +16446,11 @@
       "path": "Code/ui/wxwidgets/studio_archive_restore.cpp",
       "text_sha256": "93cd051150ccf0600b305cf5fa8e2ce64fe974a9c33f86edd5b668fc98fa109a",
       "utf8_bytes": 1093
+    },
+    {
+      "path": "Code/ui/wxwidgets/studio_catalog_display_probe.cpp",
+      "text_sha256": "71dc23445e82866cd47618ea825aaff06a45cb17a4b76fb7ddd0bcecb6f036bd",
+      "utf8_bytes": 10941
     },
     {
       "path": "Code/ui/wxwidgets/studio_design_setup.cpp",
