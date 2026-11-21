@@ -26,7 +26,7 @@ def document(service, context):
     return service._load(service.journal.read()["projects"][context["project_id"]])
 
 
-def run_study(service, context, specification, *, timeout=2420):
+def run_study(service, context, specification, *, timeout=2420, keep_incomplete=False):
     """! @brief 검토한 연구를 한 번 시작하며 종료/취소 확인을 구분한다."""
     inputs = {"expected_revision": document(service, context)["revision_id"], "specification": specification}
     preview = call(service, "sweep.preview", inputs, context)
@@ -38,7 +38,8 @@ def run_study(service, context, specification, *, timeout=2420):
     while True:
         state = call(service, "sweep.get", {"study_id": study_id}, context)
         if state["state"] not in {"running", "resuming", "cancel_requested"}:
-            require(state["state"] == "completed", "연구가 완료되지 않았습니다: " + json.dumps(state, ensure_ascii=False))
+            if not keep_incomplete:
+                require(state["state"] == "completed", "연구가 완료되지 않았습니다: " + json.dumps(state, ensure_ascii=False))
             break
         if time.monotonic() >= deadline:
             cancellation = call(service, "sweep.cancel", {"study_id": study_id}, context, mutation=True)
