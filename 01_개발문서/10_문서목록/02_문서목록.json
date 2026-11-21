@@ -20,7 +20,7 @@
     "current_03_아키텍처": 7,
     "current_04_화면설계": 25,
     "current_05_기능설계": 45,
-    "current_06_분석연구": 13,
+    "current_06_분석연구": 14,
     "current_07_검증": 148,
     "current_08_운영환경": 7,
     "current_09_개발계획": 8,
@@ -28440,9 +28440,9 @@
       "path": "01_개발문서/06_분석연구/README.md",
       "category": "current_06_분석연구",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 1724,
-      "working_tree_sha256": "de193ca0ceb3cf7c4a3f37dca54111ed80fdd26312b97580b696fb1f36e263a1",
-      "text_lines": 23,
+      "bytes": 1894,
+      "working_tree_sha256": "842ed3269d187733197e0d57fa15e25713ae821d852c4b404f5a49bde970b4e3",
+      "text_lines": 24,
       "text_status": "utf8_read"
     },
     {
@@ -28715,8 +28715,8 @@
       "path": "01_개발문서/10_문서목록/05_참고자료분류.md",
       "category": "document_catalog",
       "review_scope": "분류/경로 대응",
-      "bytes": 4159,
-      "working_tree_sha256": "e8f309652c85fd1f52a19c0d6e600126755a394d6b7911f111ac7f8670b0797d",
+      "bytes": 4272,
+      "working_tree_sha256": "ac3e38ff53136a4f550fb0bbe587ce59b24056b2a703a5fb9ea9b512944ea8d3",
       "text_lines": 25,
       "text_status": "utf8_read"
     },
@@ -32345,8 +32345,8 @@
       "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 11779,
-      "working_tree_sha256": "fb36351c56f5ac845b15eba41d3adf64a3938ddf2be3b6c69089a78e2bcfcec8",
+      "bytes": 11865,
+      "working_tree_sha256": "698989aff06d539aa232e0fb013d62d510b6b3804206cbffb557ee80798ab709",
       "text_lines": 42,
       "text_status": "utf8_read"
     },
@@ -32363,9 +32363,9 @@
       "path": "01_개발문서/09_개발계획/06_비교분석과_기능개발_범위.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12653,
-      "working_tree_sha256": "f0f47d6b2dfee6224c33c8c1c5d01be887ac9cf9bcacf0918effc2869b3da0b8",
-      "text_lines": 39,
+      "bytes": 16059,
+      "working_tree_sha256": "cdac8d1cc9f51d4b8494ef6e1e35f47424d426b28bb6608b20bf1952a0f9c27b",
+      "text_lines": 48,
       "text_status": "utf8_read"
     },
     {
@@ -32519,6 +32519,15 @@
       "bytes": 1242,
       "working_tree_sha256": "68457c981e8f77ed647ea063da8a28518919a4fb4bb552b92002a29e49ae5e2a",
       "text_lines": 11,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/06_분석연구/13_제조사_피시비_안테나_원본과_대역별_검토.md",
+      "category": "current_06_분석연구",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 46712,
+      "working_tree_sha256": "ade4cdf93c43eefbe36bdaebf3428e4766b3490d7eae9e72c8441df5341c7972",
+      "text_lines": 161,
       "text_status": "utf8_read"
     }
   ],
