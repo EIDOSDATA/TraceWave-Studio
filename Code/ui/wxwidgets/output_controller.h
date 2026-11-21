@@ -25,6 +25,8 @@ public:
     std::function<void(const std::string&, const std::string&)> onStatus;
     std::function<void()> onStateChanged;
     std::function<void(const Json&)> onCadResult;
+    std::function<void(const std::string&, const Json&)> onJobStatus;
+    std::function<void(const std::string&, const char*, const Json&)> onCancellation;
 
 private:
     friend class StudioSmokeDriver;

@@ -15,6 +15,7 @@ from rfad.domain.design import apply_design_command
 from test_cad_projection import cad_fixture
 from test_cad_worker_process import register_fixture
 from test_design import identity, quantity, unknown
+from test_native_process import assert_native_cancel_trace
 
 
 GUI = os.environ.get("RFAD_GUI_EXE", "")
@@ -58,6 +59,10 @@ class GuiCadProcessTests(unittest.TestCase):
         self.assertEqual(process.returncode, 0, result)
         self.assertTrue(result["passed"], result)
         self.assertEqual(result["cad_stage"], 7, result)
+        if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
+            target = Path(output) / ("cad-invalid.json" if invalid else "cad.json")
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(report.read_bytes())
         return workspace, result
 
     def test_step_mesh_edit_save_cancel_and_restart(self):
@@ -70,6 +75,11 @@ class GuiCadProcessTests(unittest.TestCase):
                 "cancel_preserves_previous_result", "restart_restores_published_mesh",
                 "edit_error_does_not_drop_responses",
             })
+            trace = report["native_cancel_trace"]
+            self.assertFalse(trace["control"]["menu_enabled"])
+            with ProjectService(workspace, auto_run=False) as service:
+                job = service.journal.read()["jobs"][trace["job_id"]]
+                assert_native_cancel_trace(self, workspace, trace, job, "cad", "geometry.build")
             self.assertEqual(report["service_sessions"], 2)
             self.assertGreater(report["mesh_triangles"], 0)
             self.assertGreater(report["rendered_frames"], 0)

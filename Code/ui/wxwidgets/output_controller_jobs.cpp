@@ -143,6 +143,10 @@ void OutputController::Poll(Clock::time_point now)
                 return;
             }
             const auto state = value.at("state").get<std::string>();
+            if (onJobStatus)
+            {
+                onJobStatus(job, value);
+            }
             if (state == "completed")
             {
                 try
@@ -319,16 +323,28 @@ void OutputController::Cancel()
     const auto job = m_task.Id();
     const std::weak_ptr<int> lifetime = m_lifetime;
     m_cancelRequested = true;
-    Actions();
+    const bool locked = m_view->LockCancelButton();
+    if (onCancellation)
+    {
+        onCancellation(job, "control", {{"button_enabled", !locked}});
+    }
     m_gateway(
         "job.cancel", {{"job_id", job}}, true,
-        [this, lifetime, serial, job](const Json&)
+        [this, lifetime, serial, job](const Json& result)
         {
-            if (lifetime.expired() || serial != m_serial || job != m_task.Id())
+            if (lifetime.expired() || serial != m_serial)
             {
                 return;
             }
-            Status("cancel_requested", "취소를 요청했습니다. 실제 작업 종료를 기다립니다.");
+            if (onCancellation)
+            {
+                onCancellation(job, "receipt", result);
+            }
+            const auto state = result.value("state", "");
+            if (job == m_task.Id() && (state == "cancel_requested" || state == "cancelled"))
+            {
+                Status("cancel_requested", "취소를 요청했습니다. 실제 작업 종료를 기다립니다.");
+            }
         },
         [this, lifetime, serial, job](const Json& error)
         {
@@ -341,4 +357,8 @@ void OutputController::Cancel()
             Actions();
         },
         "", "");
+    if (!lifetime.expired())
+    {
+        Actions();
+    }
 }

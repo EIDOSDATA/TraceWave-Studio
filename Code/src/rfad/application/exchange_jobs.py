@@ -3,11 +3,12 @@ from copy import deepcopy
 import hashlib
 import json
 import threading
+import time
 
 from rfad.application import exchange_contract as contract
 from rfad.application.canonical import canonical_bytes
 from rfad.application.exchange_artifacts import seal
-from rfad.application.native_process import run_native
+from rfad.application.native_process import native_cancel_evidence, run_native
 from rfad.application.source_bundle import verify_stage
 from rfad.domain.errors import ProjectError
 from rfad.storage.sealed_files import copy as copy_sealed
@@ -46,6 +47,7 @@ class ExchangeCoordinator:
             self.service._event(job, "cancelled")
         elif job["state"] == "running":
             self.service._event(job, "cancel_requested", reason=reason)
+            job["exchange"]["cancel_requested_perf_counter_ns"] = time.perf_counter_ns()
             self.cancel.set()
 
     def run_next(self):
@@ -178,7 +180,8 @@ class ExchangeCoordinator:
             if unknown:
                 self.service._event(job, "interrupted", outcome_unknown=True, error=error.diagnostic())
             elif job["state"] == "cancel_requested":
-                self.service._event(job, "cancelled")
+                evidence = native_cancel_evidence(job["exchange"], process)
+                self.service._event(job, "cancelled", **evidence)
             elif self.stop.is_set():
                 self.service._event(job, "interrupted", outcome_unknown=False, reason="서비스 종료로 출력 worker를 회수했습니다.")
             elif error is not None:

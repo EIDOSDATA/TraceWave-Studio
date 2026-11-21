@@ -233,6 +233,19 @@ def _reap(process: subprocess.Popen, job: _WindowsJob | None) -> None:
                            details={"outcome_unknown": True, "pid": process.pid}) from error
 
 
+def native_cancel_evidence(owner: dict, process: dict | None) -> dict:
+    """! @brief 소유 worker가 실제로 회수된 시각과 요청 시각의 간격을 남긴다."""
+    pid = process.get("pid") if process is not None else None
+    if type(pid) is not int or owner.get("process", {}).get("pid") != pid:
+        return {}
+    evidence = {"termination_confirmed": True}
+    requested = owner.get("cancel_requested_perf_counter_ns")
+    reaped = process.get("reaped_perf_counter_ns")
+    if type(requested) is int and type(reaped) is int and reaped >= requested:
+        evidence["native_reap_ms"] = (reaped - requested) / 1_000_000
+    return evidence
+
+
 def run_native(
     argv: list[str], cwd: Path, request_bytes: bytes, cancel: threading.Event,
     timeout_seconds: float = 120, max_output_bytes: int = 1024 * 1024,
@@ -391,6 +404,7 @@ def run_native(
                 break
             time.sleep(0.01)
         reap_owned()
+        reaped_perf_counter_ns = time.perf_counter_ns()
         for thread in threads:
             thread.join(timeout=1.0)
         if any(thread.is_alive() for thread in threads):
@@ -404,6 +418,7 @@ def run_native(
             termination = "output_limit"
         return {
             "returncode": process.returncode, "pid": process.pid, "termination": termination,
+            "reaped_perf_counter_ns": reaped_perf_counter_ns,
             "output_limit_reason": file_violation_reason or ("stream_bytes" if output_limit.is_set() else ""),
             "file_monitor": {
                 "enabled": output_directory is not None, "poll_interval_seconds": FILE_SCAN_SECONDS,

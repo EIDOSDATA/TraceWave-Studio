@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import threading
+import time
 from tempfile import TemporaryDirectory
 from uuid import UUID, uuid4
 
@@ -13,7 +14,7 @@ from rfad.application.canonical import canonical_bytes
 from rfad.application.cad_runtime import CODE_ROOT, CadRuntime, file_hash
 from rfad.application.cad_artifacts import MAX_FILE_BYTES, MAX_PACKAGE_BYTES, seal_cad_outputs
 from rfad.application.cad_verification import verification_input, seal_verification
-from rfad.application.native_process import run_native
+from rfad.application.native_process import native_cancel_evidence, run_native
 from rfad.domain.errors import ProjectError
 
 CAD_METHODS = {"geometry.build", "export.build"}
@@ -240,6 +241,7 @@ class CadCoordinator:
             self.service._event(job, "cancelled")
         elif job["state"] == "running":
             self.service._event(job, "cancel_requested", reason=reason)
+            job["cad"]["cancel_requested_perf_counter_ns"] = time.perf_counter_ns()
             self.cancel.set()
 
     def run_next(self) -> bool:
@@ -360,7 +362,8 @@ class CadCoordinator:
             if unknown:
                 self.service._event(job, "interrupted", error=error.diagnostic(), outcome_unknown=True)
             elif job["state"] == "cancel_requested":
-                self.service._event(job, "cancelled")
+                evidence = native_cancel_evidence(job["cad"], process)
+                self.service._event(job, "cancelled", **evidence)
             elif self.stop.is_set():
                 self.service._event(job, "interrupted", outcome_unknown=False, reason="서비스가 소유 worker를 종료했습니다.")
             elif error is not None:

@@ -305,6 +305,32 @@ void StudioSmokeDriver::OutputSmokeTick()
                 "과거 출력의 누락 이름이 상세 표 또는 기본 조건에 전달되지 않았습니다.");
         }
         m_setupChecks.push_back("output_history_clears_current_paper");
+        m_setupStage = 12;
+        SetupSmoke::Click(view->m_verify);
+    }
+    else if (m_setupStage == 12 && !controller.m_task.Empty() && controller.m_task.Id() == m_runningNativeJob)
+    {
+        CanvasAssert(view->m_cancel->IsEnabled(), "실행 중인 출력 작업을 취소할 수 없습니다.");
+        m_setupStage = 13;
+        ArmNativeCancellation(controller.m_task.Id(), "export.verify");
+        SetupSmoke::Click(view->m_cancel);
+        CanvasAssert(!view->m_cancel->IsEnabled(), "출력 취소 버튼이 입력 직후 잠기지 않았습니다.");
+    }
+    else if (m_setupStage == 12 && idle)
+    {
+        FinishSmoke(false, "실행 중인 출력 worker를 관찰하기 전에 작업이 끝났습니다.");
+    }
+    else if (m_setupStage == 13 && idle)
+    {
+        CheckNativeCancellation();
+        m_setupStage = 14;
+        controller.Record(m_outputBuildId);
+    }
+    else if (m_setupStage == 14 && idle && view->m_record.is_object())
+    {
+        CanvasAssert(view->m_record == m_outputBuilt && m_frame.m_revision == m_outputRevision,
+                     "출력 취소 뒤 이전 산출물이나 개정이 바뀌었습니다.");
+        m_setupChecks.push_back("output_running_cancel_reaps_worker_and_keeps_record");
         m_setupStage = 9;
         m_frame.SaveProject();
     }

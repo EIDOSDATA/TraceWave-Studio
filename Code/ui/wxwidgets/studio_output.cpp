@@ -43,6 +43,17 @@ void StudioFrame::BuildOutputInterface()
     {
         AcceptCad(result, false);
     };
+    if (m_options.outputSmoke)
+    {
+        m_output->onJobStatus = [this](const std::string& job, const Json& status)
+        {
+            m_smoke->ObserveNativeJob(job, status);
+        };
+        m_output->onCancellation = [this](const std::string& job, const char* milestone, const Json& details)
+        {
+            m_smoke->RecordNativeCancellation(job, milestone, details);
+        };
+    }
 }
 
 /** @brief 권위 영수증을 확인할 이전 출력이 있으면 편집 상태에서도 작업 전환 잠금을 복원한다. */

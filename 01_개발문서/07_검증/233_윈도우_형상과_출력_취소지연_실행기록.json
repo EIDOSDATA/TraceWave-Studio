@@ -1,0 +1,387 @@
+{
+  "schema": "rfad.stage12.native-cancellation-timing/0.1",
+  "date_kst": "2026-11-21",
+  "executable_sha256": "d905584aa7dd10b29cf97efe9b5ad89c4dcdcdb9ec003cb346952d204346ddd9",
+  "platform": "Windows",
+  "backend": [
+    "OCCT",
+    "PDF drawing verification worker"
+  ],
+  "service_clock": "QueryPerformanceCounter()",
+  "service_clock_resolution_s": 1e-07,
+  "separate_pilot_excluded": true,
+  "stress_log_load": false,
+  "full_f4_acceptance_measured": false,
+  "summary": {
+    "cad": {
+      "button": {
+        "median_ms": 0.913,
+        "p95_ms": 1.217,
+        "max_ms": 1.217
+      },
+      "receipt": {
+        "median_ms": 39.8725,
+        "p95_ms": 44.329,
+        "max_ms": 44.329
+      },
+      "worker_tree_reap": {
+        "median_ms": 5.3703,
+        "p95_ms": 6.4399,
+        "max_ms": 6.4399
+      },
+      "terminal_visible": {
+        "median_ms": 222.33800000000002,
+        "p95_ms": 257.442,
+        "max_ms": 257.442
+      }
+    },
+    "output": {
+      "button": {
+        "median_ms": 0.0985,
+        "p95_ms": 0.192,
+        "max_ms": 0.192
+      },
+      "receipt": {
+        "median_ms": 49.4505,
+        "p95_ms": 54.104,
+        "max_ms": 54.104
+      },
+      "worker_tree_reap": {
+        "median_ms": 7.5423,
+        "p95_ms": 8.6374,
+        "max_ms": 8.6374
+      },
+      "terminal_visible": {
+        "median_ms": 245.5725,
+        "p95_ms": 253.491,
+        "max_ms": 253.491
+      }
+    }
+  },
+  "samples": {
+    "cad": [
+      {
+        "number": 1,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.753,
+          "menu_enabled": false
+        },
+        "job_id": "93570167-8f1d-4bd6-87e1-a3795cd29ef6",
+        "native_worker_attached": true,
+        "operation": "geometry.build",
+        "receipt": {
+          "elapsed_ms": 38.918,
+          "events_cursor": 3,
+          "job_id": "93570167-8f1d-4bd6-87e1-a3795cd29ef6",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 195.199,
+          "events_cursor": 4,
+          "native_reap_ms": 6.4399,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      },
+      {
+        "number": 2,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.601,
+          "menu_enabled": false
+        },
+        "job_id": "c1635278-fbf2-4d4c-9257-f271bd9d030b",
+        "native_worker_attached": true,
+        "operation": "geometry.build",
+        "receipt": {
+          "elapsed_ms": 39.814,
+          "events_cursor": 3,
+          "job_id": "c1635278-fbf2-4d4c-9257-f271bd9d030b",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 252.016,
+          "events_cursor": 4,
+          "native_reap_ms": 3.8491,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      },
+      {
+        "number": 3,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 1.217,
+          "menu_enabled": false
+        },
+        "job_id": "87824da2-1302-4b8d-a0b7-274a6b893c5a",
+        "native_worker_attached": true,
+        "operation": "geometry.build",
+        "receipt": {
+          "elapsed_ms": 40.16,
+          "events_cursor": 3,
+          "job_id": "87824da2-1302-4b8d-a0b7-274a6b893c5a",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 224.686,
+          "events_cursor": 4,
+          "native_reap_ms": 5.0528,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      },
+      {
+        "number": 4,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.654,
+          "menu_enabled": false
+        },
+        "job_id": "5bab652c-f9f2-4cf3-b113-34a5ff04d8ad",
+        "native_worker_attached": true,
+        "operation": "geometry.build",
+        "receipt": {
+          "elapsed_ms": 44.329,
+          "events_cursor": 3,
+          "job_id": "5bab652c-f9f2-4cf3-b113-34a5ff04d8ad",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 257.442,
+          "events_cursor": 4,
+          "native_reap_ms": 5.6878,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      },
+      {
+        "number": 5,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 1.073,
+          "menu_enabled": false
+        },
+        "job_id": "bd62233d-4c2b-429a-aebe-f83fb977b8b8",
+        "native_worker_attached": true,
+        "operation": "geometry.build",
+        "receipt": {
+          "elapsed_ms": 39.931,
+          "events_cursor": 3,
+          "job_id": "bd62233d-4c2b-429a-aebe-f83fb977b8b8",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 219.99,
+          "events_cursor": 4,
+          "native_reap_ms": 6.1774,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      },
+      {
+        "number": 6,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 1.133,
+          "menu_enabled": false
+        },
+        "job_id": "2a5c44e4-6fa2-41c9-af29-dcb6b30bcce8",
+        "native_worker_attached": true,
+        "operation": "geometry.build",
+        "receipt": {
+          "elapsed_ms": 37.438,
+          "events_cursor": 3,
+          "job_id": "2a5c44e4-6fa2-41c9-af29-dcb6b30bcce8",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 169.291,
+          "events_cursor": 4,
+          "native_reap_ms": 4.7692,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      }
+    ],
+    "output": [
+      {
+        "number": 1,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.163
+        },
+        "job_id": "b1c5e693-9e9e-42e6-a91b-0cec21563477",
+        "native_worker_attached": true,
+        "operation": "export.verify",
+        "receipt": {
+          "elapsed_ms": 49.504,
+          "events_cursor": 3,
+          "job_id": "b1c5e693-9e9e-42e6-a91b-0cec21563477",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 246.926,
+          "events_cursor": 4,
+          "native_reap_ms": 7.5788,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      },
+      {
+        "number": 2,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.031
+        },
+        "job_id": "6eaf150a-b781-43a1-90ea-6c00d9e710b8",
+        "native_worker_attached": true,
+        "operation": "export.verify",
+        "receipt": {
+          "elapsed_ms": 49.924,
+          "events_cursor": 3,
+          "job_id": "6eaf150a-b781-43a1-90ea-6c00d9e710b8",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 253.491,
+          "events_cursor": 4,
+          "native_reap_ms": 6.8035,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      },
+      {
+        "number": 3,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.192
+        },
+        "job_id": "2c7aacb3-a5c5-447a-bf3d-316a02e3fcd2",
+        "native_worker_attached": true,
+        "operation": "export.verify",
+        "receipt": {
+          "elapsed_ms": 49.397,
+          "events_cursor": 3,
+          "job_id": "2c7aacb3-a5c5-447a-bf3d-316a02e3fcd2",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 244.219,
+          "events_cursor": 4,
+          "native_reap_ms": 8.6374,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      },
+      {
+        "number": 4,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.031
+        },
+        "job_id": "90c61821-f882-4e93-a545-840b7cbdb4f0",
+        "native_worker_attached": true,
+        "operation": "export.verify",
+        "receipt": {
+          "elapsed_ms": 47.642,
+          "events_cursor": 3,
+          "job_id": "90c61821-f882-4e93-a545-840b7cbdb4f0",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 242.271,
+          "events_cursor": 4,
+          "native_reap_ms": 6.6912,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      },
+      {
+        "number": 5,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.137
+        },
+        "job_id": "fa85ec51-473e-402d-bfc1-1460020159ce",
+        "native_worker_attached": true,
+        "operation": "export.verify",
+        "receipt": {
+          "elapsed_ms": 54.104,
+          "events_cursor": 3,
+          "job_id": "fa85ec51-473e-402d-bfc1-1460020159ce",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 206.384,
+          "events_cursor": 4,
+          "native_reap_ms": 7.9935,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      },
+      {
+        "number": 6,
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.06
+        },
+        "job_id": "0adc4fd5-534a-4c7e-a89f-6621cd09c97c",
+        "native_worker_attached": true,
+        "operation": "export.verify",
+        "receipt": {
+          "elapsed_ms": 45.162,
+          "events_cursor": 3,
+          "job_id": "0adc4fd5-534a-4c7e-a89f-6621cd09c97c",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 246.966,
+          "events_cursor": 4,
+          "native_reap_ms": 7.5058,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        },
+        "previous_result_reopened": true
+      }
+    ]
+  },
+  "service_passed": 57,
+  "ctest_passed": 13
+}

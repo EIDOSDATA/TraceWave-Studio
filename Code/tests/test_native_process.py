@@ -1,5 +1,6 @@
 """! @brief 실제 Python worker로 native 감독의 취소와 제한 및 트리 회수를 확인한다."""
 
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -10,6 +11,35 @@ import unittest
 
 from rfad.application.native_process import run_native, TAIL_BYTES
 from rfad.domain.errors import ProjectError
+
+
+def assert_native_cancel_trace(test, workspace, trace, job, owner, operation):
+    """! @brief 실제 종료 증거와 화면의 취소 시각을 하나의 소유 실행으로 대조한다."""
+    test.assertEqual(job["job_id"], trace["job_id"])
+    test.assertEqual(job["operation_method"], operation)
+    test.assertEqual(trace["operation"], operation)
+    test.assertEqual(trace["state_before"], "running")
+    test.assertTrue(trace["native_worker_attached"])
+    test.assertFalse(trace["control"]["button_enabled"])
+    test.assertEqual(trace["receipt"]["job_id"], job["job_id"])
+    test.assertIn(trace["receipt"]["state"], {"cancel_requested", "cancelled"})
+    test.assertGreaterEqual(trace["receipt"]["elapsed_ms"], trace["control"]["elapsed_ms"])
+    test.assertEqual(trace["terminal"]["state"], "cancelled")
+    test.assertTrue(trace["terminal"]["termination_confirmed"])
+    test.assertFalse(trace["terminal"]["outcome_unknown"])
+    test.assertGreaterEqual(trace["terminal"]["elapsed_ms"], trace["control"]["elapsed_ms"])
+    test.assertEqual(job["state"], "cancelled")
+    test.assertFalse(job.get("artifacts"))
+    test.assertFalse(job[owner]["resource_reserved"])
+    raw = (workspace / f"{owner}-staging" / job["run_id"] / "process.json").read_bytes()
+    process = json.loads(raw)
+    test.assertEqual(process["pid"], job[owner]["process"]["pid"])
+    test.assertEqual(process["termination"], "cancelled")
+    reaped = process["reaped_perf_counter_ns"]
+    requested = job[owner]["cancel_requested_perf_counter_ns"]
+    test.assertGreaterEqual(reaped, requested)
+    test.assertAlmostEqual(trace["terminal"]["native_reap_ms"], (reaped - requested) / 1_000_000)
+    test.assertEqual(trace["terminal"]["events_cursor"], len(job["events"]))
 
 
 class NativeProcessTests(unittest.TestCase):

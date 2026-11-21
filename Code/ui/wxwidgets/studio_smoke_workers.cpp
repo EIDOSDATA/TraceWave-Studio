@@ -101,17 +101,27 @@ void StudioSmokeDriver::CadSmokeTick()
         m_cadSmokeStage = 4;
         m_frame.StartCad(false);
     }
-    else if (m_cadSmokeStage == 4 && !m_frame.m_cadTask.Id().empty())
+    else if (m_cadSmokeStage == 4 && !m_frame.m_cadTask.Empty() && m_frame.m_cadTask.Id() == m_runningNativeJob)
     {
+        auto* button = m_frame.m_tools.at(IdCancelCad);
+        CanvasAssert(button->IsEnabled(), "실행 중 CAD 취소 버튼을 사용할 수 없습니다.");
         m_cadSmokeStage = 5;
-        m_frame.CancelCad();
-        CanvasAssert(!m_frame.m_tools.at(IdCancelCad)->IsEnabled() && !m_frame.GetMenuBar()->IsEnabled(IdCancelCad),
+        wxCommandEvent click(wxEVT_BUTTON, IdCancelCad);
+        click.SetEventObject(button);
+        ArmNativeCancellation(m_frame.m_cadTask.Id(), "geometry.build");
+        CanvasAssert(button->GetEventHandler()->ProcessEvent(click), "CAD 취소 버튼 이벤트를 처리하지 못했습니다.");
+        CanvasAssert(!button->IsEnabled() && !m_frame.GetMenuBar()->IsEnabled(IdCancelCad),
                      "CAD 취소 버튼과 메뉴가 입력 직후 함께 잠기지 않았습니다.");
+    }
+    else if (m_cadSmokeStage == 4 && m_frame.m_cadTask.Empty() && !m_frame.m_cadPreparing)
+    {
+        FinishSmoke(false, "실행 중인 CAD worker를 관찰하기 전에 작업이 끝났습니다.");
     }
     else if (m_cadSmokeStage == 5 && m_frame.m_cadTask.Id().empty() && m_frame.m_cadState == "cancelled")
     {
         CanvasAssert(m_frame.m_modelView->LoadedSnapshotId() == m_cadFirstSnapshot && !m_frame.m_cadResult.empty(),
                      "Cancellation removed the previous result.");
+        CheckNativeCancellation();
         m_cadChecks.push_back("cancel_preserves_previous_result");
         m_cadSmokeStage = 6;
         m_frame.m_connected = false;
@@ -143,6 +153,59 @@ void StudioSmokeDriver::RecordSolverCancellation(const std::string& job, const c
     }
     details["elapsed_ms"] = std::chrono::duration<double, std::milli>(Clock::now() - m_solverCancelStarted).count();
     m_solverCancelTrace[milestone] = std::move(details);
+}
+
+void StudioSmokeDriver::ArmNativeCancellation(const std::string& job, const char* kind)
+{
+    m_nativeCancelTrace = {{"job_id", job}, {"operation", kind}, {"state_before", "running"},
+                           {"native_worker_attached", m_runningNativeJob == job}};
+    m_nativeCancelStarted = Clock::now();
+}
+
+void StudioSmokeDriver::RecordNativeCancellation(const std::string& job, const char* milestone, Json details)
+{
+    if (m_nativeCancelStarted == Clock::time_point{} || m_nativeCancelTrace.value("job_id", "") != job ||
+        m_nativeCancelTrace.contains(milestone))
+    {
+        return;
+    }
+    details["elapsed_ms"] = std::chrono::duration<double, std::milli>(Clock::now() - m_nativeCancelStarted).count();
+    m_nativeCancelTrace[milestone] = std::move(details);
+}
+
+void StudioSmokeDriver::ObserveNativeJob(const std::string& job, const Json& status)
+{
+    const auto state = status.at("state").get<std::string>();
+    if (state == "running" && status.value("native_worker_attached", false))
+    {
+        m_runningNativeJob = job;
+    }
+    if (state == "completed" || state == "cancelled" || state == "interrupted" || state == "failed")
+    {
+        const auto& event = status.at("events").back();
+        RecordNativeCancellation(job, "terminal",
+                                 {{"state", state}, {"events_cursor", status.at("events_cursor")},
+                                  {"termination_confirmed", event.value("termination_confirmed", Json(nullptr))},
+                                  {"native_reap_ms", event.value("native_reap_ms", Json(nullptr))},
+                                  {"outcome_unknown", event.value("outcome_unknown", false)}});
+    }
+}
+
+void StudioSmokeDriver::CheckNativeCancellation() const
+{
+    CanvasAssert(m_nativeCancelTrace.value("native_worker_attached", false) &&
+                     m_nativeCancelTrace.contains("control") && m_nativeCancelTrace.contains("receipt") &&
+                     m_nativeCancelTrace.contains("terminal"),
+                 "실행 중 worker의 제어, 접수 또는 종료 표본이 빠졌습니다.");
+    const auto& control = m_nativeCancelTrace.at("control");
+    const auto& receipt = m_nativeCancelTrace.at("receipt");
+    const auto& terminal = m_nativeCancelTrace.at("terminal");
+    const auto receiptState = receipt.at("state").get<std::string>();
+    CanvasAssert(control.at("button_enabled") == false && receipt.at("job_id") == m_nativeCancelTrace.at("job_id") &&
+                     (receiptState == "cancel_requested" || receiptState == "cancelled") &&
+                     terminal.at("state") == "cancelled" && terminal.at("termination_confirmed") == true &&
+                     terminal.at("native_reap_ms").is_number() && terminal.at("outcome_unknown") == false,
+                 "취소 접수, 실제 native 회수와 종료 상태가 일치하지 않습니다.");
 }
 
 void StudioSmokeDriver::ObserveSolverGuest(const std::string& job)

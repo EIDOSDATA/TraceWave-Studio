@@ -365,7 +365,10 @@ class CadJobTests(unittest.TestCase):
         task = self.admit()
         response = self.service.mutate("job.cancel", self.request({"job_id": task["job_id"]}, {}))
         self.assertEqual(response["state"], "cancelled")
-        self.assert_not_published(task, "cancelled")
+        status = self.assert_not_published(task, "cancelled")
+        self.assertNotIn("native_worker_attached", status)
+        self.assertNotIn("termination_confirmed", status["events"][-1])
+        self.assertNotIn("native_reap_ms", status["events"][-1])
         self.assertFalse(self.job(task)["cad"]["resource_reserved"])
         self.assertFalse(self.service.cad.run_next())
         self.assertFalse(self.stage(task).exists())
@@ -385,6 +388,9 @@ class CadJobTests(unittest.TestCase):
         self.assertEqual(self.runner_errors, [])
         status = self.assert_not_published(task, "cancelled")
         self.assertEqual([event["state"] for event in status["events"]][-2:], ["cancel_requested", "cancelled"])
+        self.assertIs(status["native_worker_attached"], True)
+        self.assertIs(status["events"][-1]["termination_confirmed"], True)
+        self.assertGreaterEqual(status["events"][-1]["native_reap_ms"], 0)
         self.assertFalse(_alive(pid))
         self.assertFalse(self.job(task)["cad"]["resource_reserved"])
 
@@ -533,7 +539,9 @@ class CadJobTests(unittest.TestCase):
             return result
         with patch.object(self.service.cad, "_seal", side_effect=seal_then_cancel):
             self.service.cad.run_next()
-        self.assert_not_published(task, "cancelled")
+        status = self.assert_not_published(task, "cancelled")
+        self.assertIs(status["events"][-1]["termination_confirmed"], True)
+        self.assertNotIn("native_reap_ms", status["events"][-1])
         self.assertFalse(self.job(task)["cad"]["resource_reserved"])
 
     def test_error_after_commit_preserves_the_published_success(self):

@@ -29,6 +29,8 @@ public:
     void ClearRecord(const std::string& message);
     void SetStatus(const std::string& message);
     void SetAvailable(bool available, bool busy, bool reviewed, bool canCancel, bool uncertain);
+    /** @brief 전체 출력 패널의 상태를 다시 계산하기 전에 취소 버튼을 잠근다. */
+    bool LockCancelButton();
     void SetImportAvailable(bool available);
     void SelectSnapshot(const Json& snapshot);
     Json Snapshot() const;

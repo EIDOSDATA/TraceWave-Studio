@@ -16,6 +16,7 @@ from rfad.application.exchange_runtime import ExchangeRuntime
 from rfad.application.exchange_service import read
 from rfad.application.projects import ProjectService
 import test_exchange_service as fixtures
+from test_native_process import assert_native_cancel_trace
 
 ROOT = Path(__file__).resolve().parents[1]
 GUI = os.environ.get("RFAD_GUI_EXE", "")
@@ -84,7 +85,8 @@ class GuiOutputTests(unittest.TestCase):
                 "output_snapshot_explicit_native", "output_actual_paper_and_bounded_pages",
                 "output_options_invalidate_review", "output_review_confirmation_cancel_and_accept",
                 "output_actual_build_generated_not_manufacturing", "output_fresh_verify_keeps_original",
-                "output_history_clears_current_paper", "output_saved_restart_exact_record"})
+                "output_history_clears_current_paper", "output_running_cancel_reaps_worker_and_keeps_record",
+                "output_saved_restart_exact_record"})
             with ProjectService(workspace, auto_run=False) as service:
                 state = service.journal.read()
                 project = document["project_id"]
@@ -92,12 +94,17 @@ class GuiOutputTests(unittest.TestCase):
                 self.assertEqual(state["projects"][project], before["projects"][project])
                 self.assertEqual(state["solver_results"], before["solver_results"])
                 jobs = [job for job in state["jobs"].values() if "exchange" in job]
-                self.assertEqual(len(jobs), 2)
-                self.assertTrue(all(job["state"] == "completed" for job in jobs))
-                build = next(job for job in jobs if job["operation_method"] == "export.build")
-                verify = next(job for job in jobs if job["operation_method"] == "export.verify")
+                self.assertEqual(len(jobs), 3)
+                trace = report["native_cancel_trace"]
+                cancelled = state["jobs"][trace["job_id"]]
+                assert_native_cancel_trace(self, workspace, trace, cancelled, "exchange", "export.verify")
+                completed = [job for job in jobs if job["state"] == "completed"]
+                self.assertEqual(len(completed), 2)
+                build = next(job for job in completed if job["operation_method"] == "export.build")
+                verify = next(job for job in completed if job["operation_method"] == "export.verify")
                 self.assertEqual(verify["exchange"]["original_job_id"], build["job_id"])
-                for job in jobs:
+                self.assertEqual(cancelled["exchange"]["original_job_id"], build["job_id"])
+                for job in completed:
                     value = read(service, "export.get", {"contract_version": "rfad.api/2.0",
                         "context": {"project_id": project}, "input": {"job_id": job["job_id"]}})
                     self.assertFalse(value["result"]["manufacturing_verified"])

@@ -496,6 +496,8 @@ class ProjectService:
         }
         if job.get("solver", {}).get("guest_worker_attached") is True:
             result["guest_worker_attached"] = True
+        if any(job.get(owner, {}).get("process") for owner in ("cad", "exchange")):
+            result["native_worker_attached"] = True
         return result
 
     def run_next(self) -> bool:

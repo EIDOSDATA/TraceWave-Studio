@@ -30,6 +30,10 @@ public:
     void RecordSolverCancellation(const std::string& job, const char* milestone, Json details);
     /** @brief WSL 조정기가 실제 guest worker를 관찰한 작업 ID를 기록한다. */
     void ObserveSolverGuest(const std::string& job);
+    /** @brief CAD 또는 출력 worker의 소유와 실제 종료를 관찰한다. */
+    void ObserveNativeJob(const std::string& job, const Json& status);
+    /** @brief 같은 native 작업의 화면 제어 또는 접수 단계를 기록한다. */
+    void RecordNativeCancellation(const std::string& job, const char* milestone, Json details);
     /** @brief 일반 프로젝트 연구의 실제 화면/취소/재개/재연결을 확인한다. */
     void StudySmokeTick();
     /** @brief 목표 CRUD와 명시 카드 미리보기/적용을 실제 화면에서 확인한다. */
@@ -90,6 +94,11 @@ private:
     void OutputSafetyChecks();
     Json m_outputFixture = Json::object();
     Json m_outputBuilt = nullptr;
+    void ArmNativeCancellation(const std::string& job, const char* kind);
+    void CheckNativeCancellation() const;
+    std::string m_runningNativeJob;
+    Clock::time_point m_nativeCancelStarted{};
+    Json m_nativeCancelTrace = Json::object();
     std::string m_outputRevision, m_outputBuildId, m_outputVerifyId;
     /** @brief 선택한 후보의 검토/새 사본/원본 보존과 영수증 복구를 확인한다. */
     void SelectionSmokeTick();

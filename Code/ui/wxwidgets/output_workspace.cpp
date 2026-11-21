@@ -568,6 +568,12 @@ void OutputWorkspace::SetImportAvailable(bool available)
     m_pcb->SetImportAvailable(available);
 }
 
+bool OutputWorkspace::LockCancelButton()
+{
+    m_cancel->Disable();
+    return !m_cancel->IsEnabled();
+}
+
 void OutputWorkspace::SetAvailable(bool available, bool busy, bool reviewed, bool canCancel, bool uncertain)
 {
     const bool ready = available && !busy && !uncertain;

@@ -306,10 +306,19 @@ void StudioFrame::CancelCad()
     if (!m_cadTask.Id().empty())
     {
         const std::string job = m_cadTask.Id();
+        if (m_options.cadSmoke)
+        {
+            m_smoke->RecordNativeCancellation(job, "control", {{"button_enabled", m_tools.at(IdCancelCad)->IsEnabled()},
+                                                                {"menu_enabled", GetMenuBar()->IsEnabled(IdCancelCad)}});
+        }
         Send(
             "job.cancel", Json{{"job_id", job}, {"reason", "GUI 사용자 취소"}}, true, Json::object(),
-            [](const Json&)
+            [this, job](const Json& result)
             {
+                if (m_options.cadSmoke)
+                {
+                    m_smoke->RecordNativeCancellation(job, "receipt", result);
+                }
             },
             [this, job](const Json& error)
             {
@@ -445,6 +454,10 @@ void StudioFrame::PollCad(Clock::time_point now)
                 return;
             }
             const std::string state = status.at("state");
+            if (m_options.cadSmoke)
+            {
+                m_smoke->ObserveNativeJob(job, status);
+            }
             if (state == "completed")
             {
                 m_cadTask.Reset();
