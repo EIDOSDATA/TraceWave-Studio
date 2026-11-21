@@ -90,6 +90,10 @@ void StudioFrame::BuildWorkspaceJobs()
     m_views->SetPageText(2, Display("해석 결과"));
     m_views->onSelectionChanged = [this](int page)
     {
+        if (page != 0)
+        {
+            EndPortPick(false);
+        }
         m_workspaceBar->Select(page < 2                                              ? WorkspaceArea::Design
                                : page == 3 || page == 8                              ? WorkspaceArea::Analysis
                                : page == 4 || page == 14 || page == 15 || page == 16 ? WorkspaceArea::Comparison
@@ -181,6 +185,7 @@ void StudioFrame::BuildWorkspaceLayers()
                                 {
                                     m_canvas->SetLayerVisible(m_workspaceLayerIds[index],
                                                               m_workspaceLayers->IsChecked(index));
+                                    UpdatePortLinks();
                                 }
                             });
     m_workspaceLayers->Bind(wxEVT_LISTBOX,

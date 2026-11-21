@@ -87,8 +87,7 @@ void StudioFrame::BindCad()
     };
     m_modelView->onSelectionCandidates = [this](const std::vector<std::string>& sources)
     {
-        if (m_busy || m_setupDialog || m_displayResult.empty() ||
-            m_displayResult.at("snapshot").at("revision_id") != m_revision)
+        if (m_busy || m_setupDialog || !CurrentDisplayMesh())
         {
             m_modelHint->SetLabel(Display("현재 설계로 3D를 갱신한 뒤 원본을 선택하세요."));
             return;
@@ -126,7 +125,7 @@ void StudioFrame::BindCad()
             m_modelView->SetSelection(m_selection.value("id", ""));
             return;
         }
-        if (m_displayResult.empty() || m_displayResult.at("snapshot").at("revision_id") != m_revision)
+        if (!CurrentDisplayMesh())
         {
             m_modelView->SetSelection(m_selection.value("id", ""));
             m_modelHint->SetLabel(Display("이전 결과의 선택은 현재 설계에 적용하지 않습니다. 3D를 갱신하세요."));
@@ -185,6 +184,7 @@ void StudioFrame::UpdateModelState()
             m_displayResult = m_loadingModel;
         }
         m_loadingModel = Json::object();
+        UpdatePortLinks();
     }
     std::string text = "아직 생성한 3D 형상이 없습니다. 층 위치와 두께를 입력한 뒤 갱신하세요.";
     if (!m_displayResult.empty())

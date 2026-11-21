@@ -209,6 +209,20 @@ def _retarget_arc(document: dict, arc: dict, endpoint: str, target: list[float])
     arc["sweep_angle"] = _replace_quantity(arc["sweep_angle"], _quantity(new_sweep, "deg", "geometry.sweep_angle"))
 
 
+def _port_marker(document: dict, port: dict) -> dict:
+    """! @brief 명시한 급전 영역을 2D 선택용 위치로만 투영한다."""
+    marker = {"id": port["id"], "terminal_ids": [port["positive_geometry_id"], port["reference_geometry_id"]],
+              "point_mm": None, "reason": "급전 시작/끝 좌표가 미정입니다."}
+    box = port.get("excitation_box")
+    if box is not None:
+        try:
+            start, stop = [_display_point(document, box[key], "excitation_box." + key) for key in ("start", "stop")]
+            marker.update(point_mm=[(left + right) / 2 for left, right in zip(start[:2], stop[:2])], reason="")
+        except ProjectError as error:
+            marker["reason"] = error.message
+    return marker
+
+
 def project_canvas(document: dict) -> dict:
     """! @brief mm/deg의 표시 모델만 만들며 미정 형상과 생략 사유를 분리한다."""
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
@@ -233,6 +247,8 @@ def project_canvas(document: dict) -> dict:
                 visible["radius"] = None
                 result["omissions"].append({"id": board["id"], "message": "원형 기판 외곽이 2D 좌표 범위 또는 표현 정밀도를 벗어났습니다."})
         result["board"] = visible
+    if document["ports"]:
+        result["port_marker"] = _port_marker(document, document["ports"][0])
     labels = display_names(document)
     for geometry in document["geometry"]:
         try:

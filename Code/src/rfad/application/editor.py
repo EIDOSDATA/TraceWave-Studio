@@ -335,6 +335,10 @@ def editor_selection(document: dict, saved_revision: str, history: dict, selecti
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"], "saved_revision": saved_revision,
               "metadata": {key: document["metadata"][key] for key in ("name", "description")}, "history": history,
               "selection": {**selected, "fields": selected_fields}}
+    if document["ports"]:
+        port = document["ports"][0]
+        result["port_links"] = {"id": port["id"], "label": port["name"],
+                                "terminal_ids": [port["positive_geometry_id"], port["reference_geometry_id"]]}
     if any(field["editor"] == "coordinate_table" for field in selected_fields):
         result["coordinate_choices"] = _parameter_choices(document, "length")
     return result

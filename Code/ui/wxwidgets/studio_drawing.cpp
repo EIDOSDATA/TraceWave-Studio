@@ -13,7 +13,11 @@ void StudioFrame::BindCanvas()
                            event.Skip();
                            return;
                        }
-                       if (event.GetKeyCode() == WXK_F2)
+                       if (!m_portPickField.empty() && event.GetKeyCode() == WXK_ESCAPE)
+                       {
+                           EndPortPick(true);
+                       }
+                       else if (event.GetKeyCode() == WXK_F2)
                        {
                            OpenRename();
                        }

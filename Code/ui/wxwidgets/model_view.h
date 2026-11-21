@@ -21,6 +21,8 @@ public:
     bool LoadArtifact(const wxString& workspace, const Json& artifact, const Json& snapshot, const std::string& runId);
     void Clear();
     void SetSelection(const std::string& identity);
+    /** @brief 현재 메시에 있는 급전 단자를 편집 선택과 구분하여 강조한다. */
+    void SetRelatedSelection(const std::vector<std::string>& identities, bool suppressPrimary);
     void SetLayerVisible(const std::string& identity, bool visible);
     void FitView();
     void SetView(const std::string& view);

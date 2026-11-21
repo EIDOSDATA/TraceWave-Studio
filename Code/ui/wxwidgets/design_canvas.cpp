@@ -129,11 +129,33 @@ void DesignCanvas::SetScene(const Json& scene)
     Refresh(false);
 }
 
+std::string DesignCanvas::ConductorDisplayReason(const std::string& identity) const
+{
+    const auto* shape = FindShape(identity);
+    if (shape == nullptr || !Renderable(*shape))
+    {
+        return "2D 표시 형상이 없습니다.";
+    }
+    return Visible(*shape) ? "" : "2D에서 도체층이 숨겨져 있습니다.";
+}
+
+bool DesignCanvas::PortMarkerVisible() const
+{
+    return m_scene.portMarker && std::all_of(m_scene.portMarker->terminals.begin(),
+        m_scene.portMarker->terminals.end(), [this](const std::string& id)
+        {
+            return ConductorDisplayReason(id).empty();
+        });
+}
+
 void DesignCanvas::SetInspection(const std::vector<std::string>& identities, std::optional<wxPoint2DDouble> location)
 {
-    m_inspection = identities;
-    m_inspectionLocation = location;
-    Refresh(false);
+    if (m_inspection != identities || m_inspectionLocation != location)
+    {
+        m_inspection = identities;
+        m_inspectionLocation = location;
+        Refresh(false);
+    }
 }
 
 void DesignCanvas::SetSelection(const std::string& identity)
@@ -146,7 +168,8 @@ void DesignCanvas::SetSelection(const std::string& identity)
                                               Renderable(item);
                                    });
     const std::string selected =
-        (shape != nullptr && Visible(*shape) && Renderable(*shape)) || owner ? identity : std::string();
+        (shape != nullptr && Visible(*shape) && Renderable(*shape)) || owner ||
+        (m_scene.portMarker && identity == m_scene.portMarker->id) ? identity : std::string();
     if (m_selection != selected)
     {
         if (m_gesture.Reshaping())
@@ -164,6 +187,10 @@ DesignCanvas::Json DesignCanvas::SelectionInfo(const std::string& identity) cons
     if (identity.empty())
     {
         return nullptr;
+    }
+    if (m_scene.portMarker && identity == m_scene.portMarker->id)
+    {
+        return {{"kind", "port"}, {"id", identity}};
     }
     if (const auto* shape = FindShape(identity))
     {
@@ -361,12 +388,21 @@ bool DesignCanvas::Renderable(const Shape& shape, const Point& offset) const
 }
 
 /** @brief 실제 선분과 원호 구간까지의 거리로 위에 그린 객체를 먼저 선택한다. */
-std::string DesignCanvas::HitTest(const wxPoint& point) const
+std::string DesignCanvas::HitTest(const wxPoint& point, bool conductorOnly) const
 {
+    if (!conductorOnly && PortMarkerVisible())
+    {
+        const auto center = WorldToScreen(Point(m_scene.portMarker->point.x, m_scene.portMarker->point.y));
+        if (std::hypot(point.x - center.x, point.y - center.y) <= FromDIP(6))
+        {
+            return m_scene.portMarker->id;
+        }
+    }
     const Point world = ScreenToWorld(point);
     for (auto shape = m_scene.shapes.rbegin(); shape != m_scene.shapes.rend(); ++shape)
     {
-        if (!Selectable(*shape) || !Renderable(*shape))
+        if (!Renderable(*shape) ||
+            (conductorOnly ? shape->selectionKind != "geometry" || !Visible(*shape) : !Selectable(*shape)))
         {
             continue;
         }
@@ -486,6 +522,21 @@ void DesignCanvas::PaintScene(wxDC& dc)
             DrawDimensions(dc);
         }
     }
+    if (PortMarkerVisible())
+    {
+        const auto& marker = *m_scene.portMarker;
+        const auto center = WorldToScreen(Point(marker.point.x, marker.point.y));
+        if (GetClientRect().Contains(center))
+        {
+            const int radius = FromDIP(6);
+            const wxColour color = m_colours.Focus(wxColour(38, 100, 163));
+            dc.SetPen(wxPen(color, FromDIP(2)));
+            dc.SetBrush(wxBrush(marker.id == m_selection ? color : m_colours.background));
+            const wxPoint diamond[] = {{center.x, center.y - radius}, {center.x + radius, center.y},
+                                       {center.x, center.y + radius}, {center.x - radius, center.y}};
+            dc.DrawPolygon(4, diamond);
+        }
+    }
     if (m_inspectionLocation)
     {
         const wxPoint point = WorldToScreen(*m_inspectionLocation);
@@ -563,6 +614,16 @@ void DesignCanvas::OnLeftDown(wxMouseEvent& event)
         return;
     }
     m_mouseDown = event.GetPosition();
+    if (onPickConductor)
+    {
+        const auto id = HitTest(m_mouseDown, true);
+        if (!id.empty())
+        {
+            auto pick = onPickConductor;
+            pick(id);
+        }
+        return;
+    }
     UpdateCursor(m_mouseDown);
     m_clockwise = event.ShiftDown();
     if (m_tool != "select")

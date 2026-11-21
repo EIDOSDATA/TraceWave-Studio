@@ -2,7 +2,9 @@
 
 #include "canvas_geometry.h"
 #include <nlohmann/json.hpp>
+#include <array>
 #include <map>
+#include <optional>
 #include <set>
 #include <string>
 #include <vector>
@@ -65,6 +67,14 @@ public:
     std::vector<Point> boardOuter;
     std::size_t omissionCount = 0;
     std::size_t rangeOmissionCount = 0;
+    /** @brief 적용된 급전의 표시 위치와 현재 도체 참조다. */
+    struct PortMarker
+    {
+        std::string id;
+        std::array<std::string, 2> terminals;
+        Point point;
+    };
+    std::optional<PortMarker> portMarker;
 
 private:
     std::map<std::string, std::size_t> m_indices;

@@ -6,6 +6,7 @@
 /** @brief 전체 원본 대신 목록과 선택 객체의 작은 편집 DTO만 조회한다. */
 void StudioFrame::RefreshEditor(const Json& selection, std::function<void()> completed)
 {
+    EndPortPick(false);
     m_busy = true;
     UpdateControls();
     const auto project = m_project;

@@ -27,6 +27,9 @@ public:
     ~DesignCanvas() override;
     void SetScene(const Json& scene);
     void SetSelection(const std::string& identity);
+    /** @brief 도체의 현재 2D 표시 가능 여부를 숨김 상태와 구분한다. */
+    std::string ConductorDisplayReason(const std::string& identity) const;
+    bool PortMarkerVisible() const;
     /** @brief 읽기 전용 검사 오버레이가 강조할 객체와 서비스 좌표를 설정한다. */
     void SetInspection(const std::vector<std::string>& identities, std::optional<wxPoint2DDouble> location);
     void SetTool(const std::string& tool);
@@ -49,13 +52,15 @@ public:
 
     wxPoint WorldToScreen(const wxPoint2DDouble& point) const;
     wxPoint2DDouble ScreenToWorld(const wxPoint& point) const;
-    std::string HitTest(const wxPoint& point) const;
+    std::string HitTest(const wxPoint& point, bool conductorOnly = false) const;
     std::string Selection() const;
     bool HasGesture() const;
     std::size_t DisplayOmissionCount() const;
 
     std::function<void(const Json&)> onAction;
     std::function<void(const std::string&)> onSelection;
+    /** @brief 단자 선택 중에는 포트 초안용 도체만 돌려준다. */
+    std::function<void(const std::string&)> onPickConductor;
     std::function<void(const std::string&)> onStatus;
     /** @brief 화면이 보이는 상태의 첫 그리기 후 한 번만 호출한다. */
     std::function<void()> onFirstVisiblePaint;

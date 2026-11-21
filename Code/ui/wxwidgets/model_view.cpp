@@ -230,6 +230,12 @@ public:
         Refresh(false);
     }
 
+    void RelatedSelection(const std::vector<std::string>& identities)
+    {
+        m_relatedSelection = identities;
+        Refresh(false);
+    }
+
     void Layer(const std::string& identity, bool visible)
     {
         if (visible)
@@ -345,7 +351,7 @@ private:
         glRotated(m_camera.yaw, 0.0, 0.0, 1.0);
         const double unitsPerPixel = 2.0 * halfHeight / height;
         const double threshold = m_showingPreview ? PreviewLeavePx : PreviewEnterPx;
-        m_showingPreview = m_scene->preview != nullptr && m_selection.empty() && m_camera.zoom <= 0.5 &&
+        m_showingPreview = m_scene->preview != nullptr && m_selection.empty() && m_relatedSelection.empty() && m_camera.zoom <= 0.5 &&
                            m_scene->preview->maximumDisplacement <= unitsPerPixel * threshold;
         const auto& drawingScene = m_showingPreview ? m_scene->preview->mesh : *m_scene;
         auto& vertices = m_showingPreview ? m_previewVertices : m_vertices;
@@ -362,7 +368,11 @@ private:
                 continue;
             }
             const bool selected = body.id == m_selection ||
-                std::find(body.sources.begin(), body.sources.end(), m_selection) != body.sources.end();
+                std::find(body.sources.begin(), body.sources.end(), m_selection) != body.sources.end() ||
+                std::any_of(m_relatedSelection.begin(), m_relatedSelection.end(), [&body](const std::string& id)
+                {
+                    return std::find(body.sources.begin(), body.sources.end(), id) != body.sources.end();
+                });
             if (m_colours.HighContrast())
             {
                 const auto& color = selected ? m_colours.focus : m_colours.ink;
@@ -537,6 +547,7 @@ private:
     Camera m_camera;
     std::set<std::string> m_hiddenLayers;
     std::string m_selection;
+    std::vector<std::string> m_relatedSelection;
     wxPoint m_down;
     wxPoint m_last;
     bool m_dragging = false;
@@ -561,6 +572,8 @@ struct ModelView::Impl
     std::shared_ptr<const Scene> candidate;
     std::string error;
     std::string selection;
+    std::vector<std::string> relatedSelection;
+    bool suppressPrimary = false;
     std::set<std::string> hiddenLayers;
     bool discard = false;
     bool recovering = false;
@@ -742,7 +755,8 @@ struct ModelView::Impl
             candidate = std::make_shared<Scene>(std::move(loaded));
             canvas->Show();
             canvas->SetScene(candidate);
-            canvas->Selection(selection);
+            canvas->Selection(suppressPrimary ? std::string() : selection);
+            canvas->RelatedSelection(relatedSelection);
             canvas->Fit();
             Status("3D 표시 파일 검증 완료. 첫 화면을 준비하고 있습니다.");
         }
@@ -836,6 +850,7 @@ void ModelView::Clear()
     m_impl->candidate.reset();
     m_impl->scene.reset();
     m_impl->selection.clear();
+    m_impl->relatedSelection.clear();
     if (m_impl->canvas != nullptr)
     {
         for (const auto& layer : m_impl->hiddenLayers)
@@ -868,7 +883,27 @@ void ModelView::SetSelection(const std::string& identity)
     m_impl->selection = identity;
     if (m_impl->canvas != nullptr)
     {
-        m_impl->canvas->Selection(identity);
+        m_impl->canvas->Selection(m_impl->suppressPrimary ? std::string() : identity);
+    }
+}
+
+void ModelView::SetRelatedSelection(const std::vector<std::string>& identities, bool suppressPrimary)
+{
+    if (m_impl->suppressPrimary != suppressPrimary)
+    {
+        m_impl->suppressPrimary = suppressPrimary;
+        if (m_impl->canvas != nullptr)
+        {
+            m_impl->canvas->Selection(suppressPrimary ? std::string() : m_impl->selection);
+        }
+    }
+    if (m_impl->relatedSelection != identities)
+    {
+        m_impl->relatedSelection = identities;
+        if (m_impl->canvas != nullptr)
+        {
+            m_impl->canvas->RelatedSelection(identities);
+        }
     }
 }
 

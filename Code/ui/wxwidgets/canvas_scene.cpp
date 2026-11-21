@@ -333,6 +333,19 @@ Model Model::Parse(const nlohmann::json& scene)
             ++result.omissionCount;
         }
     }
+    const auto marker = scene.find("port_marker");
+    if (marker != scene.end() && !marker->at("point_mm").is_null())
+    {
+        try
+        {
+            result.portMarker.emplace(Model::PortMarker{marker->at("id").get<std::string>(),
+                marker->at("terminal_ids").get<std::array<std::string, 2>>(), ReadPoint(marker->at("point_mm"))});
+        }
+        catch (const DisplayRangeError&)
+        {
+            ++rangeOmissions;
+        }
+    }
     result.rangeOmissionCount = rangeOmissions;
     for (std::size_t index = 0; index < result.shapes.size(); ++index)
     {

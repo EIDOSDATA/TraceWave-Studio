@@ -275,6 +275,14 @@ private:
     void SelectObject(const Json& selection, bool restoreTreeFocus = false);
     /** @brief 작은 편집 DTO로 탐색 트리와 속성 폼을 갱신한다. */
     void RefreshProject();
+    void BuildPortLinks(wxSizer& form);
+    void UpdatePortLinks();
+    const Json* RelatedPort() const;
+    bool CurrentDisplayMesh() const;
+    long FindPortProblem(const Json& port) const;
+    void FollowPortLink(wxButton& source, const Json& selection);
+    void BeginPortPick(const std::string& field);
+    void EndPortPick(bool restoreFocus);
     /** @brief 폼 변경분을 한 서비스 명령으로 적용하고 권위 DTO로 다시 표시한다. */
     void ApplyCurrent(std::function<void()> completed, std::function<void(const Json&)> rejected = {});
     /** @brief 선택한 객체의 변경된 속성을 적용한다. */
@@ -426,6 +434,15 @@ private:
     wxPanel* m_properties = nullptr;
     wxPanel* m_metadataPanel = nullptr;
     EditorPanel* m_editorPanel = nullptr;
+    wxPanel* m_portLinks = nullptr;
+    wxStaticText* m_portLinkStatus = nullptr;
+    wxButton* m_portSignal = nullptr;
+    wxButton* m_portReference = nullptr;
+    wxButton* m_portReturn = nullptr;
+    wxButton* m_portProblem = nullptr;
+    wxButton* m_portModel = nullptr;
+    wxButton* m_portPick = nullptr;
+    std::string m_portPickField;
     wxStaticText* m_selectionLabel = nullptr;
     wxTextCtrl* m_name = nullptr;
     wxTextCtrl* m_description = nullptr;

@@ -300,6 +300,7 @@ void StudioFrame::BuildInterface()
     m_selectionLabel = new wxStaticText(m_properties, wxID_ANY, Display("프로젝트 속성"));
     StudioTheme::Title(*m_selectionLabel);
     form->Add(m_selectionLabel, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
+    BuildPortLinks(*form);
     m_metadataPanel = new wxPanel(m_properties);
     StudioTheme::BindSurface(*m_metadataPanel);
     auto* fields = new wxFlexGridSizer(2, FromDIP(StudioTheme::InputGap), FromDIP(StudioTheme::InputGap));

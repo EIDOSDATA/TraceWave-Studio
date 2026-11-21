@@ -171,6 +171,7 @@ void StudioFrame::UpdateControls()
     }
     UpdateDraftState();
     UpdateModelState();
+    UpdatePortLinks();
     UpdateWorkspace();
 }
 
@@ -255,6 +256,8 @@ bool StudioFrame::ConfirmDiscard()
     {
         return true;
     }
-    return wxMessageBox(Display("아직 적용하지 않은 입력을 버리고 계속하시겠습니까?"), Display("입력 변경 확인"),
-                        wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION, this) == wxYES;
+    wxMessageDialog dialog(this, Display("아직 적용하지 않은 입력을 버리고 계속하시겠습니까?"),
+                           Display("입력 변경 확인"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
+    dialog.SetName("setup.discard");
+    return dialog.ShowModal() == wxID_YES;
 }
