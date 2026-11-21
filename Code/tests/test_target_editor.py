@@ -65,15 +65,17 @@ class TargetEditorTests(unittest.TestCase):
         state = self.service.journal.read()
         return self.service._load(self.service._project(state, {"project_id": self.project_id}))
 
-    def get(self, identity=None):
+    def get(self, identity=None, *, preset=None):
         """! @brief 현재 개정의 신규/기존 목표를 조회한다."""
         return self.rpc("target.editor.get", {"contract_version": "rfad.api/2.0", "context": {"project_id": self.project_id},
-                                               "input": {"expected_revision": self.revision, "target_id": identity}})
+                                               "input": {"expected_revision": self.revision, "target_id": identity, "preset_id": preset}})
 
-    def edit(self, identity=None, values=None, *, operation="set", reason="사용자가 명시한 변경"):
+    def edit(self, identity=None, values=None, *, operation="set", reason="사용자가 명시한 변경", preset=None):
         """! @brief 성공한 목표 편집의 개정을 추적하고 원 요청을 재전송 시험에 돌려준다."""
         params = self.request({"expected_revision": self.revision, "command_id": str(uuid4()), "operation": operation,
                                "target_id": identity, "values": creation_values() if values is None else values, "reason": reason})
+        if preset is not None:
+            params["input"]["preset_id"] = preset
         result = self.rpc("target.editor.apply", params)
         self.revision = result["new_revision"]
         return result, params
@@ -128,6 +130,78 @@ class TargetEditorTests(unittest.TestCase):
         self.assertEqual({row["id"] for row in self.document()["targets"]}, {identity, second["target_id"]})
         self.move_history("project.redo")
         self.assertEqual([row["id"] for row in self.document()["targets"]], [second["target_id"]])
+
+    def test_sourced_presets_keep_scope_samples_and_missing_values_after_reopen(self):
+        """! @brief 발행 판과 범위를 신규 목표의 SI 수량 및 개별 표본과 함께 보존한다."""
+        expected = {
+            "ble-centers/0.1": (2402, 2480, None, tuple(range(2402, 2481, 2))),
+            "wifi-americas-centers/0.1": (2412, 2462, None, tuple(range(2412, 2463, 5))),
+            "lorawan-eu868/0.1": (863, 870, None, (868.1, 868.3, 868.5)),
+            "uwb-ch5/0.1": (6240, 6739.2, 6489.6, ()),
+            "gnss-gps-l1/0.1": (1560.075, 1590.765, 1575.42, ()),
+            "lte-b3-ul/0.1": (1710, 1785, None, ()),
+            "lte-b3-dl/0.1": (1805, 1880, None, ()),
+        }
+        catalog = self.get()["band_presets"]
+        self.assertEqual({row["id"] for row in catalog}, set(expected))
+        for card in catalog:
+            preset = card["id"]
+            with self.subTest(preset=preset):
+                before = self.service.journal.read()
+                preview = self.get(preset=preset)
+                self.assertEqual(self.service.journal.read(), before)
+                self.assertEqual(preview["selection"]["preset_id"], preset)
+                self.assertTrue(preview["input_status"]["has_source_defaults"])
+                applied, request = self.edit(values={}, preset=preset)
+                self.assertEqual(self.rpc("target.editor.apply", request), applied)
+                target = next(row for row in self.document()["targets"] if row["id"] == applied["target_id"])
+                refs = target["source_refs"][:-1]
+                self.assertEqual(refs[:3], [preset, card["version"], card["scope"]])
+                self.assertTrue(refs[3].startswith("https://"))
+                start, end, reference, samples = expected[preset]
+                def sourced(mhz):
+                    """! @brief 독립 기대값으로 SI·표시 단위·출처를 대조한다."""
+                    return {"value_si": mhz * 1e6, "dimension": "frequency", "display_unit": "MHz",
+                            "status": "source_default", "source_refs": refs}
+
+                for key, mhz in (("start", start), ("end", end), ("reference", reference)):
+                    value = target["band"][key]
+                    if mhz is None:
+                        self.assertIsNone(value["value_si"])
+                        self.assertEqual(value["status"], "missing")
+                    else:
+                        self.assertEqual(value, sourced(mhz))
+                sampling = target["band"]["sampling"]
+                if samples:
+                    self.assertEqual(sampling["frequencies"], [sourced(mhz) for mhz in samples])
+                else:
+                    self.assertEqual(sampling, {"kind": "linear", "count": 3})
+                self.assertIsNone(target["port_id"])
+                self.assertEqual(target["reference_impedance"]["status"], "missing")
+                self.assertEqual(target["criteria"], [])
+        original = self.document()
+        self.complete("project.save", {"expected_revision": self.revision})
+        self.service.close()
+        self.service = ProjectService(self.workspace, auto_run=False)
+        opened = self.complete("project.open", {"path": "projects/target-editor", "open_mode": "open"}, {})
+        self.assertEqual(opened["document"], original)
+
+    def test_preset_cannot_replace_existing_target_and_edits_keep_original_sources(self):
+        """! @brief 기존 목표 덮어쓰기를 막고 새 목표의 수치 변경에는 사용자 출처를 기록한다."""
+        created, _ = self.edit(values={"band.start.value": "862"}, preset="lorawan-eu868/0.1")
+        original = self.document()["targets"][0]
+        self.assertEqual(original["band"]["start"]["value_si"], 862e6)
+        self.assertEqual(original["band"]["start"]["status"], "user_entered")
+        self.assertEqual(original["band"]["start"]["source_refs"], original["source_refs"])
+        before = self.service.journal.read()
+        params = self.request({"expected_revision": self.revision, "command_id": str(uuid4()), "operation": "set",
+                               "target_id": created["target_id"], "values": {}, "reason": "덮어쓰기 차단",
+                               "preset_id": "ble-centers/0.1"})
+        self.assertIn("error", self.wire("target.editor.apply", params))
+        params = {"contract_version": "rfad.api/2.0", "context": {"project_id": self.project_id},
+                  "input": {"expected_revision": self.revision, "target_id": None, "preset_id": "unknown/0.1"}}
+        self.assertIn("error", self.wire("target.editor.get", params))
+        self.assertEqual(self.service.journal.read(), before)
 
     def test_renaming_preserves_all_quantity_status_source_and_explicit_rows(self):
         """! @brief 이름 변경으로 추정/자료 기본값이나 혼합 단위 명시 표본을 덮어쓰지 않는다."""

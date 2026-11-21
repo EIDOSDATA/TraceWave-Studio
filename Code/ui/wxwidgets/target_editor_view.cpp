@@ -4,6 +4,7 @@
 #include "studio_support.h"
 #include "studio_theme.h"
 #include <wx/button.h>
+#include <wx/choicdlg.h>
 #include <wx/listbox.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
@@ -27,7 +28,10 @@ void TargetEditorDialog::BuildInterface()
     left->Add(m_targets, 1, wxEXPAND | wxBOTTOM, FromDIP(StudioTheme::InputGap));
     m_add = new wxButton(this, wxID_ANY, Display("목표 추가"));
     m_add->SetName("target.add");
-    left->Add(m_add, 0, wxEXPAND);
+    left->Add(m_add, 0, wxEXPAND | wxBOTTOM, FromDIP(StudioTheme::InputGap));
+    m_preset = new wxButton(this, wxID_ANY, Display("대역 프리셋으로 시작"));
+    m_preset->SetName("target.band_preset");
+    left->Add(m_preset, 0, wxEXPAND);
     content->Add(left, 0, wxEXPAND | wxRIGHT, FromDIP(StudioTheme::PanelPadding));
     auto* right = new wxBoxSizer(wxVERTICAL);
     m_summary = new wxStaticText(this, wxID_ANY, wxEmptyString);
@@ -67,6 +71,7 @@ void TargetEditorDialog::BuildInterface()
                         Load(nullptr);
                     }
                 });
+    m_preset->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ChoosePreset(); });
     m_targets->Bind(wxEVT_LISTBOX,
                     [this](wxCommandEvent& event)
                     {
@@ -105,4 +110,21 @@ void TargetEditorDialog::BuildInterface()
                    {
                        Apply(true);
                    });
+}
+
+void TargetEditorDialog::ChoosePreset()
+{
+    const auto& presets = m_context.at("band_presets");
+    wxArrayString choices;
+    for (const auto& preset : presets)
+    {
+        choices.Add(Display(preset.at("name").get<std::string>() + " / " + preset.at("scope").get<std::string>() +
+                            " / " + preset.at("version").get<std::string>()));
+    }
+    wxSingleChoiceDialog picker(this, Display("새 목표에 사용할 대역과 원문 판을 선택하세요."),
+                                Display("대역 프리셋"), choices, nullptr, wxCHOICEDLG_STYLE | wxRESIZE_BORDER);
+    if (picker.ShowModal() == wxID_OK && picker.GetSelection() != wxNOT_FOUND && ConfirmDiscard())
+    {
+        Load(nullptr, presets.at(static_cast<std::size_t>(picker.GetSelection())).at("id"));
+    }
 }

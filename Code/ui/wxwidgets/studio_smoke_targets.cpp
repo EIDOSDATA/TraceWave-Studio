@@ -2,9 +2,40 @@
 #include "studio_internal.h"
 #include "target_editor_dialog.h"
 #include "setup_smoke_support.h"
+#include <wx/choicdlg.h>
+#include <algorithm>
 
 namespace
 {
+/** @brief 실제 대역 선택 대화상자에서 시험할 항목을 선택한다. */
+class BandPresetHook final : public wxModalDialogHook
+{
+public:
+    explicit BandPresetHook(int index) : m_index(index)
+    {
+        Register();
+    }
+    ~BandPresetHook() override
+    {
+        Unregister();
+    }
+    int Enter(wxDialog* dialog) override
+    {
+        auto* picker = dynamic_cast<wxSingleChoiceDialog*>(dialog);
+        if (picker == nullptr || dialog->GetTitle() != Display("대역 프리셋"))
+        {
+            return wxID_NONE;
+        }
+        picker->SetSelection(m_index);
+        shown = true;
+        return wxID_OK;
+    }
+    bool shown = false;
+
+private:
+    int m_index;
+};
+
 /** @brief 시험에서만 쓰는 명시 목표 입력이며 제품의 기본값이 아니다. */
 void FillTarget(EditorPanel& fields, const std::string& name, const std::string& start, const std::string& end)
 {
@@ -95,14 +126,41 @@ void StudioSmokeDriver::SetupTargetSmoke(TargetEditorDialog& dialog)
     else if (m_setupStage == 7)
     {
         CanvasAssert(dialog.m_targetId.is_null(), "새 목표 폼으로 전환하지 못했습니다.");
-        FillTarget(*dialog.m_fields, "삭제할 GUI 목표", "6.0", "6.1");
-        dialog.m_reason->SetValue(Display("삭제와 이력 확인용 추가"));
+        const auto& presets = dialog.m_context.at("band_presets");
+        const auto selected = std::find_if(presets.begin(), presets.end(),
+                                           [](const Json& preset) { return preset.at("id") == "ble-centers/0.1"; });
+        CanvasAssert(selected != presets.end() && dialog.m_preset->IsEnabled(), "Bluetooth LE 프리셋을 찾지 못했습니다.");
+        BandPresetHook picker(static_cast<int>(selected - presets.begin()));
+        m_setupStage = 71;
+        SetupSmoke::Click(dialog.m_preset);
+        CanvasAssert(picker.shown, "대역 프리셋 선택 창을 표시하지 못했습니다.");
+    }
+    else if (m_setupStage == 71)
+    {
+        CanvasAssert(dialog.m_targetId.is_null() && dialog.m_presetId == "ble-centers/0.1" &&
+                         dialog.m_fields->FieldValue("sampling.explicit").size() == 40 &&
+                         dialog.m_fields->FieldValue("band.start.unit") == "MHz" &&
+                         dialog.m_fields->FieldValue("band.start.status") == "source_default" &&
+                         dialog.m_fields->FieldValue("reference_impedance.mode") == "missing" &&
+                         dialog.m_fields->FieldValue("port_id") == "",
+                     "자료 기본값, MHz 표시 또는 미정 조건이 프리셋 폼에서 유실되었습니다.");
+        dialog.m_reason->SetValue(Display("Bluetooth 대역 출처 보존 시험"));
         m_setupStage = 8;
         SetupSmoke::Click(dialog.m_apply);
     }
     else if (m_setupStage == 8)
     {
-        CanvasAssert(dialog.m_context.at("items").size() == 3, "세 번째 목표를 추가하지 못했습니다.");
+        CanvasAssert(dialog.m_context.at("items").size() == 3 && !dialog.m_targetId.is_null() &&
+                         dialog.m_presetId.is_null() && dialog.m_fields->FieldValue("sampling.explicit").size() == 40 &&
+                         dialog.m_fields->FieldValue("source_refs").at(0) == "ble-centers/0.1",
+                     "대역 프리셋을 독립 목표로 적용하지 못했습니다.");
+        m_setupChecks.push_back("band_preset_dialog_applies_sourced_samples_and_keeps_missing_inputs");
+        dialog.Load(m_setupAddedTarget);
+        m_setupStage = 81;
+    }
+    else if (m_setupStage == 81)
+    {
+        CanvasAssert(dialog.m_targetId == m_setupAddedTarget, "삭제할 기존 목표를 선택하지 못했습니다.");
         dialog.m_reason->SetValue(Display("시험 목표 명시적 삭제"));
         m_setupStage = 9;
         SetupSmoke::Click(dialog.m_remove);

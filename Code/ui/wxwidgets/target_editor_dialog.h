@@ -18,7 +18,8 @@ private:
     friend class StudioSmokeDriver;
     void BuildInterface();
     void RenderContext(const Json& context);
-    void Load(const Json& targetId);
+    void Load(const Json& targetId, const Json& presetId = nullptr);
+    void ChoosePreset();
     void Apply(bool remove);
     void UpdateActions() override;
     void ShowRequestFailure(const Json& error) override;
@@ -27,6 +28,7 @@ private:
 
     Json m_context;
     Json m_targetId = nullptr;
+    Json m_presetId = nullptr;
     bool m_loading = false;
     bool m_reloadingContext = false;
     wxListBox* m_targets = nullptr;
@@ -34,6 +36,7 @@ private:
     wxTextCtrl* m_reason = nullptr;
     wxStaticText* m_summary = nullptr;
     wxButton* m_add = nullptr;
+    wxButton* m_preset = nullptr;
     wxButton* m_apply = nullptr;
     wxButton* m_remove = nullptr;
     wxButton* m_cancel = nullptr;

@@ -21,7 +21,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 45,
     "current_06_분석연구": 13,
-    "current_07_검증": 136,
+    "current_07_검증": 142,
     "current_08_운영환경": 7,
     "current_09_개발계획": 8,
     "current_11_검토기록": 7,
@@ -27962,9 +27962,9 @@
       "path": "01_개발문서/04_화면설계/10_목표와_형상템플릿_화면.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 9557,
-      "working_tree_sha256": "6e216995fdf6adf1d1a90f73cdb1177b8853116c1f6dab58e474acb44b58acc8",
-      "text_lines": 69,
+      "bytes": 10155,
+      "working_tree_sha256": "6438b8d2bc047400aae7b7cdfca915a48fd35ed199ce21a6bfbaadcbae458289",
+      "text_lines": 71,
       "text_status": "utf8_read"
     },
     {
@@ -28116,18 +28116,18 @@
       "path": "01_개발문서/05_기능설계/02_설계편집/06_대역목표_입력계약.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12633,
-      "working_tree_sha256": "82dfe2add36af7cca04e5512b67d1bb0f9c5a71f258d202accff02e4aca14f16",
-      "text_lines": 129,
+      "bytes": 14649,
+      "working_tree_sha256": "35c8111622ff7d57623972c03872eaf0832aa20d2a2f38cee2f24dd52111aac2",
+      "text_lines": 144,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/07_목표편집_서비스계약.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 8400,
-      "working_tree_sha256": "93ed96b75ba44f33cc8210ae7ed70587d204221949ed0891105d7544e0e86ef7",
-      "text_lines": 91,
+      "bytes": 9193,
+      "working_tree_sha256": "1ad85f2a091f6d3ccca9c6e6bae14731ed7b74f3e54130fa273cc2ed5c358ab7",
+      "text_lines": 95,
       "text_status": "utf8_read"
     },
     {
@@ -28161,18 +28161,18 @@
       "path": "01_개발문서/05_기능설계/02_설계편집/11_목표제약과_연결_설계규칙검사.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 8423,
-      "working_tree_sha256": "e348578e3df31c887211314b95bb3f676741675ca26ab0d69e4473ae910b1d79",
-      "text_lines": 46,
+      "bytes": 9219,
+      "working_tree_sha256": "26ba55d357535685efa3fe5127c6674562814f0c8402612187f185de29ed3124",
+      "text_lines": 52,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 14415,
-      "working_tree_sha256": "9310c331928353b14fca49cbbcb929d453b474dceca18176323844e485f84e89",
-      "text_lines": 65,
+      "bytes": 17953,
+      "working_tree_sha256": "7d3febd3be9d26baee644d0d8f52b46b75955b8126bb7d7f6a2122aa134588e3",
+      "text_lines": 83,
       "text_status": "utf8_read"
     },
     {
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 22337,
-      "working_tree_sha256": "4ec9275213b60b914844dfb75192f81e9d5349661638bf5c91102ca78067d5df",
-      "text_lines": 152,
+      "bytes": 23359,
+      "working_tree_sha256": "307a55f53155cbbe407c2f1beb66f50f93b8603d918534b7495fe28925639950",
+      "text_lines": 158,
       "text_status": "utf8_read"
     },
     {
@@ -32345,8 +32345,8 @@
       "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12353,
-      "working_tree_sha256": "914bfa5d4ba7e47b517ee112877925e385cdf3e57c3e426a4e854765ce3822f9",
+      "bytes": 12505,
+      "working_tree_sha256": "e3ccfad9a1a7bf7bba002c44f749dbad8f3ddc85c13e7c95c60394366f66ac31",
       "text_lines": 42,
       "text_status": "utf8_read"
     },
@@ -32363,8 +32363,8 @@
       "path": "01_개발문서/09_개발계획/06_비교분석과_기능개발_범위.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12317,
-      "working_tree_sha256": "5de58fa3cb1ae89a97fab24431fdc18f4fef7f3ab7919388b35e315017fc531c",
+      "bytes": 12142,
+      "working_tree_sha256": "b5a08551d63515d8bd2bdb8b0f48fcacf0b8414bbdf120facf6529b18cf462a2",
       "text_lines": 37,
       "text_status": "utf8_read"
     },
@@ -32411,6 +32411,60 @@
       "bytes": 1797,
       "working_tree_sha256": "a224aa0596d10652e9682b893c0bcb0e0f278c5c0432151d674c6567e6fec411",
       "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/249_윈도우_솔더마스크_피복과_개구_해석검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1713,
+      "working_tree_sha256": "e091b2440fbdbd6f63c7a7942edccb7090b591f343f898335552af553de1f4c1",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/250_윈도우_기판관통부_해석검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1125,
+      "working_tree_sha256": "05c5da7924c8317e676230e6bdc7640db9111e4ee1d11ac25fc450350e98d02a",
+      "text_lines": 9,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/251_윈도우_다각형기판_해석검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1018,
+      "working_tree_sha256": "4cf644e2b66b389f11aee7935ba02994785670621666113d162f50aa9a5a19ef",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/252_윈도우_본드플라이_두께와_해석검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1189,
+      "working_tree_sha256": "909b0c08e0ac5e66314c9cabbd009e9b2ec2a021815dbaa47e46da13dcb7564e",
+      "text_lines": 9,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/253_윈도우_전도체층_금지영역_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1207,
+      "working_tree_sha256": "28018b17ffa811dd8b015f058b657720504f96fe182be5e7916f116d1405da6b",
+      "text_lines": 9,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/254_윈도우_대역프리셋_출처와_저장검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1518,
+      "working_tree_sha256": "3a0413606b630c49d134ebeb68de16de67c57b4abe1a9c03ab7db8ff7f3ef495",
+      "text_lines": 11,
       "text_status": "utf8_read"
     }
   ],

@@ -27,6 +27,7 @@ void TargetEditorDialog::RenderContext(const Json& context)
     m_reloadingContext = false;
     m_context = context;
     m_targetId = context.at("selection").at("id");
+    m_presetId = context.at("selection").value("preset_id", Json(nullptr));
     m_targets->Clear();
     int selected = wxNOT_FOUND;
     int row = 0;
@@ -44,19 +45,26 @@ void TargetEditorDialog::RenderContext(const Json& context)
                         Json{{"kind", "target"}, {"id", m_targetId.is_null() ? "" : m_targetId.get<std::string>()}});
     m_reason->ChangeValue(wxEmptyString);
     const std::string summary = context.at("input_status").value("summary", "미평가");
-    m_summary->SetLabel(Display((m_targetId.is_null() ? "새 목표 / " : "선택한 목표 / ") + summary));
+    const std::string selection = !m_presetId.is_null() ? "대역 프리셋 초안" : (m_targetId.is_null() ? "새 목표" : "선택한 목표");
+    m_summary->SetLabel(Display(selection + " / " + summary));
     m_summary->Wrap(std::max(200, GetClientSize().x - FromDIP(280)));
     SetStatus("목표 저장은 해석 실행이나 성능 합격을 뜻하지 않습니다. 미정 입력과 원래 출처를 보존합니다.");
     m_loading = false;
     UpdateActions();
 }
 
-void TargetEditorDialog::Load(const Json& targetId)
+void TargetEditorDialog::Load(const Json& targetId, const Json& presetId)
 {
-    Request("target.editor.get", Json{{"expected_revision", m_revision}, {"target_id", targetId}}, false,
-            [this, targetId](const Json& result)
+    Json input{{"expected_revision", m_revision}, {"target_id", targetId}};
+    if (!presetId.is_null())
+    {
+        input["preset_id"] = presetId;
+    }
+    Request("target.editor.get", input, false,
+            [this, targetId, presetId](const Json& result)
             {
-                if (result.at("selection").at("id") != targetId)
+                const Json& selection = result.at("selection");
+                if (selection.at("id") != targetId || selection.value("preset_id", Json(nullptr)) != presetId)
                 {
                     throw std::runtime_error("목표 선택 응답이 요청과 일치하지 않습니다.");
                 }
@@ -66,7 +74,7 @@ void TargetEditorDialog::Load(const Json& targetId)
 
 bool TargetEditorDialog::HasDraft() const
 {
-    return !m_reloadingContext && (m_fields->IsDirty() || !m_reason->GetValue().empty());
+    return !m_reloadingContext && (!m_presetId.is_null() || m_fields->IsDirty() || !m_reason->GetValue().empty());
 }
 
 void TargetEditorDialog::RestoreSelection()
@@ -92,12 +100,16 @@ void TargetEditorDialog::Apply(bool remove)
     }
     try
     {
-        const Json input{{"expected_revision", m_revision},
+        Json input{{"expected_revision", m_revision},
                          {"command_id", Uuid()},
                          {"operation", remove ? "remove" : "set"},
                          {"target_id", m_targetId},
                          {"values", remove ? Json::object() : m_fields->Changes()},
                          {"reason", Utf8(m_reason->GetValue())}};
+        if (!m_presetId.is_null())
+        {
+            input["preset_id"] = m_presetId;
+        }
         SetStatus(remove ? "목표 삭제를 적용하고 있습니다." : "목표 입력을 확인하고 적용하고 있습니다.");
         Request("target.editor.apply", input, true,
                 [this, remove](const Json& result)
@@ -119,6 +131,8 @@ void TargetEditorDialog::UpdateActions()
     const bool editable = Editable() && !m_reloadingContext;
     m_targets->Enable(editable && !m_pending);
     m_add->Enable(editable && !m_pending);
+    m_preset->Enable(editable && !m_pending && m_context.contains("band_presets") &&
+                     !m_context.at("band_presets").empty());
     m_fields->Enable(editable && !m_pending);
     m_reason->Enable(editable && !m_pending);
     wxString reason = m_reason->GetValue();

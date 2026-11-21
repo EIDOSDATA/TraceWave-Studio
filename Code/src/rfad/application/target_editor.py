@@ -3,6 +3,7 @@
 from copy import deepcopy
 from uuid import uuid4
 
+from rfad.application import target_band_presets
 from rfad.application.canonical import canonical_bytes
 from rfad.application.project_contract import _fields, _uuid
 from rfad.application.target_editor_fields import QUANTITIES, blank_target, fields_for, quantity_at, summary
@@ -31,10 +32,12 @@ def input_status(target):
     return result
 
 
-def selected(document, target_id):
+def selected(document, target_id, preset_id=None):
     """! @brief null 선택은 저장 전 빈 입력이며 기존 목표는 안정 ID로만 찾는다."""
     if target_id is None:
-        return blank_target()
+        return blank_target() if preset_id is None else target_band_presets.draft(preset_id)
+    if preset_id is not None:
+        fail("대역 프리셋은 새 목표에 적용하십시오.", "preset_id", "E_CONFLICT")
     _uuid(target_id)
     target = next((item for item in document["targets"] if item["id"] == target_id), None)
     if target is None:
@@ -49,7 +52,7 @@ def read(service, params):
         fail("지원하지 않는 API 버전입니다.", "contract_version", "E_VERSION")
     _fields(params["context"], {"project_id"})
     _uuid(params["context"]["project_id"])
-    data = _fields(params["input"], {"expected_revision", "target_id"})
+    data = _fields(params["input"], {"expected_revision", "target_id"}, {"preset_id"})
     _uuid(data["expected_revision"])
     state = service.journal.read()
     project = service._project(state, params["context"])
@@ -57,11 +60,12 @@ def read(service, params):
     service._check_history_head(project, document["revision_id"])
     if data["expected_revision"] != document["revision_id"]:
         fail("목표 조회의 기준 개정이 현재 개정과 다릅니다.", "expected_revision", "E_CONFLICT")
-    target = selected(document, data["target_id"])
+    target = selected(document, data["target_id"], data.get("preset_id"))
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
               "saved_revision": service._saved_revision(project), "history": service._history_status(project),
               "items": [{"id": item["id"], "label": item["name"], "summary": summary(item)} for item in document["targets"]],
-              "selection": {"id": data["target_id"], "fields": fields_for(document, target)},
+              "selection": {"id": data["target_id"], "preset_id": data.get("preset_id"), "fields": fields_for(document, target)},
+              "band_presets": target_band_presets.choices(),
               "input_status": input_status(target),
               "limits": {"max_targets": MAX_TARGETS, "max_samples_per_target": MAX_SAMPLES, "max_dto_bytes": MAX_DTO_BYTES},
               "evaluation_supported": False, "changes_solver_settings": False}
@@ -74,7 +78,7 @@ def validate_input(context, data):
     """! @brief 공개 편집 요청의 키, 식별자와 필수 변경 사유를 검증한다."""
     _fields(context, {"project_id"})
     _uuid(context["project_id"])
-    _fields(data, {"expected_revision", "command_id", "operation", "target_id", "values", "reason"})
+    _fields(data, {"expected_revision", "command_id", "operation", "target_id", "values", "reason"}, {"preset_id"})
     _uuid(data["expected_revision"])
     _uuid(data["command_id"])
     if data["operation"] not in ("set", "remove"):
@@ -84,7 +88,7 @@ def validate_input(context, data):
     if type(data["values"]) is not dict:
         fail("변경 필드는 object여야 합니다.", "values")
     _text(data["reason"], "reason", limit=512)
-    if data["operation"] == "remove" and (data["target_id"] is None or data["values"]):
+    if data["operation"] == "remove" and (data["target_id"] is None or data["values"] or data.get("preset_id") is not None):
         fail("제거할 목표 ID와 빈 values가 필요합니다.", "target_id")
 
 
@@ -119,7 +123,7 @@ def admit(service, state, context, data):
     document = service._load(project)
     if document["revision_id"] != data["expected_revision"]:
         fail("목표 편집의 기준 개정이 현재 개정과 다릅니다.", "expected_revision", "E_CONFLICT")
-    original = selected(document, data["target_id"])
+    original = selected(document, data["target_id"], data.get("preset_id"))
     identity = data["target_id"]
     if data["operation"] == "remove":
         target = original

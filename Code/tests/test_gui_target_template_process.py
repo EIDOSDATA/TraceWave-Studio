@@ -97,6 +97,19 @@ class GuiTargetTemplateTests(unittest.TestCase):
                 self.assertTrue(set(original["targets"][0]["source_refs"]).issubset(preserved["source_refs"]))
                 self.assertEqual(preserved["name"], "GUI 원본 출처 유지")
                 self.assertEqual(len(stored["targets"]), 2)
+                preset = next(item for item in stored["targets"] if item["id"] != target["id"])
+                self.assertEqual(preset["source_refs"][0], "ble-centers/0.1")
+                self.assertEqual(preset["band"]["start"]["value_si"], 2.402e9)
+                frequencies = preset["band"]["sampling"]["frequencies"]
+                self.assertEqual([item["value_si"] for item in frequencies], [value * 1e6 for value in range(2402, 2481, 2)])
+                self.assertTrue(all(item["status"] == "source_default" and item["source_refs"] == preset["source_refs"][:-1]
+                                    for item in frequencies))
+                self.assertIsNone(preset["port_id"])
+                self.assertIsNone(preset["reference_impedance"]["value_si"])
+                self.assertIsNone(preset["band"]["reference"]["value_si"])
+                self.assertEqual(preset["criteria"], [])
+                _, saved = service.repository.read(state["projects"][original["project_id"]]["saved"])
+                self.assertEqual(saved["targets"], stored["targets"])
                 self.assertEqual(stored["geometry"], [])
                 self.assertNotIn("rfad.template-origin", stored["extensions"])
                 stored = service._load(state["projects"][small["project_id"]])
@@ -122,6 +135,7 @@ class GuiTargetTemplateTests(unittest.TestCase):
         report = self.run_workflow(False)
         self.assertTrue({"new_target_has_no_physical_defaults", "parent_close_veto_during_target_apply",
                          "target_add_edit_select_remove", "explicit_1001_samples_and_origins_preserved",
+                         "band_preset_dialog_applies_sourced_samples_and_keeps_missing_inputs",
                          "unit_only_change_preserves_si_and_missing_conditions", "invalid_target_preserves_draft_and_revision",
                          "latest_target_revision_returned_to_frame", "target_undo_redo", "late_preview_invalidated_by_edit",
                          "completed_changes_reloaded_after_dialog_disconnect",
