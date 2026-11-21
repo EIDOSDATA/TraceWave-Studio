@@ -21,7 +21,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 45,
     "current_06_분석연구": 13,
-    "current_07_검증": 145,
+    "current_07_검증": 146,
     "current_08_운영환경": 7,
     "current_09_개발계획": 8,
     "current_11_검토기록": 7,
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 23850,
-      "working_tree_sha256": "3ba6127329c549c8d3729c5dd4b03c2292ceb013b0d8462b7e320aee5b4f87fd",
-      "text_lines": 161,
+      "bytes": 24010,
+      "working_tree_sha256": "17a492589295b349a24e37b3974843d00915e6ccd9f9f351b2c3135a76d67436",
+      "text_lines": 162,
       "text_status": "utf8_read"
     },
     {
@@ -28672,8 +28672,8 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 157156,
-      "working_tree_sha256": "52648083d23940d784562626e7b4516f9601c796f840b0e88bcac274492f55b4",
+      "bytes": 156766,
+      "working_tree_sha256": "810ac16f535a1bc45395762010d40835d2ff234138a68775e7c67d9473f2c4fa",
       "text_lines": 891,
       "text_status": "utf8_read"
     },
@@ -28681,8 +28681,8 @@
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 49039,
-      "working_tree_sha256": "232c28795dadc7d942ea42713e2638e4d587f022675415fbc43f7256d4e89580",
+      "bytes": 48995,
+      "working_tree_sha256": "098cd274deea8ae4e303b5dd09e860b2ace3d7f6be9a638fd588a0908fcdedab",
       "text_lines": 181,
       "text_status": "utf8_read"
     },
@@ -32345,8 +32345,8 @@
       "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12356,
-      "working_tree_sha256": "6617248148c256c64326372d3ce8b16ebb88304816a95879d8c3e62eefce85d4",
+      "bytes": 11857,
+      "working_tree_sha256": "bd834b336d9e5eea073c6ffb80ed41501b147ff3f00441508715d72a2929adad",
       "text_lines": 42,
       "text_status": "utf8_read"
     },
@@ -32492,6 +32492,15 @@
       "bytes": 1267,
       "working_tree_sha256": "fc678bce101b7641b25850b28514a890a1335629d32417095fcee78971426f60",
       "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/258_공개자료_기반_설계모델_마감.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 5659,
+      "working_tree_sha256": "9e70a9f02d636eb6075b6a71c8a6f65affef78878a059a23831e84477cfaa943",
+      "text_lines": 24,
       "text_status": "utf8_read"
     }
   ],
