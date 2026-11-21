@@ -223,6 +223,28 @@ class TargetEditorTests(unittest.TestCase):
         self.move_history("project.undo")
         self.assertEqual(self.document()["targets"][0]["reference_plane"], expected["reference_plane"])
 
+    def test_observation_keeps_explicit_angles_polarization_and_unset_limit(self):
+        """! @brief 고급 관측 입력을 저장하고 각도와 대역 외 주파수 변경을 차단한다."""
+        changes = {**creation_values(), "observation.frequency": "2.45 GHz", "observation.theta_deg": "90",
+                   "observation.phi_deg": "0", "observation.polarization": "theta"}
+        created, _ = self.edit(values=changes)
+        identity = created["target_id"]
+        expected = self.document()["targets"][0]
+        point = expected["observation"]
+        self.assertEqual(point["frequency"]["value_si"], 2450e6)
+        self.assertEqual((point["theta_deg"], point["phi_deg"], point["polarization"]), (90, 0, "theta"))
+        self.assertIsNone(point["minimum_gain_dbi"])
+        self.assertIsNone(expected["port_id"])
+        before = self.service.journal.read()
+        for key, value in (("observation.phi_deg", "360"), ("observation.frequency", "3 GHz")):
+            params = self.request({"expected_revision": self.revision, "command_id": str(uuid4()), "operation": "set",
+                                   "target_id": identity, "values": {key: value}, "reason": "검증 범위 바깥 입력"})
+            self.assertIn("error", self.wire("target.editor.apply", params))
+        self.assertEqual(self.service.journal.read(), before)
+        self.complete("project.save", {"expected_revision": self.revision})
+        opened = self.complete("project.open", {"path": "projects/target-editor", "open_mode": "open"}, {})
+        self.assertEqual(opened["document"]["targets"], [expected])
+
     def test_renaming_preserves_all_quantity_status_source_and_explicit_rows(self):
         """! @brief 이름 변경으로 추정/자료 기본값이나 혼합 단위 명시 표본을 덮어쓰지 않는다."""
         value = target_input()

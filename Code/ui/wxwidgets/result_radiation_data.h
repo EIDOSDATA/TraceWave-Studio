@@ -46,6 +46,13 @@ public:
                 fail();
             }
         }
+        const Json caseObservation = page.value("target_observation", Json(nullptr));
+        if ((options.contains("target_id") &&
+             (!caseObservation.is_object() || caseObservation.at("target_id") != options.at("target_id"))) ||
+            (!options.contains("target_id") && !caseObservation.is_null()))
+        {
+            fail();
+        }
         const int count = page.at("returned_count").get<int>(), total = page.at("theta_count").get<int>(),
                   offset = page.at("theta_offset").get<int>();
         const int columns = static_cast<int>(page.at("phi_deg").size());
@@ -158,7 +165,8 @@ public:
             for (const std::string key :
                  {"artifact_id", "snapshot", "frequency_hz", "frequency_index", "theta_count", "phi_deg", "observable",
                   "display_scale", "floor_db", "polarization_basis", "polarization_convention", "normalization_basis",
-                  "normalization_peak_v_s_per_m", "coordinate_unit", "color_range", "color_unit", "metrics"})
+                  "normalization_peak_v_s_per_m", "coordinate_unit", "color_range", "color_unit", "metrics",
+                  "target_observation"})
             {
                 if (page.value(key, Json(nullptr)) != m_data.value(key, Json(nullptr)))
                 {

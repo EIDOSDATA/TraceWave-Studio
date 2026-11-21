@@ -48,6 +48,7 @@ def _identity(value):
 def _describe(value):
     """! @brief 실제 입력 개정/조건과 당시 평가를 작은 조회 DTO로 구분한다."""
     from rfad.application.result_export import available_formats
+    from rfad.application.radiation_target_result import describe as radiation_targets
 
     current = value["current_document"]["revision_id"]
     source_revision = value["source_revision"]["id"]
@@ -63,6 +64,7 @@ def _describe(value):
         "source_time": value.get("source_time"), "source_time_kind": value.get("source_time_kind"),
         "available_views": {"network": True, "smith": value["dataset"]["parameter_kind"] == "S",
                             "metrics": radiation, "radiation": radiation, "field": field},
+        "radiation_targets": radiation_targets(value["source_document"]) if radiation else [],
         "available_exports": available_formats(value),
         "view_reasons": {"physics": "계산 또는 가져온 자료의 표시이며 독립 물리 검증은 별도입니다."},
         "source_refs": deepcopy(value["dataset"]["source_refs"]),

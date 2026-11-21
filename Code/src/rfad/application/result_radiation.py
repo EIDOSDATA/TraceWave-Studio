@@ -70,7 +70,7 @@ def _options(data):
 
 def radiation(service, params):
     """! @brief 원본 전계, 편파와 투영을 크기 제한 페이지로 반환하며 계산을 실행하지 않는다."""
-    data = request(params, {"frequency_index", "theta_offset", "theta_limit", "observable", "display_scale",
+    data = request(params, {"frequency_index", "theta_offset", "theta_limit", "observable", "display_scale", "target_id",
                             "floor_db", "polarization_basis"})
     frequency, offset, limit, observable, scale, basis, floor = _options(data)
     resolved = resolve(service, params["context"], data["source"], data["pin"])
@@ -102,6 +102,11 @@ def radiation(service, params):
               "polarization_convention": deepcopy(CONVENTION), "e_theta": [], "e_phi": [], "normalized_power": [],
               "directivity": [], "polarization": [], "projection": [],
               "interpolation": "none", "mesh_interpolation": "display_only"}
+    if "target_id" in data:
+        from rfad.application.radiation_target_result import result_for
+
+        require_uuid(data["target_id"])
+        result["target_observation"] = result_for(resolved, value, data["target_id"])
     if metric is not None:
         result["color_range"] = [peak_db + floor, peak_db] if scale == "db_amplitude" else [0, peak_quantity]
         result["color_unit"] = "dBi" if scale == "db_amplitude" else "1"

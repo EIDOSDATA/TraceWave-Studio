@@ -3,6 +3,7 @@
 from copy import deepcopy
 
 from rfad.application.editor import _display_quantity
+from rfad.domain.target_observation import COMPONENTS, FIELDS as OBSERVATION_FIELDS
 from rfad.domain.targets import METRICS
 from rfad.domain.units import Quantity
 
@@ -86,6 +87,19 @@ def fields_for(document, target):
     fields.append(field("port_id", "평가 포트", target["port_id"] or "", editor="choice", choices=ports))
     fields.append(field("reference_plane", "목표 평가 기준면", target.get("reference_plane", ""),
                         help_text="빈칸은 미정입니다. 입력하면 평가할 복소 자료의 기준면 이름과 정확히 일치해야 합니다."))
+    point = target.get("observation", {})
+    labels = {"frequency": "관측 주파수 (예: 2.45 GHz)", "theta_deg": "관측 theta (deg, +Z 기준)",
+              "phi_deg": "관측 phi (deg, +X에서 +Y 방향)", "minimum_gain_dbi": "관측 방향 최소 실현 이득 (dBi)"}
+    for key in OBSERVATION_FIELDS:
+        value = point.get(key)
+        if key == "polarization":
+            item = field("observation." + key, "관측 편파", value or "", editor="choice",
+                         choices=[("", "미정"), *COMPONENTS.items()])
+        else:
+            if key == "frequency" and value is not None:
+                value = " ".join(_display_quantity(Quantity(**value))[:2])
+            item = field("observation." + key, labels[key], "" if value is None else str(value))
+        fields.append({**item, "advanced": True})
     sampling = target["band"]["sampling"]
     count = sampling.get("count")
     fields.extend([

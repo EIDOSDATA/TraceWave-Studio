@@ -5,6 +5,7 @@ import math
 
 from rfad.application.target_editor_fields import FREQUENCY_UNITS, QUANTITIES, explicit_lines, fields_for, quantity_at
 from rfad.domain.errors import ProjectError
+from rfad.domain.target_observation import FIELDS as OBSERVATION_FIELDS
 from rfad.domain.targets import METRICS, MAX_SAMPLES, validate_reference_plane
 from rfad.domain.units import Quantity, QuantityError
 
@@ -132,6 +133,39 @@ def criterion(original, metric, values, changed, reason):
                       "source_refs": sources(old_sources, reason)}}
 
 
+def observation(result, values, changed, reason):
+    """! @brief 수정한 관측 입력만 해석하고 빈 입력은 미정으로 남긴다."""
+    current = result.get("observation", dict.fromkeys(OBSERVATION_FIELDS))
+    for key in OBSERVATION_FIELDS:
+        path = "observation." + key
+        if path not in changed:
+            continue
+        text = values[path]
+        if not text:
+            current[key] = None
+        elif key == "polarization":
+            current[key] = text
+        elif key == "frequency":
+            pieces = text.split()
+            if len(pieces) != 2 or pieces[1] not in FREQUENCY_UNITS:
+                fail("주파수는 숫자와 Hz/kHz/MHz/GHz 단위를 입력하십시오.", path, "E_UNIT")
+            prior = current[key]
+            refs = [] if prior is None else prior["source_refs"]
+            try:
+                converted = Quantity.from_value(number(pieces[0], path), pieces[1], source_refs=sources(refs, reason)).to_dict()
+                if prior is not None and prior["value_si"] == converted["value_si"]:
+                    converted = {**prior, "display_unit": pieces[1]}
+                current[key] = converted
+            except QuantityError as error:
+                fail(str(error), path, "E_UNIT")
+        else:
+            current[key] = number(text, path)
+    if any(value is not None for value in current.values()):
+        result["observation"] = current
+    else:
+        result.pop("observation", None)
+
+
 def edited_target(document, original, changes, reason):
     """! @brief 읽기 전용 필드 변조를 차단하고 명시한 변경만 원본 복사본에 적용한다."""
     descriptors = {item["key"]: item for item in fields_for(document, original)}
@@ -164,6 +198,8 @@ def edited_target(document, original, changes, reason):
             result["reference_plane"] = validate_reference_plane(values["reference_plane"], "reference_plane")
         else:
             result.pop("reference_plane", None)
+    if any(key.startswith("observation.") for key in changed):
+        observation(result, values, changed, reason)
     result["band"]["sampling"] = sampling(original["band"]["sampling"], values, changed, reason)
     old_criteria = {item["metric"]: item for item in original["criteria"]}
     replaced = {metric: criterion(old_criteria.get(metric), metric, values, changed, reason) for metric in METRICS}

@@ -3,9 +3,11 @@
 #include "physical_setup_dialog.h"
 #include "result_workspace.h"
 #include "result_compare_view.h"
+#include "result_radiation_view.h"
 #include "setup_smoke_support.h"
 #include "studio_notebook.h"
 #include <wx/stattext.h>
+#include <wx/choice.h>
 
 /** @brief 실제 PCB 계산 두 건을 저장된 원본에서 다시 선택하여 비교한다. */
 void StudioSmokeDriver::InstallationSmokeTick()
@@ -283,8 +285,33 @@ void StudioSmokeDriver::InstallationSmokeTick()
                 return;
             }
             m_setupChecks.push_back("native_installation_reopen_s11_efficiency_radiation");
-            m_setupStage = 16;
             dialog->Destroy();
+            if (!workspace.m_description.value("radiation_targets", Json::array()).empty())
+            {
+                m_setupStage = 18;
+                m_frame.m_views->SetSelection(12);
+                return;
+            }
+            m_setupStage = 16;
+            FinishSmoke(true, "");
+        }
+        else if (m_setupStage == 18 && workspace.m_radiation->m_data.is_object())
+        {
+            CanvasAssert(workspace.m_radiation->m_target->GetCount() == 2, "계산 개정의 방사 목표를 나열하지 못했습니다.");
+            m_setupStage = 19;
+            workspace.m_radiation->m_target->SetSelection(1);
+            wxCommandEvent selected(wxEVT_CHOICE, workspace.m_radiation->m_target->GetId());
+            workspace.m_radiation->m_target->GetEventHandler()->ProcessEvent(selected);
+        }
+        else if (m_setupStage == 19 && workspace.m_radiation->m_data.contains("target_observation"))
+        {
+            const auto& observation = workspace.m_radiation->m_data.at("target_observation");
+            CanvasAssert(observation.at("status") == "conditional" && observation.at("observation").at("polarization") == "theta" &&
+                             observation.at("gain_dbi").is_number() && !observation.at("physics_validated").get<bool>() &&
+                             workspace.m_radiation->m_observation->IsShown() &&
+                             workspace.m_radiation->m_observation->GetLabel().Contains(Display("표본 통과")),
+                         observation.dump());
+            m_setupChecks.push_back("native_snapshot_target_direction_and_polarization_preserved");
             FinishSmoke(true, "");
         }
     }

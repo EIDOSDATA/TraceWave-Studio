@@ -13,8 +13,10 @@ from rfad.application.result_radiation import radiation
 from rfad.application.result_metrics import metrics
 from rfad.domain.errors import ProjectError
 from rfad.domain.radiation_polarization import polarization, projection
+from rfad.domain.units import Quantity
 from test_pcb_radiation import radiation_plan, field_result
 from test_pcb_power import power_plan, synthetic_result
+from test_targets import target_input
 
 
 def fixture(*, step=30, power=False, negative_loss=False):
@@ -108,6 +110,36 @@ class PolarizationTests(unittest.TestCase):
 
 class ResultRadiationTests(unittest.TestCase):
     """! @brief 읽기 전용 서비스의 원본 재조립과 미기록/변조 경계를 검사한다."""
+
+    def test_target_observation_uses_exact_recorded_direction_and_component(self):
+        """! @brief 동일 선형장에서 RHCP는 -3 dB이고 직교 성분과 미기록 각도를 구분한다."""
+        service, params, resolved, _, original = fixture()
+        plan = resolved["normalized"]["provenance"]["analysis_plan"]
+        frequency = original["recording"]["frequency_hz"][0]
+        target = target_input()
+        target.update(revision_id=plan["snapshot"]["revision_id"], port_id=plan["case"]["port"]["id"],
+                      reference_plane="시험 기준면", reference_impedance=Quantity.from_value(50, "ohm").to_dict(),
+                      observation={"frequency": Quantity.from_value(frequency, "Hz").to_dict(), "theta_deg": 0,
+                                   "phi_deg": 0, "polarization": "rhcp", "minimum_gain_dbi": -100.0})
+        resolved["source_document"] = {"targets": [target]}
+        resolved["normalized"]["normalization"] = {"reference_plane": "시험 기준면", "reference_impedance_ohm": 50.0}
+        params["input"]["target_id"] = target["id"]
+        row = original["frequencies"][0]
+        self.assertEqual(row["e_phi"][0][0], [0.0, 0.0])
+        with patch("rfad.application.result_radiation.resolve", return_value=resolved):
+            observation = radiation(service, params)["target_observation"]
+            expected = row["metrics"]["realized_gain_dbi"] + 10 * math.log10(row["normalized_power"][0][0] / 2)
+            self.assertAlmostEqual(observation["gain_dbi"], expected)
+            self.assertEqual(observation["status"], "conditional")
+            self.assertEqual(observation["source_refs"], target["source_refs"])
+            target["observation"]["polarization"] = "phi"
+            observation = radiation(service, params)["target_observation"]
+            self.assertEqual((observation["value_state"], observation["status"]), ("negative_infinity", "fail"))
+            target["observation"]["phi_deg"] = 1
+            self.assertEqual(radiation(service, params)["target_observation"]["value_state"], "unrecorded")
+            target["observation"]["phi_deg"] = 0
+            target["reference_plane"] = "다른 기준면"
+            self.assertEqual(radiation(service, params)["target_observation"]["status"], "not_evaluated")
 
     def test_pages_preserve_complex_original_and_unknown_conditions(self):
         """! @brief 5도 원문을 전송 상한 안에서 재조립하며 제조 조건을 채우지 않는다."""

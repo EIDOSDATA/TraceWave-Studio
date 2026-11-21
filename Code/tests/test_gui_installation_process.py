@@ -12,9 +12,10 @@ import xml.etree.ElementTree as ET
 from rfad.application.projects import ProjectService
 from rfad.domain.physical_setup import setup
 from test_cad_worker_process import register_fixture
-from test_pcb_environment import ENV_SETTINGS, add_case, board_fixture, ground_fixture
+from test_pcb_environment import ENV_SETTINGS, add_case, board_fixture, ground_fixture, quantity
 from test_pcb_surfaces import add_mask
 from test_physical_setup import load
+from test_targets import set_target, target_input
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,15 +59,22 @@ class GuiInstallationTests(unittest.TestCase):
             document = board_fixture()
             unknown = add_mask(document)
             unknown.update(name="납품 마스크 참조 (미정)", material_id=None, include_in_em=False)
+            target = target_input(start=8, end=12)
+            target.update(port_id=document["ports"][0]["id"], reference_plane=document["ports"][0]["reference_plane"],
+                          reference_impedance=quantity(50, "ohm"),
+                          observation={"frequency": quantity(10, "GHz"), "theta_deg": 90, "phi_deg": 0,
+                                       "polarization": "theta", "minimum_gain_dbi": -100})
+            document = set_target(document, target)[0]
             (directory / "installation-part.json").write_text('{"kind":"solder_mask"}', encoding="utf-8")
             with ProjectService(workspace, auto_run=False) as service:
                 original, _ = register_fixture(service, document)
             evidence = self.run_gui(directory, workspace)
+            self.assertIn("native_snapshot_target_direction_and_polarization_preserved", evidence["setup_checks"])
             with ProjectService(workspace, auto_run=False) as service:
                 stored = load(service, original)
                 self.assertEqual(stored["revision_id"], evidence["saved_revision"])
                 self.assertIn(unknown, setup(stored)["surfaces"])
-                for key in ("board", "stackup", "geometry", "ports", "materials", "source_references", "measurement_sets"):
+                for key in ("board", "stackup", "geometry", "ports", "materials", "source_references", "measurement_sets", "targets"):
                     self.assertEqual(original[key], stored[key])
                 state = service.journal.read()
                 verified = {}

@@ -41,6 +41,9 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
     m_observable = new wxChoice(this, wxID_ANY);
     m_scale = new wxChoice(this, wxID_ANY);
     m_basis = new wxChoice(this, wxID_ANY);
+    m_target = new wxChoice(this, wxID_ANY);
+    m_target->SetName("radiation.snapshot_target");
+    m_target->SetToolTip(Display("계산에 사용한 원본 개정의 방사 관측 목표"));
     for (const auto& label : ObservableLabels)
     {
         m_observable->Append(Display(label));
@@ -54,7 +57,7 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
     m_observable->SetSelection(0);
     m_scale->SetSelection(0);
     m_basis->SetSelection(0);
-    for (wxChoice* choice : {m_frequency, m_observable, m_scale, m_basis})
+    for (wxChoice* choice : {m_frequency, m_observable, m_scale, m_basis, m_target})
     {
         tools->Add(choice, 0, wxALL, FromDIP(4));
         choice->Bind(wxEVT_CHOICE,
@@ -105,6 +108,10 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
     layout->Add(tools, 0, wxEXPAND);
     m_status = new wxStaticText(this, wxID_ANY, Display("봉인된 NF2FF 방사 기록을 선택하세요."));
     layout->Add(m_status, 0, wxEXPAND | wxALL, FromDIP(8));
+    m_observation = new wxStaticText(this, wxID_ANY, wxEmptyString);
+    m_observation->SetMinSize(wxSize(1, -1));
+    m_observation->Hide();
+    layout->Add(m_observation, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
     m_tabs = new StudioNotebook(this);
     auto* cut = new wxPanel(m_tabs);
     auto* cutLayout = new wxBoxSizer(wxVERTICAL);
@@ -235,11 +242,17 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
 }
 Json RadiationResultView::Options() const
 {
-    return {{"frequency_index", std::max(0, m_frequency->GetSelection())},
+    Json options{{"frequency_index", std::max(0, m_frequency->GetSelection())},
             {"observable", Observables.at(static_cast<std::size_t>(m_observable->GetSelection()))},
             {"display_scale", m_scale->GetSelection() == 1 ? "db_amplitude" : "linear_amplitude"},
             {"floor_db", m_floor->GetValue()},
             {"polarization_basis", Bases.at(static_cast<std::size_t>(m_basis->GetSelection()))}};
+    const int selected = m_target->GetSelection();
+    if (selected > 0 && m_description.is_object())
+    {
+        options["target_id"] = m_description.at("radiation_targets").at(selected - 1).at("id");
+    }
+    return options;
 }
 void RadiationResultView::SetDescription(const Json& description)
 {
@@ -250,6 +263,13 @@ void RadiationResultView::SetDescription(const Json& description)
     m_observable->SetSelection(0);
     m_scale->SetSelection(0);
     m_basis->SetSelection(0);
+    m_target->Append(Display("방사 관측 목표 선택"));
+    for (const auto& target : description.value("radiation_targets", Json::array()))
+    {
+        m_target->Append(Display(target.at("name").get<std::string>()));
+    }
+    m_target->SetSelection(0);
+    m_target->Enable(m_target->GetCount() > 1);
     m_floor->SetValue(-40);
 }
 void RadiationResultView::SetPattern(const Json& data)
@@ -294,6 +314,7 @@ void RadiationResultView::SetPattern(const Json& data)
                           "\nLHCP = " + ResultUi::Text(convention.value("lh_formula", Json(nullptr)));
     m_convention->SetLabel(Display(details));
     m_convention->Wrap(std::max(FromDIP(220), GetClientSize().x - FromDIP(32)));
+    PresentObservation(data.value("target_observation", Json(nullptr)));
     SetBusy(false, "실제 기록 표본 / 총장 peak 정규화. 표면 연결은 표시 전용이며 추가 RF 표본이 아닙니다.");
     if (!m_canvas->Ready())
     {
@@ -303,6 +324,29 @@ void RadiationResultView::SetPattern(const Json& data)
     m_loading = false;
     Layout();
     FitInside();
+}
+
+/** @brief 원본 개정의 목표와 정확한 기록 표본의 관측 결과를 표시한다. */
+void RadiationResultView::PresentObservation(const Json& observation)
+{
+    m_observation->Show(observation.is_object());
+    if (!observation.is_object())
+    {
+        return;
+    }
+    const Json& point = observation.at("observation");
+    const auto frequency = point.at("frequency");
+    const std::string status = observation.at("status").get<std::string>();
+    const std::string decision = status == "conditional" ? "표본 통과" : status == "fail" ? "표본 미달" :
+        status == "recorded" ? "한계 미정" : "미평가";
+    const std::string gain = observation.at("value_state") == "negative_infinity" ? "-Inf dBi" :
+        observation.at("gain_dbi").is_null() ? "미기록" : ResultUi::Number(observation.at("gain_dbi")) + " dBi";
+    m_observation->SetLabel(Display(observation.at("name").get<std::string>() + " / " +
+        (frequency.is_null() ? "주파수 미정" : StudioFrequency::WithUnit(frequency.at("value_si"))) +
+        " / theta " + ResultUi::Number(point.at("theta_deg")) + " deg / phi " +
+        ResultUi::Number(point.at("phi_deg")) + " deg / " + ResultUi::Text(point.at("polarization")) +
+        "\n실현 이득 " + gain + " / " + decision + " / " + observation.at("reason").get<std::string>()));
+    m_observation->Wrap(std::max(FromDIP(220), GetClientSize().x - FromDIP(32)));
 }
 void RadiationResultView::PresentSamples()
 {
@@ -361,6 +405,7 @@ void RadiationResultView::Request()
     m_samples->DeleteAllItems();
     m_colour->Refresh();
     m_metrics->SetLabel(wxEmptyString);
+    m_observation->Hide();
     SetBusy(true, "선택한 주파수와 표시 조건의 원본 표본 조회 중");
     if (onRequest)
     {
@@ -385,6 +430,7 @@ void RadiationResultView::SetError(const std::string& message)
     m_canvas->Clear();
     m_slice->Clear();
     m_metrics->SetLabel(wxEmptyString);
+    m_observation->Hide();
     m_colour->Refresh();
     SetBusy(false, message);
 }
@@ -395,11 +441,14 @@ void RadiationResultView::Clear(const std::string& reason)
     m_description = nullptr;
     m_data = nullptr;
     m_frequency->Clear();
+    m_target->Clear();
+    m_target->Disable();
     m_phi->Clear();
     m_samples->DeleteAllItems();
     m_canvas->Clear();
     m_slice->Clear();
     m_metrics->SetLabel(wxEmptyString);
+    m_observation->Hide();
     m_convention->SetLabel(Display("편파 규약은 원본을 선택한 뒤 표시합니다."));
     m_colour->Refresh();
     SetBusy(false, reason);

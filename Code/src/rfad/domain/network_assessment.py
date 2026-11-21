@@ -6,6 +6,7 @@ import math
 from rfad.application.canonical import canonical_hash
 from rfad.domain.design import _fields, _strings, _uuid
 from rfad.domain.network_data import complex_value, fail, finite, text, validate_dataset
+from rfad.domain.target_observation import validate as validate_observation
 from rfad.domain.targets import _band, _criteria, _quantity, validate_target_fields
 
 
@@ -37,6 +38,7 @@ def _target(target):
     if target["port_id"] is not None:
         _uuid(target["port_id"], "target.port_id")
     _band({}, target["band"], "target.band")
+    validate_observation(target, "target.observation")
     _criteria(target["criteria"], "target.criteria")
     _quantity({}, target["reference_impedance"], "impedance", "target.reference_impedance", missing=True)
     _strings(target["source_refs"], "target.source_refs")

@@ -9,6 +9,7 @@ import math
 from uuid import uuid4
 
 from rfad.domain.design import _fields, _fail, _strings, _text, _uuid, resolve_scalar
+from rfad.domain.target_observation import validate as validate_observation
 
 
 TARGET_PROFILE = "rfad.target/0.1"
@@ -22,7 +23,7 @@ METRICS = {
     "fractional_bandwidth": {"unit": "1", "operator": "ge", "minimum": 0.0, "maximum": 2.0},
 }
 _TARGET_FIELDS = {"id", "revision_id", "name", "physical_mode", "band", "port_id", "reference_impedance", "criteria", "source_refs"}
-_TARGET_OPTIONAL_FIELDS = {"constraints", "reference_plane"}
+_TARGET_OPTIONAL_FIELDS = {"constraints", "reference_plane", "observation"}
 _NUMERIC_STATUSES = {"user_entered", "source_default", "estimated"}
 
 
@@ -156,6 +157,7 @@ def validate_targets(document: dict) -> None:
         if target["physical_mode"] != "radiating_rf":
             _fail("E_UNSUPPORTED", "현재 목표 저장은 radiating_rf 모드만 지원합니다.", field + ".physical_mode")
         _band(document, target["band"], field + ".band")
+        validate_observation(target, field + ".observation")
         port = target["port_id"]
         if port is not None:
             _uuid(port, field + ".port_id")
