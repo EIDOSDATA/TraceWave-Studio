@@ -1,0 +1,57 @@
+{
+  "schema": "rfad.stage12.windows-lazy-workspace-ux-and-recovery/0.1",
+  "date_kst": "2026-11-21",
+  "release_executable_sha256": "54d20e56cd26f219ef2055f5f7a775bc8ade499c2a8bded109e1c69e57f63ff0",
+  "desktop": [
+    2560,
+    1600
+  ],
+  "dpi": 144,
+  "rename": {
+    "open": "F2",
+    "apply": "Enter",
+    "save": "Ctrl+S",
+    "seen_in_reopened_project_tree": true,
+    "saved_revision": "61090f08-db4a-4bd1-9533-82055e908744",
+    "name": "한글 이름 재검증",
+    "preserved_extension": {
+      "manufacturing_condition": null,
+      "measurement_condition": null,
+      "source_ref": "직접 입력 출처"
+    },
+    "geometry_equal_except_name": true
+  },
+  "workspace_focus": [
+    "F6 -> 프로젝트 탐색",
+    "Shift+F6 -> 설계",
+    "Right -> 해석",
+    "Right -> 결과",
+    "Right -> 비교",
+    "Right -> 출력",
+    "Home -> 설계"
+  ],
+  "accessibility": {
+    "literal_unicode_verified": true,
+    "composition_observed": false,
+    "osk_higher_integrity_reported": true,
+    "post_attempt_latin_key": "g",
+    "osk_restored_off": true,
+    "narrator_audio_observed": false,
+    "mixed_monitor_dpi_observed": false
+  },
+  "recovery_regression": {
+    "unique_passed": 40,
+    "first_run_passed": 39,
+    "first_run_errors": 1,
+    "first_error": "corruption test artifact directory missing",
+    "repeated_after_creating_artifact_directory": 1,
+    "native_gui_passed": 5,
+    "corruption_rejected": true,
+    "corrupted_source_restored_and_reopened": true,
+    "snapshot_preserved": true,
+    "real_process_crash": true,
+    "injected_disk_full": true,
+    "physical_power_loss": false,
+    "windows_volume_exhaustion": false
+  }
+}
