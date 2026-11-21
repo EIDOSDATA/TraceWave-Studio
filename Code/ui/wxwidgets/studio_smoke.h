@@ -149,6 +149,8 @@ private:
     void InstallationSmokeTick();
     /** @brief 이름 오류 복구와 검토 무효화, 원자 편집 및 서비스 재시작을 실제 폼으로 검사한다. */
     void PrecisionEditorSmokeTick();
+    void PrecisionAntennaSmokeTick();
+    Json m_precisionAntenna;
     void PrecisionPlanarSmokeTick();
     std::string m_precisionId;
     Json m_precisionBeforeShapes;

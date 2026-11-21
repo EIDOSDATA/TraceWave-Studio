@@ -55,6 +55,8 @@ public:
     std::function<void(const std::vector<std::string>&)> onSelectionCandidates;
 
 private:
+    friend class StudioSmokeDriver;
+    bool ClickTopPointForSmoke(double x, double y);
     struct Impl;
     std::unique_ptr<Impl> m_impl;
 };

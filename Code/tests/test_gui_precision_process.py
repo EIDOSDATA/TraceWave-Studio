@@ -19,15 +19,92 @@ from rfad.domain.project import validate_project
 from rfad.domain.units import Quantity
 from test_cad_worker_process import register_fixture
 from test_design_rules import scenario
+from test_pcb_ifa import ifa_document
+from test_pcb_solver import fixture_document
 
 
 ROOT = Path(__file__).resolve().parents[1]
 GUI = os.environ.get("RFAD_GUI_EXE", "")
+CAD = os.environ.get("RFAD_CAD_PYTHON", "")
 
 
 @unittest.skipUnless(sys.platform == "win32" and GUI, "RFAD_GUI_EXE로 Windows GUI를 지정합니다.")
 class GuiPrecisionTests(unittest.TestCase):
     """! @brief GUI 후보 적용을 재시작한 독립 서비스의 저장 원본과 비교한다."""
+
+    @unittest.skipUnless(CAD, "원호 3D 선택은 OCCT 환경이 필요합니다.")
+    def test_arc_precision_and_native_view_selection(self):
+        """! @brief 원형 기판의 연결 원호 폭을 편집하고 다시 열린 원본을 확인한다."""
+        self.verify_antenna_edit("arc")
+
+    @unittest.skipUnless(CAD, "IFA 3D 선택은 OCCT 환경이 필요합니다.")
+    def test_ifa_precision_and_native_view_selection(self):
+        """! @brief 접지와 단락이 있는 IFA의 길이와 병합 3D 바디의 원본 선택을 확인한다."""
+        self.verify_antenna_edit("ifa")
+
+    def verify_antenna_edit(self, kind):
+        """! @brief 같은 객체를 2D, native 트리, OCCT/OpenGL 및 속성에서 선택한다."""
+        arc = kind == "arc"
+        document = fixture_document(circle=True, arc=True) if arc else ifa_document()
+        subject = next(row for row in document["geometry"] if (row["kind"] == "arc_path" if arc else row["role"] == "radiator"))
+        other = next(row for row in document["geometry"] if row["role"] == ("ground" if arc else "short"))
+        subject["name"] = "시험 원호" if arc else "시험 IFA 방사선"
+        if arc:
+            subject["width"]["source_refs"] = ["기존 사용자 원호 선폭"]
+        else:
+            subject["end"][0]["source_refs"] = ["기존 사용자 IFA 끝점"]
+        document["extensions"]["test.acquisition"] = {
+            "source_refs": ["검증용 명시 보드와 급전"], "manufacturing_condition": None, "measurement_condition": None}
+        fixture = {"id": subject["id"], "other_id": other["id"], "label": subject["name"],
+                   "point_mm": [5.12132034356, 2.12132034356] if arc else [17, 57],
+                   "dimension": "arc.width" if arc else "line.length", "value": "1.4" if arc else "27",
+                   "merged": not arc}
+        validate_project(document)
+        with TemporaryDirectory(prefix=f"TraceWave GUI {kind} ") as temporary:
+            directory = Path(temporary)
+            workspace = directory / "작업 영역"
+            with ProjectService(workspace, auto_run=False) as service:
+                original, snapshot = register_fixture(service, document)
+            (workspace / "precision-antenna.json").write_text(json.dumps(fixture, ensure_ascii=False), encoding="utf-8")
+            report_path = directory / "원호와 평면 IFA 정밀 검증.json"
+            startup = subprocess.STARTUPINFO()
+            startup.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startup.wShowWindow = 1
+            process = subprocess.run([
+                str(Path(GUI).resolve()), "--python", sys.executable, "--source", str(ROOT / "src"),
+                "--workspace", str(workspace), "--open-project", "projects/CAD 한글 교환 검증",
+                "--cad-python", str(Path(CAD).resolve()), "--precision-editor-smoke-test", "--smoke-report", str(report_path)],
+                stdin=subprocess.DEVNULL, capture_output=True, startupinfo=startup, timeout=215, check=False)
+            self.assertTrue(report_path.is_file(), (process.returncode, process.stderr))
+            report = json.loads(report_path.read_bytes())
+            if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
+                destination = Path(output) / f"precision-{kind}.json"
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_bytes(report_path.read_bytes())
+            self.assertEqual(process.returncode, 0, report)
+            self.assertEqual(set(report["setup_checks"]), {
+                "antenna_dimension_reject_apply_undo_redo", "antenna_current_and_stale_mesh_selection",
+                "antenna_saved_reopen_selection_and_geometry"}, report)
+            with ProjectService(workspace, auto_run=False) as service:
+                journal = service.journal.read()
+                record = journal["projects"][original["project_id"]]
+                _, saved = service.repository.read(record["saved"])
+                self.assertEqual(saved["revision_id"], report["saved_revision"])
+                for key in ("board", "materials", "stackup", "nets", "ports", "targets"):
+                    self.assertEqual(saved[key], original[key], key)
+                self.assertEqual([row for row in saved["geometry"] if row["id"] != subject["id"]],
+                                 [row for row in original["geometry"] if row["id"] != subject["id"]])
+                current = next(row for row in saved["geometry"] if row["id"] == subject["id"])
+                if arc:
+                    self.assertAlmostEqual(Quantity(**current["width"]).as_unit("mm"), 1.4)
+                    self.assertEqual(current["width"]["source_refs"], subject["width"]["source_refs"])
+                else:
+                    self.assertAlmostEqual(Quantity(**current["end"][0]).as_unit("mm"), 32)
+                    self.assertEqual(current["end"][0]["source_refs"], subject["end"][0]["source_refs"])
+                self.assertEqual(saved["extensions"]["test.acquisition"], original["extensions"]["test.acquisition"])
+                self.assertEqual(hashlib.sha256((workspace / snapshot["artifact"]["uri"]).read_bytes()).hexdigest(),
+                                 snapshot["artifact"]["sha256"])
+                validate_precision_origins(saved)
 
     def test_rename_precision_recovery_atomic_history_and_source_preservation(self):
         """! @brief 중복 이름/null 후보/검토 무효화/원자 이력과 미정 보존을 한 작업으로 확인한다."""

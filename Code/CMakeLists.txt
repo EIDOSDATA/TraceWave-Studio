@@ -229,6 +229,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_smoke_rules.cpp
     ui/wxwidgets/studio_smoke_setup.cpp
     ui/wxwidgets/studio_smoke_precision_editor.cpp
+    ui/wxwidgets/studio_smoke_precision_antenna.cpp
     ui/wxwidgets/studio_smoke_precision_planar.cpp
     ui/wxwidgets/studio_smoke_targets.cpp
     ui/wxwidgets/studio_smoke_templates.cpp

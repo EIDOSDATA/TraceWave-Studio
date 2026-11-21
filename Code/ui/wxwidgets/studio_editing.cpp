@@ -59,7 +59,7 @@ void StudioFrame::RefreshScene(std::function<void()> completed)
 {
     if (Studio::MatchesCanvas(m_scene, m_project, m_revision))
     {
-        m_canvas->SetSelection(m_selection.value("kind", "") == "geometry" ? m_selection.value("id", "") : "");
+        m_canvas->SetSelection(m_selection.value("id", ""));
         RefreshDimensions();
         completed();
         return;
@@ -106,7 +106,7 @@ void StudioFrame::RefreshScene(std::function<void()> completed)
         m_canvas->SetDrawingLayer(m_activeLayer);
         m_scene = std::move(result);
         RefreshLayerList();
-        m_canvas->SetSelection(m_selection.value("kind", "") == "geometry" ? m_selection.value("id", "") : "");
+        m_canvas->SetSelection(m_selection.value("id", ""));
         if (first)
         {
             m_canvas->FitView();

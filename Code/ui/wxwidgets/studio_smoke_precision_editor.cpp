@@ -6,27 +6,23 @@
 #include "studio_shell.h"
 #include <wx/srchctrl.h>
 
-namespace
-{
-/** @brief 서비스가 반환한 작업 식별자로 native 선택 이벤트를 발생시킨다. */
-int FindRow(const Json& rows, const std::string& field, const std::string& value)
-{
-    for (std::size_t index = 0; index < rows.size(); ++index)
-    {
-        if (rows.at(index).value(field, "") == value)
-        {
-            return static_cast<int>(index);
-        }
-    }
-    throw std::runtime_error("정밀 편집 시험 항목이 없습니다: " + value);
-}
-}
+using SetupSmoke::FindRow;
 
 void StudioSmokeDriver::PrecisionEditorSmokeTick()
 {
     if (m_frame.m_options.precisionPlanarSmoke)
     {
         PrecisionPlanarSmokeTick();
+        return;
+    }
+    if (m_precisionAntenna.is_null())
+    {
+        std::ifstream file(std::filesystem::path(m_frame.m_options.workspace.ToStdWstring()) / "precision-antenna.json");
+        m_precisionAntenna = file ? Json::parse(file) : Json::object();
+    }
+    if (!m_precisionAntenna.empty())
+    {
+        PrecisionAntennaSmokeTick();
         return;
     }
     auto* rename = dynamic_cast<ObjectRenameDialog*>(m_frame.m_setupDialog);

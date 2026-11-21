@@ -157,6 +157,8 @@ void StudioFrame::BindCad()
                 return;
             }
         }
+        m_modelView->SetSelection(m_selection.value("id", ""));
+        m_modelHint->SetLabel(Display("선택한 3D 바디에 대응하는 현재 편집 객체가 없습니다."));
     };
 }
 

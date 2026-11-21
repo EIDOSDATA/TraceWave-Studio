@@ -233,7 +233,8 @@ void StudioSmokeDriver::FeaturesSmokeTick()
     {
         CanvasAssert(m_frame.m_revision != m_featuresOriginalRevision &&
                          m_frame.m_editor.at("history").at("undo_count") == 1 &&
-                         m_frame.m_selection.at("kind") == "hole" && m_frame.m_selection.at("id") == m_featuresHoleId,
+                         m_frame.m_selection.at("kind") == "hole" && m_frame.m_selection.at("id") == m_featuresHoleId &&
+                         m_frame.m_canvas->Selection() == m_featuresHoleId,
                      "한 명령의 PCB 적용/typed 선택이 유지되지 않습니다.");
         m_setupChecks.push_back("features_atomic_apply_and_typed_selection");
         m_setupStage = 7;

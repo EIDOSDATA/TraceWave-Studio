@@ -10,6 +10,20 @@
 
 namespace SetupSmoke
 {
+/** @brief 서비스가 반환한 목록에서 안정 식별자로 시험 입력 행을 찾는다. */
+template <typename Rows>
+int FindRow(const Rows& rows, const std::string& field, const std::string& value)
+{
+    for (std::size_t index = 0; index < rows.size(); ++index)
+    {
+        if (rows.at(index).value(field, "") == value)
+        {
+            return static_cast<int>(index);
+        }
+    }
+    throw std::runtime_error("시험 목록에 항목이 없습니다: " + value);
+}
+
 /** @brief 실제 확인 대화상자의 응답만 고정하고 제품의 초안 분기를 검사한다. */
 class DiscardHook final : public wxModalDialogHook
 {

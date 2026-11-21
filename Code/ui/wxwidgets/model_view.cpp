@@ -9,6 +9,7 @@
 #include <GL/gl.h>
 
 #include <chrono>
+#include <cmath>
 #include <future>
 #include <set>
 #include <utility>
@@ -489,25 +490,46 @@ private:
             }
             m_selection = index >= 0 ? m_scene->bodies[static_cast<std::size_t>(index)].sources.front() : "";
             Refresh(false);
+            if (onHint)
+            {
+                onHint("3D 기하 보기 | 드래그: 회전, Shift/가운데 드래그: 이동, 휠: 확대, F: 전체 보기");
+            }
             if (onSelection)
             {
                 onSelection(m_selection);
             }
-            if (onHint)
-            {
-                const auto* body = index >= 0 ? &m_scene->bodies[static_cast<std::size_t>(index)] : nullptr;
-                if (body != nullptr && body->role == "conductor" && body->sources.size() > 1)
-                {
-                    onHint("여러 패턴이 합쳐진 형상입니다. 대표 패턴의 속성을 표시합니다. 개별 패턴은 왼쪽 목록에서 선택하세요.");
-                }
-                else
-                {
-                    onHint("3D 기하 보기 | 드래그: 회전, Shift/가운데 드래그: 이동, 휠: 확대, F: 전체 보기");
-                }
-            }
         }
     }
 
+public:
+    /** @brief 실제 상면 카메라에서 보드 좌표를 합성 마우스 입력으로 바꾼다. */
+    bool ClickTopPoint(double x, double y)
+    {
+        if (!m_scene || !IsShownOnScreen() || m_camera.pitch != 0.0 || m_camera.yaw != 0.0)
+        {
+            return false;
+        }
+        const wxSize size = GetClientSize();
+        const double unit = 2.0 * m_camera.HalfHeight(m_scene->radius) / std::max(1, size.y);
+        const wxPoint pixel(static_cast<int>(std::lround((x - m_scene->center.x + m_camera.panX) / unit + size.x / 2.0)),
+                            static_cast<int>(std::lround(size.y / 2.0 - (y - m_scene->center.y + m_camera.panY) / unit)));
+        if (!GetClientRect().Contains(pixel))
+        {
+            return false;
+        }
+        wxMouseEvent down(wxEVT_LEFT_DOWN);
+        down.SetEventObject(this);
+        down.SetPosition(pixel);
+        down.SetLeftDown(true);
+        GetEventHandler()->ProcessEvent(down);
+        wxMouseEvent up(wxEVT_LEFT_UP);
+        up.SetEventObject(this);
+        up.SetPosition(pixel);
+        GetEventHandler()->ProcessEvent(up);
+        return true;
+    }
+
+private:
     std::unique_ptr<wxGLContext> m_context;
     ModelVertexBuffer m_vertices;
     ModelVertexBuffer m_previewVertices;
@@ -739,6 +761,11 @@ ModelView::ModelView(wxWindow* parent) : wxPanel(parent), m_impl(std::make_uniqu
 }
 
 ModelView::~ModelView() = default;
+
+bool ModelView::ClickTopPointForSmoke(double x, double y)
+{
+    return m_impl->canvas && m_impl->canvas->ClickTopPoint(x, y);
+}
 
 void ModelView::SetDisplayMarker(std::function<void(wxWindow&)> marker)
 {
