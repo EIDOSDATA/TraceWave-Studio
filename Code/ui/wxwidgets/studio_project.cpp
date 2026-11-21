@@ -139,10 +139,30 @@ void StudioFrame::SaveProject()
             });
         return;
     }
+    /** @brief 미게시 저장 실패에서 마지막 저장 기준과 수동 재시도를 유지한다. */
+    const auto unpublished = [this](const Json& diagnostic)
+    {
+        const auto code = diagnostic.value("code", "");
+        const auto details = diagnostic.value("details", Json::object());
+        const bool needsFreeSpace = code == "E_RESOURCE" && details.contains("required_free_bytes") &&
+                                    details.contains("free_bytes");
+        if (!needsFreeSpace && !(code == "E_DISK" && details.value("committed", Json()) == false))
+        {
+            return false;
+        }
+        m_busy = false;
+        UpdateControls();
+        SetStatusText(Display("저장 실패"), 0);
+        Log(needsFreeSpace
+                ? "마지막 저장본과 현재 편집을 보존했습니다. 디스크 공간을 확보한 뒤 다시 저장하세요."
+                : "마지막 저장본과 현재 편집을 보존했습니다. 디스크 여유 공간과 쓰기 권한을 확인한 뒤 다시 저장하세요.");
+        m_smoke->OnSaveNotPublished();
+        return true;
+    };
     m_busy = true;
     UpdateControls();
     Send("project.save", Json{{"expected_revision", m_revision}}, true, Context(),
-         [this](const Json& task)
+         [this, unpublished](const Json& task)
          {
              WaitJob(task,
                      [this](const Json& result)
@@ -152,20 +172,18 @@ void StudioFrame::SaveProject()
                          Ready("현재 설계 버전을 저장했습니다.");
                          m_smoke->OnSaved();
                      },
-                     [this](const Json& diagnostic)
-                     {
-                         const auto details = diagnostic.value("details", Json::object());
-                         if (diagnostic.value("code", "") != "E_DISK" || details.value("committed", Json()) != false)
-                         {
-                             return false;
-                         }
-                         m_busy = false;
-                         UpdateControls();
-                         SetStatusText(Display("저장 실패"), 0);
-                         Log("마지막 저장본과 현재 편집을 보존했습니다. 디스크 여유 공간과 쓰기 권한을 확인한 뒤 다시 저장하세요.");
-                         m_smoke->OnSaveNotPublished();
-                         return true;
-                     });
+                     unpublished);
+         },
+         [this, unpublished](const Json& error)
+         {
+             for (const auto& diagnostic : error.value("data", Json::object()).value("diagnostics", Json::array()))
+             {
+                 if (unpublished(diagnostic))
+                 {
+                     return;
+                 }
+             }
+             Failure(error.value("message", std::string("저장 요청에 실패했습니다.")));
          });
 }
 

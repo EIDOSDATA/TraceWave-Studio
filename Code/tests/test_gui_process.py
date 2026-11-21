@@ -319,6 +319,60 @@ Journal._write_new = write
                 self.assertEqual(project["saved"], completed["captured"])
                 self.assertEqual(project["current"], project["saved"])
 
+    def test_windows_recovers_from_save_reserve_rejection_before_admission(self):
+        """! @brief 저장 요청 접수에 필요한 디스크 여유가 부족할 때 편집을 보존하고 수동 재시도한다."""
+        from rfad.application.projects import ProjectService
+
+        with TemporaryDirectory(prefix="rfad GUI 저장 준비 공간 ") as temporary:
+            directory = Path(temporary)
+            program = """
+import runpy
+from types import SimpleNamespace
+from unittest.mock import patch
+from rfad.application.projects import ProjectService
+from rfad.storage.journal import Journal
+
+admit = ProjectService._admit
+check_space = Journal._check_space
+first_save = True
+pending_check = False
+
+def arm_save(service, state, method, context, data):
+    global first_save, pending_check
+    result = admit(service, state, method, context, data)
+    if first_save and method == "project.save":
+        first_save = False
+        pending_check = True
+    return result
+
+def reserve(journal, size):
+    global pending_check
+    if pending_check:
+        pending_check = False
+        with patch("rfad.storage.journal.shutil.disk_usage", return_value=SimpleNamespace(free=1048576)):
+            return check_space(journal, size)
+    return check_space(journal, size)
+
+ProjectService._admit = arm_save
+Journal._check_space = reserve
+"""
+            program += f"runpy.run_path({str(_SOURCE / 'rfad' / '__main__.py')!r}, run_name='__main__')\n"
+            source = self.source_stub(directory, program)
+            environment = dict(os.environ, RFAD_TEST_SAVE_DISK_FAILURE="1")
+            code, result = self.run_gui(directory, source=source, editor=True, environment=environment)
+            self.assertEqual(code, 0, result)
+            self.assertTrue(result["passed"])
+            self.assertIn("save_disk_failure_preserved", result["ux_checks"])
+            self.assertEqual(result["service_sessions"], 2)
+            self.assertEqual(result["saved_revision"], result["revision_id"])
+            with ProjectService(directory / "한글 작업 영역", auto_run=False) as service:
+                state = service.journal.read()
+                saved, = [job for job in state["jobs"].values() if job["operation_method"] == "project.save"]
+                self.assertEqual(saved["state"], "completed")
+                project = state["projects"][result["project_id"]]
+                self.assertEqual(project["saved"], saved["captured"])
+                self.assertEqual(project["current"], project["saved"])
+
     def test_stderr_flood_does_not_displace_protocol(self):
         """! @brief 긴 로그와 로그 폭주 중에도 stdout 응답과 전체 smoke가 처리되는지 확인한다."""
         with TemporaryDirectory(prefix="rfad GUI logs ") as temporary:
