@@ -1,6 +1,7 @@
 """! @brief 실제 CSXCAD에 솔더마스크와 개구를 만들고 재료 점유를 확인한다."""
 
 from rfad.domain.errors import ProjectError
+from rfad.application.pcb_surfaces import native_surface_name
 
 
 def add_surfaces(csx, case):
@@ -8,7 +9,7 @@ def add_surfaces(csx, case):
     records = []
     for surface in case.get("surface_layers", []):
         identity = surface["id"]
-        name = "mask_" + identity
+        name = native_surface_name(surface)
         mask = csx.AddMaterial(name, epsilon=surface["epsilon_r"], kappa=surface["kappa_s_per_m"])
         low, high = surface["bounds_mm"][2]
         z_mid = (low + high) / 2
@@ -35,7 +36,8 @@ def add_surfaces(csx, case):
             rim = cy + board["radius_mm"]
             mask.AddCylinder(start=[cx, cy, low], stop=[cx, cy, high], radius=board["radius_mm"], priority=2)
             if openings:
-                air = csx.AddMaterial("mask_opening_" + identity, epsilon=1.0, kappa=0.0)
+                opening_name = "mask_opening_" + identity if surface["kind"] == "solder_mask" else name + "_opening"
+                air = csx.AddMaterial(opening_name, epsilon=1.0, kappa=0.0)
                 for hole in openings:
                     add_box(air, hole, 3)
             witness = [cx, (rim + max((hole[1][1] for hole in openings), default=cy)) / 2]
@@ -47,7 +49,7 @@ def add_surfaces(csx, case):
 
         observed = [sampled([(a + b) / 2 for a, b in hole]) for hole in openings]
         if sampled(witness) != name or name in observed:
-            raise ProjectError("E_GEOMETRY", "native 솔더마스크 피복 또는 개구 재료가 계획과 다릅니다.",
+            raise ProjectError("E_GEOMETRY", "native 표면층 피복 또는 개구 재료가 계획과 다릅니다.",
                                details={"field_path": "surface." + identity})
         records.append({"id": identity, "native_property": name, "profile": surface["profile"],
                         "covered_point_checked": True, "openings_checked": len(observed)})

@@ -328,7 +328,9 @@ def project_pcb(document, settings):
                                                + (["grounded metal uses ideal PEC joined to the reference copper sheet plane; contact impedance omitted"]
                                                   if environment and any(part["kind"] == "grounded_pec_box" for part in environment["parts"]) else [])
                                                + (["solder mask uses uniform dielectric volumes referenced to the modeled outer copper interface; rectangular openings are void"]
-                                                  if surfaces else [])
+                                                  if any(row["kind"] == "solder_mask" for row in surfaces) else [])
+                                               + (["auxiliary layers use uniform dielectric volumes; only final installed thickness enters the model"]
+                                                  if any(row["kind"] != "solder_mask" for row in surfaces) else [])
                                                + (["mechanical through relief is vacuum in the modeled dielectric; no copper is removed by the solver"]
                                                   if voids else []),
                              "unsupported_observables": ["absolute_power", "full_s_matrix"] if radiation is not None else ["NF2FF", "gain", "efficiency", "absolute_power", "full_s_matrix"]},

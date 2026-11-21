@@ -59,7 +59,7 @@ class PhysicalSetupTests(unittest.TestCase):
             service.mutate(METHOD, parameters(service, original, "stack", {"nominal": "1.09", "scope": "with_surfaces"}))
             before = load(service, original)
             applied = service.mutate(METHOD, parameters(service, before, "surface", {
-                "name": "공개 피복", "kind": "coverlay", "offset": "0", "thickness": ".02", "openings": "2 3 4 5", "include_in_export": False}))
+                "name": "공개 피복", "kind": "ferrite", "offset": "0", "thickness": ".02", "openings": "2 3 4 5", "include_in_export": False}))
             stored = load(service, before)
             review = stack_review(stored)
             self.assertAlmostEqual(review["base_sum_si"], 0.001035)

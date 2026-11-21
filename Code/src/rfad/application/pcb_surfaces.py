@@ -1,4 +1,4 @@
-"""! @brief 솔더마스크의 모델 경계, 피복 개구와 재료 적용 범위를 확정한다."""
+"""! @brief 명시 보조 유전체의 모델 경계, 피복과 개구를 확정한다."""
 
 import math
 
@@ -64,8 +64,8 @@ def project_surfaces(document, case, dielectric):
         if not row["include_in_em"]:
             continue
         field = "surface." + row["id"]
-        if "power_balance" in case["settings"] or any(other["side"] == row["side"] for other in surfaces):
-            fail("E_UNSUPPORTED", "솔더마스크 해석은 각 면에 한 층과 일반 포트/방사 계산을 지원합니다.", field)
+        if "power_balance" in case["settings"]:
+            fail("E_UNSUPPORTED", "보조 유전체는 일반 포트/방사 계산을 지원합니다.", field)
         bottom = row["side"] == "bottom"
         layer = case["layers"][0 if bottom else -1]
         offset = length(document, row["offset"], field + ".offset")
@@ -80,14 +80,16 @@ def project_surfaces(document, case, dielectric):
         polygon = row["coverage"] == "board" and board["kind"] == "polygon"
         coverage = board["bounds_mm"] if row["coverage"] == "board" else _rect(document, row, field)
         if row["coverage"] == "rectangle" and not _fits_board(coverage, board):
-            fail("E_GEOMETRY", "솔더마스크의 사각 피복이 기판 외곽을 벗어났습니다.", field)
+            fail("E_GEOMETRY", "표면층의 사각 피복이 기판 외곽을 벗어났습니다.", field)
+        if any(_overlap([*coverage, z], previous["bounds_mm"]) for previous in surfaces):
+            fail("E_GEOMETRY", "해석에 포함한 보조층의 피복과 높이가 중첩됩니다.", field)
         openings = []
         for index, opening in enumerate(row["openings"]):
             path = f"{field}.openings[{index}]"
             box = _rect(document, opening, path)
             if (not _contained(box, coverage) or not _fits_board(box, board)
                     or any(_overlap(box, previous) for previous in openings)):
-                fail("E_GEOMETRY", "솔더마스크 개구가 피복을 벗어났거나 다른 개구와 겹칩니다.", path)
+                fail("E_GEOMETRY", "표면층 개구가 피복을 벗어났거나 다른 개구와 겹칩니다.", path)
             if min(b - a for a, b in box) < step - 1e-9:
                 fail("E_GEOMETRY", "개구 폭과 길이는 각각 한 격자 이상이어야 합니다.", path)
             openings.append(box)
@@ -99,7 +101,7 @@ def project_surfaces(document, case, dielectric):
             for start, stop in part["boxes_mm"]:
                 occupied = list(zip(start, stop))
                 if _overlap(occupied, [*coverage, z]) and not any(_contained(occupied[:2], hole) for hole in openings):
-                    fail("E_GEOMETRY", "설치 물체가 솔더마스크 피복과 겹칩니다. 배치나 개구를 확인하십시오.", field)
+                    fail("E_GEOMETRY", "설치 물체가 표면층 피복과 겹칩니다. 배치나 개구를 확인하십시오.", field)
         surfaces.append({**{key: row[key] for key in ("id", "name", "kind", "side", "material_id")}, "bounds_mm": [*coverage, z],
                          "physical_z_mm": physical_z, "openings_mm": openings, "tiles_mm": tiles,
                          "profile": "cylinder_with_air_openings" if circle else "linear_polygon_tiles" if polygon else "rectangular_tiles",
@@ -108,10 +110,15 @@ def project_surfaces(document, case, dielectric):
     return surfaces
 
 
-def mask_label(case):
-    """! @brief 비교 목록에서 마스크가 있는 개정의 피복과 개구를 확인하게 한다."""
+def surface_label(case):
+    """! @brief 표면층이 있는 개정의 피복과 개구를 비교 목록에서 구별한다."""
     rows = case.get("surface_layers", [])
     if not rows:
         return ""
     return " / ".join(row["name"] + (f" (개구 {len(row['openings_mm'])}개)" if row["openings_mm"] else " (개구 없음)")
                       for row in rows)
+
+
+def native_surface_name(surface):
+    """! @brief 기존 마스크 재료 식별과 보조층 재료를 구분한다."""
+    return ("mask_" if surface["kind"] == "solder_mask" else "surface_") + surface["id"]

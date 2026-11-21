@@ -13,7 +13,7 @@ from rfad.application.target_editor_values import fail, number, sources
 from rfad.domain.design import _text, resolve_scalar
 from rfad.domain.errors import ProjectError
 from rfad.domain.physical_setup import (KEY, PROFILE, COMMAND, COLLECTIONS, FLAGS, SURFACE_KINDS,
-                                        SURFACE_NUMBERS, PART_NUMBERS, PART_KINDS, setup, stack_review, step_bytes, em_exclusions)
+                                        SURFACE_NUMBERS, PART_NUMBERS, PART_KINDS, EM_SURFACE_KINDS, setup, stack_review, step_bytes, em_exclusions)
 from rfad.domain.units import Quantity, QuantityError
 
 READS = {"physical.setup.get", "physical.step.preview"}
@@ -32,7 +32,8 @@ FIELDS = {
     "name": "이름", "kind": "종류", "side": "면", "coverage": "피복 범위", "material_id": "재료",
     "scenario_id": "설치 시나리오", "visible": "3D 표시", "include_in_em": "해석 포함",
     "include_in_export": "STEP 출력 포함", "nominal": "명목 총두께", "scope": "총두께 범위",
-    "offset": "외면에서 간격", "thickness": "두께", "x": "X", "y": "Y", "z": "Z",
+    "offset": "외면에서 간격", "thickness": "최종 두께", "supply_thickness": "공급 두께 (본드플라이용)",
+    "x": "X", "y": "Y", "z": "Z",
     "width": "폭", "height": "길이", "depth": "높이", "yaw": "Z축 회전",
     "case_thickness": "벽과 덮개 두께 (케이스용)",
     "openings": "개구 (mm, 줄마다 X Y 폭 길이)", "active_scenario_id": "활성 시나리오",
@@ -100,7 +101,7 @@ def _descriptors(document, model, section, row):
         "active_scenario_id": _options(scenarios, optional=True, unknown="기준 PCB"),
     }
     result = []
-    keys = {"surface": ("name", "kind", "side", "coverage", "offset", "thickness", "x", "y", "width", "height", "openings",
+    keys = {"surface": ("name", "kind", "side", "coverage", "offset", "thickness", "supply_thickness", "x", "y", "width", "height", "openings",
                         "material_id", "visible", "include_in_em", "include_in_export"),
             "part": ("name", "scenario_id", "kind", "x", "y", "z", "yaw", "width", "height", "depth", "case_thickness",
                      "material_id", "visible", "include_in_em", "include_in_export"),
@@ -304,6 +305,13 @@ class PhysicalSetupService:
                     if "case_thickness" in data["changes"]:
                         fail("벽 두께는 유전체 케이스에만 지정하십시오.", "case_thickness")
                     record.pop("case_thickness", None)
+            if section == "surface":
+                if record["kind"] != "bondply":
+                    if "supply_thickness" in data["changes"]:
+                        fail("공급 두께는 본드플라이에만 지정하십시오.", "supply_thickness")
+                    record.pop("supply_thickness", None)
+                elif original is None or original["kind"] != "bondply":
+                    record.setdefault("supply_thickness", _missing("supply_thickness"))
             if data["step_token"] is not None and record.get("step") is None:
                 fail("STEP 미리보기 사용 시 외부 STEP 종류를 선택하십시오.", "step_token")
             if record == original:

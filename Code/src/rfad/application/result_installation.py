@@ -3,7 +3,7 @@
 import math
 
 from rfad.application.result_radiation import load
-from rfad.application.pcb_surfaces import mask_label
+from rfad.application.pcb_surfaces import surface_label
 from rfad.domain.errors import ProjectError
 
 
@@ -21,9 +21,10 @@ def compare(service, left, right):
     cases = [plan.get("case", {}) for plan in plans]
     if not any("environment" in case or "surface_layers" in case for case in cases):
         return None
-    masks = any("surface_layers" in case for case in cases)
+    surfaces = [row for case in cases for row in case.get("surface_layers", [])]
+    empty_surface = "마스크 없음" if any(row["kind"] == "solder_mask" for row in surfaces) else "표면층 없음"
     names = [" / ".join(filter(None, (case.get("environment", {}).get("name", ""),
-                                      (mask_label(case) or "마스크 없음") if masks else ""))) or "기판 단독"
+                                      (surface_label(case) or empty_surface) if surfaces else ""))) or "기판 단독"
              for case in cases]
     if names[0] == names[1]:
         names = [name + " / " + ("기준 결과" if index == 0 else "비교 결과") + " / " +

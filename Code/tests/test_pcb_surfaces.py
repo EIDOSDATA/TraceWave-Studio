@@ -29,6 +29,26 @@ def add_mask(document):
 
 
 class PcbSurfaceTests(unittest.TestCase):
+    def test_auxiliary_layers_use_final_thickness_without_resolving_supply(self):
+        """! @brief 공급 수량이 정해져도 경화 두께를 추정하지 않는다."""
+        document = board_fixture()
+        bond = add_mask(document)
+        bond.update(kind="bondply", supply_thickness=quantity(.24, "mm"))
+        first = plan(document)["case"]
+        bond["supply_thickness"] = Quantity.missing("length", "mm").to_dict()
+        self.assertEqual(plan(document)["case"], first)
+        bond["thickness"] = Quantity.missing("length", "mm").to_dict()
+        with self.assertRaisesRegex(ProjectError, "미정"):
+            plan(document)
+        bond["thickness"] = quantity(.15, "mm")
+        adhesive = add_mask(document)
+        adhesive.update(kind="adhesive", offset=quantity(.15, "mm"))
+        setup(document)["surfaces"].sort(key=lambda row: row["id"])
+        self.assertEqual(len(plan(document)["case"]["surface_layers"]), 2)
+        adhesive["offset"] = quantity(.1, "mm")
+        with self.assertRaisesRegex(ProjectError, "중첩"):
+            plan(document)
+
     def test_opening_keeps_gap_port_and_material_out_of_window(self):
         """! @brief 피복의 개구 면적만큼 실제 유전체 타일을 제거한다."""
         document = board_fixture()

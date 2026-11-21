@@ -94,6 +94,34 @@ class GuiInstallationTests(unittest.TestCase):
                 path.mkdir(parents=True, exist_ok=True)
                 (path / "installation-mask-gui.json").write_text(json.dumps(evidence, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+    def test_bondply_cured_thickness_survives_gui_and_native_solver(self):
+        """! @brief 실제 저장과 계산에서 공급·경화 두께를 분리한다."""
+        with TemporaryDirectory(prefix="TraceWave bondply ") as temporary:
+            directory = Path(temporary)
+            workspace = directory / "work"
+            (directory / "installation-part.json").write_text('{"kind":"bondply"}', encoding="utf-8")
+            with ProjectService(workspace, auto_run=False) as service:
+                original, _ = register_fixture(service, board_fixture())
+            evidence = self.run_gui(directory, workspace)
+            with ProjectService(workspace, auto_run=False) as service:
+                stored = load(service, original)
+                self.assertEqual(stored["revision_id"], evidence["saved_revision"])
+                self.assertEqual(stored["ports"], original["ports"])
+                self.assertEqual(setup(stored)["parts"], setup(original)["parts"])
+                layer, = setup(stored)["surfaces"]
+                self.assertAlmostEqual(layer["supply_thickness"]["value_si"], .00024)
+                self.assertAlmostEqual(layer["thickness"]["value_si"], .00015)
+                self.assertTrue(layer["supply_thickness"]["source_refs"])
+                state = service.journal.read()
+                self.assertEqual(len(state["solver_results"]), 2)
+                installed = next(row for row in state["solver_results"].values() if row["snapshot"]["revision_id"] == stored["revision_id"])
+                prepared = state["prepared_plans"][installed["prepared_plan_id"]]
+                reference = next(row["artifact"] for row in prepared["files"] if row["role"] == "consumption_report")
+                report = json.loads(service.journal.read_artifact(reference))
+                model, = report["consumed_case"]["surface_layers"]
+                self.assertEqual(model["bounds_mm"][2], [1.0, 1.15])
+                self.assertEqual(report["surface_source_mapping"][0]["native_property"], "surface_" + layer["id"])
+
     def verify_installations(self, *, kind):
         """! @brief 시나리오 편집과 실제 원본/XML/결과의 일치를 공통 흐름에서 검증한다."""
         metal = kind != "dielectric_case"

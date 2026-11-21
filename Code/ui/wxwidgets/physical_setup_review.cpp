@@ -223,7 +223,8 @@ void PhysicalSetupDialog::RenderReview()
     }
     if (m_context.at("section") == "surface")
     {
-        text += "\n솔더마스크를 해석에 포함하려면 재료, 외면 간격과 두께를 입력하십시오. 개구가 비어 있으면 지정한 범위를 모두 피복합니다.";
+        text += "\n표면층의 재료, 외면 간격과 최종 두께를 입력하십시오. 본드플라이의 최종 두께는 적층 후 경화 두께입니다.";
+        text += "\n공급 두께는 원본 정보로 저장합니다. 개구를 비우면 지정한 범위를 모두 피복합니다.";
     }
     if (!m_stepReview.is_null())
     {
@@ -251,7 +252,8 @@ Json PhysicalSetupDialog::Changes() const
     for (const auto& row : m_context.at("fields"))
     {
         const std::string key = row.at("key");
-        if (key == "case_thickness" && Value("kind") != "dielectric_case")
+        if ((key == "case_thickness" && Value("kind") != "dielectric_case") ||
+            (key == "supply_thickness" && Value("kind") != "bondply"))
         {
             continue;
         }
@@ -285,6 +287,10 @@ void PhysicalSetupDialog::UpdateActions()
     if (const auto wall = m_inputs.find("case_thickness"); wall != m_inputs.end())
     {
         wall->second->Enable(ready && Value("kind") == "dielectric_case");
+    }
+    if (const auto supply = m_inputs.find("supply_thickness"); supply != m_inputs.end())
+    {
+        supply->second->Enable(ready && Value("kind") == "bondply");
     }
     m_reason->Enable(ready);
     m_browse->Enable(ready && section == "part" && m_context.at("cad_configured") == true);

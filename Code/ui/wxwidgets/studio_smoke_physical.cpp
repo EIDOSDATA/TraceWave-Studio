@@ -71,12 +71,13 @@ void StudioSmokeDriver::InstallationSmokeTick()
         if (m_setupStage == 3)
         {
             m_setupStage = 4;
-            SetupSmoke::Choose(dialog->m_section, m_resultsFixture.value("kind", "") == "solder_mask" ? 1 : 4);
+            const auto kind = m_resultsFixture.value("kind", "");
+            SetupSmoke::Choose(dialog->m_section, kind == "solder_mask" || kind == "bondply" ? 1 : 4);
         }
         else if (m_setupStage == 4)
         {
             const auto kind = m_resultsFixture.value("kind", std::string("dielectric_case"));
-            if (kind == "solder_mask")
+            if (kind == "solder_mask" || kind == "bondply")
             {
                 auto field = [dialog](const std::string& key, const std::string& value)
                 {
@@ -95,9 +96,14 @@ void StudioSmokeDriver::InstallationSmokeTick()
                 }
                 else
                 {
-                    field("name", "시험 솔더마스크");
+                    field("name", kind == "bondply" ? "시험 본드플라이" : "시험 솔더마스크");
                     field("offset", "0");
                     field("thickness", "0.15");
+                    if (kind == "bondply")
+                    {
+                        choose("kind", kind);
+                        field("supply_thickness", "0.24");
+                    }
                     auto* material = static_cast<wxChoice*>(dialog->m_inputs.at("material_id"));
                     const int index = material->FindString(Display("검증용 유전체 케이스 재료"));
                     CanvasAssert(index != wxNOT_FOUND, "시험 마스크 재료를 찾지 못했습니다.");
@@ -258,11 +264,12 @@ void StudioSmokeDriver::InstallationSmokeTick()
             CanvasAssert(dialog != nullptr && dialog->IsShown(), "설치 방사 비교 창이 열리지 않았습니다.");
             auto* values = dynamic_cast<wxStaticText*>(wxWindow::FindWindowByName("installation-efficiencies", dialog));
             const auto kind = m_resultsFixture.at("kind");
-            const auto firstLabel = kind == "solder_mask" ? "마스크 없음" :
+            const auto firstLabel = kind == "solder_mask" ? "마스크 없음" : kind == "bondply" ? "표면층 없음" :
                 kind == "grounded_pec_box" ? "(비접촉)" : kind == "isolated_pec_box" ? "기준 결과" : "기판 단독";
             const auto secondLabel = kind == "grounded_pec_box" ? "(접지 연결)" :
                 kind == "isolated_pec_box" ? "검증용 금속 상자" :
-                kind == "solder_mask" ? (index == 1 ? "(개구 없음)" : "(개구 1개)") : "유전체 케이스 시험";
+                kind == "solder_mask" ? (index == 1 ? "(개구 없음)" : "(개구 1개)") :
+                kind == "bondply" ? "시험 본드플라이" : "유전체 케이스 시험";
             CanvasAssert(values != nullptr && values->GetLabel().Contains(Display(firstLabel)) &&
                              values->GetLabel().Contains(Display(secondLabel)),
                          "설치 비교 창에 두 원본과 효율이 표시되지 않았습니다.");

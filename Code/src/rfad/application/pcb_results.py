@@ -5,6 +5,7 @@ import re
 
 from rfad.application.pcb_geometry import fail, shape_polygons
 from rfad.application.pcb_mesh import mesh_lines
+from rfad.application.pcb_surfaces import native_surface_name
 from rfad.domain.errors import ProjectError
 
 RAW_NAMES = ("port_ut_1", "port_it_1", "openEMS_stats.txt", "openEMS_run_stats.txt", "native.log", "pcb.xml")
@@ -83,11 +84,11 @@ def validate_preparation(plan, preparation):
                      "tool_hole_diameter_mm": via["tool_hole_diameter_mm"], "tool_hole_used_for_native_geometry": False, "native_drill_basis": "finished_hole_diameter"}
                     for via in plan["case"].get("vias", [])]
     connectivity = consumption.get("native_connectivity", {})
-    expected_surfaces = [{"id": row["id"], "native_property": "mask_" + row["id"], "profile": row["profile"],
+    expected_surfaces = [{"id": row["id"], "native_property": native_surface_name(row), "profile": row["profile"],
                           "covered_point_checked": True, "openings_checked": len(row["openings_mm"])}
                          for row in plan["case"].get("surface_layers", [])]
     if consumption.get("surface_source_mapping", []) != expected_surfaces:
-        fail("E_HASH", "준비 산출물의 솔더마스크 피복과 개구가 계획과 다릅니다.")
+        fail("E_HASH", "준비 산출물의 표면층 피복과 개구가 계획과 다릅니다.")
     expected_voids = [{"id": row["id"], "kind": row["kind"], "native_property": "mechanical_void_" + row["id"],
                        "vacuum_point_checked": True} for row in plan["case"].get("mechanical_voids", [])]
     if consumption.get("mechanical_source_mapping", []) != expected_voids:

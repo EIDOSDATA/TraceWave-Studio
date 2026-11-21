@@ -18,7 +18,7 @@ SURFACE_NUMBERS = ("offset", "thickness", "x", "y", "width", "height")
 PART_NUMBERS = ("x", "y", "z", "yaw", "width", "height", "depth")
 PART_KINDS = ("box", "step", "dielectric_case", "isolated_pec_box", "grounded_pec_box")
 EM_PART_KINDS = {"dielectric_case", "isolated_pec_box", "grounded_pec_box"}
-EM_SURFACE_KINDS = {"solder_mask"}
+EM_SURFACE_KINDS = {"solder_mask", "coverlay", "adhesive", "bondply", "coating"}
 ROW_FIELDS = {
     "surface": {"id", "name", "kind", "side", "coverage", "material_id", "openings", "source_refs", *FLAGS, *SURFACE_NUMBERS},
     "scenario": {"id", "name", "source_refs"},
@@ -29,10 +29,12 @@ COMMAND = "physical_setup.edit"
 
 
 def record_fields(section, record):
-    """! @brief 케이스에만 벽 두께를 추가하고 과거 상자/STEP 원본의 형식을 유지한다."""
+    """! @brief 종류에 한정한 수량을 허용하고 해당 키가 없는 과거 원본을 읽는다."""
     fields = ROW_FIELDS[section]
     if section == "part" and isinstance(record, dict) and record.get("kind") == "dielectric_case":
         return fields | {"case_thickness"}
+    if section == "surface" and isinstance(record, dict) and record.get("kind") == "bondply" and "supply_thickness" in record:
+        return fields | {"supply_thickness"}
     return fields
 
 
@@ -125,6 +127,8 @@ def validate_setup(document):
             if section == "surface":
                 if row["kind"] not in SURFACE_KINDS or row["side"] not in ("top", "bottom") or row["coverage"] not in ("board", "rectangle"):
                     _fail("E_SCHEMA", "표면층의 종류/면/범위를 지정하십시오.", "surface")
+                if "supply_thickness" in row:
+                    _number(document, row["supply_thickness"], "length", "surface.supply_thickness", positive=True)
                 if type(row["openings"]) is not list or len(row["openings"]) > 8:
                     _fail("E_RESOURCE", "표면층당 사각 개구는 최대 8개입니다.", "surface.openings")
                 for opening in row["openings"]:
