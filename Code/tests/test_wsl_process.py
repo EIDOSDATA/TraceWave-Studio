@@ -112,6 +112,39 @@ class WslProcessTests(unittest.TestCase):
         self.assertTrue(result["not_started"])
         self.assertFalse(result["outcome_unknown"])
 
+    def test_cancel_wakes_heartbeat_wait_and_reports_terminal_without_sleep(self):
+        """! @brief heartbeat 대기에서 취소 신호를 받고 실제 종료 확인은 다음 지연 없이 처리한다."""
+        cancel = threading.Event()
+        commands, observed = [], []
+        active = self.status("active", False)
+        cancelled = self.status("cancelled")
+        cancelled["cursor"] = 3
+
+        def invoke(command, payload, **kwargs):
+            commands.append(command)
+            if command == "heartbeat":
+                return {**active, "cursor": 2}
+            if command == "cancel":
+                return cancelled
+            return active
+
+        def wait_for_cancel(timeout):
+            self.assertEqual(timeout, self.runtime.poll_seconds)
+            cancel.set()
+            return True
+
+        with tempfile.TemporaryDirectory() as directory, patch.object(self.runtime, "_invoke", side_effect=invoke), \
+                patch.object(cancel, "wait", side_effect=wait_for_cancel) as wait, \
+                patch("rfad.application.wsl_process.time.sleep") as sleep:
+            result = self.runtime.execute(self.stage(directory), run_id=self.run_id, nonce=self.nonce,
+                                          cancel=cancel, on_state=lambda state: observed.append(state["cursor"]))
+        wait.assert_called_once()
+        sleep.assert_not_called()
+        self.assertEqual(commands, ["start", "heartbeat", "cancel"])
+        self.assertEqual(observed, [1, 2, 3])
+        self.assertEqual(result["state"], "cancelled")
+        self.assertTrue(result["termination_confirmed"])
+
     def test_transport_failure_preserves_unknown_outcome(self):
         """! @brief 연결과 취소 재접속이 모두 실패하면 종료 성공을 추측하지 않는다."""
         with tempfile.TemporaryDirectory() as directory, patch.object(self.runtime, "_invoke", side_effect=ProjectError("E_RESOURCE", "offline")):

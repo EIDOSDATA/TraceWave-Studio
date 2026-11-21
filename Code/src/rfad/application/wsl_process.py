@@ -346,9 +346,13 @@ class WslRuntime:
                     raise ProjectError("E_RESOURCE", "WSL guest의 종료 확인 기한을 넘었습니다.", details={"outcome_unknown": True})
                 if cancel.is_set():
                     status = self.cancel(run_id, nonce)
+                    if status.get("state") not in TERMINAL:
+                        time.sleep(self.poll_seconds)
                 else:
                     status = self.heartbeat(run_id, nonce)
-                time.sleep(self.poll_seconds)
+                    if status.get("state") not in TERMINAL:
+                        # @brief 대기 중 취소 신호를 즉시 받고 terminal 응답에는 다시 대기하지 않는다.
+                        cancel.wait(self.poll_seconds)
         except Exception as error:
             try:
                 status = self.cancel(run_id, nonce)
