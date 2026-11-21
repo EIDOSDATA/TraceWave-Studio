@@ -263,6 +263,12 @@ class JournalTests(unittest.TestCase):
             journal.put_immutable("linked/file.json", b"{}")
         self.assertEqual(raised.exception.code, "E_SCHEMA")
         self.assertFalse((target / "file.json").exists())
+        raw = b"recorded original"
+        (target / "record.json").write_bytes(raw)
+        reference = {"uri": "linked/record.json", "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest()}
+        with self.assertRaises(ProjectError) as rejected_read:
+            journal.read_artifact(reference)
+        self.assertEqual(rejected_read.exception.code, "E_SCHEMA")
 
     def test_nested_transaction_and_closed_writer_are_rejected(self):
         """! @brief 재진입과 닫힌 writer의 사용을 상태 충돌로 처리한다."""

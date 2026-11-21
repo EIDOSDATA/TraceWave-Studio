@@ -174,8 +174,8 @@ class Journal:
         if self._closed:
             raise ProjectError("E_CONFLICT", "이미 닫힌 journal입니다.")
 
-    def _safe_path(self, relative: str, *, internal: bool = False) -> Path:
-        """! @brief canonical 상대 URI와 실제 기존 경로를 함께 검사한다."""
+    def _workspace_path(self, relative: str, *, internal: bool = False) -> Path:
+        """! @brief 정규 상대 URI와 Windows 예약 이름을 검사해 경로를 만든다."""
         if type(relative) is not str or not relative or "\\" in relative or ":" in relative or "\0" in relative:
             raise ProjectError("E_SCHEMA", "저장 URI는 안전한 POSIX 상대경로여야 합니다.")
         pure = PurePosixPath(relative)
@@ -187,7 +187,11 @@ class Journal:
             stem = part.split(".", 1)[0].upper()
             if part.endswith((" ", ".")) or stem in {"CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in range(1, 10)), *(f"LPT{i}" for i in range(1, 10))}:
                 raise ProjectError("E_SCHEMA", "이름이 플랫폼 간 안전한 파일명 규칙을 만족하지 않습니다.")
-        path = self.root.joinpath(*pure.parts)
+        return self.root.joinpath(*pure.parts)
+
+    def _safe_path(self, relative: str, *, internal: bool = False) -> Path:
+        """! @brief 정규 상대 URI와 실제 기존 경로를 함께 검사한다."""
+        path = self._workspace_path(relative, internal=internal)
         _check_path_parts(path)
         return path
 
@@ -250,11 +254,11 @@ class Journal:
         manifest = {"schema_version": JOURNAL_SCHEMA, "commit_id": commit_id, "state": {"uri": f"{base}/state.json", "sha256": _digest(payload), "bytes": len(payload)}}
         manifest_bytes = canonical_bytes(manifest)
         pointer_bytes = canonical_bytes({"schema_version": JOURNAL_SCHEMA, "commit_id": commit_id, "manifest_sha256": _digest(manifest_bytes)})
-        pointer_temp = self._safe_path(f".current-{commit_id}.tmp", internal=True)
+        pointer_temp = self._workspace_path(f".current-{commit_id}.tmp", internal=True)
         published = False
         try:
-            self._write_new(self._safe_path(f"{base}/state.json", internal=True), payload)
-            self._write_new(self._safe_path(f"{base}/manifest.json", internal=True), manifest_bytes)
+            self._write_new(self._workspace_path(f"{base}/state.json", internal=True), payload)
+            self._write_new(self._workspace_path(f"{base}/manifest.json", internal=True), manifest_bytes)
             self._flush_directory(self.root / "commits" / commit_id)
             self._flush_directory(self.root / "commits")
             self._flush_directory(self.root)
@@ -284,7 +288,7 @@ class Journal:
     def _read_state(self) -> tuple[dict, bytes]:
         """! @brief 잠금 안에서 새 상태와 검증한 정규 바이트를 함께 얻는다."""
         self._ensure_open()
-        pointer = _strict_json(self._read_bytes(self._safe_path("current.json", internal=True), 16384))
+        pointer = _strict_json(self._read_bytes(self._workspace_path("current.json", internal=True), 16384))
         if type(pointer) is not dict or set(pointer) != {"schema_version", "commit_id", "manifest_sha256"} or pointer["schema_version"] != JOURNAL_SCHEMA:
             raise ProjectError("E_HASH", "current pointer 구조가 손상되었거나 지원하지 않습니다.")
         commit_id = pointer["commit_id"]
@@ -293,7 +297,7 @@ class Journal:
                 raise ValueError("invalid UUID")
         except ValueError as error:
             raise ProjectError("E_HASH", "current commit ID가 잘못되었습니다.") from error
-        manifest_bytes = self._read_bytes(self._safe_path(f"commits/{commit_id}/manifest.json", internal=True), 16384)
+        manifest_bytes = self._read_bytes(self._workspace_path(f"commits/{commit_id}/manifest.json", internal=True), 16384)
         if _digest(manifest_bytes) != pointer["manifest_sha256"]:
             raise ProjectError("E_HASH", "commit manifest의 SHA256이 일치하지 않습니다.")
         manifest = _strict_json(manifest_bytes)
@@ -383,7 +387,7 @@ class Journal:
         digest = reference["sha256"]
         if type(size) is not int or not 0 <= size <= limit or type(digest) is not str or _HASH.fullmatch(digest) is None:
             raise ProjectError("E_HASH", "불변 파일 참조의 크기 또는 hash가 유효하지 않습니다.")
-        payload = self._read_bytes(self._safe_path(reference["uri"], internal=internal), size)
+        payload = self._read_bytes(self._workspace_path(reference["uri"], internal=internal), size)
         if len(payload) != size or _digest(payload) != digest:
             raise ProjectError("E_HASH", "불변 파일의 크기 또는 SHA256이 일치하지 않습니다.")
         return payload

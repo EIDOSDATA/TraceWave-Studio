@@ -329,7 +329,12 @@ class SolverJobTests(unittest.TestCase):
     def test_queued_cancel_releases_slot_without_worker(self):
         """! @brief 미시작 작업은 즉시 취소되며 native 실행을 시작하지 않는다."""
         task = self.service.mutate("solver.plan", self.request(self.plan_input()))
+        wake_signals = (self.service._wake, self.service.cad.wake, self.service.exchange.wake,
+                        self.service.solver.wake, self.service.studies.wake)
+        for signal in wake_signals:
+            signal.clear()
         self.service.mutate("job.cancel", self.request({"job_id": task["job_id"], "reason": "시험 취소"}, {}))
+        self.assertFalse(any(signal.is_set() for signal in wake_signals))
         self.assertEqual(self.status(task)["state"], "cancelled")
         self.assertFalse(self.job(task)["solver"]["resource_reserved"])
         self.assertFalse(self.service.solver.run_next())

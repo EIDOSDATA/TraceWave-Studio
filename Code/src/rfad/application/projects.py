@@ -252,11 +252,13 @@ class ProjectService:
             raise ProjectError("E_RESOURCE", "자료 처리 worker가 중단되었습니다. 서비스를 다시 열고 작업 상태를 확인하십시오.")
         result = (self.host_calculation_context.mutate(method, params) if method in HOST_MUTATIONS
                   else self.requests.execute(method, params, self._dispatch_mutation))
-        self._wake.set()
-        self.cad.wake.set()
-        self.exchange.wake.set()
-        self.solver.wake.set()
-        self.studies.wake.set()
+        # @brief 취소는 새 대기 작업을 만들지 않는다. 소유 worker는 취소 신호를 직접 받는다.
+        if method != "job.cancel":
+            self._wake.set()
+            self.cad.wake.set()
+            self.exchange.wake.set()
+            self.solver.wake.set()
+            self.studies.wake.set()
         return result
 
     def _dispatch_mutation(self, state: dict, method: str, context: dict, data: dict) -> dict:
