@@ -511,13 +511,14 @@ class _ImportCandidate:
             fail("제조사 패턴의 X/Y/회전을 명시하십시오.", "mapping.placement")
         board = project_board(self.before)
         cosine, sine = math.cos(rotation), math.sin(rotation)
+        anchor_x, anchor_y = data.get("placement_anchor_mm", (0.0, 0.0))
         net = self.net("")
         targets = {item["layer"]: self.layer(item["layer"]) for item in data["regions"]}
         if len(set(targets.values())) != len(targets):
             fail("공급사 원문의 서로 다른 도체층은 별도 기존 층에 대응해야 합니다.", "mapping.layers")
         def placed(point):
             """! @brief 읽은 mm 좌표의 원점을 사용자 배치에 회전·이동한다."""
-            x, y = point
+            x, y = point[0] - anchor_x, point[1] - anchor_y
             return [x * cosine - y * sine + offset[0] * 1000, x * sine + y * cosine + offset[1] * 1000]
         def vertex(point):
             """! @brief 정점의 공통 원문 참조는 도형과 수입 기록에 한 번만 보존한다."""

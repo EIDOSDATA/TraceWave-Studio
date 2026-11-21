@@ -21,7 +21,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 149,
+    "current_07_검증": 150,
     "current_08_운영환경": 7,
     "current_09_개발계획": 8,
     "current_11_검토기록": 7,
@@ -32534,9 +32534,9 @@
       "path": "01_개발문서/05_기능설계/05_출력교환/07_제조사_안테나_라이브러리.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 2855,
-      "working_tree_sha256": "22ec1b11b0985d5c8d203ed795f80ab18a58b8ebe431fb5a7ecf6baee151a932",
-      "text_lines": 16,
+      "bytes": 3657,
+      "working_tree_sha256": "4c43de9a4ca4ac3dc6f1a9d20da6fae3adc238c9223a9d4e4c368bb24f1be4a1",
+      "text_lines": 19,
       "text_status": "utf8_read"
     },
     {
@@ -32545,6 +32545,15 @@
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
       "bytes": 1132,
       "working_tree_sha256": "3ecb6482e6086a4b9afbe8a93ff5ce96bed98989817383e2dd0de839127f9186",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/262_텍사스_인스트루먼츠_안테나_가져오기_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1342,
+      "working_tree_sha256": "8ea9bf54796de183613b60f4f4f5f1c1391bd490f1b86eac838991a279465295",
       "text_lines": 7,
       "text_status": "utf8_read"
     }

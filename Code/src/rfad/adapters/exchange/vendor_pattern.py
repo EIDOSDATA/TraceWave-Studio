@@ -76,13 +76,25 @@ def read_pattern(raw, format_name):
     elif digest == card["sha256"]:
         member = raw
     else:
-        raise ProjectError("E_HASH", "선택한 제조사 예제와 원문이 다릅니다. 해당 DXF 또는 공식 ZIP을 선택하십시오.")
-    polygons, skipped, arcs = read_renesas(member)
-    losses = [_loss("vendor_scope", "동박만 가져옵니다. 보드, 급전, 포트, 물성은 기존 값이 유지되며 새 도체의 해석 포함은 꺼져 있습니다."),
-              _loss("vendor_dxf_layers", "패드·비아 블록, 마스크 및 풋프린트 표시 등 도체 경계 외 항목을 원문에 보존합니다.", layers=skipped)]
-    if arcs:
-        losses.append(_loss("vendor_dxf_curves", "DXF 원호 경계를 최대 현 오차 0.002 mm의 직선 경계로 변환합니다.",
-                            chord_error_mm=CHORD_ERROR_MM, source_arc_count=arcs))
+        raise ProjectError("E_HASH", "선택한 제조사 예제와 원문이 다릅니다. 해당 멤버 또는 공식 ZIP을 선택하십시오.")
+    losses = [_loss("vendor_scope", "동박만 가져옵니다. 보드, 급전, 포트, 물성은 기존 값이 유지되며 새 도체의 해석 포함은 꺼져 있습니다.")]
+    anchor = [0.0, 0.0]
+    if format_name.startswith("vendor_ti_"):
+        from rfad.adapters.exchange.vendor_gerber import CHORD_MM, read_ti
+        copper, macros = read_ti(member)
+        anchor = list(copper.bounds[:2])
+        polygons = [("Top", "top", region) for region in _areas(copper)]
+        losses.extend([
+            _loss("vendor_ti_independent_artwork", "SPL에 포함된 독립 상부 패턴만 적용합니다. 회로의 급전, 접지, 나머지 보드·층은 별도입니다."),
+            _loss("vendor_gerber_area", "Gerber region과 aperture를 동박 면적으로 결합합니다. 원형 aperture 경계는 최대 현 오차 0.002 mm로 표현합니다.",
+                  chord_error_mm=CHORD_MM, overlay_grid_mm=1e-7, source_unit="inch", macro_apertures=macros),
+        ])
+    else:
+        polygons, skipped, arcs = read_renesas(member)
+        losses.append(_loss("vendor_dxf_layers", "패드·비아 블록, 마스크 및 풋프린트 표시 등 도체 경계 외 항목을 원문에 보존합니다.", layers=skipped))
+        if arcs:
+            losses.append(_loss("vendor_dxf_curves", "DXF 원호 경계를 최대 현 오차 0.002 mm의 직선 경계로 변환합니다.",
+                                chord_error_mm=CHORD_ERROR_MM, source_arc_count=arcs))
     regions = []
     split = 0
     redundant = 0
@@ -103,4 +115,5 @@ def read_pattern(raw, format_name):
         losses.append(_loss("vendor_bounds_split", "정점이 많은 동박을 면적을 유지하는 여러 편집 영역으로 나눕니다."))
     if len(regions) > 128:
         raise ProjectError("E_RESOURCE", "제조사 안테나 편집 영역 수가 128개를 초과했습니다.")
-    return {"schema": SCHEMA, "version": card["revision"], "card": card, "regions": regions, "losses": losses}
+    return {"schema": SCHEMA, "version": card["revision"], "card": card, "regions": regions,
+            "placement_anchor_mm": anchor, "losses": losses}

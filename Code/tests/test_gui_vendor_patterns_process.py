@@ -17,7 +17,7 @@ from rfad.application.projects import ProjectService
 from rfad.domain.vendor_catalog import VENDOR_FORMATS
 from test_exchange_service import ExchangeFixture
 from test_pcb_exchange_service import prepare
-from test_vendor_patterns import RENESAS
+from test_vendor_patterns import RENESAS, TI_IFA, TI_DIPOLE
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -50,8 +50,9 @@ class GuiVendorPatternTests(unittest.TestCase):
             layers = {row["layer"]: copper[-1 if row["side"] == "top" else 0]["id"] for row in card["regions"]}
             areas = [Polygon(row["outer_mm"], row["holes_mm"]) for row in card["regions"] if row["side"] == "top"]
             pick = max(areas, key=lambda item: item.area).representative_point()
+            anchor_x, anchor_y = card["placement_anchor_mm"]
             inputs = {"vendor_format": format_name, "raw_name": source.name, "raw_sha256": hashlib.sha256(raw).hexdigest(),
-                      "layer_mapping": layers, "x": str(x), "y": str(y), "pick": [pick.x + x, pick.y + y]}
+                      "layer_mapping": layers, "x": str(x), "y": str(y), "pick": [pick.x - anchor_x + x, pick.y - anchor_y + y]}
             (workspace / "pcb-exchange-smoke-fixture.json").write_bytes(canonical_bytes(inputs))
             report_path = Path(directory) / "공급사 원본 화면.json"
             process = subprocess.run([str(Path(GUI).resolve()), "--python", sys.executable, "--source", str(ROOT / "src"),
@@ -101,3 +102,12 @@ class GuiVendorPatternTests(unittest.TestCase):
                         self.exercise(member, key)
                 else:
                     self.exercise(RENESAS, key)
+
+    @unittest.skipUnless(TI_IFA and TI_DIPOLE, "공식 TI 원본이 필요합니다.")
+    def test_ti_ifa_and_dipole_edit_save_and_reopen(self):
+        from zipfile import ZipFile
+        with TemporaryDirectory(prefix="TraceWave 공식 SPL ") as directory, ZipFile(TI_IFA) as archive:
+            member = Path(directory) / "IFA_USB.spl"
+            member.write_bytes(archive.read(member.name))
+            self.exercise(member, "vendor_ti_cc2511", x=8, y=16)
+        self.exercise(TI_DIPOLE, "vendor_ti_cc25xx_dipole", x=8, y=16)

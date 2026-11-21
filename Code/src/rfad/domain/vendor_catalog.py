@@ -20,3 +20,23 @@ VENDOR_FORMATS = {
          "ff4c311ad226c4c38d72a1266355f51208e88e5aba4149378bbb4dfd130bc617", "그림 18·23의 상·하부 DXF 동박."),
     )
 }
+
+
+VENDOR_FORMATS.update({
+    "vendor_ti_cc2511": {
+        "format": "vendor_ti_cc2511", "label": "TI CC2511 USB IFA / 2.4 GHz",
+        "revision": "CC2511 USB Dongle 1.3 / AN043", "member": "IFA_USB.spl",
+        "source_url": "https://www.ti.com/lit/an/swra117d/swra117d.pdf",
+        "archive_sha256": "554fc9527ba4ad0b35172b1771f4ba9f188725a3e7618560daa51b2f746c2689",
+        "sha256": "a3828d60e68a181ae70f20c8b4c442e3280e2da64a94113e227e9d4d35bc04a1",
+        "description": "CC2511 USB 참조 설계 ZIP 또는 IFA_USB.spl을 선택하세요. X/Y는 도체 경계 왼쪽 아래 기준입니다.",
+    },
+    "vendor_ti_cc25xx_dipole": {
+        "format": "vendor_ti_cc25xx_dipole", "label": "TI CC25xx 접힌 다이폴 / 2.4 GHz",
+        "revision": "CC2500EM FD 1.1 / DN004", "member": "CC25xx_Folded_Dipole.spl",
+        "source_url": "https://www.ti.com/lit/an/swra118/swra118.pdf",
+        "archive_sha256": "6f96cc25788f2f079e80fb9847c51234c8597367f36acee21f09dad0aec5cf04",
+        "sha256": "1736564ac3d74726cf3c86f2abb11161d3ae56a1bf82de8d91c22a6d2d7ef424",
+        "description": "CC25xxEM 참조 설계 ZIP 또는 CC25xx_Folded_Dipole.spl을 선택하세요. X/Y는 도체 경계 왼쪽 아래 기준입니다.",
+    },
+})

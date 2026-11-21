@@ -15,6 +15,9 @@ from test_pcb_import_mapping import fixture, run
 
 REFERENCE = Path(__file__).resolve().parents[2] / "00_참고자료/PCB RF ANT/01_RF_Antenna_Vendor_Guides_CAD"
 RENESAS = next(REFERENCE.rglob("*AN_B027_DXF*.zip"), None)
+TI_IFA = next(REFERENCE.rglob("*CC2511_USB_CAD*.zip"), None)
+TI_DIPOLE = next(REFERENCE.rglob("*CC25XX_DIPOLE_CAD*.zip"), None)
+
 
 
 def placement(x, y):
@@ -69,3 +72,29 @@ class VendorRenesasTests(unittest.TestCase):
         mapping["placement"] = placement(0, 0)
         self.assertFalse(run(document, parsed, record, mapping, accepted)[0]["can_apply"])
         self.assertEqual(document, before)
+
+@unittest.skipUnless(TI_IFA and TI_DIPOLE, "공식 TI 패턴 원본이 필요합니다.")
+class VendorTiTests(unittest.TestCase):
+    """! @brief TI의 실제 inch SPL 두 종류의 원점과 영역을 비교한다."""
+
+    def test_independent_gerber_and_archive_use_same_copper(self):
+        for format_name, path, width, height, area, parts in (
+            ("vendor_ti_cc2511", TI_IFA, 14.4272, 5.41528, 22.3035221, 1),
+            ("vendor_ti_cc25xx_dipole", TI_DIPOLE, 44.6405, 17.43456, 75.1786606, 29),
+        ):
+            with self.subTest(format_name=format_name), ZipFile(path) as archive:
+                from shapely import Polygon, unary_union
+                member = VENDOR_FORMATS[format_name]["member"]
+                from_archive = parse_package({path.name: path.read_bytes()}, format_name, {})["records"][0]["data"]
+                from_member = parse_package({member: archive.read(member)}, format_name, {})["records"][0]["data"]
+                self.assertEqual(from_archive, from_member)
+                regions = from_archive["regions"]
+                self.assertEqual(len(regions), parts)
+                for value in regions:
+                    validate_region(value["outer_mm"], value["holes_mm"])
+                effective = unary_union([Polygon(row["outer_mm"], row["holes_mm"]) for row in regions])
+                x, y, right, top = effective.bounds
+                self.assertEqual(from_archive["placement_anchor_mm"], [x, y])
+                self.assertAlmostEqual(right - x, width, places=5)
+                self.assertAlmostEqual(top - y, height, places=5)
+                self.assertAlmostEqual(effective.area, area, places=5)
