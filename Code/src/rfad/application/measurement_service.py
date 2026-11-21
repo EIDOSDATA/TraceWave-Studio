@@ -241,6 +241,8 @@ def read(service, method, params):
         return contract.bounded({"profile": PROFILE, **deepcopy(entry["descriptor"]), "offset": data["offset"], "total": len(raw),
             "content_base64": base64.b64encode(chunk).decode("ascii"), "next_offset": end if end < len(raw) else None})
     if method in ("measurement.compare", "measurement.conditions"):
+        from rfad.application import measurement_candidates as candidates
+
         return contract.bounded(candidates.comparison(service, state, project, context, data, conditions_only=method == "measurement.conditions"))
     try:
         identity = str(uuid5(UUID(context["project_id"]), "measurement-preview:" + canonical_hash(data)))

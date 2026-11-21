@@ -235,6 +235,111 @@ class MeasurementServiceTests(unittest.TestCase):
         self.assertEqual([(row["frequency_hz"], row["source_indices"], row["weight"]) for row in lineage["items"]],
                          [(1.25e9, [0, 1], 0.5), (1.5e9, [1, 1], 0.0)])
 
+    def test_external_correction_compares_only_equal_planes_and_preserves_specimen_evidence(self):
+        """! @brief 합성 보정 전후 자료를 별도 보존하고 같은 단자면의 차이만 계산한다."""
+        from test_measurement import leaf, uncertainty
+
+        port = self.document()["ports"][0]["id"]
+        cable_plane = "합성 케이블 입력면"
+        terminal = "합성 기판 급전면"
+        calibration_raw = "검증용 교정 기록. 실제 장비 성적서 없음.\n".encode("utf-8")
+        attachment = {"name": "합성 교정 원문.txt", "role": "calibration", "media_type": "text/plain",
+                      "content_base64": base64.b64encode(calibration_raw).decode("ascii"),
+                      "sha256": hashlib.sha256(calibration_raw).hexdigest()}
+        certificate = self.service.mutate("measurement.attachment.add", self.request(attachment, mutation=True))["artifact"]
+        snapshot = {key: self.snapshot[key] for key in ("snapshot_id", "content_hash")}
+        before = self.document()
+        source_bytes = {}
+
+        def import_source(name, plane, ri):
+            """! @brief 실측으로 분류하지 않은 명시 복소 원문 세 개를 등록한다."""
+            params = self.parameters()
+            params.update(name=name, network=import_parameters(port))
+            raw = ("# GHz S RI R 50\n" + "".join(f"{freq} {ri[0]} {ri[1]}\n" for freq in (1.0, 1.5, 2.0))).encode("ascii")
+            source_bytes[name] = raw
+            params["network"]["source_base64"] = base64.b64encode(raw).decode("ascii")
+            params["network"]["declarations"]["reference_planes"] = [plane]
+            params["changes"]["values"].update({
+                "specimen.identifier": leaf("합성 시료 A", "planned"),
+                "specimen.design_snapshot": leaf(snapshot, "planned"),
+                "specimen.mounting_cycle": leaf(1, "planned"),
+                "fixture.fixture_id": leaf("합성 지그", "planned"),
+                "fixture.mounting_notes": leaf("합성 장착 계획", "planned")})
+            response, _ = self.apply("import_record", params)
+            return response, self.read("measurement.get", record=response["record_ref"])
+
+        raw, original = import_source("보정 전 원문", cable_plane, (0.3, 0.05))
+        submitted, corrected = import_source("외부 보정 결과", terminal, (0.1, 0.0))
+        reference, _ = import_source("급전면 수치 기준", terminal, (0.08, 0.01))
+        budget = uncertainty()
+        budget["measurand"].update(row_port_id=port, column_port_id=port)
+        budget["scope"]["frequency_range_hz"] = [1e9, 2e9]
+        budget.update(coverage_factor=2.0, repetitions=3)
+        processing = {
+            "name": "합성 외부 케이블 보정", "tool": "시험 입력", "version": "1",
+            "input_anchor": original["record"]["data_anchor"], "output_anchor": corrected["record"]["data_anchor"],
+            "order": 0, "reference_plane_before": cable_plane, "reference_plane_after": terminal,
+            "uncertainty_notes": "합성 불확도만 기록", "source_refs": ["합성 처리 원문"]}
+        selected = self.selection(submitted)
+        record_input = {"source": selected["source"], "pin": selected["pin"], "previous_record": submitted["record_ref"],
+            "name": "보정 후 교정 정보 연결", "reason": "합성 처리 조건 원문과 연결",
+            "changes": {"values": {"calibration.method": leaf("합성 SOLT"),
+                                   "calibration.port_ids": leaf([port]),
+                                   "calibration.reference_planes": leaf([{"port_id": port, "reference_plane": terminal}]),
+                                   "calibration.frequency_range_hz": leaf([1e9, 2e9]),
+                                   "calibration.certificate_refs": leaf([certificate]),
+                                   "uncertainty": [budget], "external_processing": [processing]},
+                        "quantities": {}}}
+        linked, _ = self.apply("record", record_input)
+        before_pair = self.comparison(self.selection(reference), self.selection(raw))
+        after_pair = self.comparison(self.selection(reference), self.selection(linked))
+        def live_view(method, data):
+            """! @brief Windows 비교 화면과 동일한 공개 JSON-RPC 메서드를 호출한다."""
+            payload = canonical_bytes({"jsonrpc": "2.0", "id": 1, "method": method, "params": self.request(data)})
+            response = rpc.handle_frame(payload, self.service)
+            self.assertIn("result", response, response)
+            return response["result"]
+
+        different = live_view("measurement.compare", {**before_pair, "offset": 0, "limit": 32})
+        comparable = live_view("measurement.compare", {**after_pair, "offset": 0, "limit": 32})
+        self.assertEqual(len(different["points"]), 3)
+        self.assertTrue(all(row["difference_ri"] is None for row in different["points"]))
+        self.assertIn("reference_planes_unknown_or_mismatch", different["math_comparability"]["reasons"])
+        self.assertEqual(len(comparable["points"]), 3)
+        for row in comparable["points"]:
+            self.assertAlmostEqual(row["difference_ri"][0], 0.02)
+            self.assertAlmostEqual(row["difference_ri"][1], -0.01)
+        live = live_view("measurement.conditions", {
+            "left": after_pair["left"], "right": after_pair["right"], "offset": 0, "limit": 32})
+        self.assertGreater(live["total"], 32)
+        saved, _ = self.apply("compare_record", {"name": "같은 기준면 수치 대조", "reason": "합성 보정 후 차이 보존",
+                                               "comparison": after_pair})
+        self.save_reopen()
+        rows, offset = {}, 0
+        while offset is not None:
+            conditions = self.read("measurement.history", collection="comparisons", record=saved["record_ref"],
+                                   section="conditions", offset=offset, limit=32)
+            rows.update((item["field"], item) for item in conditions["items"])
+            offset = conditions["next_offset"]
+        self.assertIn(cable_plane + " -> " + terminal, rows["measurement.external_processing"]["right_display"])
+        self.assertEqual(rows["measurement.uncertainty"]["difference"], "one_unknown")
+        summary = self.read("measurement.history", collection="comparisons", record=saved["record_ref"],
+                            section="summary", offset=0, limit=32)
+        context = summary["comparison"]["measurement_context"]
+        self.assertEqual(context["uncertainty_propagation"], "not_performed")
+        self.assertEqual(context["physical_acceptance"], "not_established")
+        stored = self.read("measurement.get", record=linked["record_ref"])["record"]
+        self.assertEqual(stored["external_processing"], [processing])
+        self.assertEqual(stored["uncertainty"], [budget])
+        self.assertEqual(stored["specimen"]["design_snapshot"], leaf(snapshot, "planned"))
+        self.assertIsNone(stored["specimen"]["fabrication_revision"])
+        self.assertEqual(self.service.journal.read_artifact(certificate), calibration_raw)
+        for result in (raw, submitted, reference):
+            record = self.read("measurement.get", record=result["record_ref"])["record"]
+            self.assertEqual(self.service.journal.read_artifact(record["data_anchor"]["raw"]), source_bytes[record["name"]])
+        for key in ("board", "geometry", "materials", "ports", "targets", "parameters", "manufacturing_profiles"):
+            self.assertEqual(self.document()[key], before[key])
+
 
 if __name__ == "__main__":
     unittest.main()
