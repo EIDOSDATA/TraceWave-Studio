@@ -1,0 +1,111 @@
+{
+  "schema": "rfad.stage12.pdf-build-cancellation/0.1",
+  "date_kst": "2026-11-21",
+  "release_executable_sha256": "e02bfb9d253f11b6f7686579903b1aff907d7f687d625fba809361511e9f4d46",
+  "native_build_trials": [
+    {
+      "number": 1,
+      "control": {
+        "button_enabled": false,
+        "elapsed_ms": 0.477
+      },
+      "job_id": "6d805eda-1ada-4c90-b41f-d2713e0196a0",
+      "native_worker_attached": true,
+      "operation": "export.build",
+      "receipt": {
+        "elapsed_ms": 104.978,
+        "events_cursor": 3,
+        "job_id": "6d805eda-1ada-4c90-b41f-d2713e0196a0",
+        "state": "cancel_requested"
+      },
+      "state_before": "running",
+      "terminal": {
+        "elapsed_ms": 237.187,
+        "events_cursor": 4,
+        "native_reap_ms": 21.3964,
+        "outcome_unknown": false,
+        "state": "cancelled",
+        "termination_confirmed": true
+      },
+      "previous_result_reopened": true
+    },
+    {
+      "number": 2,
+      "control": {
+        "button_enabled": false,
+        "elapsed_ms": 0.261
+      },
+      "job_id": "3a54793a-69e2-41f4-8b6b-65b7496c497f",
+      "native_worker_attached": true,
+      "operation": "export.build",
+      "receipt": {
+        "elapsed_ms": 66.253,
+        "events_cursor": 3,
+        "job_id": "3a54793a-69e2-41f4-8b6b-65b7496c497f",
+        "state": "cancel_requested"
+      },
+      "state_before": "running",
+      "terminal": {
+        "elapsed_ms": 177.832,
+        "events_cursor": 4,
+        "native_reap_ms": 7.782,
+        "outcome_unknown": false,
+        "state": "cancelled",
+        "termination_confirmed": true
+      },
+      "previous_result_reopened": true
+    },
+    {
+      "number": 3,
+      "control": {
+        "button_enabled": false,
+        "elapsed_ms": 0.034
+      },
+      "job_id": "9a1bd026-dba8-46e6-8085-6188d0b0a1a9",
+      "native_worker_attached": true,
+      "operation": "export.build",
+      "receipt": {
+        "elapsed_ms": 50.007,
+        "events_cursor": 3,
+        "job_id": "9a1bd026-dba8-46e6-8085-6188d0b0a1a9",
+        "state": "cancel_requested"
+      },
+      "state_before": "running",
+      "terminal": {
+        "elapsed_ms": 167.331,
+        "events_cursor": 4,
+        "native_reap_ms": 9.5719,
+        "outcome_unknown": false,
+        "state": "cancelled",
+        "termination_confirmed": true
+      },
+      "previous_result_reopened": true
+    }
+  ],
+  "native_verify_regression": {
+    "control": {
+      "button_enabled": false,
+      "elapsed_ms": 0.298
+    },
+    "job_id": "527c9105-f97e-449a-9fe7-6703ebaaaf12",
+    "native_worker_attached": true,
+    "operation": "export.verify",
+    "receipt": {
+      "elapsed_ms": 48.547,
+      "events_cursor": 3,
+      "job_id": "527c9105-f97e-449a-9fe7-6703ebaaaf12",
+      "state": "cancel_requested"
+    },
+    "state_before": "running",
+    "terminal": {
+      "elapsed_ms": 160.734,
+      "events_cursor": 4,
+      "native_reap_ms": 7.6098,
+      "outcome_unknown": false,
+      "state": "cancelled",
+      "termination_confirmed": true
+    }
+  },
+  "stress_log_load": false,
+  "full_f4_acceptance_measured": false
+}

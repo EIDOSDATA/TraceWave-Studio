@@ -23,7 +23,7 @@ GUI = os.environ.get("RFAD_GUI_EXE", "")
 EXCHANGE = os.environ.get("RFAD_EXCHANGE_PYTHON", "")
 
 
-def fixture(workspace):
+def fixture(workspace, cancel_operation="export.verify"):
     """! @brief 물리 합격을 만들지 않고 실제 형상과 미정 재료의 고정 입력만 저장한다."""
     f = fixtures.ExchangeFixture(ExchangeRuntime(Path(EXCHANGE)))
     try:
@@ -40,6 +40,7 @@ def fixture(workspace):
         state = f.service.journal.read()
         data = {"project_id": f.project, "revision_id": f.revision, "snapshot": f.snapshot,
                 "context": context, "preview": preview, "input": request, "omitted_name": excluded["name"],
+                "cancel_operation": cancel_operation,
                 "fixture_scope": "actual drawing geometry; no FDTD or manufacturing validation"}
         original = {path.relative_to(f.workspace).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
                     for path in f.workspace.rglob("*") if path.is_file() and path.name != ".writer.lock"
@@ -58,10 +59,18 @@ class GuiOutputTests(unittest.TestCase):
     """! @brief 검토 hash 무효화와 실제 파일 생성 및 명시 재검수를 분리해 검사한다."""
 
     def test_native_snapshot_review_build_verify_save_restart_preserves_sources(self):
-        """! @brief native 화면 동작 뒤 runtime 없는 재열기에서도 원문과 이전 파일을 보존한다."""
+        """! @brief 원래 도면과 재검수 결과를 보존한 채 새 재검수의 실행을 취소한다."""
+        self.check_native_cancellation("export.verify", "output.json")
+
+    def test_native_pdf_generation_cancel_preserves_published_sources(self):
+        """! @brief 실제 PDF 생성 worker를 취소하고 이미 게시된 파일과 원문을 다시 연다."""
+        self.check_native_cancellation("export.build", "output-build.json")
+
+    def check_native_cancellation(self, operation, filename):
+        """! @brief native 회수와 runtime 없는 재열기를 같은 원본으로 대조한다."""
         with TemporaryDirectory(prefix="TraceWave 출력 화면 ") as directory:
             workspace = Path(directory) / "작업 영역"
-            document, before, files, inputs = fixture(workspace)
+            document, before, files, inputs = fixture(workspace, operation)
             report_path = Path(directory) / "출력 화면 시험.json"
             startup = subprocess.STARTUPINFO()
             startup.dwFlags |= subprocess.STARTF_USESHOWWINDOW
@@ -74,7 +83,7 @@ class GuiOutputTests(unittest.TestCase):
             self.assertTrue(report_path.is_file(), (process.returncode, process.stderr))
             report = json.loads(report_path.read_bytes())
             if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
-                target = Path(output) / "output.json"
+                target = Path(output) / filename
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(report_path.read_bytes())
             self.assertEqual(process.returncode, 0, report)
@@ -97,13 +106,17 @@ class GuiOutputTests(unittest.TestCase):
                 self.assertEqual(len(jobs), 3)
                 trace = report["native_cancel_trace"]
                 cancelled = state["jobs"][trace["job_id"]]
-                assert_native_cancel_trace(self, workspace, trace, cancelled, "exchange", "export.verify")
+                assert_native_cancel_trace(self, workspace, trace, cancelled, "exchange", operation)
                 completed = [job for job in jobs if job["state"] == "completed"]
                 self.assertEqual(len(completed), 2)
                 build = next(job for job in completed if job["operation_method"] == "export.build")
                 verify = next(job for job in completed if job["operation_method"] == "export.verify")
                 self.assertEqual(verify["exchange"]["original_job_id"], build["job_id"])
-                self.assertEqual(cancelled["exchange"]["original_job_id"], build["job_id"])
+                if operation == "export.verify":
+                    self.assertEqual(cancelled["exchange"]["original_job_id"], build["job_id"])
+                else:
+                    self.assertEqual(cancelled["snapshot"], build["snapshot"])
+                    self.assertIsNone(cancelled["exchange"]["original_job_id"])
                 for job in completed:
                     value = read(service, "export.get", {"contract_version": "rfad.api/2.0",
                         "context": {"project_id": project}, "input": {"job_id": job["job_id"]}})

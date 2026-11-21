@@ -305,14 +305,33 @@ void StudioSmokeDriver::OutputSmokeTick()
                 "과거 출력의 누락 이름이 상세 표 또는 기본 조건에 전달되지 않았습니다.");
         }
         m_setupChecks.push_back("output_history_clears_current_paper");
+        if (m_outputFixture.value("cancel_operation", "") == "export.build")
+        {
+            m_setupStage = 15;
+            SetupSmoke::Click(drawing->m_preview);
+        }
+        else
+        {
+            m_setupStage = 12;
+            SetupSmoke::Click(view->m_verify);
+        }
+    }
+    else if (m_setupStage == 15 && idle)
+    {
+        CanvasAssert(view->m_preview.is_object() && view->m_preview.value("can_build", false),
+                     "실행 중 생성 취소를 위한 새 도면 검토를 받지 못했습니다.");
+        OutputReviewHook accept(wxID_OK, m_outputFixture.at("omitted_name"));
         m_setupStage = 12;
-        SetupSmoke::Click(view->m_verify);
+        SetupSmoke::Click(drawing->m_build);
+        CanvasAssert(accept.count == 1 && accept.omissionSeen && controller.Active(),
+                     "실행 중 취소할 두 번째 도면 생성이 접수되지 않았습니다.");
     }
     else if (m_setupStage == 12 && !controller.m_task.Empty() && controller.m_task.Id() == m_runningNativeJob)
     {
         CanvasAssert(view->m_cancel->IsEnabled(), "실행 중인 출력 작업을 취소할 수 없습니다.");
         m_setupStage = 13;
-        ArmNativeCancellation(controller.m_task.Id(), "export.verify");
+        const auto operation = m_outputFixture.value("cancel_operation", "export.verify");
+        ArmNativeCancellation(controller.m_task.Id(), operation.c_str());
         SetupSmoke::Click(view->m_cancel);
         CanvasAssert(!view->m_cancel->IsEnabled(), "출력 취소 버튼이 입력 직후 잠기지 않았습니다.");
     }
