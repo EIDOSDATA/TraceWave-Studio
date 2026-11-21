@@ -75,10 +75,26 @@ void StudioSmokeDriver::InstallationSmokeTick()
         }
         else if (m_setupStage == 4)
         {
+            const auto kind = m_resultsFixture.value("kind", std::string("dielectric_case"));
+            if (kind == "grounded_pec_box")
+            {
+                if (!dialog->m_context.at("exists").get<bool>())
+                {
+                    const int index = dialog->m_record->FindString(Display("시험용 금속 접지 비교"));
+                    CanvasAssert(index != wxNOT_FOUND, "비접촉 금속 원본을 찾지 못했습니다.");
+                    SetupSmoke::Choose(dialog->m_record, index);
+                    return;
+                }
+                choose("kind", kind);
+                static_cast<wxTextCtrl*>(dialog->m_inputs.at("z"))->SetValue(Display("1.035"));
+                m_setupStage = 5;
+                apply();
+                return;
+            }
             const auto& scenario = dialog->m_context.at("records").at("scenario").at(0);
             choose("scenario_id", scenario.at("id"));
-            const bool metal = m_resultsFixture.value("kind", "") == "isolated_pec_box";
-            choose("kind", metal ? "isolated_pec_box" : "dielectric_case");
+            const bool metal = kind == "isolated_pec_box";
+            choose("kind", kind);
             auto* material = static_cast<wxChoice*>(dialog->m_inputs.at("material_id"));
             const int index = material->FindString(Display(metal ? "Explicit test conductor" : "검증용 유전체 케이스 재료"));
             CanvasAssert(index != wxNOT_FOUND, "시험 재료를 찾지 못했습니다.");
@@ -98,7 +114,7 @@ void StudioSmokeDriver::InstallationSmokeTick()
         }
         else if (m_setupStage == 5)
         {
-            if (m_resultsFixture.value("kind", "") == "isolated_pec_box")
+            if (m_resultsFixture.contains("kind"))
             {
                 m_setupStage = 8;
                 dialog->CloseDialog();
@@ -138,7 +154,7 @@ void StudioSmokeDriver::InstallationSmokeTick()
         CanvasAssert(installed != m_solverFirstResult, "케이스 해석이 별도 결과를 생성하지 않았습니다.");
         m_resultsFixture = {{"bare", {{"kind", "solver"}, {"artifact_id", m_solverFirstResult}}},
                             {"installed", {{"kind", "solver"}, {"artifact_id", installed}}},
-                            {"metal", m_resultsFixture.value("kind", "") == "isolated_pec_box"}};
+                            {"kind", m_resultsFixture.value("kind", std::string("dielectric_case"))}};
         m_setupStage = 11;
         m_frame.OpenProject("open", m_frame.m_path);
     }
@@ -182,8 +198,10 @@ void StudioSmokeDriver::InstallationSmokeTick()
             auto* dialog = wxWindow::FindWindowByName("installation-comparison", view);
             CanvasAssert(dialog != nullptr && dialog->IsShown(), "설치 방사 비교 창이 열리지 않았습니다.");
             auto* values = dynamic_cast<wxStaticText*>(wxWindow::FindWindowByName("installation-efficiencies", dialog));
-            const auto firstLabel = m_resultsFixture.at("metal") == true ? "기준 결과" : "기판 단독";
-            const auto secondLabel = m_resultsFixture.at("metal") == true ? "검증용 금속 상자" : "유전체 케이스 시험";
+            const auto kind = m_resultsFixture.at("kind");
+            const auto firstLabel = kind == "grounded_pec_box" ? "(비접촉)" : kind == "isolated_pec_box" ? "기준 결과" : "기판 단독";
+            const auto secondLabel = kind == "grounded_pec_box" ? "(접지 연결)" :
+                kind == "isolated_pec_box" ? "검증용 금속 상자" : "유전체 케이스 시험";
             CanvasAssert(values != nullptr && values->GetLabel().Contains(Display(firstLabel)) &&
                              values->GetLabel().Contains(Display(secondLabel)),
                          "설치 비교 창에 두 원본과 효율이 표시되지 않았습니다.");

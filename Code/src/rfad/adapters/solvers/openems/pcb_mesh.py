@@ -151,8 +151,26 @@ def audit_native_mesh(csx, case, lines):
             if count < 2:
                 reject("polygon 구멍의 열린 영역을 native Yee 격자로 해상하지 못했습니다.", shape["id"])
             hole_checks.append({"entity_id": shape["id"], "hole_index": index, "open_electric_edges": count})
+    grounding = []
+    for part in case.get("environment", {}).get("parts", []):
+        if part["kind"] != "grounded_pec_box":
+            continue
+        low, high = part["boxes_mm"][0]
+        origin = node_at(low)
+        target = part["ground_geometry_id"]
+        pec = "environment_" + part["id"]
+        count = 0
+        for x, y in itertools.product(indexes(0, low[0], high[0]), indexes(1, low[1], high[1])):
+            node = (x, y, origin[2])
+            if node in memberships[target] and actual_property((2, *node)) == pec:
+                count += 1
+        if count < 1:
+            raise ProjectError("E_CONNECTIVITY", "native 금속의 전기 edge가 접지 패드에 연결되지 않았습니다.",
+                               details={"field_path": "part." + part["id"]})
+        grounding.append({"part_id": part["id"], "ground_geometry_id": target, "contact_nodes": count})
     return {"schema": "rfad.pcb-native-connectivity/0.1", "method": "CSXCAD material priority at Yee electric edge centers",
             "operator_coefficients_checked": False, "yee_connectivity_checked": True, "components": components,
             "entities": [{"entity_id": identity, "conductor_edge_count": edge_counts[identity], "component_count": 1} for identity in sorted(entities)],
             "port_gap_edge_count": gap_edges, "port_terminals_connected": True, "polygon_holes": hole_checks,
+            **({"grounded_environment": grounding} if grounding else {}),
             "physics_validated": False}

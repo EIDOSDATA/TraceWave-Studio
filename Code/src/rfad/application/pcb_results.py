@@ -83,6 +83,14 @@ def validate_preparation(plan, preparation):
                      "tool_hole_diameter_mm": via["tool_hole_diameter_mm"], "tool_hole_used_for_native_geometry": False, "native_drill_basis": "finished_hole_diameter"}
                     for via in plan["case"].get("vias", [])]
     connectivity = consumption.get("native_connectivity", {})
+    expected_grounding = [(part["id"], part["ground_geometry_id"]) for part in plan["case"].get("environment", {}).get("parts", [])
+                          if part["kind"] == "grounded_pec_box"]
+    observed_grounding = connectivity.get("grounded_environment", [])
+    if (type(observed_grounding) is not list or len(observed_grounding) != len(expected_grounding)
+            or any(type(row) is not dict or (row.get("part_id"), row.get("ground_geometry_id")) != expected
+                   or type(row.get("contact_nodes")) is not int or row["contact_nodes"] < 1
+                   for row, expected in zip(observed_grounding, expected_grounding))):
+        fail("E_HASH", "설치 금속의 native 접지 기록이 계획과 다릅니다.")
     expected_entities = sorted(item["id"] for item in plan["case"]["shapes"] + plan["case"].get("vias", []))
     records = connectivity.get("entities", [])
     if (connectivity.get("schema") != "rfad.pcb-native-connectivity/0.1" or connectivity.get("yee_connectivity_checked") is not True

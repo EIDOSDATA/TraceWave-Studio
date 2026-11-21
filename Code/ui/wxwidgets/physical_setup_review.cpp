@@ -219,6 +219,7 @@ void PhysicalSetupDialog::RenderReview()
     {
         text += "\n하부 개방 케이스는 바깥 치수와 벽 두께, 재료가 필요합니다. 해석에서는 Z축 회전 0도를 지정하십시오.";
         text += "\n비접촉 금속 상자는 이상 도체(PEC)로 계산합니다. PCB·케이스·다른 금속과 간극이 필요합니다.";
+        text += "\n접지 금속은 최상층의 사각 급전 기준 접지 패드 윗면에 놓으십시오.";
     }
     if (!m_stepReview.is_null())
     {

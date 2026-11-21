@@ -57,7 +57,7 @@ def prepare(stage, plan, runtime):
             prop.AddBox(start=[0, 0, low], stop=[*board["dimensions_mm"], high], priority=1)
     for part in case.get("environment", {}).get("parts", []):
         name = "environment_" + part["id"]
-        if part["kind"] == "isolated_pec_box":
+        if part["kind"] in ("isolated_pec_box", "grounded_pec_box"):
             prop = csx.AddMetal(name)
         else:
             prop = csx.AddMaterial(name, epsilon=part["epsilon_r"], kappa=part["kappa_s_per_m"])

@@ -6,6 +6,12 @@ from rfad.application.result_radiation import load
 from rfad.domain.errors import ProjectError
 
 
+def _part_label(part):
+    """! @brief 같은 부품 이름을 유지한 경우에도 해석의 접지 상태를 알려 준다."""
+    state = {"isolated": " (비접촉)", "grounded": " (접지 연결)"}.get(part.get("electrical_connection"), "")
+    return part["name"] + state
+
+
 def compare(service, left, right):
     """! @brief 실제 공통 표본의 효율과 실현 이득을 같은 조건에서 비교한다."""
     pair = (left, right)
@@ -17,7 +23,7 @@ def compare(service, left, right):
     names = [case.get("environment", {}).get("name", "기판 단독") for case in cases]
     if names[0] == names[1]:
         names = [name + " / " + ("기준 결과" if index == 0 else "비교 결과") + " / " +
-                 ", ".join(part["name"] for part in case.get("environment", {}).get("parts", []))
+                 ", ".join(_part_label(part) for part in case.get("environment", {}).get("parts", []))
                  for index, (name, case) in enumerate(zip(names, cases))]
     identity = ("board", "layers", "shapes", "vias", "port", "settings", "frequency_hz", "excitation", "boundary_conditions")
     if (any(plan.get("analysis_profile") != "rfad.openems.pcb-single-port/0.1" for plan in plans)

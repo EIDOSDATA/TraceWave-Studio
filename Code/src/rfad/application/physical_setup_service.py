@@ -26,6 +26,7 @@ LABELS = {
     "base": "기본 적층", "with_surfaces": "표면층 포함", "box": "간이 상자", "step": "외부 STEP",
     "dielectric_case": "유전체 케이스 (하부 개방)",
     "isolated_pec_box": "비접촉 금속 상자 (PEC)",
+    "grounded_pec_box": "급전 기준 패드에 접지한 금속 (PEC)",
 }
 FIELDS = {
     "name": "이름", "kind": "종류", "side": "면", "coverage": "피복 범위", "material_id": "재료",

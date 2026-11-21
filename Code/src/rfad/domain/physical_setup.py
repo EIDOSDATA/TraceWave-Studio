@@ -16,8 +16,8 @@ SURFACE_KINDS = ("solder_mask", "coverlay", "adhesive", "bondply", "finish", "fe
 FLAGS = {"visible", "include_in_em", "include_in_export"}
 SURFACE_NUMBERS = ("offset", "thickness", "x", "y", "width", "height")
 PART_NUMBERS = ("x", "y", "z", "yaw", "width", "height", "depth")
-PART_KINDS = ("box", "step", "dielectric_case", "isolated_pec_box")
-EM_PART_KINDS = {"dielectric_case", "isolated_pec_box"}
+PART_KINDS = ("box", "step", "dielectric_case", "isolated_pec_box", "grounded_pec_box")
+EM_PART_KINDS = {"dielectric_case", "isolated_pec_box", "grounded_pec_box"}
 ROW_FIELDS = {
     "surface": {"id", "name", "kind", "side", "coverage", "material_id", "openings", "source_refs", *FLAGS, *SURFACE_NUMBERS},
     "scenario": {"id", "name", "source_refs"},

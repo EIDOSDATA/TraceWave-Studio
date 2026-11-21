@@ -1,6 +1,8 @@
 """! @brief PCB 설치 환경의 형상, 재료 경계와 공기 여백을 계획에 고정한다."""
 
-from rfad.application.pcb_geometry import fail, length, scalar
+import math
+
+from rfad.application.pcb_geometry import _bounds, fail, length, scalar
 from rfad.domain.physical_setup import candidates, setup
 
 
@@ -69,23 +71,45 @@ def _dielectric_case(document, row, pcb, step, dielectric):
             "pcb_clearance_xy_mm": clearances, "pcb_ceiling_clearance_mm": ceiling, **properties}
 
 
-def _isolated_box(document, row, occupied_boxes, step):
-    """! @brief 도체 접촉을 유도하지 않는 편평한 축 분리 거리만 인정한다."""
+def _ground_attachment(case, start, stop, step, field):
+    """! @brief 명시한 상부 기준 패드에서 물리 외면과 모델의 도체 면을 각각 확인한다."""
+    port = case["port"]
+    ref = next(shape for shape in case["shapes"] if shape["id"] == port["reference_geometry_id"])
+    layer = case["layers"][-1]
+    if (ref["role"] != "ground" or ref["kind"] != "pad" or ref["pad_shape"] != "rectangle"
+            or ref["rotation_deg"] != 0 or ref["layer_id"] != layer["id"]):
+        fail("E_CONNECTIVITY", "접지 금속은 최상층의 축 정렬 사각 급전 기준 접지 패드가 필요합니다.", field)
+    surface = layer["z_min_mm"] + layer["thickness_mm"]
+    if not math.isclose(start[2], surface, rel_tol=0, abs_tol=1e-8):
+        fail("E_CONNECTIVITY", "접지 금속의 하단 Z를 기준 패드의 실제 윗면에 맞추십시오.", field + ".z")
+    if any(min(a - lo, hi - b) < step - 1e-8 for a, b, (lo, hi) in zip(start, stop, _bounds(ref))):
+        fail("E_CONNECTIVITY", "금속의 접촉면을 접지 패드 안에 놓고 패드 가장자리에서 한 격자 이상 띄우십시오.", field)
+    return {"ground_geometry_id": ref["id"], "ground_net_id": ref["net_id"],
+            "physical_contact_z_mm": surface, "native_contact_z_mm": ref["sheet_z_mm"]}
+
+
+def _metal_box(document, row, case, pcb_box, occupied_boxes, step):
+    """! @brief 명시 접지 접면과 격자상 비접촉을 각각 검사한다."""
     field = "part." + row["id"]
     start, stop, size = _box(document, row)
     if min(size) < 2 * step:
-        fail("E_GEOMETRY", "비접촉 금속 상자의 각 축 치수는 두 격자 이상이어야 합니다.", field)
-    distances = [max(max(a - hi, lo - b) for a, b, lo, hi in zip(start, stop, other_start, other_stop))
-                 for other_start, other_stop in occupied_boxes]
-    clearance = min(distances)
-    if clearance < step:
+        fail("E_GEOMETRY", "금속 상자의 각 축 치수는 두 격자 이상이어야 합니다.", field)
+    grounded = row["kind"] == "grounded_pec_box"
+    attachment = _ground_attachment(case, start, stop, step, field) if grounded else {}
+    native_start = [*start[:2], attachment["native_contact_z_mm"]] if grounded else start
+    separated = occupied_boxes if grounded else [pcb_box, *occupied_boxes]
+    distances = [max(max(a - hi, lo - b) for a, b, lo, hi in zip(native_start, stop, other_start, other_stop))
+                 for other_start, other_stop in separated]
+    clearance = min(distances, default=None)
+    if clearance is not None and clearance < step:
         fail("E_GEOMETRY", "금속과 PCB 외곽, 케이스 벽 또는 다른 금속 사이에 한 격자 이상의 축 방향 간극이 필요합니다.", field)
-    return {**_part(row, start, stop), "boxes_mm": [[start, stop]], "metal_model": "perfect_electric_conductor",
-            "electrical_connection": "isolated", "minimum_axis_clearance_mm": clearance, "material_values_consumed": False}
+    return {**_part(row, start, stop), "boxes_mm": [[native_start, stop]], "metal_model": "perfect_electric_conductor",
+            "electrical_connection": "grounded" if grounded else "isolated",
+            "minimum_axis_clearance_mm": clearance, "material_values_consumed": False, **attachment}
 
 
 def project_environment(document, case, dielectric):
-    """! @brief 활성 설치 환경에 포함한 유전체와 비접촉 도체를 봉인한다."""
+    """! @brief 활성 설치 환경에 포함한 유전체와 금속의 연결 조건을 봉인한다."""
     _, part_rows = candidates(document)
     included = [row for row in part_rows if row["include_in_em"]]
     if not included:
@@ -97,11 +121,11 @@ def project_environment(document, case, dielectric):
     pcb = board_extents(case)
     step = settings["grid_mm"]
     parts = [_dielectric_case(document, row, pcb, step, dielectric) for row in cases]
-    occupied_boxes = [list(zip(*pcb))]
-    occupied_boxes.extend(box for part in parts for box in part["boxes_mm"])
+    pcb_box = list(zip(*pcb))
+    occupied_boxes = [box for part in parts for box in part["boxes_mm"]]
     for row in included:
-        if row["kind"] == "isolated_pec_box":
-            metal = _isolated_box(document, row, occupied_boxes, step)
+        if row["kind"] in ("isolated_pec_box", "grounded_pec_box"):
+            metal = _metal_box(document, row, case, pcb_box, occupied_boxes, step)
             parts.append(metal)
             occupied_boxes.extend(metal["boxes_mm"])
     model = setup(document)

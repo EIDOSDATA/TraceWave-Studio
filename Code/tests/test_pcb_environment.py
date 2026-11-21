@@ -52,7 +52,44 @@ def plan(document):
     return build_pcb_plan(document, snapshot_for(document), runtime_identity(), ENV_SETTINGS)
 
 
+def ground_fixture():
+    """! @brief 기판 바로 위에 떠 있는 PEC와 상부 사각 기준 접지 패드를 명시한다."""
+    document = board_fixture()
+    reference = document["ports"][0]["reference_geometry_id"]
+    pad = next(row for row in document["geometry"] if row["id"] == reference)
+    for key in ("width", "start", "end"):
+        del pad[key]
+    pad.update(kind="pad", pad_shape="rectangle", center=[quantity(4, "mm"), quantity(6, "mm")],
+               size=[quantity(6, "mm"), quantity(4, "mm")], rotation=quantity(0, "deg"))
+    case = add_case(document)
+    case["depth"] = quantity(4.5, "mm")
+    metal = {key: value for key, value in case.items() if key != "case_thickness"}
+    metal.update(id=str(uuid4()), kind="isolated_pec_box", name="시험용 금속 접지 비교",
+                 material_id=document["stackup"][-1]["material_id"], source_refs=["시험 금속 원본 출처"])
+    metal.update({key: quantity(value, "mm") for key, value in
+                  {"x": 3.5, "y": 5.5, "z": 1.635, "width": 1, "height": 1, "depth": 1}.items()})
+    model = setup(document)
+    model["parts"] = sorted([*model["parts"], metal], key=lambda row: row["id"])
+    return document, metal
+
+
 class PcbEnvironmentTests(unittest.TestCase):
+    def test_grounded_box_requires_explicit_pad_contact_and_maps_to_native_sheet(self):
+        """! @brief 간극만 보고 접지를 추정하지 않으며 계산 접면을 기록한다."""
+        document, metal = ground_fixture()
+        self.assertEqual(plan(document)["case"]["environment"]["parts"][1]["electrical_connection"], "isolated")
+        metal["kind"] = "grounded_pec_box"
+        with self.assertRaisesRegex(ProjectError, "실제 윗면"):
+            plan(document)
+        metal["z"] = quantity(1.035, "mm")
+        grounded = plan(document)["case"]["environment"]["parts"][1]
+        self.assertEqual(grounded["ground_geometry_id"], document["ports"][0]["reference_geometry_id"])
+        self.assertAlmostEqual(grounded["physical_contact_z_mm"], 1.035)
+        self.assertEqual(grounded["boxes_mm"][0][0][2], 1.0)
+        metal["x"] = quantity(7, "mm")
+        with self.assertRaisesRegex(ProjectError, "패드 안"):
+            plan(document)
+
     def test_metal_requires_clearance_and_leaves_reference_material_unconsumed(self):
         """! @brief PEC의 계산 조건과 명시 재료 참조 및 간극을 구분한다."""
         document = board_fixture()

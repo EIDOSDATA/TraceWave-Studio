@@ -21,7 +21,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 45,
     "current_06_분석연구": 13,
-    "current_07_검증": 135,
+    "current_07_검증": 136,
     "current_08_운영환경": 7,
     "current_09_개발계획": 8,
     "current_11_검토기록": 7,
@@ -28170,9 +28170,9 @@
       "path": "01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 13272,
-      "working_tree_sha256": "720ca80ff58d4011a365eaa6077780743029e4af4b30e9dfdbe7dd71a52c2440",
-      "text_lines": 59,
+      "bytes": 14415,
+      "working_tree_sha256": "9310c331928353b14fca49cbbcb929d453b474dceca18176323844e485f84e89",
+      "text_lines": 65,
       "text_status": "utf8_read"
     },
     {
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 22163,
-      "working_tree_sha256": "9054da8b15cd4d7a2a744b91ba931170ff406e8e8dad39d85685effd934afca8",
-      "text_lines": 151,
+      "bytes": 22337,
+      "working_tree_sha256": "4ec9275213b60b914844dfb75192f81e9d5349661638bf5c91102ca78067d5df",
+      "text_lines": 152,
       "text_status": "utf8_read"
     },
     {
@@ -28681,8 +28681,8 @@
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 49017,
-      "working_tree_sha256": "0fab8ca7e64f030346b33974f9a2f104a77ad9bc0bec054acaf1a9f156732127",
+      "bytes": 49039,
+      "working_tree_sha256": "232c28795dadc7d942ea42713e2638e4d587f022675415fbc43f7256d4e89580",
       "text_lines": 181,
       "text_status": "utf8_read"
     },
@@ -32345,8 +32345,8 @@
       "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12539,
-      "working_tree_sha256": "161895ef921fa7bfbbe860b768916746df28e6b92c1bde693385b8988f3bbe42",
+      "bytes": 12353,
+      "working_tree_sha256": "914bfa5d4ba7e47b517ee112877925e385cdf3e57c3e426a4e854765ce3822f9",
       "text_lines": 42,
       "text_status": "utf8_read"
     },
@@ -32363,8 +32363,8 @@
       "path": "01_개발문서/09_개발계획/06_비교분석과_기능개발_범위.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12298,
-      "working_tree_sha256": "6270ce2578458402b58fceef1207ba7172fe85df5a344107c13f0eb9f56641fb",
+      "bytes": 12317,
+      "working_tree_sha256": "5de58fa3cb1ae89a97fab24431fdc18f4fef7f3ab7919388b35e315017fc531c",
       "text_lines": 37,
       "text_status": "utf8_read"
     },
@@ -32401,6 +32401,15 @@
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
       "bytes": 1512,
       "working_tree_sha256": "1e717e2f6e5badddec9cd8ad9981a648381b6ec516ce89b242fa3b645eb6c2ab",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/248_윈도우_접지금속_설치해석_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1797,
+      "working_tree_sha256": "a224aa0596d10652e9682b893c0bcb0e0f278c5c0432151d674c6567e6fec411",
       "text_lines": 16,
       "text_status": "utf8_read"
     }
@@ -32560,10 +32569,8 @@
   "incremental_refresh": {
     "date_kst": "2026-11-21",
     "mode": "pcb_installation_verification_incremental",
-    "previous_inventory_sha256": "9506f4b6954be9df4aa1fa868c008d8013fa78776d0fcc7377b36ceadb43d4f6",
+    "previous_inventory_sha256": "eaeb76efa8f5d1fc057d2d40bd213f92b705494aa5c9e85f5a8741dd06cac32f",
     "refreshed_paths": [
-      "01_개발문서/02_시스템명세/03_데이터_모델과_파일_형식.md",
-      "01_개발문서/02_시스템명세/09_표현식과_설계데이터.md",
       "01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md",
       "01_개발문서/07_검증/README.md",
       "01_개발문서/09_개발계획/03_개발완료_계획.md",
@@ -32571,8 +32578,7 @@
       "01_개발문서/09_개발계획/06_비교분석과_기능개발_범위.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/246_윈도우_유전체케이스_설치해석_검증.md",
-      "01_개발문서/07_검증/247_윈도우_비접촉금속_설치해석_검증.md"
+      "01_개발문서/07_검증/248_윈도우_접지금속_설치해석_검증.md"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,

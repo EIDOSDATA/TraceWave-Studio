@@ -304,7 +304,9 @@ def project_pcb(document, settings):
                                                + (["open-bottom dielectric case uses five axis-aligned uniform material volumes"]
                                                   if environment and any(part["kind"] == "dielectric_case" for part in environment["parts"]) else [])
                                                + (["isolated metal boxes use ideal PEC with zero conductor loss"]
-                                                  if environment and any(part["kind"] == "isolated_pec_box" for part in environment["parts"]) else []),
+                                                  if environment and any(part["kind"] == "isolated_pec_box" for part in environment["parts"]) else [])
+                                               + (["grounded metal uses ideal PEC joined to the reference copper sheet plane; contact impedance omitted"]
+                                                  if environment and any(part["kind"] == "grounded_pec_box" for part in environment["parts"]) else []),
                              "unsupported_observables": ["absolute_power", "full_s_matrix"] if radiation is not None else ["NF2FF", "gain", "efficiency", "absolute_power", "full_s_matrix"]},
             "resource_estimate": {"kind": "initial_estimate_not_measured", "estimated_grid_points": cells,
                                   "estimated_memory_bytes": 128 * 1024 * 1024 + cells * 160 + (losses["estimated_field_bytes"] * 2 if losses else 0), "max_wall_time_seconds": compute_limits(settings)["max_wall_time_seconds"],
