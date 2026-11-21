@@ -28,6 +28,18 @@ std::optional<FILETIME> StartedAt(DWORD pid)
     return started;
 }
 
+/** @brief Windows가 보고한 GDI 또는 USER 객체 수와 계측 실패를 구분한다. */
+Json GuiObjectCount(HANDLE process, DWORD kind)
+{
+    SetLastError(ERROR_SUCCESS);
+    const auto count = GetGuiResources(process, kind);
+    if (count == 0 && GetLastError() != ERROR_SUCCESS)
+    {
+        return nullptr;
+    }
+    return count;
+}
+
 /** @brief 같은 Studio와 현재 하위 서비스의 CPU/GPU 이외 프로세스 자원을 기록한다. */
 Json CurrentProcessSamples()
 {
@@ -91,8 +103,14 @@ Json CurrentProcessSamples()
         {
             throw std::runtime_error("Studio 하위 프로세스의 자원 표본을 읽지 못했습니다.");
         }
-        rows.push_back({{"pid", process}, {"gui", process == root}, {"private_commit_bytes", counters.PrivateUsage},
-                        {"working_set_bytes", counters.WorkingSetSize}, {"handles", handles}});
+        Json row{{"pid", process}, {"gui", process == root}, {"private_commit_bytes", counters.PrivateUsage},
+                 {"working_set_bytes", counters.WorkingSetSize}, {"handles", handles}};
+        if (process == root)
+        {
+            row["gui_objects"] = {{"gdi", GuiObjectCount(owner.get(), GR_GDIOBJECTS)},
+                                  {"user", GuiObjectCount(owner.get(), GR_USEROBJECTS)}};
+        }
+        rows.push_back(std::move(row));
     }
     if (rows.size() < 2)
     {
