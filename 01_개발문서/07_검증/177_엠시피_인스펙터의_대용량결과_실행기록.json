@@ -1,0 +1,413 @@
+{
+  "schema": "rfad.stage12.mcp-inspector-large-results/0.1",
+  "date_kst": "2026-11-21",
+  "inspector_version": "2.16.0",
+  "method_protocol": "separate Windows MCP stdio session per call",
+  "project_id": "67a9e2b6-840c-4568-ada6-84568685014a",
+  "base_design_and_registered_sources_unchanged": true,
+  "list": {
+    "profile": "rfad.large-result-library/0.1",
+    "records": [
+      {
+        "artifact": {
+          "bytes": 20020480,
+          "sha256": "1b686e074faefc9630ee40d7dc95a61b273d8337070d72e0d4333fcbfcc2ca0c",
+          "uri": "projects/CAD 한글 교환 검증/large-results/f292652f-aa90-4550-9480-558373a07313/source.h5"
+        },
+        "conditions": {
+          "manufacturing": null,
+          "measurement": null,
+          "physics_validated": false
+        },
+        "details": {
+          "curves": [
+            {
+              "count": 100000,
+              "label": "복소 곡선 1",
+              "measurement": null,
+              "reference_ohm": null,
+              "source": "합성 시험 원본 1"
+            },
+            {
+              "count": 100000,
+              "label": "복소 곡선 2",
+              "measurement": null,
+              "reference_ohm": null,
+              "source": "합성 시험 원본 2"
+            },
+            {
+              "count": 100000,
+              "label": "복소 곡선 3",
+              "measurement": null,
+              "reference_ohm": null,
+              "source": "합성 시험 원본 3"
+            },
+            {
+              "count": 100000,
+              "label": "복소 곡선 4",
+              "measurement": null,
+              "reference_ohm": null,
+              "source": "합성 시험 원본 4"
+            },
+            {
+              "count": 100000,
+              "label": "복소 곡선 5",
+              "measurement": null,
+              "reference_ohm": null,
+              "source": "합성 시험 원본 5"
+            },
+            {
+              "count": 100000,
+              "label": "복소 곡선 6",
+              "measurement": null,
+              "reference_ohm": null,
+              "source": "합성 시험 원본 6"
+            },
+            {
+              "count": 100000,
+              "label": "복소 곡선 7",
+              "measurement": null,
+              "reference_ohm": null,
+              "source": "합성 시험 원본 7"
+            },
+            {
+              "count": 100000,
+              "label": "복소 곡선 8",
+              "measurement": null,
+              "reference_ohm": null,
+              "source": "합성 시험 원본 8"
+            }
+          ],
+          "quantity": "Z",
+          "unit": "ohm"
+        },
+        "id": "f292652f-aa90-4550-9480-558373a07313",
+        "kind": "traces",
+        "name": "traces",
+        "revision_id": "0779abc3-d237-4fcd-9528-c7f4e147163a",
+        "source_name": "traces.h5"
+      },
+      {
+        "artifact": {
+          "bytes": 1075856824,
+          "sha256": "e776080d4c727629d68b94ad30e483ba25d13f86f6797c764ea72a8aa5c840b3",
+          "uri": "projects/CAD 한글 교환 검증/large-results/a4db047e-3ce2-4605-a90d-0494cf6d8f0a/source.h5"
+        },
+        "conditions": {
+          "manufacturing": null,
+          "measurement": null,
+          "physics_validated": false
+        },
+        "details": {
+          "frequency_hz": [
+            1000000000,
+            2000000000
+          ],
+          "shape": [
+            256,
+            256,
+            342
+          ]
+        },
+        "id": "a4db047e-3ce2-4605-a90d-0494cf6d8f0a",
+        "kind": "field",
+        "name": "field",
+        "revision_id": "0779abc3-d237-4fcd-9528-c7f4e147163a",
+        "source_name": "field.h5"
+      }
+    ]
+  },
+  "slice": {
+    "color": [
+      [
+        9.486832980505138,
+        10.44030650891055
+      ],
+      [
+        9.486832980505138,
+        10.44030650891055
+      ]
+    ],
+    "color_range": [
+      0,
+      10.44030650891055
+    ],
+    "color_scope": "returned_page_magnitude",
+    "coordinate_basis": "recorded_primary_coordinates",
+    "frequency_hz": 2000000000,
+    "id": "a4db047e-3ce2-4605-a90d-0494cf6d8f0a",
+    "interpolation": "none",
+    "magnitude": [
+      [
+        9.486832980505138,
+        10.44030650891055
+      ],
+      [
+        9.486832980505138,
+        10.44030650891055
+      ]
+    ],
+    "normal_position_mm": 10,
+    "normalization": null,
+    "phase_correction": "none_raw_time_location",
+    "phase_deg": [
+      [
+        18.43494882292201,
+        16.69924423399362
+      ],
+      [
+        18.43494882292201,
+        16.69924423399362
+      ]
+    ],
+    "physics_validated": false,
+    "profile": "rfad.result-field/0.1",
+    "selection": {
+      "component": "x",
+      "frequency_index": 1,
+      "monitor_id": "external",
+      "plane": {
+        "index": 10,
+        "normal_axis": "z"
+      },
+      "roi": {
+        "u_count": 2,
+        "u_start": 9,
+        "v_count": 2,
+        "v_start": 18
+      },
+      "stride": 1
+    },
+    "source_ref": {
+      "bytes": 1075856824,
+      "sha256": "e776080d4c727629d68b94ad30e483ba25d13f86f6797c764ea72a8aa5c840b3",
+      "uri": "projects/CAD 한글 교환 검증/large-results/a4db047e-3ce2-4605-a90d-0494cf6d8f0a/source.h5"
+    },
+    "state": [
+      [
+        "valid",
+        "valid"
+      ],
+      [
+        "valid",
+        "valid"
+      ]
+    ],
+    "u_axis": "x",
+    "u_coordinates_mm": [
+      9.000000000000002,
+      10
+    ],
+    "u_indices": [
+      9,
+      10
+    ],
+    "unit": "미정",
+    "v_axis": "y",
+    "v_coordinates_mm": [
+      18.000000000000004,
+      19
+    ],
+    "v_indices": [
+      18,
+      19
+    ],
+    "values_ri": [
+      [
+        [
+          9,
+          3
+        ],
+        [
+          10,
+          3
+        ]
+      ],
+      [
+        [
+          9,
+          3
+        ],
+        [
+          10,
+          3
+        ]
+      ]
+    ],
+    "warnings": [
+      "외부 결과 원문입니다. 설계/해석 실행, 제작·측정 및 독립 물리 검증이 확립되지 않았습니다.",
+      "기록한 격자 좌표와 복소값을 표시합니다. Yee 성분 위치나 절대 단위를 추정하지 않습니다."
+    ]
+  },
+  "complex": {
+    "counts": [
+      100000,
+      100000,
+      100000,
+      100000,
+      100000,
+      100000,
+      100000,
+      100000
+    ],
+    "id": "f292652f-aa90-4550-9480-558373a07313",
+    "metric": "imag",
+    "mode": "exact",
+    "next_offset": null,
+    "offset": 99998,
+    "pages": [
+      {
+        "parameter_kind": "Z",
+        "samples": [
+          {
+            "frequency_hz": 1999980000,
+            "imag": null,
+            "index": 99998,
+            "real": null,
+            "valid": false
+          },
+          {
+            "frequency_hz": 1999990000,
+            "imag": -1,
+            "index": 99999,
+            "real": 1.9129452507276277,
+            "valid": true
+          }
+        ]
+      },
+      {
+        "parameter_kind": "Z",
+        "samples": [
+          {
+            "frequency_hz": 1999980005,
+            "imag": null,
+            "index": 99998,
+            "real": null,
+            "valid": false
+          },
+          {
+            "frequency_hz": 1999990005,
+            "imag": -2,
+            "index": 99999,
+            "real": 2.9129452507276277,
+            "valid": true
+          }
+        ]
+      },
+      {
+        "parameter_kind": "Z",
+        "samples": [
+          {
+            "frequency_hz": 1999980010,
+            "imag": null,
+            "index": 99998,
+            "real": null,
+            "valid": false
+          },
+          {
+            "frequency_hz": 1999990010,
+            "imag": -3,
+            "index": 99999,
+            "real": 3.9129452507276277,
+            "valid": true
+          }
+        ]
+      },
+      {
+        "parameter_kind": "Z",
+        "samples": [
+          {
+            "frequency_hz": 1999980015,
+            "imag": null,
+            "index": 99998,
+            "real": null,
+            "valid": false
+          },
+          {
+            "frequency_hz": 1999990015,
+            "imag": -4,
+            "index": 99999,
+            "real": 4.912945250727628,
+            "valid": true
+          }
+        ]
+      },
+      {
+        "parameter_kind": "Z",
+        "samples": [
+          {
+            "frequency_hz": 1999980020,
+            "imag": null,
+            "index": 99998,
+            "real": null,
+            "valid": false
+          },
+          {
+            "frequency_hz": 1999990020,
+            "imag": -5,
+            "index": 99999,
+            "real": 5.912945250727628,
+            "valid": true
+          }
+        ]
+      },
+      {
+        "parameter_kind": "Z",
+        "samples": [
+          {
+            "frequency_hz": 1999980025,
+            "imag": null,
+            "index": 99998,
+            "real": null,
+            "valid": false
+          },
+          {
+            "frequency_hz": 1999990025,
+            "imag": -6,
+            "index": 99999,
+            "real": 6.912945250727628,
+            "valid": true
+          }
+        ]
+      },
+      {
+        "parameter_kind": "Z",
+        "samples": [
+          {
+            "frequency_hz": 1999980030,
+            "imag": null,
+            "index": 99998,
+            "real": null,
+            "valid": false
+          },
+          {
+            "frequency_hz": 1999990030,
+            "imag": -7,
+            "index": 99999,
+            "real": 7.912945250727628,
+            "valid": true
+          }
+        ]
+      },
+      {
+        "parameter_kind": "Z",
+        "samples": [
+          {
+            "frequency_hz": 1999980035,
+            "imag": null,
+            "index": 99998,
+            "real": null,
+            "valid": false
+          },
+          {
+            "frequency_hz": 1999990035,
+            "imag": -8,
+            "index": 99999,
+            "real": 8.912945250727628,
+            "valid": true
+          }
+        ]
+      }
+    ]
+  }
+}
