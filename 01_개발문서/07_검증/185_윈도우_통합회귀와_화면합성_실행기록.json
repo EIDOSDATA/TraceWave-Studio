@@ -1,0 +1,53 @@
+{
+  "schema": "rfad.stage12.windows-integrated-regression/0.1",
+  "date_kst": "2026-11-21",
+  "whole_gui": {
+    "total": 43,
+    "passed": 38,
+    "failed": 4,
+    "skipped": 1,
+    "duration_s": 1386.919,
+    "timed_out": [
+      "test_native_import_rlc_assessment_history_and_reopen (test_gui_network_process.GuiNetworkTests.test_native_import_rlc_assessment_history_and_reopen)",
+      "test_catalog_controls_preview_apply_and_history (test_gui_pcb_selection_process.GuiPcbSelectionTests.test_catalog_controls_preview_apply_and_history)",
+      "test_delayed_queries_keep_gui_events_and_discard_stale_responses (test_gui_pcb_selection_process.GuiPcbSelectionTests.test_delayed_queries_keep_gui_events_and_discard_stale_responses)",
+      "test_polygon_holes_pads_via_properties_and_history (test_gui_primitives_process.GuiPrimitivesTests.test_polygon_holes_pads_via_properties_and_history)"
+    ],
+    "exe_sha256": "805fc72e89028f1c5919ff99c4363a33c01f1daceed8f965b6130ba1652a689b"
+  },
+  "focused_gui_retry": {
+    "total": 4,
+    "passed": 4,
+    "duration_s": 129.422,
+    "exe_sha256": "9e613d752fbf607214375b022077c2d50c356b57019f78eb19c6f9d366ce6acf"
+  },
+  "whole_service_discovery": {
+    "total": 1437,
+    "passed": 1286,
+    "skipped": 151,
+    "duration_s": 2429.774
+  },
+  "focused_service_audit": {
+    "total": 21,
+    "passed": 19,
+    "skipped": 2
+  },
+  "release_ctest": {
+    "total": 13,
+    "passed": 13
+  },
+  "full_studio_2d_unavailable_display_capture": [
+    {
+      "failure": "전체 Studio에서 초기 합성 표식을 읽지 못했습니다. 전경 캡처 열림, 화면 표식 1, 합성 프레임 8216, 보호 프레임 8216",
+      "desktop_updates": 8216,
+      "protected_updates": 8216,
+      "frames_correlated": 0
+    },
+    {
+      "failure": "전체 Studio에서 초기 합성 표식을 읽지 못했습니다. 전경 캡처 열림, 화면 표식 1, 합성 프레임 9447, 보호 프레임 9447",
+      "desktop_updates": 9447,
+      "protected_updates": 9447,
+      "frames_correlated": 0
+    }
+  ]
+}

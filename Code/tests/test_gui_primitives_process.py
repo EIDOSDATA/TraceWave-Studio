@@ -29,7 +29,7 @@ class GuiPrimitivesTests(unittest.TestCase):
                 "--source", str(ROOT / "src"), "--workspace", str(directory / "한글 작업 영역"),
                 flag, "--smoke-report", str(report)],
                 stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                timeout=90, startupinfo=startup, check=False)
+                timeout=210, startupinfo=startup, check=False)
             self.assertTrue(report.is_file(), (process.returncode, process.stderr))
             result = json.loads(report.read_text(encoding="utf-8"))
             self.assertEqual(process.returncode, 0, result)

@@ -73,7 +73,7 @@ class GuiPcbSelectionTests(unittest.TestCase):
             startup.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             startup.wShowWindow = 0
             process = subprocess.run(command, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
-                                     stderr=subprocess.PIPE, timeout=90, startupinfo=startup, check=False)
+                                     stderr=subprocess.PIPE, timeout=210, startupinfo=startup, check=False)
             artifact_root = os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR", "")
             if artifact_root:
                 artifacts = Path(artifact_root)

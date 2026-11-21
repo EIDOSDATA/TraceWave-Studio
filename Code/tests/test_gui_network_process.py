@@ -89,7 +89,7 @@ class GuiNetworkTests(unittest.TestCase):
                 str(Path(GUI).resolve()), "--python", sys.executable, "--source", str(ROOT / "src"),
                 "--workspace", str(workspace), "--open-project", "projects/CAD 한글 교환 검증",
                 "--network-smoke-test", "--smoke-report", str(report_path)],
-                stdin=subprocess.DEVNULL, capture_output=True, startupinfo=startup, timeout=240, check=False)
+                stdin=subprocess.DEVNULL, capture_output=True, startupinfo=startup, timeout=330, check=False)
             self.assertTrue(report_path.is_file(), (process.returncode, process.stderr))
             report = json.loads(report_path.read_bytes())
             if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):

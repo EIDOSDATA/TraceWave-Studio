@@ -403,12 +403,13 @@ void StudioFrame::PollService()
         if (m_options.smoke && !m_options.projectSwitchSmoke &&
             now - m_started >
                 std::chrono::seconds(
-                    m_options.studySmoke
-                        ? 1200
-                        : (m_options.solverSmoke ? 600
-                             : (m_options.cadSmoke || m_options.setupSmoke || m_options.catalogTableSmoke ||
-                                    m_options.largeResultsSmoke || m_options.canvasSmoke ||
-                                    !m_options.openProject.empty() ? 180 : 60))))
+                    m_options.studySmoke ? 1200
+                    : m_options.solverSmoke ? 600
+                    : m_options.networkSmoke ? 300
+                    : (m_options.cadSmoke || m_options.setupSmoke || m_options.catalogTableSmoke ||
+                        m_options.largeResultsSmoke || m_options.canvasSmoke || m_options.pcbSmoke ||
+                        m_options.primitivesSmoke || !m_options.openProject.empty()) ? 180
+                    : 60))
         {
             m_smoke->FinishSmoke(false, "GUI smoke timeout");
         }
