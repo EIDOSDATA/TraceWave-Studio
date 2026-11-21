@@ -1,0 +1,14 @@
+{
+  "schema": "rfad.stage12.windows-cad-output-cancel/0.1",
+  "date_kst": "2026-11-21",
+  "executable_sha256": "2e34f1714acbec38ea966dff333f9627e5f6a3d25f7b12461df5f144f3c90dd6",
+  "native_windows": {
+    "cad_occt": {"passed": 2, "asserted_immediate_cancel_button_and_menu_lock": true, "previous_step_and_mesh_reopened": true},
+    "drawing_output": {"passed": 1, "verified_output_receipt_and_original_sources_after_reopen": true}
+  },
+  "output_worker_service_boundary": {"passed": 3, "confirmed_owned_worker_exit_after_running_cancel": true},
+  "design_trace_audit": {"passed": 14},
+  "focused_regression": {"passed": 20, "seconds": 73.779},
+  "release_ctest": {"passed": 13, "seconds": 2.47},
+  "windows_cad_and_output_cancel_latency_profile": "not_measured"
+}

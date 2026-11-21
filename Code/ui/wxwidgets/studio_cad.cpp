@@ -300,8 +300,9 @@ void StudioFrame::CancelCad()
         return;
     }
     m_cadCancelRequested = true;
-    CadStatus("cancel_requested", "취소 요청 중. worker 종료 확인을 기다립니다.");
-    UpdateControls();
+    // @brief 전체 상태와 배치를 갱신하기 전에 취소 제어를 잠그고 서비스에 요청한다.
+    m_tools.at(IdCancelCad)->Disable();
+    GetMenuBar()->Enable(IdCancelCad, false);
     if (!m_cadTask.Id().empty())
     {
         const std::string job = m_cadTask.Id();
@@ -320,6 +321,11 @@ void StudioFrame::CancelCad()
                 CadStatus(m_cadState, "취소 요청 오류: " + error.value("message", ""));
                 UpdateControls();
             });
+    }
+    if (m_connected && m_cadCancelRequested)
+    {
+        CadStatus("cancel_requested", "취소 요청 중. worker 종료 확인을 기다립니다.");
+        UpdateControls();
     }
 }
 

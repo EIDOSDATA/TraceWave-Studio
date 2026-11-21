@@ -105,6 +105,8 @@ void StudioSmokeDriver::CadSmokeTick()
     {
         m_cadSmokeStage = 5;
         m_frame.CancelCad();
+        CanvasAssert(!m_frame.m_tools.at(IdCancelCad)->IsEnabled() && !m_frame.GetMenuBar()->IsEnabled(IdCancelCad),
+                     "CAD 취소 버튼과 메뉴가 입력 직후 함께 잠기지 않았습니다.");
     }
     else if (m_cadSmokeStage == 5 && m_frame.m_cadTask.Id().empty() && m_frame.m_cadState == "cancelled")
     {
