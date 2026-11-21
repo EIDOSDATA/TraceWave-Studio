@@ -230,6 +230,7 @@ class PcbFeatureDomainTests(unittest.TestCase):
         previous_key = _evaluation_key(document, {}, None, spec)
         document["pcb"] = {**empty_pcb(), "holes": [hole_record(document)]}
         self.assertNotEqual(_evaluation_key(document, {}, None, spec), previous_key)
+        document["pcb"]["holes"][0]["plating"]["state"] = "unknown"
         with self.assertRaises(ProjectError) as caught:
             _payload(document, {}, {}, {})
         self.assertEqual(caught.exception.code, "E_UNSUPPORTED")

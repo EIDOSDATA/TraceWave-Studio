@@ -29,7 +29,8 @@ def compare(service, left, right):
         names = [name + " / " + ("기준 결과" if index == 0 else "비교 결과") + " / " +
                  ", ".join(_part_label(part) for part in case.get("environment", {}).get("parts", []))
                  for index, (name, case) in enumerate(zip(names, cases))]
-    identity = ("board", "layers", "shapes", "vias", "port", "settings", "frequency_hz", "excitation", "boundary_conditions")
+    identity = ("board", "layers", "shapes", "vias", "mechanical_voids",
+                "port", "settings", "frequency_hz", "excitation", "boundary_conditions")
     if (any(plan.get("analysis_profile") != "rfad.openems.pcb-single-port/0.1" for plan in plans)
             or any(cases[0].get(key) != cases[1].get(key) for key in identity)):
         return {"reason": "같은 PCB, 급전과 해석 조건의 두 결과를 선택하십시오."}

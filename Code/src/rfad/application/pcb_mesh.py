@@ -179,6 +179,10 @@ def mesh_lines(case):
         for hole in surface["openings_mm"]:
             for axis, (low, high) in enumerate(hole):
                 critical[axis].extend((low, (low + high) / 2, high))
+    for void in case.get("mechanical_voids", []):
+        for axis, bounds in enumerate(void["bounds_mm"]):
+            critical[axis].extend(bounds)
+            critical[axis].append(void["witness_mm"][axis])
     result = {}
     total = 1
     for axis, positions in enumerate(critical):

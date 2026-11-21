@@ -12,6 +12,7 @@ from rfad.application.projects import ProjectService
 from rfad.domain.project import new_project
 from test_cad_worker_process import register_fixture
 from test_pcb_solver import fixture_document, SETTINGS
+from test_pcb_voids import drilled_board
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -126,6 +127,25 @@ class GuiSolverProcessTests(unittest.TestCase):
             self.assertIn("radiation_paged_view_and_phi_metric_selection", result["solver_checks"])
             self.assertIn("restart_restores_result", result["solver_checks"])
             self.assertFalse(result["solver_result"]["radiation_summary"]["physics_validated"])
+
+    @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
+    def test_mechanical_voids_actual_execution_and_reopen(self):
+        """! @brief 홀, 슬롯, 내부 절삭의 실제 재료 소비와 Windows 재열기를 확인한다."""
+        document = drilled_board()
+        with TemporaryDirectory(prefix="TraceWave PCB voids ") as temporary:
+            workspace, result = self.run_gui(Path(temporary), document, settings=SETTINGS)
+            self.assertIn("restart_restores_result", result["solver_checks"])
+            with ProjectService(workspace, auto_run=False) as service:
+                state = service.journal.read()
+                record = state["solver_results"][result["solver_result"]["artifact_id"]]
+                prepared = state["prepared_plans"][record["prepared_plan_id"]]
+                reference = next(item["artifact"] for item in prepared["files"] if item["role"] == "consumption_report")
+                mappings = json.loads(service.journal.read_artifact(reference))["mechanical_source_mapping"]
+                self.assertEqual({item["kind"] for item in mappings}, {"circle", "capsule", "polygon"})
+                self.assertTrue(all(item["vacuum_point_checked"] for item in mappings))
+                stored = service._load(state["projects"][result["project_id"]])
+                self.assertEqual(stored["pcb"], document["pcb"])
+                self.assertEqual(stored["board"]["cutouts"], document["board"]["cutouts"])
 
 
 if __name__ == "__main__":
