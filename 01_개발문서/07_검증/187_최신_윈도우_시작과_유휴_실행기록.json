@@ -1,0 +1,887 @@
+{
+  "schema": "rfad.stage12.f0-current-windows-release/0.1",
+  "date_kst": "2026-11-21",
+  "warm_during_other_studio_runs": {
+    "schema": "rfad.windows-startup-measurement/0.1",
+    "mode": "Warm",
+    "recorded_utc": "2026-11-21T01:22:04.4219365+00:00",
+    "boot_started_utc": "2026-11-12T11:25:13.5000000Z",
+    "cold_first_launch_asserted_by_operator": false,
+    "fixture": {
+      "executable_sha256": "9e613d752fbf607214375b022077c2d50c356b57019f78eb19c6f9d366ce6acf",
+      "service_launcher_sha256": "0b471133e110cfb53a061cad528ce8e517d7b9ac41a0a396c39ad795a487fc14",
+      "service_source_sha256": "2d78dc5c8c0204256632b5c68abc4aad168610b5c75f236754fe4ff5112a3c81",
+      "service_source_files": 264,
+      "operating_system": {
+        "Caption": "Microsoft Windows 11 Pro",
+        "Version": "10.0.26300",
+        "BuildNumber": "26300"
+      },
+      "processor": [
+        {
+          "Name": "13th Gen Intel(R) Core(TM) i7-1365U",
+          "NumberOfLogicalProcessors": 12
+        }
+      ],
+      "video": [
+        {
+          "Name": "Intel(R) Iris(R) Xe Graphics",
+          "CurrentHorizontalResolution": 2560,
+          "CurrentVerticalResolution": 1600,
+          "CurrentRefreshRate": 120
+        }
+      ],
+      "window": {
+        "dpi": 144,
+        "client_width": 2468,
+        "client_height": 1316
+      },
+      "worker": "lightweight-project-service"
+    },
+    "qpc_frequency": 10000000,
+    "warmup": {
+      "number": 0,
+      "ok": true,
+      "launch_qpc": 7414218725647,
+      "launch_return_qpc": 7414218877034,
+      "pid": 10412,
+      "exit_qpc": 7414248057379,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7414237018958,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 10412,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7414238861178
+      },
+      "first_window_ms": 1829.3311,
+      "new_project_ready_ms": 2013.5531
+    },
+    "requested_samples": 20,
+    "samples": [
+      {
+        "number": 1,
+        "ok": true,
+        "launch_qpc": 7414248946478,
+        "launch_return_qpc": 7414249021993,
+        "pid": 25160,
+        "exit_qpc": 7414281052330,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414269606149,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 25160,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414271689273
+        },
+        "first_window_ms": 2065.9671000000003,
+        "new_project_ready_ms": 2274.2795
+      },
+      {
+        "number": 2,
+        "ok": true,
+        "launch_qpc": 7414281075867,
+        "launch_return_qpc": 7414281134628,
+        "pid": 24476,
+        "exit_qpc": 7414312381338,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414300287069,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 24476,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414302261377
+        },
+        "first_window_ms": 1921.1202,
+        "new_project_ready_ms": 2118.551
+      },
+      {
+        "number": 3,
+        "ok": true,
+        "launch_qpc": 7414312389862,
+        "launch_return_qpc": 7414312438045,
+        "pid": 19328,
+        "exit_qpc": 7414343244160,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414332130851,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 19328,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414334163643
+        },
+        "first_window_ms": 1974.0989000000002,
+        "new_project_ready_ms": 2177.3781
+      },
+      {
+        "number": 4,
+        "ok": true,
+        "launch_qpc": 7414343260050,
+        "launch_return_qpc": 7414343336385,
+        "pid": 11280,
+        "exit_qpc": 7414373971553,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414362827447,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 11280,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414364783460
+        },
+        "first_window_ms": 1956.7397,
+        "new_project_ready_ms": 2152.341
+      },
+      {
+        "number": 5,
+        "ok": true,
+        "launch_qpc": 7414373989617,
+        "launch_return_qpc": 7414374054025,
+        "pid": 18280,
+        "exit_qpc": 7414404133740,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414393087792,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 18280,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414395028103
+        },
+        "first_window_ms": 1909.8175,
+        "new_project_ready_ms": 2103.8486000000003
+      },
+      {
+        "number": 6,
+        "ok": true,
+        "launch_qpc": 7414404144698,
+        "launch_return_qpc": 7414404214151,
+        "pid": 15372,
+        "exit_qpc": 7414434696074,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414424135921,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 15372,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414426124118
+        },
+        "first_window_ms": 1999.1223,
+        "new_project_ready_ms": 2197.942
+      },
+      {
+        "number": 7,
+        "ok": true,
+        "launch_qpc": 7414434708002,
+        "launch_return_qpc": 7414434767970,
+        "pid": 20044,
+        "exit_qpc": 7414465057545,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414454249479,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 20044,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414456181128
+        },
+        "first_window_ms": 1954.1477,
+        "new_project_ready_ms": 2147.3126
+      },
+      {
+        "number": 8,
+        "ok": true,
+        "launch_qpc": 7414465064560,
+        "launch_return_qpc": 7414465170452,
+        "pid": 6584,
+        "exit_qpc": 7414499316147,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414483741837,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 6584,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414486106890
+        },
+        "first_window_ms": 1867.7277000000001,
+        "new_project_ready_ms": 2104.233
+      },
+      {
+        "number": 9,
+        "ok": true,
+        "launch_qpc": 7414499328220,
+        "launch_return_qpc": 7414499409654,
+        "pid": 17864,
+        "exit_qpc": 7414530796378,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414519105330,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 17864,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414521345204
+        },
+        "first_window_ms": 1977.711,
+        "new_project_ready_ms": 2201.6984
+      },
+      {
+        "number": 10,
+        "ok": true,
+        "launch_qpc": 7414530802333,
+        "launch_return_qpc": 7414530851459,
+        "pid": 16612,
+        "exit_qpc": 7414567240047,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414555943284,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 16612,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414555511550
+        },
+        "first_window_ms": 2514.0951,
+        "new_project_ready_ms": 2514.0951
+      },
+      {
+        "number": 11,
+        "ok": true,
+        "launch_qpc": 7414567246657,
+        "launch_return_qpc": 7414567312460,
+        "pid": 4148,
+        "exit_qpc": 7414600908319,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414588332291,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 4148,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414590346901
+        },
+        "first_window_ms": 2108.5634,
+        "new_project_ready_ms": 2310.0244000000002
+      },
+      {
+        "number": 12,
+        "ok": true,
+        "launch_qpc": 7414600915190,
+        "launch_return_qpc": 7414601012873,
+        "pid": 19856,
+        "exit_qpc": 7414652401911,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414642332310,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 19856,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414641148844
+        },
+        "first_window_ms": 4141.712,
+        "new_project_ready_ms": 4141.712
+      },
+      {
+        "number": 13,
+        "ok": true,
+        "launch_qpc": 7414652411735,
+        "launch_return_qpc": 7414652501145,
+        "pid": 13360,
+        "exit_qpc": 7414695045753,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414675312328,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 13360,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414677825841
+        },
+        "first_window_ms": 2290.0593,
+        "new_project_ready_ms": 2541.4106
+      },
+      {
+        "number": 14,
+        "ok": true,
+        "launch_qpc": 7414695052639,
+        "launch_return_qpc": 7414695140009,
+        "pid": 19528,
+        "exit_qpc": 7414743809107,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414730066458,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 19528,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414728967827
+        },
+        "first_window_ms": 3501.3819000000003,
+        "new_project_ready_ms": 3501.3819000000003
+      },
+      {
+        "number": 15,
+        "ok": true,
+        "launch_qpc": 7414743819572,
+        "launch_return_qpc": 7414743903580,
+        "pid": 12368,
+        "exit_qpc": 7414816023146,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414810116594,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 12368,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414809595065
+        },
+        "first_window_ms": 6629.702200000001,
+        "new_project_ready_ms": 6629.702200000001
+      },
+      {
+        "number": 16,
+        "ok": true,
+        "launch_qpc": 7414816037456,
+        "launch_return_qpc": 7414816098756,
+        "pid": 15816,
+        "exit_qpc": 7414846531688,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414836058821,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 15816,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414838136191
+        },
+        "first_window_ms": 2002.1365,
+        "new_project_ready_ms": 2209.8735
+      },
+      {
+        "number": 17,
+        "ok": true,
+        "launch_qpc": 7414846547703,
+        "launch_return_qpc": 7414846635655,
+        "pid": 25196,
+        "exit_qpc": 7414879620805,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414867284624,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 25196,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414869500371
+        },
+        "first_window_ms": 2073.6921,
+        "new_project_ready_ms": 2295.2668000000003
+      },
+      {
+        "number": 18,
+        "ok": true,
+        "launch_qpc": 7414879625717,
+        "launch_return_qpc": 7414879675313,
+        "pid": 6260,
+        "exit_qpc": 7414911857110,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414899647650,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 6260,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414901597546
+        },
+        "first_window_ms": 2002.1933000000001,
+        "new_project_ready_ms": 2197.1829000000002
+      },
+      {
+        "number": 19,
+        "ok": true,
+        "launch_qpc": 7414911864954,
+        "launch_return_qpc": 7414911954773,
+        "pid": 7304,
+        "exit_qpc": 7414943048314,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414931899303,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 7304,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414933827413
+        },
+        "first_window_ms": 2003.4349000000002,
+        "new_project_ready_ms": 2196.2459
+      },
+      {
+        "number": 20,
+        "ok": true,
+        "launch_qpc": 7414943053026,
+        "launch_return_qpc": 7414943131545,
+        "pid": 30340,
+        "exit_qpc": 7414974296357,
+        "exit_code": 0,
+        "probe": {
+          "canvas_painted_qpc": 7414963061357,
+          "client_height": 1316,
+          "client_width": 2468,
+          "dpi": 144,
+          "error": "",
+          "ok": true,
+          "pid": 30340,
+          "qpc_frequency": 10000000,
+          "schema": "rfad.windows-startup-probe/0.1",
+          "service_ready_qpc": 7414965115228
+        },
+        "first_window_ms": 2000.8331,
+        "new_project_ready_ms": 2206.2202
+      }
+    ],
+    "summary": {
+      "sample_count": 20,
+      "minimum": 20,
+      "complete": true,
+      "timing_ms": {
+        "first_window_ms": {
+          "median": 2002.1649000000002,
+          "p95": 4141.712,
+          "maximum": 6629.702200000001,
+          "target_p95": 1500,
+          "within_target": false
+        },
+        "new_project_ready_ms": {
+          "median": 2203.9593000000004,
+          "p95": 4141.712,
+          "maximum": 6629.702200000001,
+          "target_p95": 2000,
+          "within_target": false
+        }
+      }
+    }
+  },
+  "new_empty_workspace_idle": {
+    "schema": "rfad.windows-idle-measurement/0.1",
+    "recorded_utc": "2026-11-21T01:28:36.8031857+00:00",
+    "scope": "초기 연결이 완료된 빈 Windows Studio와 그 하위 프로세스",
+    "elapsed_seconds": 30.0103698,
+    "studio_pid": 28800,
+    "executable_sha256": "9e613d752fbf607214375b022077c2d50c356b57019f78eb19c6f9d366ce6acf",
+    "operating_system": {
+      "Caption": "Microsoft Windows 11 Pro",
+      "Version": "10.0.26300",
+      "BuildNumber": "26300"
+    },
+    "processor": [
+      {
+        "Name": "13th Gen Intel(R) Core(TM) i7-1365U",
+        "NumberOfLogicalProcessors": 12
+      }
+    ],
+    "display_adapter": [
+      {
+        "Name": "Intel(R) Iris(R) Xe Graphics",
+        "CurrentHorizontalResolution": 2560,
+        "CurrentVerticalResolution": 1600,
+        "CurrentRefreshRate": 120
+      }
+    ],
+    "total_cpu_seconds": 0.078125,
+    "percent_of_one_logical_cpu": 0.2603266821457162,
+    "peak_sampled_gui_private_commit_bytes": 40378368.0,
+    "peak_sampled_combined_private_commit_bytes": 106651648.0,
+    "samples": [
+      {
+        "elapsed_seconds": 0.0011496,
+        "processes": [
+          {
+            "pid": 7620,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:27.0121791Z",
+            "cpu_seconds": 1.8125,
+            "private_commit_bytes": 64086016,
+            "working_set_bytes": 75108352,
+            "handle_count": 232
+          },
+          {
+            "pid": 22032,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:26.9799966Z",
+            "cpu_seconds": 0.0,
+            "private_commit_bytes": 929792,
+            "working_set_bytes": 5046272,
+            "handle_count": 74
+          },
+          {
+            "pid": 24360,
+            "name": "conhost",
+            "start_time_utc": "2026-11-21T01:28:26.9897201Z",
+            "cpu_seconds": 0.015625,
+            "private_commit_bytes": 1228800,
+            "working_set_bytes": 8105984,
+            "handle_count": 97
+          },
+          {
+            "pid": 28800,
+            "name": "tracewave_gui",
+            "start_time_utc": "2026-11-21T01:28:26.9362186Z",
+            "cpu_seconds": 2.09375,
+            "private_commit_bytes": 40296448,
+            "working_set_bytes": 77455360,
+            "handle_count": 296
+          }
+        ],
+        "combined_private_commit_bytes": 106541056.0,
+        "combined_working_set_bytes": 165715968.0
+      },
+      {
+        "elapsed_seconds": 5.0211917,
+        "processes": [
+          {
+            "pid": 7620,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:27.0121791Z",
+            "cpu_seconds": 1.8125,
+            "private_commit_bytes": 64086016,
+            "working_set_bytes": 75108352,
+            "handle_count": 232
+          },
+          {
+            "pid": 22032,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:26.9799966Z",
+            "cpu_seconds": 0.0,
+            "private_commit_bytes": 929792,
+            "working_set_bytes": 5046272,
+            "handle_count": 74
+          },
+          {
+            "pid": 24360,
+            "name": "conhost",
+            "start_time_utc": "2026-11-21T01:28:26.9897201Z",
+            "cpu_seconds": 0.015625,
+            "private_commit_bytes": 1228800,
+            "working_set_bytes": 8105984,
+            "handle_count": 97
+          },
+          {
+            "pid": 28800,
+            "name": "tracewave_gui",
+            "start_time_utc": "2026-11-21T01:28:26.9362186Z",
+            "cpu_seconds": 2.109375,
+            "private_commit_bytes": 40296448,
+            "working_set_bytes": 77455360,
+            "handle_count": 296
+          }
+        ],
+        "combined_private_commit_bytes": 106541056.0,
+        "combined_working_set_bytes": 165715968.0
+      },
+      {
+        "elapsed_seconds": 10.0201326,
+        "processes": [
+          {
+            "pid": 7620,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:27.0121791Z",
+            "cpu_seconds": 1.8125,
+            "private_commit_bytes": 64086016,
+            "working_set_bytes": 75108352,
+            "handle_count": 232
+          },
+          {
+            "pid": 22032,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:26.9799966Z",
+            "cpu_seconds": 0.0,
+            "private_commit_bytes": 929792,
+            "working_set_bytes": 5046272,
+            "handle_count": 74
+          },
+          {
+            "pid": 24360,
+            "name": "conhost",
+            "start_time_utc": "2026-11-21T01:28:26.9897201Z",
+            "cpu_seconds": 0.015625,
+            "private_commit_bytes": 1228800,
+            "working_set_bytes": 8105984,
+            "handle_count": 97
+          },
+          {
+            "pid": 28800,
+            "name": "tracewave_gui",
+            "start_time_utc": "2026-11-21T01:28:26.9362186Z",
+            "cpu_seconds": 2.109375,
+            "private_commit_bytes": 40292352,
+            "working_set_bytes": 77451264,
+            "handle_count": 296
+          }
+        ],
+        "combined_private_commit_bytes": 106536960.0,
+        "combined_working_set_bytes": 165711872.0
+      },
+      {
+        "elapsed_seconds": 15.0124512,
+        "processes": [
+          {
+            "pid": 7620,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:27.0121791Z",
+            "cpu_seconds": 1.8125,
+            "private_commit_bytes": 64086016,
+            "working_set_bytes": 75108352,
+            "handle_count": 232
+          },
+          {
+            "pid": 22032,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:26.9799966Z",
+            "cpu_seconds": 0.0,
+            "private_commit_bytes": 929792,
+            "working_set_bytes": 5046272,
+            "handle_count": 74
+          },
+          {
+            "pid": 24360,
+            "name": "conhost",
+            "start_time_utc": "2026-11-21T01:28:26.9897201Z",
+            "cpu_seconds": 0.015625,
+            "private_commit_bytes": 1228800,
+            "working_set_bytes": 8105984,
+            "handle_count": 97
+          },
+          {
+            "pid": 28800,
+            "name": "tracewave_gui",
+            "start_time_utc": "2026-11-21T01:28:26.9362186Z",
+            "cpu_seconds": 2.109375,
+            "private_commit_bytes": 40292352,
+            "working_set_bytes": 77451264,
+            "handle_count": 296
+          }
+        ],
+        "combined_private_commit_bytes": 106536960.0,
+        "combined_working_set_bytes": 165711872.0
+      },
+      {
+        "elapsed_seconds": 20.0194132,
+        "processes": [
+          {
+            "pid": 7620,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:27.0121791Z",
+            "cpu_seconds": 1.8125,
+            "private_commit_bytes": 64086016,
+            "working_set_bytes": 75108352,
+            "handle_count": 232
+          },
+          {
+            "pid": 22032,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:26.9799966Z",
+            "cpu_seconds": 0.0,
+            "private_commit_bytes": 929792,
+            "working_set_bytes": 5046272,
+            "handle_count": 74
+          },
+          {
+            "pid": 24360,
+            "name": "conhost",
+            "start_time_utc": "2026-11-21T01:28:26.9897201Z",
+            "cpu_seconds": 0.015625,
+            "private_commit_bytes": 1228800,
+            "working_set_bytes": 8105984,
+            "handle_count": 97
+          },
+          {
+            "pid": 28800,
+            "name": "tracewave_gui",
+            "start_time_utc": "2026-11-21T01:28:26.9362186Z",
+            "cpu_seconds": 2.140625,
+            "private_commit_bytes": 40337408,
+            "working_set_bytes": 77479936,
+            "handle_count": 296
+          }
+        ],
+        "combined_private_commit_bytes": 106582016.0,
+        "combined_working_set_bytes": 165740544.0
+      },
+      {
+        "elapsed_seconds": 25.0201982,
+        "processes": [
+          {
+            "pid": 7620,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:27.0121791Z",
+            "cpu_seconds": 1.8125,
+            "private_commit_bytes": 64176128,
+            "working_set_bytes": 75108352,
+            "handle_count": 232
+          },
+          {
+            "pid": 22032,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:26.9799966Z",
+            "cpu_seconds": 0.0,
+            "private_commit_bytes": 868352,
+            "working_set_bytes": 5013504,
+            "handle_count": 74
+          },
+          {
+            "pid": 24360,
+            "name": "conhost",
+            "start_time_utc": "2026-11-21T01:28:26.9897201Z",
+            "cpu_seconds": 0.015625,
+            "private_commit_bytes": 1228800,
+            "working_set_bytes": 8105984,
+            "handle_count": 97
+          },
+          {
+            "pid": 28800,
+            "name": "tracewave_gui",
+            "start_time_utc": "2026-11-21T01:28:26.9362186Z",
+            "cpu_seconds": 2.15625,
+            "private_commit_bytes": 40378368,
+            "working_set_bytes": 77512704,
+            "handle_count": 296
+          }
+        ],
+        "combined_private_commit_bytes": 106651648.0,
+        "combined_working_set_bytes": 165740544.0
+      },
+      {
+        "elapsed_seconds": 30.0115194,
+        "processes": [
+          {
+            "pid": 7620,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:27.0121791Z",
+            "cpu_seconds": 1.8125,
+            "private_commit_bytes": 64176128,
+            "working_set_bytes": 75108352,
+            "handle_count": 232
+          },
+          {
+            "pid": 22032,
+            "name": "python",
+            "start_time_utc": "2026-11-21T01:28:26.9799966Z",
+            "cpu_seconds": 0.0,
+            "private_commit_bytes": 868352,
+            "working_set_bytes": 5013504,
+            "handle_count": 74
+          },
+          {
+            "pid": 24360,
+            "name": "conhost",
+            "start_time_utc": "2026-11-21T01:28:26.9897201Z",
+            "cpu_seconds": 0.015625,
+            "private_commit_bytes": 1228800,
+            "working_set_bytes": 8105984,
+            "handle_count": 97
+          },
+          {
+            "pid": 28800,
+            "name": "tracewave_gui",
+            "start_time_utc": "2026-11-21T01:28:26.9362186Z",
+            "cpu_seconds": 2.171875,
+            "private_commit_bytes": 40378368,
+            "working_set_bytes": 77512704,
+            "handle_count": 296
+          }
+        ],
+        "combined_private_commit_bytes": 106651648.0,
+        "combined_working_set_bytes": 165740544.0
+      }
+    ],
+    "startup_measured": false,
+    "interactive_frames_measured": false,
+    "gpu_memory_measured": false
+  }
+}
