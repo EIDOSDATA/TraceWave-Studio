@@ -17,6 +17,7 @@ REFERENCE = Path(__file__).resolve().parents[2] / "00_참고자료/PCB RF ANT/01
 RENESAS = next(REFERENCE.rglob("*AN_B027_DXF*.zip"), None)
 TI_IFA = next(REFERENCE.rglob("*CC2511_USB_CAD*.zip"), None)
 TI_DIPOLE = next(REFERENCE.rglob("*CC25XX_DIPOLE_CAD*.zip"), None)
+WB003 = next(REFERENCE.rglob("WB003.zip"), None)
 
 
 
@@ -98,3 +99,35 @@ class VendorTiTests(unittest.TestCase):
                 self.assertAlmostEqual(right - x, width, places=5)
                 self.assertAlmostEqual(top - y, height, places=5)
                 self.assertAlmostEqual(effective.area, area, places=5)
+
+@unittest.skipIf(WB003 is None, "공식 WB003 원본이 필요합니다.")
+class VendorWb003Tests(unittest.TestCase):
+    """! @brief WB003의 원문 동박/clear와 겹침, 외곽 자료를 대조한다."""
+
+    def test_layers_hole_and_original_cpw_overlap(self):
+        from shapely import Polygon, unary_union
+        key = "vendor_qorvo_wb003"
+        with ZipFile(WB003) as outer:
+            member = VENDOR_FORMATS[key]["member"]
+            packet = outer.read(member)
+        parsed = parse_package({WB003.name: WB003.read_bytes()}, key, {})
+        data = parsed["records"][0]["data"]
+        self.assertEqual(data, parse_package({"Mini-Hoe_Antenna_Gerbers.zip": packet}, key, {})["records"][0]["data"])
+        sources = import_sources(parsed)
+        self.assertEqual({(row["source"], row["side"]) for row in sources["layers"]}, {("Top", "top"), ("Bottom", "bottom")})
+        self.assertEqual([row["source_name"] for row in sources["nets"]], [None])
+        composed = {}
+        for label, area in (("안테나", 68.3923), ("CPW 접지", 312.48), ("하면 접지", 324.0)):
+            rows = [row for row in data["regions"] if row["label"] == label]
+            for row in rows:
+                validate_region(row["outer_mm"], row["holes_mm"])
+            composed[label] = unary_union([Polygon(row["outer_mm"], row["holes_mm"]) for row in rows])
+            self.assertAlmostEqual(composed[label].area, area, places=6)
+        self.assertEqual(len(composed["안테나"].interiors), 1)
+        overlap = composed["안테나"].intersection(composed["CPW 접지"])
+        self.assertAlmostEqual(overlap.area, 0.8)
+        self.assertEqual(overlap.bounds, (6.35, 17, 7.15, 18))
+        members = {row["role"]: row for row in data["members"]}
+        self.assertEqual(members["기준 외곽"]["bounds_mm"], [-9.0, 0.0, 9.0, 26.0])
+        self.assertEqual(members["비아 도면"]["path"], "minihoe_via_hole.gbr")
+        self.assertFalse(parsed["physics_verified"])

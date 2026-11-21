@@ -17,7 +17,7 @@ from rfad.application.projects import ProjectService
 from rfad.domain.vendor_catalog import VENDOR_FORMATS
 from test_exchange_service import ExchangeFixture
 from test_pcb_exchange_service import prepare
-from test_vendor_patterns import RENESAS, TI_IFA, TI_DIPOLE
+from test_vendor_patterns import RENESAS, TI_IFA, TI_DIPOLE, WB003
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,7 +48,8 @@ class GuiVendorPatternTests(unittest.TestCase):
             card = parsed["records"][0]["data"]
             copper = sorted((row for row in before["stackup"] if row["role"] == "conductor"), key=lambda row: row["order"])
             layers = {row["layer"]: copper[-1 if row["side"] == "top" else 0]["id"] for row in card["regions"]}
-            areas = [Polygon(row["outer_mm"], row["holes_mm"]) for row in card["regions"] if row["side"] == "top"]
+            areas = [Polygon(row["outer_mm"], row["holes_mm"]) for row in card["regions"]
+                     if row["side"] == "top" and (format_name != "vendor_qorvo_wb003" or row["label"] == "안테나")]
             pick = max(areas, key=lambda item: item.area).representative_point()
             anchor_x, anchor_y = card["placement_anchor_mm"]
             inputs = {"vendor_format": format_name, "raw_name": source.name, "raw_sha256": hashlib.sha256(raw).hexdigest(),
@@ -111,3 +112,13 @@ class GuiVendorPatternTests(unittest.TestCase):
             member.write_bytes(archive.read(member.name))
             self.exercise(member, "vendor_ti_cc2511", x=8, y=16)
         self.exercise(TI_DIPOLE, "vendor_ti_cc25xx_dipole", x=8, y=16)
+
+    @unittest.skipIf(WB003 is None, "공식 Qorvo WB003 원본이 필요합니다.")
+    def test_wb003_antenna_edit_save_and_reopen(self):
+        from zipfile import ZipFile
+        self.exercise(WB003, "vendor_qorvo_wb003", x=25, y=8)
+        with TemporaryDirectory(prefix="TraceWave 공식 WB003 ") as directory, ZipFile(WB003) as archive:
+            member = VENDOR_FORMATS["vendor_qorvo_wb003"]["member"]
+            gerber = Path(directory) / Path(member).name
+            gerber.write_bytes(archive.read(member))
+            self.exercise(gerber, "vendor_qorvo_wb003", x=25, y=8)

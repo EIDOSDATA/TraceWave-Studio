@@ -116,3 +116,45 @@ def read_ti(raw):
     """! @brief TI 독립 SPL 파일의 도체와 변환 근거를 반환한다."""
     data, macros = _ti_reader(raw)
     return _effective(data, macros), bool(macros)
+
+def _wb003_reader(raw):
+    """! @brief WB003의 단위 선언과 G37의 암묵적 직선 닫힘을 명시한다."""
+    source = raw.decode("ascii")
+    if "%MOMM*%" not in source or "G71*" not in source or "%FSLAX33Y33*%" not in source:
+        raise ProjectError("E_SCHEMA", "WB003 Gerber 단위 및 절대좌표 선언이 다릅니다.")
+    lines, first, last = [], None, None
+    active = False
+    closed = 0
+    for value in source.splitlines():
+        line = value.strip()
+        if not line or line.startswith("G04") or line in ("G90*", "G71*"):
+            continue
+        if line == "G36*":
+            if active:
+                raise ProjectError("E_SCHEMA", "WB003 Gerber 동박 영역이 중첩됐습니다.")
+            active, first, last = True, None, None
+        elif line == "G37*":
+            if not active or first is None or last is None:
+                raise ProjectError("E_GEOMETRY", "WB003 Gerber 영역 시작점과 직선 경계가 필요합니다.")
+            if last != first:
+                lines.append(first + "D01*")
+                closed += 1
+            active = False
+        elif active:
+            match = re.fullmatch(r"(G01X-?[0-9]+Y-?[0-9]+)D0([12])\*", line)
+            if not match:
+                raise ProjectError("E_UNSUPPORTED", "WB003 Gerber 영역의 유한 직선 문법을 벗어났습니다.")
+            if match[2] == "2":
+                if first is not None:
+                    raise ProjectError("E_UNSUPPORTED", "WB003 Gerber 영역은 한 폐곡선만 받습니다.")
+                first = match[1]
+            else:
+                last = match[1]
+        lines.append(line)
+    return read_gerber("\n".join(lines).encode("ascii")), closed
+
+
+def read_wb003(raw):
+    """! @brief 검토한 WB003 레이어와 암묵적 폐곡선 개수를 돌려준다."""
+    decoded, closures = _wb003_reader(raw)
+    return _effective(decoded, {}), closures

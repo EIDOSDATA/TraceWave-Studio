@@ -40,3 +40,14 @@ VENDOR_FORMATS.update({
         "description": "CC25xxEM 참조 설계 ZIP 또는 CC25xx_Folded_Dipole.spl을 선택하세요. X/Y는 도체 경계 왼쪽 아래 기준입니다.",
     },
 })
+
+
+VENDOR_FORMATS["vendor_qorvo_wb003"] = {
+    "format": "vendor_qorvo_wb003", "label": "Qorvo WB003 Mini-Hoe / UWB",
+    "revision": "WB003 Mini-Hoe / Gerber 2017-08-28 / DW1000 채널 5",
+    "member": "WB003/Gerber_Files/Mini-Hoe_Antenna_Gerbers.zip",
+    "source_url": "https://www.qorvo.com/products/p/DW1000",
+    "archive_sha256": "2b31dfc905f148d4fbee25625f11de24f1d613020fbba40ecd85fc478f82973d",
+    "sha256": "7fb9bb0efb678225639692f257421e6c42eaa444e8888a27b90a4ced826214d9",
+    "description": "WB003.zip 또는 Mini-Hoe_Antenna_Gerbers.zip을 선택하세요. 안테나와 CPW 상면 접지, 하면 접지의 원본 원점을 사용합니다.",
+}

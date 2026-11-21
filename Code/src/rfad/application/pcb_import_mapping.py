@@ -541,7 +541,7 @@ class _ImportCandidate:
             if not within(outer):
                 fail("가져올 제조사 동박이 현재 기판 외곽을 벗어납니다.", "mapping.placement", "E_GEOMETRY")
             row = self.geometry("planar_region", targets[item["layer"]], net)
-            row.update(name=data["card"]["label"].split(" / ", 1)[0] + " " + item["layer"],
+            row.update(name=data["card"]["label"].split(" / ", 1)[0] + " " + item.get("label", item["layer"]),
                        outer=[vertex(point) for point in outer],
                        holes=[[vertex(placed(point)) for point in loop] for loop in item["holes_mm"]],
                        include_in_em=False)

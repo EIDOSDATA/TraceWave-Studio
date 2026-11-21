@@ -21,7 +21,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 150,
+    "current_07_검증": 151,
     "current_08_운영환경": 7,
     "current_09_개발계획": 8,
     "current_11_검토기록": 7,
@@ -30081,8 +30081,8 @@
       "path": "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 15840,
-      "working_tree_sha256": "2a881e3b35c6b107fc0b7e058b2a560b44d8b7039066a91e172c199a6a4543f9",
+      "bytes": 16011,
+      "working_tree_sha256": "3cd69a831349ff28cf3699896d121c31853c7acae392df0bbe3462a8110fb3c9",
       "text_lines": 127,
       "text_status": "utf8_read"
     },
@@ -32363,8 +32363,8 @@
       "path": "01_개발문서/09_개발계획/06_비교분석과_기능개발_범위.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 16249,
-      "working_tree_sha256": "4eca0c8d668bf1f375ce63511c6b8eecbd417cfedbbfbd4b5c263465f8f73898",
+      "bytes": 16341,
+      "working_tree_sha256": "0228d09a6f481ceaa7c96aec17a6a62b88d80a9282c1356f46ab0330e224b677",
       "text_lines": 48,
       "text_status": "utf8_read"
     },
@@ -32534,9 +32534,9 @@
       "path": "01_개발문서/05_기능설계/05_출력교환/07_제조사_안테나_라이브러리.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 3657,
-      "working_tree_sha256": "4c43de9a4ca4ac3dc6f1a9d20da6fae3adc238c9223a9d4e4c368bb24f1be4a1",
-      "text_lines": 19,
+      "bytes": 4389,
+      "working_tree_sha256": "3927ebde8137d49486e5e2ff18a1d55f5912054cd86918f233d791ef263a1a94",
+      "text_lines": 22,
       "text_status": "utf8_read"
     },
     {
@@ -32555,6 +32555,15 @@
       "bytes": 1342,
       "working_tree_sha256": "8ea9bf54796de183613b60f4f4f5f1c1391bd490f1b86eac838991a279465295",
       "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/263_코르보_초광대역_안테나_가져오기_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1824,
+      "working_tree_sha256": "83181bf80e3ed1b32d722c206e3171e6fc45a2d39c2ed727471224d1204a13e7",
+      "text_lines": 9,
       "text_status": "utf8_read"
     }
   ],
