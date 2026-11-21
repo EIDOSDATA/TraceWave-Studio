@@ -1,0 +1,2662 @@
+{
+  "schema": "rfad.stage12.editing-first-coupled-resource/0.1",
+  "date_kst": "2026-11-21",
+  "executable_sha256": "51361e101891cecb29c4923a208d06170a0d812d5092e8f4576e63b408c325f8",
+  "summary": {
+    "cycles": 30,
+    "baseline_private_mib": 66.5,
+    "opened_peak_private_mib": 359.9375,
+    "settled_peak_private_mib": 217.5234375,
+    "initial_5_median_private_mib": 205.69921875,
+    "final_10_median_private_mib": 216.794921875,
+    "settled_delta_private_mib": 11.095703125,
+    "settled_delta_budget_mib": 32,
+    "settled_handles": {
+      "13256": {
+        "first": 262,
+        "last": 252,
+        "minimum": 252,
+        "maximum": 262
+      },
+      "18868": {
+        "first": 97,
+        "last": 97,
+        "minimum": 97,
+        "maximum": 97
+      },
+      "25124": {
+        "first": 66,
+        "last": 66,
+        "minimum": 66,
+        "maximum": 66
+      },
+      "27640": {
+        "first": 346,
+        "last": 341,
+        "minimum": 341,
+        "maximum": 346
+      }
+    },
+    "policy": "warm",
+    "settle_seconds": 30,
+    "gpu": {
+      "all_contexts_match_policy": true,
+      "opened_gpu": [
+        {
+          "ordinal": 0,
+          "samples": 30,
+          "peak_local_bytes": 156176384,
+          "peak_nonlocal_bytes": 0
+        }
+      ],
+      "settled_gpu": [
+        {
+          "ordinal": 0,
+          "samples": 30,
+          "peak_local_bytes": 138678272,
+          "peak_nonlocal_bytes": 0
+        }
+      ]
+    }
+  },
+  "studio": {
+    "apply_enabled": false,
+    "cad_checks": [],
+    "cad_result": {},
+    "cad_stage": 0,
+    "canvas_checks": [],
+    "canvas_omissions": 0,
+    "canvas_shapes": 0,
+    "canvas_stage": 0,
+    "editor_checks": [],
+    "editor_parameters": 0,
+    "editor_stage": 0,
+    "editor_ui_state": "saved",
+    "error": "",
+    "frame_budget_tested": false,
+    "mesh_bodies": 0,
+    "mesh_triangles": 0,
+    "mesh_vertex_buffer": {
+      "bytes": 0,
+      "uploads": 30
+    },
+    "passed": true,
+    "pcb_catalog_metrics": {},
+    "pcb_checks": [],
+    "pcb_project_path": "",
+    "pcb_request_ticks": 0,
+    "pcb_stage": 0,
+    "pcb_ticks": 0,
+    "physics_tested": false,
+    "primitives_checks": [],
+    "primitives_stage": 0,
+    "project_id": "cc6a4b5f-f198-4f22-8655-41dc2c68d08f",
+    "project_switch": {
+      "baseline": [
+        {
+          "gui": false,
+          "handles": 191,
+          "pid": 13256,
+          "private_commit_bytes": 51965952,
+          "working_set_bytes": 60223488
+        },
+        {
+          "gui": false,
+          "handles": 97,
+          "pid": 18868,
+          "private_commit_bytes": 1224704,
+          "working_set_bytes": 8110080
+        },
+        {
+          "gui": false,
+          "handles": 66,
+          "pid": 25124,
+          "private_commit_bytes": 966656,
+          "working_set_bytes": 5074944
+        },
+        {
+          "gui": true,
+          "handles": 243,
+          "pid": 27640,
+          "private_commit_bytes": 15572992,
+          "working_set_bytes": 39952384
+        }
+      ],
+      "baseline_gpu": [
+        {
+          "local_bytes": 0,
+          "node": 0,
+          "nonlocal_bytes": 0,
+          "ordinal": 0
+        }
+      ],
+      "current_open_gpu": [
+        {
+          "local_bytes": 156176384,
+          "node": 0,
+          "nonlocal_bytes": 0,
+          "ordinal": 0
+        }
+      ],
+      "cycles": [
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 1,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 262,
+              "pid": 13256,
+              "private_commit_bytes": 117633024,
+              "working_set_bytes": 135876608
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 966656,
+              "working_set_bytes": 5074944
+            },
+            {
+              "gui": true,
+              "handles": 347,
+              "pid": 27640,
+              "private_commit_bytes": 257597440,
+              "working_set_bytes": 337018880
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 142217216,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 262,
+              "pid": 13256,
+              "private_commit_bytes": 77119488,
+              "working_set_bytes": 95784960
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 127258624,
+              "working_set_bytes": 202743808
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 2,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 262,
+              "pid": 13256,
+              "private_commit_bytes": 94081024,
+              "working_set_bytes": 113266688
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 347,
+              "pid": 27640,
+              "private_commit_bytes": 265957376,
+              "working_set_bytes": 346664960
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 260,
+              "pid": 13256,
+              "private_commit_bytes": 83972096,
+              "working_set_bytes": 103297024
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 345,
+              "pid": 27640,
+              "private_commit_bytes": 127393792,
+              "working_set_bytes": 203018240
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 3,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 260,
+              "pid": 13256,
+              "private_commit_bytes": 94076928,
+              "working_set_bytes": 113328128
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 350,
+              "pid": 27640,
+              "private_commit_bytes": 263118848,
+              "working_set_bytes": 353431552
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 83652608,
+              "working_set_bytes": 103170048
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 131788800,
+              "working_set_bytes": 207491072
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 4,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 91865088,
+              "working_set_bytes": 111288320
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 343,
+              "pid": 27640,
+              "private_commit_bytes": 267157504,
+              "working_set_bytes": 347267072
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 86310912,
+              "working_set_bytes": 105304064
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127340544,
+              "working_set_bytes": 203177984
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 5,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 91803648,
+              "working_set_bytes": 111247360
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 343,
+              "pid": 27640,
+              "private_commit_bytes": 261275648,
+              "working_set_bytes": 342294528
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 86183936,
+              "working_set_bytes": 105312256
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127397888,
+              "working_set_bytes": 203243520
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 6,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93970432,
+              "working_set_bytes": 113287168
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 343,
+              "pid": 27640,
+              "private_commit_bytes": 260878336,
+              "working_set_bytes": 341848064
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 88182784,
+              "working_set_bytes": 107413504
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127426560,
+              "working_set_bytes": 203276288
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 7,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 92950528,
+              "working_set_bytes": 112238592
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1224704,
+              "working_set_bytes": 8110080
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5038080
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 267042816,
+              "working_set_bytes": 357531648
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 89042944,
+              "working_set_bytes": 108224512
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1310720,
+              "working_set_bytes": 8245248
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 921600,
+              "working_set_bytes": 5132288
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132018176,
+              "working_set_bytes": 208117760
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 8,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 94007296,
+              "working_set_bytes": 113319936
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1310720,
+              "working_set_bytes": 8245248
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 921600,
+              "working_set_bytes": 5132288
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 267833344,
+              "working_set_bytes": 358498304
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 88813568,
+              "working_set_bytes": 108326912
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1310720,
+              "working_set_bytes": 8245248
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 921600,
+              "working_set_bytes": 5132288
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132009984,
+              "working_set_bytes": 208117760
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 9,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 94007296,
+              "working_set_bytes": 113045504
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1310720,
+              "working_set_bytes": 8245248
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 921600,
+              "working_set_bytes": 5132288
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 266579968,
+              "working_set_bytes": 338997248
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 138285056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 90316800,
+              "working_set_bytes": 109490176
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5111808
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127361024,
+              "working_set_bytes": 203497472
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134025216,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 10,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93970432,
+              "working_set_bytes": 113000448
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5111808
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 262897664,
+              "working_set_bytes": 336277504
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 138285056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 91394048,
+              "working_set_bytes": 110608384
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5111808
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127340544,
+              "working_set_bytes": 203509760
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134025216,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 11,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 91865088,
+              "working_set_bytes": 111550464
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5111808
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 263643136,
+              "working_set_bytes": 354476032
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 92573696,
+              "working_set_bytes": 112066560
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5111808
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132059136,
+              "working_set_bytes": 208228352
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 12,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93249536,
+              "working_set_bytes": 112955392
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5111808
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 267591680,
+              "working_set_bytes": 357441536
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93249536,
+              "working_set_bytes": 112967680
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5111808
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132001792,
+              "working_set_bytes": 208183296
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 13,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93970432,
+              "working_set_bytes": 113766400
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5111808
+            },
+            {
+              "gui": true,
+              "handles": 343,
+              "pid": 27640,
+              "private_commit_bytes": 267628544,
+              "working_set_bytes": 348987392
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 91701248,
+              "working_set_bytes": 111222784
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1269760,
+              "working_set_bytes": 8220672
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 921600,
+              "working_set_bytes": 5132288
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127631360,
+              "working_set_bytes": 203812864
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 14,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 94035968,
+              "working_set_bytes": 113008640
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1269760,
+              "working_set_bytes": 8220672
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 921600,
+              "working_set_bytes": 5132288
+            },
+            {
+              "gui": true,
+              "handles": 343,
+              "pid": 27640,
+              "private_commit_bytes": 263200768,
+              "working_set_bytes": 343633920
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 92614656,
+              "working_set_bytes": 112033792
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1269760,
+              "working_set_bytes": 8220672
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 921600,
+              "working_set_bytes": 5132288
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127623168,
+              "working_set_bytes": 203825152
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 15,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 94035968,
+              "working_set_bytes": 113192960
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1269760,
+              "working_set_bytes": 8220672
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 921600,
+              "working_set_bytes": 5132288
+            },
+            {
+              "gui": true,
+              "handles": 343,
+              "pid": 27640,
+              "private_commit_bytes": 260767744,
+              "working_set_bytes": 340316160
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 92565504,
+              "working_set_bytes": 112140288
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127602688,
+              "working_set_bytes": 203812864
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 16,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 94007296,
+              "working_set_bytes": 113213440
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 263360512,
+              "working_set_bytes": 354209792
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93069312,
+              "working_set_bytes": 112291840
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132087808,
+              "working_set_bytes": 208302080
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 17,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 94007296,
+              "working_set_bytes": 113614848
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 343,
+              "pid": 27640,
+              "private_commit_bytes": 267644928,
+              "working_set_bytes": 348041216
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93114368,
+              "working_set_bytes": 112238592
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127631360,
+              "working_set_bytes": 203845632
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 18,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93278208,
+              "working_set_bytes": 112955392
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 263307264,
+              "working_set_bytes": 336662528
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 138481664,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93245440,
+              "working_set_bytes": 112971776
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127455232,
+              "working_set_bytes": 203669504
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134025216,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 19,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93970432,
+              "working_set_bytes": 113582080
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 342,
+              "pid": 27640,
+              "private_commit_bytes": 263077888,
+              "working_set_bytes": 340385792
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 142479360,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93028352,
+              "working_set_bytes": 112308224
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127680512,
+              "working_set_bytes": 203898880
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 20,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93970432,
+              "working_set_bytes": 113483776
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 263249920,
+              "working_set_bytes": 335716352
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 138481664,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 92930048,
+              "working_set_bytes": 112304128
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127680512,
+              "working_set_bytes": 203911168
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 21,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 91832320,
+              "working_set_bytes": 111661056
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 343,
+              "pid": 27640,
+              "private_commit_bytes": 262111232,
+              "working_set_bytes": 343523328
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93097984,
+              "working_set_bytes": 112406528
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127696896,
+              "working_set_bytes": 203894784
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 22,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93970432,
+              "working_set_bytes": 113197056
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 263663616,
+              "working_set_bytes": 353558528
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93003776,
+              "working_set_bytes": 112459776
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132157440,
+              "working_set_bytes": 208396288
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 23,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93962240,
+              "working_set_bytes": 113479680
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 262828032,
+              "working_set_bytes": 335355904
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 138285056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 92696576,
+              "working_set_bytes": 112226304
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127533056,
+              "working_set_bytes": 203788288
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134025216,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 24,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93970432,
+              "working_set_bytes": 113758208
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 263421952,
+              "working_set_bytes": 354336768
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93007872,
+              "working_set_bytes": 112447488
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132247552,
+              "working_set_bytes": 208465920
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 25,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93962240,
+              "working_set_bytes": 113115136
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 343,
+              "pid": 27640,
+              "private_commit_bytes": 267530240,
+              "working_set_bytes": 348901376
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93052928,
+              "working_set_bytes": 112422912
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127758336,
+              "working_set_bytes": 204021760
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 26,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93970432,
+              "working_set_bytes": 113405952
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 343,
+              "pid": 27640,
+              "private_commit_bytes": 263188480,
+              "working_set_bytes": 344678400
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 146477056,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 92938240,
+              "working_set_bytes": 112267264
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 127746048,
+              "working_set_bytes": 204013568
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 134221824,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 27,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93970432,
+              "working_set_bytes": 113569792
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 263323648,
+              "working_set_bytes": 353320960
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93081600,
+              "working_set_bytes": 112500736
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132255744,
+              "working_set_bytes": 208515072
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 28,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93970432,
+              "working_set_bytes": 113729536
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 267747328,
+              "working_set_bytes": 357679104
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93732864,
+              "working_set_bytes": 112795648
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132239360,
+              "working_set_bytes": 208498688
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 29,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93949952,
+              "working_set_bytes": 113213440
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 267706368,
+              "working_set_bytes": 357629952
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93065216,
+              "working_set_bytes": 112316416
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132284416,
+              "working_set_bytes": 208547840
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        },
+        {
+          "complex_curves": 8,
+          "context_retained": true,
+          "cycle": 30,
+          "display_triangles": 1000000,
+          "field_slices": 10,
+          "opened": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 91807744,
+              "working_set_bytes": 111628288
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 346,
+              "pid": 27640,
+              "private_commit_bytes": 268181504,
+              "working_set_bytes": 358121472
+            }
+          ],
+          "opened_gpu": [
+            {
+              "local_bytes": 156176384,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ],
+          "settled_after_switch": [
+            {
+              "gui": false,
+              "handles": 252,
+              "pid": 13256,
+              "private_commit_bytes": 93622272,
+              "working_set_bytes": 112812032
+            },
+            {
+              "gui": false,
+              "handles": 97,
+              "pid": 18868,
+              "private_commit_bytes": 1232896,
+              "working_set_bytes": 8200192
+            },
+            {
+              "gui": false,
+              "handles": 66,
+              "pid": 25124,
+              "private_commit_bytes": 884736,
+              "working_set_bytes": 5107712
+            },
+            {
+              "gui": true,
+              "handles": 341,
+              "pid": 27640,
+              "private_commit_bytes": 132349952,
+              "working_set_bytes": 208584704
+            }
+          ],
+          "settled_gpu": [
+            {
+              "local_bytes": 138678272,
+              "node": 0,
+              "nonlocal_bytes": 0,
+              "ordinal": 0
+            }
+          ]
+        }
+      ],
+      "diagnostic": "",
+      "policy": "warm",
+      "settle_seconds": 30
+    },
+    "rendered_frames": 60,
+    "renderer": "4.6.0 - Build 32.0.101.7088 / Intel(R) Iris(R) Xe Graphics",
+    "revision_id": "78c0588c-64e6-43a2-b78f-1127439abfc1",
+    "saved_revision": "78c0588c-64e6-43a2-b78f-1127439abfc1",
+    "schema_version": "rfad.gui-smoke/0.1",
+    "service_sessions": 1,
+    "setup_checks": [],
+    "setup_pending_ticks": 0,
+    "setup_stage": 0,
+    "snapshot_id": "",
+    "solver_cancel_trace": {},
+    "solver_checks": [],
+    "solver_frames": 0,
+    "solver_result": {},
+    "solver_sample_count": 0,
+    "solver_stage": 0,
+    "stage": 0,
+    "study_checks": [],
+    "study_stage": 0,
+    "study_view": {},
+    "sweep_circuit_id": "",
+    "sweep_grid_id": "",
+    "sweep_view": {},
+    "ux_checks": []
+  }
+}
