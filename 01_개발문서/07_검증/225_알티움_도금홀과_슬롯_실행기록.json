@@ -1,0 +1,214 @@
+{
+  "schema": "rfad.stage12.altium-drill-slot-review/0.1",
+  "date_kst": "2026-11-21",
+  "application": "Altium Designer Enterprise 26.9.1 CAMtastic",
+  "cam_saved_and_reopened": true,
+  "cam_saved_before_reexport_sha256": "5502eb9a392e74b75d67b11f9be7e6b263f845ccfd28b06ca87de9ec4be17988",
+  "settings": {
+    "units": "mm",
+    "coordinates": "absolute",
+    "integer_digits": 2,
+    "decimal_digits": 3,
+    "zero_suppression": "none",
+    "manual_origin_adjustment": false
+  },
+  "plated": {
+    "source_sha256": "715ff71a743eb8ad5eea3f82a4ff02b526d01695346e4f0b35a1001638f82f11",
+    "source": {
+      "schema": "rfad.xnc-read/0.1",
+      "unit": "mm",
+      "file_attributes": {
+        ".FileFunction": [
+          "Plated",
+          "1",
+          "2",
+          "PTH"
+        ],
+        ".GenerationSoftware": [
+          "TraceWave",
+          "Studio",
+          "0.1"
+        ]
+      },
+      "plating": "plated",
+      "holes": [
+        {
+          "kind": "circle",
+          "center_mm": [
+            8.0,
+            10.0
+          ],
+          "finished_diameter_mm": 1.25,
+          "tool_diameter_mm": null,
+          "attributes": {
+            "TraceWaveId": [
+              "plated-round"
+            ]
+          }
+        },
+        {
+          "kind": "slot",
+          "start_mm": [
+            22.5,
+            10.0
+          ],
+          "end_mm": [
+            27.5,
+            10.0
+          ],
+          "finished_width_mm": 1.2,
+          "tool_diameter_mm": null,
+          "attributes": {
+            "TraceWaveId": [
+              "plated-slot"
+            ]
+          }
+        }
+      ],
+      "losses": []
+    },
+    "review_sha256": "808570cd9bb2b68d33869d67c1bf6d5d88bc1571d793d1e12307e653d2f782c2",
+    "import_errors": 0,
+    "import_warnings": 0,
+    "reopened_cam_layer": "L1: plated-review.drl",
+    "export_sha256": "35ae21b549808558f7c90c92a386c0bb3f4a8e8af5abf9c98a96ae3a399799e3",
+    "export_report_sha256": "65b238dd19e64e2fe4a4cebe7c7997653fd63602ad76ddeb3fd7f929ae59fa04",
+    "export_lines": [
+      "G92",
+      "M48",
+      "METRIC",
+      "FMAT,2",
+      "T01C1.2500",
+      "T02C1.2000",
+      "DETECT,ON",
+      "%",
+      "G90",
+      "T01",
+      "X07999Y09999",
+      "T02",
+      "X22499Y09999G85X27499",
+      "M30"
+    ],
+    "export_circle_center_mm": [
+      7.999,
+      9.999
+    ],
+    "export_slot_centers_mm": [
+      [
+        22.499,
+        9.999
+      ],
+      [
+        27.499,
+        9.999
+      ]
+    ],
+    "finished_slot_length_mm": 6.2,
+    "maximum_axis_delta_mm": 0.001,
+    "export_file_plating": null,
+    "export_object_ids": null
+  },
+  "unplated": {
+    "source_sha256": "54643dd116ce97780590a7c6c2a75f14fc6bc75cfb3a475362743bd8699f63d4",
+    "source": {
+      "schema": "rfad.xnc-read/0.1",
+      "unit": "mm",
+      "file_attributes": {
+        ".FileFunction": [
+          "NonPlated",
+          "1",
+          "2",
+          "NPTH"
+        ],
+        ".GenerationSoftware": [
+          "TraceWave",
+          "Studio",
+          "0.1"
+        ]
+      },
+      "plating": "unplated",
+      "holes": [
+        {
+          "kind": "circle",
+          "center_mm": [
+            8.0,
+            30.0
+          ],
+          "finished_diameter_mm": 1.25,
+          "tool_diameter_mm": null,
+          "attributes": {
+            "TraceWaveId": [
+              "unplated-round"
+            ]
+          }
+        },
+        {
+          "kind": "slot",
+          "start_mm": [
+            22.5,
+            30.0
+          ],
+          "end_mm": [
+            27.5,
+            30.0
+          ],
+          "finished_width_mm": 1.2,
+          "tool_diameter_mm": null,
+          "attributes": {
+            "TraceWaveId": [
+              "unplated-slot"
+            ]
+          }
+        }
+      ],
+      "losses": []
+    },
+    "review_sha256": "9a8ab3f1e3e861cef1bdf1e8428f71994c070b21f67848aaa8ac5a711669e458",
+    "import_errors": 0,
+    "import_warnings": 0,
+    "reopened_cam_layer": "L2: unplated-review.drl",
+    "export_sha256": "4c8a2f1edbc22dc204842d6e6442da366feeb135bcb8b7cb23013f8b6e53497d",
+    "export_report_sha256": "cfcac3a1daa1cc703237e79f9148cd0596ebc94737919a33664fd256801ac23a",
+    "export_lines": [
+      "G92",
+      "M48",
+      "METRIC",
+      "FMAT,2",
+      "T01C1.2500",
+      "T02C1.2000",
+      "DETECT,ON",
+      "%",
+      "G90",
+      "T01",
+      "X07999Y29999",
+      "T02",
+      "X22499Y29999G85X27499",
+      "M30"
+    ],
+    "export_circle_center_mm": [
+      7.999,
+      29.999
+    ],
+    "export_slot_centers_mm": [
+      [
+        22.499,
+        29.999
+      ],
+      [
+        27.499,
+        29.999
+      ]
+    ],
+    "finished_slot_length_mm": 6.2,
+    "maximum_axis_delta_mm": 0.001,
+    "export_file_plating": null,
+    "export_object_ids": null
+  },
+  "related_regression": {
+    "platform": "Windows",
+    "kicad": "10.0.8",
+    "isolated_exchange_python": true,
+    "passed": 51,
+    "skipped": 0
+  }
+}
