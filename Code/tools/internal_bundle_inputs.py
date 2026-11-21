@@ -14,7 +14,7 @@ import zipfile
 FILE_LIMIT = 64 * 1024 * 1024
 TOTAL_LIMIT = 128 * 1024 * 1024
 FOLDER_ROOTS = ("Code/src/", "Code/ui/", "Code/tools/", "Code/tests/", "Code/fixtures/")
-SINGLE_FILES = {"Code/README.md", "Code/CMakeLists.txt", "Code/CMakePresets.json", "Code/.clang-format",
+SINGLE_FILES = {"Code/README.md", "Code/pyproject.toml", "Code/CMakeLists.txt", "Code/CMakePresets.json", "Code/.clang-format",
                 "Code/.editorconfig", "Code/runtime_profiles/native-windows-x64.json",
                 "Code/runtime_profiles/openems-wsl-build.json",
                 "01_개발문서/08_운영환경/01_파이썬_개발환경.md",
@@ -54,7 +54,8 @@ def confirmed(data, digest, label):
 
 def git_sources(repository, reference):
     """! @brief 갱신 중인 작업 트리와 무관하게 명시한 커밋의 추적 파일을 보존한다."""
-    executable = ["git", "-C", str(repository)]
+    # @brief 사용자 Git의 Windows 개행 설정이 고정 커밋의 ZIP 바이트에 영향을 주지 않게 한다.
+    executable = ["git", "-C", str(repository), "-c", "core.autocrlf=false", "-c", "core.eol=lf"]
     revision = subprocess.check_output([*executable, "rev-parse", "--verify", "--end-of-options", reference + "^{commit}"],
                                       text=True).strip()
     raw = subprocess.check_output([*executable, "ls-tree", "-r", "-z", "--long", revision, "--", "Code", "01_개발문서/08_운영환경"])

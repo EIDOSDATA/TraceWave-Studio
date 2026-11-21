@@ -22,19 +22,25 @@ class InternalBundleTests(unittest.TestCase):
             (root / "00_참고자료").mkdir()
             source = code / "src/a.py"
             source.write_bytes(b"original")
+            (code / "pyproject.toml").write_bytes(b"[build-system]\n")
             (code / "CMakeLists.txt").write_bytes(b"build")
             (root / "00_참고자료/source.txt").write_bytes(b"restricted")
             (code / "untracked-project.json").write_bytes(b"working")
             command = ["git", "-C", str(root)]
             subprocess.run([*command, "init", "-q"], check=True)
-            subprocess.run([*command, "add", "--", "Code/src/a.py", "Code/CMakeLists.txt", "00_참고자료"], check=True)
+            subprocess.run([*command, "config", "core.autocrlf", "true"], check=True)
+            subprocess.run([*command, "add", "--", "Code/src/a.py", "Code/pyproject.toml", "Code/CMakeLists.txt",
+                            "00_참고자료"], check=True)
             subprocess.run([*command, "-c", "user.name=TraceWave", "-c", "user.email=test@local.invalid",
                             "commit", "-qm", "fixture"], check=True)
             source.write_bytes(b"unsaved changes")
             (code / "src/local.py").write_bytes(b"untracked")
             commit, selected = git_sources(root, "HEAD")
             self.assertEqual(subprocess.check_output([*command, "rev-parse", "HEAD"], text=True).strip(), commit)
-            self.assertEqual(selected, {"Code/src/a.py": b"original", "Code/CMakeLists.txt": b"build"})
+            self.assertEqual(selected, {"Code/src/a.py": b"original", "Code/pyproject.toml": b"[build-system]\n",
+                                        "Code/CMakeLists.txt": b"build"})
+            subprocess.run([*command, "config", "core.autocrlf", "false"], check=True)
+            self.assertEqual(git_sources(root, "HEAD"), (commit, selected))
 
     def test_zip_is_deterministic_and_checks_hash_and_path(self):
         """! @brief 동일 바이트를 같은 ZIP으로 작성하며 변조, 중복 및 NTFS 특수 이름을 거절한다."""

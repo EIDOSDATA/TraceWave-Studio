@@ -9741,7 +9741,9 @@
         "../01_개발문서/05_기능설계/06_연구/01_명시적스윕과_실행계약.md",
         "../01_개발문서/07_검증/13_설계스윕과_연구_검증.md",
         "../01_개발문서/05_기능설계/04_해석결과/08_독립참조와_유한검증_계약.md",
-        "../01_개발문서/07_검증/19_독립참조와_유한검증.md"
+        "../01_개발문서/07_검증/19_독립참조와_유한검증.md",
+        "../01_개발문서/07_검증/281_평면_도체_복소확산_독립대조.md",
+        "../01_개발문서/07_검증/282_설치_포트_유한기록_전대역_상한.md"
       ],
       "gaps": [
         "API-019 공통 수렴 평가 공개 계약과 여러 연구의 비교/지원 범위별 수렴 수용이 남는다. 현재 명시 다축 행렬의 실행 완료 자체는 수렴 판정이 아니다.",
@@ -9771,6 +9773,7 @@
         "tests/test_rf_reference.py::RfReferenceTests.test_error_is_retained_without_normalizing_to_a_pass",
         "tests/test_rf_reference.py::RfReferenceTests.test_sheet_dc_and_internal_inductance_limit",
         "tests/test_rf_reference.py::RfReferenceTests.test_thick_sheet_is_two_halfspaces_in_parallel",
+        "tests/test_rf_reference.py::RfReferenceTests.test_symmetric_sheet_matches_independent_diffusion_and_joule_integral",
         "tests/test_rf_reference_contract.py::RFReferenceContractTests.test_unfrozen_cases_and_extra_settings_cannot_start",
         "tests/test_rf_validation_records.py::RFValidationRecordTests.test_all_prepare_gate_reports_and_runtime_free_historical_reopen",
         "tests/test_rf_validation_records.py::RFValidationRecordTests.test_foreign_project_and_tampered_report_are_rejected"
@@ -10336,7 +10339,9 @@
         "src/rfad/application/wsl_process.py",
         "ui/wxwidgets/service_client.cpp",
         "tools/mcp_stdio.py",
-        "tools/build_internal_bundle.py"
+        "tools/build_internal_bundle.py",
+        "tools/internal_bundle_inputs.py",
+        "tools/summarize_windows_canvas_display.py"
       ],
       "contract_notes": [
         "조건부 GUI/native test의 현재 스킵을 통과로 집계하지 않는다. 합성 renderer 비용은 실제 앱 FPS/메모리 수용과 다르다.",
@@ -10349,7 +10354,9 @@
         "runtime_profiles/internal-validation-bundle.json",
         "../01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
         "../01_개발문서/07_검증/47_키캐드재저장본_엠시피왕복_검증.md",
-        "../01_개발문서/07_검증/49_윈도우_에프영_시작시간_검증.md"
+        "../01_개발문서/07_검증/49_윈도우_에프영_시작시간_검증.md",
+        "../01_개발문서/07_검증/283_윈도우_연속표시_유효표본_검증.md",
+        "../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md"
       ],
       "gaps": [
         "실제 F1/F2 조작에서 60/30 fps, 전체 프로세스 메모리/입력 지연과 DPI/도킹/GPU/WSL 복구의 R1 수용이 남는다.",
@@ -10374,7 +10381,9 @@
         "tests/test_mcp_pcb_exchange_process.py::McpPcbExchangeTests.test_native_kicad_and_mcp_board_round_trip",
         "tests/test_gui_process.py::GuiProcessTests.test_f0_startup_records_real_display_and_editor_ready",
         "tests/test_gui_solver_process.py::GuiSolverProcessTests.test_circle_arc_native_results_save_cancel_and_restart",
-        "tests/test_wsl_readiness.py::WslReadinessTests.test_control_can_cancel_a_real_silent_launcher"
+        "tests/test_wsl_readiness.py::WslReadinessTests.test_control_can_cancel_a_real_silent_launcher",
+        "tests/test_internal_bundle.py",
+        "tests/test_windows_canvas_display_trace.py"
       ]
     }
   ],
@@ -14100,8 +14109,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "0d90b83db15cf8079a78525f55397057b189ea8dc11687eda5100771a8b946f0",
-      "utf8_bytes": 64403
+      "text_sha256": "1514780d707d5e2920bbe5c900fc3b919a5bb81d185c4a4df4b1f609dd916039",
+      "utf8_bytes": 65052
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14404,6 +14413,21 @@
       "utf8_bytes": 232012
     },
     {
+      "path": "01_개발문서/07_검증/281_평면_도체_복소확산_독립대조.md",
+      "text_sha256": "aba61c9b765882f7de5ac1595bbbf2ba8336b2bba7981ffef2c73e3e0e6f9e36",
+      "utf8_bytes": 2042
+    },
+    {
+      "path": "01_개발문서/07_검증/282_설치_포트_유한기록_전대역_상한.md",
+      "text_sha256": "ca810cd3de3295d17221b2bbf571242594d7b9c32763ca5be2eb6f29c50672db",
+      "utf8_bytes": 2313
+    },
+    {
+      "path": "01_개발문서/07_검증/283_윈도우_연속표시_유효표본_검증.md",
+      "text_sha256": "9589cabb5686e7857311497e55f3d8fc02225187807a0f134531dce05bbb13d9",
+      "utf8_bytes": 2625
+    },
+    {
       "path": "01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
       "text_sha256": "404ba3b4060a9a4ff7c93e3d58690dc63cbb65ab14ad176e5b87a4ee8cd8fe95",
       "utf8_bytes": 3370
@@ -14437,6 +14461,11 @@
       "path": "01_개발문서/07_검증/49_윈도우_에프영_시작시간_검증.md",
       "text_sha256": "9068b69619d3fd3d9ab6a4327c633e22bd2b31ac73291a556238a3273893bafa",
       "utf8_bytes": 3615
+    },
+    {
+      "path": "01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md",
+      "text_sha256": "5d877c624dca4536eb81d758ce7b0f372bd38542a28d59690a3ff37676cba566",
+      "utf8_bytes": 6606
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -15679,6 +15708,11 @@
       "utf8_bytes": 10316
     },
     {
+      "path": "Code/tests/test_internal_bundle.py",
+      "text_sha256": "f1aae3c037d5a8e8a726aa34a5df2712c2ab5ad77cd3fe48fce13e2ea4fa2cc5",
+      "utf8_bytes": 4850
+    },
+    {
       "path": "Code/tests/test_literature_templates.py",
       "text_sha256": "dcc8e9f0f7eaecbaa39c00fc574188c78717572fd12480d91a9720b1ce59d139",
       "utf8_bytes": 16370
@@ -15915,8 +15949,8 @@
     },
     {
       "path": "Code/tests/test_rf_reference.py",
-      "text_sha256": "4319d940630e8e66ecaa136b94562bb90aea279382546e10261192a88323a42a",
-      "utf8_bytes": 5416
+      "text_sha256": "c99624f5722e1197985a0f7d4da6729bcf5f2e50fb809b5b063403370703d497",
+      "utf8_bytes": 7534
     },
     {
       "path": "Code/tests/test_rf_reference_contract.py",
@@ -15999,6 +16033,11 @@
       "utf8_bytes": 7615
     },
     {
+      "path": "Code/tests/test_windows_canvas_display_trace.py",
+      "text_sha256": "e12a2a3fe497019c36e9ff9ae07433660ada42036b246cf6d73ce878ab6169a4",
+      "utf8_bytes": 4906
+    },
+    {
       "path": "Code/tests/test_wsl_readiness.py",
       "text_sha256": "b01bcdd74137dd86aef91ecf7e0c1936623733d9748ac02a4cdd298f703e7642",
       "utf8_bytes": 2285
@@ -16009,9 +16048,19 @@
       "utf8_bytes": 9303
     },
     {
+      "path": "Code/tools/internal_bundle_inputs.py",
+      "text_sha256": "9bc3926e5d770378e4f06a233dbaa00a30820b44723a65a8677af2bbbda3de4e",
+      "utf8_bytes": 8157
+    },
+    {
       "path": "Code/tools/mcp_stdio.py",
       "text_sha256": "0c584f22f2d05cf25ab2f4f4baa4307181dddad93ce1ff9c8e08ff04f2a3560e",
       "utf8_bytes": 2472
+    },
+    {
+      "path": "Code/tools/summarize_windows_canvas_display.py",
+      "text_sha256": "06b4997590b82858e6ff9093271492c09b3e2fc87477a1bc8ebeb77e26f06351",
+      "utf8_bytes": 9302
     },
     {
       "path": "Code/tools/verify_ifa_convergence.py",
