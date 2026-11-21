@@ -258,11 +258,12 @@ void StudioFrame::PollService()
             Connect();
             return;
         }
+        std::string serviceLog;
         for (auto& incoming : m_client.Drain())
         {
             if (!incoming.protocol)
             {
-                Log(incoming.text);
+                serviceLog.append(incoming.text).push_back('\n');
                 continue;
             }
             const Json response = Json::parse(incoming.text);
@@ -314,6 +315,11 @@ void StudioFrame::PollService()
             {
                 return;
             }
+        }
+        if (!serviceLog.empty())
+        {
+            serviceLog.pop_back();
+            Log(serviceLog);
         }
         const std::string transportError = m_client.Error();
         if (!transportError.empty() && !m_transportFailed)

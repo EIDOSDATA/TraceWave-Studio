@@ -1,0 +1,679 @@
+{
+  "schema": "rfad.stage12.f4-priority-cancel/0.1",
+  "date_kst": "2026-11-21",
+  "comparison": "same Windows SegmentHeap setting; separate native WSL2 guest per sample",
+  "concurrent_workload": "other Studio resource and verification trials",
+  "ordered_samples": [
+    {
+      "index": 1,
+      "group": "control",
+      "exit": 0
+    },
+    {
+      "index": 2,
+      "group": "candidate",
+      "exit": 0
+    },
+    {
+      "index": 3,
+      "group": "candidate",
+      "exit": 0
+    },
+    {
+      "index": 4,
+      "group": "control",
+      "exit": 0
+    },
+    {
+      "index": 5,
+      "group": "control",
+      "exit": 0
+    },
+    {
+      "index": 6,
+      "group": "candidate",
+      "exit": 0
+    },
+    {
+      "index": 7,
+      "group": "candidate",
+      "exit": 0
+    },
+    {
+      "index": 8,
+      "group": "control",
+      "exit": 0
+    },
+    {
+      "index": 9,
+      "group": "control",
+      "exit": 0
+    },
+    {
+      "index": 10,
+      "group": "candidate",
+      "exit": 0
+    },
+    {
+      "index": 11,
+      "group": "candidate",
+      "exit": 0
+    },
+    {
+      "index": 12,
+      "group": "control",
+      "exit": 0
+    }
+  ],
+  "groups": {
+    "control": {
+      "samples": [
+        {
+          "index": 1,
+          "wall_seconds": 79.53200000000652,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 35.617,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "a239424d-01b5-4d4b-b7ef-246db946f4c8",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 153.304,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1699.906,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "a239424d-01b5-4d4b-b7ef-246db946f4c8",
+            "received_ns": 738300435616900,
+            "sent_ns": 738300552177700,
+            "elapsed_ms": 116.5608
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.000172034000002,
+            "native_pid": 671,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3680,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "7e313798-6814-4bce-9fb4-efdce7f0b991",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 4,
+          "wall_seconds": 80.89000000001397,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 33.022,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "542cb446-2a9b-4721-88a8-373b62080f17",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 145.513,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1617.841,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "542cb446-2a9b-4721-88a8-373b62080f17",
+            "received_ns": 738543408230700,
+            "sent_ns": 738543520440300,
+            "elapsed_ms": 112.2096
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0001407920000247,
+            "native_pid": 1593,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3490,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "ff5f5655-6b24-46c9-9545-e4904948e456",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 5,
+          "wall_seconds": 73.71900000004098,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 52.255,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "7208dd5a-f71c-479b-8ba5-eaf1128f732a",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 163.807,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1463.669,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "7208dd5a-f71c-479b-8ba5-eaf1128f732a",
+            "received_ns": 738621710563800,
+            "sent_ns": 738621822137400,
+            "elapsed_ms": 111.5736
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0001169180000034,
+            "native_pid": 1908,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3520,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "7dc8002f-ad03-4c5a-b3a9-18b424c3181c",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 8,
+          "wall_seconds": 116.85900000005495,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 71.924,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "5b12d586-4945-472b-99e9-a6f17f984a2c",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 268.865,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1909.982,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "5b12d586-4945-472b-99e9-a6f17f984a2c",
+            "received_ns": 738953499120400,
+            "sent_ns": 738953696062600,
+            "elapsed_ms": 196.9422
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0002384439999332,
+            "native_pid": 702,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3630,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "94e85ba6-9453-4aad-a33d-91d5f569fa35",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 9,
+          "wall_seconds": 124.20299999997951,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 259.451,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "410d94f6-2371-4c19-9ff2-47d3dc0c443f",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 617.789,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 2575.068,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "410d94f6-2371-4c19-9ff2-47d3dc0c443f",
+            "received_ns": 739081495904100,
+            "sent_ns": 739081854327800,
+            "elapsed_ms": 358.4237
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.000218296000071,
+            "native_pid": 714,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 4680,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "0a067596-ed88-4352-86d1-462febd24476",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        },
+        {
+          "index": 12,
+          "wall_seconds": 132.26500000001397,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 186.465,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "ab8360d9-c035-4876-8fd6-e6c09b113092",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 373.646,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 2090.548,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "ab8360d9-c035-4876-8fd6-e6c09b113092",
+            "received_ns": 739512481266100,
+            "sent_ns": 739512668487000,
+            "elapsed_ms": 187.2209
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0002175260001422,
+            "native_pid": 724,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 4270,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "bff08de1-f29c-4107-b372-5bca9a68e6a3",
+          "executable_sha256": "35ed8480de6ffc659a96c5448e9df6ff5040b5e3ba3df494221139ddcd14058e"
+        }
+      ],
+      "distribution": {
+        "control": {
+          "minimum_ms": 33.022,
+          "median_ms": 62.0895,
+          "p95_nearest_rank_ms": 259.451
+        },
+        "receipt": {
+          "minimum_ms": 145.513,
+          "median_ms": 216.336,
+          "p95_nearest_rank_ms": 617.789
+        },
+        "terminal": {
+          "minimum_ms": 1463.669,
+          "median_ms": 1804.944,
+          "p95_nearest_rank_ms": 2575.068
+        },
+        "rpc": {
+          "minimum_ms": 111.5736,
+          "median_ms": 151.89085,
+          "p95_nearest_rank_ms": 358.4237
+        }
+      }
+    },
+    "candidate": {
+      "samples": [
+        {
+          "index": 2,
+          "wall_seconds": 77.40700000000652,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 1.31,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "662b52a2-d7ff-4636-bf3e-066b88d7a353",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 139.655,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1542.172,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "662b52a2-d7ff-4636-bf3e-066b88d7a353",
+            "received_ns": 738382636924100,
+            "sent_ns": 738382775414100,
+            "elapsed_ms": 138.49
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0001128929999936,
+            "native_pid": 982,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3640,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "79332c10-6e3d-42e5-bcd5-705496aa1aaa",
+          "executable_sha256": "805fc72e89028f1c5919ff99c4363a33c01f1daceed8f965b6130ba1652a689b"
+        },
+        {
+          "index": 3,
+          "wall_seconds": 71.45299999997951,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 1.484,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "4116321e-10ac-4d4f-b6a0-59cc6a12690c",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 119.124,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1465.035,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "4116321e-10ac-4d4f-b6a0-59cc6a12690c",
+            "received_ns": 738458646944900,
+            "sent_ns": 738458764544700,
+            "elapsed_ms": 117.5998
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0000582749999865,
+            "native_pid": 1281,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3400,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "143bce29-148b-4f79-a7d5-ae5ce0d94daa",
+          "executable_sha256": "805fc72e89028f1c5919ff99c4363a33c01f1daceed8f965b6130ba1652a689b"
+        },
+        {
+          "index": 6,
+          "wall_seconds": 86.42200000002049,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 3.622,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "6ced3e39-618b-4cb2-a827-d66ab76c574d",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 135.303,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1585.997,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "6ced3e39-618b-4cb2-a827-d66ab76c574d",
+            "received_ns": 738708964172400,
+            "sent_ns": 738709095935300,
+            "elapsed_ms": 131.7629
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.000126883000007,
+            "native_pid": 2233,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3520,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "d04c6752-36b9-4ec2-af43-ea42ca01adda",
+          "executable_sha256": "805fc72e89028f1c5919ff99c4363a33c01f1daceed8f965b6130ba1652a689b"
+        },
+        {
+          "index": 7,
+          "wall_seconds": 116.81299999996554,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 2.056,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "5f7a5e7a-e5d2-4295-9ee8-f5fce0fcbf6e",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 182.418,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1911.839,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "5f7a5e7a-e5d2-4295-9ee8-f5fce0fcbf6e",
+            "received_ns": 738831147844800,
+            "sent_ns": 738831326116800,
+            "elapsed_ms": 178.272
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.000165669000012,
+            "native_pid": 699,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 4040,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "7528133d-6149-43d6-b8ec-ee2d5375fb7f",
+          "executable_sha256": "805fc72e89028f1c5919ff99c4363a33c01f1daceed8f965b6130ba1652a689b"
+        },
+        {
+          "index": 10,
+          "wall_seconds": 141.5470000000205,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 12.318,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "e6db53a5-9a26-4020-82cc-55fb0bcf9d07",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 269.38,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 2399.671,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "e6db53a5-9a26-4020-82cc-55fb0bcf9d07",
+            "received_ns": 739224320346600,
+            "sent_ns": 739224577575400,
+            "elapsed_ms": 257.2288
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.000574748999952,
+            "native_pid": 701,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 4700,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "115d842a-1f85-438f-a163-cc066d1fbca7",
+          "executable_sha256": "805fc72e89028f1c5919ff99c4363a33c01f1daceed8f965b6130ba1652a689b"
+        },
+        {
+          "index": 11,
+          "wall_seconds": 128.71799999999348,
+          "studio_trace": {
+            "control": {
+              "button_enabled": false,
+              "elapsed_ms": 2.498,
+              "state": "cancel_requested"
+            },
+            "guest_worker_attached": true,
+            "job_id": "c10b21ec-ea71-4f7d-8e6f-608ebbd83790",
+            "phase_before": "analysis",
+            "receipt": {
+              "elapsed_ms": 205.842,
+              "events_cursor": 3,
+              "state": "cancel_requested"
+            },
+            "state_before": "running",
+            "terminal": {
+              "elapsed_ms": 1938.44,
+              "events_cursor": 4,
+              "outcome_unknown": false,
+              "state": "cancelled",
+              "termination_confirmed": true
+            }
+          },
+          "rpc_timing": {
+            "job_id": "c10b21ec-ea71-4f7d-8e6f-608ebbd83790",
+            "received_ns": 739375676619000,
+            "sent_ns": 739375879955700,
+            "elapsed_ms": 203.3367
+          },
+          "native_activity": {
+            "f4_probe": true,
+            "lines": 2000,
+            "row_bytes": 28,
+            "elapsed_seconds": 2.0002145270000256,
+            "native_pid": 688,
+            "native_mapped": true,
+            "stdout_lines_before_termination": 3780,
+            "guest_cursor": 5
+          },
+          "previous_result_preserved": true,
+          "saved_revision": "970834b1-c383-40cc-8d00-c759e44d3694",
+          "executable_sha256": "805fc72e89028f1c5919ff99c4363a33c01f1daceed8f965b6130ba1652a689b"
+        }
+      ],
+      "distribution": {
+        "control": {
+          "minimum_ms": 1.31,
+          "median_ms": 2.277,
+          "p95_nearest_rank_ms": 12.318
+        },
+        "receipt": {
+          "minimum_ms": 119.124,
+          "median_ms": 161.0365,
+          "p95_nearest_rank_ms": 269.38
+        },
+        "terminal": {
+          "minimum_ms": 1465.035,
+          "median_ms": 1748.9180000000001,
+          "p95_nearest_rank_ms": 2399.671
+        },
+        "rpc": {
+          "minimum_ms": 117.5998,
+          "median_ms": 158.381,
+          "p95_nearest_rank_ms": 257.2288
+        }
+      }
+    }
+  },
+  "acceptance": {
+    "button_ms": 100,
+    "studio_receipt_ms": 200,
+    "required_samples_per_group": 1000
+  }
+}

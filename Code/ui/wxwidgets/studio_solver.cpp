@@ -224,14 +224,15 @@ void StudioFrame::CancelSolver()
         return;
     }
     m_solverWorkflow.RequestCancel();
-    SolverStatus("cancel_requested", "취소 요청 중. 실제 WSL worker 종료 확인을 기다립니다.");
-    UpdateControls();
+    // @brief 후속 상태·표 레이아웃보다 실제 취소 제어와 접수를 먼저 처리한다.
+    m_tools.at(IdCancelSolver)->Disable();
+    GetMenuBar()->Enable(IdCancelSolver, false);
     if (!m_solverTask.Id().empty())
     {
         const std::string job = m_solverTask.Id();
         if (m_options.solverSmoke)
         {
-            m_smoke->RecordSolverCancellation(job, "control", Json{{"state", m_solverState},
+            m_smoke->RecordSolverCancellation(job, "control", Json{{"state", "cancel_requested"},
                 {"button_enabled", m_tools.at(IdCancelSolver)->IsEnabled()}});
         }
         Send(
@@ -254,6 +255,11 @@ void StudioFrame::CancelSolver()
                 SolverStatus("cancel_error", "취소 요청을 확인하지 못했습니다: " + DiagnosticMessage(error));
                 UpdateControls();
             });
+    }
+    if (m_connected && m_solverWorkflow.CancellationRequested())
+    {
+        SolverStatus("cancel_requested", "취소 요청 중. 실제 WSL worker 종료 확인을 기다립니다.");
+        UpdateControls();
     }
 }
 
