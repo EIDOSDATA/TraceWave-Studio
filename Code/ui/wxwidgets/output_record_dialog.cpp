@@ -4,6 +4,7 @@
 #include "studio_notebook.h"
 #include "studio_support.h"
 #include "studio_theme.h"
+#include <wx/accel.h>
 #include <wx/button.h>
 #include <wx/listctrl.h>
 #include <wx/scrolwin.h>
@@ -232,9 +233,31 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
                                wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
     sourcePage->GetSizer()->Add(raw, 1, wxEXPAND | wxALL, FromDIP(8));
     layout->Add(tabs, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
-    auto* close = new wxButton(this, wxID_OK, Display(review ? "검토한 내용으로 생성" : "닫기"));
+    auto* actions = new wxBoxSizer(wxHORIZONTAL);
+    actions->AddStretchSpacer();
+    auto* close = new wxButton(this, wxID_OK, Display(review ? "검토한 내용으로 생성(&G)" : "닫기"));
     StudioTheme::Button(*close, true);
-    layout->Add(close, 0, wxALIGN_RIGHT | wxALL, FromDIP(12));
+    wxButton* initial = close;
+    if (review)
+    {
+        auto* cancel = new wxButton(this, wxID_CANCEL, Display("취소"));
+        StudioTheme::Button(*cancel);
+        actions->Add(cancel, 0, wxRIGHT, FromDIP(8));
+        initial = cancel;
+        const wxAcceleratorEntry generate(wxACCEL_ALT, 'G', wxID_OK);
+        SetAcceleratorTable(wxAcceleratorTable(1, &generate));
+        Bind(wxEVT_MENU,
+             [this](wxCommandEvent&)
+             {
+                 EndModal(wxID_OK);
+             },
+             wxID_OK);
+    }
+    actions->Add(close);
+    layout->Add(actions, 0, wxEXPAND | wxALL, FromDIP(12));
     SetSizer(layout);
     CentreOnParent();
+    /** @brief 검토에서는 파일 생성 전에 키보드로 확인 동작을 명시하게 한다. */
+    initial->SetDefault();
+    initial->SetFocus();
 }

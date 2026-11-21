@@ -1,0 +1,43 @@
+{
+  "schema": "rfad.stage12.windows-keyboard-drawing/0.1",
+  "date_kst": "2026-11-21",
+  "executable_sha256": "5c5e85931483d83334949bc2e4fe071c2724016c58a458b51028b97822f253ab",
+  "win_keys_to_output": [
+    "F6",
+    "Shift+F6",
+    "End"
+  ],
+  "keyboard_input_snapshot_and_form_verified": true,
+  "enter_cancelled_with_preview_intact": true,
+  "explicit_confirm_key": "Alt+G",
+  "pdf": {
+    "job_id": "3f6e0ece-fd09-429f-9709-fc15c7e86048",
+    "sha256": "8ba5359ea70594ea8dc7d2d726e837a21b79e1f9821127113c02945b7a24c2eb",
+    "bytes": 38902,
+    "saved_revision_preserved": true,
+    "prior_solver_inventory_preserved": true,
+    "result_status": "completed"
+  },
+  "confirmed_job_events": [
+    {
+      "seq": 1,
+      "state": "queued",
+      "timestamp": 1795229492.3284545
+    },
+    {
+      "seq": 2,
+      "state": "running",
+      "timestamp": 1795229492.9722347
+    },
+    {
+      "seq": 3,
+      "state": "completed",
+      "timestamp": 1795229496.9721756
+    }
+  ],
+  "actual_output_gui": {
+    "passed": 1,
+    "seconds": 39.97
+  },
+  "release_ctest": 13
+}
