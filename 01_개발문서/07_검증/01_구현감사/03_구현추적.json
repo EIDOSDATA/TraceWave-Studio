@@ -9744,6 +9744,9 @@
         "../01_개발문서/07_검증/19_독립참조와_유한검증.md",
         "../01_개발문서/07_검증/281_평면_도체_복소확산_독립대조.md",
         "../01_개발문서/07_검증/282_설치_포트_유한기록_전대역_상한.md",
+        "../01_개발문서/07_검증/294_설치후보_격자와_경계_시간창_민감도.md",
+        "tools/verify_installed_port_uncertainty.py",
+        "tools/verify_installed_refinement.py",
         "../01_개발문서/07_검증/286_동박_면임피던스와_관통홀_귀환_대조.md",
         "tools/verify_ro_sheet_impedance.py",
         "../01_개발문서/07_검증/289_수용전력_변화와_관통홀_접합_대조.md",
@@ -14127,8 +14130,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "710e4a68efc3189454a94910766cbd64dca9c34b6224a2aa37d60a7207841861",
-      "utf8_bytes": 66248
+      "text_sha256": "406c260a5ffa46bd11cca2929a7590333a2e41e9cf6f0d57946f10fb3a73a8bb",
+      "utf8_bytes": 66441
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14469,6 +14472,11 @@
       "path": "01_개발문서/07_검증/292_입사전력과_기가헤르츠_관통홀_접합검증.md",
       "text_sha256": "485be53bfc1ee8855e9165adf6ec4611673f2893b449dc312fb59bb71afd88a8",
       "utf8_bytes": 4738
+    },
+    {
+      "path": "01_개발문서/07_검증/294_설치후보_격자와_경계_시간창_민감도.md",
+      "text_sha256": "b117abf240a0d17160064c6e76e8af1bf2088b75a2c6d3b58b2dfa5e790f2546",
+      "utf8_bytes": 2822
     },
     {
       "path": "01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
@@ -16124,6 +16132,16 @@
       "path": "Code/tools/verify_ifa_convergence.py",
       "text_sha256": "11a270af630d6d9d7641dada67edbe33b7a09604d339317247974d60839b8db3",
       "utf8_bytes": 21247
+    },
+    {
+      "path": "Code/tools/verify_installed_port_uncertainty.py",
+      "text_sha256": "813d29ba8a9c495edbeb169735a9c8b9344b3c0d85725ec071ffcdbac3c21496",
+      "utf8_bytes": 7266
+    },
+    {
+      "path": "Code/tools/verify_installed_refinement.py",
+      "text_sha256": "047785839764dfcbd2935026b34b73b17da6e166b5fb32155413efcfc8559521",
+      "utf8_bytes": 6341
     },
     {
       "path": "Code/tools/verify_nf2ff_reference.py",
