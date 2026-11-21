@@ -112,8 +112,27 @@ bool PcbImportDialog::HasDraft() const
 
 std::string PcbImportDialog::Format() const
 {
-    const std::array<const char*, 5> names{"kicad_pcb", "kicad_mod", "gerber_job", "gerber_x2", "xnc"};
-    return names.at(static_cast<std::size_t>(std::max(0, m_format->GetSelection())));
+    return m_formats.at(static_cast<std::size_t>(std::max(0, m_format->GetSelection())));
+}
+
+bool PcbImportDialog::VendorFormat() const
+{
+    return Format().rfind("vendor_", 0) == 0;
+}
+
+void PcbImportDialog::DescribeFormat()
+{
+    std::string detail = "KiCad, Gerber 또는 Excellon 원본을 선택하세요.";
+    for (const auto& pattern : m_context.value("vendor_patterns", Json::array()))
+    {
+        if (pattern.at("format") == Format())
+        {
+            detail = pattern.at("description").get<std::string>() + "\n" +
+                     pattern.at("source_url").get<std::string>();
+            break;
+        }
+    }
+    m_formatDetail->ChangeValue(Display(detail));
 }
 
 void PcbImportDialog::Changed()

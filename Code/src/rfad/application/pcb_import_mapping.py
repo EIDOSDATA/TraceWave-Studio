@@ -1,5 +1,6 @@
 """! @brief 봉인 PCB/CAM parser 원문을 명시 층/넷 대응과 원자 typed patch로 연결한다."""
 from copy import deepcopy
+import math
 from uuid import UUID, uuid5
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
@@ -9,6 +10,7 @@ from rfad.application.pcb_exchange_service import bounded, collection, new_recor
 from rfad.domain.design import _text
 from rfad.domain.errors import ProjectError
 from rfad.domain.pcb_features import PROJECT_SCHEMA, empty_pcb, fail, records, make_patch, apply_pcb_command
+from rfad.domain.sweep_inputs import input_quantity
 from rfad.domain.units import Quantity
 
 
@@ -495,6 +497,55 @@ class _ImportCandidate:
                 fail("지원하지 않는 Gerber 도형입니다.", self.source, "E_UNSUPPORTED")
             self.append("geometry", row)
 
+    def vendor(self, data):
+        """! @brief 출처 동박을 사용자가 지정한 평면 배치와 기존 동박층에 연결한다."""
+        from rfad.application.pcb_projection import project_board
+        from rfad.domain.planar import point_in_loop, _intersect
+        placement = self.mapping["placement"]
+        _fields(placement, {"origin", "rotation"})
+        if type(placement["origin"]) is not list or len(placement["origin"]) != 2:
+            fail("제조사 패턴의 배치 X/Y가 필요합니다.", "mapping.placement.origin")
+        offset = [input_quantity(item, "length", "mapping.placement.origin")["value_si"] for item in placement["origin"]]
+        rotation = input_quantity(placement["rotation"], "angle", "mapping.placement.rotation")["value_si"]
+        if None in offset or rotation is None:
+            fail("제조사 패턴의 X/Y/회전을 명시하십시오.", "mapping.placement")
+        board = project_board(self.before)
+        cosine, sine = math.cos(rotation), math.sin(rotation)
+        net = self.net("")
+        targets = {item["layer"]: self.layer(item["layer"]) for item in data["regions"]}
+        if len(set(targets.values())) != len(targets):
+            fail("공급사 원문의 서로 다른 도체층은 별도 기존 층에 대응해야 합니다.", "mapping.layers")
+        def placed(point):
+            """! @brief 읽은 mm 좌표의 원점을 사용자 배치에 회전·이동한다."""
+            x, y = point
+            return [x * cosine - y * sine + offset[0] * 1000, x * sine + y * cosine + offset[1] * 1000]
+        def vertex(point):
+            """! @brief 정점의 공통 원문 참조는 도형과 수입 기록에 한 번만 보존한다."""
+            return [Quantity.from_value(value, "mm", status="source_default").to_dict() for value in point]
+        def within(loop):
+            """! @brief 보드 형식에 따라 동박 경계 전체가 내부에 위치하는지 검사한다."""
+            tolerance = 1e-8
+            if board["kind"] == "circle":
+                return all(math.dist(p, board["center_mm"]) <= board["radius_mm"] + tolerance for p in loop)
+            if board["kind"] == "rectangle":
+                width, height = board["dimensions_mm"]
+                return all(-tolerance <= x <= width + tolerance and -tolerance <= y <= height + tolerance for x, y in loop)
+            outline = board["outer_mm"]
+            return (all(point_in_loop(p, outline, include_boundary=False) for p in loop) and
+                    not any(_intersect(a, b, c, d, tolerance) for a, b in zip(loop, loop[1:] + loop[:1])
+                            for c, d in zip(outline, outline[1:] + outline[:1])))
+        for item in data["regions"]:
+            self.source = item["source_id"]
+            outer = [placed(point) for point in item["outer_mm"]]
+            if not within(outer):
+                fail("가져올 제조사 동박이 현재 기판 외곽을 벗어납니다.", "mapping.placement", "E_GEOMETRY")
+            row = self.geometry("planar_region", targets[item["layer"]], net)
+            row.update(name=data["card"]["label"].split(" / ", 1)[0] + " " + item["layer"],
+                       outer=[vertex(point) for point in outer],
+                       holes=[[vertex(placed(point)) for point in loop] for loop in item["holes_mm"]],
+                       include_in_em=False)
+            self.append("geometry", row)
+
     def build(self):
         """! @brief 모든 파일을 하나의 원자 후보에 모으고 UUID 순서/원문 제약을 검증한다."""
         from rfad.domain.project import validate_project
@@ -503,6 +554,8 @@ class _ImportCandidate:
             data = item["data"]
             if data["schema"] == "rfad.kicad-read/0.1":
                 self.kicad(data)
+            elif data["schema"] == "rfad.vendor-pattern-read/0.1":
+                self.vendor(data)
             else:
                 self.cam(data)
         for key in self.document["pcb"]:
@@ -521,12 +574,19 @@ class _ImportCandidate:
         return self.document
 
 
+def _loss_message(row, prefix):
+    """! @brief 업체 원문의 생략·근사 근거를 고정 보고서에 정의한 문구로 표시한다."""
+    if row.get("code", "").startswith("vendor_"):
+        return row["message"]
+    return prefix + str(row.get("code", "unknown"))
+
+
 def import_candidate(document, parsed, import_record, mapping, acknowledged_losses, reason):
     """! @brief 봉인 parser 결과의 명시 대응/손실 확인을 검토 hash와 한 역명령에 연결한다."""
     from rfad.application.canvas import build_canvas_dto
     base = {"project_id": document["project_id"], "revision_id": document["revision_id"], "source_revision_id": document["revision_id"],
             "profile": "rfad.pcb-import-candidate/0.1", "operation": "import.apply", "manufacturing_verified": False, "physics_verified": False}
-    losses = [{"id": canonical_hash(row), "message": "원문에 보존되지만 편집 모델에서 지원하지 않는 항목: " + str(row.get("code", "unknown")), "original": deepcopy(row)} for row in parsed.get("losses", [])]
+    losses = [{"id": canonical_hash(row), "message": _loss_message(row, "원문에 보존되지만 편집 모델에서 지원하지 않는 항목: "), "original": deepcopy(row)} for row in parsed.get("losses", [])]
     try:
         _text(reason, "reason", limit=512)
         if parsed.get("schema") != "rfad.pcb-parse/0.1" or parsed.get("raw_preservation_required") is not True or len(canonical_bytes(parsed)) > 768 * 1024:
@@ -588,6 +648,10 @@ def import_sources(parsed):
                 name = item["layer"]
                 if name.endswith((".Mask", ".Paste")):
                     add_layer(name, "solder_mask" if name.endswith(".Mask") else "solder_paste", "top" if name.startswith("F.") else "bottom")
+        elif data["schema"] == "rfad.vendor-pattern-read/0.1":
+            for region in data["regions"]:
+                add_layer(region["layer"], side=region["side"])
+            add_net("", None)
         elif data["schema"] == "rfad.gerber-read/0.1":
             function = data["file_attributes"].get(".FileFunction", [])
             if function and function[0] == "Copper":
@@ -598,4 +662,4 @@ def import_sources(parsed):
             elif function and function[0] in ("Soldermask", "Paste"):
                 add_layer(record["path"], "solder_mask" if function[0] == "Soldermask" else "solder_paste", "top" if "Top" in function else "bottom" if "Bot" in function or "Bottom" in function else None)
     return {"layers": list(layers.values()), "nets": list(nets.values()),
-            "losses": [{"id": canonical_hash(row), "message": "원문에 보존되는 미지원 항목: " + str(row.get("code", "unknown")), "original": deepcopy(row)} for row in parsed["losses"]]}
+            "losses": [{"id": canonical_hash(row), "message": _loss_message(row, "원문에 보존되는 미지원 항목: "), "original": deepcopy(row)} for row in parsed["losses"]]}

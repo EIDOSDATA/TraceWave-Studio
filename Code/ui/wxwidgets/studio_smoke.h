@@ -83,6 +83,7 @@ private:
     /** @brief 실제 PCB 특징 입력과 원문/소유/영수증 보존을 검사한다. */
     void FeaturesSmokeTick();
     void PcbExchangeSmokeTick();
+    void VendorPatternSmokeTick();
     void PcbExchangeSafetyChecks();
     Json m_pcbExchangeFixture = Json::object(), m_pcbExchangeBefore = nullptr, m_pcbExchangeResult = nullptr;
     std::string m_pcbExchangeRevision, m_pcbExchangeUploadId, m_pcbExchangeBuildId;

@@ -20,11 +20,13 @@ void PcbImportDialog::Browse()
     {
         return;
     }
+    const bool vendor = VendorFormat();
+    const auto filter = vendor ? "제조사 원본 (*.zip;*.dxf;*.spl;*.gbr)|*.zip;*.dxf;*.spl;*.gbr|모든 파일 (*.*)|*.*" :
+                                "PCB / CAM (*.kicad_pcb;*.kicad_mod;*.gbr;*.gbrjob;*.drl;*.xnc)|"
+                                "*.kicad_pcb;*.kicad_mod;*.gbr;*.gbrjob;*.drl;*.xnc|모든 파일 (*.*)|*.*";
+    const long flags = wxFD_OPEN | wxFD_FILE_MUST_EXIST | (vendor ? 0 : wxFD_MULTIPLE);
     wxFileDialog dialog(this, Display("가져올 PCB / CAM 원문 파일"), wxEmptyString, wxEmptyString,
-                        Display("PCB / CAM "
-                                "(*.kicad_pcb;*.kicad_mod;*.gbr;*.gbrjob;*.drl;*.xnc)|*.kicad_pcb;*.kicad_mod;*.gbr;*."
-                                "gbrjob;*.drl;*.xnc|모든 파일 (*.*)|*.*"),
-                        wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_MULTIPLE);
+                        Display(filter), flags);
     if (dialog.ShowModal() != wxID_OK)
     {
         return;
@@ -279,11 +281,11 @@ void PcbImportDialog::RenderUpload(const Json& response)
     }
     m_uploadChoice->SetSelection(static_cast<int>(found - m_uploadIds.begin()));
     const auto format = response.value("format", "");
-    const std::vector<std::string> formats{"kicad_pcb", "kicad_mod", "gerber_job", "gerber_x2", "xnc"};
-    const auto selected = std::find(formats.begin(), formats.end(), format);
-    if (selected != formats.end())
+    const auto selected = std::find(m_formats.begin(), m_formats.end(), format);
+    if (selected != m_formats.end())
     {
-        m_format->SetSelection(static_cast<int>(selected - formats.begin()));
+        m_format->SetSelection(static_cast<int>(selected - m_formats.begin()));
+        DescribeFormat();
     }
     const auto parse = response.value("parse_state", Json(nullptr));
     std::string summary = "원문 상태: " + OutputUi::State(response.value("status", "unknown")) + "\n읽기 작업: " +

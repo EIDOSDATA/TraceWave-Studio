@@ -7,6 +7,7 @@ import re
 
 from rfad.application.canonical import canonical_bytes
 from rfad.domain.errors import ProjectError
+from rfad.domain.vendor_catalog import VENDOR_FORMATS
 from rfad.adapters.exchange import cam_reader,cam_writer,kicad_reader,kicad_writer,pcb_verification
 
 PROFILES={"kicad_pcb":"rfad.exchange.kicad-board/0.1","kicad_mod":"rfad.exchange.kicad-footprint/0.1","gerber_job":"rfad.exchange.cam/0.1"}
@@ -147,6 +148,10 @@ def parse_package(files,format_name,options):
             if item["kind"]=="planar_region":
                 decoded["losses"].append({"code":"zone_rules_not_in_edit_model","owner":item["id"],"original_policy":deepcopy(item.get("fill_settings")),"message":"명시 planar_region은 KiCad 자동 zone 재채움/연결/섬 정책을 계승하지 않습니다. 원문 정책과 cache는 파일에 보존됩니다.","raw_preserved":True})
         records.append({"path":names[0],"data":decoded})
+    elif format_name in VENDOR_FORMATS and len(files) == 1:
+        from rfad.adapters.exchange.vendor_pattern import read_pattern
+        name, raw = next(iter(files.items()))
+        records.append({"path": name, "data": read_pattern(raw, format_name)})
     elif format_name=="gerber_job":
         names=[name for name in files if name.endswith(".gbrjob")]
         if len(names)!=1:

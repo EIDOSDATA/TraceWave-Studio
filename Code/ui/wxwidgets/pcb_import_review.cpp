@@ -37,12 +37,13 @@ Json PcbImportDialog::Input() const
                 {{"source", row.source}, {"target", row.targets.at(static_cast<std::size_t>(index))}});
         }
     }
-    if (m_uploadState.value("format", "") == "kicad_mod")
+    const bool vendor = VendorFormat();
+    if (m_uploadState.value("format", "") == "kicad_mod" || vendor)
     {
-        if (m_side->GetSelection() <= 0 || m_x->IsEmpty() || m_y->IsEmpty() || m_rotation->IsEmpty())
+        if ((!vendor && m_side->GetSelection() <= 0) || m_x->IsEmpty() || m_y->IsEmpty() || m_rotation->IsEmpty())
         {
             throw std::runtime_error(
-                "단독 풋프린트의 X / Y / 회전 / 배치 면을 직접 입력하세요. 없는 배치를 자동으로 채우지 않습니다.");
+                "원본 배치의 X / Y / 회전을 입력하세요. KiCad 풋프린트에는 배치 면도 필요합니다.");
         }
         const auto quantity = [](wxTextCtrl* value, wxChoice* unit)
         {
@@ -51,8 +52,11 @@ Json PcbImportDialog::Input() const
                         {"source_refs", Json::array()}};
         };
         mapping["placement"] = {{"origin", Json::array({quantity(m_x, m_lengthUnit), quantity(m_y, m_lengthUnit)})},
-                                {"rotation", quantity(m_rotation, m_angleUnit)},
-                                {"side", m_side->GetSelection() == 1 ? "top" : "bottom"}};
+                                {"rotation", quantity(m_rotation, m_angleUnit)}};
+        if (!vendor)
+        {
+            mapping["placement"]["side"] = m_side->GetSelection() == 1 ? "top" : "bottom";
+        }
     }
     Json acknowledged = Json::array();
     for (unsigned int index = 0; index < m_losses->GetCount(); ++index)

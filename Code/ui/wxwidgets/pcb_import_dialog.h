@@ -68,11 +68,13 @@ private:
     void ShowScene();
     void Poll(wxTimerEvent&);
     std::string Format() const;
+    bool VendorFormat() const;
+    void DescribeFormat();
     Json m_context, m_uploadState = nullptr, m_review = nullptr, m_reviewInput = nullptr;
     DialogGateway m_gateway;
     std::shared_ptr<PcbImportRecovery> m_recovery;
     std::vector<File> m_files;
-    std::vector<std::string> m_uploadIds;
+    std::vector<std::string> m_uploadIds, m_formats;
     std::vector<MappingRow> m_layerRows, m_netRows;
     std::vector<std::string> m_lossKeys;
     std::string m_upload;
@@ -101,6 +103,7 @@ private:
     wxTextCtrl* m_raw = nullptr;
     wxTextCtrl* m_source = nullptr;
     wxTextCtrl* m_summary = nullptr;
+    wxTextCtrl* m_formatDetail = nullptr;
     DesignCanvas* m_canvas = nullptr;
     wxCollapsiblePane* m_advanced = nullptr;
     wxButton* m_browse = nullptr;

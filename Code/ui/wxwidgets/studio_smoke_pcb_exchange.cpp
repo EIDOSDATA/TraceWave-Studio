@@ -11,6 +11,7 @@
 #include <wx/checklst.h>
 #include <wx/listctrl.h>
 #include <wx/textctrl.h>
+#include <algorithm>
 #include <fstream>
 
 namespace
@@ -78,6 +79,18 @@ void StudioSmokeDriver::PcbExchangeSafetyChecks()
 
 void StudioSmokeDriver::PcbExchangeSmokeTick()
 {
+    if (m_pcbExchangeFixture.empty())
+    {
+        std::ifstream stream(std::filesystem::path(m_frame.m_options.workspace.ToStdWstring()) /
+                                 "pcb-exchange-smoke-fixture.json",
+                             std::ios::binary);
+        stream >> m_pcbExchangeFixture;
+    }
+    if (m_pcbExchangeFixture.contains("vendor_format"))
+    {
+        VendorPatternSmokeTick();
+        return;
+    }
     if (auto* dialog = dynamic_cast<PcbImportDialog*>(m_frame.m_setupDialog))
     {
         if (dialog->m_pending || dialog->m_uploading)
@@ -180,10 +193,6 @@ void StudioSmokeDriver::PcbExchangeSmokeTick()
     const bool idle = !output.Active() && output.m_reads == 0;
     if (m_setupStage == 1)
     {
-        std::ifstream stream(std::filesystem::path(m_frame.m_options.workspace.ToStdWstring()) /
-                                 "pcb-exchange-smoke-fixture.json",
-                             std::ios::binary);
-        stream >> m_pcbExchangeFixture;
         m_pcbExchangeBefore = m_frame.m_editor;
         m_pcbExchangeRevision = m_frame.m_revision;
         PcbExchangeSafetyChecks();
@@ -281,6 +290,144 @@ void StudioSmokeDriver::PcbExchangeSmokeTick()
     {
         CanvasAssert(m_frame.m_revision == m_setupExpectedRevision, "원문 수입 저장/서비스 재시작 개정이 다릅니다.");
         m_setupChecks.push_back("pcb_exchange_saved_restart_preserves_sources");
+        FinishSmoke(true, "");
+    }
+}
+
+/** @brief 실제 제조사 파일을 교환 작업으로 읽고 native 캔버스의 이동과 저장을 검증한다. */
+void StudioSmokeDriver::VendorPatternSmokeTick()
+{
+    if (auto* dialog = dynamic_cast<PcbImportDialog*>(m_frame.m_setupDialog))
+    {
+        if (dialog->m_pending || dialog->m_uploading)
+        {
+            return;
+        }
+        if (m_setupStage == 2)
+        {
+            const auto format = m_pcbExchangeFixture.at("vendor_format").get<std::string>();
+            const auto selected = std::find(dialog->m_formats.begin(), dialog->m_formats.end(), format);
+            CanvasAssert(selected != dialog->m_formats.end(), "제조사 예제가 실제 선택 목록에 없습니다.");
+            SetupSmoke::Choose(dialog->m_format, static_cast<int>(selected - dialog->m_formats.begin()));
+            const auto path = std::filesystem::path(m_frame.m_options.workspace.ToStdWstring()) /
+                              m_pcbExchangeFixture.at("raw_name").get<std::string>();
+            CanvasAssert(dialog->LoadFiles({wxString(path.native())}), "제조사 파일을 선택하지 못했습니다.");
+            m_setupStage = 3;
+            SetupSmoke::Click(dialog->m_uploadButton);
+        }
+        else if (m_setupStage == 3 && dialog->m_uploadState.is_object())
+        {
+            const auto& file = dialog->m_uploadState.at("files").at(0);
+            CanvasAssert(file.at("received") == file.at("bytes") &&
+                             file.at("sha256") == m_pcbExchangeFixture.at("raw_sha256"),
+                         "제조사 원문 바이트가 보존되지 않았습니다.");
+            m_setupStage = 4;
+            SetupSmoke::Click(dialog->m_parseButton);
+        }
+        else if (m_setupStage == 4 && dialog->m_uploadState.value("parse_state", Json(nullptr)) == "failed")
+        {
+            CanvasAssert(false, dialog->m_uploadState.dump());
+        }
+        else if (m_setupStage == 4 && dialog->m_mappingLoaded)
+        {
+            CanvasAssert(dialog->m_placement->IsShown() && !dialog->m_side->IsShown(),
+                         "제조사 원본 배치 필드의 표시가 다릅니다.");
+            dialog->m_tabs->SetSelection(1);
+            dialog->m_boardConfirmed->SetValue(true);
+            wxCommandEvent board(wxEVT_CHECKBOX, dialog->m_boardConfirmed->GetId());
+            board.SetEventObject(dialog->m_boardConfirmed);
+            dialog->m_boardConfirmed->GetEventHandler()->ProcessEvent(board);
+            for (auto& row : dialog->m_layerRows)
+            {
+                const auto& target = m_pcbExchangeFixture.at("layer_mapping").at(row.source);
+                const auto found = std::find(row.targets.begin(), row.targets.end(), target);
+                CanvasAssert(found != row.targets.end(), "제조사 동박의 기존 층을 선택할 수 없습니다.");
+                SetupSmoke::Choose(row.choice, static_cast<int>(found - row.targets.begin()));
+            }
+            CanvasAssert(dialog->m_netRows.size() == 1 && dialog->m_netRows.front().source.empty(),
+                         "원문에 없는 넷이 생성되었습니다.");
+            SetupSmoke::Choose(dialog->m_netRows.front().choice, 1);
+            dialog->m_x->SetValue(Display(m_pcbExchangeFixture.at("x").get<std::string>()));
+            dialog->m_y->SetValue(Display(m_pcbExchangeFixture.at("y").get<std::string>()));
+            dialog->m_rotation->SetValue("0");
+            dialog->m_reason->SetValue(Display("제조사 원문 가져오기 검증"));
+            for (unsigned int index = 0; index < dialog->m_losses->GetCount(); ++index)
+            {
+                dialog->m_losses->Check(index, true);
+            }
+            m_setupStage = 5;
+            SetupSmoke::Click(dialog->m_preview);
+        }
+        else if (m_setupStage == 5 && dialog->m_review.is_object())
+        {
+            CanvasAssert(dialog->m_review.value("can_apply", false) && dialog->m_changes->GetItemCount() > 1,
+                         "제조사 후보 검토를 적용할 수 없습니다. " + dialog->m_review.value("issues", Json::array()).dump());
+            m_setupChecks.push_back("vendor_original_and_explicit_placement_review");
+            m_setupStage = 6;
+            SetupSmoke::Click(dialog->m_apply);
+        }
+        return;
+    }
+    if (m_frame.m_busy || m_frame.m_cadRestoring || m_frame.m_solverRestoring)
+    {
+        return;
+    }
+    if (m_setupStage == 1)
+    {
+        m_pcbExchangeRevision = m_frame.m_revision;
+        m_setupStage = 2;
+        m_frame.CallAfter([this]() { m_frame.OpenPcbImport(); });
+    }
+    else if (m_setupStage == 6 && m_frame.m_revision != m_pcbExchangeRevision)
+    {
+        m_frame.m_views->SetSelection(0);
+        m_frame.m_canvas->SetTool("select");
+        m_frame.m_canvas->SetSnapEnabled(false);
+        m_frame.m_canvas->SetSelectionFilter("planar_region", false);
+        const auto p = m_pcbExchangeFixture.at("pick");
+        CanvasClick(p.at(0), p.at(1));
+        m_setupStage = 7;
+    }
+    else if (m_setupStage == 7)
+    {
+        if (m_frame.m_selection.value("kind", "") != "geometry")
+        {
+            return;
+        }
+        const auto p = m_pcbExchangeFixture.at("pick");
+        const double x = p.at(0);
+        const double y = p.at(1);
+        m_canvasLine = m_frame.m_selection.at("id");
+        m_canvasOriginalLine = CanvasShape(m_canvasLine);
+        CanvasAssert(m_canvasOriginalLine.at("kind") == "planar_region", "편집할 제조사 동박이 없습니다.");
+        m_pcbExchangeRevision = m_frame.m_revision;
+        m_setupStage = 8;
+        CanvasMouse(wxEVT_LEFT_DOWN, x, y, true);
+        CanvasMouse(wxEVT_MOTION, x + 2.0, y + 2.0, true);
+        CanvasMouse(wxEVT_LEFT_UP, x + 2.0, y + 2.0);
+    }
+    else if (m_setupStage == 8 && m_frame.m_revision != m_pcbExchangeRevision)
+    {
+        m_canvasMovedLine = CanvasShape(m_canvasLine);
+        CanvasAssert(m_canvasMovedLine != m_canvasOriginalLine, "제조사 동박 이동이 적용되지 않았습니다.");
+        m_setupChecks.push_back("vendor_native_canvas_edit");
+        m_setupStage = 9;
+        m_frame.SaveProject();
+    }
+    else if (m_setupStage == 9 && m_frame.m_savedRevision == m_frame.m_revision)
+    {
+        m_setupExpectedRevision = m_frame.m_revision;
+        m_setupStage = 10;
+        m_frame.m_connected = false;
+        m_frame.m_transportFailed = false;
+        m_frame.m_restarting = true;
+        m_frame.BeginShutdown();
+    }
+    else if (m_setupStage == 10 && m_serviceSessions >= 2)
+    {
+        CanvasAssert(m_frame.m_revision == m_setupExpectedRevision && CanvasShape(m_canvasLine) == m_canvasMovedLine,
+                     "재열기 후 편집한 제조사 동박이 다릅니다.");
+        m_setupChecks.push_back("vendor_saved_and_reopened");
         FinishSmoke(true, "");
     }
 }

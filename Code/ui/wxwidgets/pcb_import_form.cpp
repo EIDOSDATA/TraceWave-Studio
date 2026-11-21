@@ -39,10 +39,17 @@ void PcbImportDialog::BuildSource(wxWindow* page)
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* inputs = new wxWrapSizer(wxHORIZONTAL);
     m_format = new wxChoice(page, wxID_ANY);
+    m_formats = {"kicad_pcb", "kicad_mod", "gerber_job", "gerber_x2", "xnc"};
     for (const auto& label : {"KiCad 보드", "KiCad 풋프린트", "Gerber Job", "Gerber X2", "Excellon / XNC"})
     {
         m_format->Append(Display(label));
     }
+    for (const auto& pattern : m_context.value("vendor_patterns", Json::array()))
+    {
+        m_formats.push_back(pattern.at("format").get<std::string>());
+        m_format->Append(Display(pattern.at("label").get<std::string>()));
+    }
+    m_format->SetName(Display("가져올 형식 또는 제조사 안테나 예제"));
     m_format->SetSelection(0);
     m_browse = new wxButton(page, wxID_ANY, Display("파일 선택"));
     m_uploadButton = new wxButton(page, wxID_ANY, Display("원문 전송 / 이어 보내기"));
@@ -52,6 +59,9 @@ void PcbImportDialog::BuildSource(wxWindow* page)
         inputs->Add(control, 0, wxRIGHT | wxBOTTOM, FromDIP(8));
     }
     layout->Add(inputs, 0, wxEXPAND | wxALL, FromDIP(12));
+    m_formatDetail = Readable(page, "", 64);
+    layout->Add(m_formatDetail, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
+    DescribeFormat();
     m_uploadChoice = new wxChoice(page, wxID_ANY);
     m_uploadChoice->Append(Display("새 원문 전송"));
     m_uploadIds.emplace_back();
@@ -99,6 +109,7 @@ void PcbImportDialog::BuildSource(wxWindow* page)
     m_format->Bind(wxEVT_CHOICE,
                    [this](wxCommandEvent&)
                    {
+                       DescribeFormat();
                        Changed();
                    });
     m_uploadChoice->Bind(
@@ -154,7 +165,7 @@ void PcbImportDialog::BuildMapping(wxWindow* page)
     layout->Add(m_mappingRows, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     m_placement = new wxPanel(page);
     auto* position = new wxWrapSizer(wxHORIZONTAL);
-    position->Add(new wxStaticText(m_placement, wxID_ANY, Display("단독 풋프린트 배치 X / Y / 회전")), 0, wxALL,
+    position->Add(new wxStaticText(m_placement, wxID_ANY, Display("원본 배치 X / Y / 회전")), 0, wxALL,
                   FromDIP(6));
     m_x = new wxTextCtrl(m_placement, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(90, -1)));
     m_y = new wxTextCtrl(m_placement, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(90, -1)));
@@ -363,7 +374,9 @@ void PcbImportDialog::RenderMapping(const Json& response)
         m_losses->Append(Display(OutputUi::Text(loss.value("message", Json(nullptr)), "변환 시 정보 누락")));
         m_lossKeys.push_back(loss.at("id").get<std::string>());
     }
-    m_placement->Show(response.value("format", "") == "kicad_mod");
+    m_side->Show(!VendorFormat());
+    m_placement->Show(response.value("format", "") == "kicad_mod" || VendorFormat());
+    m_placement->Layout();
     m_mappingLoaded = true;
     m_loading = false;
     FitPage(m_mappingPage);

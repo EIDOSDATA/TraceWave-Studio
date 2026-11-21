@@ -12,12 +12,14 @@ from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.exchange_artifacts import preflight_publication
 from rfad.application.exchange_service import bounded
 from rfad.domain.errors import ProjectError
+from rfad.domain.vendor_catalog import VENDOR_FORMATS
 from rfad.storage.journal import MAX_STATE_BYTES
 from rfad.storage.sealed_files import verify
 
 PROFILE = "rfad.pcb-import/0.1"
 MAX_FILES, MAX_BYTES, CHUNK_BYTES = 40, 16 * 1024 * 1024, 256 * 1024
-FORMATS = {"kicad_pcb": "kicad_board", "kicad_mod": "kicad_footprint", "gerber_job": "gerber_job", "gerber_x2": "gerber_x2", "xnc": "xnc"}
+FORMATS = {"kicad_pcb": "kicad_board", "kicad_mod": "kicad_footprint", "gerber_job": "gerber_job", "gerber_x2": "gerber_x2", "xnc": "xnc",
+           **dict.fromkeys(VENDOR_FORMATS, "vendor_antenna")}
 READS = {"pcb.import.context", "pcb.import.get", "pcb.import.preview", "pcb.import.receipt"}
 MUTATIONS = {"pcb.import.begin", "pcb.import.chunk", "pcb.import.parse", "pcb.import.apply", "pcb.import.abandon"}
 FIELDS = {"pcb.import.context": set(), "pcb.import.begin": {"format", "files"}, "pcb.import.chunk": {"upload_id", "path", "offset", "content_base64"},
@@ -53,6 +55,8 @@ def validate_input(method, context, data):
             raise ProjectError("E_UNSUPPORTED", "지원하는 PCB 가져오기 형식을 선택하십시오.")
         if type(data["files"]) is not list or not 1 <= len(data["files"]) <= MAX_FILES:
             raise ProjectError("E_RESOURCE", "가져오기 원문은 1~40개 파일입니다.")
+        if data["format"] in VENDOR_FORMATS and len(data["files"]) != 1:
+            raise ProjectError("E_SCHEMA", "선택한 제조사 예제에 해당하는 원문 또는 ZIP 하나를 선택하십시오.")
         names, total = set(), 0
         for row in data["files"]:
             contract.fields(row, {"path", "bytes", "sha256"})
@@ -110,6 +114,8 @@ def overview(service, state, context):
                          "label": row["files"][0]["path"] + (" 외 " + str(len(row["files"]) - 1) + "개" if len(row["files"]) > 1 else "")}
                         for row in state.get("pcb_imports", {}).values() if row["context"] == context],
             "limits": {"files": MAX_FILES, "source_and_report_bytes": MAX_BYTES, "chunk_bytes": CHUNK_BYTES},
+            "vendor_patterns": [{key: card[key] for key in ("format", "label", "description", "source_url")}
+                                for card in VENDOR_FORMATS.values()],
             "runtime_configured": service.exchange.runtime is not None})
 
 
@@ -246,6 +252,12 @@ def reviewed(service, state, context, data):
     record = {"id": session["id"], "format": FORMATS[session["format"]], "format_version": ", ".join(versions),
               "parser_profile": PROFILE, "source_files": [deepcopy(row["artifact"]) for row in result["source_files"]],
               "report": deepcopy(result["report"]), "bindings": [], "source_refs": ["parser-runtime:" + canonical_hash(result["runtime"])]}
+    if session["format"] in VENDOR_FORMATS:
+        card = VENDOR_FORMATS[session["format"]]
+        if parsed["records"][0]["data"].get("card") != card:
+            raise ProjectError("E_HASH", "읽은 공급사 카드와 선택한 카드가 다릅니다.")
+        record["source_refs"] += [card["source_url"], card["revision"] + " / " + card["member"],
+                                  "sha256:" + card["sha256"]]
     review, patch = import_candidate(document, parsed, record, data["mapping"], data["acknowledged_losses"], data["reason"])
     review["review_hash"] = None if not review["can_apply"] else canonical_hash({"candidate": review["review_hash"], "report": result["report"], "runtime": result["runtime"]})
     review.update(upload_id=session["id"], source_files=deepcopy(result["source_files"]), parser_report=deepcopy(result["report"]),

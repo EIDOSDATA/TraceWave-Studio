@@ -19,9 +19,9 @@
     "current_02_시스템명세": 11,
     "current_03_아키텍처": 7,
     "current_04_화면설계": 25,
-    "current_05_기능설계": 45,
+    "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 148,
+    "current_07_검증": 149,
     "current_08_운영환경": 7,
     "current_09_개발계획": 8,
     "current_11_검토기록": 7,
@@ -28314,9 +28314,9 @@
       "path": "01_개발문서/05_기능설계/05_출력교환/README.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 1182,
-      "working_tree_sha256": "bfad5f0e547be57a0d5c8569493b31f416df47a40adf70434de8354de9eaa516",
-      "text_lines": 17,
+      "bytes": 1249,
+      "working_tree_sha256": "c193a63e6dbdbc6d86337e3909be92497a2ab3ecd7f00a5d8385bf4f8dbf39ca",
+      "text_lines": 19,
       "text_status": "utf8_read"
     },
     {
@@ -32363,8 +32363,8 @@
       "path": "01_개발문서/09_개발계획/06_비교분석과_기능개발_범위.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 16059,
-      "working_tree_sha256": "cdac8d1cc9f51d4b8494ef6e1e35f47424d426b28bb6608b20bf1952a0f9c27b",
+      "bytes": 16249,
+      "working_tree_sha256": "4eca0c8d668bf1f375ce63511c6b8eecbd417cfedbbfbd4b5c263465f8f73898",
       "text_lines": 48,
       "text_status": "utf8_read"
     },
@@ -32528,6 +32528,24 @@
       "bytes": 46712,
       "working_tree_sha256": "ade4cdf93c43eefbe36bdaebf3428e4766b3490d7eae9e72c8441df5341c7972",
       "text_lines": 161,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/05_기능설계/05_출력교환/07_제조사_안테나_라이브러리.md",
+      "category": "current_05_기능설계",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2855,
+      "working_tree_sha256": "22ec1b11b0985d5c8d203ed795f80ab18a58b8ebe431fb5a7ecf6baee151a932",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/261_레네사스_안테나_원문_가져오기_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1132,
+      "working_tree_sha256": "3ecb6482e6086a4b9afbe8a93ff5ce96bed98989817383e2dd0de839127f9186",
+      "text_lines": 7,
       "text_status": "utf8_read"
     }
   ],
