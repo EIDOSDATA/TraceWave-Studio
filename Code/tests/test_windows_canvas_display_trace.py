@@ -39,6 +39,20 @@ class WindowsCanvasDisplayTraceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "그리기에 앞선"):
             summarize(trace)
 
+    def test_frame_after_continuous_input_does_not_count_toward_perf_006(self):
+        """! @brief 조작 종료 후 표시된 입력은 전체 지연에는 남고 연속 간격 표본에서는 빠진다."""
+        trace = self.trace()
+        trace["end_qpc"] = 175
+        trace["desktop_updates"].insert(4, [162, 1, 3])
+        result = summarize(trace)
+        self.assertEqual(result["observed_frame_interval"]["samples"], 2)
+        self.assertEqual(result["active_frame_interval"]["samples"], 1)
+        self.assertEqual(result["active_frame_interval"]["p95_ms"], 40.0)
+        self.assertEqual(result["frames_observed_after_input_window"], 1)
+        self.assertEqual(result["perf_006_collection"]["active_interval_count"], 1)
+        self.assertFalse(result["perf_006_collection"]["duration_met"])
+        self.assertFalse(result["perf_006_collection"]["interval_count_met"])
+
     def test_out_of_order_marker_is_rejected(self):
         trace = self.trace()
         trace["desktop_updates"].append([192, 1, 3])

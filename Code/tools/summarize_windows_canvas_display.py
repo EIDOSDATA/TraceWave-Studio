@@ -75,6 +75,10 @@ def summarize(trace):
         raise ValueError("초기 또는 확대 화면 표식을 관찰하지 못했습니다.")
     times = list(visible.values())
     intervals = [(later - earlier) * scale for earlier, later in zip(times, times[1:])]
+    # @brief 연속 조작의 표본 조건에는 조작이 끝난 뒤 표시된 프레임을 넣지 않는다.
+    active_times = [when for when in times if start <= when <= end]
+    active_intervals = [(later - earlier) * scale for earlier, later in zip(active_times, active_times[1:])]
+    duration_s = (end - start) / frequency
     target_fps = trace.get("target_fps", 60)
     if type(target_fps) is not int or target_fps not in (30, 60):
         raise ValueError("현재 Windows 표시 검증은 30 또는 60 fps 목표를 사용합니다.")
@@ -84,7 +88,7 @@ def summarize(trace):
         "triangles": trace.get("triangles", 0), "frame_interval_target_fps": target_fps,
         "frame_interval_target_ms": limit, "renderer": trace.get("renderer"),
         "swap_interval": trace.get("swap_interval"), "vertex_buffer": trace.get("vertex_buffer"),
-        "duration_s": (end - start) / frequency, "canvas": trace["canvas"], "display": trace["display"],
+        "duration_s": duration_s, "canvas": trace["canvas"], "display": trace["display"],
         "timer": trace.get("timer", "wx-timer"), "requested_timer_ms": trace["requested_timer_ms"],
         "dpi": trace["dpi"], "refresh_hz": trace["refresh_hz"],
         "timer_offers": len(offers) if offers is not None else None,
@@ -99,6 +103,12 @@ def summarize(trace):
         "desktop_updates_without_marker": without_marker,
         "input_interval": _statistics([(later - earlier) * scale for earlier, later in zip(inputs, inputs[1:])]),
         "observed_frame_interval": _statistics(intervals),
+        "active_frame_interval": _statistics(active_intervals),
+        "frames_observed_after_input_window": len(times) - len(active_times),
+        "perf_006_collection": {"minimum_input_seconds": 30, "minimum_active_intervals": 1000,
+                                "duration_met": duration_s >= 30,
+                                "active_interval_count": len(active_intervals),
+                                "interval_count_met": len(active_intervals) >= 1000},
         "observed_frame_intervals_over_60_fps_budget": sum(value > 1000 / 60 for value in intervals),
         "observed_frame_intervals_over_target": sum(value > limit for value in intervals),
         "observed_input_to_display": _statistics(
