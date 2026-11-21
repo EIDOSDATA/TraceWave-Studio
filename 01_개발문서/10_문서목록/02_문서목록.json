@@ -19,16 +19,16 @@
     "current_02_시스템명세": 11,
     "current_03_아키텍처": 7,
     "current_04_화면설계": 25,
-    "current_05_기능설계": 44,
+    "current_05_기능설계": 45,
     "current_06_분석연구": 13,
-    "current_07_검증": 64,
+    "current_07_검증": 133,
     "current_08_운영환경": 7,
-    "current_09_개발계획": 4,
-    "current_11_검토기록": 6,
+    "current_09_개발계획": 8,
+    "current_11_검토기록": 7,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 164,
+    "documentation_asset": 228,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -25726,8 +25726,8 @@
       "path": "01_개발문서/02_시스템명세/03_데이터_모델과_파일_형식.md",
       "category": "current_02_시스템명세",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 29423,
-      "working_tree_sha256": "8e2372852ce283fb7781def90a02b52683b79a69031c4fdd7234d610af493aec",
+      "bytes": 29742,
+      "working_tree_sha256": "f19c73010d835500daad487657fa4061124823cc04b17648b2a6710950a96766",
       "text_lines": 222,
       "text_status": "utf8_read"
     },
@@ -25745,7 +25745,7 @@
       "category": "current_02_시스템명세",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
       "bytes": 35609,
-      "working_tree_sha256": "0379a8cc3f6de3ac7300da89335c5feb7d26550905cb9ff14ccaa9900e434640",
+      "working_tree_sha256": "018e8bdb6ef64c2130541bc566de31510661a2ae96151928e603f410154a06e3",
       "text_lines": 235,
       "text_status": "utf8_read"
     },
@@ -25771,8 +25771,8 @@
       "path": "01_개발문서/02_시스템명세/08_공통구현_계약.md",
       "category": "current_02_시스템명세",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 19173,
-      "working_tree_sha256": "40e6a224b32edeede6c9b045714d7760b50c8aab28949d6b33b460a08aef4230",
+      "bytes": 19788,
+      "working_tree_sha256": "4a84cda4693f69417f7e9f8cfa97b1b6a640a87b402c9fed65042b176b992811",
       "text_lines": 104,
       "text_status": "utf8_read"
     },
@@ -25780,8 +25780,8 @@
       "path": "01_개발문서/02_시스템명세/09_표현식과_설계데이터.md",
       "category": "current_02_시스템명세",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 17508,
-      "working_tree_sha256": "8a8dd616f54fe7a31fdf52f0fe8d4706ce6351f58ca3e9f9b3a12706434d9bce",
+      "bytes": 17669,
+      "working_tree_sha256": "181a04491b6c8a30abc9709c51c9168b09d1f9c5779c01111ae5e65395498fdf",
       "text_lines": 101,
       "text_status": "utf8_read"
     },
@@ -25789,8 +25789,8 @@
       "path": "01_개발문서/02_시스템명세/10_설계준비와_결정경계.md",
       "category": "current_02_시스템명세",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 8267,
-      "working_tree_sha256": "940ce7866d8395cfd33df9544df7e03acf09495a96d93765a369498df21752d2",
+      "bytes": 8385,
+      "working_tree_sha256": "1943c7902bbaaea89cced0478014a941d78b05867a55bd891580192d6aa2c088",
       "text_lines": 51,
       "text_status": "utf8_read"
     },
@@ -25807,8 +25807,8 @@
       "path": "01_개발문서/03_아키텍처/01_소프트웨어_아키텍처.md",
       "category": "current_03_아키텍처",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 19701,
-      "working_tree_sha256": "f36292d8c1ec71e1c5f9a5b992604ec05dfb363b85f3ac19ec97d6c79d8dd0b8",
+      "bytes": 19795,
+      "working_tree_sha256": "6ce32ac3bf9be5b2b4f9dc136c090a43ae4d485621500c6c7b02085d1a3ebafc",
       "text_lines": 155,
       "text_status": "utf8_read"
     },
@@ -26047,8 +26047,8 @@
       "path": "01_개발문서/04_화면설계/01_화면과_사용자_경험_설계.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 69445,
-      "working_tree_sha256": "cf4588b2538873114461c417a0d5167b3d7dc78e93d3b9ba060724332119710a",
+      "bytes": 69368,
+      "working_tree_sha256": "ec69a2705daaee81d4467d93b3cbe50f06a398fc2e2c6ab130eb134e93ae339d",
       "text_lines": 535,
       "text_status": "utf8_read"
     },
@@ -26126,8 +26126,8 @@
       "path": "01_개발문서/04_화면설계/02_화면_선정과_성능_설계.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 22601,
-      "working_tree_sha256": "906af0a8606aeb0cff85ba161108ea91966518c484670e94d114d9ce59d4d963",
+      "bytes": 22737,
+      "working_tree_sha256": "768925a3ea26d99266e15f73ecf2b433d80cce9491f6cf6c84d649c79b367d1d",
       "text_lines": 132,
       "text_status": "utf8_read"
     },
@@ -27926,9 +27926,9 @@
       "path": "01_개발문서/04_화면설계/06_사용성과_접근성.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 20500,
-      "working_tree_sha256": "8267700697af28aec6a36d0d02913dc4d2eed59bbe5560a89291fde336e517da",
-      "text_lines": 85,
+      "bytes": 22577,
+      "working_tree_sha256": "11da4384fcb2ec46577afcebb8712eacb3ce1f30afdda4aff857fa18e94f3ba6",
+      "text_lines": 93,
       "text_status": "utf8_read"
     },
     {
@@ -27944,9 +27944,9 @@
       "path": "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 35438,
-      "working_tree_sha256": "35f60034648a5e852c4df3553f43d3fa49d46a26767f191e8cfc405b633c2e1f",
-      "text_lines": 230,
+      "bytes": 36032,
+      "working_tree_sha256": "e4f19325897ee4cc2b2c6c4bb811768aa8f920aabeab29caba5c28c6561f6de2",
+      "text_lines": 234,
       "text_status": "utf8_read"
     },
     {
@@ -27971,8 +27971,8 @@
       "path": "01_개발문서/04_화면설계/11_제조업체와_적층선택_화면.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 10739,
-      "working_tree_sha256": "97d1aad0126794ef654ca7e8f01673933e599983d007cf7702f1edba74ca64e6",
+      "bytes": 10985,
+      "working_tree_sha256": "292f157892ef9cc039698c509cfb1eb8eed46926d1e244d1ec632643ceb6b8b3",
       "text_lines": 70,
       "text_status": "utf8_read"
     },
@@ -28053,8 +28053,8 @@
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 19635,
-      "working_tree_sha256": "587cc564d8eda27be791f6c7b83b0d0afe0bc11a912c4122c28198b5d8bb91e7",
+      "bytes": 20226,
+      "working_tree_sha256": "6d5d56cb8ed5cb377eff5525f3c8a65ad7cfeddfae82c842d43d3ccdba6c25e5",
       "text_lines": 136,
       "text_status": "utf8_read"
     },
@@ -28170,8 +28170,8 @@
       "path": "01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 9935,
-      "working_tree_sha256": "96df0bd712cd7acbef761ac7d3ce577833b18963eeb078600348bd1f4d057933",
+      "bytes": 10021,
+      "working_tree_sha256": "905a871c4a2b09070bf3bcd63f31b303c9ff68a5e89f4cf53195e870c2b9df1e",
       "text_lines": 44,
       "text_status": "utf8_read"
     },
@@ -28206,8 +28206,8 @@
       "path": "01_개발문서/05_기능설계/03_재료/01_기판카탈로그_조회계약.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 15603,
-      "working_tree_sha256": "7050d754f22b75066f261cf614dec132bfda21e73e4b121376382839365f56d1",
+      "bytes": 15813,
+      "working_tree_sha256": "2c74e4dd0ba550e8fc9e280bf959b5d93a2b7e8a875655e835fcab3e92d131b2",
       "text_lines": 143,
       "text_status": "utf8_read"
     },
@@ -28305,9 +28305,9 @@
       "path": "01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 26102,
-      "working_tree_sha256": "780917efc875e845aa03454ca0ae76e3ff21d461e2fce834bc9139f8c46feaf7",
-      "text_lines": 165,
+      "bytes": 26817,
+      "working_tree_sha256": "98fe6094ba4408695fc699ab5800d019d9d49a9ca66905a02a083f1a0af23843",
+      "text_lines": 167,
       "text_status": "utf8_read"
     },
     {
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 18913,
-      "working_tree_sha256": "5f755925ad7ce786a2b460eb606cc1b6e2184d8a27edaa19fa304be41db78b8a",
-      "text_lines": 131,
+      "bytes": 21823,
+      "working_tree_sha256": "0636268a4ece885f7e5e71f4b3f427c5f0d5533ac52c4a189e97490171f7eda6",
+      "text_lines": 149,
       "text_status": "utf8_read"
     },
     {
@@ -28672,27 +28672,27 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 150046,
-      "working_tree_sha256": "3b4b4ced1ee6a259dab423521766039b2b8b67dab95df82af461e826e21efdd7",
-      "text_lines": 849,
+      "bytes": 157156,
+      "working_tree_sha256": "52648083d23940d784562626e7b4516f9601c796f840b0e88bcac274492f55b4",
+      "text_lines": 891,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 37985,
-      "working_tree_sha256": "64ae00f3b59cf523cdcd81f8f629c4e74bdb2e6092d1e23228178edb57ed0310",
-      "text_lines": 175,
+      "bytes": 49012,
+      "working_tree_sha256": "b9383957a4987cd72a7abbe18b7d5589a59c44cd4a7815e63b6c44c8329f9a4a",
+      "text_lines": 181,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/09_개발계획/README.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 1029,
-      "working_tree_sha256": "228c7a7f86b6cf503db77a5a2188d0e9e50bf002e416e0aad13a5a8e6ef44238",
-      "text_lines": 16,
+      "bytes": 1316,
+      "working_tree_sha256": "f703885177671f2224c4b1f553ce645d277ebde7d1c8a3d04ded0c7565a96f12",
+      "text_lines": 20,
       "text_status": "utf8_read"
     },
     {
@@ -28785,9 +28785,9 @@
       "path": "01_개발문서/11_검토기록/README.md",
       "category": "current_11_검토기록",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 6892,
-      "working_tree_sha256": "e2f25a75cf9418f19d1a5ec1efd8ecb0ec1344536a146e6924130d364848aab5",
-      "text_lines": 47,
+      "bytes": 7097,
+      "working_tree_sha256": "e90d99f4998e06d693b1335585d7b2b693d78eee1fa5f6a259f7dbd005361796",
+      "text_lines": 49,
       "text_status": "utf8_read"
     },
     {
@@ -29103,9 +29103,9 @@
       "path": "01_개발문서/README.md",
       "category": "document_navigation",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 5648,
-      "working_tree_sha256": "a1734edc5848c2fa3bcd1d7cf201a77079539125c35cb1872980b8d3cbc0c928",
-      "text_lines": 38,
+      "bytes": 5928,
+      "working_tree_sha256": "26fea3796fd904922ce92ca4b38161ca3fab40fc80b762c6f2807be217356613",
+      "text_lines": 40,
       "text_status": "utf8_read"
     },
     {
@@ -29411,9 +29411,9 @@
       "path": "README.md",
       "category": "repository_guide",
       "review_scope": "개발 문서 진입/현재 상태 검토",
-      "bytes": 3413,
-      "working_tree_sha256": "6210eff41db0a337ec2b4a29f1c13948cd7c69527b706a2737743f1b97edeaec",
-      "text_lines": 22,
+      "bytes": 3573,
+      "working_tree_sha256": "493a8d205effef8faa4f9afd79fd733a60b38c38e1d254b22a24d96eb8fe0024",
+      "text_lines": 23,
       "text_status": "utf8_read"
     },
     {
@@ -29668,18 +29668,18 @@
       "path": "01_개발문서/04_화면설계/21_다중결과와_방사필드_화면.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 10759,
-      "working_tree_sha256": "ad2fc1e1e5ec0c111a72ecfaa76df43326a83994c81a354c36bcd32bd982c3a1",
-      "text_lines": 80,
+      "bytes": 11355,
+      "working_tree_sha256": "d57e42b06e3925d7166360cbfdc6c0c126a2da3ba6f66f9f0bc4af01865e7d24",
+      "text_lines": 82,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 17348,
-      "working_tree_sha256": "f87072f02de65ee2e818b3318d6f4b21d01695fcaba79c4790e3502fa5893e92",
-      "text_lines": 115,
+      "bytes": 17719,
+      "working_tree_sha256": "f54e25d6f5ee3f8ea6fcccc7619a4ffe4602fffa561ab1482936a651168e097d",
+      "text_lines": 119,
       "text_status": "utf8_read"
     },
     {
@@ -29933,9 +29933,9 @@
       "path": "01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12704,
-      "working_tree_sha256": "f98070b60ac02cead241fef720c16c3f522a6660013aafbd69d5edc6c91695a6",
-      "text_lines": 96,
+      "bytes": 13094,
+      "working_tree_sha256": "66a4e97480c67ebf28cba1813a744d156a8162aadc403ea2fea6930f2fd8e373",
+      "text_lines": 98,
       "text_status": "utf8_read"
     },
     {
@@ -30081,9 +30081,9 @@
       "path": "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 14294,
-      "working_tree_sha256": "dcc71429ab238eb6ae15153d3042a0e0cb24f0cb0a56522b65bf02a43b77ec18",
-      "text_lines": 117,
+      "bytes": 15840,
+      "working_tree_sha256": "2a881e3b35c6b107fc0b7e058b2a560b44d8b7039066a91e172c199a6a4543f9",
+      "text_lines": 127,
       "text_status": "utf8_read"
     },
     {
@@ -30370,9 +30370,9 @@
       "path": "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 5100,
-      "working_tree_sha256": "63f512021567dd3d5ea69cd09586146953b93f6353dc0b88dcb91af59f7cbc68",
-      "text_lines": 33,
+      "bytes": 5263,
+      "working_tree_sha256": "e3bc8901c5839d514f0184055f8bea79a4199406965bcfc7baca773fda8cbaa4",
+      "text_lines": 37,
       "text_status": "utf8_read"
     },
     {
@@ -31262,6 +31262,1129 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 64747,
       "working_tree_sha256": "3e177ec560db2a9c01bfb841b60193eb2ad95dd16be3e4e6d5d99dae2e77cef1"
+    },
+    {
+      "path": "01_개발문서/05_기능설계/04_해석결과/10_대용량_외부결과_등록과_비교.md",
+      "category": "current_05_기능설계",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 5018,
+      "working_tree_sha256": "a22425a97bd408fae56cead3d4fed84ed9a2b2049b6cf438400d46f05c9dcad2",
+      "text_lines": 34,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/115_대형자료_검색표와_메모리_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2871,
+      "working_tree_sha256": "a54b4ef86ad54770525e9e7bea2400d6376a8fade6d258c64d6a7bcb2c013df4",
+      "text_lines": 21,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/116_대형자료_검색표_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 72100,
+      "working_tree_sha256": "a2a4b7217da77cc3bdc592e65fafbddb5aecad35d9bd78c3dc79d42e9755acf5"
+    },
+    {
+      "path": "01_개발문서/07_검증/117_대형장면_화면범위와_합성_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2042,
+      "working_tree_sha256": "2c9a725f76d26b86eb7b1a1a8177381b1f4ff6253a25efe80f80d839e6295dda",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/118_대형장면_범위최적화_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 9896,
+      "working_tree_sha256": "b8bedaf8a90b70f35e9ffc1a0edd1c57bc4a6ea2a352418ff4502667867d6082"
+    },
+    {
+      "path": "01_개발문서/07_검증/119_심화해석_필드단면_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1752,
+      "working_tree_sha256": "996bbfdff8e93c2d1d2b62e793a6e02651496e465c128023f4e16f8488ebb469",
+      "text_lines": 9,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/120_스튜디오_유휴폴링과_시작_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1509,
+      "working_tree_sha256": "40175142ba21fb4c9e47dc30d24fe608b1a47e5e1fe4845cd3ad86efde15a8f5",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/121_스튜디오_유휴폴링_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 100878,
+      "working_tree_sha256": "6cccee5d173fd0c70b8af1912976a2b3481a4ca240b485174f4d509afd70fcc1"
+    },
+    {
+      "path": "01_개발문서/07_검증/122_윈도우_해석취소_재검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 825,
+      "working_tree_sha256": "89605cbac775730f5d1fccf3600973a633f7d6064e357d767077e14738c10349",
+      "text_lines": 10,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/123_해석취소_재검증_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 3458,
+      "working_tree_sha256": "3040a32232a2b3392aeaa658655d8c422c6e9a46f58a5f29f08efbca5ac41eef"
+    },
+    {
+      "path": "01_개발문서/07_검증/124_해석그래프와_작업기록_가독성_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1680,
+      "working_tree_sha256": "edee40ed4929537ac8ab58ee344cc6ce40ffff85fdc545eeed33a250a480c173",
+      "text_lines": 11,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/125_대형설계_편집복원과_상호운용_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1927,
+      "working_tree_sha256": "b8b5dba1be7a39f8ffb4bb7339d540cbb73207ce89d180defb238ea5a78b4773",
+      "text_lines": 9,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/126_대형설계_편집복원_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 1828,
+      "working_tree_sha256": "7a12778608a3a46c394c65c45daa393bd0ef178cf8bdd4864592250843cf2530"
+    },
+    {
+      "path": "01_개발문서/07_검증/127_필드조회_봉인원문_중복읽기검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1223,
+      "working_tree_sha256": "2f8127a586a354685852e140d86d58fc5fa305f793707192a0bfcb4de88eedfc",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/128_대형자료_표스크롤_합성검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2285,
+      "working_tree_sha256": "0d571302a2e61c62b140b483f483a55930401a62faefb4d941b0faa302e01b1f",
+      "text_lines": 18,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/128_대형자료_표스크롤_합성실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 437483,
+      "working_tree_sha256": "331c39e4c2444bf2d86256f32113d8a6e80547380e3aab296f2160439c08ac4a"
+    },
+    {
+      "path": "01_개발문서/07_검증/129_대형설계_반복전환_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 53054,
+      "working_tree_sha256": "3d22502fb20d90ae3fc3336b885ff798912d9835266204e48d73c4b25fcfbc3b"
+    },
+    {
+      "path": "01_개발문서/07_검증/129_대형설계_반복전환_자원검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1921,
+      "working_tree_sha256": "c9c021a5d9c3f3708efc3c1bb6aa590388d71315fce8d79169f02b360c5247fc",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/130_저장공간_실패와_재열기_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1411,
+      "working_tree_sha256": "cf45744fc99b59c8b83c6ca24c344af7acc2a01dfbed614e263c77643f3661ee",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/131_대형삼차원_유휴복귀_재검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1007,
+      "working_tree_sha256": "6b53ae92bc1b6957209f36ab1acf4be318316b779076a31a47cf774a4160d860",
+      "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/132_대형삼차원_유휴복귀_실행기록.jsonl",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 1983,
+      "working_tree_sha256": "ba084b2b70c79039ab74b0d2b0a570ccfb0fb212b0515a881cb6dd4c65735e15"
+    },
+    {
+      "path": "01_개발문서/07_검증/133_대용량_필드읽기_격리계측.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1494,
+      "working_tree_sha256": "87566589f77be4e296face9bb54c132dc26a989e519a3df544f68293cdddabe8",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/134_대용량_필드읽기_격리실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 43043,
+      "working_tree_sha256": "da5db7fb598ea36372208e196ebd39ec8dbacd6fa61a1036325c62104e9e702d"
+    },
+    {
+      "path": "01_개발문서/07_검증/135_서비스응답_윈도우_도착처리검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2107,
+      "working_tree_sha256": "5a8898b94cb525231510253442e73c935a20053faae81d696420589cc931dfde",
+      "text_lines": 17,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/136_서비스응답_윈도우_도착처리실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 170349,
+      "working_tree_sha256": "8a54f676f2538b5d4dce20d4498e58e112e8c52d4a5117e3b12f38cdf5ac976a"
+    },
+    {
+      "path": "01_개발문서/07_검증/137_키보드_패널이동_윈도우_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 890,
+      "working_tree_sha256": "32d947eedffcb1b6053a9f48fdc8c2641a00c18e6178db38a3d8800363502bfe",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/138_대용량_외부결과_제품검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2621,
+      "working_tree_sha256": "778ff1bbdbd84396134fddaacafae6e811c020e3d324bc429c2a1c4fbffad853",
+      "text_lines": 19,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/139_대용량_외부결과_제품실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 106786,
+      "working_tree_sha256": "13a24a3f0d7a01a72729febb888a7b53f2f54bd46a27c6c4a33d1ac0f9fcb5ca"
+    },
+    {
+      "path": "01_개발문서/07_검증/140_윈도우_해석취소_반복검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1357,
+      "working_tree_sha256": "a28c21a8c49080ac88ce395c42a9762f0d9b08e07cd46b771909551f6c10cc9d",
+      "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/141_윈도우_해석취소_반복실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 11228,
+      "working_tree_sha256": "d240faef28c1bc3eaaaba0e4791a5bf20598ae1b7025b26fb3a60a3983f411cc"
+    },
+    {
+      "path": "01_개발문서/07_검증/142_윈도우_첫화면과_편집준비_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2255,
+      "working_tree_sha256": "5e83db585ca7eff7d763ffac53ea495a51dd80321a273eb4ba2526eacd569cee",
+      "text_lines": 17,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/143_윈도우_첫화면과_편집준비_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 88582,
+      "working_tree_sha256": "8f7da4b3ec85e11ea426dd079fc93f96736f9bb57b684d3a7e0e403f508f41a3"
+    },
+    {
+      "path": "01_개발문서/07_검증/144_통합_대형_프로젝트_유휴회수_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1865,
+      "working_tree_sha256": "38189c02fa16cf27c65fee7d15cd2fe4d7fa832c3a38f4603ec5b598cfa34bf4",
+      "text_lines": 18,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/145_통합_대형_프로젝트_유휴회수_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 66190,
+      "working_tree_sha256": "30086e1c8cbf165d74eec0bce5ee43be9cff97df3dcfd82ef77705111d583a42"
+    },
+    {
+      "path": "01_개발문서/07_검증/146_스튜디오_대형_삼차원_합성과_표시_품질_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1920,
+      "working_tree_sha256": "ee3d6822b9e38631c09bbc8b08d6c8e51d2dd505e865be86cf8198b5d5210b56",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/147_스튜디오_대형_삼차원_합성과_표시_품질_기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 130221,
+      "working_tree_sha256": "28e74cb7c96706e962bb71e0174c9116bcf09d7e15910b91b2becf2f3a8c9163"
+    },
+    {
+      "path": "01_개발문서/07_검증/148_대용량_결과_이관과_재열기_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1285,
+      "working_tree_sha256": "212b56336e4d6b092f2a3b032b51a9b8d0d009401b029a039cfb92e2c027bca7",
+      "text_lines": 9,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/149_대용량_결과_이관_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 23326,
+      "working_tree_sha256": "57fa54f1f4a81c617c855291c83f066868fc73743dc4862bb31276400de60da7"
+    },
+    {
+      "path": "01_개발문서/07_검증/150_알티움_캠과_엠시피_인스펙터_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2028,
+      "working_tree_sha256": "c3cbc2917a18eff3bff443287976abae198a87870b4185f8ca4740709fc8a95f",
+      "text_lines": 15,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/151_알티움_캠과_엠시피_인스펙터_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 2558,
+      "working_tree_sha256": "100cc318ae2a8d19f18f736703d96ab0cf3b81073a1bb6a04e1f302a56d14212"
+    },
+    {
+      "path": "01_개발문서/07_검증/152_키보드와_결과표시_접근성_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1830,
+      "working_tree_sha256": "0351022eae23a78994883c26845e4f13433094e57dd4d0babc7f6546b89c720e",
+      "text_lines": 9,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/153_키보드와_결과표시_접근성_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 903,
+      "working_tree_sha256": "8b3b6d2b1dc3c34818c70509abb753cfc1be7964de3dae7fdd26b46d5a4fd71f"
+    },
+    {
+      "path": "01_개발문서/07_검증/154_동시부하에서의_해석취소_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1710,
+      "working_tree_sha256": "dac3e395d251abf4a687a421281fbf17065cb9a6fac74749159979669a0af9fe",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/155_동시부하에서의_해석취소_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 11011,
+      "working_tree_sha256": "7b8bde89838c8caf2a8e632ffbfe61dacdce9202ce26decca21769d708f459c9"
+    },
+    {
+      "path": "01_개발문서/07_검증/156_대형_탐색트리와_복원_재검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1732,
+      "working_tree_sha256": "13086104127bf21e73acb3c4b7b21f85615e55f0f017d3a33376947321c46ddb",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/157_대형_탐색트리와_복원_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 4263,
+      "working_tree_sha256": "ccf6734ce7e183e4f0968fe5b50aeecd4f352fcb7d3989d1d9b9640a1a64c178"
+    },
+    {
+      "path": "01_개발문서/07_검증/158_대용량_결과의_윈도우_자원_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1883,
+      "working_tree_sha256": "1a3f2e6c4616c98d609ca7f2ef5085e27f5232d781f248119e95fb78081756d8",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/159_대용량_결과의_윈도우_자원_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 107804,
+      "working_tree_sha256": "d292052f63e850de44c49a42bc418017e0de41c24e6224175fec96df4eac3541"
+    },
+    {
+      "path": "01_개발문서/07_검증/160_윈도우_손상차단과_복구_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1503,
+      "working_tree_sha256": "3ecfd446319cf689e957c019cf1b8d8ada8594d38f2a0f79b2cc66e0507432df",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/161_윈도우_손상차단과_복구_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 3895,
+      "working_tree_sha256": "f336d4c1a2a48b97d33e1bc20672e78caf8649e5ee1c6bc791c1b3baa3f60acd"
+    },
+    {
+      "path": "01_개발문서/07_검증/162_윈도우_시작과_유휴_동시부하_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1308,
+      "working_tree_sha256": "30a94a965255232979771e03d9d4cec822a83569ca3d64c6fcbdbfb70cb203a1",
+      "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/163_윈도우_시작과_유휴_동시부하_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 27154,
+      "working_tree_sha256": "ad1936f2965f5b58912aa0960030ee8c7ac547c255387698991e800d39841cfe"
+    },
+    {
+      "path": "01_개발문서/07_검증/164_삼차원_표시읽기와_유지회수_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1855,
+      "working_tree_sha256": "17ce83f77ad36819ec665d2df55b272117d06397480ab5e4b36ef46a7d0da279",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/165_삼차원_표시읽기와_유지회수_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 368844,
+      "working_tree_sha256": "17835eec871ddfcef0d8ab07d44c90c8c675e5105bba5097d6290b33a6cb8827"
+    },
+    {
+      "path": "01_개발문서/07_검증/166_대형_좌표읽기보강_유지회수_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1309,
+      "working_tree_sha256": "028b4b65db7a5d008869634ff44758c9327b6eefad389fc291b6019a37f77da8",
+      "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/167_대형_좌표읽기보강_유지회수_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 73107,
+      "working_tree_sha256": "7d5894212dae7b81ae3cff8b2246e7d5bb3f9a1685361462c408153409cdad04"
+    },
+    {
+      "path": "01_개발문서/07_검증/168_윈도우_시작_부하완화_재검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 982,
+      "working_tree_sha256": "bb2603b79913b8efa99cb9b8c6d017fbe0958219c54d66a88990f5a63ceb457f",
+      "text_lines": 10,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/169_윈도우_시작_부하완화_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 15494,
+      "working_tree_sha256": "f88cc772c548e725fe9c629f1fbf4d5f04f68f68705a7fce14a8a009cd1483fe"
+    },
+    {
+      "path": "01_개발문서/07_검증/170_작업영역_초기화오류_안내_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1233,
+      "working_tree_sha256": "e684424f3426a369f549aed0ca9a473e18da28db12584be695b46cc43fd493da",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/171_작업영역_초기화오류_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 4322,
+      "working_tree_sha256": "00ecd065472965d9101734e65abff4566c40b01f280663d9e3302919710bc093"
+    },
+    {
+      "path": "01_개발문서/07_검증/172_알티움_동박외곽과_비도금홀_왕복검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2061,
+      "working_tree_sha256": "9a1a72dabdd937d3b672ee02070869c2315f56ef35ee609b8ffd46c1491af033",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/173_알티움_동박외곽과_비도금홀_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 6036,
+      "working_tree_sha256": "68291e3830301fb5a8a1a94def580fc94c860ef531b100e08ca083e614d739ec"
+    },
+    {
+      "path": "01_개발문서/07_검증/174_윈도우_힙과_유지회수_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2042,
+      "working_tree_sha256": "a2f763526d83751435e145ce3d6fcd51e3eebaf052bf9eba53a8ce3ddcb6668f",
+      "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/175_윈도우_힙과_유지회수_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 78652,
+      "working_tree_sha256": "44a428f2ef26e8ed760243a5d047c26506bf4f36135dc4cc78df5969c4660523"
+    },
+    {
+      "path": "01_개발문서/07_검증/176_엠시피_인스펙터의_대용량결과_조회검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1583,
+      "working_tree_sha256": "121ce03cd60ac01f03cf23f36a5faa8d8e9c89e8f704f525fa93c853653d27c0",
+      "text_lines": 10,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/177_엠시피_인스펙터의_대용량결과_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 9969,
+      "working_tree_sha256": "6f5fcda4b547cba6c8c1ad2b7536d135996efa1961adbfa1ccb7c3f61493bc2d"
+    },
+    {
+      "path": "01_개발문서/07_검증/178_대형좌표_읽기보강과_유휴회수_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1590,
+      "working_tree_sha256": "f1dc2f392d5731d39bec294fb9c74bfa03eddfa24aee9477a00538a8c8e2f5eb",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/179_대형좌표_읽기보강과_유휴회수_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 74355,
+      "working_tree_sha256": "88dd34469bed681fbdcde480a89eae4eb9f0367a9c4dcf09b6155a420a9d4d63"
+    },
+    {
+      "path": "01_개발문서/07_검증/180_해석취소_제어와_접수순서_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1678,
+      "working_tree_sha256": "4f5998a97a244563b62156ec17e6cb12785569e8451acb09fadf72c97779bc2c",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/181_해석취소_제어와_접수순서_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 21966,
+      "working_tree_sha256": "d64190a624ce76f9703f75c1d22b4de99bef02402cf2104dfad5c2ba2cfad5c2"
+    },
+    {
+      "path": "01_개발문서/07_검증/182_스튜디오_작업영역_키보드전환_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1698,
+      "working_tree_sha256": "adaf54125898376f0e30553f84c6f24a06d46bd570922eb08055b7869467b62f",
+      "text_lines": 15,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/183_스튜디오_작업영역_키보드전환_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 2072,
+      "working_tree_sha256": "61ea53f8af5ec052d98e113d0bd78760433d0d1be447654e614a33e9527e4968"
+    },
+    {
+      "path": "01_개발문서/07_검증/184_윈도우_통합회귀와_화면합성_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1824,
+      "working_tree_sha256": "2c75c8cc1b515ae985c76232f8cc3c2606ca8843dfc2304228ab3a9826b6866d",
+      "text_lines": 9,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/185_윈도우_통합회귀와_화면합성_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 2046,
+      "working_tree_sha256": "5c06d0d95bb147f20ed45964b832affa13890f2f1acfdc25eb87cd7536f6a60d"
+    },
+    {
+      "path": "01_개발문서/07_검증/186_최신_윈도우_시작과_유휴_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1456,
+      "working_tree_sha256": "30d7d7ce05f6717f2b0fcb1486c920f986ff72edc6fc6253d8745231283bf23b",
+      "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/187_최신_윈도우_시작과_유휴_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 27098,
+      "working_tree_sha256": "00b30f0629b7367432b9d1378f841e731191a6c4f5a9b52503a9e1da989e49a4"
+    },
+    {
+      "path": "01_개발문서/07_검증/188_저장_여유공간과_재시도_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1818,
+      "working_tree_sha256": "e69ad62e89b4ca620f71dc5680de7a08b36a614a2578b45efabdeee89be979d4",
+      "text_lines": 13,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/189_저장_여유공간과_재시도_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 8034,
+      "working_tree_sha256": "e6693ed35d4bd0719557ed6b93285ea5da58b55714d1ee33a93df65d3b163ada"
+    },
+    {
+      "path": "01_개발문서/07_검증/190_해석취소_저널검증비용_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1615,
+      "working_tree_sha256": "460719e492cf19bea3c1a556fdd1aa07bdf4925f7174e93b30ae7f4b861fc518",
+      "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/191_해석취소_저널검증비용_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 22051,
+      "working_tree_sha256": "f31687c544232867101a362dd21ba11779389a5936bce2b7d7556ffddbf6202e"
+    },
+    {
+      "path": "01_개발문서/07_검증/192_윈도우_힙과_유휴회수_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1613,
+      "working_tree_sha256": "263c3fa3d0075e9a017f784017d4d8fa5f9b193c2400de210fa1b4e34d4b09e2",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/193_윈도우_힙과_유휴회수_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 35799,
+      "working_tree_sha256": "7ec1ab8a288e165a05a67cabc6cff6c58c3abc7331c6b777efcb8a1a38bc2050"
+    },
+    {
+      "path": "01_개발문서/07_검증/194_서비스지원정보와_시작지연_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1350,
+      "working_tree_sha256": "3a7c6e73c65da03474912de5f085efc1345feef99ebfab05f1dacda022ad9c52",
+      "text_lines": 10,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/195_서비스지원정보와_시작지연_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 44137,
+      "working_tree_sha256": "218cc06796c9ed73bc948fca4ba594998dd942322d343e3c758c2a0c0dacc784"
+    },
+    {
+      "path": "01_개발문서/07_검증/196_대형프로젝트_검증재사용과_유지회수_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2648,
+      "working_tree_sha256": "0d3f1abc847c70d4f1f562220ab71edaa3e68477339aa47dfb6772283b051d28",
+      "text_lines": 20,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/197_대형프로젝트_검증재사용과_유지회수_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 75315,
+      "working_tree_sha256": "b53f0e724ad25a0fbd69e3ee5802efcb1ae9de426e9486e5b7836dda20a3d1bb"
+    },
+    {
+      "path": "01_개발문서/07_검증/198_대형프로젝트_검증재사용과_유휴회수_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1927,
+      "working_tree_sha256": "c59c383e0214f8905d1d4b62e49137fe7a9ca48a3e9f983cb24177bd4c341ff0",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/199_대형프로젝트_검증재사용과_유휴회수_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 39154,
+      "working_tree_sha256": "95a2bfc10645854c6b036eea12e79a5bf5d2408d867dcf4f810f903c650773e1"
+    },
+    {
+      "path": "01_개발문서/07_검증/200_기술도면_키보드생성_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 959,
+      "working_tree_sha256": "fdd8d46cf2ecc825fe71ac60bdea050555b5bffb81e0bb596dbc999e87070608",
+      "text_lines": 5,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/201_기술도면_키보드생성_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 1073,
+      "working_tree_sha256": "58601f9963b6da5c28ae6e17af5b7f1a74d9465b9f34f9b885fbaa5963f28f7c"
+    },
+    {
+      "path": "01_개발문서/07_검증/202_대형설계_후속_윈도우_통합회귀_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1219,
+      "working_tree_sha256": "5dfd82c8805e97ca7defa0a5322e3e13bd2b324414939081151aa15ee892ec21",
+      "text_lines": 5,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/203_대형설계_후속_윈도우_통합회귀_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 10492,
+      "working_tree_sha256": "43ad95cbba9e4ed8c1fd04c290d077fa529a70f20b8fba4f12581562f5bafbe9"
+    },
+    {
+      "path": "01_개발문서/07_검증/204_윈도우_대비테마와_가독성_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2300,
+      "working_tree_sha256": "729a7026da88a8a98015d6c22e1e43686ae0fb6dd901c637216d1b79a353dac1",
+      "text_lines": 15,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/205_윈도우_대비테마와_가독성_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 1479,
+      "working_tree_sha256": "4d54e9ed7a89943e2204af44d55c70931056a0aa39c9b99088058a230c30476b"
+    },
+    {
+      "path": "01_개발문서/07_검증/206_최종_윈도우_시작과_기준크기_삼차원_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1884,
+      "working_tree_sha256": "23c8b0f97fc44d36df0b90b4c4b1337c2756c87584ab9126896c2ca69a249485",
+      "text_lines": 13,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/207_최종_윈도우_시작과_기준크기_삼차원_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 38527,
+      "working_tree_sha256": "12dfd39b14988a5884970e32ee9ee4b44f31e107fa460682a158802b09070d4c"
+    },
+    {
+      "path": "01_개발문서/07_검증/208_최종_윈도우_동시부하_해석취소_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1906,
+      "working_tree_sha256": "e47dc9bfbfd52f54a27479cf568fd19993d1370a019d05753789077509b58b65",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/209_최종_윈도우_동시부하_해석취소_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 17113,
+      "working_tree_sha256": "d85ea9c9d69d038f2a0980d064398f041b82b5ce1220559486ba1d168a7b0c52"
+    },
+    {
+      "path": "01_개발문서/07_검증/210_윈도우_형상과_출력_취소검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1245,
+      "working_tree_sha256": "de2021ef5f9507980d970e0f527f3ecc4a5f76b83ffc71f2c0f5f803beb1464d",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/211_윈도우_형상과_출력_취소_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 765,
+      "working_tree_sha256": "1a8de9d7c4bdf07cab49a7a2302e3db03c1c6ad5a5a9e8edfdc6fd27f16c852b"
+    },
+    {
+      "path": "01_개발문서/07_검증/212_윈도우_편집우선_시작과_작업영역검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2401,
+      "working_tree_sha256": "94dfcc6bfa950dddecfb609801eca755f3b70343e38bcffe81b6f06ac8619153",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/213_윈도우_편집우선_시작과_작업영역_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 75404,
+      "working_tree_sha256": "3a49bde9eb0fc9019fd5fb87d89c5fd0905194fc2a8ce8a0ab27c7e86298987e"
+    },
+    {
+      "path": "01_개발문서/07_검증/214_윈도우_취소접수와_파일검사_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2176,
+      "working_tree_sha256": "dfb271e06418708908af9389ba8e57eb9b487c26642c22573538fd44154fb07d",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/215_윈도우_취소접수_파일검사_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 28506,
+      "working_tree_sha256": "b982ba8e02fb195bd4bbe50fc787ff17a91c05b8680b1fdef3fcfa45024501ad"
+    },
+    {
+      "path": "01_개발문서/07_검증/216_윈도우_게스트종료_대기축소_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1401,
+      "working_tree_sha256": "d879a79e5b3a42c3d2f43c847eb920b9ecde0b431485afbf068544483e32d2ef",
+      "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/217_윈도우_게스트종료_대기축소_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 9664,
+      "working_tree_sha256": "94cb20ba3cbd2921e2a62f36e974cb38ce25025b37344ab74732500ed079e348"
+    },
+    {
+      "path": "01_개발문서/07_검증/218_편집우선_동시부하_대형전환검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1339,
+      "working_tree_sha256": "6931b0a512add24e5591d78fcd21d31eb6ee099696ec409f9891ba11c1db0ba7",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/219_편집우선_동시부하_대형전환_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 73100,
+      "working_tree_sha256": "74e7e3a7193da5601851f58d86e15daa561f7ac7041e6389a53e29ef34472762"
+    },
+    {
+      "path": "01_개발문서/07_검증/220_윈도우_이차원_펜선택_비교검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1450,
+      "working_tree_sha256": "6b55348386157cb82047f1dc4cf80021bffe0a55ab9ae5d9a17010dc32c603e8",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/221_윈도우_이차원_펜선택_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 791134,
+      "working_tree_sha256": "40ce9e38496a291ef928f0459933e435fb96231a3a7e9bd64e713d8bbb8069f8"
+    },
+    {
+      "path": "01_개발문서/07_검증/222_윈도우_삼차원_합성진단과_통합회귀.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2216,
+      "working_tree_sha256": "95d90aa6ee29251b2751d5b30082b04971cf7386c1dcde25ae25021d2e7f8b8f",
+      "text_lines": 15,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/223_윈도우_삼차원_합성진단_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 1801,
+      "working_tree_sha256": "42852e2185e0913b1f00c8d4f97de0435073aa1dc90c76a1b34f90e359d03d08"
+    },
+    {
+      "path": "01_개발문서/07_검증/224_알티움_도금홀과_슬롯_왕복검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2603,
+      "working_tree_sha256": "e7af033df573bb9f320558031f6152043cd846c5e813f29a3fabd5b4253610d0",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/225_알티움_도금홀과_슬롯_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 4946,
+      "working_tree_sha256": "47eb6f02a25e90b4a30ab3094cc5edf59d815a7637351c54c7dbe4da37627030"
+    },
+    {
+      "path": "01_개발문서/07_검증/226_윈도우_한글이름과_복구_재검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2314,
+      "working_tree_sha256": "02388cde59b312a7d9d79b72feb52e3bd6c2d632e349872b8d5af20c64ccc1a2",
+      "text_lines": 11,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/227_윈도우_한글이름과_복구_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 1670,
+      "working_tree_sha256": "1cb093e2be3e0e4895fb2c96c80db53a0cc274e49b913894e230f6fe974f5864"
+    },
+    {
+      "path": "01_개발문서/07_검증/228_윈도우_유휴_사용자인터페이스객체_진단.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1932,
+      "working_tree_sha256": "5639bd47e6405e9ad8b5ed77895da090e1b9237cd18f56fe180351e18e64105e",
+      "text_lines": 15,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/229_윈도우_유휴_사용자인터페이스객체_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 21700,
+      "working_tree_sha256": "b85074680d6d8c56708ee8bde61c3bd1177b9d2cbf5609212f3c70f2c1221b16"
+    },
+    {
+      "path": "01_개발문서/07_검증/230_윈도우_전체서비스와_네이티브_회귀검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1288,
+      "working_tree_sha256": "e34ed760ac1f9c16b63bffc617b9f8c710c3c139fb29dcab6d3d4735f893f8b9",
+      "text_lines": 7,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/231_윈도우_전체서비스와_네이티브_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 947,
+      "working_tree_sha256": "e3876a7842b9984e9706b634bb8ecad641d70cd8901b80c7109f1758e77dc7d2"
+    },
+    {
+      "path": "01_개발문서/07_검증/232_윈도우_형상과_출력_취소지연_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2202,
+      "working_tree_sha256": "4f4debc949794b00667a7d4f238e1078553376dc599bc6a3957afaef815dea2e",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/233_윈도우_형상과_출력_취소지연_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 11094,
+      "working_tree_sha256": "946f97dd30ae752595fc3d0481c7ec7836fa33d4f11998f3795a4888315e4b71"
+    },
+    {
+      "path": "01_개발문서/07_검증/234_윈도우_취소종료_표시지연_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1344,
+      "working_tree_sha256": "e8a975b96bae953957be32a46b7c92db73b14e547e57617d0d32f727469ff337",
+      "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/235_윈도우_취소종료_표시지연_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 8376,
+      "working_tree_sha256": "e4959e3afa6951dae01c319008dd1286899bb26c46a6e51434d0164ac69063c4"
+    },
+    {
+      "path": "01_개발문서/07_검증/236_취소개선_이후_윈도우_재실행_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1041,
+      "working_tree_sha256": "0aa14ccc73aa13113dbf434e8a1d1f017f92c432d620672ebe25e8ad6187c6e5",
+      "text_lines": 10,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/237_취소개선_이후_윈도우_재실행_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 14889,
+      "working_tree_sha256": "9af4f6d1601b32305aacda9b7195430dd0691ba43852a52ef941610ae7cabe94"
+    },
+    {
+      "path": "01_개발문서/07_검증/238_윈도우_도면생성_취소_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1274,
+      "working_tree_sha256": "0ffdb14313642ac9aad91cf361b82140c32777a25f7b314b33dc512f32d1730d",
+      "text_lines": 13,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/239_윈도우_도면생성_취소_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 3111,
+      "working_tree_sha256": "f56b3a7d11f9d1bdf5c5217c798263c8e02493e092054e90cf030c08f7ee9f7a"
+    },
+    {
+      "path": "01_개발문서/07_검증/240_고속로그와_해석취소_교차회귀.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 800,
+      "working_tree_sha256": "a7de0e91aa004dd4d9d94f48375380580e0aff8f8e81b0c10bf8a0ddae1a736a",
+      "text_lines": 5,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/241_고속로그와_해석취소_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 1733,
+      "working_tree_sha256": "cff46598355aa113d9feb2cb820706d0eb53ab29a0e78b1630e7b5bbec5e9907"
+    },
+    {
+      "path": "01_개발문서/07_검증/242_윈도우_형상과_도면_고속로그_취소검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2705,
+      "working_tree_sha256": "f03a35ead44be68b70970e420a2ad3d09ae9b8a9075635a508d78ae14741df70",
+      "text_lines": 24,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/243_윈도우_형상과_도면_고속로그_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 8105,
+      "working_tree_sha256": "0683afaf8e768ecb3fbb5e92d22b0978ebf1f37791ada076cfe8c34e18ceaace"
+    },
+    {
+      "path": "01_개발문서/07_검증/244_윈도우_도면재검수_고속로그_취소검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1315,
+      "working_tree_sha256": "557f1c59e562932149f1f10fccb01fbe59c2b6c8898d1f17d54b159612f0e581",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/245_윈도우_도면재검수_고속로그_실행기록.json",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 4267,
+      "working_tree_sha256": "75f7d91fa01a76eb46a902bb943ef62887aac729196d0e3a2dc4a9a7c4d8a1f1"
+    },
+    {
+      "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
+      "category": "current_09_개발계획",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 12973,
+      "working_tree_sha256": "4ffb9d34e45ece40af8dcb20126ad5fbf56a8e1e45079ee6bc1fe435f27b6387",
+      "text_lines": 42,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/09_개발계획/05_현행버전_검증선별_기준.md",
+      "category": "current_09_개발계획",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 12471,
+      "working_tree_sha256": "eedb920351b4597957ae86dd6e99470fd9ca684b86d003df278d362e29431b35",
+      "text_lines": 42,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/09_개발계획/06_비교분석과_기능개발_범위.md",
+      "category": "current_09_개발계획",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 12341,
+      "working_tree_sha256": "f98bef0e71cc5948bf995a1a1582570c3edb945200d0351808f38c6dd76c4fff",
+      "text_lines": 37,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/09_개발계획/07_현행버전_완료후_리팩토링.md",
+      "category": "current_09_개발계획",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 9737,
+      "working_tree_sha256": "d469450bbb575e0fc7c687fc07214453a9d33425d38afb6a3150ba636237cbed",
+      "text_lines": 37,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/11_검토기록/07_현행버전_계획검토.md",
+      "category": "current_11_검토기록",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2847,
+      "working_tree_sha256": "9cd9fcd3e9e9997b2a3fa8fed1466971ff3f01dff3c1005a7508d785c5c4da49",
+      "text_lines": 19,
+      "text_status": "utf8_read"
     }
   ],
   "identical_byte_groups": [
@@ -31418,22 +32541,321 @@
   ],
   "incremental_refresh": {
     "date_kst": "2026-11-21",
-    "mode": "step12_f1_windows_save_reopen_memory",
-    "previous_inventory_sha256": "88d45537b2522ab73c813839951c77b32f96d9e99e56b1ba40f17bd0c9bfca8d",
+    "mode": "r1_plan_and_document_review",
+    "previous_inventory_sha256": "7c5c93a64e663381f8ec28379d4d5b814c7e99ace37118fb7c40716963bc381b",
     "refreshed_paths": [
-      "01_개발문서/07_검증/113_대형설계_편집메모리_검증.md",
-      "01_개발문서/07_검증/114_대형설계_편집메모리_실행기록.json",
+      "01_개발문서/02_시스템명세/03_데이터_모델과_파일_형식.md",
+      "01_개발문서/02_시스템명세/05_해석기_어댑터_계약.md",
+      "01_개발문서/02_시스템명세/08_공통구현_계약.md",
+      "01_개발문서/02_시스템명세/09_표현식과_설계데이터.md",
+      "01_개발문서/02_시스템명세/10_설계준비와_결정경계.md",
+      "01_개발문서/03_아키텍처/01_소프트웨어_아키텍처.md",
+      "01_개발문서/04_화면설계/01_화면과_사용자_경험_설계.md",
+      "01_개발문서/04_화면설계/02_화면_선정과_성능_설계.md",
+      "01_개발문서/04_화면설계/06_사용성과_접근성.md",
+      "01_개발문서/04_화면설계/08_스튜디오_화면계약.md",
+      "01_개발문서/04_화면설계/11_제조업체와_적층선택_화면.md",
+      "01_개발문서/04_화면설계/21_다중결과와_방사필드_화면.md",
+      "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
+      "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
+      "01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md",
+      "01_개발문서/05_기능설계/03_재료/01_기판카탈로그_조회계약.md",
+      "01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
+      "01_개발문서/05_기능설계/04_해석결과/10_대용량_외부결과_등록과_비교.md",
+      "01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md",
+      "01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
+      "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
+      "01_개발문서/07_검증/115_대형자료_검색표와_메모리_검증.md",
+      "01_개발문서/07_검증/116_대형자료_검색표_실행기록.json",
+      "01_개발문서/07_검증/117_대형장면_화면범위와_합성_검증.md",
+      "01_개발문서/07_검증/118_대형장면_범위최적화_실행기록.json",
+      "01_개발문서/07_검증/119_심화해석_필드단면_검증.md",
+      "01_개발문서/07_검증/120_스튜디오_유휴폴링과_시작_검증.md",
+      "01_개발문서/07_검증/121_스튜디오_유휴폴링_실행기록.json",
+      "01_개발문서/07_검증/122_윈도우_해석취소_재검증.md",
+      "01_개발문서/07_검증/123_해석취소_재검증_실행기록.json",
+      "01_개발문서/07_검증/124_해석그래프와_작업기록_가독성_검증.md",
+      "01_개발문서/07_검증/125_대형설계_편집복원과_상호운용_검증.md",
+      "01_개발문서/07_검증/126_대형설계_편집복원_실행기록.json",
+      "01_개발문서/07_검증/127_필드조회_봉인원문_중복읽기검증.md",
+      "01_개발문서/07_검증/128_대형자료_표스크롤_합성검증.md",
+      "01_개발문서/07_검증/128_대형자료_표스크롤_합성실행기록.json",
+      "01_개발문서/07_검증/129_대형설계_반복전환_실행기록.json",
+      "01_개발문서/07_검증/129_대형설계_반복전환_자원검증.md",
+      "01_개발문서/07_검증/130_저장공간_실패와_재열기_검증.md",
+      "01_개발문서/07_검증/131_대형삼차원_유휴복귀_재검증.md",
+      "01_개발문서/07_검증/132_대형삼차원_유휴복귀_실행기록.jsonl",
+      "01_개발문서/07_검증/133_대용량_필드읽기_격리계측.md",
+      "01_개발문서/07_검증/134_대용량_필드읽기_격리실행기록.json",
+      "01_개발문서/07_검증/135_서비스응답_윈도우_도착처리검증.md",
+      "01_개발문서/07_검증/136_서비스응답_윈도우_도착처리실행기록.json",
+      "01_개발문서/07_검증/137_키보드_패널이동_윈도우_검증.md",
+      "01_개발문서/07_검증/138_대용량_외부결과_제품검증.md",
+      "01_개발문서/07_검증/139_대용량_외부결과_제품실행기록.json",
+      "01_개발문서/07_검증/140_윈도우_해석취소_반복검증.md",
+      "01_개발문서/07_검증/141_윈도우_해석취소_반복실행기록.json",
+      "01_개발문서/07_검증/142_윈도우_첫화면과_편집준비_검증.md",
+      "01_개발문서/07_검증/143_윈도우_첫화면과_편집준비_실행기록.json",
+      "01_개발문서/07_검증/144_통합_대형_프로젝트_유휴회수_검증.md",
+      "01_개발문서/07_검증/145_통합_대형_프로젝트_유휴회수_실행기록.json",
+      "01_개발문서/07_검증/146_스튜디오_대형_삼차원_합성과_표시_품질_검증.md",
+      "01_개발문서/07_검증/147_스튜디오_대형_삼차원_합성과_표시_품질_기록.json",
+      "01_개발문서/07_검증/148_대용량_결과_이관과_재열기_검증.md",
+      "01_개발문서/07_검증/149_대용량_결과_이관_실행기록.json",
+      "01_개발문서/07_검증/150_알티움_캠과_엠시피_인스펙터_검증.md",
+      "01_개발문서/07_검증/151_알티움_캠과_엠시피_인스펙터_실행기록.json",
+      "01_개발문서/07_검증/152_키보드와_결과표시_접근성_검증.md",
+      "01_개발문서/07_검증/153_키보드와_결과표시_접근성_실행기록.json",
+      "01_개발문서/07_검증/154_동시부하에서의_해석취소_검증.md",
+      "01_개발문서/07_검증/155_동시부하에서의_해석취소_실행기록.json",
+      "01_개발문서/07_검증/156_대형_탐색트리와_복원_재검증.md",
+      "01_개발문서/07_검증/157_대형_탐색트리와_복원_실행기록.json",
+      "01_개발문서/07_검증/158_대용량_결과의_윈도우_자원_검증.md",
+      "01_개발문서/07_검증/159_대용량_결과의_윈도우_자원_실행기록.json",
+      "01_개발문서/07_검증/160_윈도우_손상차단과_복구_검증.md",
+      "01_개발문서/07_검증/161_윈도우_손상차단과_복구_실행기록.json",
+      "01_개발문서/07_검증/162_윈도우_시작과_유휴_동시부하_검증.md",
+      "01_개발문서/07_검증/163_윈도우_시작과_유휴_동시부하_실행기록.json",
+      "01_개발문서/07_검증/164_삼차원_표시읽기와_유지회수_검증.md",
+      "01_개발문서/07_검증/165_삼차원_표시읽기와_유지회수_실행기록.json",
+      "01_개발문서/07_검증/166_대형_좌표읽기보강_유지회수_검증.md",
+      "01_개발문서/07_검증/167_대형_좌표읽기보강_유지회수_실행기록.json",
+      "01_개발문서/07_검증/168_윈도우_시작_부하완화_재검증.md",
+      "01_개발문서/07_검증/169_윈도우_시작_부하완화_실행기록.json",
+      "01_개발문서/07_검증/170_작업영역_초기화오류_안내_검증.md",
+      "01_개발문서/07_검증/171_작업영역_초기화오류_실행기록.json",
+      "01_개발문서/07_검증/172_알티움_동박외곽과_비도금홀_왕복검증.md",
+      "01_개발문서/07_검증/173_알티움_동박외곽과_비도금홀_실행기록.json",
+      "01_개발문서/07_검증/174_윈도우_힙과_유지회수_검증.md",
+      "01_개발문서/07_검증/175_윈도우_힙과_유지회수_실행기록.json",
+      "01_개발문서/07_검증/176_엠시피_인스펙터의_대용량결과_조회검증.md",
+      "01_개발문서/07_검증/177_엠시피_인스펙터의_대용량결과_실행기록.json",
+      "01_개발문서/07_검증/178_대형좌표_읽기보강과_유휴회수_검증.md",
+      "01_개발문서/07_검증/179_대형좌표_읽기보강과_유휴회수_실행기록.json",
+      "01_개발문서/07_검증/180_해석취소_제어와_접수순서_검증.md",
+      "01_개발문서/07_검증/181_해석취소_제어와_접수순서_실행기록.json",
+      "01_개발문서/07_검증/182_스튜디오_작업영역_키보드전환_검증.md",
+      "01_개발문서/07_검증/183_스튜디오_작업영역_키보드전환_실행기록.json",
+      "01_개발문서/07_검증/184_윈도우_통합회귀와_화면합성_검증.md",
+      "01_개발문서/07_검증/185_윈도우_통합회귀와_화면합성_실행기록.json",
+      "01_개발문서/07_검증/186_최신_윈도우_시작과_유휴_검증.md",
+      "01_개발문서/07_검증/187_최신_윈도우_시작과_유휴_실행기록.json",
+      "01_개발문서/07_검증/188_저장_여유공간과_재시도_검증.md",
+      "01_개발문서/07_검증/189_저장_여유공간과_재시도_실행기록.json",
+      "01_개발문서/07_검증/190_해석취소_저널검증비용_검증.md",
+      "01_개발문서/07_검증/191_해석취소_저널검증비용_실행기록.json",
+      "01_개발문서/07_검증/192_윈도우_힙과_유휴회수_검증.md",
+      "01_개발문서/07_검증/193_윈도우_힙과_유휴회수_실행기록.json",
+      "01_개발문서/07_검증/194_서비스지원정보와_시작지연_검증.md",
+      "01_개발문서/07_검증/195_서비스지원정보와_시작지연_실행기록.json",
+      "01_개발문서/07_검증/196_대형프로젝트_검증재사용과_유지회수_검증.md",
+      "01_개발문서/07_검증/197_대형프로젝트_검증재사용과_유지회수_실행기록.json",
+      "01_개발문서/07_검증/198_대형프로젝트_검증재사용과_유휴회수_검증.md",
+      "01_개발문서/07_검증/199_대형프로젝트_검증재사용과_유휴회수_실행기록.json",
+      "01_개발문서/07_검증/200_기술도면_키보드생성_검증.md",
+      "01_개발문서/07_검증/201_기술도면_키보드생성_실행기록.json",
+      "01_개발문서/07_검증/202_대형설계_후속_윈도우_통합회귀_검증.md",
+      "01_개발문서/07_검증/203_대형설계_후속_윈도우_통합회귀_실행기록.json",
+      "01_개발문서/07_검증/204_윈도우_대비테마와_가독성_검증.md",
+      "01_개발문서/07_검증/205_윈도우_대비테마와_가독성_실행기록.json",
+      "01_개발문서/07_검증/206_최종_윈도우_시작과_기준크기_삼차원_검증.md",
+      "01_개발문서/07_검증/207_최종_윈도우_시작과_기준크기_삼차원_실행기록.json",
+      "01_개발문서/07_검증/208_최종_윈도우_동시부하_해석취소_검증.md",
+      "01_개발문서/07_검증/209_최종_윈도우_동시부하_해석취소_실행기록.json",
+      "01_개발문서/07_검증/210_윈도우_형상과_출력_취소검증.md",
+      "01_개발문서/07_검증/211_윈도우_형상과_출력_취소_실행기록.json",
+      "01_개발문서/07_검증/212_윈도우_편집우선_시작과_작업영역검증.md",
+      "01_개발문서/07_검증/213_윈도우_편집우선_시작과_작업영역_실행기록.json",
+      "01_개발문서/07_검증/214_윈도우_취소접수와_파일검사_검증.md",
+      "01_개발문서/07_검증/215_윈도우_취소접수_파일검사_실행기록.json",
+      "01_개발문서/07_검증/216_윈도우_게스트종료_대기축소_검증.md",
+      "01_개발문서/07_검증/217_윈도우_게스트종료_대기축소_실행기록.json",
+      "01_개발문서/07_검증/218_편집우선_동시부하_대형전환검증.md",
+      "01_개발문서/07_검증/219_편집우선_동시부하_대형전환_실행기록.json",
+      "01_개발문서/07_검증/220_윈도우_이차원_펜선택_비교검증.md",
+      "01_개발문서/07_검증/221_윈도우_이차원_펜선택_실행기록.json",
+      "01_개발문서/07_검증/222_윈도우_삼차원_합성진단과_통합회귀.md",
+      "01_개발문서/07_검증/223_윈도우_삼차원_합성진단_실행기록.json",
+      "01_개발문서/07_검증/224_알티움_도금홀과_슬롯_왕복검증.md",
+      "01_개발문서/07_검증/225_알티움_도금홀과_슬롯_실행기록.json",
+      "01_개발문서/07_검증/226_윈도우_한글이름과_복구_재검증.md",
+      "01_개발문서/07_검증/227_윈도우_한글이름과_복구_실행기록.json",
+      "01_개발문서/07_검증/228_윈도우_유휴_사용자인터페이스객체_진단.md",
+      "01_개발문서/07_검증/229_윈도우_유휴_사용자인터페이스객체_실행기록.json",
+      "01_개발문서/07_검증/230_윈도우_전체서비스와_네이티브_회귀검증.md",
+      "01_개발문서/07_검증/231_윈도우_전체서비스와_네이티브_실행기록.json",
+      "01_개발문서/07_검증/232_윈도우_형상과_출력_취소지연_검증.md",
+      "01_개발문서/07_검증/233_윈도우_형상과_출력_취소지연_실행기록.json",
+      "01_개발문서/07_검증/234_윈도우_취소종료_표시지연_검증.md",
+      "01_개발문서/07_검증/235_윈도우_취소종료_표시지연_실행기록.json",
+      "01_개발문서/07_검증/236_취소개선_이후_윈도우_재실행_검증.md",
+      "01_개발문서/07_검증/237_취소개선_이후_윈도우_재실행_실행기록.json",
+      "01_개발문서/07_검증/238_윈도우_도면생성_취소_검증.md",
+      "01_개발문서/07_검증/239_윈도우_도면생성_취소_실행기록.json",
+      "01_개발문서/07_검증/240_고속로그와_해석취소_교차회귀.md",
+      "01_개발문서/07_검증/241_고속로그와_해석취소_실행기록.json",
+      "01_개발문서/07_검증/242_윈도우_형상과_도면_고속로그_취소검증.md",
+      "01_개발문서/07_검증/243_윈도우_형상과_도면_고속로그_실행기록.json",
+      "01_개발문서/07_검증/244_윈도우_도면재검수_고속로그_취소검증.md",
+      "01_개발문서/07_검증/245_윈도우_도면재검수_고속로그_실행기록.json",
       "01_개발문서/07_검증/README.md",
-      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md"
+      "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
+      "01_개발문서/09_개발계획/03_개발완료_계획.md",
+      "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
+      "01_개발문서/09_개발계획/05_현행버전_검증선별_기준.md",
+      "01_개발문서/09_개발계획/06_비교분석과_기능개발_범위.md",
+      "01_개발문서/09_개발계획/07_현행버전_완료후_리팩토링.md",
+      "01_개발문서/09_개발계획/README.md",
+      "01_개발문서/11_검토기록/07_현행버전_계획검토.md",
+      "01_개발문서/11_검토기록/README.md",
+      "01_개발문서/README.md",
+      "README.md"
     ],
     "added_paths": [
-      "01_개발문서/07_검증/113_대형설계_편집메모리_검증.md",
-      "01_개발문서/07_검증/114_대형설계_편집메모리_실행기록.json"
+      "01_개발문서/05_기능설계/04_해석결과/10_대용량_외부결과_등록과_비교.md",
+      "01_개발문서/07_검증/115_대형자료_검색표와_메모리_검증.md",
+      "01_개발문서/07_검증/116_대형자료_검색표_실행기록.json",
+      "01_개발문서/07_검증/117_대형장면_화면범위와_합성_검증.md",
+      "01_개발문서/07_검증/118_대형장면_범위최적화_실행기록.json",
+      "01_개발문서/07_검증/119_심화해석_필드단면_검증.md",
+      "01_개발문서/07_검증/120_스튜디오_유휴폴링과_시작_검증.md",
+      "01_개발문서/07_검증/121_스튜디오_유휴폴링_실행기록.json",
+      "01_개발문서/07_검증/122_윈도우_해석취소_재검증.md",
+      "01_개발문서/07_검증/123_해석취소_재검증_실행기록.json",
+      "01_개발문서/07_검증/124_해석그래프와_작업기록_가독성_검증.md",
+      "01_개발문서/07_검증/125_대형설계_편집복원과_상호운용_검증.md",
+      "01_개발문서/07_검증/126_대형설계_편집복원_실행기록.json",
+      "01_개발문서/07_검증/127_필드조회_봉인원문_중복읽기검증.md",
+      "01_개발문서/07_검증/128_대형자료_표스크롤_합성검증.md",
+      "01_개발문서/07_검증/128_대형자료_표스크롤_합성실행기록.json",
+      "01_개발문서/07_검증/129_대형설계_반복전환_실행기록.json",
+      "01_개발문서/07_검증/129_대형설계_반복전환_자원검증.md",
+      "01_개발문서/07_검증/130_저장공간_실패와_재열기_검증.md",
+      "01_개발문서/07_검증/131_대형삼차원_유휴복귀_재검증.md",
+      "01_개발문서/07_검증/132_대형삼차원_유휴복귀_실행기록.jsonl",
+      "01_개발문서/07_검증/133_대용량_필드읽기_격리계측.md",
+      "01_개발문서/07_검증/134_대용량_필드읽기_격리실행기록.json",
+      "01_개발문서/07_검증/135_서비스응답_윈도우_도착처리검증.md",
+      "01_개발문서/07_검증/136_서비스응답_윈도우_도착처리실행기록.json",
+      "01_개발문서/07_검증/137_키보드_패널이동_윈도우_검증.md",
+      "01_개발문서/07_검증/138_대용량_외부결과_제품검증.md",
+      "01_개발문서/07_검증/139_대용량_외부결과_제품실행기록.json",
+      "01_개발문서/07_검증/140_윈도우_해석취소_반복검증.md",
+      "01_개발문서/07_검증/141_윈도우_해석취소_반복실행기록.json",
+      "01_개발문서/07_검증/142_윈도우_첫화면과_편집준비_검증.md",
+      "01_개발문서/07_검증/143_윈도우_첫화면과_편집준비_실행기록.json",
+      "01_개발문서/07_검증/144_통합_대형_프로젝트_유휴회수_검증.md",
+      "01_개발문서/07_검증/145_통합_대형_프로젝트_유휴회수_실행기록.json",
+      "01_개발문서/07_검증/146_스튜디오_대형_삼차원_합성과_표시_품질_검증.md",
+      "01_개발문서/07_검증/147_스튜디오_대형_삼차원_합성과_표시_품질_기록.json",
+      "01_개발문서/07_검증/148_대용량_결과_이관과_재열기_검증.md",
+      "01_개발문서/07_검증/149_대용량_결과_이관_실행기록.json",
+      "01_개발문서/07_검증/150_알티움_캠과_엠시피_인스펙터_검증.md",
+      "01_개발문서/07_검증/151_알티움_캠과_엠시피_인스펙터_실행기록.json",
+      "01_개발문서/07_검증/152_키보드와_결과표시_접근성_검증.md",
+      "01_개발문서/07_검증/153_키보드와_결과표시_접근성_실행기록.json",
+      "01_개발문서/07_검증/154_동시부하에서의_해석취소_검증.md",
+      "01_개발문서/07_검증/155_동시부하에서의_해석취소_실행기록.json",
+      "01_개발문서/07_검증/156_대형_탐색트리와_복원_재검증.md",
+      "01_개발문서/07_검증/157_대형_탐색트리와_복원_실행기록.json",
+      "01_개발문서/07_검증/158_대용량_결과의_윈도우_자원_검증.md",
+      "01_개발문서/07_검증/159_대용량_결과의_윈도우_자원_실행기록.json",
+      "01_개발문서/07_검증/160_윈도우_손상차단과_복구_검증.md",
+      "01_개발문서/07_검증/161_윈도우_손상차단과_복구_실행기록.json",
+      "01_개발문서/07_검증/162_윈도우_시작과_유휴_동시부하_검증.md",
+      "01_개발문서/07_검증/163_윈도우_시작과_유휴_동시부하_실행기록.json",
+      "01_개발문서/07_검증/164_삼차원_표시읽기와_유지회수_검증.md",
+      "01_개발문서/07_검증/165_삼차원_표시읽기와_유지회수_실행기록.json",
+      "01_개발문서/07_검증/166_대형_좌표읽기보강_유지회수_검증.md",
+      "01_개발문서/07_검증/167_대형_좌표읽기보강_유지회수_실행기록.json",
+      "01_개발문서/07_검증/168_윈도우_시작_부하완화_재검증.md",
+      "01_개발문서/07_검증/169_윈도우_시작_부하완화_실행기록.json",
+      "01_개발문서/07_검증/170_작업영역_초기화오류_안내_검증.md",
+      "01_개발문서/07_검증/171_작업영역_초기화오류_실행기록.json",
+      "01_개발문서/07_검증/172_알티움_동박외곽과_비도금홀_왕복검증.md",
+      "01_개발문서/07_검증/173_알티움_동박외곽과_비도금홀_실행기록.json",
+      "01_개발문서/07_검증/174_윈도우_힙과_유지회수_검증.md",
+      "01_개발문서/07_검증/175_윈도우_힙과_유지회수_실행기록.json",
+      "01_개발문서/07_검증/176_엠시피_인스펙터의_대용량결과_조회검증.md",
+      "01_개발문서/07_검증/177_엠시피_인스펙터의_대용량결과_실행기록.json",
+      "01_개발문서/07_검증/178_대형좌표_읽기보강과_유휴회수_검증.md",
+      "01_개발문서/07_검증/179_대형좌표_읽기보강과_유휴회수_실행기록.json",
+      "01_개발문서/07_검증/180_해석취소_제어와_접수순서_검증.md",
+      "01_개발문서/07_검증/181_해석취소_제어와_접수순서_실행기록.json",
+      "01_개발문서/07_검증/182_스튜디오_작업영역_키보드전환_검증.md",
+      "01_개발문서/07_검증/183_스튜디오_작업영역_키보드전환_실행기록.json",
+      "01_개발문서/07_검증/184_윈도우_통합회귀와_화면합성_검증.md",
+      "01_개발문서/07_검증/185_윈도우_통합회귀와_화면합성_실행기록.json",
+      "01_개발문서/07_검증/186_최신_윈도우_시작과_유휴_검증.md",
+      "01_개발문서/07_검증/187_최신_윈도우_시작과_유휴_실행기록.json",
+      "01_개발문서/07_검증/188_저장_여유공간과_재시도_검증.md",
+      "01_개발문서/07_검증/189_저장_여유공간과_재시도_실행기록.json",
+      "01_개발문서/07_검증/190_해석취소_저널검증비용_검증.md",
+      "01_개발문서/07_검증/191_해석취소_저널검증비용_실행기록.json",
+      "01_개발문서/07_검증/192_윈도우_힙과_유휴회수_검증.md",
+      "01_개발문서/07_검증/193_윈도우_힙과_유휴회수_실행기록.json",
+      "01_개발문서/07_검증/194_서비스지원정보와_시작지연_검증.md",
+      "01_개발문서/07_검증/195_서비스지원정보와_시작지연_실행기록.json",
+      "01_개발문서/07_검증/196_대형프로젝트_검증재사용과_유지회수_검증.md",
+      "01_개발문서/07_검증/197_대형프로젝트_검증재사용과_유지회수_실행기록.json",
+      "01_개발문서/07_검증/198_대형프로젝트_검증재사용과_유휴회수_검증.md",
+      "01_개발문서/07_검증/199_대형프로젝트_검증재사용과_유휴회수_실행기록.json",
+      "01_개발문서/07_검증/200_기술도면_키보드생성_검증.md",
+      "01_개발문서/07_검증/201_기술도면_키보드생성_실행기록.json",
+      "01_개발문서/07_검증/202_대형설계_후속_윈도우_통합회귀_검증.md",
+      "01_개발문서/07_검증/203_대형설계_후속_윈도우_통합회귀_실행기록.json",
+      "01_개발문서/07_검증/204_윈도우_대비테마와_가독성_검증.md",
+      "01_개발문서/07_검증/205_윈도우_대비테마와_가독성_실행기록.json",
+      "01_개발문서/07_검증/206_최종_윈도우_시작과_기준크기_삼차원_검증.md",
+      "01_개발문서/07_검증/207_최종_윈도우_시작과_기준크기_삼차원_실행기록.json",
+      "01_개발문서/07_검증/208_최종_윈도우_동시부하_해석취소_검증.md",
+      "01_개발문서/07_검증/209_최종_윈도우_동시부하_해석취소_실행기록.json",
+      "01_개발문서/07_검증/210_윈도우_형상과_출력_취소검증.md",
+      "01_개발문서/07_검증/211_윈도우_형상과_출력_취소_실행기록.json",
+      "01_개발문서/07_검증/212_윈도우_편집우선_시작과_작업영역검증.md",
+      "01_개발문서/07_검증/213_윈도우_편집우선_시작과_작업영역_실행기록.json",
+      "01_개발문서/07_검증/214_윈도우_취소접수와_파일검사_검증.md",
+      "01_개발문서/07_검증/215_윈도우_취소접수_파일검사_실행기록.json",
+      "01_개발문서/07_검증/216_윈도우_게스트종료_대기축소_검증.md",
+      "01_개발문서/07_검증/217_윈도우_게스트종료_대기축소_실행기록.json",
+      "01_개발문서/07_검증/218_편집우선_동시부하_대형전환검증.md",
+      "01_개발문서/07_검증/219_편집우선_동시부하_대형전환_실행기록.json",
+      "01_개발문서/07_검증/220_윈도우_이차원_펜선택_비교검증.md",
+      "01_개발문서/07_검증/221_윈도우_이차원_펜선택_실행기록.json",
+      "01_개발문서/07_검증/222_윈도우_삼차원_합성진단과_통합회귀.md",
+      "01_개발문서/07_검증/223_윈도우_삼차원_합성진단_실행기록.json",
+      "01_개발문서/07_검증/224_알티움_도금홀과_슬롯_왕복검증.md",
+      "01_개발문서/07_검증/225_알티움_도금홀과_슬롯_실행기록.json",
+      "01_개발문서/07_검증/226_윈도우_한글이름과_복구_재검증.md",
+      "01_개발문서/07_검증/227_윈도우_한글이름과_복구_실행기록.json",
+      "01_개발문서/07_검증/228_윈도우_유휴_사용자인터페이스객체_진단.md",
+      "01_개발문서/07_검증/229_윈도우_유휴_사용자인터페이스객체_실행기록.json",
+      "01_개발문서/07_검증/230_윈도우_전체서비스와_네이티브_회귀검증.md",
+      "01_개발문서/07_검증/231_윈도우_전체서비스와_네이티브_실행기록.json",
+      "01_개발문서/07_검증/232_윈도우_형상과_출력_취소지연_검증.md",
+      "01_개발문서/07_검증/233_윈도우_형상과_출력_취소지연_실행기록.json",
+      "01_개발문서/07_검증/234_윈도우_취소종료_표시지연_검증.md",
+      "01_개발문서/07_검증/235_윈도우_취소종료_표시지연_실행기록.json",
+      "01_개발문서/07_검증/236_취소개선_이후_윈도우_재실행_검증.md",
+      "01_개발문서/07_검증/237_취소개선_이후_윈도우_재실행_실행기록.json",
+      "01_개발문서/07_검증/238_윈도우_도면생성_취소_검증.md",
+      "01_개발문서/07_검증/239_윈도우_도면생성_취소_실행기록.json",
+      "01_개발문서/07_검증/240_고속로그와_해석취소_교차회귀.md",
+      "01_개발문서/07_검증/241_고속로그와_해석취소_실행기록.json",
+      "01_개발문서/07_검증/242_윈도우_형상과_도면_고속로그_취소검증.md",
+      "01_개발문서/07_검증/243_윈도우_형상과_도면_고속로그_실행기록.json",
+      "01_개발문서/07_검증/244_윈도우_도면재검수_고속로그_취소검증.md",
+      "01_개발문서/07_검증/245_윈도우_도면재검수_고속로그_실행기록.json",
+      "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
+      "01_개발문서/09_개발계획/05_현행버전_검증선별_기준.md",
+      "01_개발문서/09_개발계획/06_비교분석과_기능개발_범위.md",
+      "01_개발문서/09_개발계획/07_현행버전_완료후_리팩토링.md",
+      "01_개발문서/11_검토기록/07_현행버전_계획검토.md"
     ],
     "removed_paths": [],
     "preserved_reference_records": 3336,
     "preserved_existing_runtime_records": 44,
-    "preservation_scope": "참고자료/기존 runtime/변경하지 않은 문서 record를 그대로 승계. 해당 원문 재읽기/재해시 없음.",
+    "preservation_scope": "기존 참고자료와 runtime 기록의 분류, 검토 범위와 해시를 승계했다. 개발문서와 저장소 안내의 작업트리 파일을 대조했다.",
     "record_order": "기존 목록 순서를 보존하고 신규 경로만 뒤에 추가"
   }
 }
