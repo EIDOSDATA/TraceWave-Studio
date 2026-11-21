@@ -24,5 +24,17 @@
   },
   "native_windows_regression": {"passed": 7, "seconds": 191.374},
   "release_ctest": {"passed": 13, "seconds": 0.89},
-  "not_observed": ["light_high_contrast_palette", "hangul_ime_composition", "screen_reader_audio", "mixed_monitor_dpi"]
+  "desert_live_switch_final_release": {
+    "registry_contrast_flags_enabled": 127,
+    "registry_contrast_flags_restored": 126,
+    "canvas_dock_titles_tree_and_layer_rows_readable": true,
+    "stored_s11_frequency_samples": 201,
+    "frequency_unit": "GHz",
+    "same_result_view_normal_colours_restored": true
+  },
+  "hangul_input_probe": {
+    "dedicated_key_supported_by_automation": false,
+    "composition_observed_after_right_alt": false
+  },
+  "not_observed": ["additional_screen_states", "hangul_ime_composition", "screen_reader_audio", "mixed_monitor_dpi"]
 }
