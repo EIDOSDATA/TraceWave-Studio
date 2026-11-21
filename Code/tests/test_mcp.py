@@ -22,7 +22,8 @@ class McpTests(unittest.TestCase):
                 {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-11-25"}},
                 {"jsonrpc": "2.0", "method": "notifications/initialized"},
                 {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}}]
-            process = subprocess.run([sys.executable, "tools/mcp_stdio.py", "--workspace", directory],
+            entry_point = Path(__file__).resolve().parents[1] / "tools/mcp_stdio.py"
+            process = subprocess.run([sys.executable, str(entry_point), "--workspace", directory],
                                      input=b''.join(json.dumps(value).encode() + b'\n' for value in messages),
                                      capture_output=True, timeout=15, check=True)
             responses = [json.loads(line) for line in process.stdout.splitlines()]
