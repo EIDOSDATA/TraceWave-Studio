@@ -575,7 +575,10 @@
       "tools/verify_ro_sheet_impedance.py",
       "../01_개발문서/07_검증/289_수용전력_변화와_관통홀_접합_대조.md",
       "tools/verify_ro_port_sensitivity.py",
-      "tools/verify_pth_joint_reference.py"
+      "tools/verify_pth_joint_reference.py",
+      "../01_개발문서/07_검증/292_입사전력과_기가헤르츠_관통홀_접합검증.md",
+      "tools/verify_pth_ghz_joint_reference.py",
+      "tools/verify_ro_grid_ablation.py"
     ],
     "next_steps": [
       7,

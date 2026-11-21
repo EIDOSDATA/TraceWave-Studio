@@ -9748,7 +9748,10 @@
         "tools/verify_ro_sheet_impedance.py",
         "../01_개발문서/07_검증/289_수용전력_변화와_관통홀_접합_대조.md",
         "tools/verify_ro_port_sensitivity.py",
-        "tools/verify_pth_joint_reference.py"
+        "tools/verify_pth_joint_reference.py",
+        "../01_개발문서/07_검증/292_입사전력과_기가헤르츠_관통홀_접합검증.md",
+        "tools/verify_pth_ghz_joint_reference.py",
+        "tools/verify_ro_grid_ablation.py"
       ],
       "gaps": [
         "API-019 공통 수렴 평가 공개 계약과 여러 연구의 비교/지원 범위별 수렴 수용이 남는다. 현재 명시 다축 행렬의 실행 완료 자체는 수렴 판정이 아니다.",
@@ -14124,8 +14127,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "11262363d937bc395e5fcb2ebd3dd335ac135bb29cb33c2a34741942c3666068",
-      "utf8_bytes": 66057
+      "text_sha256": "710e4a68efc3189454a94910766cbd64dca9c34b6224a2aa37d60a7207841861",
+      "utf8_bytes": 66248
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14461,6 +14464,11 @@
       "path": "01_개발문서/07_검증/291_드래그_부분갱신과_표_지연_검증.md",
       "text_sha256": "7103559074d5bb8dd83d1afa2e00f1fc91c401b2985e3e0a1738f5e074b0cc8d",
       "utf8_bytes": 4898
+    },
+    {
+      "path": "01_개발문서/07_검증/292_입사전력과_기가헤르츠_관통홀_접합검증.md",
+      "text_sha256": "485be53bfc1ee8855e9165adf6ec4611673f2893b449dc312fb59bb71afd88a8",
+      "utf8_bytes": 4738
     },
     {
       "path": "01_개발문서/07_검증/29_고정설계_보고서와_인계_검증.md",
@@ -16123,9 +16131,19 @@
       "utf8_bytes": 8951
     },
     {
+      "path": "Code/tools/verify_pth_ghz_joint_reference.py",
+      "text_sha256": "9f4f0f25b501c1d8d2ad4948ab25a9ad6faad570f817e7fd24b1303064040ac8",
+      "utf8_bytes": 14659
+    },
+    {
       "path": "Code/tools/verify_pth_joint_reference.py",
       "text_sha256": "7ad0efe660d594d5eee2e2826ab3ef574ca2e68048cc0c38a51784c49e62f29d",
       "utf8_bytes": 8301
+    },
+    {
+      "path": "Code/tools/verify_ro_grid_ablation.py",
+      "text_sha256": "0ed6cdb0efa1bfc6ce91ae33940d870f1dac0f6fed04cb2a4d79d76de747ba82",
+      "utf8_bytes": 9377
     },
     {
       "path": "Code/tools/verify_ro_loss_followup.py",
@@ -16134,8 +16152,8 @@
     },
     {
       "path": "Code/tools/verify_ro_port_sensitivity.py",
-      "text_sha256": "ff0439dd22275ea628a763a2cd04191e1076a95f78f0ada7c2cd180d2378e07a",
-      "utf8_bytes": 10585
+      "text_sha256": "475cbc6413c4eff626e895bd5cca22598896675b08ba265f9992d6b80da2039e",
+      "utf8_bytes": 11460
     },
     {
       "path": "Code/tools/verify_ro_sheet_impedance.py",

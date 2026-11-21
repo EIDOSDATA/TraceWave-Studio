@@ -51,16 +51,23 @@ def load_run(workspace, entry):
                normalized["native_statistics"]["timestep_seconds"], normalized["power_balance"]["frequencies"])
 
 
-def point(traces, frequency, end=None):
+def point(traces, frequency, reference, end=None):
     """! @brief 직접 합산한 전압·전류의 크기와 위상으로 수용 전력을 계산한다."""
     if end is not None:
         traces = [Trace(tuple(term for term in trace.terms if -term[0] / math.tau <= end)) for trace in traces]
     voltage, current = (trace.at(frequency) for trace in traces)
     phase = cmath.phase(voltage / current)
     accepted = 0.5 * abs(voltage) * abs(current) * math.cos(phase)
-    require(accepted > 0, "수용 전력의 로그 대조에는 양수가 필요합니다.")
+    forward = voltage + reference * current
+    reflected = voltage - reference * current
+    incident = abs(forward)**2 / (8 * reference)
+    matched = 1 - abs(reflected / forward)**2
+    require(accepted > 0 and math.isclose(accepted, incident * matched, rel_tol=1e-12),
+            "포트 복소 일률과 입사·반사 파가 일치하지 않습니다.")
+    impedance = voltage / current
     return {"voltage_abs_v_s": abs(voltage), "current_abs_a_s": abs(current),
-            "phase_deg": math.degrees(phase), "accepted_w_s2": accepted}
+            "phase_deg": math.degrees(phase), "accepted_w_s2": accepted, "incident_w_s2": incident,
+            "accepted_fraction": matched, "impedance_ohm": [impedance.real, impedance.imag]}
 
 
 def face_flux(current, dual, box, recording):
@@ -139,22 +146,27 @@ def compare(workspace, entries):
     first, second = runs = tuple(load_run(workspace, entry) for entry in entries)
     require(first.case["port"] == second.case["port"], "두 격자의 원래 급전 계약이 다릅니다.", "E_GEOMETRY")
     common_end = min(-trace.terms[-1][0] / math.tau for run in runs for trace in run.traces)
+    reference = first.case["port"]["resistance_ohm"]
     radiators = [next(shape["id"] for shape in run.case["shapes"] if shape["role"] == "radiator") for run in runs]
     result = []
     for a, b in zip(first.power, second.power, strict=True):
         frequency = a["frequency_hz"]
         require(frequency == b["frequency_hz"], "손실 표본의 주파수가 다릅니다.")
-        old, new = (point(run.traces, frequency) for run in runs)
+        old, new = (point(run.traces, frequency, reference) for run in runs)
         for values, original in ((old, a), (new, b)):
-            require(math.isclose(values["accepted_w_s2"], original["accepted_power_w_s2"], rel_tol=1e-10),
-                    "독립 포트 변환과 저장 수용 전력이 다릅니다.")
-        elapsed = [point(run.traces, frequency, common_end) for run in runs]
+            for kind in ("accepted", "incident"):
+                require(math.isclose(values[kind + "_w_s2"], original[kind + "_power_w_s2"], rel_tol=1e-10),
+                        "독립 포트 변환과 저장 파 전력이 다릅니다.")
+        elapsed = [point(run.traces, frequency, reference, common_end) for run in runs]
         terms = {key: 100 * math.log(new[key] / old[key]) for key in ("voltage_abs_v_s", "current_abs_a_s")}
         terms["phase_cosine"] = 100 * math.log(math.cos(math.radians(new["phase_deg"])) /
                                               math.cos(math.radians(old["phase_deg"])))
         losses = [next(row["loss_w_s2"] for row in snapshot["sheet_components"] if row["entity_id"] == radiator)
                   for radiator, snapshot in zip(radiators, (a, b), strict=True)]
-        result.append({"frequency_hz": frequency, "N7": old, "N8": new, "log_accepted_terms_pct": terms,
+        incident_ratio = new["incident_w_s2"] / old["incident_w_s2"]
+        result.append({"frequency_hz": frequency, "incident_ratio": incident_ratio,
+                       "accepted_fraction_ratio": new["accepted_fraction"] / old["accepted_fraction"],
+                       "incident_normalized_radiator_loss_ratio": (losses[1] / losses[0]) / incident_ratio, "N7": old, "N8": new, "log_accepted_terms_pct": terms,
                        "accepted_ratio_full": new["accepted_w_s2"] / old["accepted_w_s2"],
                        "accepted_ratio_common_end": elapsed[1]["accepted_w_s2"] / elapsed[0]["accepted_w_s2"],
                        "radiator_loss_ratio": losses[1] / losses[0]})
