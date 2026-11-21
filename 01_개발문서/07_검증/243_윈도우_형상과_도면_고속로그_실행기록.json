@@ -1,0 +1,259 @@
+{
+  "schema": "rfad.stage12.native-combined-log-cancellation/0.1",
+  "source_commit": "d317dad264c5d33225326abd018901f4c0243ad4",
+  "executable_sha256": "e02bfb9d253f11b6f7686579903b1aff907d7f687d625fba809361511e9f4d46",
+  "measurement_tool_sha256": "b6614bd795a271c15b811d10cfe0b2a7092fc98ccd3271f94c8662714b18c204",
+  "target_lines_per_second": 1000,
+  "planned_runs_per_owner": 3,
+  "runs": [
+    {
+      "owner": "cad",
+      "index": 1,
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.996,
+          "menu_enabled": false
+        },
+        "job_id": "5fe14a2b-e572-4d44-b99f-85d5ff86ca3e",
+        "native_worker_attached": true,
+        "operation": "geometry.build",
+        "receipt": {
+          "elapsed_ms": 48.867,
+          "events_cursor": 3,
+          "job_id": "5fe14a2b-e572-4d44-b99f-85d5ff86ca3e",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 134.92,
+          "events_cursor": 4,
+          "native_reap_ms": 6.7431,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "owned_pid": 26636,
+      "native_activity": {
+        "pid": 16708,
+        "parent_pid": 26636,
+        "lines": 2160,
+        "completed_backend_calls": 1,
+        "ready_perf_counter_ns": 770208481435000,
+        "elapsed_seconds": 2.2120025
+      },
+      "measured_lines_per_second": 976.4907589390157,
+      "drained_lines": 2260,
+      "previous_result_reopened": true,
+      "saved_revision": "c9d1e4a6-51b4-44f2-9b8a-a36088988fdf"
+    },
+    {
+      "owner": "pdf",
+      "index": 1,
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.033
+        },
+        "job_id": "e6f29183-b304-440a-98a0-ffa6d1d0aac5",
+        "native_worker_attached": true,
+        "operation": "export.build",
+        "receipt": {
+          "elapsed_ms": 111.138,
+          "events_cursor": 3,
+          "job_id": "e6f29183-b304-440a-98a0-ffa6d1d0aac5",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 233.962,
+          "events_cursor": 4,
+          "native_reap_ms": 10.671,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "owned_pid": 17824,
+      "native_activity": {
+        "pid": 2600,
+        "parent_pid": 17824,
+        "lines": 2000,
+        "completed_backend_calls": 13,
+        "ready_perf_counter_ns": 770230960100800,
+        "elapsed_seconds": 2.0073503
+      },
+      "measured_lines_per_second": 996.3383072700365,
+      "drained_lines": 2280,
+      "previous_result_reopened": true,
+      "saved_revision": "826a7962-149f-4b2d-ac00-c8115afec33e"
+    },
+    {
+      "owner": "cad",
+      "index": 2,
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 1.012,
+          "menu_enabled": false
+        },
+        "job_id": "89844f04-9ffe-4ab2-9e57-5aabeb08d987",
+        "native_worker_attached": true,
+        "operation": "geometry.build",
+        "receipt": {
+          "elapsed_ms": 43.94,
+          "events_cursor": 3,
+          "job_id": "89844f04-9ffe-4ab2-9e57-5aabeb08d987",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 114.539,
+          "events_cursor": 4,
+          "native_reap_ms": 10.4761,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "owned_pid": 7852,
+      "native_activity": {
+        "pid": 5928,
+        "parent_pid": 7852,
+        "lines": 2000,
+        "completed_backend_calls": 1,
+        "ready_perf_counter_ns": 770252486126300,
+        "elapsed_seconds": 2.0175812
+      },
+      "measured_lines_per_second": 991.2860012771729,
+      "drained_lines": 2240,
+      "previous_result_reopened": true,
+      "saved_revision": "348ba445-ee18-495c-933a-25f96b788b11"
+    },
+    {
+      "owner": "pdf",
+      "index": 2,
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.245
+        },
+        "job_id": "139bdd59-e108-400c-bdd3-1ac240c76444",
+        "native_worker_attached": true,
+        "operation": "export.build",
+        "receipt": {
+          "elapsed_ms": 96.827,
+          "events_cursor": 3,
+          "job_id": "139bdd59-e108-400c-bdd3-1ac240c76444",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 211.469,
+          "events_cursor": 4,
+          "native_reap_ms": 10.9855,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "owned_pid": 19796,
+      "native_activity": {
+        "pid": 30812,
+        "parent_pid": 19796,
+        "lines": 2000,
+        "completed_backend_calls": 11,
+        "ready_perf_counter_ns": 770275320317500,
+        "elapsed_seconds": 2.0167784
+      },
+      "measured_lines_per_second": 991.6805931677966,
+      "drained_lines": 2220,
+      "previous_result_reopened": true,
+      "saved_revision": "cca6778f-7b5c-4530-b918-d18f087151fb"
+    },
+    {
+      "owner": "cad",
+      "index": 3,
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 1.178,
+          "menu_enabled": false
+        },
+        "job_id": "986ce0d9-732e-4723-ada5-7cee0c17c32e",
+        "native_worker_attached": true,
+        "operation": "geometry.build",
+        "receipt": {
+          "elapsed_ms": 41.413,
+          "events_cursor": 3,
+          "job_id": "986ce0d9-732e-4723-ada5-7cee0c17c32e",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 123.562,
+          "events_cursor": 4,
+          "native_reap_ms": 7.6873,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "owned_pid": 4380,
+      "native_activity": {
+        "pid": 27856,
+        "parent_pid": 4380,
+        "lines": 2000,
+        "completed_backend_calls": 1,
+        "ready_perf_counter_ns": 770295946902000,
+        "elapsed_seconds": 2.0103945
+      },
+      "measured_lines_per_second": 994.8296217483684,
+      "drained_lines": 2140,
+      "previous_result_reopened": true,
+      "saved_revision": "277f7e68-f36c-4c20-b2c2-4cc5fb32ad2e"
+    },
+    {
+      "owner": "pdf",
+      "index": 3,
+      "trace": {
+        "control": {
+          "button_enabled": false,
+          "elapsed_ms": 0.458
+        },
+        "job_id": "761b3ff9-0281-409e-a59d-56b02d1868cd",
+        "native_worker_attached": true,
+        "operation": "export.build",
+        "receipt": {
+          "elapsed_ms": 95.039,
+          "events_cursor": 3,
+          "job_id": "761b3ff9-0281-409e-a59d-56b02d1868cd",
+          "state": "cancel_requested"
+        },
+        "state_before": "running",
+        "terminal": {
+          "elapsed_ms": 214.897,
+          "events_cursor": 4,
+          "native_reap_ms": 8.6058,
+          "outcome_unknown": false,
+          "state": "cancelled",
+          "termination_confirmed": true
+        }
+      },
+      "owned_pid": 20044,
+      "native_activity": {
+        "pid": 7380,
+        "parent_pid": 20044,
+        "lines": 2000,
+        "completed_backend_calls": 13,
+        "ready_perf_counter_ns": 770318335746400,
+        "elapsed_seconds": 2.0060515
+      },
+      "measured_lines_per_second": 996.983377545392,
+      "drained_lines": 2200,
+      "previous_result_reopened": true,
+      "saved_revision": "420e21a1-0939-4439-80f6-b92b3a170f28"
+    }
+  ]
+}

@@ -20,15 +20,20 @@ def patch(path, before, after):
     path.write_text(text.replace(before, after), encoding="utf-8")
 
 
-def prepare(source, case, revision):
-    """! @brief 추적한 Code 사본에만 계측기와 로그 부하를 연결한다."""
+def archive_source(source, case, revision):
+    """! @brief 지정 Git 개정의 Code를 새 시험 영역에만 푼다."""
     commit = subprocess.check_output(["git", "rev-parse", "--verify", "--end-of-options", revision + "^{commit}"],
                                      cwd=source.parent, text=True).strip()
     packed = subprocess.check_output(["git", "archive", "--format=zip", commit, "Code"], cwd=source.parent)
     case.mkdir(parents=True, exist_ok=False)
     with zipfile.ZipFile(io.BytesIO(packed)) as archive:
         archive.extractall(case)
-    code = case / "Code"
+    return commit, case / "Code"
+
+
+def prepare(source, case, revision):
+    """! @brief 추적한 Code 사본에만 계측기와 로그 부하를 연결한다."""
+    commit, code = archive_source(source, case, revision)
     audit = code / ".local/wsl/native-audit.json"
     audit.parent.mkdir(parents=True, exist_ok=False)
     shutil.copyfile(source / ".local/wsl/native-audit.json", audit)
