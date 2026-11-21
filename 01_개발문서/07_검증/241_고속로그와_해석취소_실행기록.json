@@ -1,0 +1,51 @@
+{
+  "schema": "rfad.stage12.cancel-cross-regression/0.1",
+  "date_kst": "2026-11-21",
+  "gui_wsl2_active_cancellation": {
+    "passed": 1,
+    "duration_s": 69.641,
+    "log_sha256": "f2abbd17d26d6d6d1d9d4f7f430554492aae2a481d8ced4c39ada5814c9b51cb"
+  },
+  "independent_native_log_fixture": {
+    "schema": "rfad.native-log-cancel-measurement/0.1",
+    "scope": "windows-native-job-object",
+    "wsl_and_gui_load": false,
+    "runs": [
+      {
+        "target_lines_per_second": 1000,
+        "before_request_lines": 2000,
+        "before_request_seconds": 2.000357999932021,
+        "before_request_lines_per_second": 999.8210320692431,
+        "drained_stdout_lines": 2020,
+        "stderr_bytes": 0,
+        "cancel_to_native_return_ms": 6.436199997551739,
+        "descendant_signaled": true,
+        "termination": "cancelled"
+      },
+      {
+        "target_lines_per_second": 1000,
+        "before_request_lines": 2000,
+        "before_request_seconds": 2.0004220999544486,
+        "before_request_lines_per_second": 999.7889945554699,
+        "drained_stdout_lines": 2020,
+        "stderr_bytes": 0,
+        "cancel_to_native_return_ms": 4.16159990709275,
+        "descendant_signaled": true,
+        "termination": "cancelled"
+      },
+      {
+        "target_lines_per_second": 1000,
+        "before_request_lines": 2000,
+        "before_request_seconds": 2.0005508000031114,
+        "before_request_lines_per_second": 999.7246758227232,
+        "drained_stdout_lines": 2020,
+        "stderr_bytes": 0,
+        "cancel_to_native_return_ms": 5.456099985167384,
+        "descendant_signaled": true,
+        "termination": "cancelled"
+      }
+    ]
+  },
+  "release_ctest_passed": 13,
+  "full_f4_acceptance_measured": false
+}
