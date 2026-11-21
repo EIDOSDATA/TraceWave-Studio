@@ -740,7 +740,10 @@ void SweepDialog::RenderReview(const Json& result)
         m_previewRows->SetItem(
             row, 2,
             Display(SweepUi::Status(candidate.value("validation_status", candidate.value("state", "unknown")))));
-        m_previewRows->SetItem(row, 3, Display(SweepUi::Diagnostics(candidate.value("diagnostics", Json::array()))));
+        const auto why = candidate.contains("duplicate_of")
+            ? "후보 " + std::to_string(candidate.at("duplicate_of").get<int>() + 1) + "과 계산 입력이 같습니다. 원래 행은 유지합니다."
+            : SweepUi::Diagnostics(candidate.value("diagnostics", Json::array()));
+        m_previewRows->SetItem(row, 3, Display(why));
     }
     m_reviewSummary->SetLabel(
         Display("전체 후보 " + std::to_string(result.value("candidate_count", 0)) + "개 / 처음 " +
@@ -751,6 +754,12 @@ void SweepDialog::RenderReview(const Json& result)
                 std::to_string(result.value("counts", Json::object()).value("duplicates", 0)) + "\n" +
                 (result.value("can_create", false) ? "저장 가능 / 실행은 별도" : "저장 차단 / 입력과 예산 진단 확인")));
     std::string diagnostics = SweepUi::Diagnostics(result.value("diagnostics", Json::array()));
+    for (const auto& reason : result.value("reason_counts", Json::array()))
+    {
+        diagnostics += "\n" + reason.at("code").get<std::string>() + " / " + reason.at("count").dump() +
+                       "개 / 첫 후보 " + std::to_string(reason.at("first_ordinal").get<int>() + 1) +
+                       " / " + reason.at("message").get<std::string>();
+    }
     const auto budget = result.value("budget_estimate", Json::object());
     diagnostics +=
         "\n\n예산 예상 / 실제 관측값 아님\n실제 EM 해석 대상: " +

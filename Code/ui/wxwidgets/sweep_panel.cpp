@@ -63,7 +63,7 @@ SweepPanel::SweepPanel(wxWindow* parent, wxWindow* navigation, wxWindow* conditi
     StudioTheme::Button(*m_create);
     actions->Add(m_create, 0, wxALL, FromDIP(4));
     for (const auto& item : std::vector<std::pair<std::string, std::string>>{
-             {"start", "선택 연구 실행"}, {"cancel", "취소 요청"}, {"resume", "명시적 재개"}})
+             {"start", "선택 연구 실행"}, {"cancel", "취소 요청"}, {"resume", "명시적 재개"}, {"export", "후보 CSV 저장"}})
     {
         auto* button = new wxButton(this, wxID_ANY, Display(item.second));
         button->SetName(Display("sweep." + item.first));
@@ -375,9 +375,13 @@ void SweepPanel::SetPage(const Json& page)
         m_candidates->SetItem(row, 3, Display(std::to_string(candidate.value("attempts", Json::array()).size())));
         m_candidates->SetItem(
             row, 4, Display(candidate.value("results", Json::object()).contains("dataset") ? "결과 있음" : "없음"));
-        m_candidates->SetItem(row, 5,
-                              Display(candidate.value("message", "") +
-                                      SweepUi::Diagnostics(candidate.value("diagnostics", Json::array()))));
+        std::string reason = candidate.value("message", "") +
+                             SweepUi::Diagnostics(candidate.value("diagnostics", Json::array()));
+        if (candidate.contains("cached_from_ordinal"))
+        {
+            reason = "후보 " + std::to_string(candidate.at("cached_from_ordinal").get<int>() + 1) + "의 계산 재사용 / " + reason;
+        }
+        m_candidates->SetItem(row, 5, Display(reason));
     }
     if (!m_rows.empty())
     {

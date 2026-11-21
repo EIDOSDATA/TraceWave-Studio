@@ -1,6 +1,8 @@
 """! @brief 명시적 설계/수치/외부 회로 스윕의 검토, 저장, 제어와 페이지 조회를 제공한다."""
 
 from copy import deepcopy
+import csv
+import io
 import hashlib
 from pathlib import Path
 from uuid import uuid4
@@ -20,7 +22,7 @@ from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 from rfad.domain.units import Quantity
 
 
-READS = {"sweep.context", "sweep.preview", "sweep.list", "sweep.get", "sweep.page", "sweep.result", "sweep.quantity"}
+READS = {"sweep.context", "sweep.preview", "sweep.list", "sweep.get", "sweep.page", "sweep.result", "sweep.quantity", "sweep.export"}
 MUTATIONS = {"sweep.create", "sweep.start", "sweep.cancel", "sweep.resume"}
 MAX_STUDIES = 32
 FIELDS = {
@@ -28,7 +30,7 @@ FIELDS = {
     "sweep.preview": {"expected_revision", "specification"},
     "sweep.create": {"expected_revision", "specification", "review_hash"},
     "sweep.get": {"study_id"}, "sweep.start": {"study_id"},
-    "sweep.cancel": {"study_id"}, "sweep.resume": {"study_id"},
+    "sweep.cancel": {"study_id"}, "sweep.resume": {"study_id"}, "sweep.export": {"study_id"},
     "sweep.page": {"study_id", "offset", "limit"},
     "sweep.result": {"study_id", "index", "offset", "limit", "row", "column"},
     "sweep.quantity": {"expected_revision", "quantity", "display_unit"},
@@ -173,20 +175,29 @@ def preview(service, state, project, document, data):
     specification = validate_specification(data["specification"], document, circuit=circuit)
     count = candidate_count(specification)
     counts = {"total": count, "valid": 0, "invalid": 0, "unsupported": 0, "duplicates": 0}
-    first_page, keys = [], {}
+    first_page, keys, reasons = [], {}, {}
+    labels = _labels(document, circuit)
     for index in range(count):
         candidate = candidate_at(document, specification, index, circuit=circuit)
         counts[candidate["status"]] += 1
         row = _candidate_row(candidate)
         key = candidate["evaluation_key"]
         if candidate["status"] == "valid":
-            if key in keys:
-                row["duplicate_of"] = keys[key]
+            first = keys.setdefault(key, index)
+            if first != index:
+                row["duplicate_of"] = first
                 counts["duplicates"] += 1
-            else:
-                keys[key] = index
+        else:
+            codes = set()
+            for diagnostic in candidate["diagnostics"]:
+                code = diagnostic["code"]
+                if code not in codes and diagnostic.get("severity") != "warning":
+                    summary = reasons.setdefault(code, {"code": code, "count": 0, "first_ordinal": index,
+                                                        "message": diagnostic.get("message_ko", "")})
+                    summary["count"] += 1
+                    codes.add(code)
         if index < PAGE_SIZE:
-            first_page.append(_display_candidate(row, _labels(document, circuit)))
+            first_page.append(_display_candidate(row, labels))
     runtime, engine = _environment(service, specification["type"])
     fingerprint = canonical_hash({"profile": PROFILE, "base": canonical_hash(document),
         "input": data["specification"], "normalized": specification, "network": network,
@@ -195,6 +206,7 @@ def preview(service, state, project, document, data):
     response = bounded({"profile": PROFILE, "project_id": document["project_id"],
         "revision_id": document["revision_id"], "review_hash": fingerprint, "can_create": True,
         "candidate_count": count, "counts": counts, "candidates": first_page,
+        "reason_counts": list(reasons.values()),
         "next_offset": PAGE_SIZE if count > PAGE_SIZE else None, "diagnostics": [],
         "budget_estimate": {"kind": "candidate_count_only_plans_checked_lazily", "native_solves": native_count,
             "native_budget_insufficient": native_count > specification["budget"]["max_native_solves"],
@@ -311,7 +323,7 @@ def actions(service, state, study, definition):
     reason = _environment_reason(service, definition)
     exhausted = study["usage"]["wall_seconds"] >= definition["specification"]["budget"]["wall_seconds"]
     return {"start": study["state"] == "ready" and not other and reason is None and not exhausted,
-            "cancel": study["state"] in ACTIVE | {"ready"},
+            "cancel": study["state"] in ACTIVE | {"ready"}, "export": True,
             "resume": study["state"] in {"cancelled", "interrupted", "failed", "blocked"}
                       and not other and reason is None and not exhausted}, reason
 
@@ -349,6 +361,58 @@ def view(service, state, study):
         "convergence_status": "not_established", "physical_validation": "not_established"})
 
 
+def _export_candidates(service, study, definition, source):
+    """! @brief 고정 정의와 한 시점의 후보 기록을 원본을 쓰지 않고 CSV 행으로 연결한다."""
+    from rfad.domain.design_sweep import candidate_at
+    from rfad.domain.physical_setup import setup
+
+    columns = ("study_id", "ordinal", "base_revision_id", "installation_scenario_id", "definition_sha256",
+               "candidate_record_sha256", "evaluation_key", "validation_status", "state", "outcome",
+               "first_equal_input_ordinal", "reused_from_ordinal", "calculated_ordinal", "calculated_snapshot_sha256",
+               "analysis_plan_sha256", "job_attempts", "dataset_sha256", "assessment_sha256",
+               "diagnostics_sha256", "axis_values_si", "diagnostic_codes")
+    content = io.StringIO(newline="")
+    output = csv.writer(content, lineterminator="\r\n")
+    output.writerow(columns)
+    installation = setup(source)["active_scenario_id"]
+    network = definition["network"]
+    circuit = None if network is None else network["circuit"]
+    records = study["records"]
+    keys = {}
+    for index in range(study["counts"]["total"]):
+        recorded = load_candidate(service, study, index)
+        row = recorded if recorded is not None else _candidate_row(candidate_at(source, definition["specification"], index, circuit))
+        key = row["evaluation_key"]
+        first = keys.setdefault(key, index) if key is not None else index
+        reused = row.get("cached_from_ordinal")
+        calculated, seen = row, {index}
+        while "cached_from_ordinal" in calculated:
+            cached = calculated["cached_from_ordinal"]
+            if type(cached) is not int or cached in seen:
+                fail("재사용 후보의 계산 기록이 순환합니다.", "E_HASH")
+            seen.add(cached)
+            calculated = load_candidate(service, study, cached)
+            if calculated is None or calculated["evaluation_key"] != key:
+                fail("내보낼 재사용 후보의 계산 기록이 일치하지 않습니다.", "E_HASH")
+        runs = [{"phase": attempt["phase"], "job_id": attempt["job_id"]} for attempt in calculated["attempts"]]
+        values = [{"axis_id": item["id"], "kind": item["kind"], "index": item["index"],
+                   "value_si": item["value"]["value_si"] if isinstance(item["value"], dict) else item["value"],
+                   "dimension": item["value"]["dimension"] if isinstance(item["value"], dict) else "state"}
+                  for item in row["values"]]
+        result = row["results"]
+        output.writerow((study["study_id"], index, source["revision_id"], installation, study["definition"]["sha256"],
+                         records.get(str(index), {}).get("sha256"), key, row["validation_status"], row["state"], row["outcome"],
+                         first if first != index else None, reused, calculated["ordinal"] if "dataset" in result else None,
+                         (calculated.get("snapshot") or {}).get("artifact", {}).get("sha256"),
+                         (calculated.get("analysis_plan") or {}).get("artifact", {}).get("sha256"),
+                         canonical_bytes(runs).decode("utf-8"), result.get("dataset", {}).get("sha256"),
+                         result.get("assessment", {}).get("sha256"), result.get("diagnostics", {}).get("sha256"),
+                         canonical_bytes(values).decode("utf-8"),
+                         canonical_bytes(sorted({issue["code"] for issue in row["diagnostics"]})).decode("utf-8")))
+    return bounded({"profile": PROFILE, "study_id": study["study_id"], "row_count": study["counts"]["total"],
+                    "csv": content.getvalue()})
+
+
 def read(service, method, params):
     """! @brief 기존 결과는 native runtime 없이도 페이지 단위로 읽을 수 있다."""
     _fields(params, {"contract_version", "context", "input"})
@@ -375,6 +439,8 @@ def read(service, method, params):
     if method == "sweep.get":
         return view(service, state, study)
     definition, source = baseline(service, study)
+    if method == "sweep.export":
+        return _export_candidates(service, study, definition, source)
     labels = _labels(source, None if definition["network"] is None else definition["network"]["circuit"])
     if method == "sweep.page":
         total, offset = study["counts"]["total"], data["offset"]

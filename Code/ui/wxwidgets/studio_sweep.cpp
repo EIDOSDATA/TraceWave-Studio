@@ -4,6 +4,8 @@
 #include "sweep_model.h"
 #include "studio_theme.h"
 #include "studio_shell.h"
+#include "file_delivery.h"
+#include <wx/filedlg.h>
 
 void StudioFrame::BuildSweepInterface()
 {
@@ -227,6 +229,60 @@ void StudioFrame::SweepCommand(const std::string& action)
     const auto project = m_project;
     const auto generation = ++m_sweepGeneration;
     m_sweepPending = true;
+    const bool exporting = action == "export";
+    if (exporting)
+    {
+        m_sweepPanel->SetStatus("봉인된 후보와 결과의 CSV를 읽고 있습니다.");
+        UpdateControls();
+        Send("sweep.export", {{"study_id", id}}, false, Context(),
+             [this, project, generation, id](const Json& result)
+             {
+                 if (m_closing || project != m_project || generation != m_sweepGeneration)
+                 {
+                     return;
+                 }
+                 m_sweepPending = false;
+                 UpdateControls();
+                 if (result.at("study_id") != id)
+                 {
+                     m_sweepPanel->SetStatus("내보내기 응답이 선택한 연구와 다릅니다.");
+                     return;
+                 }
+                 CallAfter([this, project, generation, id, contents = result.at("csv").get<std::string>()]()
+                 {
+                     if (m_closing || project != m_project || generation != m_sweepGeneration)
+                     {
+                         return;
+                     }
+                     wxFileDialog dialog(this, Display("후보 CSV 저장"), wxEmptyString, Display("sweep-" + id.substr(0, 8) + ".csv"),
+                                         Display("CSV (*.csv)|*.csv"), wxFD_SAVE);
+                     if (dialog.ShowModal() != wxID_OK)
+                     {
+                         m_sweepPanel->SetStatus("후보 CSV 저장을 취소했습니다.");
+                         return;
+                     }
+                     try
+                     {
+                         WriteExternalExportFile(dialog.GetPath(), m_options.workspace, contents);
+                         m_sweepPanel->SetStatus("후보 행과 불변 입력/결과 참조를 CSV로 저장했습니다.");
+                     }
+                     catch (const std::exception& error)
+                     {
+                         m_sweepPanel->SetStatus("후보 CSV 저장 실패: " + std::string(error.what()));
+                     }
+                 });
+             },
+             [this, project, generation](const Json& error)
+             {
+                 if (!m_closing && project == m_project && generation == m_sweepGeneration)
+                 {
+                     m_sweepPending = false;
+                     m_sweepPanel->SetStatus("후보 CSV 조회 실패: " + DiagnosticMessage(error));
+                     UpdateControls();
+                 }
+             });
+        return;
+    }
     m_sweepPanel->SetStatus(action == "cancel"
                                 ? "취소를 요청합니다. 실제 종료를 확인하기 전에는 취소 완료로 표시하지 않습니다."
                                 : "연구 제어 응답을 기다리고 있습니다.");

@@ -1,6 +1,7 @@
 """! @brief 실제 Windows 연구 폼과 외부 회로 계산의 출처/미정/저장 재열기를 검증한다."""
 
 from copy import deepcopy
+import csv
 import json
 import os
 from pathlib import Path
@@ -104,7 +105,7 @@ class GuiSweepTests(unittest.TestCase):
                 "sweep_real_circuit_completion_and_reuse", "sweep_saved_service_restart_preserves_history",
                 "sweep_studio_candidates_and_design_return",
                 "sweep_studio_titles_and_result_button", "sweep_candidate_result_native_conditions",
-                "sweep_value_mode_explicit_rows_safe_reset",
+                "sweep_value_mode_explicit_rows_safe_reset", "sweep_candidate_csv_retains_provenance",
             }, report)
             with ProjectService(workspace, auto_run=False) as service:
                 state = service.journal.read()
@@ -139,6 +140,14 @@ class GuiSweepTests(unittest.TestCase):
                 rows = [load_candidate(service, circuit, index) for index in range(3)]
                 self.assertEqual(rows[2]["cached_from_ordinal"], 0)
                 self.assertEqual(rows[0]["evaluation_key"], rows[2]["evaluation_key"])
+                with (Path(temporary) / "윈도우 연구 후보.csv").open(encoding="utf-8", newline="") as file:
+                    exported = list(csv.DictReader(file))
+                self.assertEqual([int(row["ordinal"]) for row in exported], [0, 1, 2])
+                self.assertEqual(exported[2]["first_equal_input_ordinal"], "0")
+                self.assertEqual(exported[2]["reused_from_ordinal"], "0")
+                self.assertEqual(exported[2]["calculated_ordinal"], "0")
+                self.assertEqual(exported[2]["candidate_record_sha256"], circuit["records"]["2"]["sha256"])
+                self.assertEqual(exported[2]["dataset_sha256"], rows[0]["results"]["dataset"]["sha256"])
                 for index, expected in enumerate((613 / 1513, 1063 / 1963, 613 / 1513)):
                     data = read_json(service, rows[index]["results"]["dataset"])
                     self.assertEqual(len(data["frequency_hz"]), 201)

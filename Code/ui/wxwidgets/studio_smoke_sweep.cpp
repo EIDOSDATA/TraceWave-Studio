@@ -6,6 +6,7 @@
 #include "studio_notebook.h"
 #include "setup_smoke_support.h"
 #include "workspace_bar.h"
+#include "file_delivery.h"
 #include <wx/checklst.h>
 #include <wx/listbox.h>
 #include <wx/spinctrl.h>
@@ -414,6 +415,24 @@ void StudioSmokeDriver::SweepSmokeTick()
                                                page.at("candidates").at(2).at("cached_from_ordinal") == 0 &&
                                                !page.at("candidates").at(0).at("physics_validated").get<bool>(),
                                            "중복 계산 재사용 또는 물리 검증 경계가 기록과 다릅니다.");
+                              m_setupStage = 21;
+                          });
+    }
+    else if (m_setupStage == 21)
+    {
+        auto* panel = m_frame.m_sweepPanel;
+        CanvasAssert(panel->m_actions.at("export")->IsEnabled(), "완료 연구의 후보 CSV 저장 동작이 비활성입니다.");
+        m_setupStage = 22;
+        SweepSmokeRequest("sweep.export", {{"study_id", m_sweepCircuitId}}, false,
+                          [this](const Json& result)
+                          {
+                              CanvasAssert(result.at("study_id") == m_sweepCircuitId && result.at("row_count") == 3,
+                                           "CSV 조회의 연구 ID와 후보 수가 다릅니다.");
+                              const auto path = std::filesystem::path(m_frame.m_options.workspace.ToStdWstring()).parent_path() /
+                                                std::filesystem::u8path("윈도우 연구 후보.csv");
+                              WriteExternalExportFile(wxString(path.native()), m_frame.m_options.workspace,
+                                                      result.at("csv").get<std::string>());
+                              m_setupChecks.push_back("sweep_candidate_csv_retains_provenance");
                               m_setupStage = 15;
                           });
     }

@@ -330,6 +330,9 @@ def candidate_at(document, normalized_spec, ordinal, circuit=None):
         validate_project(result_document)
         if result_circuit is not None:
             validate_circuit(result_circuit)
+            for index, element in enumerate(result_circuit["elements"]):
+                if element["state"] == "connected" and element["value"]["value_si"] is None:
+                    fail("연결한 회로 소자의 값이 미정입니다.", f"circuit.elements.{index}.value", "E_CONFLICT")
             result["evaluation_key"] = _evaluation_key(result_document, settings, result_circuit, specification)
             return result
         else:

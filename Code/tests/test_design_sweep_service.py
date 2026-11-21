@@ -1,6 +1,8 @@
 """! @brief 연구 저장/원본 보존/영수증/페이지와 중단 후 명시 재개의 공개 서비스 경계를 검증한다."""
 
 from copy import deepcopy
+import csv
+import io
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -90,6 +92,7 @@ class DesignSweepServiceTests(unittest.TestCase):
         self.assertEqual(preview["candidate_count"], 3)
         self.assertEqual(preview["candidates"][2]["duplicate_of"], 1)
         self.assertEqual(preview["budget_estimate"]["native_solves"], 0)
+        self.assertEqual([(row["count"], row["first_ordinal"]) for row in preview["reason_counts"]], [(1, 0)])
         self.assertEqual(before, self.service.journal.read())
         self.assertEqual(files, sorted(str(path.relative_to(self.workspace)) for path in self.workspace.rglob("*") if path.is_file()))
         identity = self.create()
@@ -111,6 +114,16 @@ class DesignSweepServiceTests(unittest.TestCase):
         last = self.read("sweep.page", study_id=identity, offset=2, limit=1)
         self.assertEqual(first["next_offset"], 2)
         self.assertEqual(last["candidates"][0]["ordinal"], 2)
+        exported = self.read("sweep.export", study_id=identity)
+        rows = list(csv.DictReader(io.StringIO(exported["csv"])))
+        self.assertEqual(len(rows), exported["row_count"])
+        self.assertEqual(rows[0]["validation_status"], "invalid")
+        self.assertEqual(rows[2]["first_equal_input_ordinal"], "1")
+        self.assertEqual(rows[2]["evaluation_key"], rows[1]["evaluation_key"])
+        self.assertEqual(rows[2]["definition_sha256"], study["definition"]["sha256"])
+        self.assertEqual(rows[2]["base_revision_id"], self.original["revision_id"])
+        self.assertEqual(rows[2]["job_attempts"], "[]")
+        self.assertEqual(rows[2]["dataset_sha256"], "")
         self.assertEqual(self.service.journal.read(), after)
         with self.assertRaises(ProjectError):
             self.read("sweep.result", study_id=identity, index=0, offset=0, limit=201, row=0, column=0)
