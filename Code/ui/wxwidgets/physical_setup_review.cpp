@@ -215,6 +215,10 @@ void PhysicalSetupDialog::RenderReview()
     {
         text += "\n해석 포함으로 선택한 미지원 항목은 해석을 차단합니다.";
     }
+    if (m_context.at("section") == "part")
+    {
+        text += "\n하부 개방 케이스는 바깥 치수와 벽 두께, 재료가 필요합니다. 해석에서는 Z축 회전 0도를 지정하십시오.";
+    }
     if (!m_stepReview.is_null())
     {
         const auto& box = m_stepReview.at("bbox_mm");
@@ -241,6 +245,10 @@ Json PhysicalSetupDialog::Changes() const
     for (const auto& row : m_context.at("fields"))
     {
         const std::string key = row.at("key");
+        if (key == "case_thickness" && Value("kind") != "dielectric_case")
+        {
+            continue;
+        }
         if (const Json value = WidgetValue(*m_inputs.at(key)); value != row.at("value"))
         {
             changed[key] = value;
@@ -268,6 +276,10 @@ void PhysicalSetupDialog::UpdateActions()
     m_section->Enable(ready);
     m_record->Enable(ready && list);
     m_form->Enable(ready);
+    if (const auto wall = m_inputs.find("case_thickness"); wall != m_inputs.end())
+    {
+        wall->second->Enable(ready && Value("kind") == "dielectric_case");
+    }
     m_reason->Enable(ready);
     m_browse->Enable(ready && section == "part" && m_context.at("cad_configured") == true);
     const bool reason = !m_reason->GetValue().Trim().Trim(false).empty();

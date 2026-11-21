@@ -44,7 +44,7 @@ wxPenStyle SeriesStroke(std::size_t index)
 }
 }
 
-NetworkChart::NetworkChart(wxWindow* parent) : wxPanel(parent)
+NetworkChart::NetworkChart(wxWindow* parent, bool angularAxis) : wxPanel(parent), m_angularAxis(angularAxis)
 {
     SetBackgroundStyle(wxBG_STYLE_PAINT);
     SetMinSize(FromDIP(wxSize(320, 240)));
@@ -248,13 +248,14 @@ void NetworkChart::Paint(wxPaintEvent&)
     double maxX = -minX;
     double minY = minX;
     double maxY = -minX;
+    const std::string xKey = m_angularAxis ? "theta_deg" : "frequency_hz";
     for (const auto& series : m_series)
     {
         for (const auto& sample : series.page.at("samples"))
         {
             double x = 0.0;
             double y = 0.0;
-            if (Number(sample, "frequency_hz", x))
+            if (Number(sample, xKey, x))
             {
                 minX = std::min(minX, x);
                 maxX = std::max(maxX, x);
@@ -297,8 +298,9 @@ void NetworkChart::Paint(wxPaintEvent&)
             const int y = plot.y + plot.height * index / 4;
             dc.DrawLine(x, plot.y, x, plot.GetBottom());
             dc.DrawLine(plot.x, y, plot.GetRight(), y);
-            const wxString xLabel =
-                Display(StudioFrequency::Value(minX + (maxX - minX) * index / 4, frequencyScale, 6));
+            const double axisValue = minX + (maxX - minX) * index / 4;
+            const wxString xLabel = m_angularAxis ? Label(axisValue) :
+                Display(StudioFrequency::Value(axisValue, frequencyScale, 6));
             const int labelWidth = dc.GetTextExtent(xLabel).x;
             const int labelX = std::clamp(x - labelWidth / 2, margin, std::max(margin, size.x - margin - labelWidth));
             dc.DrawText(xLabel, labelX, plot.GetBottom() + FromDIP(4));
@@ -333,7 +335,7 @@ void NetworkChart::Paint(wxPaintEvent&)
                     double x = 0.0;
                     double y = 0.0;
                     const int index = sample.value("index", -1);
-                    if (!sample.value("valid", false) || !Number(sample, "frequency_hz", x) ||
+                    if (!sample.value("valid", false) || !Number(sample, xKey, x) ||
                         !Number(sample, m_metric, y))
                     {
                         previousValid = false;
@@ -385,7 +387,7 @@ void NetworkChart::Paint(wxPaintEvent&)
                     plot.y + FromDIP(24));
     }
     dc.SetTextForeground(colours.secondary);
-    const wxString frequencyLabel = Display("주파수 / " + frequencyScale.unit);
+    const wxString frequencyLabel = Display(m_angularAxis ? "theta / deg" : "주파수 / " + frequencyScale.unit);
     dc.DrawText(frequencyLabel, plot.GetRight() - dc.GetTextExtent(frequencyLabel).x,
                 plot.GetBottom() + lineHeight + FromDIP(4));
     int footerY = size.y - footerHeight;

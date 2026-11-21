@@ -104,8 +104,12 @@ def read(service, method, params):
                 "items": rows, "offset": offset, "total": len(conditions),
                 "next_offset": offset + len(rows) if offset + len(rows) < len(conditions) else None})
         result = result_complex.compare_data(left["dataset"], right["dataset"], data)
+        from rfad.application.result_installation import compare as compare_installation
+
+        installation = compare_installation(service, left, right)
         return bounded({"profile": "rfad.result-comparison/0.1", "left": _identity(left), "right": _identity(right), **result,
             "condition_differences": conditions[:32], "condition_count": len(conditions), "condition_next_offset": 32 if len(conditions) > 32 else None,
+            **({"installation_comparison": installation} if installation is not None else {}),
             "historical_assessments": {"left": left["historical_assessments"], "right": right["historical_assessments"]}})
     if method != "result.describe":
         validate_pin(data["pin"])

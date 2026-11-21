@@ -38,6 +38,7 @@ public:
         parser.AddSwitch("", "printed-seed-smoke-test",
                          "Run printed reference/seed and workspace GUI workflow and exit");
         parser.AddSwitch("", "physical-setup-smoke-test", "Run physical stack, STEP placement and reopen workflow");
+        parser.AddSwitch("", "installation-smoke-test", "Run native PCB installation comparison and reopen");
         parser.AddSwitch("", "design-rules-smoke-test", "Run design rules editing, checking and reopen workflow");
         parser.AddSwitch("", "precision-editor-smoke-test", "Run rename, precision preview/apply and restart workflow");
         parser.AddSwitch("", "precision-planar-smoke-test",
@@ -93,6 +94,7 @@ public:
         options.printedSeedSmoke = parser.Found("printed-seed-smoke-test");
         options.designRulesSmoke = parser.Found("design-rules-smoke-test");
         options.physicalSetupSmoke = parser.Found("physical-setup-smoke-test");
+        options.installationSmoke = parser.Found("installation-smoke-test");
         options.precisionPlanarSmoke = parser.Found("precision-planar-smoke-test");
         options.precisionEditorSmoke = parser.Found("precision-editor-smoke-test") || options.precisionPlanarSmoke;
         options.networkSmoke = parser.Found("network-smoke-test");
@@ -104,7 +106,7 @@ public:
         options.featuresSmoke = parser.Found("features-smoke-test");
         options.pcbExchangeSmoke = parser.Found("pcb-exchange-smoke-test");
         options.setupSmoke = parser.Found("design-setup-smoke-test") || options.printedSeedSmoke ||
-                             options.designRulesSmoke || options.physicalSetupSmoke || options.precisionEditorSmoke ||
+                             options.designRulesSmoke || options.physicalSetupSmoke || options.installationSmoke || options.precisionEditorSmoke ||
                              options.networkSmoke || options.sweepSmoke || options.resultsSmoke ||
                              options.validationSmoke || options.selectionSmoke || options.outputSmoke ||
                              options.featuresSmoke || options.pcbExchangeSmoke;

@@ -5,6 +5,7 @@ import math
 
 from rfad.domain.errors import ProjectError
 from rfad.application.pcb_geometry import _bounds, fail
+from rfad.application.pcb_environment import scene_extents
 
 MAX_GRID_POINTS = 1500000
 
@@ -104,11 +105,8 @@ def policy_report(case, lines):
     """! @brief 설정값과 실제 PML 위치/성장률을 별도로 기록한다."""
     settings = case["settings"]
     policy = settings["mesh_policy"]
-    z = [value for layer in case["layers"] for value in (layer["z_min_mm"], layer["z_min_mm"] + layer["thickness_mm"])]
-    physical = [*case["board"]["bounds_mm"], [min(z), max(z)]]
-    dielectric_z = [value for layer in case["layers"] if layer["role"] == "dielectric"
-                    for value in (layer["z_min_mm"], layer["z_min_mm"] + layer["thickness_mm"])]
-    model_bounds = [*case["board"]["bounds_mm"], [min(dielectric_z), max(dielectric_z)]]
+    physical = scene_extents(case)
+    model_bounds = scene_extents(case, sheet=True)
     axes = {}
     for axis, bounds, model in zip("xyz", physical, model_bounds):
         values = lines[axis]
@@ -124,7 +122,9 @@ def policy_report(case, lines):
                       "air_and_interface_max_adjacent_ratio": max(max(a / b, b / a) for a, b in air_pairs),
                       "axis_max_adjacent_ratio": max(max(a / b, b / a) for a, b in zip(steps, steps[1:]))}
     highest_excitation = case["excitation"]["center_hz"] + case["excitation"]["width_hz"]
-    report = {"schema": "rfad.pcb-mesh-policy/0.1", **policy, "padding_reference": "physical_board_outer_face_to_outer_boundary",
+    report = {"schema": "rfad.pcb-mesh-policy/0.1", **policy,
+            "padding_reference": ("installed_scene_outer_face_to_outer_boundary" if "environment" in case
+                                  else "physical_board_outer_face_to_outer_boundary"),
             "pml_cells_per_end": 8, "pml_thickness_mm": 8 * policy["air_cell_mm"], "padding_extension_preserves_common_lines": True,
             "air_growth_postcondition_checked": True, "interior_critical_intervals_unchanged": True,
             "interior_growth_postcondition_enforced": False,
@@ -143,7 +143,7 @@ def mesh_lines(case):
 
     maximum = limits(settings)["max_grid_points"]
     bounds = board["bounds_mm"]
-    z = [v for layer in case["layers"] for v in (layer["z_min_mm"], layer["z_min_mm"] + layer["thickness_mm"])]
+    physical = scene_extents(case)
     dielectric = [layer for layer in case["layers"] if layer["role"] == "dielectric"]
     # @brief 동박은 sheet이므로 동박 두께를 별도 Yee 간격으로 강제하지 않는다.
     critical = [[bounds[i][0], bounds[i][1]] for i in range(2)] + [[v for layer in dielectric for v in (layer["z_min_mm"], layer["z_min_mm"] + layer["thickness_mm"])]]
@@ -169,10 +169,14 @@ def mesh_lines(case):
         critical[2].extend((via["z_min_mm"], (via["z_min_mm"] + via["z_max_mm"]) / 2, via["z_max_mm"]))
     for axis in range(3):
         critical[axis].extend([case["port"]["start_mm"][axis], case["port"]["stop_mm"][axis], (case["port"]["start_mm"][axis] + case["port"]["stop_mm"][axis]) / 2])
+    for part in case.get("environment", {}).get("parts", []):
+        for start, stop in part["boxes_mm"]:
+            for axis in range(3):
+                critical[axis].extend((start[axis], stop[axis]))
     result = {}
     total = 1
     for axis, positions in enumerate(critical):
-        lower, upper = (bounds[axis] if axis < 2 else [min(z), max(z)])
+        lower, upper = physical[axis]
         padding = settings["air_padding_mm"]
         inner_lower, inner_upper = min(positions), max(positions)
         graded = settings.get("mesh_policy")

@@ -51,5 +51,7 @@ def project_setup(document, mode, length, angle, *, maximum):
             "translation_mm": [length(row[key], field + "." + key) for key in ("x", "y", "z")],
             "yaw_deg": yaw,
             "size_mm": [length(row[key], field + "." + key, positive=True) for key in ("width", "height", "depth")]
-                       if row["kind"] == "box" else None})
+                       if row["kind"] != "step" else None})
+        if row["kind"] == "dielectric_case":
+            projected_parts[-1]["wall_mm"] = length(row["case_thickness"], field + ".case_thickness", positive=True)
     return projected_surfaces, projected_parts, omitted

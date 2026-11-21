@@ -12,7 +12,8 @@ void StudioSmokeDriver::SetupSmokeTick()
     try
     {
         // @brief 복소 결과의 전체 저장·재연결 시험에는 주 창의 300초 종료 조건을 사용한다.
-        if (!m_frame.m_options.networkSmoke && Clock::now() - m_setupStarted > std::chrono::seconds(180))
+        const int timeout = m_frame.m_options.installationSmoke ? 270 : 180;
+        if (!m_frame.m_options.networkSmoke && Clock::now() - m_setupStarted > std::chrono::seconds(timeout))
         {
             throw std::runtime_error("설정 화면 시험 제한 시간을 초과했습니다.");
         }
@@ -80,6 +81,11 @@ void StudioSmokeDriver::SetupSmokeTick()
         if (m_frame.m_options.physicalSetupSmoke)
         {
             PhysicalSetupSmokeTick();
+            return;
+        }
+        if (m_frame.m_options.installationSmoke)
+        {
+            InstallationSmokeTick();
             return;
         }
         if (m_frame.m_options.designRulesSmoke)

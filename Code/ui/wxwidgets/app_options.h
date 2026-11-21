@@ -43,6 +43,7 @@ struct Options
     bool printedSeedSmoke = false;
     bool designRulesSmoke = false;
     bool physicalSetupSmoke = false;
+    bool installationSmoke = false;
     bool precisionEditorSmoke = false;
     bool precisionPlanarSmoke = false;
     wxString studySpecification;

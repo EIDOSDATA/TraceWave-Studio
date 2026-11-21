@@ -16,6 +16,8 @@ SURFACE_KINDS = ("solder_mask", "coverlay", "adhesive", "bondply", "finish", "fe
 FLAGS = {"visible", "include_in_em", "include_in_export"}
 SURFACE_NUMBERS = ("offset", "thickness", "x", "y", "width", "height")
 PART_NUMBERS = ("x", "y", "z", "yaw", "width", "height", "depth")
+PART_KINDS = ("box", "step", "dielectric_case")
+EM_PART_KINDS = {"dielectric_case"}
 ROW_FIELDS = {
     "surface": {"id", "name", "kind", "side", "coverage", "material_id", "openings", "source_refs", *FLAGS, *SURFACE_NUMBERS},
     "scenario": {"id", "name", "source_refs"},
@@ -23,6 +25,14 @@ ROW_FIELDS = {
 }
 COLLECTIONS = {"surface": "surfaces", "scenario": "scenarios", "part": "parts"}
 COMMAND = "physical_setup.edit"
+
+
+def record_fields(section, record):
+    """! @brief 케이스에만 벽 두께를 추가하고 과거 상자/STEP 원본의 형식을 유지한다."""
+    fields = ROW_FIELDS[section]
+    if section == "part" and isinstance(record, dict) and record.get("kind") == "dielectric_case":
+        return fields | {"case_thickness"}
+    return fields
 
 
 def setup(document):
@@ -93,7 +103,7 @@ def validate_setup(document):
         if type(rows) is not list or len(rows) > 16:
             _fail("E_RESOURCE", "각 설치 구성 목록은 최대 16개입니다.", section)
         for row in rows:
-            _fields(row, ROW_FIELDS[section], section)
+            _fields(row, record_fields(section, row), section)
             identity = _uuid(row["id"], section + ".id")
             if identity in used:
                 _fail("E_CONFLICT", "설치/표면 객체 ID가 중복됩니다.", section + ".id")
@@ -120,10 +130,12 @@ def validate_setup(document):
                     _rect(document, opening, "surface.openings")
             else:
                 _reference(row["scenario_id"], scenarios, "part.scenario_id")
+                if row["kind"] == "dielectric_case":
+                    _number(document, row["case_thickness"], "length", "part.case_thickness", positive=True)
                 if row["kind"] == "step":
                     source_total += len(step_bytes(row["step"]))
-                elif row["kind"] != "box" or row["step"] is not None:
-                    _fail("E_SCHEMA", "간이 상자 또는 검토한 STEP을 선택하십시오.", "part.kind")
+                elif row["kind"] not in PART_KINDS or row["step"] is not None:
+                    _fail("E_SCHEMA", "지원하는 외부 물체 종류를 선택하십시오.", "part.kind")
         if [row["id"] for row in rows] != sorted(row["id"] for row in rows):
             _fail("E_SCHEMA", "설치/표면 객체 목록을 ID 순서로 저장하십시오.", section)
     if source_total > MAX_STEP_BYTES:
@@ -153,7 +165,7 @@ def apply_setup(document, payload):
             inherit_step = section == "part" and previous is not None and type(record) is dict and "step" not in record
             if inherit_step:
                 record["step"] = deepcopy(previous["step"])
-            _fields(record, ROW_FIELDS[section], "command.payload.record")
+            _fields(record, record_fields(section, record), "command.payload.record")
             if record["id"] != identity:
                 _fail("E_SCHEMA", "물리 객체 ID와 변경 대상이 다릅니다.", "command.payload.record_id")
             rows.append(record)
@@ -235,4 +247,5 @@ def em_exclusions(document):
     """! @brief 지원하지 않는 해석 포함 요청은 모델에서 조용히 버리지 않는다."""
     surfaces, parts = candidates(document)
     return [{"id": row["id"], "section": section, "reason": "unsupported_in_profile" if row["include_in_em"] else "excluded_by_user"}
-            for section, rows in (("surface", surfaces), ("part", parts)) for row in rows]
+            for section, rows in (("surface", surfaces), ("part", parts)) for row in rows
+            if not (row["include_in_em"] and section == "part" and row["kind"] in EM_PART_KINDS)]

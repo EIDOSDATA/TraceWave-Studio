@@ -1,7 +1,178 @@
 /** @file @brief Windows의 물리 설정과 실제 CAD/저장/재열기 경로를 검사한다. */
 #include "studio_internal.h"
 #include "physical_setup_dialog.h"
+#include "result_workspace.h"
+#include "result_compare_view.h"
 #include "setup_smoke_support.h"
+#include "studio_notebook.h"
+#include <wx/stattext.h>
+
+/** @brief 실제 PCB 계산 두 건을 저장된 원본에서 다시 선택하여 비교한다. */
+void StudioSmokeDriver::InstallationSmokeTick()
+{
+    auto* setup = dynamic_cast<PhysicalSetupDialog*>(m_frame.m_setupDialog);
+    if ((setup == nullptr && m_frame.m_busy) || m_frame.m_solverRestoring)
+    {
+        return;
+    }
+    if (m_frame.m_solverState == "failed")
+    {
+        throw std::runtime_error(Utf8(m_frame.m_solverDetails->GetValue()));
+    }
+    if (m_setupStage == 1)
+    {
+        std::ifstream settings(std::filesystem::path(m_frame.m_options.solverSettings.ToStdWstring()), std::ios::binary);
+        m_frame.m_solverSettings = Json::parse(settings);
+        m_setupStage = 2;
+        m_frame.StartSolver();
+    }
+    else if (m_setupStage == 2 && m_frame.m_solverState == "completed" && !m_frame.m_solverWorkflow.Active())
+    {
+        m_solverFirstResult = m_frame.m_solverResult.at("artifact_id");
+        m_setupStage = 3;
+        m_frame.CallAfter([this]()
+        {
+            wxCommandEvent event(wxEVT_MENU, IdPhysicalSetup);
+            m_frame.GetEventHandler()->ProcessEvent(event);
+        });
+    }
+    else if (auto* dialog = setup)
+    {
+        if (dialog->m_pending)
+        {
+            return;
+        }
+        CanvasAssert(dialog->m_error.is_null(), dialog->m_error.dump());
+        auto choose = [dialog](const std::string& key, const std::string& value)
+        {
+            auto* control = static_cast<wxChoice*>(dialog->m_inputs.at(key));
+            for (unsigned index = 0; index < control->GetCount(); ++index)
+            {
+                const auto* data = static_cast<wxStringClientData*>(control->GetClientObject(index));
+                if (Utf8(data->GetData()) == value)
+                {
+                    SetupSmoke::Choose(control, static_cast<int>(index));
+                    return;
+                }
+            }
+            throw std::runtime_error("설치 선택지를 찾지 못했습니다.");
+        };
+        auto apply = [dialog]()
+        {
+            dialog->m_reason->SetValue(Display("내부 케이스 검증 출처"));
+            SetupSmoke::Click(dialog->m_apply);
+        };
+        if (m_setupStage == 3)
+        {
+            m_setupStage = 4;
+            SetupSmoke::Choose(dialog->m_section, 4);
+        }
+        else if (m_setupStage == 4)
+        {
+            const auto& scenario = dialog->m_context.at("records").at("scenario").at(0);
+            choose("scenario_id", scenario.at("id"));
+            choose("kind", "dielectric_case");
+            auto* material = static_cast<wxChoice*>(dialog->m_inputs.at("material_id"));
+            const int index = material->FindString(Display("검증용 유전체 케이스 재료"));
+            CanvasAssert(index != wxNOT_FOUND, "케이스 재료를 찾지 못했습니다.");
+            SetupSmoke::Choose(material, index);
+            const Json fields{{"name", "검증용 케이스"}, {"x", "-2"}, {"y", "-2"}, {"z", "0"},
+                              {"yaw", "0"}, {"width", "20"}, {"height", "16"}, {"depth", "3.5"}, {"case_thickness", "1"}};
+            for (const auto& field : fields.items())
+            {
+                static_cast<wxTextCtrl*>(dialog->m_inputs.at(field.key()))->SetValue(Display(field.value()));
+            }
+            static_cast<wxCheckBox*>(dialog->m_inputs.at("include_in_em"))->SetValue(true);
+            m_setupStage = 5;
+            apply();
+        }
+        else if (m_setupStage == 5)
+        {
+            m_setupStage = 6;
+            SetupSmoke::Choose(dialog->m_section, 2);
+        }
+        else if (m_setupStage == 6)
+        {
+            choose("active_scenario_id", dialog->m_context.at("records").at("scenario").at(0).at("id"));
+            m_setupStage = 7;
+            apply();
+        }
+        else if (m_setupStage == 7)
+        {
+            m_setupStage = 8;
+            dialog->CloseDialog();
+        }
+    }
+    else if (m_setupStage == 8)
+    {
+        m_setupStage = 9;
+        m_frame.SaveProject();
+    }
+    else if (m_setupStage == 9 && m_frame.m_savedRevision == m_frame.m_revision)
+    {
+        m_setupExpectedRevision = m_frame.m_revision;
+        m_setupStage = 10;
+        m_frame.StartSolver();
+    }
+    else if (m_setupStage == 10 && m_frame.m_solverState == "completed" && !m_frame.m_solverWorkflow.Active())
+    {
+        const std::string installed = m_frame.m_solverResult.at("artifact_id");
+        CanvasAssert(installed != m_solverFirstResult, "케이스 해석이 별도 결과를 생성하지 않았습니다.");
+        m_resultsFixture = {{"bare", {{"kind", "solver"}, {"artifact_id", m_solverFirstResult}}},
+                            {"installed", {{"kind", "solver"}, {"artifact_id", installed}}}};
+        m_setupStage = 11;
+        m_frame.OpenProject("open", m_frame.m_path);
+    }
+    else if (m_setupStage == 11 && m_frame.m_savedRevision == m_setupExpectedRevision)
+    {
+        m_frame.PrepareExtendedWorkspaces(2);
+        m_frame.m_views->SetSelection(14);
+        m_setupStage = 12;
+        m_frame.m_results->Select(m_resultsFixture.at("bare"));
+    }
+    else if (m_setupStage >= 12)
+    {
+        auto& workspace = *m_frame.m_results;
+        auto* view = workspace.m_compare;
+        if (m_setupStage == 12 && workspace.m_description.is_object() &&
+            workspace.m_description.at("source") == m_resultsFixture.at("bare"))
+        {
+            CanvasAssert(view->Add(workspace.m_description), "기판 단독 결과를 다시 읽지 못했습니다.");
+            m_setupStage = 13;
+            workspace.Select(m_resultsFixture.at("installed"));
+        }
+        else if (m_setupStage == 13 && workspace.m_description.is_object() &&
+                 workspace.m_description.at("source") == m_resultsFixture.at("installed"))
+        {
+            CanvasAssert(view->Add(workspace.m_description), "케이스 결과를 다시 읽지 못했습니다.");
+            m_setupStage = 14;
+        }
+        else if (m_setupStage == 14 && view->m_pages.at(0).is_object() && view->m_pages.at(1).is_object())
+        {
+            view->m_orders.at(1) = Json::array({0});
+            m_setupStage = 15;
+            workspace.Compare(view, 1);
+        }
+        else if (m_setupStage == 15 && view->m_comparisons.at(1).is_object())
+        {
+            const auto& comparison = view->m_comparisons.at(1);
+            CanvasAssert(comparison.at("points").size() == 31, "S11 공통 표본을 표시하지 못했습니다.");
+            const auto& installation = comparison.at("installation_comparison");
+            CanvasAssert(installation.contains("frequencies"), installation.dump());
+            view->OpenInstallation(installation);
+            auto* dialog = wxWindow::FindWindowByName("installation-comparison", view);
+            CanvasAssert(dialog != nullptr && dialog->IsShown(), "설치 방사 비교 창이 열리지 않았습니다.");
+            auto* values = dynamic_cast<wxStaticText*>(wxWindow::FindWindowByName("installation-efficiencies", dialog));
+            CanvasAssert(values != nullptr && values->GetLabel().Contains(Display("기판 단독")) &&
+                             values->GetLabel().Contains(Display("유전체 케이스 시험")),
+                         "설치 비교 창에 두 원본과 효율이 표시되지 않았습니다.");
+            m_setupChecks.push_back("native_installation_reopen_s11_efficiency_radiation");
+            m_setupStage = 16;
+            dialog->Destroy();
+            FinishSmoke(true, "");
+        }
+    }
+}
 
 void StudioSmokeDriver::PhysicalSetupSmokeTick()
 {

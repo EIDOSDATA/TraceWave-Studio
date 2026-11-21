@@ -13,7 +13,7 @@ from rfad.application.target_editor_values import fail, number, sources
 from rfad.domain.design import _text, resolve_scalar
 from rfad.domain.errors import ProjectError
 from rfad.domain.physical_setup import (KEY, PROFILE, COMMAND, COLLECTIONS, FLAGS, SURFACE_KINDS,
-                                        SURFACE_NUMBERS, PART_NUMBERS, setup, stack_review, step_bytes, em_exclusions)
+                                        SURFACE_NUMBERS, PART_NUMBERS, PART_KINDS, setup, stack_review, step_bytes, em_exclusions)
 from rfad.domain.units import Quantity, QuantityError
 
 READS = {"physical.setup.get", "physical.step.preview"}
@@ -24,6 +24,7 @@ LABELS = {
     "finish": "표면처리", "ferrite": "페라이트", "plating": "도금층", "coating": "코팅",
     "top": "상면", "bottom": "하면", "board": "기판 전체", "rectangle": "사각 범위",
     "base": "기본 적층", "with_surfaces": "표면층 포함", "box": "간이 상자", "step": "외부 STEP",
+    "dielectric_case": "유전체 케이스 (하부 개방)",
 }
 FIELDS = {
     "name": "이름", "kind": "종류", "side": "면", "coverage": "피복 범위", "material_id": "재료",
@@ -31,6 +32,7 @@ FIELDS = {
     "include_in_export": "STEP 출력 포함", "nominal": "명목 총두께", "scope": "총두께 범위",
     "offset": "외면에서 간격", "thickness": "두께", "x": "X", "y": "Y", "z": "Z",
     "width": "폭", "height": "길이", "depth": "높이", "yaw": "Z축 회전",
+    "case_thickness": "벽과 덮개 두께 (케이스용)",
     "openings": "개구 (mm, 줄마다 X Y 폭 길이)", "active_scenario_id": "활성 시나리오",
 }
 
@@ -90,7 +92,7 @@ def _descriptors(document, model, section, row):
         "coverage": _options([(key, LABELS[key]) for key in ("board", "rectangle")]),
         "side": _options([(key, LABELS[key]) for key in ("top", "bottom")]),
         "scope": _options([(key, LABELS[key]) for key in ("base", "with_surfaces")], optional=True),
-        "kind": _options([(key, LABELS[key]) for key in (SURFACE_KINDS if section == "surface" else ("box", "step"))]),
+        "kind": _options([(key, LABELS[key]) for key in (SURFACE_KINDS if section == "surface" else PART_KINDS)]),
         "material_id": _options([(item["id"], item["name"]) for item in document["materials"]], optional=True),
         "scenario_id": _options(scenarios, optional=True, unknown="선택 필요"),
         "active_scenario_id": _options(scenarios, optional=True, unknown="기준 PCB"),
@@ -98,7 +100,7 @@ def _descriptors(document, model, section, row):
     result = []
     keys = {"surface": ("name", "kind", "side", "coverage", "offset", "thickness", "x", "y", "width", "height", "openings",
                         "material_id", "visible", "include_in_em", "include_in_export"),
-            "part": ("name", "scenario_id", "kind", "x", "y", "z", "yaw", "width", "height", "depth",
+            "part": ("name", "scenario_id", "kind", "x", "y", "z", "yaw", "width", "height", "depth", "case_thickness",
                      "material_id", "visible", "include_in_em", "include_in_export"),
             "stack": ("nominal", "scope"), "scenario": ("name",), "activation": ("active_scenario_id",)}[section]
     for key in keys:
@@ -114,7 +116,8 @@ def _descriptors(document, model, section, row):
             entry.update(kind="text", value=row[key])
         else:
             unit = "deg" if key == "yaw" else "mm"
-            entry.update(kind="quantity", unit=unit, value=_value(document, row[key], key, unit), original=deepcopy(row[key]))
+            quantity = row.get(key, _missing(key))
+            entry.update(kind="quantity", unit=unit, value=_value(document, quantity, key, unit), original=deepcopy(quantity))
         result.append(entry)
     return result
 
@@ -164,7 +167,7 @@ def _parse_changes(document, model, section, row, changes, reason):
                 fail("목록에 있는 값을 선택하십시오.", key)
             result[key] = value or None
         elif entry["kind"] == "quantity":
-            result[key] = _quantity(row[key], key, value, reason)
+            result[key] = _quantity(entry["original"], key, value, reason)
         elif entry["kind"] == "lines":
             result[key] = _openings(document, row, value, reason)
         else:
@@ -291,13 +294,20 @@ class PhysicalSetupService:
             if section == "part":
                 if record["kind"] == "step" and record["step"] is None:
                     fail("STEP 파일의 읽기 미리보기가 필요합니다.", "step_token")
-                if record["kind"] == "box":
+                if record["kind"] != "step":
                     record["step"] = None
+                if record["kind"] == "dielectric_case":
+                    record.setdefault("case_thickness", _missing("case_thickness"))
+                else:
+                    if "case_thickness" in data["changes"]:
+                        fail("벽 두께는 유전체 케이스에만 지정하십시오.", "case_thickness")
+                    record.pop("case_thickness", None)
             if data["step_token"] is not None and record.get("step") is None:
                 fail("STEP 미리보기 사용 시 외부 STEP 종류를 선택하십시오.", "step_token")
             if record == original:
                 fail("변경할 항목이 없습니다.", "changes", "E_CONFLICT")
-            display_only = original is not None and set(k for k in original if original[k] != record[k]) == {"visible"}
+            display_only = original is not None and {k for k in original.keys() | record.keys()
+                                                      if original.get(k) != record.get(k)} == {"visible"}
             if "source_refs" in record:
                 record["source_refs"] = sources(record["source_refs"], data["reason"])
             if section in COLLECTIONS:

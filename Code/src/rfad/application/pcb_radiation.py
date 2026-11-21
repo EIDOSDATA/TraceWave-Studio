@@ -5,6 +5,7 @@ from bisect import bisect_left, bisect_right
 import math
 
 from rfad.application.pcb_geometry import fail
+from rfad.application.pcb_environment import board_extents, scene_extents
 
 
 SCHEMA = "rfad.pcb-radiation/0.1"
@@ -40,8 +41,7 @@ def recording(case, lines):
     """! @brief 물리 기판 전체와 PML 사이의 공기 안에 격자 정렬된 폐곡면을 배치한다."""
     if "radiation" not in case["settings"]:
         return None
-    z = [v for layer in case["layers"] for v in (layer["z_min_mm"], layer["z_min_mm"] + layer["thickness_mm"])]
-    physical = [*case["board"]["bounds_mm"], [min(z), max(z)]]
+    physical = scene_extents(case)
     value = case["settings"]["radiation"]
     clearance = value.get("box_clearance_mm")
     low, high = [], []
@@ -53,7 +53,7 @@ def recording(case, lines):
             last = bisect_left(values, round(bounds[1] + clearance, 12))
         if (len(values) <= 22 or first < 10 or last > len(values) - 11
                 or first >= last or not values[first] < bounds[0] or not values[last] > bounds[1]):
-            fail("E_GEOMETRY", "NF2FF 폐곡면과 기판 및 PML 사이에 공기 격자가 부족합니다. 공기 여백을 늘리십시오.", "settings.air_padding_mm")
+            fail("E_GEOMETRY", "NF2FF 폐곡면과 설치 모델 및 PML 사이에 공기 격자가 부족합니다. 공기 여백을 늘리십시오.", "settings.air_padding_mm")
         low.append(values[first])
         high.append(values[last])
     result = {"schema": "rfad.nf2ff-recording/0.1", "name": NAME, "start_mm": low, "stop_mm": high,
@@ -65,9 +65,12 @@ def recording(case, lines):
             "field_recording": "frequency_domain", "physics_validated": False}
     if clearance is not None:
         result.update(box_clearance_request_mm=clearance, phase_center_policy="physical_board_center",
-                      center_m=[(a + b) * 0.0005 for a, b in physical],
+                      center_m=[(a + b) * 0.0005 for a, b in board_extents(case)],
                       actual_clearance_mm=[[a - lo, hi - b] for (a, b), lo, hi in zip(physical, low, high)],
                       pml_clearance_mm=[[lo - lines[axis][8], lines[axis][-9] - hi] for axis, lo, hi in zip("xyz", low, high)])
+    if "environment" in case:
+        result.update(phase_center_policy="physical_board_center",
+                      center_m=[(a + b) * 0.0005 for a, b in board_extents(case)])
     return result
 
 

@@ -81,6 +81,8 @@ def solver_labels(state, project_id):
         description = records[identity]["snapshot"].get("description") or "설명 미지정"
         metadata = records[identity].get("metadata", {})
         label = "해석 결과 " + str(ordinal)
+        if metadata.get("installation_name"):
+            label += " / " + metadata["installation_name"]
         if metadata.get("profile") == "rfad.openems.reference-benchmark/0.1":
             grid = metadata.get("reference_grid_mm")
             level = (3.0, 2.5, 2.0).index(grid) + 1 if type(grid) in (float, int) and grid in (3.0, 2.5, 2.0) else None

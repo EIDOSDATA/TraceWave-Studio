@@ -9,6 +9,7 @@
 #include <wx/button.h>
 #include <wx/choice.h>
 #include <wx/choicdlg.h>
+#include <wx/dialog.h>
 #include <wx/listctrl.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
@@ -41,6 +42,16 @@ ResultCompareView::ResultCompareView(wxWindow* parent, bool measurementMode)
     {
         StudioTheme::Button(*button);
         tools->Add(button, 0, wxALL, FromDIP(4));
+    }
+    if (!measurementMode)
+    {
+        m_installation = new wxButton(this, wxID_ANY, Display("설치 비교 / 효율·방사"));
+        StudioTheme::Button(*m_installation);
+        tools->Add(m_installation, 0, wxALL, FromDIP(4));
+        m_installation->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+        {
+            OpenInstallation(m_comparisons.at(static_cast<std::size_t>(Selected())).at("installation_comparison"));
+        });
     }
     layout->Add(tools, 0, wxEXPAND);
     m_sources =
@@ -485,6 +496,7 @@ void ResultCompareView::SetComparison(std::size_t index, const Json& response)
     }
     m_comparisons[index] = response;
     RefreshRows();
+    Actions();
     if (Selected() != static_cast<int>(index))
     {
         return;
@@ -618,6 +630,11 @@ void ResultCompareView::Actions()
     m_row->Enable(m_available && !m_descriptions.empty());
     m_column->Enable(m_available && !m_descriptions.empty());
     const bool compared = valid && m_comparisons[static_cast<std::size_t>(selected)].is_object();
+    if (m_installation != nullptr)
+    {
+        m_installation->Enable(m_available && compared &&
+                               m_comparisons[static_cast<std::size_t>(selected)].contains("installation_comparison"));
+    }
     m_differencePrevious->Enable(m_available && compared &&
                                  m_comparisons[static_cast<std::size_t>(selected)].value("offset", 0) > 0);
     m_differenceNext->Enable(
@@ -627,6 +644,89 @@ void ResultCompareView::Actions()
     {
         onActionsChanged();
     }
+}
+
+/** @brief 공통 주파수에서 효율과 실제 기록한 각도 단면을 나란히 표시한다. */
+void ResultCompareView::OpenInstallation(const Json& comparison)
+{
+    if (comparison.contains("reason"))
+    {
+        wxMessageBox(Display(comparison.at("reason")), Display("설치 비교"), wxOK | wxICON_INFORMATION, this);
+        return;
+    }
+    auto* dialog = new wxDialog(this, wxID_ANY, Display("설치 비교 / 효율과 방사"),
+                                wxDefaultPosition, FromDIP(wxSize(780, 560)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+    dialog->SetName("installation-comparison");
+    auto* layout = new wxBoxSizer(wxVERTICAL);
+    auto* controls = new wxBoxSizer(wxHORIZONTAL);
+    auto* frequency = new wxChoice(dialog, wxID_ANY);
+    auto* phi = new wxChoice(dialog, wxID_ANY);
+    for (const auto& row : comparison.at("frequencies"))
+    {
+        const auto hz = row.at("frequency_hz").get<double>();
+        const auto scale = StudioFrequency::ForRange(hz, hz);
+        frequency->Append(Display(StudioFrequency::Value(hz, scale) + " " + scale.unit));
+    }
+    for (const auto& angle : comparison.at("phi_deg"))
+    {
+        phi->Append(Display("phi " + angle.dump() + " deg"));
+    }
+    for (auto* choice : {frequency, phi})
+    {
+        choice->SetSelection(0);
+        controls->Add(choice, 0, wxALL, FromDIP(6));
+    }
+    layout->Add(controls, 0, wxEXPAND);
+    auto* metrics = new wxStaticText(dialog, wxID_ANY, wxEmptyString);
+    metrics->SetName("installation-efficiencies");
+    layout->Add(metrics, 0, wxEXPAND | wxALL, FromDIP(8));
+    auto* chart = new NetworkChart(dialog, true);
+    chart->SetMetric("gain_dbi", Display("실현 이득 / dBi"));
+    layout->Add(chart, 1, wxEXPAND | wxALL, FromDIP(8));
+    auto* close = new wxButton(dialog, wxID_CLOSE, Display("닫기"));
+    layout->Add(close, 0, wxALIGN_RIGHT | wxALL, FromDIP(8));
+    auto update = [=]()
+    {
+        const auto& rows = comparison.at("frequencies").at(frequency->GetSelection()).at("results");
+        const auto& theta = comparison.at("theta_deg");
+        std::vector<Json> pages;
+        std::vector<wxString> labels;
+        std::string text = "계산 결과 / 물리 검증 전\n";
+        for (std::size_t i = 0; i < rows.size(); ++i)
+        {
+            const auto& row = rows.at(i);
+            const auto percent = [&row](const char* key)
+            {
+                const auto& value = row.at(key);
+                return value.is_number() ? Utf8(wxString::Format("%.2f%%", 100.0 * value.get<double>())) : std::string("미평가");
+            };
+            const auto name = comparison.at("names").at(i).get<std::string>();
+            text += name + "  |  방사 효율 " + percent("radiation_efficiency") + "  |  총 효율 " +
+                    percent("total_efficiency") + "  |  " + ResultUi::State(row.at("power_balance_status")) + "\n";
+            const auto& values = row.at("realized_gain_cuts_dbi").at(phi->GetSelection());
+            Json samples = Json::array();
+            for (std::size_t j = 0; j < theta.size(); ++j)
+            {
+                samples.push_back({{"index", j}, {"theta_deg", theta.at(j)}, {"valid", values.at(j).is_number()},
+                                   {"gain_dbi", values.at(j)}});
+            }
+            pages.push_back({{"samples", std::move(samples)}});
+            labels.push_back(Display(name));
+        }
+        metrics->SetLabel(Display(text));
+        chart->SetSeries(pages, labels, false);
+        dialog->Layout();
+    };
+    for (auto* choice : {frequency, phi})
+    {
+        choice->Bind(wxEVT_CHOICE, [update](wxCommandEvent&) { update(); });
+    }
+    close->Bind(wxEVT_BUTTON, [dialog](wxCommandEvent&) { dialog->Destroy(); });
+    dialog->Bind(wxEVT_CLOSE_WINDOW, [dialog](wxCloseEvent&) { dialog->Destroy(); });
+    dialog->SetSizer(layout);
+    update();
+    dialog->CentreOnParent();
+    dialog->Show();
 }
 void ResultCompareView::SetAvailable(bool available)
 {

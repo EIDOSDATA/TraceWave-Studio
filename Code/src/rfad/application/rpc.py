@@ -185,7 +185,8 @@ def capabilities(service=None, catalog=None) -> dict:
                                          "maximum_characters": 256, "legacy_names_persisted_on_read": False,
                                          "rename_method": "editor.apply", "automatic_names": ["board", "geometry", "template_objects"]}
         result["physical_setup_profile"] = {"profile": physical_setup_service.PROFILE, "step_preview_requires_cad": True,
-                                           "step_geometry": "single_mm_solid", "em_supported": False}
+                                           "step_geometry": "single_mm_solid", "em_supported": True,
+                                           "em_part_kinds": ["dielectric_case"]}
         result["design_rules_profile"] = {"profile": design_rule_service.PROFILE, "source": "draft_revision",
                                           "report": "rfad.design-checks/0.1", "manufacturing_verified": False}
         result["methods"].update({name: {"status": "implemented", "extension_profile": target_editor.PROFILE}

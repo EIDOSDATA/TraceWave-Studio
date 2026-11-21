@@ -11,7 +11,7 @@
 class NetworkChart final : public wxPanel
 {
 public:
-    explicit NetworkChart(wxWindow* parent);
+    explicit NetworkChart(wxWindow* parent, bool angularAxis = false);
     void SetPage(const Json& page, const wxString& label = wxString());
     void SetComparison(const Json& originalPage, const Json& derivedPage, const wxString& originalLabel,
                        const wxString& derivedLabel);
@@ -45,6 +45,7 @@ private:
     int m_marker = -1;
     bool m_externalLegend = false;
     bool m_multiStyle = false;
+    bool m_angularAxis = false;
     std::vector<int> m_markers;
     struct Hit
     {

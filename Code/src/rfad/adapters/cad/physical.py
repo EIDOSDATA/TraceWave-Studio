@@ -104,7 +104,18 @@ def part_bodies(cq, projection):
         return result
     storage = {row["id"]: row["step"] for row in projection["source_semantics"]["extensions"][KEY]["parts"]}
     for row in rows:
-        shape = (cq.Solid.makeBox(*row["size_mm"]) if row["kind"] == "box" else read_external(storage[row["id"]]))
+        if row["kind"] == "dielectric_case":
+            width, length, height = row["size_mm"]
+            wall = row["wall_mm"]
+            _require(min(width, length) > 2 * wall and height > wall,
+                     "케이스 벽 두께 안에 빈 내부 공간이 필요합니다.", field="part." + row["id"])
+            outer = cq.Solid.makeBox(width, length, height)
+            cavity = cq.Solid.makeBox(width - 2 * wall, length - 2 * wall, height - wall, (wall, wall, 0))
+            shape = _positive_solid(outer.cut(cavity))
+        elif row["kind"] == "box":
+            shape = cq.Solid.makeBox(*row["size_mm"])
+        else:
+            shape = read_external(storage[row["id"]])
         shape = shape.rotate((0, 0, 0), (0, 0, 1), row["yaw_deg"]).translate(tuple(row["translation_mm"]))
         result.append({"id": row["id"], "name": "environment_" + row["id"], "role": "environment", "layer_id": row["id"],
                        "net_id": None, "material_id": row["material_id"], "source_entity_ids": [row["id"]],

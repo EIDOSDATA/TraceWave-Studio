@@ -12,6 +12,7 @@ from rfad.application.pcb_geometry import (MAX_POLYGON_POINTS, fail, scalar, len
                                             shape_polygons, distance_to_shape, _inside_board)
 from rfad.application.pcb_mesh import mesh_lines, policy_report
 from rfad.application.pcb_compute import limits as compute_limits
+from rfad.application.pcb_environment import project_environment
 from rfad.application.pcb_results import normalization_contract
 from rfad.domain.design import material_input_fields, resolve_scalar
 from rfad.domain.material_models import TOTAL_TAN_DELTA_MODEL
@@ -84,6 +85,22 @@ class MaterialProjection:
         return result
 
 
+def dielectric_volume(materials, material_id, field, center_hz):
+    """! @brief 기판과 케이스에 동일한 상수 손실 근사 및 유효 대역을 적용한다."""
+    mat = materials.consume(material_id, field)
+    epsilon = mat["epsilon_r"]
+    dielectric_loss = 2 * math.pi * center_hz * EPSILON0 * epsilon * mat["tan_delta"]
+    result = {"epsilon_r": epsilon}
+    if mat.get("model") == TOTAL_TAN_DELTA_MODEL:
+        result.update(kappa_s_per_m=dielectric_loss, loss_model=TOTAL_TAN_DELTA_MODEL,
+                      loss_partition=mat["loss_partition"],
+                      loss_approximation="constant_kappa_from_total_tan_delta_at_band_center_not_broadband_constant_tan_delta")
+    else:
+        result["kappa_s_per_m"] = mat["conductivity_s_per_m"] + dielectric_loss
+    result["loss_reference_frequency_hz"] = center_hz
+    return result
+
+
 def project_board(document):
     """! @brief 원본 기판 외곽의 의미와 mm 좌표를 보존한다."""
     source_board = document["board"]
@@ -149,17 +166,7 @@ def project_pcb(document, settings):
         item = {"id": source["id"], "role": source["role"], "material_id": source["material_id"],
                 "z_min_mm": length(document, source["z_min"], field + ".z_min"), "thickness_mm": length(document, source["thickness"], field + ".thickness", positive=True)}
         if item["role"] == "dielectric":
-            mat = materials.consume(item["material_id"], field + ".material_id")
-            item["epsilon_r"] = mat["epsilon_r"]
-            dielectric_loss = 2 * math.pi * center_hz * EPSILON0 * mat["epsilon_r"] * mat["tan_delta"]
-            if mat.get("model") == TOTAL_TAN_DELTA_MODEL:
-                item["kappa_s_per_m"] = dielectric_loss
-                item["loss_model"] = TOTAL_TAN_DELTA_MODEL
-                item["loss_partition"] = mat["loss_partition"]
-                item["loss_approximation"] = "constant_kappa_from_total_tan_delta_at_band_center_not_broadband_constant_tan_delta"
-            else:
-                item["kappa_s_per_m"] = mat["conductivity_s_per_m"] + dielectric_loss
-            item["loss_reference_frequency_hz"] = center_hz
+            item.update(dielectric_volume(materials, item["material_id"], field + ".material_id", center_hz))
         elif source["material_id"] in materials.sources and materials.sources[source["material_id"]]["model"] == TOTAL_TAN_DELTA_MODEL:
             fail("E_UNSUPPORTED", "총 손실 탄젠트 모델은 도체 층에 사용할 수 없습니다.",
                  "materials." + source["material_id"] + ".model")
@@ -258,13 +265,20 @@ def project_pcb(document, settings):
     port = project_port(document, shapes, frequency, settings)
     connectivity = validate_native_contacts(shapes, port, settings["curve_tolerance_mm"], polygons_by_id, vias)
     excitation = {"kind": "gaussian", "center_hz": center_hz, "width_hz": center_hz / 2}
-    shortest = 299792458.0 / (center_hz * 1.5 * math.sqrt(max(l["epsilon_r"] for l in dielectrics))) * 1000
-    if settings["grid_mm"] > shortest / 10:
-        fail("E_GEOMETRY", "최소 모델 파장당 10개 격자 초기 기준을 충족하지 못했습니다.", "settings.grid_mm")
     case = {"source": "user_project", "board": board, "layers": layers, "shapes": shapes, "vias": vias, "connectivity": connectivity, "materials": list(materials.consumed.values()),
             "port": port, "settings": deepcopy(settings), "frequency_hz": deepcopy(frequency), "excitation": excitation,
             "native_length_unit": "mm", "delta_unit_m": 0.001, "coordinate_round_decimals_mm": 12, "boundary_conditions": ["PML_8"] * 6, "num_threads": compute_limits(settings)["num_threads"],
             "stop_criteria": {"max_timesteps": settings["max_timesteps"], "energy_decay": settings["end_criterion"], "exact_end_criteria": True}}
+    environment = project_environment(document, case,
+                                      lambda material_id, field: dielectric_volume(materials, material_id, field, center_hz))
+    dielectric_regions = dielectrics
+    if environment is not None:
+        case["environment"] = environment
+        case["materials"] = list(materials.consumed.values())
+        dielectric_regions = [*dielectrics, *environment["parts"]]
+    shortest = 299792458.0 / (center_hz * 1.5 * math.sqrt(max(region["epsilon_r"] for region in dielectric_regions))) * 1000
+    if settings["grid_mm"] > shortest / 10:
+        fail("E_GEOMETRY", "최소 모델 파장당 10개 격자 초기 기준을 충족하지 못했습니다.", "settings.grid_mm")
     lines = mesh_lines(case)
     if "mesh_policy" in settings:
         case["mesh_policy_report"] = policy_report(case, lines)
@@ -286,7 +300,8 @@ def project_pcb(document, settings):
                              "approximations": ["outer copper collapsed to adjacent dielectric interface with finite-conductivity sheet model",
                                                 "dielectric tan_delta converted to constant conductivity at evaluation band center",
                                                 "analytic line/arc/pad converted to bounded-error polygons before Cartesian Yee discretization",
-                                                "PTH uses explicit finite-kappa hollow volume; RF skin depth loss accuracy is unvalidated"],
+                                                "PTH uses explicit finite-kappa hollow volume; RF skin depth loss accuracy is unvalidated"]
+                                               + (["open-bottom dielectric case uses five axis-aligned uniform material volumes"] if environment else []),
                              "unsupported_observables": ["absolute_power", "full_s_matrix"] if radiation is not None else ["NF2FF", "gain", "efficiency", "absolute_power", "full_s_matrix"]},
             "resource_estimate": {"kind": "initial_estimate_not_measured", "estimated_grid_points": cells,
                                   "estimated_memory_bytes": 128 * 1024 * 1024 + cells * 160 + (losses["estimated_field_bytes"] * 2 if losses else 0), "max_wall_time_seconds": compute_limits(settings)["max_wall_time_seconds"],

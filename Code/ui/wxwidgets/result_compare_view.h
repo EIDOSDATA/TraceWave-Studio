@@ -54,6 +54,7 @@ private:
     void MapPorts();
     void Remove();
     void ChannelChanged();
+    void OpenInstallation(const Json& comparison);
     wxListCtrl* m_sources = nullptr;
     wxListCtrl* m_markers = nullptr;
     wxListCtrl* m_differences = nullptr;
@@ -66,6 +67,7 @@ private:
     wxButton* m_remove = nullptr;
     wxButton* m_map = nullptr;
     wxButton* m_compare = nullptr;
+    wxButton* m_installation = nullptr;
     wxButton* m_previous = nullptr;
     wxButton* m_next = nullptr;
     wxButton* m_differencePrevious = nullptr;
