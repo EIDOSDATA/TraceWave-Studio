@@ -1,0 +1,842 @@
+{
+  "schema": "rfad.ro-and-ghz-pth-independent-followup/0.1",
+  "date_kst": "2026-11-22",
+  "ro4350b": {
+    "schema": "rfad.ro-grid-ablation/0.2",
+    "scope": "native_port_sensitivity_only",
+    "mode": "replay",
+    "physics_validated": false,
+    "cutoff_seconds": 4.21e-09,
+    "fixed_dt_seconds": 1.371922165243796e-13,
+    "native_executable_sha256": "a30a6f017d89009044f1120db990d3461ad7010fab50e65d10269b7a5d31fda3",
+    "settings": {
+      "same_grid_shorter_dt": [],
+      "transverse_feed_strip": [
+        [
+          "X",
+          8.0,
+          10.0
+        ]
+      ],
+      "axial_feed_strip": [
+        [
+          "Y",
+          49.0,
+          54.0
+        ]
+      ],
+      "substrate_z": [
+        [
+          "Z",
+          0.035,
+          0.797
+        ]
+      ],
+      "feed_strips_and_substrate": [
+        [
+          "X",
+          8.0,
+          10.0
+        ],
+        [
+          "Y",
+          49.0,
+          54.0
+        ],
+        [
+          "Z",
+          0.035,
+          0.797
+        ]
+      ]
+    },
+    "original": {
+      "N7": {
+        "sha256": {
+          "pcb.xml": "dd63709b616e00c8e18528fcce62944d527e52a34cc66511c9436d7e267898bd",
+          "port_ut_1": "22101bb68fe6798c434fa4154331f6afd56f82e9dc539060e0d27c29d8d4b8e9",
+          "port_it_1": "b2e11d488812c0af9826699e2e26fa2638c0255a266b514cc3ccf9640bc36f3a"
+        },
+        "points": [
+          {
+            "frequency_hz": 2400000000.0,
+            "accepted_w_s2": 6.621028245755866e-28,
+            "incident_w_s2": 1.3306761819620643e-27,
+            "accepted_fraction": 0.4975687049566971,
+            "impedance_ohm": [
+              28.131131027379638,
+              72.13156175168453
+            ],
+            "voltage_abs_v_s": 5.311952491269888e-13,
+            "current_abs_a_s": 6.8609478987855526e-15
+          },
+          {
+            "frequency_hz": 2441750000.0,
+            "accepted_w_s2": 5.85271595907174e-28,
+            "incident_w_s2": 1.337631697571194e-27,
+            "accepted_fraction": 0.4375431570363363,
+            "impedance_ohm": [
+              25.438028563185043,
+              77.0504373566829
+            ],
+            "voltage_abs_v_s": 5.504177052856242e-13,
+            "current_abs_a_s": 6.78347136959096e-15
+          },
+          {
+            "frequency_hz": 2483500000.0,
+            "accepted_w_s2": 5.095273885017795e-28,
+            "incident_w_s2": 1.3305631201393404e-27,
+            "accepted_fraction": 0.38294116287276947,
+            "impedance_ohm": [
+              23.11337990191284,
+              82.01181746676204
+            ],
+            "voltage_abs_v_s": 5.657705365986863e-13,
+            "current_abs_a_s": 6.6399840443246494e-15
+          }
+        ]
+      },
+      "N8": {
+        "sha256": {
+          "pcb.xml": "95d7586761130edac63a33744059902b0acb1327f05da861d4479146ea230d82",
+          "port_ut_1": "d47a5966ef6e105b494b27dcb05e03609e4877296be8e4d05b7794e9534ae9ec",
+          "port_it_1": "b51324434ac07ed90cf49235f8a598eba9b494cf89369b2e2d08ad18f29b528d"
+        },
+        "points": [
+          {
+            "frequency_hz": 2400000000.0,
+            "accepted_w_s2": 6.299962157659693e-28,
+            "incident_w_s2": 1.306606405601266e-27,
+            "accepted_fraction": 0.4821621974798612,
+            "impedance_ohm": [
+              28.038536486396435,
+              74.43332998310676
+            ],
+            "voltage_abs_v_s": 5.331966008950082e-13,
+            "current_abs_a_s": 6.703572297852001e-15
+          },
+          {
+            "frequency_hz": 2441750000.0,
+            "accepted_w_s2": 5.55784654873885e-28,
+            "incident_w_s2": 1.3134421764321105e-27,
+            "accepted_fraction": 0.4231512165869698,
+            "impedance_ohm": [
+              25.362445288624084,
+              79.42239235278515
+            ],
+            "voltage_abs_v_s": 5.51952453615014e-13,
+            "current_abs_a_s": 6.620224423580609e-15
+          },
+          {
+            "frequency_hz": 2483500000.0,
+            "accepted_w_s2": 4.83107535887402e-28,
+            "incident_w_s2": 1.3065064250348971e-27,
+            "accepted_fraction": 0.36977050141525175,
+            "impedance_ohm": [
+              23.053006960269414,
+              84.45162525011642
+            ],
+            "voltage_abs_v_s": 5.667443613334143e-13,
+            "current_abs_a_s": 6.474006232102615e-15
+          }
+        ]
+      }
+    },
+    "runs": [
+      {
+        "name": "same_grid_shorter_dt",
+        "changed_intervals_mm": [],
+        "base_grid": "N7",
+        "status": "completed",
+        "input_xml_sha256": "d5c0a6a6bf996e82f430a48802e0dd8aaf9b0be8b3130cfdc510b34fffb1fcd0",
+        "stats": {
+          "cells": 2087280.0,
+          "timestep_s": 1.371922165243796e-13,
+          "iterations": 30833.0,
+          "numerical_duration_s": 4.230047612096196e-09,
+          "wall_seconds": 2014.063131,
+          "cells_per_s": 31953866.41532241
+        },
+        "points": [
+          {
+            "frequency_hz": 2400000000.0,
+            "accepted_w_s2": 6.734269252628502e-28,
+            "incident_w_s2": 1.3534092755734034e-27,
+            "accepted_fraction": 0.49757818083339,
+            "impedance_ohm": [
+              28.131797760952438,
+              72.13120453535178
+            ],
+            "voltage_abs_v_s": 5.357115941465235e-13,
+            "current_abs_a_s": 6.919289358706771e-15
+          },
+          {
+            "frequency_hz": 2441750000.0,
+            "accepted_w_s2": 5.952839822515026e-28,
+            "incident_w_s2": 1.3604847982974426e-27,
+            "accepted_fraction": 0.4375528363098665,
+            "impedance_ohm": [
+              25.43843309370441,
+              77.04957202077348
+            ],
+            "voltage_abs_v_s": 5.550966386661077e-13,
+            "current_abs_a_s": 6.8411941826048245e-15
+          },
+          {
+            "frequency_hz": 2483500000.0,
+            "accepted_w_s2": 5.182383341445293e-28,
+            "incident_w_s2": 1.3532962862672882e-27,
+            "accepted_fraction": 0.3829452126658482,
+            "impedance_ohm": [
+              23.113240193295045,
+              82.01071885541916
+            ],
+            "voltage_abs_v_s": 5.705806736731973e-13,
+            "current_abs_a_s": 6.6965227546436255e-15
+          }
+        ],
+        "raw_sha256": {
+          "port_ut_1": "31742dc5fff6feb7506447501759ec35ba2c95aa5e086eb312ed914d61e9ce6f",
+          "port_it_1": "327eda57ef83c263b42c96c35da049d094f76dda60bcc49fe864cd77dede42fd",
+          "openEMS_stats.txt": "eae6852250d1add285438d9961b3c647e604bc818515d976c7b5c64ac6c9f683",
+          "native.log": "dda2df0e0b80304e597e6795f9cf3ef69d1fd42c95b8ba177f5594a29896df86"
+        }
+      },
+      {
+        "name": "transverse_feed_strip",
+        "changed_intervals_mm": [
+          [
+            "X",
+            8.0,
+            10.0
+          ]
+        ],
+        "base_grid": "N7",
+        "status": "completed",
+        "input_xml_sha256": "65c7dbba4639c00edcc557f1e4ec06c5f267491e33e650a4f04818b40d3b57ec",
+        "stats": {
+          "cells": 2133664.0,
+          "timestep_s": 1.371922165243796e-13,
+          "iterations": 30833.0,
+          "numerical_duration_s": 4.230047612096196e-09,
+          "wall_seconds": 2013.063694,
+          "cells_per_s": 32680169.19091086
+        },
+        "points": [
+          {
+            "frequency_hz": 2400000000.0,
+            "accepted_w_s2": 6.61822804935566e-28,
+            "incident_w_s2": 1.3330036912640572e-27,
+            "accepted_fraction": 0.4964898516582309,
+            "impedance_ohm": [
+              28.134848988498494,
+              72.30801843910888
+            ],
+            "voltage_abs_v_s": 5.321848509224246e-13,
+            "current_abs_a_s": 6.859043664161539e-15
+          },
+          {
+            "frequency_hz": 2441750000.0,
+            "accepted_w_s2": 5.849588101064386e-28,
+            "incident_w_s2": 1.3399731104675776e-27,
+            "accepted_fraction": 0.4365451855241482,
+            "impedance_ohm": [
+              25.441655401006773,
+              77.22995476433343
+            ],
+            "voltage_abs_v_s": 5.513951787624357e-13,
+            "current_abs_a_s": 6.78117509000571e-15
+          },
+          {
+            "frequency_hz": 2483500000.0,
+            "accepted_w_s2": 5.092067221164495e-28,
+            "incident_w_s2": 1.3328934303894608e-27,
+            "accepted_fraction": 0.3820310840362259,
+            "impedance_ohm": [
+              23.116723187892372,
+              82.19462549929945
+            ],
+            "voltage_abs_v_s": 5.667255568342318e-13,
+            "current_abs_a_s": 6.637414284596808e-15
+          }
+        ],
+        "raw_sha256": {
+          "port_ut_1": "ad2b871866866c8fada4209499a1394ed660c7ce8c80493f48075281a4389fab",
+          "port_it_1": "c7656e669047d08cde1042898a2106a5cd7956be93dd79b99032de106240ee44",
+          "openEMS_stats.txt": "5734ef2c33d45939ad375d1dba301ed37ee451082956d43d0ca287d26328c9b7",
+          "native.log": "15f7459fcee0e001720d92a810f16c1a9707c7b78c871ee7348455b60de524f3"
+        }
+      },
+      {
+        "name": "axial_feed_strip",
+        "changed_intervals_mm": [
+          [
+            "Y",
+            49.0,
+            54.0
+          ]
+        ],
+        "base_grid": "N7",
+        "status": "completed",
+        "input_xml_sha256": "38e1eb44606100bc8d42b321a64581513058e23cbc1b37c6350ead4a50a03816",
+        "stats": {
+          "cells": 2134080.0,
+          "timestep_s": 1.371922165243796e-13,
+          "iterations": 30833.0,
+          "numerical_duration_s": 4.230047612096196e-09,
+          "wall_seconds": 2014.875966,
+          "cells_per_s": 32657141.05996736
+        },
+        "points": [
+          {
+            "frequency_hz": 2400000000.0,
+            "accepted_w_s2": 6.730735130939401e-28,
+            "incident_w_s2": 1.3534149785439916e-27,
+            "accepted_fraction": 0.49731495791337765,
+            "impedance_ohm": [
+              28.14214203131606,
+              72.19029779401917
+            ],
+            "voltage_abs_v_s": 5.358793348563933e-13,
+            "current_abs_a_s": 6.916202058143708e-15
+          },
+          {
+            "frequency_hz": 2441750000.0,
+            "accepted_w_s2": 5.94991662434793e-28,
+            "incident_w_s2": 1.3604919598068604e-27,
+            "accepted_fraction": 0.4373356697523298,
+            "impedance_ohm": [
+              25.44858709143465,
+              77.10721040039334
+            ],
+            "voltage_abs_v_s": 5.552456440344492e-13,
+            "current_abs_a_s": 6.83814963909259e-15
+          },
+          {
+            "frequency_hz": 2483500000.0,
+            "accepted_w_s2": 5.180032117915685e-28,
+            "incident_w_s2": 1.3533045398206285e-27,
+            "accepted_fraction": 0.3827691377287675,
+            "impedance_ohm": [
+              23.123049295337818,
+              82.0670563134721
+            ],
+            "voltage_abs_v_s": 5.707109868714018e-13,
+            "current_abs_a_s": 6.693583286527731e-15
+          }
+        ],
+        "raw_sha256": {
+          "port_ut_1": "b2775ecd5d42cf456d648b76810f719f5fb0ca5a4a388da3fc48cdfe46c735a0",
+          "port_it_1": "3bac5e329cbe2a00da0d5fe6611e3056b5e2961fe5373244e0a14554ada6717e",
+          "openEMS_stats.txt": "eda172d4b520cc2fd605d1b4fa4f9e5a5f794493ede4c6281e64e74b17a5b30f",
+          "native.log": "c83cc79ba3e99a1b5f0095a31e6f426eeb4914698843a0993585b85a4263a65a"
+        }
+      },
+      {
+        "name": "substrate_z",
+        "changed_intervals_mm": [
+          [
+            "Z",
+            0.035,
+            0.797
+          ]
+        ],
+        "base_grid": "N7",
+        "status": "completed",
+        "input_xml_sha256": "1d52862104c98156d161e887b224249cbdaf4892865115aa986860645c724441",
+        "stats": {
+          "cells": 2127420.0,
+          "timestep_s": 1.371922165243796e-13,
+          "iterations": 30833.0,
+          "numerical_duration_s": 4.230047612096196e-09,
+          "wall_seconds": 1567.99317,
+          "cells_per_s": 41833562.87196072
+        },
+        "points": [
+          {
+            "frequency_hz": 2400000000.0,
+            "accepted_w_s2": 6.645894772936958e-28,
+            "incident_w_s2": 1.338856907018442e-27,
+            "accepted_fraction": 0.4963857405596082,
+            "impedance_ohm": [
+              28.15548341098062,
+              72.35962621243863
+            ],
+            "voltage_abs_v_s": 5.334824691548922e-13,
+            "current_abs_a_s": 6.870846307494792e-15
+          },
+          {
+            "frequency_hz": 2441750000.0,
+            "accepted_w_s2": 5.873816055570574e-28,
+            "incident_w_s2": 1.3458571827256052e-27,
+            "accepted_fraction": 0.4364368025792328,
+            "impedance_ohm": [
+              25.459411264308173,
+              77.28400775786103
+            ],
+            "voltage_abs_v_s": 5.527296567875841e-13,
+            "current_abs_a_s": 6.792833826505993e-15
+          },
+          {
+            "frequency_hz": 2483500000.0,
+            "accepted_w_s2": 5.112928099459016e-28,
+            "incident_w_s2": 1.3387466621914627e-27,
+            "accepted_fraction": 0.381919017530128,
+            "impedance_ohm": [
+              23.13196279269905,
+              82.25119649514102
+            ],
+            "voltage_abs_v_s": 5.680876534257496e-13,
+            "current_abs_a_s": 6.648805032865084e-15
+          }
+        ],
+        "raw_sha256": {
+          "port_ut_1": "9f498fbb8f807f583ef0ae4c7246f0195d0476b0590ece466c99b91e1ebad030",
+          "port_it_1": "0cdec98b352e74324893fda66feb33586cdd9bcf242561037aeb51ac75a1d81f",
+          "openEMS_stats.txt": "9a5a232facc32bf42a90e1cba814123b070e5de3fa9f6ef7c49be9bfa2478132",
+          "native.log": "84f42e156fb0d5776a8e5f90544a8538589b46b011ff7fdeef655a77d6c99547"
+        }
+      },
+      {
+        "name": "feed_strips_and_substrate",
+        "changed_intervals_mm": [
+          [
+            "X",
+            8.0,
+            10.0
+          ],
+          [
+            "Y",
+            49.0,
+            54.0
+          ],
+          [
+            "Z",
+            0.035,
+            0.797
+          ]
+        ],
+        "base_grid": "N7",
+        "status": "completed",
+        "input_xml_sha256": "c1aa1b144085bcb2ae23f24c2448a6c30b21a01b9ea33683e66f6e64195d0c0b",
+        "stats": {
+          "cells": 2223456.0,
+          "timestep_s": 1.371922165243796e-13,
+          "iterations": 30833.0,
+          "numerical_duration_s": 4.230047612096196e-09,
+          "wall_seconds": 1574.846705,
+          "cells_per_s": 43531740.98173574
+        },
+        "points": [
+          {
+            "frequency_hz": 2400000000.0,
+            "accepted_w_s2": 6.53505482545518e-28,
+            "incident_w_s2": 1.3203694624012432e-27,
+            "accepted_fraction": 0.49494137902662744,
+            "impedance_ohm": [
+              28.168999633271948,
+              72.61108391234558
+            ],
+            "voltage_abs_v_s": 5.305180541609985e-13,
+            "current_abs_a_s": 6.811674762071998e-15
+          },
+          {
+            "frequency_hz": 2441750000.0,
+            "accepted_w_s2": 5.77532364338338e-28,
+            "incident_w_s2": 1.3272750923771912e-27,
+            "accepted_fraction": 0.43512634845272313,
+            "impedance_ohm": [
+              25.47286079524365,
+              77.53777584144568
+            ],
+            "voltage_abs_v_s": 5.495828186101192e-13,
+            "current_abs_a_s": 6.7338633657586415e-15
+          },
+          {
+            "frequency_hz": 2483500000.0,
+            "accepted_w_s2": 5.0269200132337335e-28,
+            "incident_w_s2": 1.3202643432455088e-27,
+            "accepted_fraction": 0.3807510245165317,
+            "impedance_ohm": [
+              23.145287540017264,
+              82.50738725725746
+            ],
+            "voltage_abs_v_s": 5.64776455580992e-13,
+            "current_abs_a_s": 6.590747825699313e-15
+          }
+        ],
+        "raw_sha256": {
+          "port_ut_1": "80084d46a6bf01ffb7665d7a1ee30249397f9be57a47d716091382bb102e3c09",
+          "port_it_1": "5b6f3146862e5a38789727cbaae41ced149a17db1207b3b2b0fc1e2d23f71a36",
+          "openEMS_stats.txt": "96cdad8c3a0dfde048d752b95ce5780ae6c1016594b4c9e098e7d60c85192463",
+          "native.log": "20e286456b8d618c90a10415153302c8610f6621b42c5c9601b07330430c6dfa"
+        }
+      }
+    ]
+  },
+  "pth_ghz": {
+    "schema": "rfad.pth-ghz-surface-comparison/0.1",
+    "scope": "asymptotic_surface_loss_in_prescribed_current_fixture",
+    "native_or_measurement_validated": false,
+    "record_sha256": "838288b44c57b8d1fbcc27c932698ff4b4baaf5b33496f0dc183098d9611cc56",
+    "maximum_relative_difference": {
+      "barrel": 0.005175371278033358,
+      "joint": 0.005275516103553701,
+      "pad": 0.005740254717074844,
+      "feed_pad": 0.018593121644376653
+    },
+    "cases": [
+      {
+        "frequency_hz": 8000000000.0,
+        "joint_conductivity_ratio": 1.0,
+        "terminal_profile": "spread",
+        "surface_loss_w": {
+          "barrel": 0.0032496684180984073,
+          "joint": 0.00046423834544262964,
+          "pad": 0.00288581201270277,
+          "feed_pad": 0.0002806533172103924
+        },
+        "numerical_loss_w": {
+          "volume": {
+            "barrel": 0.003261101812844787,
+            "joint": 0.0004661857954075166,
+            "pad": 0.002895110340802217,
+            "feed_pad": 0.00027688976776969244
+          },
+          "elements": {
+            "barrel": 0.00324986148426183,
+            "joint": 0.00046439016000461466,
+            "pad": 0.0028874001588628804,
+            "feed_pad": 0.0002770783719666161
+          }
+        },
+        "surface_minus_numerical_relative": {
+          "volume": {
+            "barrel": -0.0035059913497168527,
+            "joint": -0.004177411633026207,
+            "pad": -0.003211735307079966,
+            "feed_pad": 0.013592230117475346
+          },
+          "elements": {
+            "barrel": -5.9407505322184306e-05,
+            "joint": -0.0003269116683770612,
+            "pad": -0.0005500263464471855,
+            "feed_pad": 0.012902289046966997
+          }
+        }
+      },
+      {
+        "frequency_hz": 10000000000.0,
+        "joint_conductivity_ratio": 1.0,
+        "terminal_profile": "spread",
+        "surface_loss_w": {
+          "barrel": 0.0036332397436011233,
+          "joint": 0.0005190342490858748,
+          "pad": 0.00322643591534444,
+          "feed_pad": 0.00031377994769662455
+        },
+        "numerical_loss_w": {
+          "volume": {
+            "barrel": 0.003648011517389992,
+            "joint": 0.0005214689947043945,
+            "pad": 0.0032384468749528097,
+            "feed_pad": 0.00031022347387586003
+          },
+          "elements": {
+            "barrel": 0.0036323161485727366,
+            "joint": 0.0005190142607337806,
+            "pad": 0.003227057089232542,
+            "feed_pad": 0.0003101645125273854
+          }
+        },
+        "surface_minus_numerical_relative": {
+          "volume": {
+            "barrel": -0.004049267311370008,
+            "joint": -0.004669013197802552,
+            "pad": -0.0037088641784635,
+            "feed_pad": 0.011464231820792703
+          },
+          "elements": {
+            "barrel": 0.00025427165219360504,
+            "joint": 3.8512144282742966e-05,
+            "pad": -0.00019248927766868373,
+            "feed_pad": 0.011656508153620182
+          }
+        }
+      },
+      {
+        "frequency_hz": 12000000000.0,
+        "joint_conductivity_ratio": 1.0,
+        "terminal_profile": "spread",
+        "surface_loss_w": {
+          "barrel": 0.003980014728789242,
+          "joint": 0.0005685735326841775,
+          "pad": 0.0035343834623579565,
+          "feed_pad": 0.0003437287108924649
+        },
+        "numerical_loss_w": {
+          "volume": {
+            "barrel": 0.003998472684551278,
+            "joint": 0.0005715440275823943,
+            "pad": 0.0035494394147762287,
+            "feed_pad": 0.0003404170990544255
+          },
+          "elements": {
+            "barrel": 0.003977856398513921,
+            "joint": 0.0005683660561154512,
+            "pad": 0.003533930772826697,
+            "feed_pad": 0.0003400573201962472
+          }
+        },
+        "surface_minus_numerical_relative": {
+          "volume": {
+            "barrel": -0.004616251558589135,
+            "joint": -0.005197315963184512,
+            "pad": -0.004241783182886483,
+            "feed_pad": 0.00972810075415742
+          },
+          "elements": {
+            "barrel": 0.0005425862723771324,
+            "joint": 0.0003650403934118973,
+            "pad": 0.00012809801899349438,
+            "feed_pad": 0.010796387779857142
+          }
+        }
+      },
+      {
+        "frequency_hz": 8000000000.0,
+        "joint_conductivity_ratio": 0.1,
+        "terminal_profile": "spread",
+        "surface_loss_w": {
+          "barrel": 0.0032496684180984073,
+          "joint": 0.0014680505487867585,
+          "pad": 0.00288581201270277,
+          "feed_pad": 0.0002806533172103924
+        },
+        "numerical_loss_w": {
+          "volume": {
+            "barrel": 0.0032633428759538214,
+            "joint": 0.001475836347202636,
+            "pad": 0.0029004172874531288,
+            "feed_pad": 0.00027688976776969244
+          },
+          "elements": {
+            "barrel": 0.0032520778081886912,
+            "joint": 0.0014745321623448571,
+            "pad": 0.0028923877141190046,
+            "feed_pad": 0.0002770783719666161
+          }
+        },
+        "surface_minus_numerical_relative": {
+          "volume": {
+            "barrel": -0.004190322125258494,
+            "joint": -0.005275516103553701,
+            "pad": -0.0050355770576666625,
+            "feed_pad": 0.013592230117475346
+          },
+          "elements": {
+            "barrel": -0.0007408771352940269,
+            "joint": -0.004395708499020712,
+            "pad": -0.0022734508876993686,
+            "feed_pad": 0.012902289046966997
+          }
+        }
+      },
+      {
+        "frequency_hz": 10000000000.0,
+        "joint_conductivity_ratio": 0.1,
+        "terminal_profile": "spread",
+        "surface_loss_w": {
+          "barrel": 0.0036332397436011233,
+          "joint": 0.0016413304107465321,
+          "pad": 0.00322643591534444,
+          "feed_pad": 0.00031377994769662455
+        },
+        "numerical_loss_w": {
+          "volume": {
+            "barrel": 0.003650255328572162,
+            "joint": 0.001649168422571858,
+            "pad": 0.0032437756261664828,
+            "feed_pad": 0.00031022347387586003
+          },
+          "elements": {
+            "barrel": 0.003634529701454911,
+            "joint": 0.001647796795491602,
+            "pad": 0.0032320229118485973,
+            "feed_pad": 0.0003101645125273854
+          }
+        },
+        "surface_minus_numerical_relative": {
+          "volume": {
+            "barrel": -0.004661478017126686,
+            "joint": -0.004752705495720488,
+            "pad": -0.00534553336000454,
+            "feed_pad": 0.011464231820792703
+          },
+          "elements": {
+            "barrel": -0.000354917406032329,
+            "joint": -0.003924261027064779,
+            "pad": -0.0017286376540448511,
+            "feed_pad": 0.011656508153620182
+          }
+        }
+      },
+      {
+        "frequency_hz": 12000000000.0,
+        "joint_conductivity_ratio": 0.1,
+        "terminal_profile": "spread",
+        "surface_loss_w": {
+          "barrel": 0.003980014728789242,
+          "joint": 0.0017979873805701908,
+          "pad": 0.0035343834623579565,
+          "feed_pad": 0.0003437287108924649
+        },
+        "numerical_loss_w": {
+          "volume": {
+            "barrel": 0.004000719939857436,
+            "joint": 0.0018058519313147742,
+            "pad": 0.003554788855855989,
+            "feed_pad": 0.0003404170990544255
+          },
+          "elements": {
+            "barrel": 0.003980067317518574,
+            "joint": 0.0018044449975623859,
+            "pad": 0.003538876818736136,
+            "feed_pad": 0.0003400573201962472
+          }
+        },
+        "surface_minus_numerical_relative": {
+          "volume": {
+            "barrel": -0.005175371278033358,
+            "joint": -0.0043550363173228135,
+            "pad": -0.005740254717074844,
+            "feed_pad": 0.00972810075415742
+          },
+          "elements": {
+            "barrel": -1.3213025091496355e-05,
+            "joint": -0.0035787275316889744,
+            "pad": -0.0012697125693638123,
+            "feed_pad": 0.010796387779857142
+          }
+        }
+      },
+      {
+        "frequency_hz": 8000000000.0,
+        "joint_conductivity_ratio": 0.1,
+        "terminal_profile": "surface_concentrated",
+        "surface_loss_w": {
+          "barrel": 0.0032496684180984073,
+          "joint": 0.0014680505487867585,
+          "pad": 0.00288581201270277,
+          "feed_pad": 0.00012743167469782903
+        },
+        "numerical_loss_w": {
+          "volume": {
+            "barrel": 0.0032633428759538214,
+            "joint": 0.001475836347202636,
+            "pad": 0.0029004172874531288,
+            "feed_pad": 0.00012554521279222705
+          },
+          "elements": {
+            "barrel": 0.0032520778081886912,
+            "joint": 0.0014745321623448571,
+            "pad": 0.0028923877141190054,
+            "feed_pad": 0.00012510557158692406
+          }
+        },
+        "surface_minus_numerical_relative": {
+          "volume": {
+            "barrel": -0.004190322125258494,
+            "joint": -0.005275516103553701,
+            "pad": -0.0050355770576666625,
+            "feed_pad": 0.015026155626690407
+          },
+          "elements": {
+            "barrel": -0.0007408771352940269,
+            "joint": -0.004395708499020712,
+            "pad": -0.0022734508876997017,
+            "feed_pad": 0.018593121644376653
+          }
+        }
+      },
+      {
+        "frequency_hz": 10000000000.0,
+        "joint_conductivity_ratio": 0.1,
+        "terminal_profile": "surface_concentrated",
+        "surface_loss_w": {
+          "barrel": 0.0036332397436011233,
+          "joint": 0.0016413304107465321,
+          "pad": 0.00322643591534444,
+          "feed_pad": 0.0001422930039696461
+        },
+        "numerical_loss_w": {
+          "volume": {
+            "barrel": 0.003650255328572162,
+            "joint": 0.001649168422571858,
+            "pad": 0.0032437756261664828,
+            "feed_pad": 0.00014053611324835579
+          },
+          "elements": {
+            "barrel": 0.003634529701454911,
+            "joint": 0.001647796795491602,
+            "pad": 0.0032320229118485973,
+            "feed_pad": 0.0001399228188187702
+          }
+        },
+        "surface_minus_numerical_relative": {
+          "volume": {
+            "barrel": -0.004661478017126686,
+            "joint": -0.004752705495720488,
+            "pad": -0.00534553336000454,
+            "feed_pad": 0.012501347025198672
+          },
+          "elements": {
+            "barrel": -0.000354917406032329,
+            "joint": -0.003924261027064779,
+            "pad": -0.0017286376540448511,
+            "feed_pad": 0.01693923243460249
+          }
+        }
+      },
+      {
+        "frequency_hz": 12000000000.0,
+        "joint_conductivity_ratio": 0.1,
+        "terminal_profile": "surface_concentrated",
+        "surface_loss_w": {
+          "barrel": 0.003980014728789242,
+          "joint": 0.0017979873805701908,
+          "pad": 0.0035343834623579565,
+          "feed_pad": 0.0001557286726327189
+        },
+        "numerical_loss_w": {
+          "volume": {
+            "barrel": 0.004000719939857436,
+            "joint": 0.0018058519313147742,
+            "pad": 0.003554788855855989,
+            "feed_pad": 0.00015411482145796546
+          },
+          "elements": {
+            "barrel": 0.003980067317518574,
+            "joint": 0.0018044449975623859,
+            "pad": 0.003538876818736136,
+            "feed_pad": 0.00015330982611509505
+          }
+        },
+        "surface_minus_numerical_relative": {
+          "volume": {
+            "barrel": -0.005175371278033358,
+            "joint": -0.0043550363173228135,
+            "pad": -0.005740254717074844,
+            "feed_pad": 0.010471745413491051
+          },
+          "elements": {
+            "barrel": -1.3213025091496355e-05,
+            "joint": -0.0035787275316889744,
+            "pad": -0.0012697125693638123,
+            "feed_pad": 0.015777504801342213
+          }
+        }
+      }
+    ]
+  }
+}

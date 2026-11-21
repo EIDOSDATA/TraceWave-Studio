@@ -9753,6 +9753,8 @@
         "tools/verify_ro_port_sensitivity.py",
         "tools/verify_pth_joint_reference.py",
         "../01_개발문서/07_검증/292_입사전력과_기가헤르츠_관통홀_접합검증.md",
+        "../01_개발문서/07_검증/301_급전격자와_관통홀_표면손실_독립대조.md",
+        "tools/verify_pth_ghz_surface_loss.py",
         "tools/verify_pth_ghz_joint_reference.py",
         "tools/verify_ro_grid_ablation.py"
       ],
@@ -14135,8 +14137,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "4b8fedcbfd6e4c7f70626d4d17179604c6fc36c4117e5d1399b92144440d5671",
-      "utf8_bytes": 66706
+      "text_sha256": "2fbee9bfdc0c5e3297eb1677a1ae06e25e0012e5295b95a19097b07feaff0ad0",
+      "utf8_bytes": 66849
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14507,6 +14509,11 @@
       "path": "01_개발문서/07_검증/300_윈도우_R1_내부후보_재현과_수신.md",
       "text_sha256": "e71b04e7e23ce0344c50e3fe3a9191718cfc3f14fa7b58afe11a6b2d8ff4b43f",
       "utf8_bytes": 3042
+    },
+    {
+      "path": "01_개발문서/07_검증/301_급전격자와_관통홀_표면손실_독립대조.md",
+      "text_sha256": "b8e1105088d755b74468c1f4662085ea0632c5cac71b99c142a37786afea389b",
+      "utf8_bytes": 4995
     },
     {
       "path": "01_개발문서/07_검증/31_프로젝트_편집복원_검증.md",
@@ -16165,8 +16172,8 @@
     },
     {
       "path": "Code/tools/verify_installed_port_uncertainty.py",
-      "text_sha256": "813d29ba8a9c495edbeb169735a9c8b9344b3c0d85725ec071ffcdbac3c21496",
-      "utf8_bytes": 7266
+      "text_sha256": "7089ec7816fb64378734f2a7063f1d348c527ee959a0d98fb97f86949eea4b1d",
+      "utf8_bytes": 7306
     },
     {
       "path": "Code/tools/verify_installed_refinement.py",
@@ -16184,14 +16191,19 @@
       "utf8_bytes": 14659
     },
     {
+      "path": "Code/tools/verify_pth_ghz_surface_loss.py",
+      "text_sha256": "de65e227e052b5b18e5251dfbe9d0917ab7b9bc03344136aa10f74a087669ce6",
+      "utf8_bytes": 4179
+    },
+    {
       "path": "Code/tools/verify_pth_joint_reference.py",
       "text_sha256": "7ad0efe660d594d5eee2e2826ab3ef574ca2e68048cc0c38a51784c49e62f29d",
       "utf8_bytes": 8301
     },
     {
       "path": "Code/tools/verify_ro_grid_ablation.py",
-      "text_sha256": "0ed6cdb0efa1bfc6ce91ae33940d870f1dac0f6fed04cb2a4d79d76de747ba82",
-      "utf8_bytes": 9377
+      "text_sha256": "46b45aafb42649894d827827e82c48a76125122890bda59218e0f757cc8c518e",
+      "utf8_bytes": 12282
     },
     {
       "path": "Code/tools/verify_ro_loss_followup.py",

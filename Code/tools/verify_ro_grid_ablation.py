@@ -6,7 +6,6 @@ import hashlib
 import json
 import math
 from pathlib import Path
-import re
 import subprocess
 import time
 from xml.etree import ElementTree as ET
@@ -22,7 +21,7 @@ N7_DT = 1.593972486287773e-13
 N8_DT = 1.371922165243796e-13
 WORKERS = 3
 THREADS = 2
-TIMEOUT = 2100
+TIMEOUT = 4200
 ABLATIONS = {
     "same_grid_shorter_dt": (),
     "transverse_feed_strip": (("X", 8.0, 10.0),),
@@ -30,6 +29,8 @@ ABLATIONS = {
     "substrate_z": (("Z", 0.035, 0.797),),
     "feed_strips_and_substrate": (("X", 8.0, 10.0), ("Y", 49.0, 54.0), ("Z", 0.035, 0.797)),
 }
+COMPLEMENT = "outside_feed_strips_and_substrate"
+ALLOWED = {**ABLATIONS, COMPLEMENT: ABLATIONS["feed_strips_and_substrate"]}
 
 
 def sha(path):
@@ -70,7 +71,11 @@ def port_points(raw, cutoff):
         voltage, current = (trace.at(frequency) for trace in traces)
         z = voltage / current
         accepted = 0.5 * (voltage * current.conjugate()).real
+        incident = abs(voltage + 50 * current) ** 2 / 400
+        if incident <= 0:
+            raise ValueError("공통 기준면의 입사 전력은 양수여야 합니다.")
         rows.append({"frequency_hz": frequency, "accepted_w_s2": accepted,
+                     "incident_w_s2": incident, "accepted_fraction": accepted / incident,
                      "impedance_ohm": [z.real, z.imag], "voltage_abs_v_s": abs(voltage),
                      "current_abs_a_s": abs(current)})
     return rows
@@ -88,7 +93,7 @@ def physical_contract(tree):
         ET.tostring(tree.find("FDTD/" + name)) for name in ("Excitation", "BoundaryCond")]
 
 
-def write_case(root, fine, changes, path):
+def case_xml(root, fine, changes):
     """! @brief N7의 선택 구간만 N8의 선으로 교체하고 공통 시간 간격을 고정한다."""
     xml = deepcopy(root)
     selection = xml.find("ContinuousStructure/Properties")
@@ -113,14 +118,52 @@ def write_case(root, fine, changes, path):
     fdtd.set("TimeStep", format(N8_DT, ".17g"))
     fdtd.set("NumberOfTimesteps", str(math.ceil((DURATION + 0.020e-9) / N8_DT)))
     fdtd.set("endCriteria", "1e-12")
-    ET.ElementTree(xml).write(path, encoding="utf-8", xml_declaration=True)
+    return ET.tostring(xml, encoding="utf-8", xml_declaration=True)
+
+
+def planned_xml(name, definition, roots):
+    """! @brief 보완 대조는 N8의 세 국부 구간만 N7로 되돌린다."""
+    base, replacement = reversed(roots) if name == COMPLEMENT else roots
+    return case_xml(base, replacement, definition)
+
+
+def read_trial(directory, expected_xml, definition):
+    """! @brief 지정 XML과 시간 간격을 확인하고 완료된 native 원시 포트만 읽는다."""
+    actual = (directory / "pcb.xml").read_bytes()
+    if actual != expected_xml:
+        raise ValueError("native 격자 입력이 재생성한 통제 조건과 다릅니다.")
+    raw_stats = (directory / "openEMS_stats.txt").read_text(encoding="utf-8").splitlines()
+    numbers = [line.partition("%")[0].strip() for line in raw_stats]
+    keys = ("cells", "timestep_s", "iterations", "numerical_duration_s", "wall_seconds", "cells_per_s")
+    statistics = dict(zip(keys, (float(value) for value in numbers if value), strict=True))
+    expected_iterations = int(ET.fromstring(actual).find("FDTD").get("NumberOfTimesteps"))
+    if (not all(math.isfinite(value) and value > 0 for value in statistics.values())
+            or statistics["iterations"] != expected_iterations
+            or not math.isclose(statistics["timestep_s"], N8_DT, rel_tol=1e-9)
+            or not math.isclose(statistics["numerical_duration_s"], expected_iterations * N8_DT, rel_tol=1e-9)
+            or statistics["numerical_duration_s"] < DURATION):
+        raise ValueError("고정한 시간 간격과 최종 시간까지의 native 실행을 확인하지 못했습니다.")
+    return {"name": directory.name, "changed_intervals_mm": definition,
+            "base_grid": "N8" if directory.name == COMPLEMENT else "N7",
+            "status": "completed", "input_xml_sha256": hashlib.sha256(actual).hexdigest(),
+            "stats": statistics, "points": port_points(directory, DURATION),
+            "raw_sha256": {name: sha(directory / name) for name in (*PORT_NAMES, "openEMS_stats.txt", "native.log")}}
+
+
+def replay_one(name, definition, roots, roots_with_runs):
+    """! @brief 한 번 완료된 원시 실행을 덮어쓰지 않고 새 결과로 해석한다."""
+    directories = [root / name for root in roots_with_runs if (root / name / "openEMS_stats.txt").is_file()]
+    if len(directories) != 1:
+        raise ValueError(f"{name} 원시 실행 경로를 한 곳으로 지정하십시오.")
+    return read_trial(directories[0], planned_xml(name, definition, roots), definition)
 
 
 def run_one(executable, directory, definition, root, fine):
     """! @brief 별도 디렉터리에서 하나의 기준면 대조를 실행하고 검증 상태를 고정한다."""
     directory.mkdir()
     path = directory / "pcb.xml"
-    write_case(root, fine, definition, path)
+    expected_xml = planned_xml(directory.name, definition, (root, fine))
+    path.write_bytes(expected_xml)
     out = {"name": directory.name, "changed_intervals_mm": definition, "input_xml_sha256": sha(path)}
     started = time.monotonic()
     try:
@@ -130,11 +173,7 @@ def run_one(executable, directory, definition, root, fine):
                                   cwd=directory, stdout=stream, stderr=subprocess.STDOUT, timeout=TIMEOUT, check=False)
         if proc.returncode:
             raise ValueError(f"native가 {proc.returncode}로 종료됐습니다.")
-        raw_stats = (directory / "openEMS_stats.txt").read_text(encoding="utf-8").split()
-        if len(raw_stats) != 6 or not math.isclose(float(raw_stats[1]), N8_DT, rel_tol=1e-6):
-            raise ValueError("실행의 공통 시간 간격을 확인하지 못했습니다.")
-        out.update(status="completed", stats=[float(x) for x in raw_stats], points=port_points(directory, DURATION),
-                   raw_sha256={name: sha(directory / name) for name in (*PORT_NAMES, "native.log")})
+        out = read_trial(directory, expected_xml, definition)
     except (OSError, ValueError, subprocess.TimeoutExpired) as error:
         out.update(status="not_evaluated", error=str(error))
     out["elapsed_seconds"] = time.monotonic() - started
@@ -148,9 +187,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("report", "workspace", "destination", "executable"):
         parser.add_argument(name, type=Path)
-    parser.add_argument("--case", choices=ABLATIONS, action="append", help="선택한 대조만 새 경로에서 실행합니다.")
+    parser.add_argument("--case", choices=ALLOWED, action="append", help="선택한 대조만 새 경로에서 실행합니다.")
+    parser.add_argument("--replay-from", action="append", type=Path,
+                        help="완료된 원시 실행 폴더를 읽기 전용으로 사용합니다.")
     args = parser.parse_args()
-    selected = {name: ABLATIONS[name] for name in (args.case or ABLATIONS)}
+    selected = {name: ALLOWED[name] for name in (args.case or ABLATIONS)}
     report = json.loads(args.report.read_bytes())
     entries = {item["settings"]["feature_subdivisions"]: item for item in report["runs"].values()}
     sources = [source(args.workspace.resolve(), entries[level]) for level in (7, 8)]
@@ -160,17 +201,22 @@ def main():
                        for (_, rec), dt in zip(sources, (N7_DT, N8_DT), strict=True))):
         raise ValueError("7분할과 8분할의 같은 물리·여기 입력을 확인하지 못했습니다.")
     args.destination.mkdir()
-    result = {"schema": "rfad.ro-grid-ablation/0.1", "scope": "native_port_sensitivity_only",
+    result = {"schema": "rfad.ro-grid-ablation/0.2", "scope": "native_port_sensitivity_only",
+              "mode": "replay" if args.replay_from else "execute",
               "physics_validated": False, "cutoff_seconds": DURATION, "fixed_dt_seconds": N8_DT,
               "native_executable_sha256": sha(args.executable), "settings": selected,
               "original": {f"N{n}": {"sha256": {name: sha(path) for name, path in paths.items()},
                                     "points": port_points(paths["pcb.xml"].parent, DURATION)}
                            for n, (paths, _) in zip((7, 8), sources, strict=True)}}
     (args.destination / "plan.json").write_text(json.dumps(result, allow_nan=False) + "\n", encoding="utf-8")
-    with ThreadPoolExecutor(max_workers=WORKERS) as pool:
-        jobs = [pool.submit(run_one, args.executable, args.destination / name, definition, *roots)
-                for name, definition in selected.items()]
-        result["runs"] = [job.result() for job in jobs]
+    if args.replay_from:
+        result["runs"] = [replay_one(name, definition, roots, args.replay_from)
+                          for name, definition in selected.items()]
+    else:
+        with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+            jobs = [pool.submit(run_one, args.executable, args.destination / name, definition, *roots)
+                    for name, definition in selected.items()]
+            result["runs"] = [job.result() for job in jobs]
     (args.destination / "report.json").write_text(json.dumps(result, allow_nan=False) + "\n", encoding="utf-8")
     return 0 if all(row["status"] == "completed" for row in result["runs"]) else 1
 
