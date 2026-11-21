@@ -129,11 +129,27 @@ def _bounds(shape):
     return [[min(p[i] for p in points) - half, max(p[i] for p in points) + half] for i in range(2)]
 
 
-def _inside_board(board, shape):
-    """! @brief polygon 표본 대신 analytic 중심선 극값으로 원/직사각 외곽을 검사한다."""
+def polygon_contains(outer, points, guard):
+    """! @brief 오목 외곽에서도 내부 점과 경계 사이 모든 변을 검사한다."""
+    from rfad.application.pcb_contacts import _segment_distance_squared
+    from rfad.domain.planar import point_in_loop
+
+    if not all(point_in_loop(p, outer, include_boundary=False) for p in points):
+        return False
+    boundary = list(zip(outer, outer[1:] + outer[:1]))
+    squared = guard ** 2
+    return all(_segment_distance_squared(a, b, c, d) > squared
+               for a, b in zip(points, points[1:] + points[:1]) for c, d in boundary)
+
+
+def _inside_board(board, shape, tolerance=0.01):
+    """! @brief 해석에 사용한 경계 전체가 실제 기판 외곽에 드는지 검사한다."""
     if board["kind"] == "rectangle":
         bounds = _bounds(shape)
         return all(bounds[i][0] >= -1e-9 and bounds[i][1] <= board["dimensions_mm"][i] + 1e-9 for i in range(2))
+    if board["kind"] == "polygon":
+        points = [shape["outer_mm"]] if shape["kind"] == "planar_region" else shape_polygons(shape, tolerance)
+        return all(polygon_contains(board["outer_mm"], polygon, tolerance) for polygon in points)
     center = board["center_mm"]
     if shape["kind"] in ("planar_region", "pad"):
         if shape["kind"] == "pad" and shape["pad_shape"] == "circle":

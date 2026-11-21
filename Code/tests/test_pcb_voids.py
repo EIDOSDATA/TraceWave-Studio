@@ -31,6 +31,13 @@ def drilled_board():
     return document
 
 
+def polygon_board(document):
+    """! @brief 같은 PCB 외곽에서 우상단을 제거한 단일 오목 외곽을 지정한다."""
+    document["board"]["outline"] = {"kind": "polygon", "outer": [
+        [quantity(x, "mm"), quantity(y, "mm")] for x, y in [(0, 0), (16, 0), (16, 7), (14, 7), (14, 12), (0, 12)]]}
+    return document
+
+
 class PcbVoidTests(unittest.TestCase):
     def test_mechanical_voids_keep_source_and_compute_bounds(self):
         """! @brief 세 가지 완성 절삭에 실제 격자 경계가 있으며 원본 공구는 미정이다."""
@@ -53,4 +60,21 @@ class PcbVoidTests(unittest.TestCase):
             plan(document)
         drill["plating"]["state"] = "unknown"
         with self.assertRaisesRegex(ProjectError, "비도금"):
+            plan(document)
+
+    def test_concave_board_projects_cutouts_and_mask_without_filling_notch(self):
+        """! @brief 실제 오목 외곽과 마스크 개구 면적을 사용하고 노치 속 홀을 거절한다."""
+        from rfad.domain.planar import signed_area
+        from test_pcb_surfaces import add_mask, rectangle
+
+        document = polygon_board(drilled_board())
+        mask = add_mask(document)
+        mask["openings"] = [rectangle(6, 4, 4, 4)]
+        case = plan(document)["case"]
+        self.assertEqual(case["board"]["kind"], "polygon")
+        tiles = case["surface_layers"][0]["linear_tiles_mm"]
+        self.assertAlmostEqual(sum(signed_area(tile) for tile in tiles), 16*12-2*5-4*4)
+        drill = next(row for row in document["pcb"]["holes"] if row["shape"]["kind"] == "circle")
+        drill["shape"]["center"] = [quantity(15, "mm"), quantity(9, "mm")]
+        with self.assertRaisesRegex(ProjectError, "기판 내부"):
             plan(document)

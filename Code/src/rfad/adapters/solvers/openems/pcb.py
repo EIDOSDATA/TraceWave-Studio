@@ -55,6 +55,8 @@ def prepare(stage, plan, runtime):
         if board["kind"] == "circle":
             cx, cy = board["center_mm"]
             prop.AddCylinder(start=[cx, cy, low], stop=[cx, cy, high], radius=board["radius_mm"], priority=1)
+        elif board["kind"] == "polygon":
+            prop.AddLinPoly(np.asarray(board["outer_mm"]).T, norm_dir=2, elevation=low, length=high-low, priority=1)
         else:
             prop.AddBox(start=[0, 0, low], stop=[*board["dimensions_mm"], high], priority=1)
     for part in case.get("environment", {}).get("parts", []):
@@ -116,7 +118,8 @@ def prepare(stage, plan, runtime):
         mesh["mesh_policy_report"] = case["mesh_policy_report"]
     consumption = {"schema": "rfad.openems-pcb-consumption/0.1", "analysis_plan_id": plan["plan_id"], "source": "user_project",
                    "consumed_case": case, "project_geometry_consumed": True, "project_materials_consumed": True,
-                   "source_mapping": mappings, "board_native_primitive": "cylinder" if board["kind"] == "circle" else "box",
+                   "source_mapping": mappings,
+                   "board_native_primitive": {"circle": "cylinder", "rectangle": "box", "polygon": "linear_polygon"}[board["kind"]],
                    "via_source_mapping": via_mappings, "native_connectivity": connectivity,
                    **({"surface_source_mapping": mask_mappings} if mask_mappings else {}),
                    **({"mechanical_source_mapping": void_mappings} if void_mappings else {}),

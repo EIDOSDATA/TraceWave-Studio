@@ -117,8 +117,13 @@ def project_board(document):
         board["center_mm"] = point(document, outline["center"], "board.outline.center")
         board["radius_mm"] = length(document, outline["radius"], "board.outline.radius", positive=True)
         board["bounds_mm"] = [[v - board["radius_mm"], v + board["radius_mm"]] for v in board["center_mm"]]
+    elif outline["kind"] == "polygon":
+        board["outer_mm"] = [point(document, pair, "board.outline.outer") for pair in outline["outer"]]
+        validate_region(board["outer_mm"], [], "board.outline.outer")
+        board["bounds_mm"] = [[min(p[axis] for p in board["outer_mm"]), max(p[axis] for p in board["outer_mm"])]
+                              for axis in range(2)]
     else:
-        fail("E_UNSUPPORTED", "직사각 또는 원형 PCB 외곽만 지원합니다.", "board.outline.kind")
+        fail("E_UNSUPPORTED", "직사각, 원형과 단일 다각형 PCB 외곽을 지원합니다.", "board.outline.kind")
     return board
 
 
@@ -157,6 +162,8 @@ def project_port(document, shapes, frequency, settings):
 def project_pcb(document, settings):
     """! @brief 계획 경계에서 검증한 문서와 설정을 native 소비 조건으로 변환한다."""
     board = project_board(document)
+    if board["kind"] == "polygon" and "power_balance" in settings:
+        fail("E_UNSUPPORTED", "다각형 기판의 독립 손실 적분은 별도 검증이 필요합니다.", "settings.power_balance")
     frequency = settings["frequency_hz"]
     center_hz = (frequency["start"] + frequency["stop"]) / 2
     materials = MaterialProjection(document, frequency)
@@ -223,7 +230,7 @@ def project_pcb(document, settings):
             if item["fill"] != "none" or lower >= upper or plating > inner:
                 fail("E_UNSUPPORTED", "초기 PTH는 중공 배럴과 반지름 이하의 도금 두께가 필요합니다.", field)
             probe = {"kind": "pad", "pad_shape": "circle", "center_mm": item["center_mm"], "size_mm": [2 * (inner + plating)] * 2}
-            if not _inside_board(board, probe):
+            if not _inside_board(board, probe, settings["curve_tolerance_mm"]):
                 fail("E_GEOMETRY", "비아 배럴이 실제 기판 외곽을 벗어났습니다.", field)
             vias.append(item)
             continue
@@ -257,7 +264,7 @@ def project_pcb(document, settings):
                 fail("E_GEOMETRY", "패드 최소 크기는 격자 두 배 이상이어야 합니다.", field + ".size")
         else:
             fail("E_UNSUPPORTED", "지원하지 않는 PCB 도체 종류입니다.", field + ".kind")
-        if not _inside_board(board, item):
+        if not _inside_board(board, item, settings["curve_tolerance_mm"]):
             fail("E_GEOMETRY", "원형 끝단을 포함한 도체가 실제 기판 외곽을 벗어났습니다.", field)
         polygons_by_id[item["id"]] = shape_polygons(item, settings["curve_tolerance_mm"])
         polygon_points += sum(len(poly) for poly in polygons_by_id[item["id"]])

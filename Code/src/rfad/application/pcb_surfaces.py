@@ -2,8 +2,9 @@
 
 import math
 
-from rfad.application.pcb_geometry import fail, length
+from rfad.application.pcb_geometry import fail, length, polygon_contains
 from rfad.domain.physical_setup import candidates
+from rfad.domain.planar import decompose_region
 
 
 def _rect(document, row, field):
@@ -25,9 +26,17 @@ def _contained(inner, outer):
 
 def _fits_board(rect, board):
     """! @brief 원형 기판에서는 사각형의 각 꼭짓점을 실제 원에 대조한다."""
+    if board["kind"] == "polygon":
+        return polygon_contains(board["outer_mm"], _rect_points(rect), 1e-9)
     return (_contained(rect, board["bounds_mm"]) and
             (board["kind"] != "circle" or all(math.dist((x, y), board["center_mm"]) <= board["radius_mm"] + 1e-9
                                               for x in rect[0] for y in rect[1])))
+
+
+def _rect_points(rect):
+    """! @brief 사각형의 꼭짓점을 둘레 순서로 반환한다."""
+    (x0, x1), (y0, y1) = rect
+    return [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]
 
 
 def _tiles(coverage, holes):
@@ -68,6 +77,7 @@ def project_surfaces(document, case, dielectric):
         z = [model_face - offset - thickness, model_face - offset] if bottom else [model_face + offset, model_face + offset + thickness]
         physical_z = [value + physical_face - model_face for value in z]
         circle = row["coverage"] == "board" and board["kind"] == "circle"
+        polygon = row["coverage"] == "board" and board["kind"] == "polygon"
         coverage = board["bounds_mm"] if row["coverage"] == "board" else _rect(document, row, field)
         if row["coverage"] == "rectangle" and not _fits_board(coverage, board):
             fail("E_GEOMETRY", "솔더마스크의 사각 피복이 기판 외곽을 벗어났습니다.", field)
@@ -81,8 +91,9 @@ def project_surfaces(document, case, dielectric):
             if min(b - a for a, b in box) < step - 1e-9:
                 fail("E_GEOMETRY", "개구 폭과 길이는 각각 한 격자 이상이어야 합니다.", path)
             openings.append(box)
-        tiles = [] if circle else _tiles(coverage, openings)
-        if not circle and not tiles:
+        tiles = [] if circle or polygon else _tiles(coverage, openings)
+        linear_tiles = decompose_region(board["outer_mm"], [_rect_points(box) for box in openings]) if polygon else []
+        if not circle and not polygon and not tiles:
             fail("E_GEOMETRY", "피복 전체가 제거되었습니다. 마스크를 해석에서 제외하십시오.", field)
         for part in case.get("environment", {}).get("parts", []):
             for start, stop in part["boxes_mm"]:
@@ -91,7 +102,8 @@ def project_surfaces(document, case, dielectric):
                     fail("E_GEOMETRY", "설치 물체가 솔더마스크 피복과 겹칩니다. 배치나 개구를 확인하십시오.", field)
         surfaces.append({**{key: row[key] for key in ("id", "name", "kind", "side", "material_id")}, "bounds_mm": [*coverage, z],
                          "physical_z_mm": physical_z, "openings_mm": openings, "tiles_mm": tiles,
-                         "profile": "cylinder_with_air_openings" if circle else "rectangular_tiles",
+                         "profile": "cylinder_with_air_openings" if circle else "linear_polygon_tiles" if polygon else "rectangular_tiles",
+                         **({"linear_tiles_mm": linear_tiles} if polygon else {}),
                          **dielectric(row["material_id"], field + ".material_id")})
     return surfaces
 

@@ -117,7 +117,8 @@ def validate_preparation(plan, preparation):
             or preparation.get("normalization") != plan["normalization"] or preparation["consumption_report"].get("consumed_case") != plan["case"]
             or consumption.get("project_geometry_consumed") is not True or consumption.get("project_materials_consumed") is not True
             or consumption.get("source_mapping") != mappings or consumption.get("fdtd_executed") is not False or consumption.get("physics_validated") is not False
-            or consumption.get("board_native_primitive") != ("cylinder" if plan["case"]["board"]["kind"] == "circle" else "box")
+            or consumption.get("board_native_primitive") != {"circle": "cylinder", "rectangle": "box",
+                                                            "polygon": "linear_polygon"}[plan["case"]["board"]["kind"]]
             or consumption.get("approximations") != plan["model_report"]["approximations"]
             or consumption.get("via_source_mapping") != via_mappings
             or consumption.get("analysis_plan_id") != plan["plan_id"] or consumption.get("source") != "user_project"):

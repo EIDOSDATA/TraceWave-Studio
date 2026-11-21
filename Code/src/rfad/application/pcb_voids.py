@@ -67,7 +67,7 @@ def project_voids(document, case, polygons_by_id):
         profile, footprint, polygon = _profile(document, row, field, step, tolerance)
         planar = _polygon(polygon, field)
         bounds = _bounds(footprint)
-        if not _inside_board(case["board"], footprint) or min(b - a for a, b in bounds) < 2 * step:
+        if not _inside_board(case["board"], footprint, guard) or min(b - a for a, b in bounds) < 2 * step:
             fail("E_GEOMETRY", "관통 절삭은 기판 내부에 두고 두 격자 이상의 완성 크기를 지정하십시오.", field)
         # @brief 기판 외곽이나 다른 절삭과 거의 닿는 형상은 외곽 notch로 바꾸지 않는다.
         board = case["board"]

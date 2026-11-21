@@ -147,6 +147,9 @@ def mesh_lines(case):
     dielectric = [layer for layer in case["layers"] if layer["role"] == "dielectric"]
     # @brief 동박은 sheet이므로 동박 두께를 별도 Yee 간격으로 강제하지 않는다.
     critical = [[bounds[i][0], bounds[i][1]] for i in range(2)] + [[v for layer in dielectric for v in (layer["z_min_mm"], layer["z_min_mm"] + layer["thickness_mm"])]]
+    for vertex in board.get("outer_mm", []):
+        for axis in range(2):
+            critical[axis].append(vertex[axis])
     for shape in case["shapes"]:
         for axis, extent in enumerate(_bounds(shape)):
             critical[axis].extend(extent)

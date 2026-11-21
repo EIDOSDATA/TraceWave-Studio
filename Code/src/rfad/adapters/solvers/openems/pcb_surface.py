@@ -22,6 +22,13 @@ def add_surfaces(csx, case):
             for tile in surface["tiles_mm"]:
                 add_box(mask, tile, 2)
             witness = [(a + b) / 2 for a, b in surface["tiles_mm"][0]]
+        elif surface["profile"] == "linear_polygon_tiles":
+            import numpy as np
+
+            linear_tiles = surface["linear_tiles_mm"]
+            for tile in linear_tiles:
+                mask.AddLinPoly(np.asarray(tile).T, norm_dir=2, elevation=low, length=high-low, priority=2)
+            witness = list(np.mean(linear_tiles[0], axis=0))
         else:
             board = case["board"]
             cx, cy = board["center_mm"]

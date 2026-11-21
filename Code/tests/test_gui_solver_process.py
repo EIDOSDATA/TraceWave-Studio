@@ -7,12 +7,14 @@ import subprocess
 import sys
 from tempfile import TemporaryDirectory
 import unittest
+import xml.etree.ElementTree as ET
 
 from rfad.application.projects import ProjectService
 from rfad.domain.project import new_project
 from test_cad_worker_process import register_fixture
 from test_pcb_solver import fixture_document, SETTINGS
-from test_pcb_voids import drilled_board
+from test_pcb_voids import drilled_board, polygon_board
+from test_pcb_surfaces import add_mask, rectangle
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -131,7 +133,18 @@ class GuiSolverProcessTests(unittest.TestCase):
     @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
     def test_mechanical_voids_actual_execution_and_reopen(self):
         """! @brief 홀, 슬롯, 내부 절삭의 실제 재료 소비와 Windows 재열기를 확인한다."""
-        document = drilled_board()
+        self.verify_mechanical_board(drilled_board(), "box")
+
+    @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
+    def test_concave_board_masks_and_cutouts_actual_execution_and_reopen(self):
+        """! @brief 오목 기판의 실제 외곽을 마스크와 관통부까지 적용한다."""
+        document = polygon_board(drilled_board())
+        mask = add_mask(document)
+        mask["openings"] = [rectangle(6, 4, 4, 4)]
+        self.verify_mechanical_board(document, "linear_polygon")
+
+    def verify_mechanical_board(self, document, primitive):
+        """! @brief 봉인 준비의 native 기판 종류와 기계 원본을 Windows 결과에 대응시킨다."""
         with TemporaryDirectory(prefix="TraceWave PCB voids ") as temporary:
             workspace, result = self.run_gui(Path(temporary), document, settings=SETTINGS)
             self.assertIn("restart_restores_result", result["solver_checks"])
@@ -140,12 +153,21 @@ class GuiSolverProcessTests(unittest.TestCase):
                 record = state["solver_results"][result["solver_result"]["artifact_id"]]
                 prepared = state["prepared_plans"][record["prepared_plan_id"]]
                 reference = next(item["artifact"] for item in prepared["files"] if item["role"] == "consumption_report")
-                mappings = json.loads(service.journal.read_artifact(reference))["mechanical_source_mapping"]
+                report = json.loads(service.journal.read_artifact(reference))
+                self.assertEqual(report["board_native_primitive"], primitive)
+                mappings = report["mechanical_source_mapping"]
                 self.assertEqual({item["kind"] for item in mappings}, {"circle", "capsule", "polygon"})
                 self.assertTrue(all(item["vacuum_point_checked"] for item in mappings))
                 stored = service._load(state["projects"][result["project_id"]])
                 self.assertEqual(stored["pcb"], document["pcb"])
                 self.assertEqual(stored["board"]["cutouts"], document["board"]["cutouts"])
+                self.assertEqual(stored["board"]["outline"], document["board"]["outline"])
+                if primitive == "linear_polygon":
+                    fragment = next(item["artifact"] for item in prepared["files"] if item["role"] == "native_input")
+                    xml = ET.fromstring(service.journal.read_artifact(fragment))
+                    layer = document["stackup"][0]["id"]
+                    self.assertIsNotNone(xml.find(f".//Material[@Name='dielectric_{layer}']/Primitives/LinPoly"))
+                    self.assertEqual(report["surface_source_mapping"][0]["openings_checked"], 1)
 
 
 if __name__ == "__main__":
