@@ -178,36 +178,63 @@ def _signed_area(loop):
     return math.fsum(terms)
 
 
+def _footprint_from_loops(row, loops):
+    """! @brief 도면의 해석형 경계로 동일한 거리 및 재료 내부 판정을 만든다."""
+    from rfad.domain.boundary_distance import Arc, Segment
+    from rfad.domain.check_geometry import Footprint
+    from rfad.domain.drawing_layout import _inside
+
+    edges = [Segment(tuple(edge["start"]), tuple(edge["end"])) if edge["kind"] == "line" else
+             Arc(tuple(edge["center"]), edge["radius"], math.radians(edge["start_deg"] + min(0, edge["sweep_deg"])),
+                 math.radians(abs(edge["sweep_deg"]))) for loop in loops for edge in loop]
+    return Footprint(row, edges, lambda value: _inside(value, loops), None)
+
+
+def _local_mechanical(mechanical, copper):
+    """! @brief 떨어진 절삭을 도체에서 빼지 않으며 미정이거나 접하는 경계는 원래 검사를 사용한다."""
+    from rfad.domain.check_geometry import separation
+    from rfad.domain.drawing_layout import mechanical_loops, number
+
+    result, budget = {"cutouts": [], "holes": []}, [200000]
+    for key, records in mechanical.items():
+        for row in records:
+            offset = 0.0
+            plating = row.get("plating")
+            if plating is not None:
+                if plating["state"] not in ("plated", "unplated"):
+                    result[key].append(row)
+                    continue
+                if plating["state"] == "plated":
+                    offset = number(plating["thickness_mm"], positive=True)
+            cutter = _footprint_from_loops(row, mechanical_loops(row["shape"], offset))
+            guard = max(copper.guard, cutter.guard)
+            a, b = copper.bounds, cutter.bounds
+            lower = max(a[0] - b[2], b[0] - a[2], a[1] - b[3], b[1] - a[3])
+            if lower <= guard and separation(copper, cutter, budget)[0] <= guard:
+                result[key].append(row)
+    return result
+
+
 def effective_footprint(document, row, original):
     """! @brief 기계 제거 후 경계로 DRC를 수행하며 분리된 객체를 연결 하나로 가장하지 않는다."""
-    mechanical = mechanical_projection(document)
+    mechanical = _local_mechanical(mechanical_projection(document), original)
     if not mechanical["holes"] and not mechanical["cutouts"]:
         return original
-    from rfad.domain.drawing_layout import shape_loops, _mechanical_removed, _inside
-    from rfad.domain.check_geometry import Footprint
-    from rfad.domain.boundary_distance import Arc, Segment
+    from rfad.domain.drawing_layout import shape_loops, _mechanical_removed
     projection = {"mechanical": mechanical}
     loops = _mechanical_removed(shape_loops(geometry_projection(document, row)), projection)
     if sum(_signed_area(loop) > 0 for loop in loops) != 1:
         fail("기계 절삭으로 나뉜 한 원본의 여러 도체 섬은 객체 단위 연결 검사에서 미평가입니다.", "geometry." + row["id"], "E_CHECK_UNSUPPORTED")
-    edges = [Segment(tuple(edge["start"]), tuple(edge["end"])) if edge["kind"] == "line" else
-             Arc(tuple(edge["center"]), edge["radius"], math.radians(edge["start_deg"] + min(0, edge["sweep_deg"])), math.radians(abs(edge["sweep_deg"])))
-             for loop in loops for edge in loop]
-    return Footprint(row, edges, lambda value: _inside(value, loops), None)
+    return _footprint_from_loops(row, loops)
 
 
 def extra_diagnostics(document, shapes, report):
     """! @brief 새 제조/배치 규칙과 실제 수직 접합의 미평가 범위를 분리해 기록한다."""
-    from rfad.domain.drawing_layout import mechanical_loops, _inside
-    from rfad.domain.check_geometry import Footprint, separation
-    from rfad.domain.boundary_distance import Arc, Segment
+    from rfad.domain.drawing_layout import mechanical_loops
+    from rfad.domain.check_geometry import separation
     def footprint_of(row, shape):
         """! @brief 명시 형상은 동일 해석형 경계 거리 엔진으로 비교한다."""
-        loops = mechanical_loops(shape)
-        edges = [Segment(tuple(edge["start"]), tuple(edge["end"])) if edge["kind"] == "line" else
-                 Arc(tuple(edge["center"]), edge["radius"], math.radians(edge["start_deg"] + min(0, edge["sweep_deg"])), math.radians(abs(edge["sweep_deg"])))
-                 for loop in loops for edge in loop]
-        return Footprint(row, edges, lambda value: _inside(value, loops), None)
+        return _footprint_from_loops(row, mechanical_loops(shape))
     model = document.get("pcb", empty_pcb())
     budget = [200000]
     orders = {layer["id"]: layer["order"] for layer in document["stackup"] if layer["role"] == "conductor"}

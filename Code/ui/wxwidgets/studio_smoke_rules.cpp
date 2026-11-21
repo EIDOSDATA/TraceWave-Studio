@@ -115,6 +115,19 @@ void StudioSmokeDriver::DesignRulesSmokeTick()
             }
         }
         CanvasAssert(dialog->m_issues->GetItemCount() == static_cast<long>(issues.size()), "검사 행이 화면과 일치하지 않습니다.");
+        int measuredWidths = 0;
+        for (const auto& check : dialog->m_report.at("checks"))
+        {
+            if (check.at("rule") == "minimum_width" && check.at("status") == "passed" && check.at("measured") == 1.0)
+            {
+                ++measuredWidths;
+            }
+        }
+        CanvasAssert(measuredWidths == 2, "도체에서 떨어진 홀 때문에 두 선폭 판정이 사라졌습니다.");
+        if (m_setupStage == 15)
+        {
+            m_setupChecks.push_back("mechanical_clearance_preserves_unaffected_trace_width");
+        }
         m_setupChecks.push_back(m_setupStage == 8 ? "design_rules_apply_and_overlay" : "design_rules_saved_reopen_and_recheck");
         m_setupStage = m_setupStage == 8 ? 9 : 16;
         dialog->CloseDialog();

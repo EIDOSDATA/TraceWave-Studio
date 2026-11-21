@@ -21,7 +21,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 45,
     "current_06_분석연구": 13,
-    "current_07_검증": 144,
+    "current_07_검증": 145,
     "current_08_운영환경": 7,
     "current_09_개발계획": 8,
     "current_11_검토기록": 7,
@@ -28152,8 +28152,8 @@
       "path": "01_개발문서/05_기능설계/02_설계편집/10_추가문헌과_조건부_초기길이.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 9314,
-      "working_tree_sha256": "a91646a1c90100dd6138ff2c069d83d766e2466bebf9cc601efc69bdfeb489c6",
+      "bytes": 9191,
+      "working_tree_sha256": "94d33cd0ec9d1a806aadc3b49b742b938d89527d77daf9f18923548185634dd5",
       "text_lines": 76,
       "text_status": "utf8_read"
     },
@@ -28161,9 +28161,9 @@
       "path": "01_개발문서/05_기능설계/02_설계편집/11_목표제약과_연결_설계규칙검사.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 9219,
-      "working_tree_sha256": "26ba55d357535685efa3fe5127c6674562814f0c8402612187f185de29ed3124",
-      "text_lines": 52,
+      "bytes": 9658,
+      "working_tree_sha256": "56b6b6a5173c8f922748f20a871ef77ff8e6c421720d2da7d2bd27cc810af1d9",
+      "text_lines": 54,
       "text_status": "utf8_read"
     },
     {
@@ -28609,9 +28609,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 23685,
-      "working_tree_sha256": "fad5767a1ae46c7874d52efaa11c454461153b7250528319773a491e7559a7d8",
-      "text_lines": 160,
+      "bytes": 23850,
+      "working_tree_sha256": "3ba6127329c549c8d3729c5dd4b03c2292ceb013b0d8462b7e320aee5b4f87fd",
+      "text_lines": 161,
       "text_status": "utf8_read"
     },
     {
@@ -32345,8 +32345,8 @@
       "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 12367,
-      "working_tree_sha256": "264b57fb05a6356be080fdc69b82226e0d488cc29b6568f08360ef2f27326ca6",
+      "bytes": 12356,
+      "working_tree_sha256": "6617248148c256c64326372d3ce8b16ebb88304816a95879d8c3e62eefce85d4",
       "text_lines": 42,
       "text_status": "utf8_read"
     },
@@ -32483,6 +32483,15 @@
       "bytes": 1380,
       "working_tree_sha256": "d0b4108610ffee7ef7852aad63e7b0f4f8de0926497ee9a00025657101491d74",
       "text_lines": 13,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/257_윈도우_관통부와_제조규칙_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1043,
+      "working_tree_sha256": "f77454fd2bd2e9421fedb5505edac66553e95bf523a722cd79bdac7d416ec570",
+      "text_lines": 11,
       "text_status": "utf8_read"
     }
   ],

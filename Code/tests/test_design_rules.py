@@ -18,10 +18,12 @@ from rfad.domain.check_geometry import footprint, board_clearance, separation
 from rfad.domain.design_rules import RULES
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import validate_project
+from rfad.domain.pcb_features import empty_pcb
 from rfad.domain.target_constraints import empty_constraints
 from rfad.domain.units import Quantity
 from test_cad_worker_process import register_fixture, request
 from test_pcb_ifa import ifa_document, via_document
+from test_pcb_features import hole_record
 from test_pcb_solver import fixture_document, quantity, snapshot_for, runtime_identity, SETTINGS
 from test_targets import command, set_target, target_input
 
@@ -61,6 +63,26 @@ def inspect_rows(report, rule):
 
 
 class DesignChecksTests(unittest.TestCase):
+    def test_only_copper_cut_by_a_mechanical_hole_loses_nominal_width(self):
+        """! @brief 실제로 맞닿은 절삭의 국부 폭만 미평가이며 다른 도체의 폭과 출처를 보존한다."""
+        document = scenario()
+        document["pcb"] = empty_pcb()
+        far = hole_record(document, x=3, y=2)
+        document["pcb"]["holes"] = [far]
+        validate_project(document)
+        before = deepcopy(document)
+        widths = inspect_rows(check_design(document), "minimum_width")
+        self.assertEqual(len(widths), 2)
+        self.assertTrue(all(row["status"] == "passed" and row["measured"] == 1.0 for row in widths))
+        self.assertTrue(all("시험 카탈로그 규칙" in row["source_refs"] for row in widths))
+        self.assertEqual(document, before)
+        near = hole_record(document, x=3, y=6.55, diameter=.45)
+        document["pcb"]["holes"] = [near]
+        validate_project(document)
+        widths = inspect_rows(check_design(document), "minimum_width")
+        self.assertCountEqual([(row["status"], row["measured"]) for row in widths], [("passed", 1.0), ("not_evaluated", None)])
+        self.assertIsNone(near["tool_diameter"]["value_si"])
+
     def test_arc_cardinal_extrema_caps_and_intersections(self):
         """! @brief 음의 sweep 원호의 내부 극점과 실제 원호 범위를 독립 기대값과 비교한다."""
         document = fixture_document(circle=True)
