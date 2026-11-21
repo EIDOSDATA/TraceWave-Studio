@@ -555,6 +555,7 @@
       "tests/test_rf_reference.py::RfReferenceTests.test_sheet_dc_and_internal_inductance_limit",
       "tests/test_rf_reference.py::RfReferenceTests.test_thick_sheet_is_two_halfspaces_in_parallel",
       "tests/test_rf_reference.py::RfReferenceTests.test_symmetric_sheet_matches_independent_diffusion_and_joule_integral",
+      "tests/test_pth_loss_reference.py::HollowShellIntegralReferenceTests.test_outer_return_field_matches_radial_ode_and_boundary_flux",
       "tests/test_rf_reference_contract.py::RFReferenceContractTests.test_unfrozen_cases_and_extra_settings_cannot_start",
       "tests/test_rf_validation_records.py::RFValidationRecordTests.test_all_prepare_gate_reports_and_runtime_free_historical_reopen",
       "tests/test_rf_validation_records.py::RFValidationRecordTests.test_foreign_project_and_tampered_report_are_rejected"
@@ -568,7 +569,9 @@
       "../01_개발문서/05_기능설계/04_해석결과/08_독립참조와_유한검증_계약.md",
       "../01_개발문서/07_검증/19_독립참조와_유한검증.md",
       "../01_개발문서/07_검증/281_평면_도체_복소확산_독립대조.md",
-      "../01_개발문서/07_검증/282_설치_포트_유한기록_전대역_상한.md"
+      "../01_개발문서/07_검증/282_설치_포트_유한기록_전대역_상한.md",
+      "../01_개발문서/07_검증/286_동박_면임피던스와_관통홀_귀환_대조.md",
+      "tools/verify_ro_sheet_impedance.py"
     ],
     "next_steps": [
       7,

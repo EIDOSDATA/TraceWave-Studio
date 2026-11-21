@@ -92,7 +92,6 @@ class HollowShellIntegralReferenceTests(unittest.TestCase):
 
     def test_ghz_shell_loss_matches_current_driven_radial_reference(self):
         """! @brief 안쪽 표면의 지정 반환 전류에서 원통 금속 내부 전계를 독립적으로 푼다."""
-        import CSXCAD
         import numpy as np
 
         frequency = 10e9
@@ -132,7 +131,62 @@ class HollowShellIntegralReferenceTests(unittest.TestCase):
         self.assertLess(abs(coarse / reference - 1), 0.001)
         self.assertLess(abs(flux / reference - 1), 0.001)
 
-        inner_mm, outer_mm, length_mm = (size * 1000 for size in (inner, outer, length))
+        actual = self.integrate_current_driven_shell(frequency, conductivity, depth, radii, field, inner_field, field[-1])
+        relative_error = abs(actual / reference - 1)
+        self.assertLess(relative_error, 0.02, {"radial_loss": reference, "boundary_flux": flux,
+                                              "cartesian_loss": actual, "relative_error": relative_error})
+
+    def test_outer_return_field_matches_radial_ode_and_boundary_flux(self):
+        """! @brief 바깥 귀환 자계와 빈 내벽에서의 손실을 독립 초기값 적분으로 검증한다."""
+        import numpy as np
+
+        frequency, conductivity, current = 10e9, 58e6, 1.0
+        omega, permeability = 2 * math.pi * frequency, 4e-7 * math.pi
+        depth = math.sqrt(2 / (omega * permeability * conductivity))
+        length = 10 * depth
+        wave = 1j * omega * permeability * (conductivity + 1j * omega * 8.8541878188e-12) * depth**2
+        derivative = 1j * omega * permeability * current / (2 * math.pi * 13)
+
+        def solve(intervals):
+            """! @brief 내벽 E'=0으로 적분하고 바깥 자계로 복소 스케일을 정한다."""
+            radii = np.linspace(8, 13, intervals + 1)
+            step = 5 / intervals
+            state = np.array([1.0, 0.0, 0.0], dtype=complex)
+            profile = [state[0]]
+
+            def rate(radius, values):
+                """! @brief 반경 방향 Maxwell 확산식과 Joule 적분의 도함수다."""
+                field, gradient, _ = values
+                return np.array([gradient, wave * field - gradient / radius, radius * abs(field)**2])
+
+            for radius in radii[:-1]:
+                a = rate(radius, state)
+                b = rate(radius + step / 2, state + step * a / 2)
+                c = rate(radius + step / 2, state + step * b / 2)
+                d = rate(radius + step, state + step * c)
+                state += step * (a + 2 * b + 2 * c + d) / 6
+                profile.append(state[0])
+            scale = derivative / state[1]
+            field = np.asarray(profile) * scale
+            loss = math.pi * conductivity * length * depth**2 * abs(scale)**2 * state[2].real
+            flux = 0.5 * current * field[-1].real * length
+            return radii, field, loss, flux
+
+        _, _, coarse, _ = solve(128)
+        radii, field, reference, flux = solve(256)
+        actual = self.integrate_current_driven_shell(frequency, conductivity, depth, radii, field, field[0], field[-1])
+        self.assertGreater(reference, 0)
+        self.assertLess(abs(coarse / reference - 1), 0.001)
+        self.assertLess(abs(flux / reference - 1), 0.001)
+        self.assertLess(abs(actual / reference - 1), 0.02,
+                        {"radial_loss": reference, "boundary_flux": flux, "cartesian_loss": actual})
+
+    def integrate_current_driven_shell(self, frequency, conductivity, depth, radii, field, inner_field, outer_field):
+        """! @brief 지정 반경 전계를 같은 CSXCAD QuarterCell 격자에 놓아 체적 일을 집계한다."""
+        import CSXCAD
+        import numpy as np
+
+        inner_mm, outer_mm, length_mm = (multiple * depth * 1000 for multiple in (8, 13, 10))
         csx = CSXCAD.ContinuousStructure()
         csx.AddMaterial("via_v", epsilon=1, kappa=conductivity).AddCylindricalShell(
             start=[0, 0, 0], stop=[0, 0, length_mm], radius=(outer_mm + inner_mm) / 2,
@@ -149,17 +203,14 @@ class HollowShellIntegralReferenceTests(unittest.TestCase):
         electric = np.zeros(shape, dtype=complex)
         axis = np.asarray(lateral[1:-1]) * 0.001 / depth
         radius = np.hypot(axis[:, None], axis)
-        electric[2] = np.interp(radius, radii, field, left=inner_field, right=field[-1])[:, :, None]
+        electric[2] = np.interp(radius, radii, field, left=inner_field, right=outer_field)[:, :, None]
         conduction = electric * partition[0]
         weights = [edge_weights(lines, indices, direction) for direction in range(3)]
         recorded, audit = partition_work(electric, conduction, conduction, weights, sheet, frequency, 1e-15, [], partition)
 
-        actual = recorded["via_loss_w_s2"]
-        relative_error = abs(actual / reference - 1)
-        self.assertLess(relative_error, 0.02, {"radial_loss": reference, "boundary_flux": flux,
-                                              "cartesian_loss": actual, "relative_error": relative_error})
         self.assertAlmostEqual(audit["volume_work_w_s2"] / audit["assigned_volume_work_w_s2"], 1)
         self.assertEqual(recorded["sheet_loss_w_s2"], 0)
+        return recorded["via_loss_w_s2"]
 
 
 if __name__ == "__main__":
