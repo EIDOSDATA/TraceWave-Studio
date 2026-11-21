@@ -19,6 +19,7 @@ struct Frame
     std::int64_t presented;
     unsigned accumulated;
     std::optional<unsigned> sequence;
+    bool protectedContent = false;
 };
 
 /** @brief 지정한 시험 창 안의 고정된 한 줄만 GPU에서 복사하고 원본 픽셀을 보존하지 않는다. */

@@ -1,0 +1,82 @@
+{
+  "schema": "rfad.stage12.f2-desktop-capture-diagnostic/0.1",
+  "date_kst": "2026-11-21",
+  "release_executable_sha256": "44b296580958aa3add037f71b26cec030eae41528655344e3f6c38965cadedf4",
+  "desktop_after_restore": [
+    2560,
+    1600
+  ],
+  "dpi_after_restore": 144,
+  "capture": [
+    {
+      "desktop": [
+        1920,
+        1080
+      ],
+      "dpi": 96,
+      "explicit_activation": false,
+      "triangles": 1000000,
+      "passed": false,
+      "decoded_updates": 0,
+      "desktop_updates": 0,
+      "protected_updates": 0,
+      "reader_opened": false
+    },
+    {
+      "desktop": [
+        1920,
+        1080
+      ],
+      "dpi": 96,
+      "explicit_activation": true,
+      "triangles": 1000000,
+      "passed": false,
+      "decoded_updates": 0,
+      "desktop_updates": 958,
+      "protected_updates": 958,
+      "reader_opened": true
+    },
+    {
+      "desktop": [
+        2560,
+        1600
+      ],
+      "dpi": 144,
+      "explicit_activation": true,
+      "triangles": 1000000,
+      "passed": false,
+      "decoded_updates": 0,
+      "desktop_updates": 1160,
+      "protected_updates": 1160,
+      "reader_opened": true
+    }
+  ],
+  "frame_interval_measured": false,
+  "full_f2_acceptance_measured": false,
+  "display_quality": {
+    "desktop": [
+      1920,
+      1080
+    ],
+    "dpi": 96,
+    "passed": true,
+    "buffers": {
+      "bytes": 72000000,
+      "preview_bytes": 7418880,
+      "preview_uploads": 1,
+      "uploads": 1
+    },
+    "coarse_triangles": 103040,
+    "fit_triangles": 1000000,
+    "restored_triangles": 1000000,
+    "selected_triangles": 1000000
+  },
+  "integrated_regression": {
+    "windows_gui": 4,
+    "host_wsl_and_readiness": 15,
+    "implementation_audit": 14,
+    "passed": 33,
+    "release_ctest_passed": 13,
+    "timing_run": false
+  }
+}

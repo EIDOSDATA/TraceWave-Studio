@@ -209,8 +209,9 @@ std::optional<Frame> Reader::Next()
     {
         return std::nullopt;
     }
-    Frame frame{info.LastPresentTime.QuadPart, info.AccumulatedFrames, std::nullopt};
-    if (info.ProtectedContentMaskedOut)
+    Frame frame{info.LastPresentTime.QuadPart, info.AccumulatedFrames, std::nullopt,
+                info.ProtectedContentMaskedOut != FALSE};
+    if (frame.protectedContent)
     {
         return frame;
     }

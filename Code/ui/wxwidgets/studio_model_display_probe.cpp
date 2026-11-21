@@ -5,6 +5,7 @@
 
 #include <GL/gl.h>
 #include <mmsystem.h>
+#include <algorithm>
 #include <atomic>
 #include <climits>
 #include <exception>
@@ -206,13 +207,27 @@ Json StudioModelDisplayProbe::Finish()
     {
         state.capture.join();
     }
-    if (state.inputError)
+    const auto masked = std::count_if(state.frames.begin(), state.frames.end(), [](const Marker::Frame& frame)
     {
-        std::rethrow_exception(state.inputError);
-    }
-    if (state.captureError)
+        return frame.protectedContent;
+    });
+    const auto decoded = std::count_if(state.frames.begin(), state.frames.end(), [](const Marker::Frame& frame)
     {
-        std::rethrow_exception(state.captureError);
+        return frame.sequence.has_value();
+    });
+    const Json capture{{"reader_opened", state.reader != nullptr}, {"desktop_updates", state.frames.size()},
+                       {"protected_updates", masked}, {"decoded_updates", decoded}};
+    if (state.inputError || state.captureError)
+    {
+        try
+        {
+            std::rethrow_exception(state.inputError ? state.inputError : state.captureError);
+        }
+        catch (const std::exception& error)
+        {
+            // @brief 실제 갱신이 오지 않은 경우와 OS가 보호한 화면을 실패 기록에서 구분한다.
+            throw std::runtime_error(std::string(error.what()) + " DXGI " + capture.dump());
+        }
     }
     if (!state.model || !state.surface || !state.reader)
     {
@@ -233,5 +248,6 @@ Json StudioModelDisplayProbe::Finish()
             {"qpc_frequency", state.frequency}, {"start_qpc", state.start}, {"end_qpc", state.end},
             {"refresh_hz", state.reader->RefreshRate()}, {"timer", "wx-timer-1ms-resolution"},
             {"requested_timer_ms", InputPeriodMs}, {"inputs_qpc", state.inputs},
-            {"painted", std::move(state.painted)}, {"desktop_updates", std::move(frames)}};
+            {"painted", std::move(state.painted)}, {"desktop_updates", std::move(frames)},
+            {"desktop_capture", capture}};
 }
