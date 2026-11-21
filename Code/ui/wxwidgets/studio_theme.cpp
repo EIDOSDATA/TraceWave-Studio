@@ -6,6 +6,15 @@
 #include <wx/settings.h>
 #include <wx/stattext.h>
 #include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/checklst.h>
+#include <wx/collheaderctrl.h>
+#include <wx/listbox.h>
+#include <wx/notebook.h>
+#include <wx/srchctrl.h>
+#include <wx/ownerdrw.h>
+#include <wx/textctrl.h>
+#include <wx/treectrl.h>
 #include <wx/dcmemory.h>
 #include <wx/graphics.h>
 #include <wx/listctrl.h>
@@ -23,6 +32,64 @@ void ApplySurface(wxWindow& window, Surface surface)
     window.SetBackgroundColour(surface == Surface::Workspace ? colours.workspace : colours.panel);
     window.SetForegroundColour(colours.text);
     window.Refresh(false);
+}
+
+/** @brief Studio가 관리하는 글자와 읽기 전용 본문의 시스템 대비 변경을 연결한다. */
+void BindNativeContrast(wxWindow& parent, bool initiallyHighContrast)
+{
+    for (auto* window : parent.GetChildren())
+    {
+        auto* edit = dynamic_cast<wxTextCtrl*>(window);
+        const bool content = (edit != nullptr && !edit->IsEditable()) ||
+                             dynamic_cast<wxTreeCtrl*>(window) != nullptr ||
+                             dynamic_cast<wxListBox*>(window) != nullptr ||
+                             dynamic_cast<wxNotebook*>(window) != nullptr ||
+                             dynamic_cast<wxSearchCtrl*>(window) != nullptr;
+        const bool label = dynamic_cast<wxStaticText*>(window) != nullptr ||
+                           dynamic_cast<wxCheckBox*>(window) != nullptr ||
+                           dynamic_cast<wxCollapsibleHeaderCtrl*>(window) != nullptr;
+        if (content || label)
+        {
+            const auto foreground = window->GetForegroundColour();
+            const auto background = window->GetBackgroundColour();
+            const auto update = [window, content, initiallyHighContrast, foreground, background]()
+            {
+                const bool highContrast = StudioAppearance::HighContrast();
+                const auto colours = Colours();
+                window->SetForegroundColour(highContrast || initiallyHighContrast ? colours.text : foreground);
+                if (content)
+                {
+                    window->SetBackgroundColour(highContrast || initiallyHighContrast ? colours.content : background);
+                }
+#if defined(__WXMSW__) && wxUSE_OWNER_DRAWN
+                /** @brief Windows 체크 목록은 그리기 항목마다 별도 배경색을 보관한다. */
+                if (auto* list = dynamic_cast<wxCheckListBox*>(window))
+                {
+                    for (unsigned int index = 0; index < list->GetCount(); ++index)
+                    {
+                        list->GetItem(index)->SetTextColour(window->GetForegroundColour());
+                        list->GetItem(index)->SetBackgroundColour(window->GetBackgroundColour());
+                    }
+                }
+#endif
+                window->Refresh(false);
+            };
+            if (initiallyHighContrast)
+            {
+                update();
+            }
+            window->Bind(wxEVT_SYS_COLOUR_CHANGED,
+                         [update](wxSysColourChangedEvent& event)
+                         {
+                             update();
+                             event.Skip();
+                         });
+        }
+        if (!window->IsTopLevel())
+        {
+            BindNativeContrast(*window, initiallyHighContrast);
+        }
+    }
 }
 }
 
@@ -199,6 +266,14 @@ wxBitmap Icon(wxWindow& window, const std::string& kind, int size, int rowHeight
 void BindSurface(wxWindow& window, Surface surface)
 {
     ApplySurface(window, surface);
+    if (window.IsTopLevel())
+    {
+        window.CallAfter(
+            [&window]()
+            {
+                BindNativeContrast(window, StudioAppearance::HighContrast());
+            });
+    }
     window.Bind(wxEVT_SYS_COLOUR_CHANGED,
                 [&window, surface](wxSysColourChangedEvent& event)
                 {

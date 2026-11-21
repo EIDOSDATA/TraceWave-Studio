@@ -1,0 +1,28 @@
+{
+  "schema": "rfad.stage12.windows-contrast/0.1",
+  "date_kst": "2026-11-21",
+  "host_os": "Windows 11",
+  "executable_sha256": "bf2843c6e0c713c7f876eaf7260c249a1904341238938f6670a735084cf7d056",
+  "contrast_theme": "Night sky",
+  "spi_gethighcontrast_flags": {
+    "before": 126,
+    "final_release_during": 127,
+    "after": 126
+  },
+  "display_restored": {"width": 2560, "height": 1600, "dpi": 144, "scaling_percent": 150},
+  "observed_final_release": [
+    "opened_in_high_contrast",
+    "dock_titles_and_tree_icons",
+    "both_layer_checklist_rows",
+    "normal_tab_search_and_layer_colours_restored_live"
+  ],
+  "observed_previous_theme_build": {
+    "frequency_samples": 201,
+    "result_plot": "S11",
+    "frequency_unit": "GHz",
+    "output_basis_and_unknowns_readable": true
+  },
+  "native_windows_regression": {"passed": 7, "seconds": 191.374},
+  "release_ctest": {"passed": 13, "seconds": 0.89},
+  "not_observed": ["light_high_contrast_palette", "hangul_ime_composition", "screen_reader_audio", "mixed_monitor_dpi"]
+}

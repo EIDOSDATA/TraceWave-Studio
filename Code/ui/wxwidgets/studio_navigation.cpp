@@ -76,13 +76,23 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
                        wxTR_HAS_BUTTONS | wxTR_TWIST_BUTTONS | wxTR_NO_LINES | wxTR_FULL_ROW_HIGHLIGHT | wxBORDER_NONE);
     m_tree->SetIndent(FromDIP(18));
     m_tree->SetBackgroundColour(StudioTheme::Colours().content);
-    auto* icons = new wxImageList(FromDIP(20), FromDIP(34), true);
-    for (const auto* kind : {"project", "templates", "targets", "board", "geometry", "port", "material", "parameter",
-                             "environment", "rules", "line", "arc", "region", "pad", "via"})
+    const auto assignIcons = [this]()
     {
-        icons->Add(StudioTheme::Icon(*m_tree, kind, 20, 34));
-    }
-    m_tree->AssignImageList(icons);
+        auto* icons = new wxImageList(FromDIP(20), FromDIP(34), true);
+        for (const auto* kind : {"project", "templates", "targets", "board", "geometry", "port", "material",
+                                 "parameter", "environment", "rules", "line", "arc", "region", "pad", "via"})
+        {
+            icons->Add(StudioTheme::Icon(*m_tree, kind, 20, 34));
+        }
+        m_tree->AssignImageList(icons);
+    };
+    assignIcons();
+    m_tree->Bind(wxEVT_SYS_COLOUR_CHANGED,
+                 [assignIcons](wxSysColourChangedEvent& event)
+                 {
+                     assignIcons();
+                     event.Skip();
+                 });
     m_tree->SetName("navigation.objects");
     m_tree->SetToolTip(Display("객체 선택: 속성 / F2: 이름 변경 / 그룹 Enter: 관련 설정"));
     m_tree->AddRoot(Display("프로젝트 없음"));

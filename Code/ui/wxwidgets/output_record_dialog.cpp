@@ -42,6 +42,7 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
                parent->FromDIP(wxSize(950, 670)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER)
 {
     StudioTheme::ApplyTypography(*this);
+    StudioTheme::BindSurface(*this);
     SetMinSize(FromDIP(wxSize(650, 450)));
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* notice = new wxStaticText(
