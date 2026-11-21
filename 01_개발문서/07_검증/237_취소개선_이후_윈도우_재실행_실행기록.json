@@ -1,0 +1,546 @@
+{
+  "schema": "rfad.windows-startup-measurement/0.1",
+  "mode": "Warm",
+  "recorded_utc": "2026-11-21T09:05:10.7916093+00:00",
+  "boot_started_utc": "2026-11-12T11:25:13.5000000Z",
+  "cold_first_launch_asserted_by_operator": false,
+  "fixture": {
+    "executable_sha256": "512e678ebbb26eccb46fa499f72aa732583e036997939fe41e4f4bae200a5e70",
+    "service_launcher_sha256": "0b471133e110cfb53a061cad528ce8e517d7b9ac41a0a396c39ad795a487fc14",
+    "service_source_sha256": "030ad8ea0626b7f2ed08efe543dd1ffb2134e56cfa904cf853b64508733b730f",
+    "service_source_files": 264,
+    "operating_system": {
+      "Caption": "Microsoft Windows 11 Pro",
+      "Version": "10.0.26300",
+      "BuildNumber": "26300"
+    },
+    "processor": [
+      {
+        "Name": "13th Gen Intel(R) Core(TM) i7-1365U",
+        "NumberOfLogicalProcessors": 12
+      }
+    ],
+    "video": [
+      {
+        "Name": "Intel(R) Iris(R) Xe Graphics",
+        "CurrentHorizontalResolution": 2560,
+        "CurrentVerticalResolution": 1600,
+        "CurrentRefreshRate": 120
+      }
+    ],
+    "window": {
+      "dpi": 144,
+      "client_width": 2468,
+      "client_height": 1316
+    },
+    "worker": "lightweight-project-service"
+  },
+  "qpc_frequency": 10000000,
+  "warmup": {
+    "number": 0,
+    "ok": true,
+    "launch_qpc": 7692075495326,
+    "launch_return_qpc": 7692075713189,
+    "pid": 24220,
+    "exit_qpc": 7692098755517,
+    "exit_code": 0,
+    "probe": {
+      "canvas_painted_qpc": 7692079186963,
+      "client_height": 1316,
+      "client_width": 2468,
+      "dpi": 144,
+      "error": "",
+      "ok": true,
+      "pid": 24220,
+      "qpc_frequency": 10000000,
+      "schema": "rfad.windows-startup-probe/0.1",
+      "service_ready_qpc": 7692087766439
+    },
+    "first_window_ms": 369.1637,
+    "new_project_ready_ms": 1227.1113
+  },
+  "requested_samples": 20,
+  "samples": [
+    {
+      "number": 1,
+      "ok": true,
+      "launch_qpc": 7692099394596,
+      "launch_return_qpc": 7692099436784,
+      "pid": 2204,
+      "exit_qpc": 7692121922376,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692102393959,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 2204,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692109813565
+      },
+      "first_window_ms": 299.9363,
+      "new_project_ready_ms": 1041.8969
+    },
+    {
+      "number": 2,
+      "ok": true,
+      "launch_qpc": 7692121945053,
+      "launch_return_qpc": 7692121990157,
+      "pid": 28180,
+      "exit_qpc": 7692144311412,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692124798811,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 28180,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692132328331
+      },
+      "first_window_ms": 285.3758,
+      "new_project_ready_ms": 1038.3278
+    },
+    {
+      "number": 3,
+      "ok": true,
+      "launch_qpc": 7692144323537,
+      "launch_return_qpc": 7692144396216,
+      "pid": 30540,
+      "exit_qpc": 7692170048695,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692147889524,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 30540,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692157099544
+      },
+      "first_window_ms": 356.5987,
+      "new_project_ready_ms": 1277.6007
+    },
+    {
+      "number": 4,
+      "ok": true,
+      "launch_qpc": 7692170057920,
+      "launch_return_qpc": 7692170108147,
+      "pid": 17268,
+      "exit_qpc": 7692191373113,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692173209854,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 17268,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692180047164
+      },
+      "first_window_ms": 315.1934,
+      "new_project_ready_ms": 998.9244
+    },
+    {
+      "number": 5,
+      "ok": true,
+      "launch_qpc": 7692191387224,
+      "launch_return_qpc": 7692191442783,
+      "pid": 26960,
+      "exit_qpc": 7692213030801,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692195054013,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 26960,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692202149755
+      },
+      "first_window_ms": 366.6789,
+      "new_project_ready_ms": 1076.2531000000001
+    },
+    {
+      "number": 6,
+      "ok": true,
+      "launch_qpc": 7692213040439,
+      "launch_return_qpc": 7692213116513,
+      "pid": 30196,
+      "exit_qpc": 7692235516471,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692216639647,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 30196,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692223636570
+      },
+      "first_window_ms": 359.92080000000004,
+      "new_project_ready_ms": 1059.6131
+    },
+    {
+      "number": 7,
+      "ok": true,
+      "launch_qpc": 7692235529523,
+      "launch_return_qpc": 7692235589743,
+      "pid": 15332,
+      "exit_qpc": 7692258127548,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692239007888,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 15332,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692246549725
+      },
+      "first_window_ms": 347.8365,
+      "new_project_ready_ms": 1102.0202000000002
+    },
+    {
+      "number": 8,
+      "ok": true,
+      "launch_qpc": 7692258136656,
+      "launch_return_qpc": 7692258195286,
+      "pid": 26312,
+      "exit_qpc": 7692282256774,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692261424839,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 26312,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692269462587
+      },
+      "first_window_ms": 328.8183,
+      "new_project_ready_ms": 1132.5931
+    },
+    {
+      "number": 9,
+      "ok": true,
+      "launch_qpc": 7692282266293,
+      "launch_return_qpc": 7692282343986,
+      "pid": 32148,
+      "exit_qpc": 7692302991813,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692285577280,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 32148,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692292123019
+      },
+      "first_window_ms": 331.0987,
+      "new_project_ready_ms": 985.6726000000001
+    },
+    {
+      "number": 10,
+      "ok": true,
+      "launch_qpc": 7692302997742,
+      "launch_return_qpc": 7692303037364,
+      "pid": 3960,
+      "exit_qpc": 7692324830865,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692306373353,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 3960,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692313637800
+      },
+      "first_window_ms": 337.5611,
+      "new_project_ready_ms": 1064.0058000000001
+    },
+    {
+      "number": 11,
+      "ok": true,
+      "launch_qpc": 7692324840744,
+      "launch_return_qpc": 7692324897287,
+      "pid": 28368,
+      "exit_qpc": 7692346089511,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692328191184,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 28368,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692335060471
+      },
+      "first_window_ms": 335.04400000000004,
+      "new_project_ready_ms": 1021.9727
+    },
+    {
+      "number": 12,
+      "ok": true,
+      "launch_qpc": 7692346095453,
+      "launch_return_qpc": 7692346155451,
+      "pid": 19936,
+      "exit_qpc": 7692368739045,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692349521083,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 19936,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692357255053
+      },
+      "first_window_ms": 342.563,
+      "new_project_ready_ms": 1115.96
+    },
+    {
+      "number": 13,
+      "ok": true,
+      "launch_qpc": 7692368755184,
+      "launch_return_qpc": 7692368822869,
+      "pid": 5832,
+      "exit_qpc": 7692391484871,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692372208591,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 5832,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692379650354
+      },
+      "first_window_ms": 345.3407,
+      "new_project_ready_ms": 1089.517
+    },
+    {
+      "number": 14,
+      "ok": true,
+      "launch_qpc": 7692391492867,
+      "launch_return_qpc": 7692391557766,
+      "pid": 27020,
+      "exit_qpc": 7692415095490,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692395020639,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 27020,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692402877738
+      },
+      "first_window_ms": 352.7772,
+      "new_project_ready_ms": 1138.4871
+    },
+    {
+      "number": 15,
+      "ok": true,
+      "launch_qpc": 7692415107037,
+      "launch_return_qpc": 7692415158594,
+      "pid": 19832,
+      "exit_qpc": 7692438224301,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692418715325,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 19832,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692425413395
+      },
+      "first_window_ms": 360.8288,
+      "new_project_ready_ms": 1030.6358
+    },
+    {
+      "number": 16,
+      "ok": true,
+      "launch_qpc": 7692438234386,
+      "launch_return_qpc": 7692438295162,
+      "pid": 30324,
+      "exit_qpc": 7692461664885,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692441837874,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 30324,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692448306265
+      },
+      "first_window_ms": 360.34880000000004,
+      "new_project_ready_ms": 1007.1879
+    },
+    {
+      "number": 17,
+      "ok": true,
+      "launch_qpc": 7692461675453,
+      "launch_return_qpc": 7692461764459,
+      "pid": 20788,
+      "exit_qpc": 7692486097105,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692465091049,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 20788,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692472854548
+      },
+      "first_window_ms": 341.5596,
+      "new_project_ready_ms": 1117.9095
+    },
+    {
+      "number": 18,
+      "ok": true,
+      "launch_qpc": 7692486104923,
+      "launch_return_qpc": 7692486172000,
+      "pid": 29172,
+      "exit_qpc": 7692512168949,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692490176518,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 29172,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692498666529
+      },
+      "first_window_ms": 407.15950000000004,
+      "new_project_ready_ms": 1256.1606000000002
+    },
+    {
+      "number": 19,
+      "ok": true,
+      "launch_qpc": 7692512174982,
+      "launch_return_qpc": 7692512238220,
+      "pid": 25732,
+      "exit_qpc": 7692533989767,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692515433489,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 25732,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692522494199
+      },
+      "first_window_ms": 325.8507,
+      "new_project_ready_ms": 1031.9217
+    },
+    {
+      "number": 20,
+      "ok": true,
+      "launch_qpc": 7692533996672,
+      "launch_return_qpc": 7692534061308,
+      "pid": 8000,
+      "exit_qpc": 7692557813938,
+      "exit_code": 0,
+      "probe": {
+        "canvas_painted_qpc": 7692537599606,
+        "client_height": 1316,
+        "client_width": 2468,
+        "dpi": 144,
+        "error": "",
+        "ok": true,
+        "pid": 8000,
+        "qpc_frequency": 10000000,
+        "schema": "rfad.windows-startup-probe/0.1",
+        "service_ready_qpc": 7692544808697
+      },
+      "first_window_ms": 360.2934,
+      "new_project_ready_ms": 1081.2025
+    }
+  ],
+  "summary": {
+    "sample_count": 20,
+    "minimum": 20,
+    "complete": true,
+    "timing_ms": {
+      "first_window_ms": {
+        "median": 343.95185000000004,
+        "p95": 366.6789,
+        "maximum": 407.15950000000004,
+        "target_p95": 1500,
+        "within_target": true
+      },
+      "new_project_ready_ms": {
+        "median": 1070.1294500000001,
+        "p95": 1256.1606000000002,
+        "maximum": 1277.6007,
+        "target_p95": 2000,
+        "within_target": true
+      }
+    }
+  }
+}
