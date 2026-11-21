@@ -1,0 +1,97 @@
+{
+  "schema": "rfad.stage12.windows-verification-after-large-project/0.1",
+  "date_kst": "2026-11-21",
+  "gui": {
+    "total": 44,
+    "passed": 44,
+    "seconds": 855.206,
+    "executable_sha256": "a3528d8affff1207c48da39b6834c48c4279c90c59efbfae07b17394f31e66de",
+    "native_cad": true,
+    "native_wsl_openems": true,
+    "exchange_runtime": true,
+    "recorded_field_artifact_id": "a73812c0-9c38-4b82-bd9b-99f7066752dc",
+    "test_names": [
+      "test_missing_geometry_input_does_not_publish_or_display (test_gui_cad_process.GuiCadProcessTests.test_missing_geometry_input_does_not_publish_or_display)",
+      "test_step_mesh_edit_save_cancel_and_restart (test_gui_cad_process.GuiCadProcessTests.test_step_mesh_edit_save_cancel_and_restart)",
+      "test_constraints_connectivity_drc_sources_after_reopen (test_gui_design_rules_process.GuiDesignRulesTests.test_constraints_connectivity_drc_sources_after_reopen)",
+      "test_native_feature_edit_units_undo_save_restart_preserves_original (test_gui_features_process.GuiPcbFeatureTests.test_native_feature_edit_units_undo_save_restart_preserves_original) ... ok",
+      "test_native_import_rlc_assessment_history_and_reopen (test_gui_network_process.GuiNetworkTests.test_native_import_rlc_assessment_history_and_reopen)",
+      "test_native_snapshot_review_build_verify_save_restart_preserves_sources (test_gui_output_process.GuiOutputTests.test_native_snapshot_review_build_verify_save_restart_preserves_sources)",
+      "test_real_cam_and_chunk_import_apply_undo_save_restart (test_gui_pcb_exchange_process.GuiPcbExchangeTests.test_real_cam_and_chunk_import_apply_undo_save_restart) ... ok",
+      "test_catalog_controls_preview_apply_and_history (test_gui_pcb_selection_process.GuiPcbSelectionTests.test_catalog_controls_preview_apply_and_history)",
+      "test_delayed_queries_keep_gui_events_and_discard_stale_responses (test_gui_pcb_selection_process.GuiPcbSelectionTests.test_delayed_queries_keep_gui_events_and_discard_stale_responses)",
+      "test_direct_input_without_catalog (test_gui_pcb_selection_process.GuiPcbSelectionTests.test_direct_input_without_catalog)",
+      "test_surface_and_external_step_native_reopen (test_gui_physical_setup_process.GuiPhysicalSetupTests.test_surface_and_external_step_native_reopen)",
+      "test_planar_multiselection_empty_recovery_mirror_and_restart (test_gui_precision_process.GuiPrecisionTests.test_planar_multiselection_empty_recovery_mirror_and_restart)",
+      "test_rename_precision_recovery_atomic_history_and_source_preservation (test_gui_precision_process.GuiPrecisionTests.test_rename_precision_recovery_atomic_history_and_source_preservation)",
+      "test_64_point_coordinate_table_with_history_and_restart (test_gui_primitives_process.GuiPrimitivesTests.test_64_point_coordinate_table_with_history_and_restart)",
+      "test_polygon_holes_pads_via_properties_and_history (test_gui_primitives_process.GuiPrimitivesTests.test_polygon_holes_pads_via_properties_and_history)",
+      "test_printed_modes_scope_history_and_workspace (test_gui_printed_seed_process.GuiPrintedSeedTests.test_printed_modes_scope_history_and_workspace)",
+      "test_canvas_mouse_line_arc_drag_properties_history_and_restart (test_gui_process.GuiProcessTests.test_canvas_mouse_line_arc_drag_properties_history_and_restart)",
+      "test_editor_controls_expression_error_history_and_restart (test_gui_process.GuiProcessTests.test_editor_controls_expression_error_history_and_restart)",
+      "test_f0_cold_summary_requires_distinct_matching_boot_records (test_gui_process.GuiProcessTests.test_f0_cold_summary_requires_distinct_matching_boot_records)",
+      "test_f0_startup_fails_when_service_disconnects (test_gui_process.GuiProcessTests.test_f0_startup_fails_when_service_disconnects)",
+      "test_f0_startup_records_real_display_and_editor_ready (test_gui_process.GuiProcessTests.test_f0_startup_records_real_display_and_editor_ready)",
+      "test_missing_python_executable_is_reported (test_gui_process.GuiProcessTests.test_missing_python_executable_is_reported)",
+      "test_oversized_protocol_frame_fails_without_hanging (test_gui_process.GuiProcessTests.test_oversized_protocol_frame_fails_without_hanging)",
+      "test_real_service_save_snapshot_restart_and_korean_paths (test_gui_process.GuiProcessTests.test_real_service_save_snapshot_restart_and_korean_paths)",
+      "test_service_exit_is_reported (test_gui_process.GuiProcessTests.test_service_exit_is_reported)",
+      "test_stderr_flood_does_not_displace_protocol (test_gui_process.GuiProcessTests.test_stderr_flood_does_not_displace_protocol)",
+      "test_windows_distinguishes_workspace_writer_conflict (test_gui_process.GuiProcessTests.test_windows_distinguishes_workspace_writer_conflict)",
+      "test_windows_recovers_from_save_disk_full_before_publication (test_gui_process.GuiProcessTests.test_windows_recovers_from_save_disk_full_before_publication)",
+      "test_windows_recovers_from_save_reserve_rejection_before_admission (test_gui_process.GuiProcessTests.test_windows_recovers_from_save_reserve_rejection_before_admission)",
+      "test_windows_rejects_damaged_project_without_overwriting_and_reopens_restored_source (test_gui_process.GuiProcessTests.test_windows_rejects_damaged_project_without_overwriting_and_reopens_restored_source)",
+      "test_missing_physics_keeps_original_and_creates_no_native_job (test_gui_project_study_process.GuiProjectStudyTests.test_missing_physics_keeps_original_and_creates_no_native_job)",
+      "test_recorded_field_moves_and_reopens_without_native_solver (test_gui_results_process.GuiRecordedFieldTests.test_recorded_field_moves_and_reopens_without_native_solver)",
+      "test_native_past_sources_smith_compare_export_and_reopen (test_gui_results_process.GuiResultsTests.test_native_past_sources_smith_compare_export_and_reopen)",
+      "test_explicit_condition_pages_keep_tail_unknowns_and_originals (test_gui_results_process.ResultConditionsPagingTests.test_explicit_condition_pages_keep_tail_unknowns_and_originals)",
+      "test_native_copy_review_undo_save_restart_preserves_original_and_selected_sources (test_gui_selection_process.GuiSelectionTests.test_native_copy_review_undo_save_restart_preserves_original_and_selected_sources)",
+      "test_active_analysis_cancel_acknowledgement_and_restore (test_gui_solver_process.GuiSolverProcessTests.test_active_analysis_cancel_acknowledgement_and_restore)",
+      "test_circle_arc_native_results_save_cancel_and_restart (test_gui_solver_process.GuiSolverProcessTests.test_circle_arc_native_results_save_cancel_and_restart)",
+      "test_create_circle_then_reject_missing_physics (test_gui_solver_process.GuiSolverProcessTests.test_create_circle_then_reject_missing_physics)",
+      "test_radiation_pages_display_with_snapshot_and_restart (test_gui_solver_process.GuiSolverProcessTests.test_radiation_pages_display_with_snapshot_and_restart)",
+      "test_native_sweep_preview_cancel_resume_save_and_reopen (test_gui_sweep_process.GuiSweepTests.test_native_sweep_preview_cancel_resume_save_and_reopen)",
+      "test_delayed_queries_preserve_input_and_latest_selection (test_gui_target_template_process.GuiTargetTemplateTests.test_delayed_queries_preserve_input_and_latest_selection)",
+      "test_target_crud_sources_templates_history_and_reopen (test_gui_target_template_process.GuiTargetTemplateTests.test_target_crud_sources_templates_history_and_reopen)",
+      "test_native_plan_and_immutable_reports_save_restart_preserve_unknowns (test_gui_validation_process.GuiValidationTests.test_native_plan_and_immutable_reports_save_restart_preserve_unknowns)",
+      "test_unexecuted_reports_are_distinct_read_only_and_keep_unknowns (test_gui_validation_process.ValidationFixtureTests.test_unexecuted_reports_are_distinct_read_only_and_keep_unknowns)"
+    ]
+  },
+  "service_repository_root": {
+    "total": 1435,
+    "passed": 1278,
+    "excluded": 153,
+    "errors": [
+      "ERROR: test_internal_bundle (unittest.loader._FailedTest.test_internal_bundle)",
+      "ERROR: test_real_stdio_discovery_emits_only_protocol (test_mcp.McpTests.test_real_stdio_discovery_emits_only_protocol)",
+      "ERROR: test_windows_canvas_display_trace (unittest.loader._FailedTest.test_windows_canvas_display_trace)",
+      "ERROR: test_windows_model_lifetime (unittest.loader._FailedTest.test_windows_model_lifetime)"
+    ],
+    "seconds": 2399.318
+  },
+  "service_code_directory_retry": {
+    "passed": 11,
+    "seconds": 3.712,
+    "test_names": [
+      "test_extracts_only_explicit_committed_inputs (test_internal_bundle.InternalBundleTests.test_extracts_only_explicit_committed_inputs)",
+      "test_pe_imports_include_cpp_runtime_name (test_internal_bundle.InternalBundleTests.test_pe_imports_include_cpp_runtime_name)",
+      "test_zip_is_deterministic_and_checks_hash_and_path (test_internal_bundle.InternalBundleTests.test_zip_is_deterministic_and_checks_hash_and_path)",
+      "test_real_stdio_discovery_emits_only_protocol (test_mcp.McpTests.test_real_stdio_discovery_emits_only_protocol)",
+      "test_marker_that_precedes_paint_is_rejected (test_windows_canvas_display_trace.WindowsCanvasDisplayTraceTests.test_marker_that_precedes_paint_is_rejected) ... ok",
+      "test_model_trace_uses_its_30_fps_target (test_windows_canvas_display_trace.WindowsCanvasDisplayTraceTests.test_model_trace_uses_its_30_fps_target)",
+      "test_native_table_preserves_unmatched_markers_and_display_gaps (test_windows_canvas_display_trace.WindowsCanvasDisplayTraceTests.test_native_table_preserves_unmatched_markers_and_display_gaps)",
+      "test_observed_intervals_preserve_gaps_and_unobserved_input_counts (test_windows_canvas_display_trace.WindowsCanvasDisplayTraceTests.test_observed_intervals_preserve_gaps_and_unobserved_input_counts) ... ok",
+      "test_out_of_order_marker_is_rejected (test_windows_canvas_display_trace.WindowsCanvasDisplayTraceTests.test_out_of_order_marker_is_rejected) ... ok",
+      "test_compares_only_closed_endpoints_without_inventing_gpu (test_windows_model_lifetime.WindowsModelLifetimeTests.test_compares_only_closed_endpoints_without_inventing_gpu)",
+      "test_missing_release_and_wrong_wait_are_rejected (test_windows_model_lifetime.WindowsModelLifetimeTests.test_missing_release_and_wrong_wait_are_rejected)"
+    ]
+  },
+  "service_code_directory_discovery": {
+    "collected": 1442,
+    "discovery_errors": 0
+  },
+  "service_across_two_runs": {
+    "unique_passed": 1289,
+    "conditional_exclusions": 153
+  }
+}
