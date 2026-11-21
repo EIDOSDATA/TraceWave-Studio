@@ -1,12 +1,15 @@
 """! @brief 불변 프로젝트 문서의 검증과 저장 참조 접근을 담당한다."""
 
+from collections import deque
 import json
 from pathlib import Path
+from threading import Lock
 
 from rfad.application.canonical import canonical_bytes
 from rfad.application.project_contract import MAX_DOCUMENT_BYTES, _fields, _uuid
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import validate_project
+from rfad.domain.resource_limits import MAX_INLINE_DOCUMENT_BYTES
 from rfad.storage.journal import Journal
 
 
@@ -18,17 +21,29 @@ class ProjectRepository:
         self.workspace = workspace
         self.journal = journal
         self.max_document_bytes = max_document_bytes
+        self._validated_large_sources = deque(maxlen=16)
+        self._validation_lock = Lock()
 
     def read(self, reference: dict) -> tuple[bytes, dict]:
         """! @brief 실제 소비할 바이트와 정규 문서를 함께 반환한다."""
+        # @brief 항상 원문 SHA256을 확인하고 성공한 대형 문서의 순수 검증만 같은 해시에서 재사용한다.
         raw = self.journal.read_document(reference)
+        large = len(raw) > MAX_INLINE_DOCUMENT_BYTES
+        digest = reference["sha256"]
+        with self._validation_lock:
+            known = large and digest in self._validated_large_sources
         try:
             document = json.loads(raw.decode("utf-8"))
-            validate_project(document)
-            if canonical_bytes(document) != raw:
-                raise ProjectError("E_HASH", "저장된 문서의 정규 바이트가 다릅니다.")
+            if not known:
+                validate_project(document)
+                if canonical_bytes(document) != raw:
+                    raise ProjectError("E_HASH", "저장된 문서의 정규 바이트가 다릅니다.")
         except (ValueError, UnicodeError, RecursionError) as error:
             raise ProjectError("E_HASH", "저장된 프로젝트를 해석할 수 없습니다.") from error
+        if large and not known:
+            with self._validation_lock:
+                if digest not in self._validated_large_sources:
+                    self._validated_large_sources.append(digest)
         return raw, document
 
     def load(self, project: dict) -> dict:

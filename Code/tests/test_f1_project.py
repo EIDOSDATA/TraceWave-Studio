@@ -88,6 +88,22 @@ class F1ProjectTests(unittest.TestCase):
                 result = complete(service, "project.open", {**open_data, "result_mode": "summary"})["operation_result"]
                 self.assertNotIn("document", result)
                 self.assertEqual(result["revision_hash"], current["sha256"])
+                read_back = service.repository.load(row)
+                read_back["metadata"]["name"] = "저장 원문과 다른 반환값"
+                self.assertEqual(service.repository.load(row)["metadata"], fixture["metadata"])
+                path = workspace / current["uri"]
+                raw = path.read_bytes()
+                try:
+                    path.write_bytes(raw[:-1] + b" ")
+                    with self.assertRaises(ProjectError) as damaged:
+                        service.repository.load(row)
+                    self.assertEqual(damaged.exception.code, "E_HASH")
+                finally:
+                    path.write_bytes(raw)
+                noncanonical = service.journal.put_document("test/large-uncanonical.json", b" " + raw)
+                with self.assertRaises(ProjectError) as invalid:
+                    service.repository.read(noncanonical)
+                self.assertEqual(invalid.exception.code, "E_HASH")
                 edited = complete(service, "project.save", {"expected_revision": document["revision_id"]}, project_id)
                 self.assertEqual(edited["operation_result"]["artifact"], current)
             with ProjectService(workspace, auto_run=False) as service:
