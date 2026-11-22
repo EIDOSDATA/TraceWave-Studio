@@ -268,6 +268,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_precision.cpp
     ui/wxwidgets/precision_dialog.cpp
     ui/wxwidgets/smart_dimension_dialog.cpp
+    ui/wxwidgets/sketch_constraint_dialog.cpp
     ui/wxwidgets/design_canvas_dimensions.cpp
     ui/wxwidgets/object_rename_dialog.cpp
     ui/wxwidgets/studio_editing.cpp
