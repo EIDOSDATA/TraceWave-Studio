@@ -8,7 +8,7 @@ from uuid import uuid4
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.job_state import TERMINAL
-from rfad.application.pcb_execution import stopped
+from rfad.application.pcb_execution import stopped, valid_energy_observation
 from rfad.application.solver import PROFILE, build_analysis_plan, make_prepared_plan, validate_reference_plan
 from rfad.application.solver_requests import PCB_PROFILE, REFERENCE_PROFILE, SOLVER_METHODS, validate_solver_input
 from rfad.application.solver_runtime import SolverRuntime, stage_solver_job
@@ -28,6 +28,7 @@ class SolverCoordinator:
         self.wake, self.stop, self.cancel = threading.Event(), threading.Event(), threading.Event()
         self.thread, self.error = None, None
         self._run_lock = threading.Lock()
+        self._live_energy = None
 
     def start(self):
         """! @brief 구성된 서비스에만 WSL 조정 스레드를 시작한다."""
@@ -162,7 +163,13 @@ class SolverCoordinator:
         try:
             return self._run_one()
         finally:
+            self._live_energy = None
             self._run_lock.release()
+
+    def live_energy(self, job_id):
+        """! @brief 현재 소유 작업의 최신 관측값만 반환한다."""
+        observed = self._live_energy
+        return dict(observed[1]) if observed is not None and observed[0] == job_id else None
 
     def _run_one(self):
         """! @brief 실행 및 취소 경쟁에서 먼저 확정한 terminal 상태를 보존한다."""
@@ -234,8 +241,14 @@ class SolverCoordinator:
 
 
     def _progress(self, job, value):
-        """! @brief 제한된 phase와 소유 정보만 저장하고 계산 출력은 로그 파일로 둔다."""
+        """! @brief phase와 소유 정보를 기록하고 최신 에너지 값은 실행 중 조회에 전달한다."""
         phase = value.get("phase")
+        sample = value.get("energy_observation")
+        if (phase == "running" and value.get("state") == "active" and valid_energy_observation(sample)
+                and job["kind"] == "em_analysis" and job["solver"]["analysis_plan"]["analysis_profile"] == PCB_PROFILE):
+            previous = self.live_energy(job["job_id"])
+            if previous is None or previous["step"] < sample["step"]:
+                self._live_energy = job["job_id"], dict(sample)
         pid = value.get("worker_pid")
         worker_attached = value.get("state") == "active" and type(pid) is int and pid > 0
         def update(state):

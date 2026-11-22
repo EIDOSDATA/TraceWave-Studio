@@ -61,10 +61,9 @@ _PROGRESS = re.compile(
     r"\(\s*([+-])\s*(\d+(?:\.\d+)?|inf)\s*dB\)", re.IGNORECASE)
 
 
-def energy_observations(log, termination, limit=96):
-    """! @brief 로그에 실제 기록된 진행 표본과 확인된 마지막 표본을 단계 순으로 읽는다."""
+def _progress_samples(log, stop):
+    """! @brief 실제 로그 숫자와 에너지 감쇠 부호를 읽고 종료 표시는 별도로 처리한다."""
     samples = {}
-    stop = termination["iterations"]
     for match in _PROGRESS.finditer(log):
         step = int(match[1])
         energy = float(match[2])
@@ -74,6 +73,30 @@ def energy_observations(log, termination, limit=96):
         samples[step] = {"step": step, "reported_energy": energy,
                          "decay_db": decay * (1 if match[3] == "-" else -1) if math.isfinite(decay) else None,
                          "final": False}
+    return samples
+
+
+def latest_energy_observation(log, max_timesteps):
+    """! @brief 진행 로그의 마지막 유효 관측값만 읽는다."""
+    samples = _progress_samples(log, max_timesteps)
+    return samples[max(samples)] if samples else None
+
+
+def valid_energy_observation(value):
+    """! @brief 실제 작업 상태에 올릴 작은 관측값을 검증한다."""
+    return (type(value) is dict and set(value) == {"step", "reported_energy", "decay_db", "final"}
+            and type(value["step"]) is int and 0 < value["step"] < 200000
+            and type(value["reported_energy"]) in (int, float) and math.isfinite(value["reported_energy"])
+            and value["reported_energy"] >= 0
+            and (value["decay_db"] is None
+                 or type(value["decay_db"]) in (int, float) and math.isfinite(value["decay_db"]))
+            and value["final"] is False)
+
+
+def energy_observations(log, termination, limit=96):
+    """! @brief 로그에 실제 기록된 진행 표본과 확인된 마지막 표본을 단계 순으로 읽는다."""
+    stop = termination["iterations"]
+    samples = _progress_samples(log, stop)
     ordered = [samples[step] for step in sorted(samples)]
     ordered.append({"step": stop, "reported_energy": 0.0 if termination["reported_zero_energy"] else None,
                     "decay_db": termination["reported_decay_db"], "final": True})

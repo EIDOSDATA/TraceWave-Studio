@@ -8,7 +8,7 @@ import unittest
 from uuid import uuid4
 
 from rfad.application import solver_preview
-from rfad.application.pcb_execution import energy_observations
+from rfad.application.pcb_execution import energy_observations, latest_energy_observation, valid_energy_observation
 from rfad.application.projects import ProjectService
 from rfad.domain.errors import ProjectError
 from rfad.domain.physical_setup import KEY as PHYSICAL_KEY, setup
@@ -110,3 +110,9 @@ class SolverReviewFollowup(unittest.TestCase):
         history = energy_observations(log, {"iterations": 500, "reported_zero_energy": False, "reported_decay_db": 30.8})
         self.assertEqual([row["decay_db"] for row in history["samples"]], [14.37, -0.72, 30.8])
         self.assertEqual([row["final"] for row in history["samples"]], [False, False, True])
+        latest = latest_energy_observation(log, 500)
+        self.assertEqual(latest, history["samples"][1])
+        self.assertTrue(valid_energy_observation(latest))
+        self.assertFalse(valid_energy_observation({**latest, "reported_energy": -1}))
+        self.assertFalse(valid_energy_observation({**latest, "final": True}))
+        self.assertIsNone(latest_energy_observation(log, 200))

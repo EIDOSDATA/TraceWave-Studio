@@ -396,6 +396,17 @@ void StudioFrame::PollSolver(Clock::time_point now)
                                                                     : ""));
                 UpdateControls();
             }
+            else if (state == "running" && status.contains("energy_observation"))
+            {
+                const auto& energy = status.at("energy_observation");
+                const auto& decay = energy.at("decay_db");
+                const auto value = decay.is_number()
+                    ? wxString::Format(Display("감쇠 %.4g dB"), decay.get<double>())
+                    : Display("유한한 감쇠값 없음");
+                const auto label = Display(ProgressLabel(m_solverWorkflow.PhaseName(), state)) +
+                    wxString::Format(Display(" / 시간 단계 %d / "), energy.at("step").get<int>()) + value;
+                SolverStatus(state, label.ToStdString(wxConvUTF8));
+            }
             else if (state != m_solverState)
             {
                 SolverStatus(state, ProgressLabel(m_solverWorkflow.PhaseName(), state));

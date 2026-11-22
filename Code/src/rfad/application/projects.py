@@ -515,6 +515,9 @@ class ProjectService:
         }
         if job.get("solver", {}).get("guest_worker_attached") is True:
             result["guest_worker_attached"] = True
+            observation = self.solver.live_energy(job["job_id"]) if job["state"] == "running" else None
+            if observation is not None:
+                result["energy_observation"] = observation
         if any(job.get(owner, {}).get("process") for owner in ("cad", "exchange")):
             result["native_worker_attached"] = True
         return result

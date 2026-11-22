@@ -478,6 +478,7 @@ def daemon(payload):
         last = -1
         deadline = time.monotonic() + specification["lease_seconds"]
         phase = "preparing"
+        observation = None
         try:
             while not finished.wait(0.05):
                 value = read_json(path / "control.json")
@@ -495,9 +496,11 @@ def daemon(payload):
                 try:
                     progress = read_json(path / "progress.json", 4096)
                     current = progress.get("phase")
-                    if current in {"preparing", "running", "postprocessing"} and current != phase:
-                        phase = current
-                        publish(path, phase=phase)
+                    if current in {"preparing", "running", "postprocessing"}:
+                        sample = progress.get("energy_observation") if current == "running" else None
+                        if current != phase or sample != observation:
+                            phase, observation = current, sample
+                            publish(path, phase=phase, energy_observation=observation)
                 except FileNotFoundError:
                     pass
         except Exception as error:

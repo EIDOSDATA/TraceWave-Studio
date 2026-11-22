@@ -9,7 +9,7 @@ import subprocess
 import time
 
 from rfad.application.canonical import canonical_hash
-from rfad.application.pcb_execution import NATIVE_SCOPE, estimate
+from rfad.application.pcb_execution import NATIVE_SCOPE, estimate, latest_energy_observation
 from rfad.application.pcb_solver import (
     PROFILE, RAW_NAMES, check_termination, mesh_lines, read_statistics_values,
     shape_polygons, validate_pcb_plan, validate_preparation, validate_result,
@@ -167,7 +167,10 @@ def solve(stage, request, inputs, runtime):
     command = [str(EXECUTABLE), "pcb.xml", "--engine=multithreaded", "--numThreads=" + str(threads), "--dump-statistics", "--exact-endcriteria"]
     plan = request["analysis_plan"]
     started, mapped = time.monotonic(), set()
-    with (raw / "native.log").open("xb") as stream:
+    log = raw / "native.log"
+    next_observation = started
+    observed_step = 0
+    with log.open("xb") as stream, log.open("rb") as readable:
         child = subprocess.Popen(command, cwd=raw, stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.STDOUT)
         try:
             # @brief wait4는 다른 자식 프로세스와 섞이지 않는 이 openEMS PID의 최대 RSS를 반환한다.
@@ -177,7 +180,17 @@ def solve(stage, request, inputs, runtime):
                     child.returncode = os.waitstatus_to_exitcode(status)
                     break
                 mapped.update(_mapped_files(child.pid))
-                require((raw / "native.log").stat().st_size <= MAX_FILE_BYTES, "native 로그 상한을 초과했습니다.", "E_RESOURCE")
+                length = log.stat().st_size
+                require(length <= MAX_FILE_BYTES, "native 로그 상한을 초과했습니다.", "E_RESOURCE")
+                now = time.monotonic()
+                if now >= next_observation:
+                    next_observation = now + 1.0
+                    readable.seek(max(0, length - 8192))
+                    sample = latest_energy_observation(readable.read(8192).decode("utf-8", errors="replace"),
+                                                       plan["case"]["settings"]["max_timesteps"])
+                    if sample is not None and sample["step"] > observed_step:
+                        observed_step = sample["step"]
+                        write_json(stage / "progress.json", {"phase": "running", "energy_observation": sample})
                 time.sleep(0.05)
         finally:
             if child.returncode is None:
