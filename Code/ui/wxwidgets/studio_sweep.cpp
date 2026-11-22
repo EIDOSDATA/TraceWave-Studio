@@ -13,10 +13,10 @@
 
 namespace
 {
-/** @brief 저장한 목표에 가중치를 입력하거나 기존 우열 그룹을 그대로 연다. */
-std::optional<Json> RankingWeights(wxWindow* parent, const Json& targets)
+/** @brief 저장한 목표의 가중치와 별도 공차 모서리 검토를 설정한다. */
+std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, bool toleranceAvailable)
 {
-    if (targets.size() < 2)
+    if (targets.size() < 2 && !toleranceAvailable)
     {
         return Json::object();
     }
@@ -51,6 +51,14 @@ std::optional<Json> RankingWeights(wxWindow* parent, const Json& targets)
     }
     scroll->SetSizer(fields);
     layout->Add(scroll, 1, wxEXPAND | wxLEFT | wxRIGHT, gap);
+    wxCheckBox* tolerance = nullptr;
+    if (toleranceAvailable)
+    {
+        tolerance = new wxCheckBox(&dialog, wxID_ANY, Display("최소·공칭·최대 입력의 공차 모서리 비교"));
+        tolerance->SetName("sweep.ranking.tolerance");
+        tolerance->SetToolTip(Display("저장한 카테시안 연구에서 공칭점과 각 축 최소/최대의 조합을 비교합니다."));
+        layout->Add(tolerance, 0, wxEXPAND | wxALL, gap);
+    }
     auto* status = new wxStaticText(&dialog, wxID_ANY, " ");
     layout->Add(status, 0, wxEXPAND | wxALL, gap);
     layout->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
@@ -86,7 +94,20 @@ std::optional<Json> RankingWeights(wxWindow* parent, const Json& targets)
     }, wxID_OK);
     dialog.SetSizerAndFit(layout);
     dialog.CentreOnParent();
-    return dialog.ShowModal() == wxID_OK ? std::optional<Json>(std::move(weights)) : std::nullopt;
+    if (dialog.ShowModal() != wxID_OK)
+    {
+        return std::nullopt;
+    }
+    Json options = Json::object();
+    if (!weights.empty())
+    {
+        options["weights"] = std::move(weights);
+    }
+    if (tolerance && tolerance->GetValue())
+    {
+        options["tolerance"] = true;
+    }
+    return options;
 }
 }
 
@@ -313,15 +334,13 @@ void StudioFrame::SweepCommand(const std::string& action)
     Json rankRequest = {{"study_id", id}};
     if (action == "rank")
     {
-        const auto weights = RankingWeights(this, selected.value("ranking_targets", Json::array()));
-        if (!weights || m_closing || m_project != project || m_sweepPanel->StudyId() != id || m_sweepPending)
+        const auto options = RankingOptions(this, selected.value("ranking_targets", Json::array()),
+                                            selected.value("ranking_tolerance_available", false));
+        if (!options || m_closing || m_project != project || m_sweepPanel->StudyId() != id || m_sweepPending)
         {
             return;
         }
-        if (!weights->empty())
-        {
-            rankRequest["weights"] = *weights;
-        }
+        rankRequest.update(*options);
     }
     const auto generation = ++m_sweepGeneration;
     m_sweepPending = true;
@@ -363,10 +382,24 @@ void StudioFrame::SweepCommand(const std::string& action)
                      wxArrayString labels;
                      const auto& targets = result.at("targets");
                      const auto& rows = result.at("items");
+                     const auto tolerance = result.value("tolerance_analysis", Json::object());
+                     const auto corners = tolerance.value("corner_ordinals", Json::array());
                      for (const auto& row : rows)
                      {
                          auto label = wxString::Format(Display("%d그룹 / 후보 %d"),
                              row.at("front").get<int>(), row.at("ordinal").get<int>() + 1);
+                         if (!tolerance.empty())
+                         {
+                             const auto ordinal = row.at("ordinal").get<int>();
+                             if (ordinal == tolerance.at("nominal_ordinal"))
+                             {
+                                 label += Display(" / 공칭");
+                             }
+                             else if (std::find(corners.begin(), corners.end(), ordinal) != corners.end())
+                             {
+                                 label += Display(" / 모서리");
+                             }
+                         }
                          if (row.contains("weighted_score"))
                          {
                              label += wxString::Format(Display(" / 가중 점수 %.2f%%"),
@@ -399,6 +432,28 @@ void StudioFrame::SweepCommand(const std::string& action)
                          if (weights.size() > visible)
                          {
                              explanation += wxString::Format(Display(" | 외 %zu개"), weights.size() - visible);
+                         }
+                     }
+                     if (!tolerance.empty())
+                     {
+                         const auto missing = tolerance.at("missing_corner_ordinals").size();
+                         explanation += wxString::Format(Display("\n공칭 후보 %d | 모서리 평가 %zu/%zu"),
+                             tolerance.at("nominal_ordinal").get<int>() + 1, corners.size() - missing, corners.size());
+                         if (missing)
+                         {
+                             explanation += Display(" | 누락으로 최악값 미확정");
+                         }
+                         const auto& objective = tolerance.at("targets");
+                         for (std::size_t i = 0; i < std::min<std::size_t>(4, objective.size()); ++i)
+                         {
+                             const auto& minimum = objective.at(i).at("complete_corner_score");
+                             const auto& nominal = objective.at(i).at("nominal_score");
+                             const auto percent = [](const Json& score)
+                             {
+                                 return score.is_null() ? Display("미정") : wxString::Format("%.1f%%", score.get<double>() * 100);
+                             };
+                             explanation += "\n" + Display(targets.at(i).at("name").get<std::string>()).Left(28) +
+                                 Display(" | 공칭 ") + percent(nominal) + Display(" | 모서리 최저 ") + percent(minimum);
                          }
                      }
                      explanation += Display("\n확인을 누르면 선택 후보의 전체 평가를 엽니다.");

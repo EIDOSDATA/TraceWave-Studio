@@ -42,9 +42,11 @@ def validate_input(method, context, data):
     """! @brief 공개 요청을 닫힌 계약과 프로젝트 소유권으로 제한한다."""
     _fields(context, {"project_id"})
     _uuid(context["project_id"])
-    _fields(data, FIELDS[method], {"weights"} if method == "sweep.rank" else set())
+    _fields(data, FIELDS[method], {"weights", "tolerance"} if method == "sweep.rank" else set())
     if "weights" in data and (type(data["weights"]) is not dict or not 1 <= len(data["weights"]) <= 32):
         fail("순위에는 연구 목표의 명시 가중치를 입력하십시오.")
+    if "tolerance" in data and type(data["tolerance"]) is not bool:
+        fail("공차 모서리 비교 사용 여부는 참 또는 거짓으로 입력하십시오.")
     for name in ("study_id", "expected_revision"):
         if name in data:
             _uuid(data[name])
@@ -349,6 +351,8 @@ def _budget_display(values):
 
 def view(service, state, study):
     """! @brief 전체 후보 배열 대신 고정 입력과 요약 상태를 조회한다."""
+    from rfad.application.sweep_ranking import tolerance_axes
+
     definition, source = baseline(service, study)
     current = service._load(state["projects"][study["project_id"]])
     allowed, reason = actions(service, state, study, definition)
@@ -363,6 +367,7 @@ def view(service, state, study):
         "variable_labels": _labels(source, None if definition["network"] is None else definition["network"]["circuit"]),
         "ranking_targets": [{"id": row["id"], "name": row["name"]} for row in source["targets"]
                             if row["id"] in definition["specification"]["target_ids"]],
+        "ranking_tolerance_available": bool(tolerance_axes(definition["specification"])),
         "allowed_actions": allowed, "stop_reason": reason or study.get("stop_reason"),
         "convergence_status": "not_established", "physical_validation": "not_established"})
 
@@ -494,7 +499,8 @@ def read(service, method, params):
         return bounded(_replay_preview(service, state, project, study, definition, source))
     if method == "sweep.rank":
         from rfad.application import sweep_ranking
-        return bounded(sweep_ranking.read(service, study, definition, source, project, data.get("weights")))
+        return bounded(sweep_ranking.read(service, study, definition, source, project,
+                                          data.get("weights"), data.get("tolerance", False)))
     labels = _labels(source, None if definition["network"] is None else definition["network"]["circuit"])
     if method == "sweep.page":
         total, offset = study["counts"]["total"], data["offset"]

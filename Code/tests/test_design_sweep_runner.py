@@ -187,6 +187,26 @@ class DesignSweepRunnerTests(unittest.TestCase):
         self.assertEqual(self.fixture.read("sweep.rank", study_id=identity), ranking)
         self.assertEqual(self.fixture.read("sweep.rank", study_id=identity, weights=weights), weighted)
         self.assertEqual(self.fixture.read("sweep.recipe", study_id=identity), recipe)
+        with self.assertRaisesRegex(ProjectError, "공차 모서리"):
+            self.fixture.read("sweep.rank", study_id=identity, tolerance=True)
+
+        values[:] = [{**values[1], "text": str(value)} for value in (10, 20, 50)]
+        tolerance_id = self.fixture.create()
+        unavailable = self.fixture.read("sweep.rank", study_id=tolerance_id, tolerance=True)["tolerance_analysis"]
+        self.assertFalse(unavailable["nominal_available"])
+        self.assertEqual(unavailable["missing_corner_ordinals"], [0, 2])
+        self.assertTrue(all(row["complete_corner_score"] is None for row in unavailable["targets"]))
+        self.command("start", tolerance_id)
+        self.assertEqual(self.run_all(tolerance_id)["state"], "completed")
+        before = self.service.journal.read()
+        report = self.fixture.read("sweep.rank", study_id=tolerance_id, tolerance=True)["tolerance_analysis"]
+        self.assertEqual((report["nominal_ordinal"], report["corner_ordinals"]), (1, [0, 2]))
+        self.assertTrue(report["nominal_available"] and report["complete_corners"])
+        self.assertEqual(report["missing_corner_ordinals"], [])
+        strict, relaxed = report["targets"]
+        self.assertEqual((strict["nominal_score"], strict["complete_corner_score"], strict["observed_min_ordinals"]), (1, 0, [2]))
+        self.assertEqual((relaxed["nominal_score"], relaxed["complete_corner_score"]), (1, 1))
+        self.assertEqual(self.service.journal.read(), before)
 
     def test_circuit_lazy_failure_duplicate_and_results_keep_originals(self):
         """! @brief 0 ohm 실패와 50 ohm의 독립 반사값 11/29, 동치 재사용을 구분한다."""

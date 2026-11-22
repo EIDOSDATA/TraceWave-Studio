@@ -2,6 +2,7 @@
 
 from collections import Counter
 from fractions import Fraction
+from itertools import product
 
 from rfad.application.canonical import canonical_hash, canonical_hash_from_bytes
 from rfad.application.design_sweep_store import fail, load_candidate, read_json
@@ -64,9 +65,53 @@ def _weights(identities, raw):
     return [Fraction(str(value)) for value in values]
 
 
-def read(service, study, definition, source, project, weights=None):
+def tolerance_axes(specification):
+    """! @brief 사용자가 세 값을 지정한 설계 또는 소자 축에서 공차 모서리를 읽는다."""
+    axes = specification["variables"]
+    if specification["combination"] != "cartesian" or specification["type"] == "numerical_study":
+        return []
+    for axis in axes:
+        if axis["kind"] not in {"parameter", "circuit_value"} or len(axis["values"]) != 3:
+            return []
+        low, nominal, high = (quantity["value_si"] for quantity in axis["values"])
+        if None in (low, nominal, high) or not low < nominal < high:
+            return []
+    return axes
+
+
+def _tolerance_report(axes, ids, vectors):
+    """! @brief 공칭점과 명시 모서리만 비교하며 누락 구간에서 최악 판정을 유보한다."""
+    corners, nominal = [], None
+    for ordinal, indices in enumerate(product(range(3), repeat=len(axes))):
+        if 1 not in indices:
+            corners.append(ordinal)
+        elif all(index == 1 for index in indices):
+            nominal = ordinal
+    reported = [ordinal for ordinal in corners if ordinal in vectors]
+    missing = [ordinal for ordinal in corners if ordinal not in vectors]
+    objectives = []
+    for index, identity in enumerate(ids):
+        observed = min((vectors[ordinal][index] for ordinal in reported), default=None)
+        objectives.append({
+            "target_id": identity,
+            "nominal_score": float(vectors[nominal][index]) if nominal in vectors else None,
+            "observed_min_score": float(observed) if observed is not None else None,
+            "complete_corner_score": float(observed) if not missing else None,
+            "observed_min_ordinals": [ordinal for ordinal in reported if vectors[ordinal][index] == observed],
+        })
+    return {"axes": axes, "nominal_ordinal": nominal, "nominal_available": nominal in vectors,
+            "corner_ordinals": corners, "missing_corner_ordinals": missing,
+            "complete_corners": not missing, "targets": objectives}
+
+
+def read(service, study, definition, source, project, weights=None, tolerance=False):
     """! @brief 현재 설계나 결과를 바꾸지 않고 연구에 소속된 봉인 평가만 사용한다."""
-    ids = definition["specification"]["target_ids"]
+    specification = definition["specification"]
+    ids = specification["target_ids"]
+    axes = tolerance_axes(specification) if tolerance else []
+    if tolerance and (not axes or not ids):
+        fail("공차 모서리는 목표와 오름차순 최소·공칭·최대값을 가진 카테시안 설계 또는 회로 연구가 필요합니다.",
+             "E_UNSUPPORTED")
     weights = _weights(ids, weights)
     targets = {row["id"]: row["name"] for row in source["targets"]}
     root = project["path"] + "/sweeps/" + study["study_id"] + "/results/"
@@ -123,4 +168,6 @@ def read(service, study, definition, source, project, weights=None):
         report["weights"] = [{"id": identity, "weight": float(raw), "normalized_weight": float(value)}
                              for identity, raw, value in zip(ids, weights, normalized)]
         report["scope"] = "weighted_worst_criterion_sample_pass_fraction"
+    if tolerance:
+        report["tolerance_analysis"] = _tolerance_report(axes, ids, vectors)
     return {**report, "ranking_sha256": canonical_hash(report)}
