@@ -17,6 +17,8 @@ else:
 
 
 SCHEMA = "rfad.internal-bundle/0.2"
+INTERNAL_DISTRIBUTION = "internal_validation_only"
+PUBLIC_CANDIDATE = "public_prerelease_validation"
 MANIFEST = "bundle-manifest.json"
 COMMIT = re.compile(r"[0-9a-f]{40}(?:[0-9a-f]{24})?\Z")
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
@@ -68,7 +70,7 @@ def verify(archive_path):
             raise ValueError("유한한 내부 묶음 manifest가 필요합니다.")
         manifest = json.loads(archive.read(manifest_info))
         if (type(manifest) is not dict or manifest.get("schema") != SCHEMA or
-                manifest.get("distribution") != "internal_validation_only" or
+                manifest.get("distribution") not in (INTERNAL_DISTRIBUTION, PUBLIC_CANDIDATE) or
                 type(manifest.get("source_revision")) is not str or not COMMIT.fullmatch(manifest["source_revision"]) or
                 type(manifest.get("files")) is not list):
             raise ValueError("내부 묶음 manifest의 schema, 배포 또는 소스 식별이 다릅니다.")
@@ -86,13 +88,27 @@ def verify(archive_path):
                 raise ValueError(f"묶음 파일의 SHA256이 다릅니다. {name}")
         if paths:
             raise ValueError("manifest에 없는 파일이 묶음에 있습니다.")
+        runtime = manifest.get("external_compiler_runtime")
+        if (manifest["distribution"] == PUBLIC_CANDIDATE) != (runtime is not None):
+            raise ValueError("공개 검증 후보에는 외부 컴파일러 DLL 계약이 필요합니다.")
+        if runtime is not None:
+            profile = json.loads(archive.read(PROFILE))
+            expected = profile["compiler"]["runtime_files"]
+            archived = {item.filename.casefold() for item in members}
+            if (not isinstance(expected, dict) or not expected or runtime != expected or
+                    any(not re.fullmatch(r"[A-Za-z0-9_+.-]+\.dll", name) or
+                        not isinstance(digest, str) or not SHA256.fullmatch(digest) or
+                        (BIN + _safe_name(name)).casefold() in archived
+                        for name, digest in expected.items())):
+                raise ValueError("외부 컴파일러 DLL 계약이 묶음과 다릅니다.")
     with archive_path.open("rb") as stream:
         digest = hashlib.file_digest(stream, "sha256").hexdigest()
     return {"path": str(archive_path), "files": len(members) - 1, "bytes": archive_path.stat().st_size,
             "source_revision": manifest["source_revision"], "sha256": digest, "status": "contents_verified"}
 
 
-def build(repository, output, reference, executable, runtime, wx_archive, notice_dir, objdump):
+def build(repository, output, reference, executable, runtime, wx_archive, notice_dir, objdump,
+          *, external_compiler_runtime=False):
     """! @brief 검증된 임시 묶음만 새 이름에 게시하며 기존 ZIP은 덮지 않는다."""
     repository, output = Path(repository), Path(output)
     if output.exists():
@@ -105,6 +121,10 @@ def build(repository, output, reference, executable, runtime, wx_archive, notice
     if profile.get("schema") != "rfad.runtime.windows-internal-bundle/0.1":
         raise ValueError("Windows 내부 묶음 의존 profile이 다릅니다.")
     native, imports = native_files(Path(executable), Path(runtime), profile, objdump)
+    required_dlls = profile["compiler"]["runtime_files"]
+    if external_compiler_runtime:
+        for dll in required_dlls:
+            del native[BIN + dll]
     files = {**sources, **native, **notices(Path(wx_archive), Path(notice_dir), profile)}
     casefolded = {name.casefold() for name in files}
     if (len(casefolded) != len(files) or MANIFEST in casefolded or
@@ -112,7 +132,7 @@ def build(repository, output, reference, executable, runtime, wx_archive, notice
         raise ValueError("내부 묶음 전체 용량 또는 Windows 이름 조건이 다릅니다.")
     entries = [{"path": name, "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
                for name, data in sorted(files.items())]
-    manifest = {"schema": SCHEMA, "distribution": "internal_validation_only",
+    manifest = {"schema": SCHEMA, "distribution": PUBLIC_CANDIDATE if external_compiler_runtime else INTERNAL_DISTRIBUTION,
                 "design_baseline": "RFAD-D0-3.4", "source_revision": revision, "platform": profile["platform"],
                 "release_runtime_profile": PROFILE, "native_imports": imports, "files": entries,
                 "compression": {"method": "deflate", "level": 9, "zlib": zlib.ZLIB_RUNTIME_VERSION},
@@ -121,6 +141,9 @@ def build(repository, output, reference, executable, runtime, wx_archive, notice
                 "optional_external_prerequisites": ["OCCT Python runtime", "engineering export runtime",
                     "WSL2 openEMS", "material catalog import", "pinned Python wheels by feature"],
                 "turnkey_installation": False, "r1_acceptance_established": False, "physics_validated": False}
+    if external_compiler_runtime:
+        manifest["external_compiler_runtime"] = required_dlls
+        manifest["external_prerequisites"].append("Pinned WinLibs compiler runtime DLLs")
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".tracewave-bundle-", dir=output.parent) as temp:
         pending = Path(temp) / "bundle.zip"
@@ -145,6 +168,8 @@ def main():
     parser.add_argument("--wx-archive", type=Path)
     parser.add_argument("--notice-dir", type=Path)
     parser.add_argument("--objdump", default="objdump")
+    parser.add_argument("--external-compiler-runtime", action="store_true",
+                        help="DLL의 해시와 의존성을 검사하고 파일 자체는 원 공급처에서 받도록 표시합니다.")
     args = parser.parse_args()
     if args.verify is not None:
         if args.output is not None:
@@ -157,7 +182,8 @@ def main():
         executable = args.gui or repository / BIN / "tracewave_gui.exe"
         runtime = args.runtime_dir or executable.parent
         wx_archive = args.wx_archive or repository / "Code/.local/deps/wxWidgets-3.2.12.tar.bz2"
-        result = build(repository, args.output, args.source_ref, executable, runtime, wx_archive, args.notice_dir, args.objdump)
+        result = build(repository, args.output, args.source_ref, executable, runtime, wx_archive,
+                       args.notice_dir, args.objdump, external_compiler_runtime=args.external_compiler_runtime)
     print(json.dumps(result, ensure_ascii=False))
 
 

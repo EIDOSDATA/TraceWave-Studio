@@ -10,6 +10,7 @@ import zipfile
 
 from tools import build_internal_bundle as bundle
 from tools.internal_bundle_inputs import _imports, git_sources
+from tools.verify_windows_internal_bundle import install_compiler_runtime
 
 
 class InternalBundleTests(unittest.TestCase):
@@ -81,3 +82,22 @@ class InternalBundleTests(unittest.TestCase):
         output = b"tracewave_gui.exe: file format pei-x86-64\r\n\tDLL Name: libstdc++-6.dll\r\n\tDLL Name: KERNEL32.dll\r\n"
         with patch("tools.internal_bundle_inputs.subprocess.check_output", return_value=output):
             self.assertEqual(_imports(Path("tracewave_gui.exe"), "objdump"), {"libstdc++-6.dll", "kernel32.dll"})
+
+    def test_external_runtime_is_checked_before_any_copy(self):
+        """! @brief 공개 후보의 외부 런타임은 전체 해시 검증 후에만 연결한다."""
+        with TemporaryDirectory() as folder:
+            root = Path(folder)
+            source, destination = root / "upstream", root / "receiver"
+            source.mkdir()
+            destination.mkdir()
+            first, second = "libgcc_s_seh-1.dll", "libmcfgthread-2.dll"
+            (source / first).write_bytes(b"fixed")
+            (source / second).write_bytes(b"wrong")
+            expected = dict.fromkeys((first, second), hashlib.sha256(b"fixed").hexdigest())
+            with self.assertRaisesRegex(ValueError, "SHA256"):
+                install_compiler_runtime(source, destination, expected)
+            self.assertEqual(list(destination.iterdir()), [])
+            (source / second).write_bytes(b"fixed")
+            install_compiler_runtime(source, destination, expected)
+            self.assertEqual({file.name: file.read_bytes() for file in destination.iterdir()},
+                             dict.fromkeys(expected, b"fixed"))
