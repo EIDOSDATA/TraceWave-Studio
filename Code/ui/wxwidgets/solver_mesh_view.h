@@ -3,6 +3,7 @@
 
 #include <wx/panel.h>
 #include <nlohmann/json.hpp>
+#include <array>
 #include <string>
 
 class wxPaintEvent;
@@ -15,6 +16,8 @@ public:
     void DisplayPlan(const nlohmann::json* review);
     void SetView(int plane, bool full);
     void Highlight(const std::string& id);
+    /** @brief 선택한 국부 격자 구간의 양쪽 실제 격자선을 강조한다. */
+    void HighlightBand(int axis, const std::array<double, 2>& bounds, bool applied);
 
 private:
     void Paint(wxPaintEvent& event);
@@ -22,4 +25,7 @@ private:
     int m_plane = 0;
     bool m_full = false;
     std::string m_highlight;
+    int m_bandAxis = -1;
+    std::array<double, 2> m_bandBounds{};
+    bool m_bandApplied = false;
 };

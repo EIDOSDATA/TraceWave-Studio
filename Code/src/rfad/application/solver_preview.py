@@ -147,5 +147,6 @@ def read(service, params):
             "omissions": plan.get("physical_setup_omissions", {}),
             "outputs": plan.get("outputs", []), "settings": case["settings"],
             "mesh": {"lines_mm": lines, "model_bounds_mm": bounds, "axes": axes,
+                     **({"local_mesh_report": case["local_mesh_report"]} if "local_mesh_report" in case else {}),
                      "case_sha256": canonical_hash(case), "lines_sha256": canonical_hash(lines)},
             "model": model_review(document, plan)}

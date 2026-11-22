@@ -10,7 +10,8 @@ import math
 from rfad.application.pcb_contacts import validate_native_contacts
 from rfad.application.pcb_geometry import (MAX_POLYGON_POINTS, fail, scalar, length, point,
                                             shape_polygons, distance_to_shape, _inside_board)
-from rfad.application.pcb_mesh import mesh_lines, policy_report
+from rfad.application.pcb_mesh import build_grid, policy_report
+from rfad.application.pcb_local_mesh import FIELD as LOCAL_MESH_FIELD, covers_feed
 from rfad.application.pcb_compute import limits as compute_limits
 from rfad.application.pcb_environment import project_environment
 from rfad.application.pcb_surfaces import project_surfaces
@@ -167,7 +168,7 @@ def project_port(document, shapes, frequency, settings):
     for index in range(3):
         if index != axis and start[index] != stop[index]:
             fail("E_UNSUPPORTED", "급전 영역을 한 축의 1차원 간극으로 지정하십시오.", f"{box}.stop[{index}]")
-    if axis != 2 and abs(stop[axis] - start[axis]) < 2 * settings["grid_mm"]:
+    if axis != 2 and abs(stop[axis] - start[axis]) < 2 * settings["grid_mm"] and "local_mesh" not in settings:
         fail("E_PORT", "급전 간극은 최소 두 격자로 표현해야 합니다. 모델 최대 격자 간격을 확인하십시오.", "settings.grid_mm")
     for endpoint, position, shape in (("start", start, ref), ("stop", stop, pos)):
         if axis != 2 and shape["kind"] in ("line_path", "arc_path") and abs(distance_to_shape(position[:2], shape) - shape["width_mm"] / 2) > 1e-6:
@@ -326,7 +327,14 @@ def project_pcb(document, settings):
     shortest = 299792458.0 / (center_hz * 1.5 * math.sqrt(max(region["epsilon_r"] for region in dielectric_regions))) * 1000
     if settings["grid_mm"] > shortest / 10:
         fail("E_GEOMETRY", "최소 모델 파장당 10개 격자 초기 기준을 충족하지 못했습니다.", "settings.grid_mm")
-    lines = mesh_lines(case)
+    lines, local_mesh = build_grid(case)
+    if local_mesh is not None:
+        case["local_mesh_report"] = local_mesh
+        axis = "xyz".index(port["axis"])
+        gap_width = abs(port["stop_mm"][axis] - port["start_mm"][axis])
+        if axis != 2 and gap_width < 2 * settings["grid_mm"] and not covers_feed(local_mesh, port):
+            fail("E_PORT", "급전 방향의 국부 규칙이 간극 전체에 적용되어야 하며 목표 폭은 간극 폭의 절반 이하여야 합니다.",
+                 LOCAL_MESH_FIELD)
     if "mesh_policy" in settings:
         case["mesh_policy_report"] = policy_report(case, lines)
     from rfad.application.pcb_radiation import recording

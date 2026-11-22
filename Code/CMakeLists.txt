@@ -250,6 +250,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/studio_cad.cpp
     ui/wxwidgets/studio_solver.cpp
     ui/wxwidgets/solver_review_dialog.cpp
+    ui/wxwidgets/solver_local_mesh_panel.cpp
     ui/wxwidgets/solver_mesh_view.cpp
     ui/wxwidgets/studio_solver_view.cpp
     ui/wxwidgets/solver_chart.cpp

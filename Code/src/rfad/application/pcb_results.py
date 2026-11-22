@@ -115,6 +115,7 @@ def validate_preparation(plan, preparation):
             or mesh.get("fdtd_executed") is not False or mesh.get("native_preprocessing_executed") is not False
             or mesh.get("delta_unit_m") != 0.001 or mesh.get("native_length_unit") != "mm"
             or mesh.get("mesh_policy_report") != plan["case"].get("mesh_policy_report")
+            or mesh.get("local_mesh_report") != plan["case"].get("local_mesh_report")
             or preparation.get("normalization") != plan["normalization"] or preparation["consumption_report"].get("consumed_case") != plan["case"]
             or consumption.get("project_geometry_consumed") is not True or consumption.get("project_materials_consumed") is not True
             or consumption.get("source_mapping") != mappings or consumption.get("fdtd_executed") is not False or consumption.get("physics_validated") is not False

@@ -1,6 +1,7 @@
 /** @file @brief 같은 창에서 해석 입력 수정, 읽기 전용 검토와 실행 승인까지 이어간다. */
 #include "solver_review_dialog.h"
 #include "solver_mesh_view.h"
+#include "solver_local_mesh_panel.h"
 #include "studio_notebook.h"
 #include "studio_support.h"
 #include "studio_theme.h"
@@ -55,6 +56,14 @@ public:
         m_values = values;
         SetItemCount(values ? static_cast<long>(values->size()) : 0);
         Refresh();
+    }
+
+    /** @brief 선택 구간 첫 셀의 끝 선을 실제 좌표 표에서 보이게 한다. */
+    void LocateCell(long firstLine)
+    {
+        SetItemState(firstLine + 1, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
+        EnsureVisible(firstLine + 1);
+        SetFocus();
     }
 
 private:
@@ -125,7 +134,7 @@ void CompareValues(wxListCtrl& table, const Json& current, const Json& source, c
         {"radiation.frequency_hz", "NF2FF 기록 주파수 (Hz)"}, {"radiation.theta_step_deg", "NF2FF theta 간격 (deg)"},
         {"radiation.phi_step_deg", "NF2FF phi 간격 (deg)"},
         {"compute_profile.kind", "계산 예산 프로필"}, {"compute_profile.num_threads", "계산 스레드"},
-        {"power_balance.kind", "독립 손실 기록 방식"}};
+        {"power_balance.kind", "독립 손실 기록 방식"}, {"local_mesh", "객체별 국부 격자"}};
     if (current == source)
     {
         return;
@@ -218,6 +227,25 @@ public:
                                   wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
         m_output->SetName("solver.review.output");
         m_output->GetParent()->GetSizer()->Add(m_output, 1, wxEXPAND | wxALL, pad);
+        auto* local = Page("국부 격자");
+        m_local = new SolverLocalMeshPanel(local, m_catalog.value("local_mesh_targets", Json::array()),
+            [this]() { Invalidate(); },
+            [this](int axis, const std::array<double, 2>& bounds, long firstLine, bool applied)
+            {
+                m_book->SetSelection(1);
+                m_plane->SetSelection(axis == 2 ? 1 : 0);
+                m_axis->SetSelection(axis);
+                UpdatePlot();
+                UpdateAxis();
+                m_plot->HighlightBand(axis, bounds, applied);
+                m_coordinates->LocateCell(firstLine);
+                const auto status = wxString::Format(Display("국부 격자 %s축 %.8g ~ %.8g mm / %s"),
+                    Display(std::string(1, "XYZ"[axis])), bounds[0], bounds[1],
+                    Display(applied ? "적용 경계" : "상위 규칙이 적용된 경계"));
+                SetStatus(Utf8(status));
+            });
+        local->GetSizer()->Add(m_local, 1, wxEXPAND);
+        LoadFields(m_draft);
 
         auto* actions = new wxBoxSizer(wxHORIZONTAL);
         auto* back = new wxButton(this, wxID_ANY, Display("조건 입력으로"));
@@ -353,7 +381,6 @@ private:
             Invalidate();
         });
         m_input->SetSizer(columns);
-        LoadFields(m_draft);
         page->GetSizer()->Add(m_input, 1, wxEXPAND);
     }
 
@@ -724,6 +751,7 @@ private:
         m_fields.at("frequency_hz")->ChangeValue(wxJoin(frequencies, ','));
         m_graded->SetValue(!mesh.empty());
         m_nf->SetValue(!radiation.empty());
+        m_local->LoadRules(settings.value("local_mesh", Json::array()));
         m_draft = settings;
         SetOptionalControls();
         const bool useBudget = settings.contains("compute_profile");
@@ -756,6 +784,7 @@ private:
         m_result = Json::object();
         m_model->DeleteAllItems();
         m_modelDetails->Clear();
+        m_local->DisplayReport(Json::object());
         m_axisSummary->SetLabel(wxEmptyString);
         m_meshSummary->SetLabel(wxEmptyString);
         m_meshSettings->SetLabel(wxEmptyString);
@@ -829,6 +858,14 @@ private:
         {
             settings.erase("mesh_policy");
         }
+        if (m_local->Rules().empty())
+        {
+            settings.erase("local_mesh");
+        }
+        else
+        {
+            settings["local_mesh"] = m_local->Rules();
+        }
         if (m_nf->GetValue())
         {
             Json frequencies = Json::array();
@@ -871,6 +908,7 @@ private:
         ClearResult();
         m_pending = true;
         m_input->Enable(false);
+        m_local->Enable(false);
         m_load->Enable(false);
         m_check->Enable(false);
         SetStatus("해석 계획과 실제 입력 격자선을 확인하고 있습니다.");
@@ -896,6 +934,7 @@ private:
     {
         m_pending = false;
         m_input->Enable(true);
+        m_local->Enable(true);
         m_check->Enable(true);
         m_load->Enable(!m_selected.empty());
         SetOptionalControls();
@@ -916,12 +955,21 @@ private:
             }
         }
         auto problem = DiagnosticMessage(error);
+        const auto field = details.value("field_path", std::string());
+        const bool local = field.rfind("settings.local_mesh", 0) == 0;
         if (details.contains("grid_point_limit"))
         {
             problem += " 확인된 격자점은 최소 " + details.at("grid_points_lower_bound").dump() +
-                       "개입니다. 격자 간격, 공기 여유와 임계 구간 분할을 확인하세요.";
+                       (local ? "개입니다. 국부 목표 폭과 범위 또는 전체 격자 조건을 확인하세요."
+                              : "개입니다. 격자 간격, 공기 여유와 임계 구간 분할을 확인하세요.");
         }
-        const auto field = details.value("field_path", std::string());
+        if (local)
+        {
+            SetStatus(problem);
+            m_book->SetSelection(m_book->GetPageCount() - 1);
+            m_local->FocusRule(field);
+            return;
+        }
         if (field.empty())
         {
             problem += " 조건을 확인한 뒤 필요하면 다시 검토하세요.";
@@ -972,6 +1020,7 @@ private:
             Display("모델 최대 간격 %.8g mm  |  임계 구간 최소 분할 %d  |  %s"),
             settings.at("grid_mm").get<double>(), settings.value("feature_subdivisions", 1), grid));
         m_plot->DisplayPlan(&m_result);
+        m_local->DisplayReport(mesh.value("local_mesh_report", Json::object()));
         UpdateAxis();
         FillModel();
         const std::string radiation = settings.contains("radiation") ? "NF2FF 기록 사용" : "NF2FF 기록 끔";
@@ -1052,6 +1101,7 @@ private:
     wxListCtrl* m_model = nullptr;
     wxStaticText* m_modelSummary = nullptr;
     wxTextCtrl* m_modelDetails = nullptr;
+    SolverLocalMeshPanel* m_local = nullptr;
 };
 }
 

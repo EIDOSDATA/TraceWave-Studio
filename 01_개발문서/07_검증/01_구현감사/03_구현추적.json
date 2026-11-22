@@ -14301,8 +14301,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
-      "text_sha256": "48c40c05bbf8952f7aeee7965b67b813f4143e4665773aaafaa9f77adba97129",
-      "utf8_bytes": 20817
+      "text_sha256": "7b28372a7943ac0445bea51c5405b26ec447f84d5b7059660244780a801f0768",
+      "utf8_bytes": 23112
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
@@ -14866,8 +14866,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/solvers/openems/pcb.py",
-      "text_sha256": "fc2bb4f307f448b86438e60578c939f8ea6e0d16cc44d2fc6cb7bac86532e972",
-      "utf8_bytes": 18793
+      "text_sha256": "9ccd955380c92be732fc630785ef123d90509d88152017eb8230b83e773bb0c2",
+      "utf8_bytes": 18891
     },
     {
       "path": "Code/src/rfad/adapters/solvers/openems/pcb_absorption.py",
@@ -14941,8 +14941,8 @@
     },
     {
       "path": "Code/src/rfad/application/convergence.py",
-      "text_sha256": "7edef92292cfb5dc5fea84e7d5d474b43626477ebe20d498adde6969c376d9f1",
-      "utf8_bytes": 21100
+      "text_sha256": "0a6118772b028c140ba1c9f6fcdbbbfcf8e7c001222b09ea82f562b9ac0f09ec",
+      "utf8_bytes": 21121
     },
     {
       "path": "Code/src/rfad/application/design_rule_service.py",
@@ -15086,8 +15086,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_mesh.py",
-      "text_sha256": "912c3624d86d395c61bf09d00bf17a947b2338c9ff6a6196682087d75a90f2f8",
-      "utf8_bytes": 13326
+      "text_sha256": "7789f1c105662fc582e53c117cd570a3a98618d63322972ac50970b625227c2c",
+      "utf8_bytes": 14923
     },
     {
       "path": "Code/src/rfad/application/pcb_power.py",
@@ -15096,8 +15096,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_projection.py",
-      "text_sha256": "86202f3daaa1a118f8a57220011e6312d2d2bdb41acd418c1ac950fa204f15f3",
-      "utf8_bytes": 28321
+      "text_sha256": "f2f7ca321f971d8841f5457d19a208fff663e36254305788fbaa71bfb8eb4d53",
+      "utf8_bytes": 28938
     },
     {
       "path": "Code/src/rfad/application/pcb_radiation.py",
@@ -15106,8 +15106,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_results.py",
-      "text_sha256": "c4df0880d3c2e21834382e22fa5886602632e29c1436e7cdbcb7bb9a38113082",
-      "utf8_bytes": 14950
+      "text_sha256": "7cd08e77872b44dc804db1ba2808779d5acea9eac3670060888f77196c1694ec",
+      "utf8_bytes": 15036
     },
     {
       "path": "Code/src/rfad/application/pcb_selection.py",
@@ -15126,8 +15126,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "4cb38dcd1c35e806590969c644db1fa6d686a3c4a4b6618be7a367eeeb9cf7f4",
-      "utf8_bytes": 8308
+      "text_sha256": "a9f7bccb48bb2379c26b37511965041e0270aeb12403ee91c97288f4ce9188db",
+      "utf8_bytes": 8461
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
@@ -16016,8 +16016,8 @@
     },
     {
       "path": "Code/tests/test_pcb_mesh.py",
-      "text_sha256": "6025033994e212de445206d28927392731831b328c0daedeffc6a25961205d4b",
-      "utf8_bytes": 7657
+      "text_sha256": "392c1a666ce8800332cd3ced763e674fb5487c90913a4c3e71856af98902488c",
+      "utf8_bytes": 13151
     },
     {
       "path": "Code/tests/test_pcb_native.py",

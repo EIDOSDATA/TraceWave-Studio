@@ -6,6 +6,7 @@ import math
 from rfad.domain.errors import ProjectError
 from rfad.application.pcb_geometry import _bounds, fail
 from rfad.application.pcb_environment import scene_extents
+from rfad.application import pcb_local_mesh
 
 MAX_GRID_POINTS = 1500000
 
@@ -133,10 +134,41 @@ def policy_report(case, lines):
     if "feature_subdivisions" in settings:
         report.update(feature_subdivisions=settings["feature_subdivisions"],
                       interior_critical_intervals_unchanged=settings["feature_subdivisions"] == 1)
+    if "local_mesh" in settings:
+        report["interior_critical_intervals_unchanged"] = False
     return report
 
 
 def mesh_lines(case):
+    """! @brief 기존 계획/준비 호출자에게 최종 격자선만 제공한다."""
+    return build_grid(case)[0]
+
+
+def _base_lines(positions, settings):
+    """! @brief 기존 모델 간격과 임계점 최소 분할로 기본선을 만든다."""
+    points = []
+    for left, right in zip(positions, positions[1:]):
+        gap = right - left
+        if gap < 1e-4:
+            if gap > 1e-9:
+                fail("E_GEOMETRY", "격자 임계선 사이 간격이 너무 작습니다.", "mesh")
+            continue
+        count = max(math.ceil(gap / settings["grid_mm"]), settings.get("feature_subdivisions", 1))
+        if gap / count < 1e-4:
+            fail("E_GEOMETRY", "임계 구간 분할 후 최소 격자 간격이 0.0001 mm보다 작습니다.", "settings.feature_subdivisions")
+        points.extend(left + gap * i / count for i in range(count))
+    points.append(positions[-1])
+    return sorted({round(value, 12) for value in points})
+
+
+def _grid_limit(total, maximum, *, local):
+    """! @brief 자원 초과 시 해당 설정과 이미 확인된 점 수 하한을 알려 준다."""
+    raise ProjectError("E_RESOURCE", f"PCB profile의 실제 격자점 상한 {maximum}을 초과했습니다.",
+                       details={"field_path": pcb_local_mesh.FIELD if local else "mesh",
+                                "grid_point_limit": maximum, "grid_points_lower_bound": total})
+
+
+def build_grid(case):
     """! @brief 외곽과 유전체 경계/port gap을 보존하는 제한된 Cartesian 격자를 만든다."""
     board, settings = case["board"], case["settings"]
     from rfad.application.pcb_compute import limits
@@ -186,35 +218,34 @@ def mesh_lines(case):
         for axis, bounds in enumerate(void["bounds_mm"]):
             critical[axis].extend(bounds)
             critical[axis].append(void["witness_mm"][axis])
-    result = {}
-    total = 1
-    for axis, positions in enumerate(critical):
+    padding = settings["air_padding_mm"]
+    graded = settings.get("mesh_policy")
+    base = [_base_lines(sorted(set(positions if graded else positions + [lower - padding, upper + padding])), settings)
+            for positions, (lower, upper) in zip(critical, physical)]
+    local = "local_mesh" in settings
+    model_bounds = [[round(min(points), 12), round(max(points), 12)] for points in critical]
+    rules = pcb_local_mesh.compile_rules(case, base, model_bounds) if local else []
+    result, total = {}, 1
+    for axis, name in enumerate("xyz"):
         lower, upper = physical[axis]
-        padding = settings["air_padding_mm"]
-        inner_lower, inner_upper = min(positions), max(positions)
-        graded = settings.get("mesh_policy")
-        critical_positions = sorted(set(positions if graded else positions + [lower - padding, upper + padding]))
-        points = []
-        for left, right in zip(critical_positions, critical_positions[1:]):
-            gap = right - left
-            if gap < 1e-4:
-                if gap > 1e-9:
-                    fail("E_GEOMETRY", "격자 임계선 사이 간격이 너무 작습니다.", "mesh")
-                continue
-            count = max(math.ceil(gap / settings["grid_mm"]), settings.get("feature_subdivisions", 1))
-            if gap / count < 1e-4:
-                fail("E_GEOMETRY", "임계 구간 분할 후 최소 격자 간격이 0.0001 mm보다 작습니다.", "settings.feature_subdivisions")
-            points.extend(left + gap * i / count for i in range(count))
-        points.append(critical_positions[-1])
-        points = sorted(set(round(v, 12) for v in points))
+        inner_lower, inner_upper = min(critical[axis]), max(critical[axis])
+        points = base[axis]
+        axis_rules = [(row["priority"], row["axes"][name]) for row in rules if name in row["axes"]]
+        if axis_rules:
+            refined = []
+            for left, right in zip(points, points[1:]):
+                width = pcb_local_mesh.assign_interval(axis_rules, left, right)
+                count = math.ceil((right - left) / width - 1e-10) if width is not None else 1
+                if total * (len(refined) + count + 1) > maximum:
+                    _grid_limit(total * (len(refined) + count + 1), maximum, local=True)
+                refined.extend(round(left + (right - left) * i / count, 12) for i in range(count))
+            points = [*refined, points[-1]]
         if graded:
             points = graded_axis(points, [lower, upper], padding, graded["air_cell_mm"], graded["growth_ratio"])
         if len(points) < 19 or sum(v < inner_lower for v in points) < 9 or sum(v > inner_upper for v in points) < 9:
             fail("E_GEOMETRY", "PML 8 cells와 모델 사이의 공기 격자가 부족합니다.", "mesh")
         total *= len(points)
         if total > maximum:
-            raise ProjectError("E_RESOURCE", f"PCB profile의 실제 격자점 상한 {maximum}을 초과했습니다.",
-                               details={"field_path": "mesh", "grid_point_limit": maximum,
-                                        "grid_points_lower_bound": total})
-        result["xyz"[axis]] = points
-    return result
+            _grid_limit(total, maximum, local=local)
+        result[name] = points
+    return result, pcb_local_mesh.finish_report(rules, result) if local else None

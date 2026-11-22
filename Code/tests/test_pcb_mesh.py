@@ -6,11 +6,13 @@ import os
 from pathlib import Path
 import sys
 import unittest
+from uuid import uuid4
 
 from rfad.application.canonical import canonical_bytes
 from rfad.application.pcb_solver import build_pcb_plan, mesh_lines, validate_pcb_plan
 from rfad.domain.errors import ProjectError
-from test_pcb_solver import runtime_identity, snapshot_for
+from test_pcb_ifa import VIA_SETTINGS, via_document
+from test_pcb_solver import SETTINGS, fixture_document, quantity, runtime_identity, snapshot_for
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -123,6 +125,83 @@ class GradedPcbMeshTests(unittest.TestCase):
             self.assertFalse((stage / "output/raw").exists())
         finally:
             helper.tearDown()
+
+
+class LocalPcbMeshTests(unittest.TestCase):
+    def test_object_gap_priority_and_actual_lines(self):
+        """! @brief 모델 선 보존, 겹침의 우선순위와 동률, 적용 구간의 실제 셀을 대조한다."""
+        document = fixture_document(arc=True)
+        reference = build_pcb_plan(document, snapshot_for(document), runtime_identity(), SETTINGS)
+        rows = [
+            {"kind": "port", "object_id": reference["case"]["port"]["id"], "priority": 20, "max_cell_mm": {"x": .05}},
+            {"kind": "gap", "name": "좁은 간극", "priority": 60, "max_cell_mm": {"x": .25},
+             "bounds_mm": [[7.2, 7.8], [5.8, 6.2], [.1, .9]]},
+            {"kind": "gap", "name": "동일 우선순위", "priority": 60, "max_cell_mm": {"x": .1},
+             "bounds_mm": [[7.2, 7.8], [5.8, 6.2], [.1, .9]]},
+        ]
+        plan = build_pcb_plan(document, snapshot_for(document), runtime_identity(), {**SETTINGS, "local_mesh": rows})
+        validate_pcb_plan(plan)
+        old, current = mesh_lines(reference["case"]), mesh_lines(plan["case"])
+        self.assertEqual(old["y"], current["y"])
+        self.assertEqual(old["z"], current["z"])
+        self.assertTrue(set(old["x"]) < set(current["x"]))
+        self.assertTrue(all(7 <= line <= 9 for line in set(current["x"]) - set(old["x"])))
+        port, weak, strong = plan["case"]["local_mesh_report"]["rules"]
+        self.assertEqual([section["applied"] for section in port["axes"]["x"]["segments"]], [True, False, True])
+        self.assertFalse(weak["axes"]["x"]["segments"][0]["applied"])
+        self.assertTrue(strong["axes"]["x"]["segments"][0]["applied"])
+        for rule in (port, weak, strong):
+            axis = rule["axes"]["x"]
+            for section in axis["segments"]:
+                first, cells = section["first_line"], section["cells"]
+                self.assertEqual(section["bounds_mm"], [current["x"][first], current["x"][first + cells]])
+                actual = max(b - a for a, b in zip(current["x"][first:first + cells], current["x"][first + 1:first + cells + 1]))
+                self.assertEqual(section["max_cell_mm"], actual)
+                if section["applied"]:
+                    self.assertLessEqual(actual, axis["target_cell_mm"] + 1e-10)
+
+    def test_via_extent_and_stale_id(self):
+        """! @brief 비아의 실제 배럴 범위를 쓰며 없는 ID를 다른 비아로 바꾸지 않는다."""
+        document = via_document()
+        identity = next(row["id"] for row in document["geometry"] if row["kind"] == "via")
+        rule = {"kind": "via", "object_id": identity, "priority": 55, "max_cell_mm": {"x": .04, "y": .045, "z": .12}}
+        plan = build_pcb_plan(document, snapshot_for(document), runtime_identity(), {**VIA_SETTINGS, "local_mesh": [rule]})
+        region = plan["case"]["local_mesh_report"]["rules"][0]
+        self.assertEqual(region["bounds_mm"], [[2.6, 3.4], [5.6, 6.4], [0.0, 1.0]])
+        for axis, width in rule["max_cell_mm"].items():
+            self.assertLessEqual(region["axes"][axis]["segments"][0]["max_cell_mm"], width + 1e-10)
+        rule["object_id"] = str(uuid4())
+        with self.assertRaises(ProjectError) as caught:
+            build_pcb_plan(document, snapshot_for(document), runtime_identity(), {**VIA_SETTINGS, "local_mesh": [rule]})
+        self.assertEqual(caught.exception.details["field_path"], "settings.local_mesh[0].object_id")
+
+    def test_local_rules_cannot_bypass_uncovered_feed_or_resource_limits(self):
+        """! @brief 좁은 급전 전 구간과 격자점 상한을 끝까지 확인한다."""
+        document = fixture_document()
+        rule = {"kind": "port", "object_id": document["ports"][0]["id"], "priority": 20, "max_cell_mm": {"x": .25}}
+        settings = {**SETTINGS, "frequency_hz": {"start": 2e9, "stop": 3e9, "count": 21},
+                    "grid_mm": 1.1, "air_padding_mm": 15}
+        document["ports"][0]["validity_hz"] = deepcopy(document["materials"][0]["validity_hz"])
+        for shape in document["geometry"]:
+            shape["width"] = quantity(2.4, "mm")
+            if shape["role"] == "ground":
+                shape["end"][0] = quantity(5.8, "mm")
+            else:
+                shape["start"][0] = quantity(10.2, "mm")
+        with self.assertRaisesRegex(ProjectError, "급전 간극"):
+            build_pcb_plan(document, snapshot_for(document), runtime_identity(), settings)
+        plan = build_pcb_plan(document, snapshot_for(document), runtime_identity(), {**settings, "local_mesh": [rule]})
+        self.assertLessEqual(plan["case"]["local_mesh_report"]["rules"][0]["axes"]["x"]["segments"][0]["max_cell_mm"], .25)
+        rule["max_cell_mm"] = {"y": .25}
+        with self.assertRaises(ProjectError) as caught:
+            build_pcb_plan(document, snapshot_for(document), runtime_identity(), {**settings, "local_mesh": [rule]})
+        self.assertEqual(caught.exception.details["field_path"], "settings.local_mesh")
+        wide = {"kind": "gap", "name": "상한 검증", "priority": 100, "max_cell_mm": {"x": .001},
+                "bounds_mm": [[0, 40], [10, 20], [.1, .5]]}
+        with self.assertRaises(ProjectError) as caught:
+            study_plan({**STUDY_SETTINGS, "local_mesh": [wide]})
+        self.assertEqual(caught.exception.code, "E_RESOURCE")
+        self.assertEqual(caught.exception.details["field_path"], "settings.local_mesh")
 
 
 if __name__ == "__main__":

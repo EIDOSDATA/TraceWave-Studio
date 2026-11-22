@@ -109,7 +109,7 @@ def _result(result):
                     "normalization": result["normalization"], "runtime_identity": plan["runtime_identity"],
                     "observed_runtime": result["provenance"]["runtime"], "analysis_profile": plan["analysis_profile"],
                     "runtime_profile": plan["runtime_profile"], "model_report": plan["model_report"],
-                    "physics": {key: value for key, value in plan["case"].items() if key not in {"settings", "stop_criteria", "mesh_policy_report", "loss_recording"}}}
+                    "physics": {key: value for key, value in plan["case"].items() if key not in {"settings", "stop_criteria", "mesh_policy_report", "local_mesh_report", "loss_recording"}}}
         return {"frequencies": frequencies, "s11": reflections, "impedance": impedances, "identity": identity,
                 "plan": plan, "settings": settings, "lines": lines, "native_cells": count, "pml": pml}
     except (KeyError, TypeError, IndexError, OverflowError) as error:

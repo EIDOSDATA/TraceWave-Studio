@@ -116,6 +116,8 @@ def prepare(stage, plan, runtime):
             "pml_cells_per_end": 8, "native_preprocessing_executed": False, "fdtd_executed": False}
     if "mesh_policy_report" in case:
         mesh["mesh_policy_report"] = case["mesh_policy_report"]
+    if "local_mesh_report" in case:
+        mesh["local_mesh_report"] = case["local_mesh_report"]
     consumption = {"schema": "rfad.openems-pcb-consumption/0.1", "analysis_plan_id": plan["plan_id"], "source": "user_project",
                    "consumed_case": case, "project_geometry_consumed": True, "project_materials_consumed": True,
                    "source_mapping": mappings,

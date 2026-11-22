@@ -98,6 +98,7 @@ void SolverMeshView::DisplayPlan(const Json* review)
 {
     m_review = review;
     m_highlight.clear();
+    m_bandAxis = -1;
     Refresh(false);
 }
 
@@ -111,6 +112,16 @@ void SolverMeshView::SetView(int plane, bool full)
 void SolverMeshView::Highlight(const std::string& id)
 {
     m_highlight = id;
+    m_bandAxis = -1;
+    Refresh(false);
+}
+
+void SolverMeshView::HighlightBand(int axis, const std::array<double, 2>& bounds, bool applied)
+{
+    m_highlight.clear();
+    m_bandAxis = axis;
+    m_bandBounds = bounds;
+    m_bandApplied = applied;
     Refresh(false);
 }
 
@@ -276,6 +287,22 @@ void SolverMeshView::Paint(wxPaintEvent&)
     if (highlighted)
     {
         drawComponent(*highlighted, true);
+    }
+    if (m_bandAxis == first || m_bandAxis == second)
+    {
+        const bool vertical = m_bandAxis == first;
+        dc.SetPen(wxPen(palette.accent, FromDIP(3), m_bandApplied ? wxPENSTYLE_SOLID : wxPENSTYLE_SHORT_DASH));
+        for (const double value : m_bandBounds)
+        {
+            if (vertical)
+            {
+                dc.DrawLine(point(value, v[0]), point(value, v[1]));
+            }
+            else
+            {
+                dc.DrawLine(point(u[0], value), point(u[1], value));
+            }
+        }
     }
     dc.DestroyClippingRegion();
     dc.SetPen(wxPen(palette.border));

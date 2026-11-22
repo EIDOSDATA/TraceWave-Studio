@@ -7,6 +7,7 @@ from rfad.application.pcb_solver import PROFILE as PCB_PROFILE, validate_setting
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain import solver_conditions as domain
 from rfad.domain.errors import ProjectError
+from rfad.domain.object_names import display_names
 
 READ = "solver.conditions"
 SAVE = "solver.conditions.save"
@@ -79,5 +80,9 @@ def read(service, params):
                for row in state["solver_results"].values()
                if row["project_id"] == project_id and row["metadata"]["profile"] == PCB_PROFILE]
     results.sort(key=lambda row: (row["snapshot_time"], row["id"]), reverse=True)
+    names = display_names(document)
+    targets = [{"kind": "port", "id": row["id"], "name": row["name"]} for row in document["ports"]]
+    targets.extend({"kind": "via", "id": row["id"], "name": names[row["id"]]}
+                   for row in document["geometry"] if row["kind"] == "via" and row["include_in_em"])
     return {"revision_id": expected, "design": domain.design_context(document),
-            "saved": deepcopy(domain.records(document)), "results": results}
+            "saved": deepcopy(domain.records(document)), "results": results, "local_mesh_targets": targets}
