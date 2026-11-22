@@ -1,0 +1,1361 @@
+{
+  "schema": "rfad.ro-local8-global-refinement-evidence/0.1",
+  "date_kst": "2026-11-22",
+  "status": "completed",
+  "source_workspace_pointer_unchanged": true,
+  "archive": {
+    "historical_result_reused_for_assessment": false,
+    "native_input_sha256": "95d7586761130edac63a33744059902b0acb1327f05da861d4479146ea230d82",
+    "normalized_result": {
+      "bytes": 260146,
+      "sha256": "35e5595a5d55d73378508c32d6cd3008efc42bca14fefa9e13aa0f2cde581848",
+      "uri": "solver-artifacts/0e020dc0-9426-4502-b9d9-86ea7d655e37/normalized.json"
+    },
+    "same_baseline_native_xml": true,
+    "same_solver_identity": false
+  },
+  "independent_baseline_recomparison": {
+    "same_input_xml": true,
+    "maximum_sample_complex_absolute_difference": 0.0,
+    "maximum_accepted_power_relative_difference": 0.0,
+    "same_native_time_step": true,
+    "iterations_original": 30845,
+    "iterations_current": 30845
+  },
+  "preflight_guards": [
+    {
+      "actual_grid_points": [
+        2422035,
+        2584725
+      ],
+      "fixed_pml_and_radiation_planes": true,
+      "passed": true,
+      "same_snapshot_source_runtime": true,
+      "single_setting_changed": true
+    },
+    {
+      "actual_grid_points": [
+        2584725,
+        2703415
+      ],
+      "fixed_pml_and_radiation_planes": true,
+      "passed": true,
+      "same_snapshot_source_runtime": true,
+      "single_setting_changed": true
+    }
+  ],
+  "runs": [
+    {
+      "settings": {
+        "air_padding_mm": 90,
+        "compute_profile": {
+          "kind": "loss_refinement_deep/0.1",
+          "num_threads": 4
+        },
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "feature_subdivisions": 8,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.4,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "power_balance": {
+          "max_relative_residual": 0.03
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "status": "completed",
+      "native_input": {
+        "bytes": 21195,
+        "media_type": "application/xml",
+        "path": "output/prepared/pcb.xml",
+        "role": "native_input",
+        "sha256": "95d7586761130edac63a33744059902b0acb1327f05da861d4479146ea230d82"
+      },
+      "normalized_result": {
+        "bytes": 245482,
+        "sha256": "ff82d1029d6ec020ff0819b6f367d8b18377309bc7deef38f8224bf8442d1db4",
+        "uri": "solver-artifacts/313a0d2f-aa9d-4a44-95bb-c3839afa37c9/normalized.json"
+      },
+      "radiation_result": {
+        "bytes": 1073080,
+        "sha256": "bd163c02317dfc7e12d076c0b50a03e342a3ec32975815c16a2752746dad9ee8",
+        "uri": "solver-artifacts/313a0d2f-aa9d-4a44-95bb-c3839afa37c9/radiation.json"
+      },
+      "power_balance_result": {
+        "bytes": 5501,
+        "sha256": "9b9ae9cef3d3ac5b88d9391d28253f2555480d3f692aabc79917418eb44724b0",
+        "uri": "solver-artifacts/313a0d2f-aa9d-4a44-95bb-c3839afa37c9/power_balance.json"
+      },
+      "native_statistics": {
+        "iterations": 30845,
+        "native_cells": 2422035,
+        "raw_values": [
+          2422035.0,
+          1.371922165243796e-13,
+          30845.0,
+          4.23169391869449e-09,
+          1150.323925,
+          64944897.65132896
+        ],
+        "timestep_seconds": 1.371922165243796e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "30845",
+          "50.83"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 30845,
+        "reported_decay_db": 50.83,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "maximum_relative_residual": 0.0021313521636702523,
+      "power_frequencies": [
+        {
+          "accepted_power_w_s2": 6.299354854365699e-28,
+          "conductor_loss_w_s2": 4.801772694741362e-30,
+          "dielectric_components": [
+            {
+              "entity_id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+              "loss_w_s2": 4.125105472590061e-30
+            }
+          ],
+          "dielectric_loss_w_s2": 4.125105472590061e-30,
+          "frequency_hz": 2400000000,
+          "incident_power_w_s2": 1.3066063520239383e-27,
+          "independent_absorption_power_w_s2": 8.926878167331422e-30,
+          "inferred_loss_w_s2": 7.610205307356377e-30,
+          "radiated_power_w_s2": 6.2232528012921355e-28,
+          "reflected_power_w_s2": 6.766708665873684e-28,
+          "relative_residual": -0.0020901709626066542,
+          "residual_w_s2": -1.3166728599750454e-30,
+          "sheet_components": [
+            {
+              "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+              "loss_w_s2": 1.1062588354659344e-30
+            },
+            {
+              "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+              "loss_w_s2": 2.0155820153701436e-30
+            },
+            {
+              "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+              "loss_w_s2": 1.0629936497355533e-30
+            },
+            {
+              "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+              "loss_w_s2": 4.567373131338385e-31
+            },
+            {
+              "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+              "loss_w_s2": 1.6020088103589169e-31
+            }
+          ],
+          "sheet_loss_w_s2": 4.801772694741362e-30,
+          "status": "within_initial_numerical_budget",
+          "via_components": [],
+          "via_loss_w_s2": 0.0
+        },
+        {
+          "accepted_power_w_s2": 5.557337360776644e-28,
+          "conductor_loss_w_s2": 4.6139383000203945e-30,
+          "dielectric_components": [
+            {
+              "entity_id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+              "loss_w_s2": 3.736798631666267e-30
+            }
+          ],
+          "dielectric_loss_w_s2": 3.736798631666267e-30,
+          "frequency_hz": 2441750000,
+          "incident_power_w_s2": 1.3134421268277814e-27,
+          "independent_absorption_power_w_s2": 8.350736931686663e-30,
+          "inferred_loss_w_s2": 7.166272630872979e-30,
+          "radiated_power_w_s2": 5.485674634467914e-28,
+          "reflected_power_w_s2": 7.5770839075011705e-28,
+          "relative_residual": -0.0021313521636702523,
+          "residual_w_s2": -1.184464300813683e-30,
+          "sheet_components": [
+            {
+              "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+              "loss_w_s2": 1.0477615349013706e-30
+            },
+            {
+              "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+              "loss_w_s2": 1.8993742790332142e-30
+            },
+            {
+              "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+              "loss_w_s2": 1.058634596254745e-30
+            },
+            {
+              "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+              "loss_w_s2": 4.514581409716561e-31
+            },
+            {
+              "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+              "loss_w_s2": 1.5670974885940855e-31
+            }
+          ],
+          "sheet_loss_w_s2": 4.6139383000203945e-30,
+          "status": "within_initial_numerical_budget",
+          "via_components": [],
+          "via_loss_w_s2": 0.0
+        },
+        {
+          "accepted_power_w_s2": 4.830976675905591e-28,
+          "conductor_loss_w_s2": 4.37548380496052e-30,
+          "dielectric_components": [
+            {
+              "entity_id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+              "loss_w_s2": 3.3407281576958885e-30
+            }
+          ],
+          "dielectric_loss_w_s2": 3.3407281576958885e-30,
+          "frequency_hz": 2483500000,
+          "incident_power_w_s2": 1.3065064106078756e-27,
+          "independent_absorption_power_w_s2": 7.716211962656408e-30,
+          "inferred_loss_w_s2": 7.286987393118833e-30,
+          "radiated_power_w_s2": 4.758106801974403e-28,
+          "reflected_power_w_s2": 8.234087430173165e-28,
+          "relative_residual": -0.0008884840443927725,
+          "residual_w_s2": -4.292245695375752e-31,
+          "sheet_components": [
+            {
+              "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+              "loss_w_s2": 9.782723730411695e-31
+            },
+            {
+              "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+              "loss_w_s2": 1.7657317258436353e-30
+            },
+            {
+              "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+              "loss_w_s2": 1.0356763720771092e-30
+            },
+            {
+              "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+              "loss_w_s2": 4.379719417696933e-31
+            },
+            {
+              "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+              "loss_w_s2": 1.5783139222891218e-31
+            }
+          ],
+          "sheet_loss_w_s2": 4.37548380496052e-30,
+          "status": "within_initial_numerical_budget",
+          "via_components": [],
+          "via_loss_w_s2": 0.0
+        }
+      ]
+    },
+    {
+      "settings": {
+        "air_padding_mm": 90,
+        "compute_profile": {
+          "kind": "loss_refinement_deep/0.1",
+          "num_threads": 4
+        },
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "feature_subdivisions": 8,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.38,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "power_balance": {
+          "max_relative_residual": 0.03
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "status": "completed",
+      "native_input": {
+        "bytes": 22311,
+        "media_type": "application/xml",
+        "path": "output/prepared/pcb.xml",
+        "role": "native_input",
+        "sha256": "8562f22b14169f3331f1b62a397a8c7ed8d2e181b54091e1eed5628133d56821"
+      },
+      "normalized_result": {
+        "bytes": 247571,
+        "sha256": "125f6d4560d87d8856f28ebc30671a8138b3d717413371136900eabed70bb863",
+        "uri": "solver-artifacts/386ae654-7358-4a60-a9c4-79039a45beef/normalized.json"
+      },
+      "radiation_result": {
+        "bytes": 1073115,
+        "sha256": "323e3c919f5e1fc87189859ed6f7b5055dc609bf0f5305855fa702634cfb6b49",
+        "uri": "solver-artifacts/386ae654-7358-4a60-a9c4-79039a45beef/radiation.json"
+      },
+      "power_balance_result": {
+        "bytes": 5495,
+        "sha256": "ae2bac2b8b9c5224a7c1ad6b3386c099f3e351ff1c2232063a7333f6d7ce2638",
+        "uri": "solver-artifacts/386ae654-7358-4a60-a9c4-79039a45beef/power_balance.json"
+      },
+      "native_statistics": {
+        "iterations": 30845,
+        "native_cells": 2584725,
+        "raw_values": [
+          2584725.0,
+          1.371922165243796e-13,
+          30845.0,
+          4.23169391869449e-09,
+          1241.662461,
+          64208949.79847506
+        ],
+        "timestep_seconds": 1.371922165243796e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "30845",
+          "50.76"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 30845,
+        "reported_decay_db": 50.76,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "maximum_relative_residual": 0.0021453453943747645,
+      "power_frequencies": [
+        {
+          "accepted_power_w_s2": 6.3044668230515175e-28,
+          "conductor_loss_w_s2": 4.8062228775145796e-30,
+          "dielectric_components": [
+            {
+              "entity_id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+              "loss_w_s2": 4.128166114267498e-30
+            }
+          ],
+          "dielectric_loss_w_s2": 4.128166114267498e-30,
+          "frequency_hz": 2400000000,
+          "incident_power_w_s2": 1.306606004953131e-27,
+          "independent_absorption_power_w_s2": 8.934388991782077e-30,
+          "inferred_loss_w_s2": 7.620607808718946e-30,
+          "radiated_power_w_s2": 6.228260744964328e-28,
+          "reflected_power_w_s2": 6.761593226479793e-28,
+          "relative_residual": -0.002083889438928365,
+          "residual_w_s2": -1.3137811830631317e-30,
+          "sheet_components": [
+            {
+              "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+              "loss_w_s2": 1.1100084855261802e-30
+            },
+            {
+              "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+              "loss_w_s2": 2.0156943683752344e-30
+            },
+            {
+              "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+              "loss_w_s2": 1.062389261725673e-30
+            },
+            {
+              "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+              "loss_w_s2": 4.579032285046636e-31
+            },
+            {
+              "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+              "loss_w_s2": 1.6022753338282862e-31
+            }
+          ],
+          "sheet_loss_w_s2": 4.8062228775145796e-30,
+          "status": "within_initial_numerical_budget",
+          "via_components": [],
+          "via_loss_w_s2": 0.0
+        },
+        {
+          "accepted_power_w_s2": 5.562307938500733e-28,
+          "conductor_loss_w_s2": 4.618446826790154e-30,
+          "dielectric_components": [
+            {
+              "entity_id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+              "loss_w_s2": 3.740099756018675e-30
+            }
+          ],
+          "dielectric_loss_w_s2": 3.740099756018675e-30,
+          "frequency_hz": 2441750000,
+          "incident_power_w_s2": 1.313441660388057e-27,
+          "independent_absorption_power_w_s2": 8.358546582808829e-30,
+          "inferred_loss_w_s2": 7.165239411013155e-30,
+          "radiated_power_w_s2": 5.490655544390602e-28,
+          "reflected_power_w_s2": 7.572108665379837e-28,
+          "relative_residual": -0.0021453453943747645,
+          "residual_w_s2": -1.1933071717956739e-30,
+          "sheet_components": [
+            {
+              "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+              "loss_w_s2": 1.0512661006296791e-30
+            },
+            {
+              "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+              "loss_w_s2": 1.8997245250718907e-30
+            },
+            {
+              "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+              "loss_w_s2": 1.0581430889088433e-30
+            },
+            {
+              "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+              "loss_w_s2": 4.526490574019934e-31
+            },
+            {
+              "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+              "loss_w_s2": 1.5666405477774692e-31
+            }
+          ],
+          "sheet_loss_w_s2": 4.618446826790154e-30,
+          "status": "within_initial_numerical_budget",
+          "via_components": [],
+          "via_loss_w_s2": 0.0
+        },
+        {
+          "accepted_power_w_s2": 4.835444326061125e-28,
+          "conductor_loss_w_s2": 4.3798659517735555e-30,
+          "dielectric_components": [
+            {
+              "entity_id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+              "loss_w_s2": 3.343992962632249e-30
+            }
+          ],
+          "dielectric_loss_w_s2": 3.343992962632249e-30,
+          "frequency_hz": 2483500000,
+          "incident_power_w_s2": 1.3065058493580021e-27,
+          "independent_absorption_power_w_s2": 7.723858914405804e-30,
+          "inferred_loss_w_s2": 7.280352375998789e-30,
+          "radiated_power_w_s2": 4.762640802301137e-28,
+          "reflected_power_w_s2": 8.229614167518897e-28,
+          "relative_residual": -0.0009171991413833307,
+          "residual_w_s2": -4.435065384070162e-31,
+          "sheet_components": [
+            {
+              "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+              "loss_w_s2": 9.814701799334309e-31
+            },
+            {
+              "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+              "loss_w_s2": 1.7662254981422602e-30
+            },
+            {
+              "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+              "loss_w_s2": 1.0352854357285906e-30
+            },
+            {
+              "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+              "loss_w_s2": 4.391570160089855e-31
+            },
+            {
+              "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+              "loss_w_s2": 1.5772782196028793e-31
+            }
+          ],
+          "sheet_loss_w_s2": 4.3798659517735555e-30,
+          "status": "within_initial_numerical_budget",
+          "via_components": [],
+          "via_loss_w_s2": 0.0
+        }
+      ]
+    },
+    {
+      "settings": {
+        "air_padding_mm": 90,
+        "compute_profile": {
+          "kind": "loss_refinement_deep/0.1",
+          "num_threads": 4
+        },
+        "curve_tolerance_mm": 0.025,
+        "end_criterion": 1e-05,
+        "feature_subdivisions": 8,
+        "frequency_hz": {
+          "count": 201,
+          "start": 2400000000,
+          "stop": 2483500000
+        },
+        "grid_mm": 0.36,
+        "max_timesteps": 100000,
+        "mesh_policy": {
+          "air_cell_mm": 6,
+          "growth_ratio": 1.5,
+          "kind": "graded_air"
+        },
+        "power_balance": {
+          "max_relative_residual": 0.03
+        },
+        "radiation": {
+          "box_clearance_mm": 30,
+          "frequency_hz": [
+            2400000000,
+            2441750000,
+            2483500000
+          ],
+          "phi_step_deg": 5,
+          "theta_step_deg": 5
+        }
+      },
+      "status": "completed",
+      "native_input": {
+        "bytes": 23244,
+        "media_type": "application/xml",
+        "path": "output/prepared/pcb.xml",
+        "role": "native_input",
+        "sha256": "28dba52f776c3fc34c857f41e200a3a5b88c3f7901f31a7991e6e0c942bd0722"
+      },
+      "normalized_result": {
+        "bytes": 249462,
+        "sha256": "3dd2fb5fb8f75b50011cb92c3089ce17f6cec965550958d39074ed564cb9b2e1",
+        "uri": "solver-artifacts/d2b38a80-8545-4669-87e7-986a20a431e4/normalized.json"
+      },
+      "radiation_result": {
+        "bytes": 1073070,
+        "sha256": "d2533f0e81b1c95867af7c50796e12797abfacc1c28142e076dbd765119d8a81",
+        "uri": "solver-artifacts/d2b38a80-8545-4669-87e7-986a20a431e4/radiation.json"
+      },
+      "power_balance_result": {
+        "bytes": 5483,
+        "sha256": "2ffe4987334d02a8fb9f86883b227d8f934753a8b903936662cb3267a6cd5dce",
+        "uri": "solver-artifacts/d2b38a80-8545-4669-87e7-986a20a431e4/power_balance.json"
+      },
+      "native_statistics": {
+        "iterations": 30845,
+        "native_cells": 2703415,
+        "raw_values": [
+          2703415.0,
+          1.371922165243796e-13,
+          30845.0,
+          4.23169391869449e-09,
+          1255.777353,
+          66402563.6995223
+        ],
+        "timestep_seconds": 1.371922165243796e-13
+      },
+      "termination": {
+        "evidence": [
+          "50.00",
+          "30845",
+          "50.75"
+        ],
+        "exact_endcriterion_schedule": true,
+        "iterations": 30845,
+        "reported_decay_db": 50.75,
+        "reported_zero_energy": false,
+        "status": "end_criterion_reached",
+        "target_energy_ratio": 1e-05
+      },
+      "maximum_relative_residual": 0.0021454945355479558,
+      "power_frequencies": [
+        {
+          "accepted_power_w_s2": 6.304482923939104e-28,
+          "conductor_loss_w_s2": 4.807313153656386e-30,
+          "dielectric_components": [
+            {
+              "entity_id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+              "loss_w_s2": 4.128092710061229e-30
+            }
+          ],
+          "dielectric_loss_w_s2": 4.128092710061229e-30,
+          "frequency_hz": 2400000000,
+          "incident_power_w_s2": 1.3066058589148869e-27,
+          "independent_absorption_power_w_s2": 8.935405863717616e-30,
+          "inferred_loss_w_s2": 7.619700114884063e-30,
+          "radiated_power_w_s2": 6.2282859227902635e-28,
+          "reflected_power_w_s2": 6.7615756652097645e-28,
+          "relative_residual": -0.0020869368110073114,
+          "residual_w_s2": -1.3157057488335525e-30,
+          "sheet_components": [
+            {
+              "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+              "loss_w_s2": 1.109890745608694e-30
+            },
+            {
+              "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+              "loss_w_s2": 2.015522382741735e-30
+            },
+            {
+              "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+              "loss_w_s2": 1.0621700086381004e-30
+            },
+            {
+              "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+              "loss_w_s2": 4.58515720098954e-31
+            },
+            {
+              "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+              "loss_w_s2": 1.612142965689032e-31
+            }
+          ],
+          "sheet_loss_w_s2": 4.807313153656386e-30,
+          "status": "within_initial_numerical_budget",
+          "via_components": [],
+          "via_loss_w_s2": 0.0
+        },
+        {
+          "accepted_power_w_s2": 5.562458007409961e-28,
+          "conductor_loss_w_s2": 4.619434508613712e-30,
+          "dielectric_components": [
+            {
+              "entity_id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+              "loss_w_s2": 3.740080123613423e-30
+            }
+          ],
+          "dielectric_loss_w_s2": 3.740080123613423e-30,
+          "frequency_hz": 2441750000,
+          "incident_power_w_s2": 1.3134414981861801e-27,
+          "independent_absorption_power_w_s2": 8.359514632227134e-30,
+          "inferred_loss_w_s2": 7.16609230631583e-30,
+          "radiated_power_w_s2": 5.4907970843468025e-28,
+          "reflected_power_w_s2": 7.57195697445184e-28,
+          "relative_residual": -0.0021454945355479558,
+          "residual_w_s2": -1.1934223259113042e-30,
+          "sheet_components": [
+            {
+              "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+              "loss_w_s2": 1.0511632675659504e-30
+            },
+            {
+              "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+              "loss_w_s2": 1.899587483720155e-30
+            },
+            {
+              "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+              "loss_w_s2": 1.057885153620842e-30
+            },
+            {
+              "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+              "loss_w_s2": 4.532275227280232e-31
+            },
+            {
+              "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+              "loss_w_s2": 1.5757108097874138e-31
+            }
+          ],
+          "sheet_loss_w_s2": 4.619434508613712e-30,
+          "status": "within_initial_numerical_budget",
+          "via_components": [],
+          "via_loss_w_s2": 0.0
+        },
+        {
+          "accepted_power_w_s2": 4.8357226938997895e-28,
+          "conductor_loss_w_s2": 4.38080275603734e-30,
+          "dielectric_components": [
+            {
+              "entity_id": "e4a4695c-615a-4ac4-9314-3ee8d1166436",
+              "loss_w_s2": 3.344030554007384e-30
+            }
+          ],
+          "dielectric_loss_w_s2": 3.344030554007384e-30,
+          "frequency_hz": 2483500000,
+          "incident_power_w_s2": 1.3065056624826685e-27,
+          "independent_absorption_power_w_s2": 7.724833310044725e-30,
+          "inferred_loss_w_s2": 7.282326717576168e-30,
+          "radiated_power_w_s2": 4.762899426724028e-28,
+          "reflected_power_w_s2": 8.229333930926896e-28,
+          "relative_residual": -0.0009150785114844858,
+          "residual_w_s2": -4.425065924685567e-31,
+          "sheet_components": [
+            {
+              "entity_id": "483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+              "loss_w_s2": 9.813833954554529e-31
+            },
+            {
+              "entity_id": "4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+              "loss_w_s2": 1.76612310309279e-30
+            },
+            {
+              "entity_id": "6442ae11-5c6e-4deb-a44e-5e683f69083c",
+              "loss_w_s2": 1.034999085800571e-30
+            },
+            {
+              "entity_id": "8523d17e-8a81-4054-ab55-e449146549a1",
+              "loss_w_s2": 4.396949432504933e-31
+            },
+            {
+              "entity_id": "9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+              "loss_w_s2": 1.58602228438033e-31
+            }
+          ],
+          "sheet_loss_w_s2": 4.38080275603734e-30,
+          "status": "within_initial_numerical_budget",
+          "via_components": [],
+          "via_loss_w_s2": 0.0
+        }
+      ]
+    }
+  ],
+  "assessment": {
+    "axes": {
+      "mesh": {
+        "comparisons": [
+          {
+            "components": [
+              {
+                "absolute_fraction_delta": 4.550885430781512e-07,
+                "allowed_fraction_delta": 0.0001309691410615232,
+                "component": "dielectric_loss_w_s2",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.00654845705307616,
+                "relative_delta": 6.949553755786973e-05,
+                "right_fraction": 0.006548001964533082,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 8.779680550829658e-07,
+                "allowed_fraction_delta": 0.0001524703995567463,
+                "component": "conductor_loss_w_s2",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.007622642009782233,
+                "relative_delta": 0.00011516570529563075,
+                "right_fraction": 0.007623519977837316,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 8.779680550829658e-07,
+                "allowed_fraction_delta": 0.0001524703995567463,
+                "component": "sheet_loss_w_s2",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.007622642009782233,
+                "relative_delta": 0.00011516570529563075,
+                "right_fraction": 0.007623519977837316,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 0.0,
+                "allowed_fraction_delta": 1e-05,
+                "component": "via_loss_w_s2",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.0,
+                "relative_delta": 0.0,
+                "right_fraction": 0.0,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 4.523639636145899e-06,
+                "allowed_fraction_delta": 3.52133976331692e-05,
+                "component": "sheet_components:483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.001756146242022314,
+                "relative_delta": 0.002569271890926461,
+                "right_fraction": 0.0017606698816584599,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.4162317807346727e-06,
+                "allowed_fraction_delta": 6.399328381931894e-05,
+                "component": "sheet_components:4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.003199664190965947,
+                "relative_delta": 0.0007551516773406262,
+                "right_fraction": 0.0031972479591852124,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.326944565723141e-06,
+                "allowed_fraction_delta": 3.374928621456711e-05,
+                "component": "sheet_components:6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.0016874643107283552,
+                "relative_delta": 0.0013789592769039181,
+                "right_fraction": 0.001685137366162632,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.2614389166454472e-06,
+                "allowed_fraction_delta": 1.4526310990499499e-05,
+                "component": "sheet_components:8523d17e-8a81-4054-ab55-e449146549a1",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.0007250541106083295,
+                "relative_delta": 0.001736764299580883,
+                "right_fraction": 0.000726315549524975,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.6393415124986216e-07,
+                "allowed_fraction_delta": 1e-05,
+                "component": "sheet_components:9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.00025431315545728657,
+                "relative_delta": 0.0006446153009862515,
+                "right_fraction": 0.0002541492213060367,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 4.550885430781512e-07,
+                "allowed_fraction_delta": 0.0001309691410615232,
+                "component": "dielectric_components:e4a4695c-615a-4ac4-9314-3ee8d1166436",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.00654845705307616,
+                "relative_delta": 6.949553755786973e-05,
+                "right_fraction": 0.006548001964533082,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 7.394834986192145e-08,
+                "allowed_fraction_delta": 0.00013448161913078626,
+                "component": "dielectric_loss_w_s2",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0067240809565393125,
+                "relative_delta": 1.0997540086129555e-05,
+                "right_fraction": 0.006724007008189451,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 6.863002350830649e-07,
+                "allowed_fraction_delta": 0.00016606224890292613,
+                "component": "conductor_loss_w_s2",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.008302426144911224,
+                "relative_delta": 8.265577993999716e-05,
+                "right_fraction": 0.008303112445146307,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 6.863002350830649e-07,
+                "allowed_fraction_delta": 0.00016606224890292613,
+                "component": "sheet_loss_w_s2",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.008302426144911224,
+                "relative_delta": 8.265577993999716e-05,
+                "right_fraction": 0.008303112445146307,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 0.0,
+                "allowed_fraction_delta": 1e-05,
+                "component": "via_loss_w_s2",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0,
+                "relative_delta": 0.0,
+                "right_fraction": 0.0,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 4.615763624275272e-06,
+                "allowed_fraction_delta": 3.779963685049188e-05,
+                "component": "sheet_components:483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0018853660789003187,
+                "relative_delta": 0.0024422264385935274,
+                "right_fraction": 0.001889981842524594,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.4245095107122694e-06,
+                "allowed_fraction_delta": 6.835555071530783e-05,
+                "component": "sheet_components:4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0034177775357653916,
+                "relative_delta": 0.0007093818966685069,
+                "right_fraction": 0.0034153530262546793,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.5859198690037118e-06,
+                "allowed_fraction_delta": 3.809862628554908e-05,
+                "component": "sheet_components:6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0019049313142774542,
+                "relative_delta": 0.0013574871963215947,
+                "right_fraction": 0.0019023453944084505,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.4151042066959515e-06,
+                "allowed_fraction_delta": 1.6275584250518878e-05,
+                "component": "sheet_components:8523d17e-8a81-4054-ab55-e449146549a1",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.000812364108319248,
+                "relative_delta": 0.001738928919434443,
+                "right_fraction": 0.0008137792125259439,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 3.3413821617304506e-07,
+                "allowed_fraction_delta": 1e-05,
+                "component": "sheet_components:9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0002819871076488115,
+                "relative_delta": 0.0011849414640231811,
+                "right_fraction": 0.00028165296943263846,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 7.394834986192145e-08,
+                "allowed_fraction_delta": 0.00013448161913078626,
+                "component": "dielectric_components:e4a4695c-615a-4ac4-9314-3ee8d1166436",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0067240809565393125,
+                "relative_delta": 1.0997540086129555e-05,
+                "right_fraction": 0.006724007008189451,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 3.625833781490187e-07,
+                "allowed_fraction_delta": 0.0001383117139663652,
+                "component": "dielectric_loss_w_s2",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.006915223114940111,
+                "relative_delta": 5.242988720929192e-05,
+                "right_fraction": 0.00691558569831826,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 6.943166880359064e-07,
+                "allowed_fraction_delta": 0.00018115671100452205,
+                "component": "conductor_loss_w_s2",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.009057141233538067,
+                "relative_delta": 7.665370873492783e-05,
+                "right_fraction": 0.009057835550226103,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 6.943166880359064e-07,
+                "allowed_fraction_delta": 0.00018115671100452205,
+                "component": "sheet_loss_w_s2",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.009057141233538067,
+                "relative_delta": 7.665370873492783e-05,
+                "right_fraction": 0.009057835550226103,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 0.0,
+                "allowed_fraction_delta": 1e-05,
+                "component": "via_loss_w_s2",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.0,
+                "relative_delta": 0.0,
+                "right_fraction": 0.0,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 4.742290376223354e-06,
+                "allowed_fraction_delta": 4.059482908917786e-05,
+                "component": "sheet_components:483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.0020249991640826693,
+                "relative_delta": 0.002336401203121507,
+                "right_fraction": 0.0020297414544588927,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.35585971809912e-06,
+                "allowed_fraction_delta": 7.310040367821233e-05,
+                "component": "sheet_components:4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.0036550201839106165,
+                "relative_delta": 0.0006445545030009971,
+                "right_fraction": 0.0036526643241925174,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.789240901936857e-06,
+                "allowed_fraction_delta": 4.287647991523231e-05,
+                "component": "sheet_components:6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.0021438239957616155,
+                "relative_delta": 0.0013010587191165152,
+                "right_fraction": 0.0021410347548596787,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.6131736735458405e-06,
+                "allowed_fraction_delta": 1.8164081163838597e-05,
+                "component": "sheet_components:8523d17e-8a81-4054-ab55-e449146549a1",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.0009065908845183841,
+                "relative_delta": 0.0017762238111525043,
+                "right_fraction": 0.0009082040581919299,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 5.160467416983954e-07,
+                "allowed_fraction_delta": 1e-05,
+                "component": "sheet_components:9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.00032670700526478094,
+                "relative_delta": 0.001579539873288494,
+                "right_fraction": 0.00032619095852308254,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 3.625833781490187e-07,
+                "allowed_fraction_delta": 0.0001383117139663652,
+                "component": "dielectric_components:e4a4695c-615a-4ac4-9314-3ee8d1166436",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.006915223114940111,
+                "relative_delta": 5.242988720929192e-05,
+                "right_fraction": 0.00691558569831826,
+                "status": "passed"
+              }
+            ],
+            "status": "passed"
+          },
+          {
+            "components": [
+              {
+                "absolute_fraction_delta": 1.3315456895684336e-07,
+                "allowed_fraction_delta": 0.00013096003929066166,
+                "component": "dielectric_loss_w_s2",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.006548001964533082,
+                "relative_delta": 2.0335144930937447e-05,
+                "right_fraction": 0.006547868809964125,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.7098969273049089e-06,
+                "allowed_fraction_delta": 0.00015250459749529242,
+                "component": "conductor_loss_w_s2",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.007623519977837316,
+                "relative_delta": 0.00022424201701298752,
+                "right_fraction": 0.007625229874764621,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.7098969273049089e-06,
+                "allowed_fraction_delta": 0.00015250459749529242,
+                "component": "sheet_loss_w_s2",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.007623519977837316,
+                "relative_delta": 0.00022424201701298752,
+                "right_fraction": 0.007625229874764621,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 0.0,
+                "allowed_fraction_delta": 1e-05,
+                "component": "via_loss_w_s2",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.0,
+                "relative_delta": 0.0,
+                "right_fraction": 0.0,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.9125240519318049e-07,
+                "allowed_fraction_delta": 3.52133976331692e-05,
+                "component": "sheet_components:483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.0017606698816584599,
+                "relative_delta": 0.00010862479513367414,
+                "right_fraction": 0.0017604786292532667,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.809643370187305e-07,
+                "allowed_fraction_delta": 6.394495918370425e-05,
+                "component": "sheet_components:4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.0031972479591852124,
+                "relative_delta": 8.78769305995058e-05,
+                "right_fraction": 0.0031969669948481937,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 3.520769442644494e-07,
+                "allowed_fraction_delta": 3.370274732325264e-05,
+                "component": "sheet_components:6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.001685137366162632,
+                "relative_delta": 0.00020893070875651723,
+                "right_fraction": 0.0016847852892183676,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 9.696626498385081e-07,
+                "allowed_fraction_delta": 1.454570424349627e-05,
+                "component": "sheet_components:8523d17e-8a81-4054-ab55-e449146549a1",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.000726315549524975,
+                "relative_delta": 0.0013332632557437945,
+                "right_fraction": 0.0007272852121748135,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.5645279639429238e-06,
+                "allowed_fraction_delta": 1e-05,
+                "component": "sheet_components:9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.0002541492213060367,
+                "relative_delta": 0.006118278615871817,
+                "right_fraction": 0.00025571374926997963,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.3315456895684336e-07,
+                "allowed_fraction_delta": 0.00013096003929066166,
+                "component": "dielectric_components:e4a4695c-615a-4ac4-9314-3ee8d1166436",
+                "frequency_hz": 2400000000,
+                "left_fraction": 0.006548001964533082,
+                "relative_delta": 2.0335144930937447e-05,
+                "right_fraction": 0.006547868809964125,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.1670068309134066e-07,
+                "allowed_fraction_delta": 0.00013448014016378902,
+                "component": "dielectric_loss_w_s2",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.006724007008189451,
+                "relative_delta": 3.2227908571096344e-05,
+                "right_fraction": 0.006723790307506359,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.5516124699278822e-06,
+                "allowed_fraction_delta": 0.0001660932811523247,
+                "component": "conductor_loss_w_s2",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.008303112445146307,
+                "relative_delta": 0.00018683627166169272,
+                "right_fraction": 0.008304664057616234,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.5516124699278822e-06,
+                "allowed_fraction_delta": 0.0001660932811523247,
+                "component": "sheet_loss_w_s2",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.008303112445146307,
+                "relative_delta": 0.00018683627166169272,
+                "right_fraction": 0.008304664057616234,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 0.0,
+                "allowed_fraction_delta": 1e-05,
+                "component": "via_loss_w_s2",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0,
+                "relative_delta": 0.0,
+                "right_fraction": 0.0,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.358594256544628e-07,
+                "allowed_fraction_delta": 3.779963685049188e-05,
+                "component": "sheet_components:483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.001889981842524594,
+                "relative_delta": 0.0001247945458245288,
+                "right_fraction": 0.0018897459830989395,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 3.385107479685588e-07,
+                "allowed_fraction_delta": 6.830706052509359e-05,
+                "component": "sheet_components:4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0034153530262546793,
+                "relative_delta": 9.911442400429513e-05,
+                "right_fraction": 0.0034150145155067107,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 5.150305448613224e-07,
+                "allowed_fraction_delta": 3.804690788816901e-05,
+                "component": "sheet_components:6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0019023453944084505,
+                "relative_delta": 0.00027073450824185123,
+                "right_fraction": 0.0019018303638635892,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.0179906605999609e-06,
+                "allowed_fraction_delta": 1.629594406373088e-05,
+                "component": "sheet_components:8523d17e-8a81-4054-ab55-e449146549a1",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.0008137792125259439,
+                "relative_delta": 0.0012493791787929062,
+                "right_fraction": 0.0008147972031865439,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.6230225278131326e-06,
+                "allowed_fraction_delta": 1e-05,
+                "component": "sheet_components:9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.00028165296943263846,
+                "relative_delta": 0.0057294743426041,
+                "right_fraction": 0.0002832759919604516,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.1670068309134066e-07,
+                "allowed_fraction_delta": 0.00013448014016378902,
+                "component": "dielectric_components:e4a4695c-615a-4ac4-9314-3ee8d1166436",
+                "frequency_hz": 2441750000,
+                "left_fraction": 0.006724007008189451,
+                "relative_delta": 3.2227908571096344e-05,
+                "right_fraction": 0.006723790307506359,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 3.203580913654219e-07,
+                "allowed_fraction_delta": 0.0001383117139663652,
+                "component": "dielectric_loss_w_s2",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.00691558569831826,
+                "relative_delta": 4.6324072224761374e-05,
+                "right_fraction": 0.006915265340226895,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.4158447384487322e-06,
+                "allowed_fraction_delta": 0.00018118502789929103,
+                "component": "conductor_loss_w_s2",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.009057835550226103,
+                "relative_delta": 0.00015628716730785373,
+                "right_fraction": 0.009059251394964551,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.4158447384487322e-06,
+                "allowed_fraction_delta": 0.00018118502789929103,
+                "component": "sheet_loss_w_s2",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.009057835550226103,
+                "relative_delta": 0.00015628716730785373,
+                "right_fraction": 0.009059251394964551,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 0.0,
+                "allowed_fraction_delta": 1e-05,
+                "component": "via_loss_w_s2",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.0,
+                "relative_delta": 0.0,
+                "right_fraction": 0.0,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 2.9630721449592015e-07,
+                "allowed_fraction_delta": 4.059482908917786e-05,
+                "component": "sheet_components:483c79ee-06c2-4ad1-aaef-1aad037c03a8",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.0020297414544588927,
+                "relative_delta": 0.00014598273777431052,
+                "right_fraction": 0.0020294451472443967,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 4.220123644743841e-07,
+                "allowed_fraction_delta": 7.305328648385035e-05,
+                "component": "sheet_components:4ae807f7-0e5f-43f6-a7b2-c4203bb80fb4",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.0036526643241925174,
+                "relative_delta": 0.00011553549054023107,
+                "right_fraction": 0.003652242311828043,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 7.154038220128119e-07,
+                "allowed_fraction_delta": 4.2820695097193576e-05,
+                "component": "sheet_components:6442ae11-5c6e-4deb-a44e-5e683f69083c",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.0021410347548596787,
+                "relative_delta": 0.00033413928493640857,
+                "right_fraction": 0.002140319351037666,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.0601223310011164e-06,
+                "allowed_fraction_delta": 1.818528361045862e-05,
+                "component": "sheet_components:8523d17e-8a81-4054-ab55-e449146549a1",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.0009082040581919299,
+                "relative_delta": 0.0011659123428698409,
+                "right_fraction": 0.000909264180522931,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 1.789445808431274e-06,
+                "allowed_fraction_delta": 1e-05,
+                "component": "sheet_components:9fba8f18-1eb6-408c-ac83-f85eca05c52a",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.00032619095852308254,
+                "relative_delta": 0.005455953419163878,
+                "right_fraction": 0.0003279804043315138,
+                "status": "passed"
+              },
+              {
+                "absolute_fraction_delta": 3.203580913654219e-07,
+                "allowed_fraction_delta": 0.0001383117139663652,
+                "component": "dielectric_components:e4a4695c-615a-4ac4-9314-3ee8d1166436",
+                "frequency_hz": 2483500000,
+                "left_fraction": 0.00691558569831826,
+                "relative_delta": 4.6324072224761374e-05,
+                "right_fraction": 0.006915265340226895,
+                "status": "passed"
+              }
+            ],
+            "status": "passed"
+          }
+        ],
+        "fabrication_validated": false,
+        "measurement_validated": false,
+        "minimum_levels_met": true,
+        "physics_validated": false,
+        "profile": {
+          "absolute_fraction_floor": 1e-05,
+          "id": "independent-loss-initial/0.1",
+          "max_relative_delta": 0.02,
+          "minimum_levels": 3
+        },
+        "schema": "rfad.independent-loss-stability/0.1",
+        "scope": "tested_settings_only_not_continuum_accuracy",
+        "status": "passed"
+      }
+    },
+    "fabrication_validated": false,
+    "full_energy_closure": "within_initial_numerical_budget",
+    "individual_loss_stability": "passed",
+    "measurement_validated": false,
+    "physics_validated": false,
+    "schema": "rfad.pcb-loss-study-assessment/0.1",
+    "scope": "tested_settings_only_not_continuum_accuracy",
+    "status": "passed",
+    "study_hash": "3580077ce788221bbfba4a0562cff577f72fdf3585268b411f4eb998589fdfa9"
+  }
+}

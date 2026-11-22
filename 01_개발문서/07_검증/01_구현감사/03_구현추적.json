@@ -9760,6 +9760,8 @@
         "../01_개발문서/07_검증/305_급전구간_밖의_격자와_수용전력_대조.md",
         "tools/verify_ro_grid_decomposition.py",
         "tools/verify_ro_radiator_grid_loss.py",
+        "../01_개발문서/07_검증/307_팔분할_일반격자_손실_수렴검증.md",
+        "tools/verify_ro_global_refinement.py",
         "tools/verify_pth_ghz_joint_reference.py",
         "tools/verify_ro_grid_ablation.py"
       ],
@@ -14142,8 +14144,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "80ae2bdac149806c305223aadc10adfce9fa66ed60300e21dced3710a4413a7d",
-      "utf8_bytes": 67180
+      "text_sha256": "3e911c2d748180629ed9399fbadaca1451acf6a282d64cd379ed8861c51a7aeb",
+      "utf8_bytes": 67314
     }
   ],
   "reviewed_commit": "de8b5ac8ca5cfc47d955e557bc76b07e12919e23",
@@ -14529,6 +14531,11 @@
       "path": "01_개발문서/07_검증/305_급전구간_밖의_격자와_수용전력_대조.md",
       "text_sha256": "413bac01d0a580b1ccce35b5a9ec4ee9d85817325ea195beeffa929336cddbae",
       "utf8_bytes": 4776
+    },
+    {
+      "path": "01_개발문서/07_검증/307_팔분할_일반격자_손실_수렴검증.md",
+      "text_sha256": "8dd18901b065d993af6a70e636de3bb6622ee64da3d5ed69850d4372bb6df2d3",
+      "utf8_bytes": 2911
     },
     {
       "path": "01_개발문서/07_검증/31_프로젝트_편집복원_검증.md",
@@ -16219,6 +16226,11 @@
       "path": "Code/tools/verify_pth_joint_reference.py",
       "text_sha256": "7ad0efe660d594d5eee2e2826ab3ef574ca2e68048cc0c38a51784c49e62f29d",
       "utf8_bytes": 8301
+    },
+    {
+      "path": "Code/tools/verify_ro_global_refinement.py",
+      "text_sha256": "58eee9499ad93605899540e103bbef785ac5c01794acf397144298bf4e5721ec",
+      "utf8_bytes": 7332
     },
     {
       "path": "Code/tools/verify_ro_grid_ablation.py",
