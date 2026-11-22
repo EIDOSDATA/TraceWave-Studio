@@ -17,7 +17,8 @@ using RadiationGateway = std::function<void(const Json&, std::function<void(cons
 class RadiationDialog final : public wxDialog
 {
 public:
-    RadiationDialog(wxWindow* parent, const Json& result, bool stale, RadiationGateway gateway);
+    RadiationDialog(wxWindow* parent, const Json& result, bool stale, RadiationGateway gateway,
+                    std::function<void(wxWindow*)> onEvidence = {});
 
 private:
     friend class StudioSmokeDriver;

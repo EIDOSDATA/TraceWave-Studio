@@ -234,6 +234,7 @@ private:
                           const std::string& resultId);
     /** @brief 봉인된 결과의 방사 조회 화면을 독립적으로 연다. */
     void OpenRadiation();
+    void OpenSolverEvidence(const std::string& artifact, wxWindow* parent);
     /** @brief 작업 상태와 로그를 해석 패널에 표시한다. */
     void SolverStatus(const std::string& state, const std::string& message);
     /** @brief 스냅샷부터 해석까지 별도 작업으로 추적하여 편집과 저장을 계속 허용한다. */
@@ -381,6 +382,7 @@ private:
     wxStaticText* m_solverViewState = nullptr;
     wxTextCtrl* m_solverDetails = nullptr;
     wxButton* m_solverCost = nullptr;
+    wxButton* m_solverEvidence = nullptr;
     bool m_solverConfigured = false;
     bool m_solverRestoring = false;
     std::string m_solverState = "idle";

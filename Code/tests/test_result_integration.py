@@ -12,6 +12,7 @@ import unittest
 from unittest.mock import patch
 
 from rfad.application.canonical import canonical_hash
+from rfad.application.solver_evidence import read as read_evidence
 from rfad.application.projects import ProjectService
 from rfad.application.result_service import read
 from rfad.application.result_sources import resolve, read_solver_artifact
@@ -119,7 +120,9 @@ class ResultLegacySolverTests(unittest.TestCase):
         record = state["solver_results"][artifact_id]
         source = {"kind": "solver", "artifact_id": artifact_id}
         context = {"project_id": record["project_id"]}
-        refs = [record["normalized"], record["snapshot"]["artifact"], *[row["artifact"] for row in record["files"]]]
+        plan = state["analysis_plans"][record["analysis_plan_id"]]["reference"]
+        refs = [record["normalized"], record["snapshot"]["artifact"], plan["artifact"],
+                *[row["artifact"] for row in record["files"]]]
         before = {item["uri"]: hashlib.sha256((original / item["uri"]).read_bytes()).hexdigest() for item in refs}
         with TemporaryDirectory(prefix="보존 solver 결과 조회 ") as directory:
             workspace = Path(directory)
@@ -133,6 +136,14 @@ class ResultLegacySolverTests(unittest.TestCase):
             with ProjectService(workspace, auto_run=False) as service:
                 resolved = resolve(service, context, source)
                 self.assertEqual(resolved["source_snapshot"], record["snapshot"])
+                describe = read(service, "result.describe", {"contract_version": "rfad.api/2.0",
+                    "context": context, "input": {"source": source}})
+                self.assertEqual(describe["solver_evidence_artifact_id"], artifact_id)
+                evidence = read_evidence(service, {"contract_version": "rfad.api/2.0", "context": context,
+                    "input": {"artifact_id": artifact_id}})
+                self.assertEqual(evidence["snapshot"], record["snapshot"])
+                self.assertEqual(evidence["plan"], plan)
+                self.assertEqual(evidence["settings"], resolved["normalized"]["provenance"]["analysis_plan"]["case"]["settings"])
                 self.assertEqual(resolved["source_revision"]["id"], record["snapshot"]["revision_id"])
                 self.assertEqual(resolved["normalized"]["provenance"]["analysis_plan"]["source_semantics"], resolved["source_document"])
                 self.assertEqual(resolved["pin"]["dataset_sha256"], canonical_hash(resolved["dataset"]))

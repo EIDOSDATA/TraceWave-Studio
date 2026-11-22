@@ -255,6 +255,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/solver_mesh_quality.cpp
     ui/wxwidgets/solver_mesh_quality_panel.cpp
     ui/wxwidgets/solver_cost_view.cpp
+    ui/wxwidgets/solver_evidence_dialog.cpp
     ui/wxwidgets/studio_solver_view.cpp
     ui/wxwidgets/solver_chart.cpp
     ui/wxwidgets/radiation_dialog.cpp

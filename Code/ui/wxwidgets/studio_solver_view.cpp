@@ -1,6 +1,7 @@
 /** @file @brief 해석 탭의 상태, 그래프와 펼쳐 보는 작업 기록이다. */
 #include "studio_internal.h"
 #include "solver_cost_view.h"
+#include "solver_evidence_dialog.h"
 #include "studio_theme.h"
 #include <wx/collpane.h>
 #include <wx/wrapsizer.h>
@@ -31,6 +32,18 @@ void StudioFrame::BuildSolverInterface()
         }
         const bool recentFailure = m_solverState == "failed" || m_solverState == "cancelled" || m_solverState == "interrupted";
         Studio::ShowSolverCost(this, completed, m_solverLastAttempt, recentFailure);
+    });
+    m_solverEvidence = new wxButton(panel, wxID_ANY, Display("해석 입력과 출처"));
+    m_solverEvidence->SetName("solver.evidence.open");
+    StudioTheme::Button(*m_solverEvidence);
+    m_solverEvidence->Disable();
+    tools->Add(m_solverEvidence, 0, wxRIGHT, FromDIP(StudioTheme::InputGap));
+    m_solverEvidence->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        if (m_solverSamples.contains("artifact_id"))
+        {
+            OpenSolverEvidence(m_solverSamples.at("artifact_id").get<std::string>(), this);
+        }
     });
     layout->Add(tools, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));
     m_solverMetric = new wxChoice(panel, wxID_ANY);
@@ -98,9 +111,28 @@ void StudioFrame::SolverStatus(const std::string& state, const std::string& mess
 }
 
 /** @brief 저장된 결과의 개정 차이와 아직 검증하지 않은 상태를 계속 표시한다. */
+/** @brief 조회 요청을 화면이 열렸을 때의 프로젝트와 세션에 고정한다. */
+void StudioFrame::OpenSolverEvidence(const std::string& artifact, wxWindow* parent)
+{
+    const auto project = m_project, epoch = m_epoch;
+    ShowSolverEvidence(parent, artifact,
+        [this, project, epoch](const std::string& method, const Json& input, bool mutation,
+                              std::function<void(const Json&)> success, std::function<void(const Json&)> failure)
+        {
+            if (mutation || m_closing || !m_connected || project.empty() || project != m_project || epoch != m_epoch)
+            {
+                failure({{"code", "E_STATE"}, {"message", "프로젝트 연결이 바뀌었습니다. 화면을 다시 여십시오."}});
+                return;
+            }
+            Send(method, input, false, Context(), std::move(success), std::move(failure));
+        });
+}
+
 void StudioFrame::UpdateSolverView()
 {
     m_solverCost->Enable(m_solverSamples.contains("execution_cost") || !m_solverLastAttempt.empty());
+    m_solverEvidence->Enable(m_solverSamples.value("metadata", Json::object()).value("profile", "") ==
+                             "rfad.openems.pcb-single-port/0.1");
     if (m_solverSamples.empty())
     {
         return;

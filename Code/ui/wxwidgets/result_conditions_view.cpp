@@ -77,6 +77,18 @@ ResultConditionsView::ResultConditionsView(wxWindow* parent) : wxPanel(parent)
                                      onValidation();
                                  }
                              });
+    m_solverEvidence = new wxButton(this, wxID_ANY, Display("해석 입력과 출처"));
+    m_solverEvidence->SetName("result.conditions.solver.evidence");
+    StudioTheme::Button(*m_solverEvidence);
+    m_solverEvidence->Hide();
+    layout->Add(m_solverEvidence, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
+    m_solverEvidence->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        if (onSolverEvidence && !m_solverArtifact.empty())
+        {
+            onSolverEvidence(m_solverArtifact);
+        }
+    });
     m_pager = new wxPanel(this);
     auto* pagerLayout = new wxBoxSizer(wxVERTICAL);
     m_pageLabel = new wxStaticText(m_pager, wxID_ANY, wxEmptyString);
@@ -183,6 +195,8 @@ void ResultConditionsView::SetValidationAvailable(bool available)
 }
 void ResultConditionsView::SetDescription(const Json& description)
 {
+    m_solverArtifact = description.value("solver_evidence_artifact_id", "");
+    m_solverEvidence->Show(!m_solverArtifact.empty());
     ++m_conditionGeneration;
     m_conditionsPending = false;
     m_comparison = nullptr;
@@ -291,6 +305,7 @@ void ResultConditionsView::SetDescription(const Json& description)
 void ResultConditionsView::SetComparison(const Json& response, const std::string& leftName,
                                          const std::string& rightName)
 {
+    m_solverEvidence->Hide();
     ++m_conditionGeneration;
     m_comparison = response;
     m_leftName = leftName;
@@ -383,6 +398,8 @@ void ResultConditionsView::PresentComparison()
 
 void ResultConditionsView::Clear(const std::string& message)
 {
+    m_solverArtifact.clear();
+    m_solverEvidence->Hide();
     ++m_conditionGeneration;
     m_conditionsPending = false;
     m_comparison = nullptr;

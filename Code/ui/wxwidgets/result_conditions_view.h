@@ -30,6 +30,7 @@ public:
     void Clear(const std::string& message);
     void SetValidationAvailable(bool available);
     std::function<void()> onValidation;
+    std::function<void(const std::string&)> onSolverEvidence;
 
 private:
     friend class StudioSmokeDriver;
@@ -47,6 +48,8 @@ private:
     wxCollapsiblePane* m_advanced = nullptr;
     wxButton* m_copy = nullptr;
     wxButton* m_validationButton = nullptr;
+    wxButton* m_solverEvidence = nullptr;
+    std::string m_solverArtifact;
     wxPanel* m_pager = nullptr;
     wxStaticText* m_pageLabel = nullptr;
     wxButton* m_previous = nullptr;

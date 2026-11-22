@@ -1,12 +1,14 @@
 /** @file @brief 비동기 방사 페이지 조회와 theta 절단면 표시를 구현한다. */
 #include "radiation_dialog.h"
 #include "studio_support.h"
+#include "studio_theme.h"
 #include <wx/wx.h>
 #include <wx/dcbuffer.h>
 #include <wx/weakref.h>
 #include <algorithm>
 
-RadiationDialog::RadiationDialog(wxWindow* parent, const Json& result, bool stale, RadiationGateway gateway)
+RadiationDialog::RadiationDialog(wxWindow* parent, const Json& result, bool stale, RadiationGateway gateway,
+                                 std::function<void(wxWindow*)> onEvidence)
     : wxDialog(parent, wxID_ANY, Display("방사 패턴 / 계산 결과 / 물리 검증 전"), wxDefaultPosition,
                wxSize(980, 740), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
       m_gateway(std::move(gateway)), m_artifact(result.at("artifact_id").get<std::string>()), m_timeout(this)
@@ -31,6 +33,17 @@ RadiationDialog::RadiationDialog(wxWindow* parent, const Json& result, bool stal
     tools->Add(new wxStaticText(this, wxID_ANY, "phi"), 0, wxALL | wxALIGN_CENTER_VERTICAL, 6);
     tools->Add(m_phi, 0, wxALL, 6);
     tools->Add(m_metric, 0, wxALL, 6);
+    if (onEvidence && result.at("metadata").value("profile", "") == "rfad.openems.pcb-single-port/0.1")
+    {
+        auto* evidence = new wxButton(this, wxID_ANY, Display("해석 입력과 출처"));
+        evidence->SetName("radiation.solver.evidence");
+        StudioTheme::Button(*evidence);
+        tools->Add(evidence, 0, wxALL, 6);
+        evidence->Bind(wxEVT_BUTTON, [this, onEvidence = std::move(onEvidence)](wxCommandEvent&)
+        {
+            onEvidence(this);
+        });
+    }
     layout->Add(tools, 0, wxEXPAND);
     layout->Add(new wxStaticText(this, wxID_ANY, Display(stale ? "이전 설계 스냅샷의 결과입니다." : "조회 시점의 적용 설계 스냅샷 결과입니다.")), 0, wxALL, 6);
     m_status = new wxStaticText(this, wxID_ANY, wxEmptyString);

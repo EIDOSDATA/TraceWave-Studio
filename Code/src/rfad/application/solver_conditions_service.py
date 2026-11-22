@@ -2,8 +2,8 @@
 
 from copy import deepcopy
 
-from rfad.application.canonical import canonical_hash
 from rfad.application.pcb_solver import PROFILE as PCB_PROFILE, validate_settings
+from rfad.application.solver_evidence import pcb_result_plan
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain import solver_conditions as domain
 from rfad.domain.errors import ProjectError
@@ -43,21 +43,9 @@ def save(service, state, context, data):
 
 def _result_settings(service, state, project_id, result_id):
     """! @brief 결과가 가리키는 봉인된 사용자 PCB 계획에서만 실행 당시 조건을 읽는다."""
-    result = state["solver_results"].get(result_id)
-    if result is None or result["project_id"] != project_id or result["metadata"]["profile"] != PCB_PROFILE:
-        raise ProjectError("E_MISSING_ARTIFACT", "이 프로젝트의 사용자 PCB 해석 결과를 찾지 못했습니다.")
-    row = state["analysis_plans"].get(result["analysis_plan_id"])
-    if row is None or row["project_id"] != project_id:
-        raise ProjectError("E_MISSING_ARTIFACT", "결과의 원래 해석 계획을 찾지 못했습니다.")
-    plan_ref = row["reference"]
-    _, plan = service.solver._record(state, "analysis_plans", plan_ref, "plan_id", project_id)
+    _, plan = pcb_result_plan(service, state, project_id, result_id)
     source = plan["source_semantics"]
-    if (plan["analysis_profile"] != PCB_PROFILE or plan["snapshot"] != result["snapshot"]
-            or canonical_hash(source) != plan["snapshot"]["content_hash"]):
-        raise ProjectError("E_HASH", "결과와 원래 해석 계획의 개정 또는 해시가 다릅니다.")
-    settings = plan["case"]["settings"]
-    validate_settings(settings)
-    return {"id": result_id, "revision_id": source["revision_id"], "settings": settings,
+    return {"id": result_id, "revision_id": source["revision_id"], "settings": plan["case"]["settings"],
             "design": domain.design_context(source)}
 
 

@@ -74,6 +74,13 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
         }
     };
     m_conditions->onValidation = validation;
+    m_conditions->onSolverEvidence = [this](const std::string& artifact)
+    {
+        if (onSolverEvidence)
+        {
+            onSolverEvidence(artifact);
+        }
+    };
     m_metrics->onValidation = validation;
     m_radiation->onSelectSource = focus;
     m_network->onOpenTools = [this]()

@@ -83,6 +83,10 @@ void StudioFrame::BuildResultInterface()
         Send(method, input, false, Context(), std::move(success), std::move(failure));
     };
     m_results = std::make_unique<ResultWorkspace>(m_views, m_tree->GetParent(), m_properties, std::move(gateway));
+    m_results->onSolverEvidence = [this](const std::string& artifact)
+    {
+        OpenSolverEvidence(artifact, this);
+    };
     m_results->onFocusSource = [this]()
     {
         if (m_shell)

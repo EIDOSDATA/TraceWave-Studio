@@ -8280,6 +8280,10 @@
       "extension_profile": "rfad.result-workspace/0.1",
       "status": "implemented"
     },
+    "result.solver_evidence": {
+      "extension_profile": "rfad.solver-evidence/0.1",
+      "status": "implemented"
+    },
     "result.sources": {
       "extension_profile": "rfad.result-workspace/0.1",
       "status": "implemented"
@@ -14301,8 +14305,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
-      "text_sha256": "e4af719bd6d9cbdc6906f26367e45ff6b1b5053a01e01d56a8ff223298b1e27c",
-      "utf8_bytes": 27093
+      "text_sha256": "230ebe44546d343b74bcf44db0ee1ded3584fc4b952a328d2ae2122f5b7c1e42",
+      "utf8_bytes": 28612
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
@@ -15246,8 +15250,8 @@
     },
     {
       "path": "Code/src/rfad/application/result_service.py",
-      "text_sha256": "dda13e150518cd08e8bc429ca377f7c181a8f8ef2e56c2e2d05baa2e55350195",
-      "utf8_bytes": 8199
+      "text_sha256": "32821e949ad6f646d0c36df5a0bb68720bbd7d98ebd7930e8ec4b1e569f23b74",
+      "utf8_bytes": 8483
     },
     {
       "path": "Code/src/rfad/application/result_smith.py",
@@ -15286,8 +15290,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "c8f1a48a20cfa6115442d53c418008851a4757d7ca45bbd2d529b3ecff99023a",
-      "utf8_bytes": 38791
+      "text_sha256": "baa2f1b5f8dec65be921073eb905e30d117174f4ff09abf0682d363bf8c10419",
+      "utf8_bytes": 39073
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -16101,8 +16105,8 @@
     },
     {
       "path": "Code/tests/test_result_integration.py",
-      "text_sha256": "6f692d26c237b9aedcbca5a9a63910cb1792a2ee0b19093a9eec4e0154c823a6",
-      "utf8_bytes": 10720
+      "text_sha256": "fd785a1f47bd8fde9ff3b79bb894c9c76d307c2913e82cb59956a5c9c44e4ba6",
+      "utf8_bytes": 11584
     },
     {
       "path": "Code/tests/test_result_math.py",
@@ -16536,8 +16540,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/radiation_dialog.cpp",
-      "text_sha256": "d7a2ed58948a41c09dd1a436fe54a10217e01bf5d640dcd5bca51f295257dc37",
-      "utf8_bytes": 9245
+      "text_sha256": "cb42164f1166c4cf2dfb71c52aa817f31348c48ee351184ddec9a4c0337c6bab",
+      "utf8_bytes": 9842
     },
     {
       "path": "Code/ui/wxwidgets/radiation_pattern.h",
@@ -16551,8 +16555,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/result_conditions_view.cpp",
-      "text_sha256": "a98ba7fc1baf8578deb0c2bc9db0923f4464684945d7b3a485a0804f41b7f78a",
-      "utf8_bytes": 19688
+      "text_sha256": "0ae70b976bfd6858dafb373454d2442f1b95fb0312d882b74d200b28ae2193f3",
+      "utf8_bytes": 20437
     },
     {
       "path": "Code/ui/wxwidgets/result_metrics_view.cpp",
@@ -16581,8 +16585,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace.cpp",
-      "text_sha256": "bda528056098d1e114d0f4b6a8ae81cb0741ffcfa250ef32133260bd95364e1e",
-      "utf8_bytes": 21239
+      "text_sha256": "e374236b2621f865d4867da2e99b040d7d82731f71ea6a9ae2250ce662dd3bf2",
+      "utf8_bytes": 21415
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace_compare.cpp",

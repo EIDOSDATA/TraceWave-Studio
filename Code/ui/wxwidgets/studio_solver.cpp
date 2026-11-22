@@ -221,6 +221,9 @@ void StudioFrame::OpenRadiation()
                 return;
             }
             Send("solver.radiation", input, false, Context(), std::move(completed), std::move(rejected));
+        }, [this, artifact = m_solverSamples.at("artifact_id").get<std::string>()](wxWindow* parent)
+        {
+            OpenSolverEvidence(artifact, parent);
         });
     dialog->Show();
 }

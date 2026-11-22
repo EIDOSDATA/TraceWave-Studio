@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 198,
+    "current_07_검증": 199,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28400,18 +28400,18 @@
       "path": "01_개발문서/05_기능설계/04_해석결과/02_해석작업_계약.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 16701,
-      "working_tree_sha256": "399801b436fa1d9a3682a3091c5f7c6c8978870e7edadfc1d1a9a1e17b563866",
-      "text_lines": 98,
+      "bytes": 17395,
+      "working_tree_sha256": "3a7c8f827945ff53585c49b0d830c7d41c6a9cdd4a3b75f652549a8b9496276a",
+      "text_lines": 101,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 27231,
-      "working_tree_sha256": "246da8fff0c14a3546219dfb5ce9938c277491a5e818fe9621b5aeec0fcf0b2f",
-      "text_lines": 138,
+      "bytes": 28758,
+      "working_tree_sha256": "5f321943c252307c7da650d443adb0d62b3bddf1a04e846951d8e792fd3ec2a4",
+      "text_lines": 146,
       "text_status": "utf8_read"
     },
     {
@@ -28747,8 +28747,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 642587,
-      "working_tree_sha256": "8c217961762a3cdad00fffcce892d91de55c0e092a5e1fa960d6b5251780fbb6"
+      "bytes": 642715,
+      "working_tree_sha256": "cb9915d267d2b2b789f984b701cfe988bffccb90fef96c74896fe6ef2058a047"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -31613,6 +31613,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/322_해석결과_출처역추적_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2600,
+      "working_tree_sha256": "69f63c69eb2839378d0b59a7f1cdfda21e962062d858e8cbdc11ce9b61840148",
+      "text_lines": 17,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/32_프로젝트_편집복원_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -32158,9 +32167,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 33179,
-      "working_tree_sha256": "53f9a0b4847273732630c0be5bf2c5d13a65d95591e426a67dfffb1dda5ee329",
-      "text_lines": 223,
+      "bytes": 33389,
+      "working_tree_sha256": "9eb8d78c0dbd84da877055cedbb9463fd3081e61c7077e07e0c84255c3b52279",
+      "text_lines": 225,
       "text_status": "utf8_read"
     },
     {
@@ -32347,8 +32356,8 @@
       "path": "01_개발문서/09_개발계획/14_매트랩과_안테나설계자동화_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 14734,
-      "working_tree_sha256": "cf1f775a92f3bad9d4a241ba81417d9c194332da83b2207862702fcf10b26178",
+      "bytes": 14907,
+      "working_tree_sha256": "46d468a3dd71714c843611167469e67116c9dd6ab9e2322645794bdd9eac97e9",
       "text_lines": 51,
       "text_status": "utf8_read"
     },
@@ -32356,9 +32365,9 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 20553,
-      "working_tree_sha256": "bfb37fc332e26d7fa6a5c34710d7d7a58a6238f7d7a5880c5717c87161eb19d9",
-      "text_lines": 149,
+      "bytes": 20839,
+      "working_tree_sha256": "2709103f02a9ed595f8d932b4eda711d2030341a936b31f37907b5ba624fd4a1",
+      "text_lines": 151,
       "text_status": "utf8_read"
     },
     {
@@ -33134,9 +33143,9 @@
       "path": "Code/ui/wxwidgets/README.md",
       "category": "repository_guide",
       "review_scope": "개발 문서 진입/현재 상태 검토",
-      "bytes": 44589,
-      "working_tree_sha256": "a5463f096edc3e4e95bed1572e32934ac0b33c3d7cf865ad781b580c3619ec0f",
-      "text_lines": 257,
+      "bytes": 45049,
+      "working_tree_sha256": "bba1dd3afad3de16fd9632119486c7c0554bae57ca04f3f63977366bb0deefb8",
+      "text_lines": 259,
       "text_status": "utf8_read"
     },
     {

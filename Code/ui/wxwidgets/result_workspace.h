@@ -33,6 +33,7 @@ public:
     std::function<void()> onFocusSource;
     std::function<void()> onOpenTools;
     std::function<void()> onOpenValidation;
+    std::function<void(const std::string&)> onSolverEvidence;
     std::function<void(const Json&)> onExportResult;
     std::function<void(const std::string&, const Json&, const Json&)> onMeasurementTool;
 

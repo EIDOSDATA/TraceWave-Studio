@@ -4,6 +4,7 @@ from copy import deepcopy
 
 from rfad.application.canonical import canonical_bytes
 from rfad.application.project_contract import _fields, _uuid
+from rfad.application.solver_requests import PCB_PROFILE
 from rfad.application.network_records import samples
 from rfad.application.result_sources import fail, resolve, validate_pin
 from rfad.application import result_catalog, result_complex
@@ -53,6 +54,8 @@ def _describe(value):
     current = value["current_document"]["revision_id"]
     source_revision = value["source_revision"]["id"]
     radiation = value["normalized"] is not None and "radiation_summary" in value["normalized"]
+    solver = value["solver_record"]
+    has_pcb_evidence = solver is not None and solver["metadata"]["profile"] == PCB_PROFILE
     field = value["normalized"] is not None and "loss_recording" in value["normalized"]["provenance"]["analysis_plan"]["case"]
     return {"profile": "rfad.result-view/0.1", **_identity(value), "label": value["label"],
         "source_revision": deepcopy(value["source_revision"]), "current_revision_id": current,
@@ -66,6 +69,7 @@ def _describe(value):
                             "metrics": radiation, "radiation": radiation, "field": field},
         "radiation_targets": radiation_targets(value["source_document"]) if radiation else [],
         "available_exports": available_formats(value),
+        **({"solver_evidence_artifact_id": value["solver_result_id"]} if has_pcb_evidence else {}),
         "view_reasons": {"physics": "계산 또는 가져온 자료의 표시이며 독립 물리 검증은 별도입니다."},
         "source_refs": deepcopy(value["dataset"]["source_refs"]),
         "historical_assessments": deepcopy(value["historical_assessments"]),
