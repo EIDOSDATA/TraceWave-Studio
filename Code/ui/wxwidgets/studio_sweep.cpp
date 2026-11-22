@@ -7,6 +7,7 @@
 #include "file_delivery.h"
 #include <wx/choicdlg.h>
 #include <wx/filedlg.h>
+#include <wx/msgdlg.h>
 #include <wx/scrolwin.h>
 #include <cmath>
 #include <optional>
@@ -405,6 +406,7 @@ void StudioFrame::SweepCommand(const std::string& action)
             return;
         }
         rankRequest.update(*options);
+        rankRequest["suggest_next"] = true;
     }
     const auto generation = ++m_sweepGeneration;
     m_sweepPending = true;
@@ -448,6 +450,14 @@ void StudioFrame::SweepCommand(const std::string& action)
                      const auto& rows = result.at("items");
                      const auto tolerance = result.value("tolerance_analysis", Json::object());
                      const auto corners = tolerance.value("corner_ordinals", Json::array());
+                     const auto next = result.value("next_candidate", Json::object());
+                     const bool canSuggest = next.value("status", std::string()) == "proposed";
+                     if (canSuggest)
+                     {
+                         labels.Add(wxString::Format(Display("다음 후보 검토 / %s %s / 후보 %d와 %d 사이"),
+                             Display(next.at("text")), Display(next.at("unit")),
+                             next.at("basis_ordinal").get<int>() + 1, next.at("neighbor_ordinal").get<int>() + 1));
+                     }
                      for (const auto& row : rows)
                      {
                          auto label = wxString::Format(Display("%d그룹 / 후보 %d"),
@@ -573,12 +583,24 @@ void StudioFrame::SweepCommand(const std::string& action)
                              }
                          }
                      }
-                     explanation += Display("\n확인을 누르면 선택 후보의 전체 평가를 엽니다.");
+                     if (!canSuggest)
+                     {
+                         explanation += Display("\n평가를 마친 한 축 이웃 사이에 새 후보를 만들 수 있는 구간이 없습니다.");
+                     }
+                     explanation += Display("\n후보의 평가를 열거나 다음 후보를 새 연구로 검토할 수 있습니다.");
                      wxSingleChoiceDialog dialog(this, explanation, Display("목표별 후보 순위"), labels);
                      dialog.SetName("sweep.rank.dialog");
                      if (dialog.ShowModal() == wxID_OK && m_sweepPanel->StudyId() == id)
                      {
-                         OpenSweepResult(rows.at(dialog.GetSelection()).at("ordinal").get<int>());
+                         const int selection = dialog.GetSelection();
+                         if (canSuggest && selection == 0)
+                         {
+                             ReviewNextSweepCandidate(next);
+                         }
+                         else if (selection >= 0)
+                         {
+                             OpenSweepResult(rows.at(selection - static_cast<int>(canSuggest)).at("ordinal").get<int>());
+                         }
                      }
                  });
              },

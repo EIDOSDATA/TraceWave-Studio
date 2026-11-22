@@ -172,6 +172,18 @@ class DesignSweepRunnerTests(unittest.TestCase):
                 self.fixture.read("sweep.rank", study_id=identity, weights=invalid)
         self.assertEqual(weighted["ranking_sha256"], canonical_hash(
             {key: value for key, value in weighted.items() if key != "ranking_sha256"}))
+        recommended = self.fixture.read("sweep.rank", study_id=identity, weights=weights, suggest_next=True)
+        proposal = recommended["next_candidate"]
+        self.assertEqual(proposal["status"], "proposed")
+        self.assertEqual((proposal["basis_ordinal"], proposal["neighbor_ordinal"]), (1, 2))
+        proposed_values = proposal["specification"]["variables"][0]["values"]
+        self.assertEqual([item["value_si"] for item in proposed_values], [30])
+        self.assertEqual(proposed_values[0]["status"], "estimated")
+        self.assertEqual(proposal["assessment_sha256"], [row["assessment_sha256"] for row in weighted["items"][:2]])
+        review = self.fixture.read("sweep.preview", expected_revision=proposal["revision_id"],
+                                   specification=proposal["specification"])
+        self.assertEqual(review["counts"]["valid"], 1)
+        self.assertEqual(review["candidates"][0]["values"][0]["text"], "30")
         recipe = self.fixture.read("sweep.recipe", study_id=identity)
         self.assertEqual(self.service.journal.read(), before)
         definition = load_definition(self.service, before["sweeps"][identity])
@@ -189,6 +201,14 @@ class DesignSweepRunnerTests(unittest.TestCase):
         self.assertEqual(self.fixture.read("sweep.rank", study_id=identity), ranking)
         self.assertEqual(self.fixture.read("sweep.rank", study_id=identity, weights=weights), weighted)
         self.assertEqual(self.fixture.read("sweep.recipe", study_id=identity), recipe)
+        self.assertEqual(self.fixture.read("sweep.rank", study_id=identity, weights=weights, suggest_next=True), recommended)
+        request = self.fixture.request({"expected_revision": proposal["revision_id"], "specification": proposal["specification"],
+                                        "review_hash": review["review_hash"]}, mutation=True)
+        followup = self.service.mutate("sweep.create", request)["study_id"]
+        self.assertNotEqual(followup, identity)
+        self.command("start", followup)
+        self.assertEqual(self.run_all(followup)["state"], "completed")
+        self.assertEqual(self.fixture.read("sweep.rank", study_id=identity, weights=weights, suggest_next=True), recommended)
         with self.assertRaisesRegex(ProjectError, "공차 모서리"):
             self.fixture.read("sweep.rank", study_id=identity, tolerance=True)
 

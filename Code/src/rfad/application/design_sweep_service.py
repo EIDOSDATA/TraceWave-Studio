@@ -42,13 +42,15 @@ def validate_input(method, context, data):
     """! @brief 공개 요청을 닫힌 계약과 프로젝트 소유권으로 제한한다."""
     _fields(context, {"project_id"})
     _uuid(context["project_id"])
-    _fields(data, FIELDS[method], {"weights", "tolerance", "probabilities"} if method == "sweep.rank" else set())
+    _fields(data, FIELDS[method], {"weights", "tolerance", "probabilities", "suggest_next"} if method == "sweep.rank" else set())
     if "weights" in data and (type(data["weights"]) is not dict or not 1 <= len(data["weights"]) <= 32):
         fail("순위에는 연구 목표의 명시 가중치를 입력하십시오.")
     if "probabilities" in data and type(data["probabilities"]) is not list:
         fail("공차 축별 가중치 세 개의 목록을 입력하십시오.")
     if "tolerance" in data and type(data["tolerance"]) is not bool:
         fail("공차 모서리 비교 사용 여부는 참 또는 거짓으로 입력하십시오.")
+    if "suggest_next" in data and type(data["suggest_next"]) is not bool:
+        fail("다음 후보 제안은 참 또는 거짓으로 입력하십시오.")
     for name in ("study_id", "expected_revision"):
         if name in data:
             _uuid(data[name])
@@ -504,7 +506,8 @@ def read(service, method, params):
     if method == "sweep.rank":
         from rfad.application import sweep_ranking
         report = sweep_ranking.read(service, study, definition, source, project,
-                                    data.get("weights"), data.get("tolerance", False), data.get("probabilities"))
+                                    data.get("weights"), data.get("tolerance", False), data.get("probabilities"),
+                                    data.get("suggest_next", False))
         return bounded(report)
     labels = _labels(source, None if definition["network"] is None else definition["network"]["circuit"])
     if method == "sweep.page":

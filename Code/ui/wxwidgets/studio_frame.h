@@ -149,6 +149,8 @@ private:
     void LoadSweep(const std::string& id, int offset = 0);
     void SweepCommand(const std::string& action);
     void OpenSweepSetup();
+    /** @brief 평가한 이웃에서 얻은 한 후보를 별도 연구로 검토하고 저장한다. */
+    void ReviewNextSweepCandidate(const Json& proposal);
     void ShowSweepSetup(const Json& context);
     void OpenSweepResult(int index);
     /** @brief 검토한 연구 후보를 원본과 별도 프로젝트로 생성하고 명시적으로 연다. */

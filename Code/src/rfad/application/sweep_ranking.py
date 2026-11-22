@@ -212,7 +212,64 @@ def _probability_report(axes, normalized, outcomes):
             "unresolved_ordinals": unresolved, "all_positive_mass_evaluated": not unresolved}
 
 
-def read(service, study, definition, source, project, weights=None, tolerance=False, probabilities=None):
+def _next_candidate(study, definition, source, rows):
+    """! @brief 봉인 평가가 있는 한 축 이웃 사이의 아직 검토하지 않은 점을 제안한다."""
+    from bisect import bisect_left
+    from copy import deepcopy
+
+    from rfad.domain.design_sweep import _indices, candidate_at
+    from rfad.domain.units import Quantity
+
+    specification = definition["specification"]
+    variables = specification["variables"]
+    total = study["counts"]["total"]
+    grid = [[value if type(value) is str else value["value_si"] for value in variable["values"]]
+            for variable in variables]
+    indices = [_indices(specification, ordinal) for ordinal in range(total)]
+    points = [tuple(values[index] for values, index in zip(grid, coordinate)) for coordinate in indices]
+    occupied = set(points)
+    ranked = {row["ordinal"]: row for row in rows}
+    rank_order = {row["ordinal"]: position for position, row in enumerate(rows)}
+    numeric = {axis: sorted(set(values)) for axis, values in enumerate(grid)
+               if variables[axis]["dimension"] != "state" and all(value is not None for value in values)}
+    circuit = None if definition["network"] is None else definition["network"]["circuit"]
+    for basis in rows:
+        pivot = points[basis["ordinal"]]
+        neighbors = []
+        for axis, values in numeric.items():
+            position = bisect_left(values, pivot[axis])
+            for other in values[max(0, position - 1):position] + values[position + 1:position + 2]:
+                peer = pivot[:axis] + (other,) + pivot[axis + 1:]
+                matches = [ordinal for ordinal in ranked if points[ordinal] == peer]
+                if matches:
+                    neighbors.append((min(matches, key=rank_order.get), axis))
+        for ordinal, axis in sorted(neighbors, key=lambda row: (rank_order[row[0]], row[1])):
+            origin, other = pivot[axis], points[ordinal][axis]
+            middle = float((Fraction(origin) + Fraction(other)) / 2)
+            coordinates = pivot[:axis] + (middle,) + pivot[axis + 1:]
+            if coordinates in occupied:
+                continue
+            original = variables[axis]["values"][indices[basis["ordinal"]][axis]]
+            quantity = Quantity(middle, original["dimension"], original["display_unit"], "estimated",
+                                [f"TraceWave {study['study_id']} 후보 {basis['ordinal'] + 1}, {ordinal + 1}"]).to_dict()
+            proposal = deepcopy(specification)
+            proposal.update(name=specification["name"][:245] + " / 후속 후보", combination="cartesian", rows=[])
+            for variable, index in zip(proposal["variables"], indices[basis["ordinal"]]):
+                variable["values"] = [variable["values"][index]]
+            proposal["variables"][axis]["values"] = [quantity]
+            candidate = candidate_at(source, proposal, 0, circuit=circuit)
+            if candidate["status"] != "valid":
+                continue
+            return {"status": "proposed", "revision_id": source["revision_id"],
+                    "basis_ordinal": basis["ordinal"], "neighbor_ordinal": ordinal,
+                    "assessment_sha256": [basis["assessment_sha256"], ranked[ordinal]["assessment_sha256"]],
+                    "axis": {"kind": variables[axis]["kind"], "id": variables[axis]["id"]},
+                    "text": format(Quantity(**quantity).as_unit(original["display_unit"]), ".15g"),
+                    "unit": original["display_unit"], "specification": proposal}
+    return {"status": "no_distinct_valid_bracket"}
+
+
+def read(service, study, definition, source, project, weights=None, tolerance=False, probabilities=None, suggest_next=False):
     """! @brief 현재 설계나 결과를 바꾸지 않고 연구에 소속된 봉인 평가만 사용한다."""
     specification = definition["specification"]
     ids = specification["target_ids"]
@@ -300,4 +357,6 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
         if probability_axes is not None:
             report["tolerance_analysis"]["discrete_probability"] = _probability_report(
                 axes, probability_axes, probability_outcomes)
+    if suggest_next:
+        report["next_candidate"] = _next_candidate(study, definition, source, rows)
     return {**report, "ranking_sha256": canonical_hash(report)}
