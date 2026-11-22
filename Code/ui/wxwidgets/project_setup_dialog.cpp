@@ -197,6 +197,7 @@ bool ProjectSetupDialog::ConfirmDiscard()
     wxMessageDialog confirm(this, Display("미적용 입력을 버리고 계속하시겠습니까?"), Display("미적용 입력 확인"),
                             wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
     confirm.SetName("setup.discard");
+    confirm.SetYesNoLabels(Display("입력 버리기"), Display("계속 편집"));
     return confirm.ShowModal() == wxID_YES;
 }
 

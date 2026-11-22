@@ -65,7 +65,7 @@ public:
                       int* extent) override
     {
         dc.SetFont(window->GetFont().Bold());
-        const int width = std::max(window->FromDIP(88), dc.GetTextExtent(caption).x + window->FromDIP(40));
+        const int width = std::max(window->FromDIP(76), dc.GetTextExtent(caption).x + window->FromDIP(28));
         *extent = width;
         return wxSize(width,
                       std::max(window->FromDIP(StudioTheme::TabHeight), dc.GetCharHeight() + window->FromDIP(16)));

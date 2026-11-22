@@ -35,6 +35,7 @@ private:
     wxChoice* m_section = nullptr;
     wxChoice* m_subject = nullptr;
     wxChoice* m_parameter = nullptr;
+    wxStaticText* m_parameterLabel = nullptr;
     wxChoice* m_inclusion = nullptr;
     EditorPanel* m_fields = nullptr;
     DesignCanvas* m_canvas = nullptr;

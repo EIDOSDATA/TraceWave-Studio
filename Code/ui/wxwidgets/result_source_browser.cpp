@@ -22,6 +22,14 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     auto* title = new wxStaticText(this, wxID_ANY, Display("결과 원본 선택"));
     StudioTheme::Heading(*title);
     layout->Add(title, 0, wxALL, FromDIP(12));
+    const auto label = [this, layout](const char* caption)
+    {
+        auto* text = new wxStaticText(this, wxID_ANY, Display(caption));
+        StudioTheme::BindSecondary(*text);
+        layout->Add(text, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::Space * 2));
+        return text;
+    };
+    label("자료 종류");
     m_kind = new wxChoice(this, wxID_ANY);
     for (const auto* name : {"네트워크 자료", "해석 실행", "연구 후보"})
     {
@@ -30,6 +38,7 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     m_kind->SetSelection(0);
     m_kind->SetName("result.source-kind");
     layout->Add(m_kind, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
+    m_anchorLabel = label("보존 개정 범위");
     m_anchor = new wxChoice(this, wxID_ANY);
     m_anchor->SetName("result.source-revision");
     layout->Add(m_anchor, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
@@ -39,13 +48,14 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     anchors->Add(m_anchorPrevious, 0, wxALL, FromDIP(2));
     anchors->Add(m_anchorNext, 0, wxALL, FromDIP(2));
     layout->Add(anchors, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(6));
+    m_studyLabel = label("연구 범위");
     m_study = new wxChoice(this, wxID_ANY);
     m_study->SetName("result.source-study");
     layout->Add(m_study, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
     m_items =
         new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL | wxLC_HRULES);
     m_items->SetName("result.source-items");
-    m_items->SetMinSize(FromDIP(wxSize(-1, 160)));
+    m_items->SetMinSize(FromDIP(wxSize(160, 150)));
     StudioTheme::Table(*m_items);
     m_items->AppendColumn(Display("자료 / 후보 이름"), wxLIST_FORMAT_LEFT, FromDIP(175));
     m_items->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(95));
@@ -61,12 +71,15 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     m_refresh = new wxButton(this, wxID_ANY, Display("결과 목록 새로 읽기"));
     StudioTheme::Button(*m_refresh);
     layout->Add(m_refresh, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
-    m_status = new wxStaticText(this, wxID_ANY, wxEmptyString);
+    m_status = new wxStaticText(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+                                wxST_NO_AUTORESIZE);
+    m_status->SetMinSize(FromDIP(wxSize(160, -1)));
     StudioTheme::BindSecondary(*m_status);
     layout->Add(m_status, 0, wxEXPAND | wxALL, FromDIP(8));
     SetSizer(layout);
     for (auto* choice : {m_kind, m_anchor, m_study})
     {
+        choice->SetMinSize(FromDIP(wxSize(150, -1)));
         choice->Bind(wxEVT_CHOICE,
                      [this](wxCommandEvent&)
                      {
@@ -140,6 +153,7 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     Bind(wxEVT_SIZE,
          [this](wxSizeEvent& event)
          {
+             m_status->SetLabel(m_statusText);
              m_status->Wrap(std::max(120, GetClientSize().x - FromDIP(20)));
              event.Skip();
          });
@@ -286,7 +300,8 @@ void ResultSourceBrowser::SetSolverContext()
 
 void ResultSourceBrowser::SetStatus(const std::string& message)
 {
-    m_status->SetLabel(Display(message));
+    m_statusText = Display(message);
+    m_status->SetLabel(m_statusText);
     m_status->Wrap(std::max(120, GetClientSize().x - FromDIP(20)));
     Layout();
 }
@@ -300,9 +315,11 @@ void ResultSourceBrowser::SetAvailable(bool available)
 void ResultSourceBrowser::UpdateLayout()
 {
     const bool network = Kind() == "network";
+    m_anchorLabel->Show(network);
     m_anchor->Show(network);
     m_anchorPrevious->Show(network);
     m_anchorNext->Show(network);
+    m_studyLabel->Show(Kind() == "sweep");
     m_study->Show(Kind() == "sweep");
     for (auto* choice : {m_kind, m_anchor, m_study})
     {

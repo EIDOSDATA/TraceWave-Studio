@@ -18,6 +18,15 @@ void StudioFrame::UpdateControls()
                            !m_solverRestoring && !m_cadRestoring && !m_modelView->IsLoading();
     GetMenuBar()->Enable(IdCreate, canSwitch);
     GetMenuBar()->Enable(IdOpen, canSwitch);
+    GetMenuBar()->Enable(IdFindObject, opened);
+    m_startCreate->Enable(canSwitch);
+    m_startOpen->Enable(canSwitch);
+    const bool showStart = !hasProject;
+    if (m_startActions->IsShown() != showStart)
+    {
+        m_startActions->Show(showStart);
+        m_startActions->GetParent()->Layout();
+    }
     GetMenuBar()->Enable(IdArchiveRestore, canSwitch && m_archiveRestoreSupported);
     GetMenuBar()->Enable(IdSave, opened);
     GetMenuBar()->Enable(IdSnapshot, opened);
@@ -259,5 +268,6 @@ bool StudioFrame::ConfirmDiscard()
     wxMessageDialog dialog(this, Display("아직 적용하지 않은 입력을 버리고 계속하시겠습니까?"),
                            Display("입력 변경 확인"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
     dialog.SetName("setup.discard");
+    dialog.SetYesNoLabels(Display("입력 버리기"), Display("계속 편집"));
     return dialog.ShowModal() == wxID_YES;
 }

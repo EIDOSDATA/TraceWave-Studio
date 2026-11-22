@@ -49,6 +49,7 @@ DesignRulesDialog::DesignRulesDialog(wxWindow* parent, const Json& context, Dial
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* top = new wxBoxSizer(wxHORIZONTAL);
     m_section = new wxChoice(this, wxID_ANY);
+    m_section->SetName("rules.section");
     for (const auto* label : {"기판 크기 / 제조 규칙 연결", "매개변수 범위 / 정수", "기대 연결 / 분리", "제조 규칙"})
     {
         m_section->Append(Display(label));
@@ -61,10 +62,20 @@ DesignRulesDialog::DesignRulesDialog(wxWindow* parent, const Json& context, Dial
         m_inclusion->Append(Display(label));
     }
     m_inclusion->SetSelection(0);
-    for (auto* choice : {m_section, m_subject, m_parameter, m_inclusion})
+    const auto addChoice = [&](wxChoice& choice, const char* text)
     {
-        top->Add(choice, 1, wxEXPAND | wxRIGHT, FromDIP(StudioTheme::InputGap));
-    }
+        auto* field = new wxBoxSizer(wxVERTICAL);
+        auto* label = new wxStaticText(this, wxID_ANY, Display(text));
+        StudioTheme::Heading(*label);
+        field->Add(label, 0, wxBOTTOM, FromDIP(StudioTheme::Space));
+        field->Add(&choice, 0, wxEXPAND);
+        top->Add(field, 1, wxEXPAND | wxRIGHT, FromDIP(StudioTheme::InputGap));
+        return label;
+    };
+    addChoice(*m_section, "규칙 종류");
+    addChoice(*m_subject, "목표 / 규칙");
+    m_parameterLabel = addChoice(*m_parameter, "매개변수");
+    addChoice(*m_inclusion, "검사 대상 도체");
     layout->Add(top, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::PanelPadding));
     auto* body = new wxBoxSizer(wxHORIZONTAL);
     m_fields = new EditorPanel(this);
@@ -93,6 +104,7 @@ DesignRulesDialog::DesignRulesDialog(wxWindow* parent, const Json& context, Dial
     m_check = new wxButton(this, wxID_ANY, Display("현재 개정 검사"));
     for (auto* button : {m_set, m_remove, m_check, new wxButton(this, wxID_CANCEL, Display("닫기"))})
     {
+        StudioTheme::Button(*button, button == m_check);
         actions->Add(button, 0, wxLEFT, FromDIP(6));
     }
     layout->Add(actions, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::PanelPadding));
@@ -127,6 +139,7 @@ void DesignRulesDialog::Render(const Json& context)
                target ? "목표 선택" : "새 규칙");
     FillChoice(m_parameter, context.at("parameters"), selection.at("parameter_id"), "매개변수 선택");
     m_parameter->Show(section == "parameter");
+    m_parameterLabel->Show(section == "parameter");
     m_fields->SetFields(context.at("fields"));
     m_reason->ChangeValue(wxEmptyString);
     m_canvas->SetScene(context.at("scene"));

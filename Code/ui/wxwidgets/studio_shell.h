@@ -24,6 +24,10 @@ public:
     ~StudioShell() override;
     /** @brief 현재 창 폭에 맞는 기본 배치를 복원하고 숨긴 패널을 다시 보인다. */
     void RestoreLayout();
+    /** @brief 현재 창 배치에서 사용자가 선택한 패널의 표시 상태를 반환한다. */
+    std::array<bool, 4> PanelVisibility() const;
+    /** @brief 보기 메뉴와 같은 사용자 설정에 패널 표시를 기록한다. */
+    void SetPanelVisibility(const std::array<bool, 4>& visible);
     /** @brief 명시적인 선택 편집 요청에 따라 속성 패널 또는 속성 탭을 보인다. */
     void ShowProperties(bool focus = false);
     /** @brief 검색과 객체 이름 변경 시 탐색 탭을 명시적으로 보인다. */

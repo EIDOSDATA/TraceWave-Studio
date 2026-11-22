@@ -1,5 +1,23 @@
 /** @file @brief 주 창의 geometry_dialogs 책임을 구현한다. */
 #include "studio_internal.h"
+#include "studio_theme.h"
+
+namespace
+{
+/** @brief 숫자와 좌표 편집의 공통 하단 동작을 한국어로 표시한다. */
+void AddConfirmation(wxDialog& dialog, wxBoxSizer& layout, const char* action)
+{
+    auto* buttons = dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL);
+    auto* confirm = static_cast<wxButton*>(dialog.FindWindow(wxID_OK));
+    auto* cancel = static_cast<wxButton*>(dialog.FindWindow(wxID_CANCEL));
+    confirm->SetLabel(Display(action));
+    cancel->SetLabel(Display("취소"));
+    StudioTheme::Button(*confirm, true);
+    StudioTheme::Button(*cancel);
+    layout.Add(buttons, 0, wxEXPAND | wxALL, dialog.FromDIP(StudioTheme::PanelPadding));
+    StudioTheme::BindSurface(dialog);
+}
+}
 
 /** @brief 키보드만으로 좌표를 지정하며 유한 수치의 판정 후 서비스에 전달한다. */
 bool StudioFrame::AskNumbers(const std::string& title, const std::vector<NumericField>& fields, Json& values)
@@ -7,7 +25,8 @@ bool StudioFrame::AskNumbers(const std::string& title, const std::vector<Numeric
     wxDialog dialog(this, wxID_ANY, Display(title), wxDefaultPosition, wxDefaultSize,
                     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
     auto* outer = new wxBoxSizer(wxVERTICAL);
-    auto* form = new wxFlexGridSizer(2, 8, 8);
+    const int gap = dialog.FromDIP(StudioTheme::InputGap);
+    auto* form = new wxFlexGridSizer(2, gap, gap);
     form->AddGrowableCol(1);
     std::map<std::string, wxTextCtrl*> controls;
     for (const auto& field : fields)
@@ -18,8 +37,8 @@ bool StudioFrame::AskNumbers(const std::string& title, const std::vector<Numeric
         controls[field.key] = input;
         form->Add(input, 1, wxEXPAND);
     }
-    outer->Add(form, 1, wxEXPAND | wxALL, 14);
-    outer->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 10);
+    outer->Add(form, 1, wxEXPAND | wxALL, dialog.FromDIP(StudioTheme::PanelPadding));
+    AddConfirmation(dialog, *outer, "확인");
     dialog.SetSizerAndFit(outer);
     while (dialog.ShowModal() == wxID_OK)
     {
@@ -62,7 +81,7 @@ void StudioFrame::AddPolygon()
     auto* input =
         new wxTextCtrl(&dialog, wxID_ANY, Display(m_polygonDraft), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
     layout->Add(input, 1, wxEXPAND | wxLEFT | wxRIGHT, 12);
-    layout->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 10);
+    AddConfirmation(dialog, *layout, "추가");
     dialog.SetSizer(layout);
     while (dialog.ShowModal() == wxID_OK)
     {
@@ -127,7 +146,8 @@ void StudioFrame::AddVia()
             Display("시작은 활성 도체층입니다. 적층 순서상 뒤에 있는 끝 도체층을 선택하세요.\n완성 구멍/도금/공구 "
                     "구멍은 서로 다른 값입니다. 빈칸은 미정입니다.\n패드와 도금 물성은 자동으로 생성하지 않습니다.")),
         0, wxEXPAND | wxALL, 12);
-    auto* form = new wxFlexGridSizer(2, 8, 8);
+    const int gap = dialog.FromDIP(StudioTheme::InputGap);
+    auto* form = new wxFlexGridSizer(2, gap, gap);
     form->AddGrowableCol(1);
     form->Add(new wxStaticText(&dialog, wxID_ANY, Display("끝 도체층")), 0, wxALIGN_CENTER_VERTICAL);
     auto* endLayer = new wxChoice(&dialog, wxID_ANY);
@@ -173,7 +193,7 @@ void StudioFrame::AddVia()
         }
     }
     layout->Add(pads, 1, wxEXPAND | wxLEFT | wxRIGHT, 12);
-    layout->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 10);
+    AddConfirmation(dialog, *layout, "추가");
     dialog.SetSizerAndFit(layout);
     while (dialog.ShowModal() == wxID_OK)
     {

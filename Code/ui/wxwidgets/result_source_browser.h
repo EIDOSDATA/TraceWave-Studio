@@ -41,6 +41,9 @@ private:
     wxChoice* m_study = nullptr;
     wxListCtrl* m_items = nullptr;
     wxStaticText* m_status = nullptr;
+    wxStaticText* m_anchorLabel = nullptr;
+    wxStaticText* m_studyLabel = nullptr;
+    wxString m_statusText;
     wxStaticText* m_page = nullptr;
     wxButton* m_previous = nullptr;
     wxButton* m_next = nullptr;

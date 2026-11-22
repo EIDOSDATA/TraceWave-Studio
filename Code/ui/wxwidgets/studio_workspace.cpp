@@ -12,7 +12,7 @@ void StudioFrame::BuildWorkspacePages()
     const auto action = [this](wxWindow* parent, wxSizer* layout, int id, const std::string& label)
     {
         auto* button = new wxButton(parent, wxID_ANY, Display(label));
-        button->SetMinSize(FromDIP(wxSize(180, 34)));
+        StudioTheme::Button(*button, id == IdRunSolver);
         layout->Add(button, 0, wxALL, FromDIP(StudioTheme::InputGap));
         m_workspaceCommands.emplace_back(id, button);
         button->Bind(wxEVT_BUTTON,
@@ -28,9 +28,10 @@ void StudioFrame::BuildWorkspacePages()
         StudioTheme::BindSurface(*panel);
         auto* layout = new wxBoxSizer(wxVERTICAL);
         auto* heading = new wxStaticText(panel, wxID_ANY, Display(title));
-        StudioTheme::Heading(*heading);
+        StudioTheme::Title(*heading);
         layout->Add(heading, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
         auto* text = new wxStaticText(panel, wxID_ANY, Display(help));
+        StudioTheme::BindSecondary(*text);
         text->Wrap(FromDIP(440));
         layout->Add(text, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
         panel->SetSizer(layout);
@@ -47,10 +48,15 @@ void StudioFrame::BuildWorkspacePages()
     m_analysisSummary = new wxStaticText(analysis, wxID_ANY, Display(summary));
     m_analysisSummary->Wrap(FromDIP(440));
     analysis->GetSizer()->Add(m_analysisSummary, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
+    auto* environment = new wxButton(analysis, wxID_ANY, Display("실행 환경 / 진단"));
+    StudioTheme::Button(*environment);
+    analysis->GetSizer()->Add(environment, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
+    environment->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ShowEnvironment(); });
     m_views->AddPage(analysis, Display("해석 준비"));
     auto* comparison = page("수렴 연구", "저장된 수렴 연구 보고서의 조건과 판정을 확인합니다.\n여러 원본의 RF 곡선은 "
                                          "결과 / 후보 비교 탭에서 비교합니다.");
     auto* open = new wxButton(comparison, wxID_ANY, Display("수렴 연구 보고서 열기"));
+    StudioTheme::Button(*open);
     comparison->GetSizer()->Add(open, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     open->Bind(wxEVT_BUTTON,
                [this](wxCommandEvent&)
@@ -248,7 +254,7 @@ void StudioFrame::ShowWorkspaceJob(long row, const std::string& state, const std
         m_workspaceJobs->SetItem(row, 1,
                                  Display(needsCad ? "환경 필요" : (found == labels.end() ? state : found->second)));
         m_workspaceJobs->SetItem(
-            row, 2, Display(needsCad ? "CAD 환경 연결 필요. 보기 > 실행 환경 안내에서 확인하세요." : message));
+            row, 2, Display(needsCad ? "CAD 환경 연결 필요. 보기 > 실행 환경 / 진단에서 확인하세요." : message));
     }
 }
 

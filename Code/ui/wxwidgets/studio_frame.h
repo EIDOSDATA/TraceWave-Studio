@@ -83,6 +83,14 @@ private:
 
     /** @brief 프로젝트 메타데이터와 선택 객체의 서비스 기반 입력 폼을 구성한다. */
     void BuildInterface();
+    /** @brief 기존 패널 표시, 키보드 동작과 Windows 표시 상태를 안내한다. */
+    void ShowDisplayPreferences();
+    /** @brief 현재 실행할 수 있는 Studio 메뉴와 편집 명령을 찾는다. */
+    void ShowCommandSearch();
+    /** @brief 시작 시 선택된 실행 환경과 현재 진단을 표시한다. */
+    void ShowEnvironment();
+    /** @brief 설계 화면의 탐색 검색으로 이동한다. */
+    void FocusObjectSearch();
     /** @brief 탐색과 이름 변경의 표시 상태를 별도 모듈에서 구성한다. */
     void BuildNavigation(wxWindow* parent, wxSizer* layout);
     void RebuildNavigation();
@@ -409,6 +417,9 @@ private:
     wxSpinCtrlDouble* m_width = nullptr;
     wxCheckBox* m_snapCheck = nullptr;
     wxStaticText* m_canvasHint = nullptr;
+    wxPanel* m_startActions = nullptr;
+    wxButton* m_startCreate = nullptr;
+    wxButton* m_startOpen = nullptr;
     wxStaticText* m_problemSummary = nullptr;
     StudioNotebook* m_bottom = nullptr;
     wxListCtrl* m_problems = nullptr;
@@ -430,6 +441,8 @@ private:
     wxTreeCtrl* m_tree = nullptr;
     wxSearchCtrl* m_objectSearch = nullptr;
     wxChoice* m_objectFilter = nullptr;
+    wxStaticText* m_navigationLabel = nullptr;
+    wxStaticText* m_navigationStatus = nullptr;
     std::string m_navigationProject;
     wxPanel* m_properties = nullptr;
     wxPanel* m_metadataPanel = nullptr;

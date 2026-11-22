@@ -54,6 +54,8 @@ void StudioFrame::UpdateNetworkViews()
     m_tree->Show(!active);
     m_objectSearch->Show(!active);
     m_objectFilter->Show(!active);
+    m_navigationLabel->Show(!active);
+    m_navigationStatus->Show(!active);
     m_selectionLabel->Show(!active && !output);
     const bool metadata = m_selection.value("kind", "project") == "project";
     m_metadataPanel->Show(!active && !output && metadata);

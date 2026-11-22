@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 189,
+    "current_07_검증": 190,
     "current_08_운영환경": 7,
     "current_09_개발계획": 9,
     "current_11_검토기록": 8,
@@ -28030,9 +28030,9 @@
       "path": "01_개발문서/04_화면설계/12_구현화면_설계기준.md",
       "category": "current_04_화면설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 22155,
-      "working_tree_sha256": "30c49120e1548e2b0302e09a31777b4beda1267ebd81fc8a57bf5d184c8b91f2",
-      "text_lines": 144,
+      "bytes": 22428,
+      "working_tree_sha256": "f2e58a609f6b65100558c82765bc82d634c55dc9b6c6e705496412a897ef7e41",
+      "text_lines": 146,
       "text_status": "utf8_read"
     },
     {
@@ -28748,7 +28748,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 642131,
-      "working_tree_sha256": "88fb64b9b328a3cc25b56068ec90ddbcd22dfe0bcfc886de09020dce5590d749"
+      "working_tree_sha256": "913ff65eb46a724d42843929aac5fa9280424dddea67e4a84ffa26e99073813d"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -31523,6 +31523,15 @@
       "working_tree_sha256": "246e681dc456034fdec08fff55cc08d8ca512dc28d7a75ff925453cf697fd3c3"
     },
     {
+      "path": "01_개발문서/07_검증/313_윈도우_실행화면_캡처와_사용성_검수.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 6256,
+      "working_tree_sha256": "d16e655cce911bed768114adb34948bcf4d6151c71e6b102bb2a270be72812bb",
+      "text_lines": 38,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/31_프로젝트_편집복원_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
@@ -32077,9 +32086,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 31187,
-      "working_tree_sha256": "49f9bb30e2987be39aed62ab771d936791084c3c3b6871d6f74010ee845d3fa2",
-      "text_lines": 205,
+      "bytes": 31355,
+      "working_tree_sha256": "87e0779ed67fdefff7ed14fffb60eca31f6b789fa226a63881c7adb0e00447db",
+      "text_lines": 207,
       "text_status": "utf8_read"
     },
     {
@@ -32990,9 +32999,9 @@
       "path": "Code/ui/wxwidgets/README.md",
       "category": "repository_guide",
       "review_scope": "개발 문서 진입/현재 상태 검토",
-      "bytes": 40533,
-      "working_tree_sha256": "247174815f6b2c0ce12333c58e0a0c56fed8501dca362ca50a61065a3a1cb8a8",
-      "text_lines": 237,
+      "bytes": 41072,
+      "working_tree_sha256": "691e92cd76f92bc96989dd50dcba1aef9acfdca4ad5d475cbaa1f63b72ab3c65",
+      "text_lines": 243,
       "text_status": "utf8_read"
     },
     {

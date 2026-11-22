@@ -16340,8 +16340,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/design_rules_dialog.cpp",
-      "text_sha256": "77f1cd52ce556c1d8a6071169fbcf7b9489c9c319ed5c193ef73c94e46c9b996",
-      "utf8_bytes": 11076
+      "text_sha256": "1a242c4155dcd8b6c3a656a7b83aa468658e999fc6361c1b9d51d0af3c2e3fed",
+      "utf8_bytes": 11718
     },
     {
       "path": "Code/ui/wxwidgets/design_rules_review.cpp",
@@ -16500,8 +16500,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_dialog.cpp",
-      "text_sha256": "93b32b6213ab0516dbef2196f664fd78f7450ed323f481551011582a004b9b51",
-      "utf8_bytes": 10454
+      "text_sha256": "e5371d58c2c4ceaa6fc4e90d7c7165a6defa7f19740d1210b847e514e05c52db",
+      "utf8_bytes": 10545
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_review.cpp",
@@ -16515,8 +16515,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/project_setup_dialog.cpp",
-      "text_sha256": "8a82aceb6666fa5c305cca86390d164cef6e5daefbcad55f471bd03c8e85670e",
-      "utf8_bytes": 7527
+      "text_sha256": "3ef6e61b38e1ca4abefd75b7344a883a75f8224c1204378b7adb9c1c5f1db852",
+      "utf8_bytes": 7610
     },
     {
       "path": "Code/ui/wxwidgets/radiation_dialog.cpp",
@@ -16560,8 +16560,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/result_source_browser.cpp",
-      "text_sha256": "f0222ed42f1578a3d974d41c2c59657f93c5cc6685589dd9928cd197f819a6f6",
-      "utf8_bytes": 12778
+      "text_sha256": "75d06a85e273c6e7880d4684a54afcf8106b1894e1d605d9b01f09d36c8c0e0c",
+      "utf8_bytes": 13551
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace.cpp",
@@ -16625,13 +16625,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "0d2e1315221f605c1da063a8155938ff5026a532d84847aa1f72497401dbbdd9",
-      "utf8_bytes": 28986
+      "text_sha256": "d3e10acc927ed733a8e59c507f29dedb195f7ad9c10f99e5f53d25d877b9523d",
+      "utf8_bytes": 30653
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
-      "text_sha256": "a7b017a09412887c643e0488357ca0881a4a240e3f2d7c4b889192af1c6179e3",
-      "utf8_bytes": 19984
+      "text_sha256": "fb80620ee4ab28b2154d87a66e38882b46ddfe08a8c9a83a03ca6bb274490b2c",
+      "utf8_bytes": 22256
     },
     {
       "path": "Code/ui/wxwidgets/studio_precision.cpp",
@@ -16640,8 +16640,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_shell.cpp",
-      "text_sha256": "ed6be1a4b9a717a349b52a8fc7d3877bbe4552c52b0fde3c02f4dab74cd46afd",
-      "utf8_bytes": 15698
+      "text_sha256": "967a57a9427dedcab1cf68b919e3f2ebb231edff67da38fb4a449cd3d3cb6f67",
+      "utf8_bytes": 16329
     },
     {
       "path": "Code/ui/wxwidgets/studio_sweep_selection.cpp",
@@ -16665,8 +16665,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_workspace.cpp",
-      "text_sha256": "4f6cd54f87e2a591a271ba9422927974ad953de96ed2807e22fc001ceb67a701",
-      "utf8_bytes": 13829
+      "text_sha256": "4b3976e10456ba667c4798531db1a99d002b5ff64b7ab0d9b9a1e29241b6c0f0",
+      "utf8_bytes": 14236
     },
     {
       "path": "Code/ui/wxwidgets/study_report_dialog.cpp",

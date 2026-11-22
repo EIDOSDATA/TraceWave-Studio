@@ -77,6 +77,7 @@ PhysicalSetupDialog::PhysicalSetupDialog(wxWindow* parent, const Json& context, 
     summary->Add(m_sectionView, 0, wxEXPAND | wxBOTTOM, pad);
     m_stack = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL);
     m_stack->SetName("physical.stack");
+    StudioTheme::Table(*m_stack);
     const std::array<const char*, 4> columns = {"층", "하부 z (mm)", "상부 z (mm)", "두께 (mm)"};
     for (std::size_t index = 0; index < columns.size(); ++index)
     {
@@ -106,6 +107,7 @@ PhysicalSetupDialog::PhysicalSetupDialog(wxWindow* parent, const Json& context, 
     m_remove = new wxButton(this, wxID_ANY, Display("제거"));
     for (auto* button : {m_apply, m_remove, new wxButton(this, wxID_CANCEL, Display("닫기"))})
     {
+        StudioTheme::Button(*button, button == m_apply);
         actions->Add(button, 0, wxLEFT, FromDIP(6));
     }
     layout->Add(actions, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);

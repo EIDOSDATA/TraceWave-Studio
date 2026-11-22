@@ -3,6 +3,8 @@
 #include "editor_sync.h"
 #include "object_rename_dialog.h"
 #include "studio_theme.h"
+#include "studio_shell.h"
+#include "workspace_bar.h"
 #include <wx/srchctrl.h>
 #include <wx/imaglist.h>
 
@@ -27,6 +29,7 @@ public:
     int filter = 0;
     bool pcbFeatures = false;
     bool draft = false;
+    std::set<std::string> expanded;
     std::map<std::pair<std::string, std::string>, wxTreeItemId> items;
 };
 
@@ -55,10 +58,14 @@ int NavigationIcon(const std::string& kind)
 
 void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
 {
+    m_navigationLabel = new wxStaticText(parent, wxID_ANY, Display("프로젝트 객체 찾기"));
+    StudioTheme::Heading(*m_navigationLabel);
+    layout->Add(m_navigationLabel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, FromDIP(StudioTheme::InputGap));
     m_objectSearch = new wxSearchCtrl(parent, wxID_ANY);
     m_objectSearch->SetDescriptiveText(Display("객체 이름 검색"));
     m_objectSearch->SetName("navigation.search");
-    m_objectSearch->ShowCancelButton(true);
+    m_objectSearch->ShowCancelButton(false);
+    m_objectSearch->SetToolTip(Display("이름으로 검색 (Ctrl+F). 객체 종류와 함께 좁힐 수 있습니다."));
     m_objectSearch->SetMinSize(FromDIP(wxSize(-1, 34)));
     layout->Add(m_objectSearch, 0, wxEXPAND | wxALL, FromDIP(8));
     m_objectFilter = new wxChoice(parent, wxID_ANY);
@@ -69,8 +76,13 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
     }
     m_objectFilter->SetSelection(0);
     m_objectFilter->SetName("navigation.filter");
+    m_objectFilter->SetToolTip(Display("표시할 객체 종류"));
     m_objectFilter->SetMinSize(FromDIP(wxSize(-1, 32)));
     layout->Add(m_objectFilter, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
+    m_navigationStatus = new wxStaticText(parent, wxID_ANY, Display("프로젝트를 열어 검색하세요."));
+    m_navigationStatus->SetName("navigation.status");
+    StudioTheme::BindSecondary(*m_navigationStatus);
+    layout->Add(m_navigationStatus, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::InputGap));
     m_tree =
         new wxTreeCtrl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize,
                        wxTR_HAS_BUTTONS | wxTR_TWIST_BUTTONS | wxTR_NO_LINES | wxTR_FULL_ROW_HIGHLIGHT | wxBORDER_NONE);
@@ -100,6 +112,7 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
     m_objectSearch->Bind(wxEVT_TEXT,
                          [this](wxCommandEvent&)
                          {
+                             m_objectSearch->ShowCancelButton(!m_objectSearch->GetValue().empty());
                              RebuildNavigation();
                          });
     m_objectSearch->Bind(wxEVT_SEARCH_CANCEL,
@@ -201,15 +214,22 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
 
 void StudioFrame::RebuildNavigation()
 {
-    if (m_editor.empty() || !m_tree)
+    if (!m_tree)
     {
+        return;
+    }
+    if (m_editor.empty())
+    {
+        m_navigationStatus->SetLabel(Display("프로젝트를 열어 검색하세요."));
         return;
     }
     const bool refreshing = m_refreshing;
     m_refreshing = true;
     const auto selectionKind = m_selection.value("kind", "");
     const bool draft = selectionKind.rfind("new_", 0) == 0;
-    const auto query = m_objectSearch->GetValue().Lower();
+    wxString query = m_objectSearch->GetValue();
+    query.Trim().Trim(false);
+    query.MakeLower();
     const int filter = m_objectFilter->GetSelection();
     const auto* previous = dynamic_cast<const NavigationRows*>(m_tree->GetClientObject());
     if (previous && !previous->draft && !draft && previous->project == m_project && previous->revision == m_revision &&
@@ -236,9 +256,14 @@ void StudioFrame::RebuildNavigation()
     rows->pcbFeatures = m_pcbFeaturesSupported;
     rows->draft = draft;
 
-    std::set<std::string> expanded;
+    const bool restricted = !query.empty() || filter != 0;
     const auto oldRoot = m_tree->GetRootItem();
-    if (m_navigationProject == m_project && oldRoot.IsOk())
+    const bool first = m_navigationProject != m_project;
+    if (!first && previous && (!previous->query.empty() || previous->filter != 0))
+    {
+        rows->expanded = previous->expanded;
+    }
+    else if (!first && oldRoot.IsOk())
     {
         wxTreeItemIdValue cookie;
         for (auto node = m_tree->GetFirstChild(oldRoot, cookie); node.IsOk();
@@ -247,11 +272,14 @@ void StudioFrame::RebuildNavigation()
             auto* action = dynamic_cast<NavigationAction*>(m_tree->GetItemData(node));
             if (action && m_tree->IsExpanded(node))
             {
-                expanded.insert(action->key);
+                rows->expanded.insert(action->key);
             }
         }
     }
-    const bool first = m_navigationProject != m_project;
+    if (first)
+    {
+        rows->expanded.insert("geometry");
+    }
     m_navigationProject = m_project;
     m_tree->Freeze();
     m_tree->DeleteAllItems();
@@ -406,11 +434,27 @@ void StudioFrame::RebuildNavigation()
     m_tree->Expand(root);
     for (const auto& [key, node] : groups)
     {
-        if ((first && key == "geometry") || expanded.count(key) || !query.empty())
+        if (restricted || rows->expanded.count(key))
         {
             m_tree->Expand(node);
         }
     }
+    if (restricted)
+    {
+        wxTreeItemIdValue cookie;
+        for (auto node = m_tree->GetFirstChild(root, cookie); node.IsOk();)
+        {
+            const auto next = m_tree->GetNextChild(root, cookie);
+            if (m_tree->GetChildrenCount(node, false) == 0)
+            {
+                m_tree->Delete(node);
+            }
+            node = next;
+        }
+    }
+    const auto count = rows->items.size() - 1;
+    m_navigationStatus->SetLabel(count == 0 && restricted ? Display("일치하는 객체 없음")
+        : wxString::Format(Display(restricted ? "검색 결과 %zu개" : "프로젝트 객체 %zu개"), count));
     if (m_selection.value("kind", "") == "project")
     {
         selected = root;
@@ -423,6 +467,20 @@ void StudioFrame::RebuildNavigation()
     m_tree->Thaw();
     m_tree->SetClientObject(rows.release());
     m_refreshing = refreshing;
+}
+
+void StudioFrame::FocusObjectSearch()
+{
+    if (m_objectSearch->IsEnabled())
+    {
+        if (!m_objectSearch->IsShown())
+        {
+            NavigateWorkspace(WorkspaceArea::Design);
+        }
+        m_shell->ShowNavigation();
+        m_objectSearch->SetFocus();
+        m_objectSearch->SelectAll();
+    }
 }
 
 void StudioFrame::OpenRename()

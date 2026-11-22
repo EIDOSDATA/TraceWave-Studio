@@ -6,7 +6,32 @@
 #include "drawing_rail.h"
 #include "studio_shell.h"
 #include <wx/statline.h>
+#include <wx/textdlg.h>
 #include <wx/wrapsizer.h>
+
+namespace
+{
+/** @brief 한글 동작 이름을 표시하는 프로젝트 입력 대화상자다. */
+wxString ReadProjectText(wxWindow& parent, const char* title, const char* prompt,
+                         const wxString& initial, const char* action)
+{
+    wxTextEntryDialog dialog(&parent, Display(prompt), Display(title), initial);
+    auto* apply = wxDynamicCast(dialog.FindWindow(wxID_OK), wxButton);
+    auto* cancel = wxDynamicCast(dialog.FindWindow(wxID_CANCEL), wxButton);
+    if (apply && cancel)
+    {
+        apply->SetLabel(Display(action));
+        cancel->SetLabel(Display("취소"));
+        StudioTheme::Button(*apply, true);
+        StudioTheme::Button(*cancel);
+        dialog.SetMinSize(dialog.FromDIP(wxSize(375, -1)));
+        dialog.Fit();
+    }
+    StudioTheme::BindSurface(dialog);
+    dialog.CentreOnParent();
+    return dialog.ShowModal() == wxID_OK ? dialog.GetValue() : wxString();
+}
+}
 
 /** @brief 프로젝트 메타데이터와 선택 객체의 서비스 기반 입력 폼을 구성한다. */
 void StudioFrame::BuildInterface()
@@ -28,6 +53,11 @@ void StudioFrame::BuildInterface()
     redo->AddExtraAccel(wxAcceleratorEntry(wxACCEL_CTRL | wxACCEL_SHIFT, 'Z', IdRedo));
     edit->AppendSeparator();
     edit->Append(IdNewParameter, Display("매개변수 추가"));
+    edit->AppendSeparator();
+    edit->Append(IdFindObject, Display("프로젝트 객체 찾기\tCtrl+F"));
+    edit->Append(IdFindCommand, Display("명령 찾기\tCtrl+Shift+P"));
+    Bind(wxEVT_MENU, [this](wxCommandEvent&) { FocusObjectSearch(); }, IdFindObject);
+    Bind(wxEVT_MENU, [this](wxCommandEvent&) { ShowCommandSearch(); }, IdFindCommand);
     auto* bar = new wxMenuBar;
     bar->Append(menu, Display("파일(&F)"));
     bar->Append(edit, Display("편집"));
@@ -90,23 +120,12 @@ void StudioFrame::BuildInterface()
     view->Append(IdOutputFolder, Display("STEP 출력 폴더 열기"));
     view->Append(IdCancelCad, Display("CAD 작업 취소"));
     view->AppendSeparator();
+    const int preferences = wxWindow::NewControlId();
+    view->Append(preferences, Display("환경설정..."));
+    Bind(wxEVT_MENU, [this](wxCommandEvent&) { ShowDisplayPreferences(); }, preferences);
     const int environmentHelp = wxWindow::NewControlId();
-    view->Append(environmentHelp, Display("실행 환경 안내"));
-    Bind(
-        wxEVT_MENU,
-        [this](wxCommandEvent&)
-        {
-            const std::string message = std::string("CAD: ") + (m_cadConfigured ? "연결됨" : "연결 필요") +
-                                        "\n해석: " + (m_solverConfigured ? "연결됨" : "연결 필요") +
-                                        "\n\n환경이 없어도 설계 편집과 저장, 기존 결과 조회는 가능합니다."
-                                        "\n현재 개발판은 프로그램을 다시 시작할 때 실행 환경을 연결합니다."
-                                        "\n\n개발 실행 도우미: Code/tools/launch_gui.ps1"
-                                        "\nCAD: -CadPython <CAD Python 경로>"
-                                        "\nWSL2 openEMS: -OpenEmsWsl"
-                                        "\n\n프로젝트 데이터가 실행 프로그램이나 경로를 결정하지 않습니다.";
-            wxMessageBox(Display(message), Display("실행 환경 안내"), wxOK | wxICON_INFORMATION, this);
-        },
-        environmentHelp);
+    view->Append(environmentHelp, Display("실행 환경 / 진단..."));
+    Bind(wxEVT_MENU, [this](wxCommandEvent&) { ShowEnvironment(); }, environmentHelp);
     bar->Append(view, Display("보기"));
     SetMenuBar(bar);
     CreateStatusBar(3);
@@ -226,6 +245,28 @@ void StudioFrame::BuildInterface()
     auto* center = new wxPanel(m_views);
     StudioTheme::BindSurface(*center);
     auto* centerSizer = new wxBoxSizer(wxVERTICAL);
+    m_startActions = new wxPanel(center);
+    StudioTheme::BindSurface(*m_startActions);
+    auto* startLayout = new wxBoxSizer(wxHORIZONTAL);
+    auto* startTitle = new wxStaticText(m_startActions, wxID_ANY, Display("프로젝트 시작"));
+    StudioTheme::Heading(*startTitle);
+    startLayout->Add(startTitle, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(StudioTheme::GroupGap));
+    const auto startButton = [&](int id, const char* label, bool primary)
+    {
+        auto* button = new wxButton(m_startActions, wxID_ANY, Display(label));
+        StudioTheme::Button(*button, primary);
+        startLayout->Add(button, 0, wxRIGHT, FromDIP(StudioTheme::InputGap));
+        button->Bind(wxEVT_BUTTON, [this, id](wxCommandEvent&)
+        {
+            wxCommandEvent command(wxEVT_MENU, id);
+            ProcessWindowEvent(command);
+        });
+        return button;
+    };
+    m_startCreate = startButton(IdCreate, "새 프로젝트", true);
+    m_startOpen = startButton(IdOpen, "프로젝트 열기", false);
+    m_startActions->SetSizer(startLayout);
+    centerSizer->Add(m_startActions, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::PanelPadding));
     auto* drawingTools = new wxWrapSizer(wxHORIZONTAL);
     AddTool(center, drawingTools, IdSelect, "선택");
     AddTool(center, drawingTools, IdLine, "선");
@@ -419,8 +460,8 @@ void StudioFrame::BuildInterface()
             {
                 return;
             }
-            const wxString name =
-                wxGetTextFromUser(Display("새 프로젝트 이름"), Display("프로젝트 만들기"), Display("새 안테나"), this);
+            const wxString name = ReadProjectText(*this, "프로젝트 만들기", "새 프로젝트 이름",
+                                                  Display("새 안테나"), "만들기");
             if (!name.empty())
             {
                 OpenProject("create", "projects/" + Utf8(name), Utf8(name));
@@ -435,9 +476,8 @@ void StudioFrame::BuildInterface()
             {
                 return;
             }
-            const wxString path =
-                wxGetTextFromUser(Display("작업 영역에 등록된 경로 (projects/이름)"), Display("프로젝트 열기"),
-                                  Display(m_path.empty() ? "projects/새 안테나" : m_path), this);
+            const wxString path = ReadProjectText(*this, "프로젝트 열기", "작업 영역에 등록된 경로 (projects/이름)",
+                                                  Display(m_path.empty() ? "projects/새 안테나" : m_path), "열기");
             if (!path.empty())
             {
                 OpenProject("open", Utf8(path));

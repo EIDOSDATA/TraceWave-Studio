@@ -160,6 +160,27 @@ void StudioShell::SetCompact(bool compact)
     m_updating = false;
 }
 
+std::array<bool, 4> StudioShell::PanelVisibility() const
+{
+    return {m_visible[VisibilityIndex(0)], m_visible[VisibilityIndex(1)], m_visible[2], m_visible[3]};
+}
+
+void StudioShell::SetPanelVisibility(const std::array<bool, 4>& visible)
+{
+    for (std::size_t index = 0; index < visible.size(); ++index)
+    {
+        const auto preference = VisibilityIndex(index);
+        if ((m_compact && index == 1) || m_visible[preference] == visible[index])
+        {
+            continue;
+        }
+        m_visible[preference] = visible[index];
+        SaveVisibility(preference);
+    }
+    ApplyVisibility();
+    m_manager.Update();
+}
+
 void StudioShell::ApplyVisibility()
 {
     m_navigation.SetPageText(0, Display(m_validationContext ? "검증 기록"
