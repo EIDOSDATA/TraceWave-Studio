@@ -1,5 +1,6 @@
 /** @file @brief 비동기 요청과 작업 조회의 화면 독립 구현이다. */
 #include "async_state.h"
+#include <algorithm>
 #include <stdexcept>
 #include <utility>
 
@@ -24,7 +25,7 @@ RequestDispatcher::SubmitResult RequestDispatcher::Submit(const std::string& met
         parameters["request_key_epoch"] = epoch;
     }
     Json request{{"jsonrpc", "2.0"}, {"id", id}, {"method", method}, {"params", parameters}};
-    if (id.empty() || !m_pending.emplace(id, Pending{now, std::move(success), std::move(failure), foreground}).second)
+    if (id.empty() || !m_pending.emplace(id, Pending{now, std::move(success), std::move(failure), foreground, method}).second)
     {
         throw std::logic_error("Duplicate or empty GUI request identifier.");
     }
@@ -71,6 +72,21 @@ bool RequestDispatcher::Expired(Clock::time_point now) const
         }
     }
     return false;
+}
+
+std::string RequestDispatcher::DescribePending(Clock::time_point now) const
+{
+    const auto oldest = std::min_element(m_pending.begin(), m_pending.end(), [](const auto& left, const auto& right)
+    {
+        return left.second.sent < right.second.sent;
+    });
+    if (oldest == m_pending.end())
+    {
+        return "pending=0";
+    }
+    const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - oldest->second.sent);
+    return "pending=" + std::to_string(m_pending.size()) + ", oldest=" + oldest->second.method +
+           ", elapsed_ms=" + std::to_string(elapsed.count());
 }
 
 void RequestDispatcher::Clear()

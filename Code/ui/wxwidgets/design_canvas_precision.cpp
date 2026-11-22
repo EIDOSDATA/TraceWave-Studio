@@ -1,6 +1,8 @@
 /** @file @brief 자유 입력, 스냅 후보 및 끝점 드래그를 2D 표시 장면에 연결한다. */
 #include "design_canvas.h"
 
+#include <algorithm>
+
 namespace
 {
 using namespace CanvasPrecision;
@@ -199,5 +201,17 @@ void DesignCanvas::DrawPrecision(wxDC& dc, const Shape* selected) const
             dc.DrawLine(pixel.x - radius, pixel.y, pixel.x + radius + 1, pixel.y);
             dc.DrawLine(pixel.x, pixel.y - radius, pixel.x, pixel.y + radius + 1);
         }
+        const wxString label = wxString::FromUTF8(m_snap->kind == SnapKind::Endpoint ? "끝점 스냅" : "격자 스냅");
+        const wxSize size = dc.GetTextExtent(label);
+        const int padding = FromDIP(4);
+        const auto client = GetClientSize();
+        const int left = std::clamp(pixel.x + radius + padding, 0,
+                                    std::max(0, client.x - size.x - 2 * padding));
+        const int top = std::clamp(pixel.y - size.y - 2 * padding, 0,
+                                   std::max(0, client.y - size.y - 2 * padding));
+        dc.SetBrush(wxBrush(m_colours.background));
+        dc.SetTextForeground(m_colours.Focus(wxColour(13, 113, 100)));
+        dc.DrawRectangle(left, top, size.x + 2 * padding, size.y + 2 * padding);
+        dc.DrawText(label, left + padding, top + padding);
     }
 }

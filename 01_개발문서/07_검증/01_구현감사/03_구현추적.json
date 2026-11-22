@@ -8192,6 +8192,10 @@
       "extension_profile": "rfad.precision-editor/0.1",
       "status": "implemented"
     },
+    "project.evidence": {
+      "extension_profile": "rfad.project-evidence/0.1",
+      "status": "implemented"
+    },
     "project.redo": {
       "extension_profile": "rfad.editor/0.1",
       "status": "implemented"
@@ -8314,6 +8318,10 @@
     },
     "solver.latest": {
       "extension_profile": "rfad.solver-view/0.1",
+      "status": "implemented"
+    },
+    "solver.preview": {
+      "extension_profile": "rfad.solver-preview/0.1",
       "status": "implemented"
     },
     "solver.radiation": {
@@ -15270,8 +15278,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "3e991baa073e4ec26974d7469f9e7c2f944409afec65d7958a9f2b94e83a5726",
-      "utf8_bytes": 37799
+      "text_sha256": "ce0f6a2abfcbc569247a69449353c6d3118588768199bdc647f6fe081dc1ecd0",
+      "utf8_bytes": 38363
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -16335,8 +16343,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_precision.cpp",
-      "text_sha256": "f12afc4a704bb01714d75950e8410ef61ab019b5575a07671c266a3b929ec6c7",
-      "utf8_bytes": 7230
+      "text_sha256": "c9b9b0ede6b8332a026f4a6fc07508a625b7ddd5c7f6bb18f0a68fd54472dd85",
+      "utf8_bytes": 8078
     },
     {
       "path": "Code/ui/wxwidgets/design_rules_dialog.cpp",
@@ -16515,8 +16523,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/project_setup_dialog.cpp",
-      "text_sha256": "3ef6e61b38e1ca4abefd75b7344a883a75f8224c1204378b7adb9c1c5f1db852",
-      "utf8_bytes": 7610
+      "text_sha256": "c12dab58dcaf7e315e49ffcd3ffec2e4e7aed98b338eaa74b4cfc1ce96538566",
+      "utf8_bytes": 7804
     },
     {
       "path": "Code/ui/wxwidgets/radiation_dialog.cpp",
@@ -16625,8 +16633,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "d3e10acc927ed733a8e59c507f29dedb195f7ad9c10f99e5f53d25d877b9523d",
-      "utf8_bytes": 30653
+      "text_sha256": "8b34435c25d3e18c611ba4b642d6788c2e74fd3bf0a1f56cb1c6f4238cbb2f12",
+      "utf8_bytes": 32672
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
@@ -16670,8 +16678,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/study_report_dialog.cpp",
-      "text_sha256": "a13e5b1bcc06f57040c045c839a462b139c8c6c0dfff9e3e941306ef3dc59151",
-      "utf8_bytes": 3490
+      "text_sha256": "c8397b5933f3b1981c2fb551a933635ff47726d6f7e99466ee617b5f8f73785a",
+      "utf8_bytes": 4493
     },
     {
       "path": "Code/ui/wxwidgets/study_report_model.cpp",
@@ -16700,8 +16708,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/template_dialog.cpp",
-      "text_sha256": "051838ce1b434bff885eacf0d57cdfeb2cab1034e785bb9dae548d47654f300e",
-      "utf8_bytes": 14293
+      "text_sha256": "7c14c7e7b44f756f90650514a38584c74426117d7531d0fb9b359298a752805d",
+      "utf8_bytes": 14657
     },
     {
       "path": "Code/ui/wxwidgets/template_seed_view.cpp",

@@ -34,6 +34,7 @@ bool StudioFrame::AskNumbers(const std::string& title, const std::vector<Numeric
         form->Add(new wxStaticText(&dialog, wxID_ANY, Display(field.label)), 0, wxALIGN_CENTER_VERTICAL);
         auto* input =
             new wxTextCtrl(&dialog, wxID_ANY, wxString::Format("%.12g", values.value(field.key, field.initial)));
+        input->SetName(Display(field.label));
         controls[field.key] = input;
         form->Add(input, 1, wxEXPAND);
     }

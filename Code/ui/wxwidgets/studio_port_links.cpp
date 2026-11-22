@@ -204,6 +204,8 @@ void StudioFrame::UpdatePortLinks()
         m_portModel->SetToolTip(Display(modelReason));
         m_portModel->Enable(ready && !modelSources.empty());
         const std::array<wxButton*, 2> buttons{m_portSignal, m_portReference};
+        const std::array<std::string, 2> roles{"신호", "기준"};
+        std::string connections;
         for (std::size_t i = 0; i < buttons.size(); ++i)
         {
             const auto& id = terminals.at(i);
@@ -216,7 +218,14 @@ void StudioFrame::UpdatePortLinks()
             buttons[i]->SetToolTip(Display(conductor == items.end() ? "참조 도체가 없습니다."
                 : conductor->at("label").get<std::string>() + (reason.empty() ? "" : "\n" + reason)));
             buttons[i]->Enable(ready && conductor != items.end());
+            const std::string name = conductor == items.end() ? "미정" : conductor->at("label").get<std::string>();
+            connections += roles[i] + " 도체: " + name + "\n";
         }
+        const auto plane = port->value("reference_plane", std::string());
+        const auto sourceCount = port->value("source_ref_count", std::size_t(0));
+        connections += "기준면: " + (plane.empty() ? "미정" : plane);
+        connections += "\n저항 / 대역 출처: " + (sourceCount > 0 ? std::to_string(sourceCount) + "개" : "미정");
+        status = connections + (status.empty() ? "" : "\n" + status);
     }
     else
     {

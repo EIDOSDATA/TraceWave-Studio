@@ -25,6 +25,8 @@ public:
     void SetRelatedSelection(const std::vector<std::string>& identities, bool suppressPrimary);
     void SetLayerVisible(const std::string& identity, bool visible);
     void FitView();
+    /** @brief 설계 보기에서 선택할 수 있는 표시 전용 축 단면을 추가한다. */
+    void EnableSections();
     void SetView(const std::string& view);
     /** @brief 드래그와 같은 카메라 회전/이동을 픽셀 변화량으로 적용한다. */
     void RotateView(double dx, double dy);

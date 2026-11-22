@@ -48,7 +48,7 @@ void TemplateDialog::BuildInterface()
     BuildSeedControls(inputs);
     content->Add(inputs, 1, wxEXPAND | wxRIGHT, FromDIP(StudioTheme::PanelPadding));
     auto* review = new wxBoxSizer(wxVERTICAL);
-    auto* previewTitle = new wxStaticText(this, wxID_ANY, Display("형상 미리보기 / mm"));
+    auto* previewTitle = new wxStaticText(this, wxID_ANY, Display("후보 형상 / 새로 생성할 도체 강조 (mm)"));
     StudioTheme::Heading(*previewTitle);
     review->Add(previewTitle, 0, wxBOTTOM, FromDIP(StudioTheme::InputGap));
     m_canvas = new DesignCanvas(this);
@@ -67,12 +67,15 @@ void TemplateDialog::BuildInterface()
     auto* actions = new wxBoxSizer(wxHORIZONTAL);
     m_previewButton = new wxButton(this, wxID_ANY, Display("형상 미리보기"));
     m_previewButton->SetName("template.preview");
+    StudioTheme::Button(*m_previewButton);
     actions->Add(m_previewButton, 0);
     actions->AddStretchSpacer();
     m_applyButton = new wxButton(this, wxID_ANY, Display("검토한 형상 적용"));
     m_applyButton->SetName("template.apply");
+    StudioTheme::Button(*m_applyButton, true);
     actions->Add(m_applyButton, 0, wxRIGHT, FromDIP(StudioTheme::InputGap));
     m_cancel = new wxButton(this, wxID_CANCEL, Display("닫기"));
+    StudioTheme::Button(*m_cancel);
     actions->Add(m_cancel, 0);
     layout->Add(actions, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
     SetSizer(layout);

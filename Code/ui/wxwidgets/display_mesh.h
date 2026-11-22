@@ -232,7 +232,8 @@ inline Scene Parse(const Json& value, const Json& snapshot, const std::string& r
 }
 
 /** @brief 한 삼각형을 실제 화면 좌표계로 투영해 보이는 위치의 깊이를 구한다. */
-inline double PickTriangleDepth(const Body& body, std::size_t offset, const Camera& camera, double x, double y)
+inline double PickTriangleDepth(const Body& body, std::size_t offset, const Camera& camera, double x, double y,
+    const std::array<double, 4>* section = nullptr)
 {
     constexpr double miss = -std::numeric_limits<double>::infinity();
     std::array<Point, 3> points{};
@@ -254,6 +255,20 @@ inline double PickTriangleDepth(const Body& body, std::size_t offset, const Came
     const double w = 1.0 - u - v;
     if (u >= -1e-9 && v >= -1e-9 && w >= -1e-9)
     {
+        if (section)
+        {
+            const auto& plane = *section;
+            double side = plane[3];
+            for (std::size_t axis = 0; axis < 3; ++axis)
+            {
+                side += plane[axis] * (u * body.positions[offset + axis] + v * body.positions[offset + 3 + axis] +
+                                       w * body.positions[offset + 6 + axis]);
+            }
+            if (side < 0)
+            {
+                return miss;
+            }
+        }
         return u * a.z + v * b.z + w * c.z;
     }
     return miss;
@@ -261,7 +276,7 @@ inline double PickTriangleDepth(const Body& body, std::size_t offset, const Came
 
 /** @brief 작은 장면과 인덱스 없는 장면의 삼각형을 원래 순서로 검사한다. */
 inline int Pick(const Scene& scene, const Camera& camera, double x, double y,
-    const std::set<std::string>& hiddenLayers = {})
+    const std::set<std::string>& hiddenLayers = {}, const std::array<double, 4>* section = nullptr)
 {
     double closest = -std::numeric_limits<double>::infinity();
     int selected = -1;
@@ -274,7 +289,7 @@ inline int Pick(const Scene& scene, const Camera& camera, double x, double y,
         }
         for (std::size_t offset = 0; offset < body.positions.size(); offset += 9)
         {
-            const double depth = PickTriangleDepth(body, offset, camera, x, y);
+            const double depth = PickTriangleDepth(body, offset, camera, x, y, section);
             if (depth > closest)
             {
                 closest = depth;

@@ -142,6 +142,12 @@ int main()
     camera.pitch = 0.0;
     Check(Pick(scene, camera, -0.5, -0.5) == 1, "nearest visible surface");
     Check(Pick(scene, camera, -0.5, -0.5, {"copper"}) == 0, "hidden layer picking");
+    const std::array<double, 4> removeCopper{0.0, 0.0, -1.0, -0.01};
+    Check(PickIndexed(scene, camera, -0.5, -0.5, {}, &removeCopper) == 0, "section picks visible rear face");
+    const std::array<double, 4> removeLeft{1.0, 0.0, 0.0, 0.0};
+    Check(PickIndexed(scene, camera, -0.5, -0.5, {}, &removeLeft) == -1, "section rejects clipped hit");
+    Check(PickIndexed(scene, camera, 0.2, -0.5, {}, &removeLeft) == 1, "section keeps visible part of triangle");
+    Check(scene.triangles == 2 && PickIndexed(scene, camera, -0.5, -0.5) == 1, "section keeps original mesh");
     Check(Pick(scene, camera, 9.0, 9.0) == -1, "outside picking");
     camera.panX = 5.0;
     camera.panY = -3.0;

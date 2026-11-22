@@ -42,6 +42,10 @@ int FieldGroup(const std::string& key, const Json& descriptor, const std::string
     {
         return 2;
     }
+    if (kind == "target" && key.rfind("criteria.", 0) == 0)
+    {
+        return 1;
+    }
     if (descriptor.value("advanced", false) || leaf == "status" || leaf == "parameter_id" ||
         (leaf == "mode" && separator != std::string::npos) ||
         (kind == "geometry" &&
@@ -115,9 +119,10 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
     const std::array<std::string, 4> names{
         {kind == "material"
              ? "재료 물성"
-             : (kind == "layer" ? "적층 치수"
-                                : (kind == "parameter" || kind == "new_parameter" ? "매개변수" : "형상 / 치수")),
-         "기판 / 재료", "출처와 가정", "고급 설정"}};
+             : kind == "layer" ? "적층 치수"
+             : kind == "target" ? "대역과 기준면"
+             : kind == "parameter" || kind == "new_parameter" ? "매개변수" : "형상 / 치수",
+         kind == "target" ? "성능 기준" : "기판 / 재료", "출처와 가정", "고급 설정"}};
     for (std::size_t index = 0; index < m_groups.size(); ++index)
     {
         auto& group = m_groups[index];

@@ -1,6 +1,7 @@
 /** @file @brief 다중 목표 목록과 기본/고급 입력을 읽기 쉬운 두 영역으로 배치한다. */
 #include "target_editor_dialog.h"
 #include "editor_panel.h"
+#include "project_evidence_dialog.h"
 #include "studio_support.h"
 #include "studio_theme.h"
 #include <wx/button.h>
@@ -55,11 +56,25 @@ void TargetEditorDialog::BuildInterface()
     m_remove = new wxButton(this, wxID_ANY, Display("선택 목표 삭제"));
     m_remove->SetName("target.remove");
     actions->Add(m_remove, 0);
+    auto* history = new wxButton(this, wxID_ANY, Display("목표 출처 / 변경 이력..."));
+    StudioTheme::Button(*history);
+    actions->Add(history, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::InputGap));
+    history->Bind(wxEVT_UPDATE_UI, [this](wxUpdateUIEvent& event)
+    {
+        event.Enable(Editable() && !m_pending && !m_targetId.is_null());
+    });
+    history->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        Request("project.evidence", Json{{"expected_revision", m_revision}, {"target_id", m_targetId}}, false,
+                [this](const Json& result) { ShowProjectEvidence(this, result); });
+    });
     actions->AddStretchSpacer();
     m_apply = new wxButton(this, wxID_ANY, Display("목표 적용"));
     m_apply->SetName("target.apply");
+    StudioTheme::Button(*m_apply, true);
     actions->Add(m_apply, 0, wxRIGHT, FromDIP(StudioTheme::InputGap));
     m_cancel = new wxButton(this, wxID_CANCEL, Display("닫기"));
+    StudioTheme::Button(*m_cancel);
     actions->Add(m_cancel, 0);
     layout->Add(actions, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
     SetSizer(layout);

@@ -3,6 +3,7 @@
 #include "studio_support.h"
 #include "studio_theme.h"
 #include <wx/display.h>
+#include <wx/button.h>
 #include <wx/msgdlg.h>
 #include <wx/stattext.h>
 #include <wx/weakref.h>
@@ -227,7 +228,11 @@ void ProjectSetupDialog::ServiceDisconnected(const std::string& message)
     m_mutating = false;
     m_pending = false;
     m_disconnected = true;
-    SetStatus((uncertain ? "적용 여부가 미확정입니다. 다시 적용하지 말고 닫은 뒤 프로젝트를 다시 확인하세요.\n"
+    if (auto* close = dynamic_cast<wxButton*>(FindWindow(wxID_CANCEL)))
+    {
+        close->SetLabel(Display(uncertain ? "닫고 개정 확인" : "닫기"));
+    }
+    SetStatus((uncertain ? "적용 여부 미확정 / 닫은 뒤 서비스에 저장된 개정을 확인합니다. 자동 재적용은 없습니다.\n"
                          : "서비스 상태가 바뀌었습니다. 닫은 뒤 다시 열어 확인하세요.\n") +
               message);
     UpdateActions();

@@ -200,6 +200,7 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         method.rfind("pcb.features.", 0) != 0 && method.rfind("pcb.import.", 0) != 0 &&
         method.rfind("measurement.", 0) != 0 && method.rfind("archive.", 0) != 0 && method.rfind("study.", 0) != 0 && method != "cad.latest" &&
         method != "solver.latest" && method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
+        method != "project.evidence" && method != "solver.preview" &&
         method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
         !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
         !(method == "snapshot.create" && input.value("description", "") == "GUI 출력 검토 입력") &&
@@ -352,7 +353,8 @@ void StudioFrame::PollService()
         }
         if (m_requests.Expired(now))
         {
-            Failure("Service response timeout. Reopen and inspect durable state before resubmitting.", true);
+            Failure("Service response timeout (" + m_requests.DescribePending(now) +
+                        "). Reopen and inspect durable state before resubmitting.", true);
             return;
         }
         if (m_foregroundTask.BeginPoll(now, std::chrono::milliseconds(100)))
@@ -411,7 +413,8 @@ void StudioFrame::PollService()
                         m_options.primitivesSmoke || !m_options.openProject.empty()) ? 180
                     : 60))
         {
-            m_smoke->FinishSmoke(false, "GUI smoke timeout");
+            m_smoke->FinishSmoke(false, "GUI smoke timeout (" + m_requests.DescribePending(now) +
+                                     ", busy=" + (m_busy ? "true" : "false") + ")");
         }
         // @brief 빈 창만 저빈도로 확인하며 조회 요청이 들어오면 즉시 기본 주기로 돌아간다.
         if (!m_options.smoke && m_connected && !m_busy && m_project.empty() &&

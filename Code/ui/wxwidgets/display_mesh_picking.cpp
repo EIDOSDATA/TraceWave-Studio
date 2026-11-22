@@ -112,7 +112,8 @@ private:
 };
 
 void FindDepth(const Body& body, const PickIndex::BodyTree& tree, std::uint32_t index,
-    const ProjectedBounds& bounds, const Camera& camera, double x, double y, double& closest)
+    const ProjectedBounds& bounds, const Camera& camera, double x, double y, double& closest,
+    const std::array<double, 4>* section)
 {
     const auto& node = tree.nodes[index];
     if (!bounds.Contains(node, x, y))
@@ -121,14 +122,14 @@ void FindDepth(const Body& body, const PickIndex::BodyTree& tree, std::uint32_t 
     }
     if (node.count == 0)
     {
-        FindDepth(body, tree, index + 1, bounds, camera, x, y, closest);
-        FindDepth(body, tree, node.right, bounds, camera, x, y, closest);
+        FindDepth(body, tree, index + 1, bounds, camera, x, y, closest, section);
+        FindDepth(body, tree, node.right, bounds, camera, x, y, closest, section);
         return;
     }
     for (auto offset = node.first; offset < node.first + node.count; ++offset)
     {
         const auto triangle = static_cast<std::size_t>(tree.order[offset]);
-        closest = std::max(closest, PickTriangleDepth(body, triangle * 9, camera, x, y));
+        closest = std::max(closest, PickTriangleDepth(body, triangle * 9, camera, x, y, section));
     }
 }
 }
@@ -199,11 +200,11 @@ bool MayIntersectView(const Scene& scene, std::size_t bodyIndex, const Camera& c
 }
 
 int PickIndexed(const Scene& scene, const Camera& camera, double x, double y,
-    const std::set<std::string>& hiddenLayers)
+    const std::set<std::string>& hiddenLayers, const std::array<double, 4>* section)
 {
     if (scene.pickIndex == nullptr)
     {
-        return Pick(scene, camera, x, y, hiddenLayers);
+        return Pick(scene, camera, x, y, hiddenLayers, section);
     }
     const ProjectedBounds bounds(camera);
     double closest = -std::numeric_limits<double>::infinity();
@@ -221,12 +222,12 @@ int PickIndexed(const Scene& scene, const Camera& camera, double x, double y,
         {
             for (std::size_t offset = 0; offset < body.positions.size(); offset += 9)
             {
-                depth = std::max(depth, PickTriangleDepth(body, offset, camera, x, y));
+                depth = std::max(depth, PickTriangleDepth(body, offset, camera, x, y, section));
             }
         }
         else
         {
-            FindDepth(body, tree, 0, bounds, camera, x, y, depth);
+            FindDepth(body, tree, 0, bounds, camera, x, y, depth, section);
         }
         if (depth > closest)
         {

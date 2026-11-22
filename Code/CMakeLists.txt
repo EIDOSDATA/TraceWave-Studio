@@ -116,6 +116,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/startup_probe.cpp
     ui/wxwidgets/studio_layout.cpp
     ui/wxwidgets/studio_preferences.cpp
+    ui/wxwidgets/project_evidence_dialog.cpp
     ui/wxwidgets/studio_workspace.cpp
     ui/wxwidgets/studio_shell.cpp
     ui/wxwidgets/workspace_bar.cpp

@@ -35,5 +35,5 @@ bool MayIntersectView(const Scene& scene, std::size_t bodyIndex, const Camera& c
 
 /** @brief 숨긴 층, 화면 투영의 실제 깊이와 기존 바디 순서의 동률 우선을 유지한다. */
 int PickIndexed(const Scene& scene, const Camera& camera, double x, double y,
-    const std::set<std::string>& hiddenLayers = {});
+    const std::set<std::string>& hiddenLayers = {}, const std::array<double, 4>* section = nullptr);
 }

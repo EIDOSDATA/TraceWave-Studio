@@ -139,6 +139,8 @@ int main()
                           now) == RequestDispatcher::SubmitResult::Queued);
     Check(!sent.back().at("params").contains("request_key"));
     Check(sent.back().at("params").at("input").at("request_key") == "retained-receipt-key");
+    Check(requests.DescribePending(now + std::chrono::seconds(31)) ==
+          "pending=1, oldest=sweep.selection.receipt, elapsed_ms=31000");
     requests.Clear();
 
     AnalysisWorkflow flow;

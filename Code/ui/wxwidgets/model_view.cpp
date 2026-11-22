@@ -5,12 +5,15 @@
 #include "system_appearance.h"
 
 #include <wx/glcanvas.h>
+#include <wx/spinctrl.h>
+#include <wx/wrapsizer.h>
 #include <wx/dcclient.h>
 #include <GL/gl.h>
 
 #include <chrono>
 #include <cmath>
 #include <future>
+#include <optional>
 #include <set>
 #include <utility>
 
@@ -236,6 +239,12 @@ public:
         Refresh(false);
     }
 
+    void SetSection(std::optional<std::array<double, 4>> plane)
+    {
+        m_section = plane;
+        Refresh(false);
+    }
+
     void Layer(const std::string& identity, bool visible)
     {
         if (visible)
@@ -349,9 +358,14 @@ private:
         glTranslated(m_camera.panX, m_camera.panY, 0.0);
         glRotated(m_camera.pitch, 1.0, 0.0, 0.0);
         glRotated(m_camera.yaw, 0.0, 0.0, 1.0);
+        if (m_section)
+        {
+            glClipPlane(GL_CLIP_PLANE0, m_section->data());
+            glEnable(GL_CLIP_PLANE0);
+        }
         const double unitsPerPixel = 2.0 * halfHeight / height;
         const double threshold = m_showingPreview ? PreviewLeavePx : PreviewEnterPx;
-        m_showingPreview = m_scene->preview != nullptr && m_selection.empty() && m_relatedSelection.empty() && m_camera.zoom <= 0.5 &&
+        m_showingPreview = !m_section && m_scene->preview != nullptr && m_selection.empty() && m_relatedSelection.empty() && m_camera.zoom <= 0.5 &&
                            m_scene->preview->maximumDisplacement <= unitsPerPixel * threshold;
         const auto& drawingScene = m_showingPreview ? m_scene->preview->mesh : *m_scene;
         auto& vertices = m_showingPreview ? m_previewVertices : m_vertices;
@@ -410,6 +424,7 @@ private:
             glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(body.positions.size() / 3));
             submittedTriangles += body.positions.size() / 9;
         }
+        glDisable(GL_CLIP_PLANE0);
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_VERTEX_ARRAY);
         if (buffered)
@@ -492,7 +507,8 @@ private:
             const wxSize size = GetClientSize();
             const double unit = 2.0 * m_camera.HalfHeight(m_scene->radius) / std::max(1, size.y);
             const int index = DisplayMesh::PickIndexed(*m_scene, m_camera,
-                (event.GetX() - size.x / 2.0) * unit, (size.y / 2.0 - event.GetY()) * unit, m_hiddenLayers);
+                (event.GetX() - size.x / 2.0) * unit, (size.y / 2.0 - event.GetY()) * unit, m_hiddenLayers,
+                m_section ? &*m_section : nullptr);
             if (index >= 0 && m_scene->bodies[static_cast<std::size_t>(index)].sources.size() > 1 && onSelectionCandidates)
             {
                 onSelectionCandidates(m_scene->bodies[static_cast<std::size_t>(index)].sources);
@@ -545,6 +561,7 @@ private:
     ModelVertexBuffer m_previewVertices;
     std::shared_ptr<const Scene> m_scene;
     Camera m_camera;
+    std::optional<std::array<double, 4>> m_section;
     std::set<std::string> m_hiddenLayers;
     std::string m_selection;
     std::vector<std::string> m_relatedSelection;
@@ -566,6 +583,10 @@ struct ModelView::Impl
     wxTimer idleTimer;
     wxStaticText* message = nullptr;
     MeshCanvas* canvas = nullptr;
+    wxCheckBox* section = nullptr;
+    wxChoice* sectionAxis = nullptr;
+    wxSpinCtrlDouble* sectionOffset = nullptr;
+    wxCheckBox* sectionKeepUpper = nullptr;
     std::future<Scene> pendingLoad;
     std::shared_ptr<std::atomic<bool>> cancelled;
     std::shared_ptr<const Scene> scene;
@@ -623,8 +644,37 @@ struct ModelView::Impl
         }
     }
 
+    /** @brief 모델 원점의 절단 위치를 렌더러가 쓰는 중심 원점으로 옮긴다. */
+    void UpdateSection()
+    {
+        if (!section)
+        {
+            return;
+        }
+        const bool available = scene != nullptr;
+        section->Enable(available);
+        const bool active = available && section->GetValue();
+        sectionAxis->Enable(active);
+        sectionOffset->Enable(active);
+        sectionKeepUpper->Enable(active);
+        std::optional<std::array<double, 4>> plane;
+        if (active)
+        {
+            const auto axis = static_cast<std::size_t>(sectionAxis->GetSelection());
+            const std::array<double, 3> center{scene->center.x, scene->center.y, scene->center.z};
+            const double side = sectionKeepUpper->GetValue() ? 1.0 : -1.0;
+            plane = std::array<double, 4>{0, 0, 0, side * (center[axis] - sectionOffset->GetValue())};
+            (*plane)[axis] = side;
+        }
+        if (canvas)
+        {
+            canvas->SetSection(plane);
+        }
+    }
+
     void Status(const std::string& text)
     {
+        UpdateSection();
         message->SetLabel(Text(text));
         message->Show(scene == nullptr || !error.empty());
         owner->Layout();
@@ -849,6 +899,11 @@ void ModelView::Clear()
     m_impl->recovering = false;
     m_impl->candidate.reset();
     m_impl->scene.reset();
+    if (m_impl->section)
+    {
+        m_impl->section->SetValue(false);
+        m_impl->sectionOffset->SetValue(0.0);
+    }
     m_impl->selection.clear();
     m_impl->relatedSelection.clear();
     if (m_impl->canvas != nullptr)
@@ -870,6 +925,49 @@ void ModelView::Clear()
         }
     }
     m_impl->Status("3D 형상을 생성하면 여기에 표시합니다.");
+}
+
+void ModelView::EnableSections()
+{
+    if (m_impl->section)
+    {
+        return;
+    }
+    auto* row = new wxWrapSizer(wxHORIZONTAL);
+    const int gap = FromDIP(8);
+    m_impl->section = new wxCheckBox(this, wxID_ANY, Text("단면 미리보기"));
+    m_impl->section->SetName("model.section");
+    row->Add(m_impl->section, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, gap);
+    m_impl->sectionAxis = new wxChoice(this, wxID_ANY);
+    m_impl->sectionAxis->SetName("model.section.axis");
+    for (const auto* plane : {"YZ (X)", "XZ (Y)", "XY (Z)"})
+    {
+        m_impl->sectionAxis->Append(Text(plane));
+    }
+    m_impl->sectionAxis->SetSelection(0);
+    row->Add(m_impl->sectionAxis, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, gap);
+    row->Add(new wxStaticText(this, wxID_ANY, Text("설계 원점 기준 위치 (mm)")), 0,
+             wxALIGN_CENTER_VERTICAL | wxRIGHT, gap);
+    m_impl->sectionOffset = new wxSpinCtrlDouble(this, wxID_ANY, "0", wxDefaultPosition, FromDIP(wxSize(105, -1)),
+                                                wxSP_ARROW_KEYS, -1000000, 1000000, 0.0, 0.1);
+    m_impl->sectionOffset->SetName("model.section.offset");
+    m_impl->sectionOffset->SetDigits(3);
+    row->Add(m_impl->sectionOffset, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, gap);
+    m_impl->sectionKeepUpper = new wxCheckBox(this, wxID_ANY, Text("큰 좌표 쪽 유지"));
+    m_impl->sectionKeepUpper->SetName("model.section.direction");
+    m_impl->sectionKeepUpper->SetValue(true);
+    row->Add(m_impl->sectionKeepUpper, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, gap);
+    auto* hint = new wxStaticText(this, wxID_ANY, Text("표시용 단면 / 절단면 채움 및 원본 변경 없음"));
+    row->Add(hint, 0, wxALIGN_CENTER_VERTICAL);
+    GetSizer()->Insert(0, row, 0, wxEXPAND | wxALL, gap);
+    const auto update = [this](wxCommandEvent&) { m_impl->UpdateSection(); };
+    m_impl->section->Bind(wxEVT_CHECKBOX, update);
+    m_impl->sectionAxis->Bind(wxEVT_CHOICE, update);
+    m_impl->sectionOffset->Bind(wxEVT_TEXT, update);
+    m_impl->sectionKeepUpper->Bind(wxEVT_CHECKBOX, update);
+    m_impl->sectionOffset->Bind(wxEVT_SPINCTRLDOUBLE,
+                               [this](wxSpinDoubleEvent&) { m_impl->UpdateSection(); });
+    m_impl->UpdateSection();
 }
 
 void ModelView::KeepContextForMeasurement()

@@ -29,6 +29,7 @@ public:
         Callback success;
         Callback failure;
         bool foreground;
+        std::string method;
     };
 
     /** @brief 전송 전에 콜백을 등록하고 전송 실패 시 정확히 해당 요청만 회수한다. */
@@ -41,6 +42,8 @@ public:
     std::optional<Pending> Take(const Json& response);
     /** @brief 시간 초과는 재전송하지 않고 호출자에게 연결 확인 필요를 알린다. */
     bool Expired(Clock::time_point now) const;
+    /** @brief 본문 없이 가장 오래 대기한 요청과 경과 시간을 진단에 남긴다. */
+    std::string DescribePending(Clock::time_point now) const;
     /** @brief 연결 종료 시 과거 세션의 콜백을 해제한다. */
     void Clear();
     /** @brief 대기 요청 수를 반환한다. */

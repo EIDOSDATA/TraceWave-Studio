@@ -266,18 +266,24 @@ void TemplateDialog::Preview()
                                      "개 중 일부를 표시합니다. 전체 검사는 프로젝트 입력 점검을 사용하세요.";
                         }
                     }
-                    m_notes->ChangeValue(Display(notes));
-                    if (result.contains("scene") && !result.at("scene").is_null())
+                    m_notes->ChangeValue(Display("검토 기준 개정 " + m_revision + "\n\n" + notes));
+                    const bool hasScene = result.contains("scene") && !result.at("scene").is_null();
+                    if (hasScene)
                     {
                         m_canvas->SetScene(result.at("scene"));
+                        m_canvas->SetInspection(result.at("generated_ids").at("geometry").get<std::vector<std::string>>(),
+                                                std::nullopt);
                         m_canvas->Show();
-                        m_canvas->FitView();
                     }
                     SetStatus(result.value("can_apply", false)
                                   ? "형상 미리보기 완료 / 적용하면 한 명령으로 추가합니다. 제조/RF 성능 검증은 "
                                     "수행하지 않았습니다."
                                   : "적용할 수 없습니다. 카드 조건과 입력 문제를 확인하세요.");
                     Layout();
+                    if (hasScene)
+                    {
+                        m_canvas->FitView();
+                    }
                 });
     }
     catch (const std::exception& error)

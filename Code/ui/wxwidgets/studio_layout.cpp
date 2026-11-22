@@ -1,6 +1,7 @@
 /** @file @brief 주 창의 layout 책임을 구현한다. */
 #include "studio_internal.h"
 #include "study_report_dialog.h"
+#include "project_evidence_dialog.h"
 #include "studio_theme.h"
 #include "workspace_bar.h"
 #include "drawing_rail.h"
@@ -36,9 +37,50 @@ wxString ReadProjectText(wxWindow& parent, const char* title, const char* prompt
 /** @brief 프로젝트 메타데이터와 선택 객체의 서비스 기반 입력 폼을 구성한다. */
 void StudioFrame::BuildInterface()
 {
+    const auto addEvidence = [this](wxMenu& menu, const char* label, std::size_t page)
+    {
+        const int id = wxWindow::NewControlId();
+        menu.Append(id, Display(label));
+        Bind(wxEVT_MENU, [this, page](wxCommandEvent&)
+        {
+            if (!m_connected || m_busy || m_project.empty() || m_setupDialog)
+            {
+                return;
+            }
+            const auto project = m_project;
+            const auto revision = m_revision;
+            Send("project.evidence", Json{{"expected_revision", revision}}, false, Context(),
+                 [this, project, revision, page](const Json& result)
+                 {
+                     CallAfter([this, project, revision, page, result]()
+                     {
+                         if (m_closing || !m_connected || m_project != project || m_revision != revision)
+                         {
+                             return;
+                         }
+                         const int selected = ShowProjectEvidence(this, result, page);
+                         if (selected == wxID_OK)
+                         {
+                             wxCommandEvent command(wxEVT_MENU, IdRefresh);
+                             ProcessWindowEvent(command);
+                         }
+                         else if (selected == wxID_APPLY)
+                         {
+                             OpenArchiveRestore();
+                         }
+                     });
+                 },
+                 [this](const Json& error) { Log("출처 조회 실패: " + DiagnosticMessage(error)); });
+        }, id);
+        Bind(wxEVT_UPDATE_UI, [this](wxUpdateUIEvent& event)
+        {
+            event.Enable(m_connected && !m_busy && !m_project.empty() && m_setupDialog == nullptr);
+        }, id);
+    };
     auto* menu = new wxMenu;
     menu->Append(IdCreate, Display("새 프로젝트(&N)\tCtrl+N"));
     menu->Append(IdOpen, Display("프로젝트 열기(&O)\tCtrl+O"));
+    addEvidence(*menu, "저장본 / 복구 후보 검토...", 3);
     menu->Append(IdArchiveRestore, Display("프로젝트 보존 묶음 복원..."));
     menu->AppendSeparator();
     menu->Append(IdSave, Display("저장(&S)\tCtrl+S"));
@@ -114,6 +156,7 @@ void StudioFrame::BuildInterface()
     Bind(wxEVT_MENU, [this](wxCommandEvent&) { m_views->SetSelection(8); }, IdSweep);
     bar->Append(analysis, Display("해석"));
     auto* view = new wxMenu;
+    addEvidence(*view, "출처와 채택 이력...", 0);
     view->Append(IdResetLayout, Display("기본 패널 배치 복원"), Display("패널 이동: F6 / 이전 패널: Shift+F6"));
     view->Append(IdFit, Display("전체 형상 맞춤"));
     view->Append(IdBuild3D, Display("현재 설계로 3D 갱신"));
@@ -297,7 +340,7 @@ void StudioFrame::BuildInterface()
     context->Add(widthTools, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::Space));
     m_snapCheck = new wxCheckBox(center, wxID_ANY, Display("스냅"));
     m_snapCheck->SetName("canvas.snap");
-    m_snapCheck->SetToolTip(Display("보이는 같은 층의 선·원호 끝점과 표시 격자에 맞춥니다."));
+    m_snapCheck->SetToolTip(Display("같은 층의 보이는 선·원호 끝점에 우선 맞춥니다. 십자 표시는 격자 스냅입니다."));
     drawingTools->Add(m_snapCheck, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::InputGap));
     BuildPrecisionTools(center, context);
     centerSizer->Add(context, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::Space));
@@ -322,6 +365,7 @@ void StudioFrame::BuildInterface()
                                     Display("아직 생성한 3D 형상이 없습니다. 층 위치와 두께를 입력한 뒤 갱신하세요."));
     modelSizer->Add(m_modelState, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::InputGap));
     m_modelView = new ModelView(modelPanel);
+    m_modelView->EnableSections();
     modelSizer->Add(m_modelView, 1, wxEXPAND);
     m_modelHint = new wxStaticText(modelPanel, wxID_ANY, Display("표시용 형상 / 실제 두께 / 제조 및 RF 검증 전"));
     StudioTheme::BindSecondary(*m_modelHint);
