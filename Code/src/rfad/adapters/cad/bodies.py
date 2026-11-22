@@ -7,6 +7,7 @@ from uuid import NAMESPACE_URL, uuid5
 from rfad.adapters.cad.physical import external_metrics, part_bodies, surface_bodies
 from rfad.adapters.cad.geometry import _require, _number, _planar_solid, _inside_outline, _via_records, _drilled, _material
 from rfad.adapters.cad.mechanical import board_solid, records as mechanical_records, barrel_bodies
+from rfad.domain.errors import ProjectError
 
 
 def _metrics(shape) -> dict:
@@ -115,9 +116,11 @@ def _check_pairs(bodies: list[dict], tolerance: float) -> None:
             if any(bounds[axis + 3] < other_bounds[axis] - tolerance or other_bounds[axis + 3] < bounds[axis] - tolerance for axis in range(3)):
                 continue
             common = body["shape"].intersect(other["shape"])
-            _require(abs(common.Volume()) <= tolerance ** 3,
-                     "서로 다른 CAD 바디의 부피가 중첩합니다: " + body["name"] + " / " + other["name"],
-                     code="E_CONNECTIVITY", field=body["id"])
+            overlap = abs(common.Volume())
+            if overlap > tolerance ** 3:
+                raise ProjectError("E_CONNECTIVITY",
+                    f"CAD 바디가 {overlap:.8g} mm^3 중첩합니다. {body['name']} / {other['name']}",
+                    details={"field_path": body["id"], "body_ids": [body["id"], other["id"]], "overlap_mm3": overlap})
             if body["role"] == other["role"] == "conductor":
                 barrel_kinds = ("via_barrel", "plated_hole_barrel")
                 via_contact = ((body.get("feature_kind") in barrel_kinds and body["id"] in other.get("drill_source_ids", []))

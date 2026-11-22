@@ -17,8 +17,11 @@ def _positive_solid(shape):
     return solids[0]
 
 
-def read_external(source):
-    """! @brief 고정 작업 파일에서 실제 단위와 루트/전송 성공을 확인한다."""
+_LENGTH_UNITS = {"millimetre": ("mm", 1.0), "inch": ("inch", 25.4)}
+
+
+def _read_external(source):
+    """! @brief STEP의 명시 길이 단위를 확인하고 mm 형상으로 한 번 옮긴다."""
     import cadquery as cq
     from OCP.IFSelect import IFSelect_RetDone
     from OCP.STEPControl import STEPControl_Reader
@@ -32,7 +35,9 @@ def read_external(source):
         length, angle, solid_angle = (TColStd_SequenceOfAsciiString() for _ in range(3))
         reader.FileUnits(length, angle, solid_angle)
         units = [length.Value(index).ToCString().lower() for index in range(1, length.Length() + 1)]
-        _require(units == ["millimetre"], "현재 외부 STEP 가져오기는 mm 길이 선언 한 종류만 지원합니다.", code="E_UNIT")
+        _require(len(units) == 1 and units[0] in _LENGTH_UNITS,
+                 "외부 STEP에는 한 가지 길이 단위(mm 또는 inch)가 명시되어야 합니다.", code="E_UNIT")
+        source_unit, scale = _LENGTH_UNITS[units[0]]
         reader.SetSystemLengthUnit(1.0)
         _require(reader.NbRootsForTransfer() == 1 and reader.TransferRoots() == 1 and reader.NbShapes() == 1,
                  "STEP 단일 루트를 모두 전송할 수 없습니다.")
@@ -41,7 +46,12 @@ def read_external(source):
                  "STEP 단일 B-rep 고체만 지원합니다. 조립체 또는 다른 entity를 펼치지 않습니다.", code="E_UNSUPPORTED")
         solid = _positive_solid(shape)
         _require(len(solid.Faces()) <= 256, "외부 STEP 고체는 최대 256면입니다.", code="E_RESOURCE")
-        return solid
+        return solid, source_unit, scale
+
+
+def read_external(source):
+    """! @brief 배치 엔진에는 변환이 끝난 mm 모델을 전달한다."""
+    return _read_external(source)[0]
 
 
 def external_metrics(shape):
@@ -58,8 +68,9 @@ def external_metrics(shape):
 
 def inspect_step(item):
     """! @brief 가져오기 미리보기에는 실제 B-rep 확인 범위와 미정 물성을 반환한다."""
-    shape = read_external(item)
-    return {"sha256": item["sha256"], "unit": "mm", "shape": "single_solid", "faces": len(shape.Faces()),
+    shape, source_unit, scale = _read_external(item)
+    return {"sha256": item["sha256"], "unit": "mm", "source_length_unit": source_unit, "source_to_mm": scale,
+            "shape": "single_solid", "faces": len(shape.Faces()),
             "material_id": None, **external_metrics(shape)}
 
 
@@ -123,6 +134,16 @@ def part_bodies(cq, projection):
     return result
 
 
+def _clearance_witness(shape, other):
+    """! @brief 가장 가까운 두 바디의 보드 좌표상 증거점을 계산한다."""
+    from OCP.BRepExtrema import BRepExtrema_DistShapeShape
+
+    measure = BRepExtrema_DistShapeShape(shape.wrapped, other.wrapped)
+    if not measure.IsDone() or measure.NbSolution() < 1:
+        return None
+    return [list(point.Coord()) for point in (measure.PointOnShape1(1), measure.PointOnShape2(1))]
+
+
 def placement_review(bodies, tolerance):
     """! @brief 현재 포함 모델의 형상 간극과 접촉을 전기 접속과 구분해 반환한다."""
     review = []
@@ -134,8 +155,10 @@ def placement_review(bodies, tolerance):
         for other in other_bodies:
             measured = body["shape"].distance(other["shape"])
             if distance is None or measured < distance:
-                distance, nearest = measured, other["id"]
-        review.append({"id": body["id"], "nearest_id": nearest, "clearance_mm": distance,
+                distance, nearest = measured, other
+        points = None if nearest is None else _clearance_witness(body["shape"], nearest["shape"])
+        review.append({"id": body["id"], "nearest_id": None if nearest is None else nearest["id"],
+                       "clearance_mm": distance, "witness_points_mm": points,
                        "relation": "not_evaluated" if distance is None else "touching" if distance <= tolerance else "separated",
                        "electrical_connection": "not_evaluated", "material_id": body["material_id"]})
     return review

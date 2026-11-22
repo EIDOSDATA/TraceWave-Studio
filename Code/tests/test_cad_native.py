@@ -1,5 +1,6 @@
 """! @brief 고정 CAD 환경에서 실제 OCCT 고체와 AP242 교환을 검증한다."""
 
+import base64
 from copy import deepcopy
 import hashlib
 import importlib.util
@@ -53,6 +54,70 @@ def fixture():
 @unittest.skipUnless(importlib.util.find_spec("cadquery") is not None, "격리 CAD Python 환경이 필요합니다.")
 class CadNativeTests(unittest.TestCase):
     """! @brief 실제 writer/reader와 독립 산술 기대값을 비교한다."""
+
+    def test_external_clearance_and_interference_have_actual_witnesses(self):
+        """! @brief 접촉과 간극은 최근접점으로 확인하고 겹친 고체는 체적 진단으로 차단한다."""
+        import cadquery as cq
+        from rfad.adapters.cad.bodies import _check_pairs
+        from rfad.adapters.cad.physical import external_metrics, placement_review
+
+        fixed = cq.Solid.makeBox(2, 2, 2)
+        test = cq.Solid.makeBox(1, 1, 1, (3, 0, 0))
+        def body(shape, role):
+            return {"id": role, "name": role, "role": role, "material_id": None,
+                    "shape": shape, "metrics": external_metrics(shape)}
+
+        original = body(fixed, "dielectric")
+        separation, = placement_review([original, body(test, "environment")], 1e-6)
+        left, right = separation["witness_points_mm"]
+        self.assertAlmostEqual(math.dist(left, right), 1)
+        self.assertAlmostEqual(separation["clearance_mm"], 1)
+        self.assertEqual(separation["relation"], "separated")
+        touch, = placement_review([original, body(test.translate((-1, 0, 0)), "environment")], 1e-6)
+        self.assertEqual(touch["relation"], "touching")
+        self.assertEqual(touch["clearance_mm"], 0)
+        with self.assertRaises(ProjectError) as caught:
+            _check_pairs([original, body(test.translate((-1.5, 0, 0)), "environment")], 1e-6)
+        self.assertEqual(caught.exception.details["body_ids"], ["dielectric", "environment"])
+        self.assertAlmostEqual(caught.exception.details["overlap_mm3"], .5)
+
+    def test_external_inch_and_mm_place_same_solid(self):
+        """! @brief 다른 STEP 단위의 같은 고체를 한 번만 mm로 바꾸고 배치한다."""
+        import cadquery as cq
+        from OCP.IFSelect import IFSelect_RetDone
+        from OCP.Interface import Interface_Static
+        from OCP.STEPControl import STEPControl_AsIs, STEPControl_Controller, STEPControl_Writer
+        from rfad.adapters.cad.physical import external_metrics, inspect_step, part_bodies
+        from rfad.domain.physical_setup import KEY
+
+        STEPControl_Controller.Init_s()
+        placed = []
+        with TemporaryDirectory() as directory:
+            for unit, unit_name, scale in (("MM", "mm", 1), ("INCH", "inch", 25.4)):
+                path = Path(directory) / (unit + ".step")
+                self.assertTrue(Interface_Static.SetCVal_s("xstep.cascade.unit", "MM"))
+                self.assertTrue(Interface_Static.SetCVal_s("write.step.unit", unit))
+                writer = STEPControl_Writer()
+                self.assertEqual(writer.Transfer(cq.Solid.makeBox(25.4, 12.7, 6.35).wrapped, STEPControl_AsIs), IFSelect_RetDone)
+                self.assertEqual(writer.Write(str(path)), IFSelect_RetDone)
+                raw = path.read_bytes()
+                encoded = base64.b64encode(raw).decode("ascii")
+                source = {"name": path.name, "sha256": hashlib.sha256(raw).hexdigest(),
+                          "chunks": [encoded[index:index + 4096] for index in range(0, len(encoded), 4096)]}
+                preview = inspect_step(source)
+                self.assertEqual((preview["source_length_unit"], preview["source_to_mm"]), (unit_name, scale))
+                self.assertEqual(preview["sha256"], source["sha256"])
+                self.assertAlmostEqual(preview["volume_mm3"], 25.4 * 12.7 * 6.35, places=7)
+                self.assertIsNone(preview["material_id"])
+                part = identity("unit-test")
+                body, = part_bodies(cq, {
+                    "environment_parts": [{"id": part, "kind": "step", "yaw_deg": 90,
+                                            "translation_mm": [10, 20, 3], "material_id": None}],
+                    "source_semantics": {"extensions": {KEY: {"parts": [{"id": part, "step": source}]}}}})
+                placed.append(external_metrics(body["shape"])["bbox_mm"])
+        for bounds in placed:
+            for actual, expected in zip(bounds, (-2.7, 20, 3, 10, 45.4, 9.35)):
+                self.assertAlmostEqual(actual, expected, places=8)
 
     def test_ap242_named_bodies_units_hashes_and_analytic_volumes(self):
         """! @brief 별도 reader의 UUID 이름, mm, 고체와 analytic 체적을 확인한다."""

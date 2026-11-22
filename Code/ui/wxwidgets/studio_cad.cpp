@@ -395,6 +395,12 @@ void StudioFrame::AcceptCad(const Json& result, bool show)
         listing += "\n" + item.at("id").get<std::string>() + " / " + description + " " +
                    (clearance.is_null() ? "미평가" : clearance.dump() + " mm") + " / " +
                    (item.at("material_id").is_null() ? "물성 미정 / " : "") + "전기 연결 미평가";
+        const auto points = item.value("witness_points_mm", Json());
+        if (points.is_array() && item.at("nearest_id").is_string())
+        {
+            listing += "\n  인접 바디 " + item.at("nearest_id").get<std::string>() +
+                       "\n  최근접 좌표 (mm) " + points.dump();
+        }
     }
     if (purpose != "step")
     {
