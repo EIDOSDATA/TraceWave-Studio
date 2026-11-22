@@ -41,6 +41,10 @@ def worker_error(package):
     except (ValueError, TypeError, RecursionError) as exception:
         raise ProjectError("E_HASH", "worker 오류 봉투가 유한 크기 계약을 벗어났습니다.") from exception
     details = error.get("details", {})
+    if "execution_cost" in details:
+        from rfad.application.pcb_execution import validate_measurement
+
+        validate_measurement(details["execution_cost"])
     if "convergence_state" in details and details["convergence_state"] != "not_converged":
         raise ProjectError("E_HASH", "실패 봉투에는 명시적 미수렴 근거만 허용합니다.")
     return ProjectError(error["code"], error["message_ko"], details=details)
@@ -176,6 +180,15 @@ def check_solver_result(journal, job, result, files):
         raise ProjectError("E_HASH", "원시 manifest와 실제 결과 파일 목록이 다릅니다.")
     native_input = next(f for f in captured["preparation"]["files"] if f["role"] == "native_input")
     execution = manifest.get("execution", {})
+    if pcb and ("cost" in execution or "cost_estimate" in execution):
+        from rfad.application.pcb_execution import estimate, validate_measurement
+
+        validate_measurement(execution.get("cost"))
+        comparison = estimate(captured["analysis_plan"], captured["preparation"]["mesh_statistics"]["lines_mm"])
+        if (execution.get("cost_estimate") != comparison
+                or execution["cost"]["raw_output_bytes"] != sum(row["bytes"] for row in descriptions)
+                or execution["cost"]["wall_seconds"] != execution.get("elapsed_seconds")):
+            raise ProjectError("E_HASH", "원시 출력 크기 또는 PCB 실행 비용 추정이 계획과 다릅니다.")
     native_role = "raw/reference.xml" if reference else "raw/pcb.xml" if pcb else "raw/waveguide.xml"
     if roles[native_role]["sha256"] != native_input["sha256"] or execution.get("native_input_sha256") != native_input["sha256"] or execution.get("exit_code") != 0:
         raise ProjectError("E_HASH", "실제 해석 입력 또는 종료 코드가 준비 계획과 다릅니다.")

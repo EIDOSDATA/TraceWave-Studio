@@ -404,6 +404,7 @@ def run_native(
                 break
             time.sleep(0.01)
         reap_owned()
+        wall_seconds = time.monotonic() - started
         reaped_perf_counter_ns = time.perf_counter_ns()
         for thread in threads:
             thread.join(timeout=1.0)
@@ -418,6 +419,7 @@ def run_native(
             termination = "output_limit"
         return {
             "returncode": process.returncode, "pid": process.pid, "termination": termination,
+            "wall_seconds": wall_seconds,
             "reaped_perf_counter_ns": reaped_perf_counter_ns,
             "output_limit_reason": file_violation_reason or ("stream_bytes" if output_limit.is_set() else ""),
             "file_monitor": {

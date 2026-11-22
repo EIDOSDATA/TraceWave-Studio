@@ -375,6 +375,11 @@ void StudioFrame::PollSolver(Clock::time_point now)
                 m_solverTask.Reset();
                 m_solverWorkflow.Stop();
                 const auto terminal = status.at("events").back();
+                if (terminal.contains("execution_cost"))
+                {
+                    m_solverLastAttempt = terminal.at("execution_cost");
+                    UpdateSolverView();
+                }
                 const std::string reason = DiagnosticMessage(terminal.value("error", Json::object()));
                 SolverStatus(state, state == "cancelled" ? "해석이 취소되었습니다. 기존 결과는 보존했습니다."
                                                          : "해석 중단: " + reason +
@@ -475,6 +480,8 @@ void StudioFrame::RestoreSolver()
         [this](const Json& response)
         {
             m_solverRestoring = false;
+            m_solverLastAttempt = response.value("last_attempt", Json::object());
+            UpdateSolverView();
             if (response.contains("result") && !response.at("result").is_null())
             {
                 AcceptSolver(response.at("result"), false);

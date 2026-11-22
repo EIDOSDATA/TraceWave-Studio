@@ -380,6 +380,7 @@ private:
     wxStaticText* m_solverStatus = nullptr;
     wxStaticText* m_solverViewState = nullptr;
     wxTextCtrl* m_solverDetails = nullptr;
+    wxButton* m_solverCost = nullptr;
     bool m_solverConfigured = false;
     bool m_solverRestoring = false;
     std::string m_solverState = "idle";
@@ -388,6 +389,7 @@ private:
     Json m_solverSettings = Json::object();
     Json m_solverResult = Json::object();
     Json m_solverSamples = Json::object();
+    Json m_solverLastAttempt = Json::object();
     wxAuiManager* m_manager = nullptr;
     wxString m_defaultLayout;
     WorkspaceBar* m_workspaceBar = nullptr;

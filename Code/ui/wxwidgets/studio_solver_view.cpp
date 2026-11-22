@@ -1,5 +1,6 @@
 /** @file @brief 해석 탭의 상태, 그래프와 펼쳐 보는 작업 기록이다. */
 #include "studio_internal.h"
+#include "solver_cost_view.h"
 #include "studio_theme.h"
 #include <wx/collpane.h>
 #include <wx/wrapsizer.h>
@@ -16,6 +17,21 @@ void StudioFrame::BuildSolverInterface()
     AddTool(panel, tools, IdReuseSolverConditions, "결과 조건 다시 사용");
     AddTool(panel, tools, IdRadiation, "방사 패턴 조회");
     AddTool(panel, tools, IdProjectStudy, "프로젝트 연구");
+    m_solverCost = new wxButton(panel, wxID_ANY, Display("실행 비용과 종료"));
+    m_solverCost->SetName("solver.cost.open");
+    StudioTheme::Button(*m_solverCost);
+    m_solverCost->Disable();
+    tools->Add(m_solverCost, 0, wxRIGHT, FromDIP(StudioTheme::InputGap));
+    m_solverCost->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        const auto completed = m_solverSamples.value("execution_cost", Json::object());
+        if (completed.empty() && m_solverLastAttempt.empty())
+        {
+            return;
+        }
+        const bool recentFailure = m_solverState == "failed" || m_solverState == "cancelled" || m_solverState == "interrupted";
+        Studio::ShowSolverCost(this, completed, m_solverLastAttempt, recentFailure);
+    });
     layout->Add(tools, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));
     m_solverMetric = new wxChoice(panel, wxID_ANY);
     m_solverMetric->SetName(Display("해석 그래프 항목"));
@@ -84,6 +100,7 @@ void StudioFrame::SolverStatus(const std::string& state, const std::string& mess
 /** @brief 저장된 결과의 개정 차이와 아직 검증하지 않은 상태를 계속 표시한다. */
 void StudioFrame::UpdateSolverView()
 {
+    m_solverCost->Enable(m_solverSamples.contains("execution_cost") || !m_solverLastAttempt.empty());
     if (m_solverSamples.empty())
     {
         return;

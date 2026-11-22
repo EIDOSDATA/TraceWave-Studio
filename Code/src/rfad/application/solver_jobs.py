@@ -8,6 +8,7 @@ from uuid import uuid4
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.job_state import TERMINAL
+from rfad.application.pcb_execution import stopped
 from rfad.application.solver import PROFILE, build_analysis_plan, make_prepared_plan, validate_reference_plan
 from rfad.application.solver_requests import PCB_PROFILE, REFERENCE_PROFILE, SOLVER_METHODS, validate_solver_input
 from rfad.application.solver_runtime import SolverRuntime, stage_solver_job
@@ -332,6 +333,8 @@ class SolverCoordinator:
             if captured["analysis_plan"]["analysis_profile"] == REFERENCE_PROFILE:
                 result_record["metadata"]["reference_scope"] = deepcopy(result["reference_scope"])
                 result_record["metadata"]["reference_grid_mm"] = captured["analysis_plan"]["case"]["mesh"]["interior_grid_mm"]
+            elif captured["analysis_plan"]["analysis_profile"] == PCB_PROFILE and job["input"]["task_plan"]["execution_mode"] != "postprocess_only":
+                result_record["metadata"]["execution_budget_seconds"] = job["input"]["budget"]["timeout_seconds"]
         def publish(state):
             active = state["jobs"][job["job_id"]]
             if active["solver"]["nonce"] != captured["nonce"]:
@@ -389,8 +392,13 @@ class SolverCoordinator:
                 terminal = "interrupted"
             else:
                 terminal = "failed"
-            diagnostic = error or ProjectError("E_RESOURCE" if process.get("state") in {"timeout", "output_limit"} else "E_SOLVER", "해석 작업을 완료하지 못했습니다.")
-            self.service._event(active, terminal, termination_confirmed=confirmed, outcome_unknown=not confirmed, error=diagnostic.diagnostic())
+            reasons = {"timeout": "해석 실행 시간 한도에 도달했습니다.", "output_limit": "해석 출력 용량 상한에 도달했습니다."}
+            reason = process.get("state")
+            diagnostic = error or ProjectError("E_RESOURCE" if reason in reasons else "E_SOLVER",
+                                               reasons.get(reason, "해석 작업을 완료하지 못했습니다."))
+            cost = stopped(job, terminal, process, diagnostic)
+            self.service._event(active, terminal, termination_confirmed=confirmed, outcome_unknown=not confirmed,
+                                error=diagnostic.diagnostic(), **({"execution_cost": cost} if cost else {}))
         self.service.journal.transaction(finish)
 
     def reconcile(self, job_id):

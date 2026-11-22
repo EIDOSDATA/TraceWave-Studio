@@ -2,12 +2,14 @@
 
 import json
 import math
+import os
 from pathlib import Path
 import shutil
 import subprocess
 import time
 
 from rfad.application.canonical import canonical_hash
+from rfad.application.pcb_execution import NATIVE_SCOPE, estimate
 from rfad.application.pcb_solver import (
     PROFILE, RAW_NAMES, check_termination, mesh_lines, read_statistics_values,
     shape_polygons, validate_pcb_plan, validate_preparation, validate_result,
@@ -21,6 +23,7 @@ from .pcb_surface import add_surfaces
 from .pcb_void import add_voids
 from .pcb_ports import spectra
 from rfad.application.pcb_radiation import raw_names
+from rfad.domain.errors import ProjectError
 
 
 def prepare(stage, plan, runtime):
@@ -162,29 +165,43 @@ def solve(stage, request, inputs, runtime):
     require(file_identity(inputs["native_input"]) == file_identity(raw / "pcb.xml"), "준비 XML 복사본의 해시가 다릅니다.", "E_HASH")
     threads = request["analysis_plan"]["case"]["num_threads"]
     command = [str(EXECUTABLE), "pcb.xml", "--engine=multithreaded", "--numThreads=" + str(threads), "--dump-statistics", "--exact-endcriteria"]
+    plan = request["analysis_plan"]
     started, mapped = time.monotonic(), set()
     with (raw / "native.log").open("xb") as stream:
         child = subprocess.Popen(command, cwd=raw, stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.STDOUT)
         try:
-            while child.poll() is None:
+            # @brief wait4는 다른 자식 프로세스와 섞이지 않는 이 openEMS PID의 최대 RSS를 반환한다.
+            while True:
+                pid, status, usage = os.wait4(child.pid, os.WNOHANG)
+                if pid:
+                    child.returncode = os.waitstatus_to_exitcode(status)
+                    break
                 mapped.update(_mapped_files(child.pid))
                 require((raw / "native.log").stat().st_size <= MAX_FILE_BYTES, "native 로그 상한을 초과했습니다.", "E_RESOURCE")
-                time.sleep(0.1)
+                time.sleep(0.05)
         finally:
-            if child.poll() is None:
+            if child.returncode is None:
                 child.kill()
-            child.wait()
-    require(child.returncode == 0, "PCB native solver가 정상 종료하지 않았습니다.")
-    require(file_identity(inputs["native_input"]) == file_identity(raw / "pcb.xml"), "실행 중 준비 XML이 변경되었습니다.", "E_HASH")
-    actual = _validate_mapped(sorted(mapped), {f["path"]: {key: f[key] for key in ("bytes", "sha256")} for f in runtime["native_files"]})
-    require(any("libopenEMS" in f["path"] for f in actual), "실제 native 로딩을 확인하지 못했습니다.", "E_VERSION")
-    stats, termination = statistics_and_termination(raw, request["analysis_plan"])
-    require("openEMS - fixed number of threads: " + str(threads) + "\n" in (raw / "native.log").read_text(encoding="utf-8"),
-            "native 스레드 요청의 로그 근거가 다릅니다.", "E_HASH")
-    require(stats["native_cells"] == prep["mesh_statistics"]["native_grid_points"], "실제 native cell 수가 준비 격자와 다릅니다.")
-    files = [descriptor(stage, raw / name, "raw/" + name) for name in raw_names(request["analysis_plan"])]
-    execution = {"command": command, "elapsed_seconds": time.monotonic() - started, "exit_code": child.returncode, "loaded_native_files": actual,
-                 "statistics": stats, "termination": termination, "native_input_sha256": file_identity(raw / "pcb.xml")["sha256"]}
+                child.wait()
+    names = raw_names(plan)
+    cost = {"scope": NATIVE_SCOPE, "wall_seconds": time.monotonic() - started, "peak_rss_bytes": usage.ru_maxrss * 1024,
+            "raw_output_bytes": sum((raw / name).stat().st_size for name in names if (raw / name).is_file())}
+    try:
+        require(child.returncode == 0, "PCB native solver가 정상 종료하지 않았습니다.")
+        require(file_identity(inputs["native_input"]) == file_identity(raw / "pcb.xml"), "실행 중 준비 XML이 변경되었습니다.", "E_HASH")
+        actual = _validate_mapped(sorted(mapped), {f["path"]: {key: f[key] for key in ("bytes", "sha256")} for f in runtime["native_files"]})
+        require(any("libopenEMS" in f["path"] for f in actual), "실제 native 로딩을 확인하지 못했습니다.", "E_VERSION")
+        stats, termination = statistics_and_termination(raw, plan)
+        require("openEMS - fixed number of threads: " + str(threads) + "\n" in (raw / "native.log").read_text(encoding="utf-8"),
+                "native 스레드 요청의 로그 근거가 다릅니다.", "E_HASH")
+        require(stats["native_cells"] == prep["mesh_statistics"]["native_grid_points"], "실제 native cell 수가 준비 격자와 다릅니다.")
+        files = [descriptor(stage, raw / name, "raw/" + name) for name in names]
+    except ProjectError as error:
+        error.details["execution_cost"] = cost
+        raise
+    execution = {"command": command, "elapsed_seconds": cost["wall_seconds"], "exit_code": child.returncode, "loaded_native_files": actual,
+                 "statistics": stats, "termination": termination, "native_input_sha256": file_identity(raw / "pcb.xml")["sha256"],
+                 "cost": cost, "cost_estimate": estimate(plan, prep["mesh_statistics"]["lines_mm"])}
     manifest = {"schema": "rfad.openems-raw/0.1", "complete": True, "analysis_plan_id": request["analysis_plan"]["plan_id"],
                 "analysis_plan_hash": canonical_hash(request["analysis_plan"]), "prepared_plan_id": request["prepared_plan"]["prepared_plan_id"],
                 "prepared_plan_hash": canonical_hash(request["prepared_plan"]), "files": files, "execution": execution}

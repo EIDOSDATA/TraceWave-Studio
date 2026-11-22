@@ -101,6 +101,11 @@ class ProjectReviewTests(unittest.TestCase):
             self.assertEqual(result["mesh"]["lines_mm"], expected)
             self.assertEqual(result["mesh"]["lines_sha256"], canonical_hash(expected))
             self.assertEqual(result["mesh"]["case_sha256"], canonical_hash(plan["case"]))
+            costs = result["execution_estimate"]
+            self.assertGreater(costs["wall_seconds_high"], costs["wall_seconds_low"])
+            self.assertEqual(costs["memory_bytes"], plan["resource_estimate"]["estimated_memory_bytes"])
+            self.assertGreater(costs["raw_output_bytes"], 0)
+            self.assertEqual(costs["max_timesteps"], SETTINGS["max_timesteps"])
             self.assertEqual(result["mesh"]["axes"]["z"]["pml_inner_mm"], [expected["z"][8], expected["z"][-9]])
             quality = result["mesh"]["quality_reference"]
             self.assertEqual(quality["max_excitation_hz"], 15e9)

@@ -5,7 +5,8 @@ import json
 import math
 
 from rfad.application.canonical import canonical_bytes
-from rfad.application.solver_requests import require_fields, require_uuid
+from rfad.application.pcb_execution import completed
+from rfad.application.solver_requests import PCB_PROFILE, require_fields, require_uuid
 from rfad.domain.errors import ProjectError
 
 
@@ -38,11 +39,17 @@ def latest_solver_result(service, params):
     state = service.journal.read()
     service._project(state, params["context"])
     candidates = [job for job in state["jobs"].values() if "solver" in job and job["kind"] == "em_analysis"
-                  and job["state"] == "completed" and job["context"] == params["context"]]
-    if not candidates:
-        return {"profile": "rfad.solver-view/0.1", "job_id": None, "result": None}
-    job = max(candidates, key=lambda item: (item["events"][-1]["timestamp"], item["job_id"]))
-    return {"profile": "rfad.solver-view/0.1", "job_id": job["job_id"], "result": deepcopy(job["events"][-1]["operation_result"])}
+                  and job["context"] == params["context"]]
+    def order(item):
+        """! @brief 서로 다른 완료 시도의 시간과 안정 ID를 비교한다."""
+        return item["events"][-1]["timestamp"], item["job_id"]
+    job = max((item for item in candidates if item["state"] == "completed"), key=order, default=None)
+    attempt = max((item for item in candidates if "execution_cost" in item["events"][-1]), key=order, default=None)
+    response = {"profile": "rfad.solver-view/0.1", "job_id": job["job_id"] if job else None,
+                "result": deepcopy(job["events"][-1]["operation_result"]) if job else None}
+    if attempt:
+        response["last_attempt"] = deepcopy(attempt["events"][-1]["execution_cost"])
+    return response
 
 
 def solver_samples(service, params):
@@ -85,6 +92,8 @@ def solver_samples(service, params):
         raise ProjectError("E_HASH", "표시 결과의 원본 스냅샷을 확인할 수 없습니다.")
     dto = {"profile": "rfad.solver-chart/0.1", "artifact_id": record["artifact_id"], "snapshot": snapshot,
            "metadata": deepcopy(record["metadata"]), "samples": samples}
+    if record["metadata"]["profile"] == PCB_PROFILE:
+        dto["execution_cost"] = completed(result, record["files"], record["metadata"].get("execution_budget_seconds"))
     if len(canonical_bytes(dto)) > 60 * 1024:
         raise ProjectError("E_RESOURCE", "해석 그래프 DTO가 전송 상한을 초과했습니다.")
     return dto

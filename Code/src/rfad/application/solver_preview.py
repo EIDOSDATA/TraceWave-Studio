@@ -116,6 +116,7 @@ def model_review(document, plan):
 def read(service, params):
     """! @brief 영속 스냅샷을 쓰지 않고 개정의 준비 입력과 정확히 같은 격자선을 반환한다."""
     from rfad.application.pcb_environment import scene_extents
+    from rfad.application.pcb_execution import estimate
     from rfad.application.pcb_mesh import wavelength_reference
     from rfad.application.pcb_solver import build_pcb_plan, mesh_lines
 
@@ -145,6 +146,7 @@ def read(service, params):
         axes[axis] = {"pml_inner_mm": pml, "air_before_pml_mm": [interval[0] - pml[0], pml[1] - interval[1]],
                       "min_cell_mm": min(steps), "max_cell_mm": max(steps)}
     return {"revision_id": expected, "estimated": plan["resource_estimate"],
+            "execution_estimate": estimate(plan, lines),
             "omissions": plan.get("physical_setup_omissions", {}),
             "outputs": plan.get("outputs", []), "settings": case["settings"],
             "mesh": {"lines_mm": lines, "model_bounds_mm": bounds, "axes": axes,

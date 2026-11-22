@@ -14301,8 +14301,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
-      "text_sha256": "0b0bab186e2badcb8dd12978384b82663bd285a91e4735b99a2c583e89ae3a9e",
-      "utf8_bytes": 25044
+      "text_sha256": "e4af719bd6d9cbdc6906f26367e45ff6b1b5053a01e01d56a8ff223298b1e27c",
+      "utf8_bytes": 27093
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
@@ -14866,8 +14866,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/solvers/openems/pcb.py",
-      "text_sha256": "9ccd955380c92be732fc630785ef123d90509d88152017eb8230b83e773bb0c2",
-      "utf8_bytes": 18891
+      "text_sha256": "f7e03d995b1eec60753902e26fd319be35a96d083df3c0c400a391e2997bfec5",
+      "utf8_bytes": 19800
     },
     {
       "path": "Code/src/rfad/adapters/solvers/openems/pcb_absorption.py",
@@ -15296,18 +15296,18 @@
     },
     {
       "path": "Code/src/rfad/application/solver_artifacts.py",
-      "text_sha256": "f77855303c9c42b154ee8daa934100636a89bda63aea134a3ca0a5312fbad932",
-      "utf8_bytes": 18053
+      "text_sha256": "d97afe610609705ee8d9f43c533c757d106e83049f5802e02664d4b5a0e9face",
+      "utf8_bytes": 18910
     },
     {
       "path": "Code/src/rfad/application/solver_jobs.py",
-      "text_sha256": "7010662f654d81c08d72ed9a632dda08dd03fb530b9401dbdf997a95a73be6c8",
-      "utf8_bytes": 29791
+      "text_sha256": "72d02f4de709e3ee3b95d5469415562a6f51d86368b25343045a43b4170c0589",
+      "utf8_bytes": 30480
     },
     {
       "path": "Code/src/rfad/application/solver_queries.py",
-      "text_sha256": "8b9f63d88447084e4384f2ac4e47543893a070b8b780ee4eafe85db625f52905",
-      "utf8_bytes": 5802
+      "text_sha256": "0a0685036502462bdb05573b3d1306ad05c6f602a3508b4f2e72f4ee1c55b1f2",
+      "utf8_bytes": 6376
     },
     {
       "path": "Code/src/rfad/application/solver_requests.py",

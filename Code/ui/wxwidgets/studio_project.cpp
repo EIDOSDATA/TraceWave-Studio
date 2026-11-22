@@ -74,6 +74,8 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
                          m_solverChart->Clear();
                          m_solverResult = Json::object();
                          m_solverSamples = Json::object();
+                         m_solverLastAttempt = Json::object();
+                         UpdateSolverView();
                          m_solverViewState->SetLabel(
                              Display("표시할 해석 결과가 없습니다."));
                          SolverStatus("idle", "선택한 프로젝트의 완료 결과를 조회합니다.");

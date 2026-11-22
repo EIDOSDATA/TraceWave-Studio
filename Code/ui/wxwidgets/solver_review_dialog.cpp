@@ -3,6 +3,7 @@
 #include "solver_mesh_view.h"
 #include "solver_local_mesh_panel.h"
 #include "solver_mesh_quality_panel.h"
+#include "solver_cost_view.h"
 #include "studio_notebook.h"
 #include "studio_support.h"
 #include "studio_theme.h"
@@ -1089,15 +1090,16 @@ private:
         FillModel();
         const std::string radiation = settings.contains("radiation") ? "NF2FF 기록 사용" : "NF2FF 기록 끔";
         const std::string loss = settings.contains("power_balance") ? "독립 손실 기록 사용" : "독립 손실 기록 요청 없음";
+        const auto cost = Studio::SolverEstimateText(m_result.value("execution_estimate", Json::object()));
         m_output->ChangeValue(wxString::Format(
             Display("최대 %d 시간 단계 / 종료 에너지 비율 %.8g\n\n복소 표본, 사용한 개정과 해석 조건을 보존합니다.\n"),
             settings.at("max_timesteps").get<int>(), settings.at("end_criterion").get<double>()) +
-            Display(radiation + "\n" + loss + "\n기본 PCB 실행의 내부 전계 / 자계는 자동으로 기록하지 않습니다.\n\n격자 SHA-256 " +
+            cost + "\n\n" + Display(radiation + "\n" + loss + "\n기본 PCB 실행의 내부 전계 / 자계는 자동으로 기록하지 않습니다.\n\n격자 SHA-256 " +
                     mesh.at("lines_sha256").get<std::string>() + "\n해석 입력 SHA-256 " +
                     mesh.at("case_sha256").get<std::string>() + "\n검토한 프로젝트 개정 " + m_revision));
         m_book->SetSelection(1);
         m_meshSummary->GetParent()->Layout();
-        SetStatus("격자와 포함 형상 확인을 완료했습니다. 해석 실행 대기 중입니다.");
+        SetStatus("격자와 포함 형상 확인을 완료했습니다. 종료 / 기록 출력에서 예상 실행 비용을 확인할 수 있습니다.");
         m_run->Enable(true);
         m_save->Enable(true);
     }

@@ -7,7 +7,8 @@ import unittest
 from uuid import uuid4
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
-from rfad.application.pcb_solver import build_pcb_plan, check_termination, shape_polygons, validate_pcb_plan, validate_result
+from rfad.application.pcb_execution import NATIVE_SCOPE, estimate, stopped, validate_measurement
+from rfad.application.pcb_solver import build_pcb_plan, check_termination, mesh_lines, shape_polygons, validate_pcb_plan, validate_result
 from rfad.domain.errors import ProjectError
 from rfad.domain.project import new_project, validate_project
 from rfad.domain.units import Quantity
@@ -243,6 +244,38 @@ class PcbPlanTests(unittest.TestCase):
         for log, steps in ((good + "\nABORTING SIMULATION", 1000), (good, 20000), (good.replace("41.20", "39.00"), 1000)):
             with self.assertRaises(ProjectError):
                 check_termination(log, steps, SETTINGS)
+
+    def test_execution_cost_separates_limits_and_actual_measurements(self):
+        """! @brief 완료하지 못한 계산의 범위 있는 자원 관측과 시간 단계 종료를 구분한다."""
+        document = fixture_document(arc=True)
+        plan = build_pcb_plan(document, snapshot_for(document), runtime_identity(), SETTINGS)
+        lines = mesh_lines(plan["case"])
+        job = {"kind": "em_analysis", "solver": {"analysis_plan": plan, "preparation": {"mesh_statistics": {"lines_mm": lines}}},
+               "input": {"budget": {"timeout_seconds": 10}}}
+        predicted = estimate(plan, lines)
+        self.assertAlmostEqual(predicted["wall_seconds_high"] / predicted["wall_seconds_low"], 3)
+        process = {"state": "timeout", "termination_confirmed": True,
+                   "native": {"wall_seconds": 10.2, "file_monitor": {"observed_peak_bytes": 1234}}}
+        timeout = stopped(job, "failed", process, ProjectError("E_RESOURCE", "시간 한도"))
+        self.assertEqual(timeout["termination"]["reason"], "timeout")
+        self.assertEqual(timeout["estimate"], predicted)
+        self.assertEqual(timeout["actual"]["worker_wall_seconds"], 10.2)
+        self.assertEqual(timeout["actual"]["observed_output_peak_bytes"], 1234)
+        self.assertIsNone(timeout["actual"]["wall_seconds"])
+        self.assertIsNone(timeout["actual"]["peak_rss_bytes"])
+        self.assertIsNone(timeout["actual"]["raw_output_bytes"])
+        self.assertEqual(stopped(job, "cancelled", process, ProjectError("E_SOLVER", "사용자 취소"))["termination"]["reason"], "cancelled")
+        observed = {"scope": NATIVE_SCOPE, "wall_seconds": 7.2, "peak_rss_bytes": 1024, "raw_output_bytes": 321}
+        limited = stopped(job, "failed", {"state": "failed", "termination_confirmed": True},
+                          ProjectError("E_SOLVER", "시간 단계 한도", details={"criterion": "native_timestep_limit",
+                                       "iterations": 1000, "execution_cost": observed}))
+        self.assertEqual(limited["termination"]["reason"], "timestep_limit")
+        self.assertEqual(limited["termination"]["iterations"], 1000)
+        self.assertTrue(limited["actual"]["partial_raw"])
+        self.assertEqual(limited["actual"]["peak_rss_bytes"], 1024)
+        self.assertEqual(limited["actual"]["raw_output_bytes"], 321)
+        with self.assertRaises(ProjectError):
+            validate_measurement({**observed, "peak_rss_bytes": True})
 
 
 if __name__ == "__main__":
