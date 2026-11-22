@@ -1,0 +1,373 @@
+{
+  "schema": "rfad.installed-boundary-band/0.1",
+  "limit_db": -10,
+  "frequency_hz": [
+    2400000000.0,
+    2483500000.0
+  ],
+  "frequencies_per_case": 3201,
+  "cases": {
+    "arc": {
+      "circuit": {
+        "shunt_pf": 1.76134777,
+        "series_kind": "L",
+        "series_pf_or_nh": 1.82129706
+      },
+      "cases": {
+        "grid_reference": {
+          "run_id": "266a0f37-7ef4-4d54-83b0-fe93f3035af8",
+          "normalized_sha256": "dcaa53fe23d0e0749d966f0d5876c0bd409d1cdd81d07f447e161fee7454c0cd",
+          "last_common_time_s": 3.41256605052e-09,
+          "reference_plane": "explicit ideal local arc gap; no SMA, launch or measurement calibration",
+          "settings": {
+            "air_padding_mm": 8.0,
+            "compute_profile": {
+              "kind": "tuning_refinement/0.1",
+              "num_threads": 4
+            },
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 0.0001,
+            "frequency_hz": {
+              "count": 51,
+              "start": 2400000000.0,
+              "stop": 2483500000.0
+            },
+            "grid_mm": 0.45,
+            "max_timesteps": 28000,
+            "radiation": {
+              "box_clearance_mm": 1,
+              "frequency_hz": [
+                2441750000.0
+              ],
+              "phi_step_deg": 15,
+              "theta_step_deg": 15
+            }
+          },
+          "snapshot_sha256": "e240a4459fb36f80e40f0f62e7b25bb9222877db258377c550699296435a476f",
+          "sample_peak_hz": 2483500000.0,
+          "sample_peak_db": -15.652460579423904,
+          "upper_bound_center_hz": 2483500000.0,
+          "continuous_upper_db": -15.61676716803735,
+          "within_goal": true
+        },
+        "grid_finer": {
+          "run_id": "297c13e7-c024-4ecd-914d-a00915ae6318",
+          "normalized_sha256": "f4220d601f7306a3acd2410fdb64574836b474921d9f6d7a65918072275b9256",
+          "last_common_time_s": 3.39165154841e-09,
+          "reference_plane": "explicit ideal local arc gap; no SMA, launch or measurement calibration",
+          "settings": {
+            "air_padding_mm": 8.0,
+            "compute_profile": {
+              "kind": "tuning_refinement/0.1",
+              "num_threads": 4
+            },
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 0.0001,
+            "frequency_hz": {
+              "count": 51,
+              "start": 2400000000.0,
+              "stop": 2483500000.0
+            },
+            "grid_mm": 0.425,
+            "max_timesteps": 28000,
+            "radiation": {
+              "box_clearance_mm": 1,
+              "frequency_hz": [
+                2441750000.0
+              ],
+              "phi_step_deg": 15,
+              "theta_step_deg": 15
+            }
+          },
+          "snapshot_sha256": "69ca88d4933b35cf34531f93a91a4d0a19024925ffa216fb8460290a7ba2382b",
+          "sample_peak_hz": 2400000000.0,
+          "sample_peak_db": -14.797834075318912,
+          "upper_bound_center_hz": 2400000000.0,
+          "continuous_upper_db": -14.76470935168761,
+          "within_goal": true
+        },
+        "boundary_near": {
+          "run_id": "b8feaf28-1da4-4098-b7f8-3d39b403e467",
+          "normalized_sha256": "e35a599d083865389ea3a2395043c117fcd04c673b57151f72d3183914431458",
+          "last_common_time_s": 3.4038405514e-09,
+          "reference_plane": "explicit ideal local arc gap; no SMA, launch or measurement calibration",
+          "settings": {
+            "air_padding_mm": 10.4,
+            "compute_profile": {
+              "kind": "tuning_refinement/0.1",
+              "num_threads": 4
+            },
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 0.0001,
+            "frequency_hz": {
+              "count": 51,
+              "start": 2400000000.0,
+              "stop": 2483500000.0
+            },
+            "grid_mm": 0.5,
+            "max_timesteps": 28000,
+            "mesh_policy": {
+              "air_cell_mm": 0.8,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            },
+            "radiation": {
+              "box_clearance_mm": 1,
+              "frequency_hz": [
+                2441750000.0
+              ],
+              "phi_step_deg": 15,
+              "theta_step_deg": 15
+            }
+          },
+          "snapshot_sha256": "69ca88d4933b35cf34531f93a91a4d0a19024925ffa216fb8460290a7ba2382b",
+          "sample_peak_hz": 2400000000.0,
+          "sample_peak_db": -13.712451136232438,
+          "upper_bound_center_hz": 2400000000.0,
+          "continuous_upper_db": -13.682547544344201,
+          "within_goal": true
+        },
+        "boundary_far": {
+          "run_id": "2e40aa67-5aed-4c3c-8bc8-fda8453c2feb",
+          "normalized_sha256": "c113c85306131c28d40c72ad51379db9a4cd91ac107ea07e57c05e67217bd0f5",
+          "last_common_time_s": 3.4038405514e-09,
+          "reference_plane": "explicit ideal local arc gap; no SMA, launch or measurement calibration",
+          "settings": {
+            "air_padding_mm": 11.2,
+            "compute_profile": {
+              "kind": "tuning_refinement/0.1",
+              "num_threads": 4
+            },
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 0.0001,
+            "frequency_hz": {
+              "count": 51,
+              "start": 2400000000.0,
+              "stop": 2483500000.0
+            },
+            "grid_mm": 0.5,
+            "max_timesteps": 28000,
+            "mesh_policy": {
+              "air_cell_mm": 0.8,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            },
+            "radiation": {
+              "box_clearance_mm": 1,
+              "frequency_hz": [
+                2441750000.0
+              ],
+              "phi_step_deg": 15,
+              "theta_step_deg": 15
+            }
+          },
+          "snapshot_sha256": "6b8caae7820672c34a4f734bd2ee9c174f14c05ad55148b3ef73713d2f93519a",
+          "sample_peak_hz": 2400000000.0,
+          "sample_peak_db": -13.714499865556204,
+          "upper_bound_center_hz": 2400000000.0,
+          "continuous_upper_db": -13.6845470636666,
+          "within_goal": true
+        }
+      },
+      "near_run_statistics": {
+        "iterations": 23250,
+        "native_cells": 771498,
+        "raw_values": [
+          771498.0,
+          1.467172651465476e-13,
+          23250.0,
+          3.411176414657232e-09,
+          819.095613,
+          21898943.43873137
+        ],
+        "timestep_seconds": 1.467172651465476e-13
+      },
+      "complex_difference_upper": {
+        "grid_mm": 0.02008741224603215,
+        "air_padding_mm": 0.0034729362519305444
+      },
+      "all_observed_conditions_within_goal": true
+    },
+    "ifa": {
+      "circuit": {
+        "shunt_pf": 1.39154089,
+        "series_kind": "C",
+        "series_pf_or_nh": 1.42842904
+      },
+      "cases": {
+        "grid_reference": {
+          "run_id": "1ab1adb9-4303-4d92-9eb9-e7564c36e79f",
+          "normalized_sha256": "dc5a2a931ebd13acc6f1426f95eb7a6b601bf846d81f7f652c7597203154e395",
+          "last_common_time_s": 3.94376360676e-09,
+          "reference_plane": "ideal local antenna gap; no SMA or launch deembedding",
+          "settings": {
+            "air_padding_mm": 8.0,
+            "compute_profile": {
+              "kind": "tuning_refinement/0.1",
+              "num_threads": 4
+            },
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 0.0001,
+            "frequency_hz": {
+              "count": 51,
+              "start": 2400000000.0,
+              "stop": 2483500000.0
+            },
+            "grid_mm": 0.45,
+            "max_timesteps": 50000,
+            "radiation": {
+              "box_clearance_mm": 1,
+              "frequency_hz": [
+                2441750000.0
+              ],
+              "phi_step_deg": 15,
+              "theta_step_deg": 15
+            }
+          },
+          "snapshot_sha256": "a70f407dc16af3d33e044c5d92c60f81ba289022593bb7203e37f6e15a7e3bce",
+          "sample_peak_hz": 2400000000.0,
+          "sample_peak_db": -17.84248406516142,
+          "upper_bound_center_hz": 2400000000.0,
+          "continuous_upper_db": -17.793239727920323,
+          "within_goal": true
+        },
+        "grid_finer": {
+          "run_id": "9f1d76a2-8da5-446e-9912-545f77006acc",
+          "normalized_sha256": "cab86a01ee8c2686fe95dae8f7cd3f82368fd3033bab69824167ab2b4209fdae",
+          "last_common_time_s": 3.95085724239e-09,
+          "reference_plane": "ideal local antenna gap; no SMA or launch deembedding",
+          "settings": {
+            "air_padding_mm": 8.0,
+            "compute_profile": {
+              "kind": "tuning_refinement/0.1",
+              "num_threads": 4
+            },
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 0.0001,
+            "frequency_hz": {
+              "count": 51,
+              "start": 2400000000.0,
+              "stop": 2483500000.0
+            },
+            "grid_mm": 0.43,
+            "max_timesteps": 50000,
+            "radiation": {
+              "box_clearance_mm": 1,
+              "frequency_hz": [
+                2441750000.0
+              ],
+              "phi_step_deg": 15,
+              "theta_step_deg": 15
+            }
+          },
+          "snapshot_sha256": "e7a31ce269e0becf17125bed642fc347e239c1ddc16086915372756ed0716bd2",
+          "sample_peak_hz": 2483500000.0,
+          "sample_peak_db": -17.795190281172044,
+          "upper_bound_center_hz": 2483500000.0,
+          "continuous_upper_db": -17.73912639198717,
+          "within_goal": true
+        },
+        "boundary_near": {
+          "run_id": "043280da-a565-41b8-8538-110eb6e3917f",
+          "normalized_sha256": "f8c959d975a15d6d036868c7b3acdb5eb91dc58a9b226bbab9b18d20f1d454bd",
+          "last_common_time_s": 3.6761477955100004e-09,
+          "reference_plane": "ideal local antenna gap; no SMA or launch deembedding",
+          "settings": {
+            "air_padding_mm": 10.4,
+            "compute_profile": {
+              "kind": "tuning_refinement/0.1",
+              "num_threads": 4
+            },
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 0.0001,
+            "frequency_hz": {
+              "count": 51,
+              "start": 2400000000.0,
+              "stop": 2483500000.0
+            },
+            "grid_mm": 0.5,
+            "max_timesteps": 50000,
+            "mesh_policy": {
+              "air_cell_mm": 0.8,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            },
+            "radiation": {
+              "box_clearance_mm": 1,
+              "frequency_hz": [
+                2441750000.0
+              ],
+              "phi_step_deg": 15,
+              "theta_step_deg": 15
+            }
+          },
+          "snapshot_sha256": "e7a31ce269e0becf17125bed642fc347e239c1ddc16086915372756ed0716bd2",
+          "sample_peak_hz": 2400000000.0,
+          "sample_peak_db": -13.65315305772855,
+          "upper_bound_center_hz": 2400000000.0,
+          "continuous_upper_db": -13.621460860748398,
+          "within_goal": true
+        },
+        "boundary_far": {
+          "run_id": "7be0b896-d8e7-4a9e-bf10-34238e9dce7b",
+          "normalized_sha256": "75d5f993ff6af8e7686f04a45e5e3518ea1fe52896c648c1778ca69ebc4bde6c",
+          "last_common_time_s": 3.6761477955100004e-09,
+          "reference_plane": "ideal local antenna gap; no SMA or launch deembedding",
+          "settings": {
+            "air_padding_mm": 11.2,
+            "compute_profile": {
+              "kind": "tuning_refinement/0.1",
+              "num_threads": 4
+            },
+            "curve_tolerance_mm": 0.025,
+            "end_criterion": 0.0001,
+            "frequency_hz": {
+              "count": 51,
+              "start": 2400000000.0,
+              "stop": 2483500000.0
+            },
+            "grid_mm": 0.5,
+            "max_timesteps": 50000,
+            "mesh_policy": {
+              "air_cell_mm": 0.8,
+              "growth_ratio": 1.5,
+              "kind": "graded_air"
+            },
+            "radiation": {
+              "box_clearance_mm": 1,
+              "frequency_hz": [
+                2441750000.0
+              ],
+              "phi_step_deg": 15,
+              "theta_step_deg": 15
+            }
+          },
+          "snapshot_sha256": "54cab6aabdae2c375e36f3de839f79f414bb2cbe17ed3787dba8cba0bc700e83",
+          "sample_peak_hz": 2400000000.0,
+          "sample_peak_db": -13.65389156680113,
+          "upper_bound_center_hz": 2400000000.0,
+          "continuous_upper_db": -13.622131200682476,
+          "within_goal": true
+        }
+      },
+      "near_run_statistics": {
+        "iterations": 25110,
+        "native_cells": 771498,
+        "raw_values": [
+          771498.0,
+          1.467172651465476e-13,
+          25110.0,
+          3.684070527829811e-09,
+          703.208818,
+          27548452.58496176
+        ],
+        "timestep_seconds": 1.467172651465476e-13
+      },
+      "complex_difference_upper": {
+        "grid_mm": 0.0032197129107156756,
+        "air_padding_mm": 0.0035807564206138754
+      },
+      "all_observed_conditions_within_goal": true
+    }
+  }
+}

@@ -22,9 +22,10 @@ from verify_tuning_workflow import document
 
 GRIDS = {"ifa": 0.43, "arc": 0.425}
 END = 2.5e-5
+GRADED_AIR = {"kind": "graded_air", "air_cell_mm": 0.8, "growth_ratio": 1.5}
 
 
-def refine(kind, baseline, source, destination, prepare_only):
+def refine(kind, baseline, source, destination, prepare_only, *, boundary=None, boundary_grid=None):
     """! @brief 저장 원본을 복사하고 원래 물리 조건을 확인한 단일 축 실험만 게시한다."""
     base = payload(source, baseline)
     normalized, *_ = inputs(source, baseline)
@@ -47,8 +48,16 @@ def refine(kind, baseline, source, destination, prepare_only):
         current_id = document(service, context)["revision_id"]
         snapshot, _ = wait(service, call(service, "snapshot.create", {
             "expected_revision": current_id, "description": "합성 설치 후보의 단일 축 재검증"}, context, mutation=True))
-        for key, value in (("end_criterion", END), ("grid_mm", GRIDS[kind])):
-            settings = {**base_settings, key: value}
+        changes = (
+            ("graded_reference", {"mesh_policy": GRADED_AIR, "air_padding_mm": 10.4}),
+            ("air_padding_mm", {"mesh_policy": GRADED_AIR, "air_padding_mm": 11.2}),
+        ) if boundary else (("end_criterion", {"end_criterion": END}), ("grid_mm", {"grid_mm": GRIDS[kind]}))
+        for key, overrides in changes:
+            if boundary not in (None, "both", key):
+                continue
+            settings = {**base_settings, **overrides}
+            if boundary_grid is not None:
+                settings["grid_mm"] = boundary_grid
             row = report["axes"][key] = {"settings": settings, "status": "pending"}
             save_report(path, report)
             try:
@@ -102,6 +111,13 @@ if __name__ == "__main__":
     parser.add_argument("baseline")
     parser.add_argument("destination", type=Path)
     parser.add_argument("--prepare-only", action="store_true", help="계획과 실제 native XML 준비까지만 검사합니다.")
+    parser.add_argument("--boundary", nargs="?", const="both", choices=("both", "graded_reference", "air_padding_mm"),
+                        help="외부 공기 격자 정책을 고정하고 여백의 영향을 대조합니다.")
+    parser.add_argument("--boundary-grid", type=float,
+                        help="경계 비교에 사용할 기존 격자 간격을 명시합니다.")
     args = parser.parse_args()
-    status = refine(args.kind, args.baseline, args.source.resolve(), args.destination.resolve(), args.prepare_only)
+    if args.boundary_grid is not None and args.boundary is None:
+        parser.error("--boundary-grid에는 --boundary가 필요합니다.")
+    status = refine(args.kind, args.baseline, args.source.resolve(), args.destination.resolve(),
+                    args.prepare_only, boundary=args.boundary, boundary_grid=args.boundary_grid)
     raise SystemExit(0 if status in {"completed", "prepared"} else 1)
