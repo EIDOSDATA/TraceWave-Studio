@@ -6,6 +6,7 @@
 #include "studio_theme.h"
 #include <wx/button.h>
 #include <wx/choice.h>
+#include <wx/msgdlg.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
@@ -37,7 +38,13 @@ void TemplateDialog::BuildInterface()
     selectors->Add(new wxStaticText(this, wxID_ANY, Display("연결할 설계 목표")), 0, wxALIGN_CENTER_VERTICAL);
     m_target = new wxChoice(this, wxID_ANY);
     m_target->SetName("template.target");
-    selectors->Add(m_target, 1, wxEXPAND);
+    auto* targetRow = new wxBoxSizer(wxHORIZONTAL);
+    targetRow->Add(m_target, 1, wxEXPAND);
+    m_goalLayoutNote = new wxButton(this, wxID_ANY, Display("목표 치수 참고"));
+    m_goalLayoutNote->SetName("template.target_layout_note");
+    StudioTheme::Button(*m_goalLayoutNote);
+    targetRow->Add(m_goalLayoutNote, 0, wxEXPAND | wxLEFT, FromDIP(StudioTheme::InputGap));
+    selectors->Add(targetRow, 1, wxEXPAND);
     layout->Add(selectors, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
     auto* content = new wxBoxSizer(wxHORIZONTAL);
     auto* inputs = new wxBoxSizer(wxVERTICAL);
@@ -102,6 +109,10 @@ void TemplateDialog::BuildInterface()
                    {
                        Changed();
                    });
+    m_goalLayoutNote->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        ShowGoalLayoutNote();
+    });
     m_previewButton->Bind(wxEVT_BUTTON,
                           [this](wxCommandEvent&)
                           {
@@ -112,4 +123,47 @@ void TemplateDialog::BuildInterface()
                         {
                             Apply();
                         });
+}
+
+void TemplateDialog::ShowGoalLayoutNote()
+{
+    const int index = m_target->GetSelection() - 1;
+    if (index < 0)
+    {
+        return;
+    }
+    const auto& target = m_context.at("targets").at(index);
+    const auto layout = target.value("layout_note", Json());
+    if (!layout.is_object())
+    {
+        return;
+    }
+    const auto source = layout.at("frequency_source") == "target_reference" ? "목표 기준 주파수" : "목표 대역 중앙";
+    auto text = wxString::Format(Display("%s %.6g GHz\n자유공간 1/4 파장 기준의 초기 기하 참고값\n"),
+                                 Display(source), layout.at("frequency_hz").get<double>() / 1e9);
+    for (const auto& row : layout.at("candidates"))
+    {
+        const auto label = row.at("size_kind") == "semicircle_radius_mm" ? "180도 원호 반경" : "IFA 전체 가지 경로";
+        text += wxString::Format(Display("\n%s %.5g mm"), Display(label), row.at("size_mm").get<double>());
+        const auto state = row.at("outside_ideal_envelope");
+        if (!row.value("board_supported", true))
+        {
+            text += Display(" / 현재 보드 종류 미지원");
+        }
+        else if (state.is_null())
+        {
+            text += Display(" / 보드 외곽 적합성 미확인");
+        }
+        else if (state.get<bool>())
+        {
+            text += Display(" / 이상 형상도 보드 외곽 초과");
+        }
+        else
+        {
+            text += Display(" / 보드 외곽 한도 안");
+        }
+    }
+    text += Display("\n\n선폭, 접지·단락·급전, 설치 여유와 유전체 영향은 실제 형상과 해석에서 확인합니다.");
+    wxMessageDialog dialog(this, text, Display("원호·IFA 초기 치수"), wxOK | wxICON_INFORMATION);
+    dialog.ShowModal();
 }

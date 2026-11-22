@@ -15122,8 +15122,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_import_mapping.py",
-      "text_sha256": "e0392116d5412f62a730c09b938412a56dcf30230d19456edd4bae308d7fe323",
-      "utf8_bytes": 50128
+      "text_sha256": "8df2a6f40b0d403c2e38d7ae0804105bbae68e85b50d90e4ccb3299d66fc093a",
+      "utf8_bytes": 51153
     },
     {
       "path": "Code/src/rfad/application/pcb_import_service.py",
@@ -15552,8 +15552,8 @@
     },
     {
       "path": "Code/src/rfad/domain/pcb_features.py",
-      "text_sha256": "0e613c92712935d1526a706f6966bb7c9f468ec483add595551096dac65462e6",
-      "utf8_bytes": 34495
+      "text_sha256": "4d9075879d028e189e74327c7d1809a2e82015775ae361d2b9e8d9d29d61e3de",
+      "utf8_bytes": 34511
     },
     {
       "path": "Code/src/rfad/domain/pcb_selection_evidence.py",
@@ -16057,8 +16057,8 @@
     },
     {
       "path": "Code/tests/test_pcb_import_service.py",
-      "text_sha256": "89675d9fe9c7fa7510bdb26eec7b69d387fc3649f1518b2c28c4d85597193cd0",
-      "utf8_bytes": 21138
+      "text_sha256": "14ca3541259ca5357b991c5fcb93ab0c7c938585428f7c474e1e5242c4af0479",
+      "utf8_bytes": 24335
     },
     {
       "path": "Code/tests/test_pcb_loss_convergence.py",
@@ -16242,8 +16242,8 @@
     },
     {
       "path": "Code/tests/test_template_candidates.py",
-      "text_sha256": "3e20e6e0a2e5a06c92d58f6b10f22af0555fe00e3988035e54827c4c199459fc",
-      "utf8_bytes": 31355
+      "text_sha256": "bff6efae46f53e99f821ce27062f15ffd5ca7fe3c2e95edbdd457f632e75f681",
+      "utf8_bytes": 33810
     },
     {
       "path": "Code/tests/test_template_native.py",
@@ -16552,8 +16552,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_dialog.cpp",
-      "text_sha256": "5aa0712cad8d5ea727d45acb637008fdfea74c5ac6050aa6bff9ed9f35613c90",
-      "utf8_bytes": 8396
+      "text_sha256": "d300313b1a2c609624b1c2124e4ff262fca893f2c86183faddbee2e9540978bd",
+      "utf8_bytes": 8644
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_review.cpp",
@@ -16562,8 +16562,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_transfer.cpp",
-      "text_sha256": "379409040e0ff553fde9fcab0190d0c48414d2199c7de8edbe4c9af44f588bc5",
-      "utf8_bytes": 15805
+      "text_sha256": "71ac54e9ba94b14fc1a8ebc0d8844fa5a8c9bc4f7b984a4ff88d3c90704a4989",
+      "utf8_bytes": 16064
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_dialog.cpp",

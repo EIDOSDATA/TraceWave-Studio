@@ -1,14 +1,52 @@
 """! @brief 근거가 있는 초기 길이의 조건과 산술을 기하 생성 및 RF 판정에서 분리한다."""
 
 from copy import deepcopy
+import math
 
-from rfad.domain.design import _fail, _fields, _text
+from rfad.domain.design import _fail, _fields, _text, resolve_scalar
 from rfad.domain.template_inputs import normalize_inputs, normalize_quantity_input
 from rfad.domain.units import Quantity, QuantityError
+from rfad.templates.cards import ARC, IFA
 from rfad.templates.printed_references import MONOPOLE
 
 
 C0_M_PER_S = 299792458.0
+
+
+def goal_layout_note(document, target):
+    """! @brief 목표 주파수의 자유공간 길이로 두 기존 구조의 외곽 적합성을 먼저 확인한다."""
+    band = target["band"]
+    selected = band["reference"]["value_si"]
+    if selected is None:
+        start, stop = (band[key]["value_si"] for key in ("start", "end"))
+        selected = start + (stop - start) / 2
+    quarter_mm = (C0_M_PER_S / 4) / selected * 1000
+    if not math.isfinite(quarter_mm) or quarter_mm <= 0:
+        return None
+    board = document.get("board")
+    outline = board["outline"] if board is not None else {}
+    kind = outline.get("kind")
+    keys = {"rectangle": ("width", "height"), "circle": ("radius",)}.get(kind, ())
+    dimensions = [resolve_scalar(document, outline[key], "length", "board.outline." + key) for key in keys]
+    bounds = [row.as_unit("mm") for row in dimensions if row.value_si is not None]
+    outside_arc = outside_ifa = None
+    radius = quarter_mm / math.pi
+    if kind == "rectangle" and len(bounds) == 2:
+        narrow, wide = sorted(bounds)
+        outside_arc = radius > narrow or 2 * radius > wide
+        outside_ifa = quarter_mm > narrow + wide
+    elif kind == "circle" and bounds:
+        outside_arc = radius > bounds[0]
+    rows = [
+        {"card": ARC, "size_kind": "semicircle_radius_mm", "size_mm": radius, "outside_ideal_envelope": outside_arc},
+        {"card": IFA, "size_kind": "total_trace_path_mm", "size_mm": quarter_mm, "outside_ideal_envelope": outside_ifa},
+    ]
+    if kind == "circle":
+        rows[-1]["board_supported"] = False
+    return {"frequency_hz": selected, "frequency_source": "target_reference" if band["reference"]["value_si"] is not None else "band_midpoint",
+            "profile": "rfad.goal-layout-note/0.1", "scope": "ideal_free_space_quarter_wave_geometry",
+            "target_id": target["id"], "target_revision_id": target["revision_id"], "candidates": rows,
+            "material_assigned": False, "physical_validation": False}
 
 
 def normalize_candidate(card, requested, mode="explicit_geometry", seed=None):

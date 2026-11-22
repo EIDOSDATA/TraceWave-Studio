@@ -329,6 +329,9 @@ void TemplateDialog::UpdateActions()
     m_seedPanel->Enable(editable);
     m_binding->Enable(editable);
     m_target->Enable(editable);
+    const int target = m_target->GetSelection() - 1;
+    m_goalLayoutNote->Enable(editable && target >= 0 &&
+                             m_context.at("targets").at(target).value("layout_note", Json()).is_object());
     m_inputs->Enable(editable);
     m_previewButton->Enable(editable && !m_pending && !m_card.is_null());
     m_applyButton->Enable(editable && !m_pending && !m_preview.is_null() && m_preview.value("can_apply", false));

@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 import json
+import math
 from pathlib import Path
 import tempfile
 from types import SimpleNamespace
@@ -438,6 +439,41 @@ class TemplateServiceCase(unittest.TestCase):
 
 class TemplateServiceTests(TemplateServiceCase):
     """! @brief 공개 RPC와 실제 저장소의 이력/멱등/실패 경계를 검사한다."""
+
+    def test_goal_layout_advice_uses_selected_target_and_preserves_model(self):
+        """! @brief 실제 목표/기판 개정에서 자유공간 치수와 외곽 적합성만 읽는다."""
+        from test_cad_worker_process import register_fixture
+        from test_pcb_ifa import ifa_document
+
+        fixtures = ((fixture_document(circle=True, arc=True), 8, 12, 10), (ifa_document(), 2.4, 2.4835, None))
+        for document, low, high, nominal in fixtures:
+            with self.subTest(frequency_ghz=low), tempfile.TemporaryDirectory() as folder:
+                wanted = target_input(start=low, end=high)
+                if nominal is not None:
+                    wanted["band"]["reference"] = quantity(nominal, "GHz")
+                document["targets"] = [{**wanted, "revision_id": str(uuid4())}]
+                with ProjectService(Path(folder), auto_run=False) as service:
+                    saved, _ = register_fixture(service, document)
+                    before = service.journal.read()
+                    params = {"contract_version": "rfad.api/2.0", "context": {"project_id": saved["project_id"]},
+                              "input": {"expected_revision": saved["revision_id"]}}
+                    result = service.templates.query("template.context", params)
+                    target, = result["targets"]
+                    info = target["layout_note"]
+                    frequency = (nominal if nominal is not None else (low + high) / 2) * 1e9
+                    self.assertAlmostEqual(info["frequency_hz"], frequency)
+                    self.assertEqual(info["target_revision_id"], document["targets"][0]["revision_id"])
+                    self.assertEqual(info["frequency_source"], "target_reference" if nominal else "band_midpoint")
+                    arc, ifa = info["candidates"]
+                    self.assertAlmostEqual(ifa["size_mm"], 299792458 * 250 / frequency, places=12)
+                    self.assertAlmostEqual(arc["size_mm"] * math.pi, ifa["size_mm"], places=12)
+                    self.assertFalse(arc["outside_ideal_envelope"])
+                    if nominal:
+                        self.assertFalse(ifa["board_supported"])
+                    else:
+                        self.assertFalse(ifa["outside_ideal_envelope"])
+                    self.assertFalse(info["physical_validation"] or info["material_assigned"])
+                    self.assertEqual(service.journal.read(), before)
 
     def test_public_preview_apply_save_restart_undo_redo_and_duplicate(self):
         """! @brief 단일 적용/재접수/재시작 후 inverse가 생성 당시 사본을 복원한다."""

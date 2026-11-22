@@ -24,6 +24,7 @@ private:
     void SelectCard(int index);
     void SelectMode(int index);
     void RenderCardInputs();
+    void ShowGoalLayoutNote();
     void BuildSeedControls(wxSizer* layout);
     void RenderSeedControls();
     Json SeedSpecification() const;
@@ -56,6 +57,7 @@ private:
     EditorPanel* m_seedInputs = nullptr;
     wxChoice* m_binding = nullptr;
     wxChoice* m_target = nullptr;
+    wxButton* m_goalLayoutNote = nullptr;
     EditorPanel* m_inputs = nullptr;
     DesignCanvas* m_canvas = nullptr;
     wxTextCtrl* m_notes = nullptr;

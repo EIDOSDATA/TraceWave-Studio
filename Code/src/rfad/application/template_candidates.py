@@ -14,7 +14,7 @@ from rfad.domain.template_command import apply_template_command
 from rfad.domain.template_geometry import generate_geometry, all_ids, object_id
 from rfad.domain.template_instance import (EXTENSION_KEY, MAX_INSTANCES, record_hash, instance_status, object_ids)
 from rfad.domain.template_ports import generate_port
-from rfad.domain.template_seeds import normalize_candidate
+from rfad.domain.template_seeds import goal_layout_note, normalize_candidate
 from rfad.domain.template_provenance import generation_report
 from rfad.templates.cards import list_cards, describe_card, resolve_card
 
@@ -110,7 +110,8 @@ class TemplateCandidateCoordinator:
             "frame_id": None if board is None else board["frame_id"],
             "bindings": [{"layer_id": layer["id"], "label": layer["name"], "material_id": layer["material_id"]}
                          for layer in document["stackup"] if layer["role"] == "conductor"],
-            "targets": [{key: item[key] for key in ("id", "revision_id", "name")} for item in document["targets"]],
+            "targets": [{**{key: item[key] for key in ("id", "revision_id", "name")}, "layout_note": goal_layout_note(document, item)}
+                        for item in document["targets"]],
             "instances": [instance_status(document, record) for record in document["extensions"].get(EXTENSION_KEY, {"instances": []})["instances"]],
             "physical_defaults_supplied": False,
         })
