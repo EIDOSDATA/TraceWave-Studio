@@ -384,7 +384,7 @@
     "gaps": [
       "일반 H/시간 영역 필드, 표면 전류, 임의 monitor와 전문 필드 교환 형식은 미지원이다. 현재 손실 기록용 E/J/rotH profile 밖을 같은 형식으로 추정하지 않는다.",
       "일반 복소 excitation basis 합성, arbitrary requested excitation, 고급 편파/phase center와 미기록 각도/주파수 생성은 별도 capability 및 R2 검증이 필요하다.",
-      "큰 결과의 표시 LOD와 실제 물리 적분 표본의 구분, 60/30fps 및 전체 메모리 수용은 남는다. 현재 3D 결과 표시를 장기 3D 안테나 모델 지원이나 독립 RF 정확도 합격으로 확대하지 않는다."
+      "큰 결과에서는 표시용 LOD와 실제 물리 적분 표본을 구분한다. 현재 3D 결과 표시를 장기 3D 안테나 모델 지원이나 독립 RF 정확도 합격으로 확대하지 않는다."
     ],
     "code": [
       "src/rfad/adapters/solvers/openems/pcb_radiation.py",
@@ -879,7 +879,7 @@
     "implementation_status": "partial",
     "implemented": "C++ wxWidgets GUI와 stdio CLI/MCP가 같은 ProjectService, 명령/영수증/worker를 사용한다. host CAD와 local WSL2 solver를 격리하고 한국어/공백 경로 및 결과 재열기/취소를 개별 시험했다. Qt 없는 native build와 내부 검증 묶음 도구가 있다. 공식 MCP SDK에서 고정 KiCad 보드의 검토/발행/재검수, 실제 KiCad 재저장, 수입 대응/적용과 원문 재열기를 확인했다.",
     "gaps": [
-      "실제 F1/F2 조작에서 60/30 fps, 전체 프로세스 메모리/입력 지연과 DPI/도킹/GPU/WSL 복구의 R1 수용이 남는다.",
+      "실제 Windows에서 한글 IME 조합, 스크린리더 오류 안내와 혼합 DPI 이동을 검수한다. 도킹, GPU 및 WSL 복구의 기능 증거도 확인한다.",
       "명시적 지원표/설치 진단, 새 PC 오프라인 설치/패키지/라이선스, 전체 GUI-CLI workflow와 접근성 검증이 필요하다.",
       "KiCad 보드 외 다른 EDA의 단위/좌표/net/port 의미 변환과 여러 외부 host는 추가 검증이 필요하다. Linux GUI와 remote/HPC는 후속이다."
     ],
@@ -934,7 +934,7 @@
       13
     ],
     "contract_notes": [
-      "조건부 GUI/native test의 현재 스킵을 통과로 집계하지 않는다. 합성 renderer 비용은 실제 앱 FPS/메모리 수용과 다르다.",
+      "조건부 GUI/native test의 현재 스킵을 통과로 집계하지 않는다.",
       "GUI 현대화는 공통 서비스/표시 DTO를 소비하는 View/표시모델 책임이며 canonical/worker 계약에 toolkit 또는 테마 값을 넣지 않는다."
     ]
   }

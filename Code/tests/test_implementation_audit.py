@@ -41,7 +41,7 @@ class ImplementationAuditTests(unittest.TestCase):
         audit.validate_trace_links(**self.records())
         for category, count in (("functions", 46), ("requirements", 141), ("acceptance_criteria", 404),
                                 ("acceptance_subcases", 407), ("verification_groups", 30),
-                                ("public_api", 30), ("supplemental_design_conditions", 22)):
+                                ("public_api", 30), ("supplemental_design_conditions", 12)):
             self.assertEqual(len(self.profile[category]), count)
         for category in ("requirements", "acceptance_subcases", "verification_groups", "supplemental_design_conditions"):
             self.assertTrue(all(row["acceptance_status"] == "open" for row in self.profile[category]))
@@ -76,11 +76,22 @@ class ImplementationAuditTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "API 식별자"):
             audit.validate_trace_links(**records)
 
-    def test_duplicate_supplemental_cannot_hide_missing_performance_condition(self):
-        """! @brief 22행 중 PERF-002가 사라지고 PERF-001이 반복된 경우 실패한다."""
+    def test_duplicate_supplemental_cannot_hide_missing_gui_condition(self):
+        """! @brief 현행 승인표에서 GUI 조건의 누락과 중복을 검사한다."""
         records = self.records()
-        row = next(item for item in records["supplemental"] if item["id"] == "PERF-002")
-        row["id"] = "PERF-001"
+        row = next(item for item in records["supplemental"] if item["id"] == "GUI-SPIKE-002")
+        row["id"] = "GUI-SPIKE-001"
+        with self.assertRaisesRegex(ValueError, "보충 조건 식별자"):
+            audit.validate_trace_links(**records)
+
+    def test_r1_does_not_require_a_reference_pc_performance_test(self):
+        """! @brief 성능 계측의 재편입을 거부하고 Windows 조작 및 취소 조건을 유지한다."""
+        records = self.records()
+        cases = {row["ac_id"]: row for row in records["cases"]}
+        self.assertIn("취소", cases["NFR-003-AC01"]["assertion_summary"])
+        self.assertIn("배율", cases["NFR-001-AC02"]["assertion_summary"])
+        self.assertIn("GUI-SPIKE-002", {row["id"] for row in records["supplemental"]})
+        records["supplemental"].append({"id": "PERF-001"})
         with self.assertRaisesRegex(ValueError, "보충 조건 식별자"):
             audit.validate_trace_links(**records)
 

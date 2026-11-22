@@ -14,7 +14,7 @@ Code는 개발 코드 영역이다. 제품 소스, 빌드 설정, 시험, fixtur
 | 별도 출력 worker | 같은 snapshot의 PDF/SVG/DXF 및 PCB/CAM 출력, 파일 재입력과 봉인 원문 parser. `adapters/exchange/`, `tools/exchange_worker.py` |
 | 별도 WSL2 openEMS worker | 해석 계획/준비/실행/취소/결과와 후처리. `adapters/solvers/openems/`, `tools/openems_worker.py` |
 
-Qt와 필수 유료 GUI 부품을 사용하지 않는다. Linux GUI는 별도 후속이다. 일반 60 fps/대형 30 fps와 메모리 예산은 초기 목표이며 전체 앱 실측 합격이 아니다. 현재 CAD 보기와 장기 비평면 3차원 안테나 해석을 구분한다.
+Qt와 필수 유료 GUI 부품을 사용하지 않는다. Linux GUI는 별도 후속이다. R1에서는 실제 한글 IME, 스크린리더 오류 안내 및 혼합 DPI 환경의 창 이동을 검수한다. 현재 CAD 보기와 장기 비평면 3차원 안테나 해석을 구분한다.
 
 ## 현재 기능과 범위
 

@@ -102,7 +102,7 @@ def validate_trace_links(requirements, acs, cases, verification_groups, apis, su
     unique_ids(verification_groups, group_ids, "VT")
     unique_ids(apis, {f"API-{index:03d}" for index in range(1, 31)}, "API")
     unique_ids(supplemental, {f"{prefix}-{index:03d}" for prefix, count in
-                              (("DES-URS", 5), ("PERF", 10), ("GUI-SPIKE", 7))
+                              (("DES-URS", 5), ("GUI-SPIKE", 7))
                               for index in range(1, count + 1)}, "보충 조건")
     requirement_map = {row["id"]: row for row in requirements}
     for row in requirements:
@@ -219,20 +219,19 @@ def build():
         match = re.match(r"^\| ((?:DES-URS|PERF|GUI-SPIKE)-\d{3}) \|", line)
         if match:
             supplemental.append({"id": match[1], "specified_row": line, "acceptance_status": "open"})
-    require(len(supplemental) == 22, "추가 설계/성능/GUI 조건 수 불일치")
     validate_trace_links(requirements, acs, cases, verification_groups, apis, supplemental)
     source_names = ["03_RFAD_사용자_요구사항.md", "06_RFAD_기능_설계.md", "11_RFAD_해석기_어댑터_계약.md", "14_RFAD_검증과_수용_기준.md", "17_RFAD_요구사항_추적표.md", "24_RFAD_GUI_선정과_성능_설계.md"]
     profile = {"schema": "rfad.implementation-audit/0.1", "design_baseline": "RFAD-D0-3.4",
                "initial_review_date_kst": "2026-11-12",
                "initial_reviewed_commit": "1ed9686b8eea5cec3b17931d8655565fbafc72e2",
-               "review_date_kst": "2026-11-22", "reviewed_commit": "59a988ee231dddb8625594f3edc579908fa27f11",
+               "review_date_kst": "2026-11-22", "reviewed_commit": "48e5e4a70c8c62be73dd3c103193969d2233cc89",
                "working_tree_review": True,
                "scope": "implementation_gap_review_not_release_acceptance",
                "generator": reference(Path(__file__).resolve()),
                "review_inputs": [reference(directory / name) for name in ("01_설계기능.json", "02_해석기능.json")],
                "design_sources": [reference(design_path(name)) for name in source_names],
                "approved_design_sources": [reference(approved_design_path(name)) for name in source_names],
-               "design_source_scope": "current_edited_specs_with_preserved_approved_baseline_not_new_approval",
+               "design_source_scope": "current_r1_acceptance_scope_with_preserved_d0_baseline",
                "functions": sorted(functions, key=lambda r: r["id"]), "requirements": requirements,
                "acceptance_criteria": list(acs.values()), "acceptance_subcases": cases,
                "verification_groups": verification_groups, "public_api": apis,
@@ -281,6 +280,7 @@ def main():
     print(json.dumps({"requirements": len(profile["requirements"]), "acs": len(profile["acceptance_criteria"]),
                       "subcases": len(profile["acceptance_subcases"]), "functions": len(profile["functions"]),
                       "verification_groups": len(profile["verification_groups"]), "apis": len(profile["public_api"]),
+                      "supplemental_conditions": len(profile["supplemental_design_conditions"]),
                       "acceptance_passes_claimed": 0, "mode": "checked" if args.check else "generated"}))
 
 
