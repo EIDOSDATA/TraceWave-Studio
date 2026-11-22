@@ -382,23 +382,37 @@ void StudioFrame::BuildInterface()
     m_properties = new wxPanel(propertiesHost);
     StudioTheme::BindSurface(*m_properties);
     auto* form = new wxBoxSizer(wxVERTICAL);
-    m_selectionLabel = new wxStaticText(m_properties, wxID_ANY, Display("프로젝트 속성"));
+    const int metadataGap = FromDIP(StudioTheme::InputGap);
+    m_selectionLabel = new wxStaticText(m_properties, wxID_ANY, Display("프로젝트 속성"),
+        wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_END | wxST_NO_AUTORESIZE);
+    m_selectionLabel->SetName("project.properties.heading");
     StudioTheme::Title(*m_selectionLabel);
-    form->Add(m_selectionLabel, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
+    form->Add(m_selectionLabel, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::PanelPadding));
     BuildPortLinks(*form);
     m_metadataPanel = new wxPanel(m_properties);
     StudioTheme::BindSurface(*m_metadataPanel);
-    auto* fields = new wxFlexGridSizer(2, FromDIP(StudioTheme::InputGap), FromDIP(StudioTheme::InputGap));
-    fields->AddGrowableCol(1);
-    fields->Add(new wxStaticText(m_metadataPanel, wxID_ANY, Display("이름")), 0, wxALIGN_CENTER_VERTICAL);
-    m_name = new wxTextCtrl(m_metadataPanel, wxID_ANY);
-    fields->Add(m_name, 1, wxEXPAND);
-    fields->Add(new wxStaticText(m_metadataPanel, wxID_ANY, Display("설명")), 0, wxALIGN_TOP);
-    m_description = new wxTextCtrl(m_metadataPanel, wxID_ANY, wxEmptyString, wxDefaultPosition,
-                                   FromDIP(wxSize(-1, 100)), wxTE_MULTILINE);
-    fields->Add(m_description, 1, wxEXPAND);
     auto* metadataForm = new wxBoxSizer(wxVERTICAL);
-    metadataForm->Add(fields, 0, wxEXPAND);
+    auto* nameLabel = new wxStaticText(m_metadataPanel, wxID_ANY, Display("이름"));
+    metadataForm->Add(nameLabel, 0, wxBOTTOM, metadataGap);
+    m_name = new wxTextCtrl(m_metadataPanel, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                            FromDIP(wxSize(-1, 56)), wxTE_MULTILINE | wxTE_WORDWRAP);
+    m_name->SetName(Display("이름"));
+    m_name->SetToolTip(Display("프로젝트 이름"));
+    m_name->Bind(wxEVT_CHAR, [](wxKeyEvent& event)
+    {
+        if (event.GetKeyCode() != WXK_RETURN && event.GetKeyCode() != WXK_NUMPAD_ENTER)
+        {
+            event.Skip();
+        }
+    });
+    metadataForm->Add(m_name, 0, wxEXPAND | wxBOTTOM, 2 * metadataGap);
+    auto* descriptionLabel = new wxStaticText(m_metadataPanel, wxID_ANY, Display("설명"));
+    metadataForm->Add(descriptionLabel, 0, wxBOTTOM, metadataGap);
+    m_description = new wxTextCtrl(m_metadataPanel, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                                   FromDIP(wxSize(-1, 156)), wxTE_MULTILINE | wxTE_WORDWRAP);
+    m_description->SetName(Display("설명"));
+    m_description->SetToolTip(Display("프로젝트 설명"));
+    metadataForm->Add(m_description, 0, wxEXPAND);
     m_metadataDiagnostic = new wxStaticText(m_metadataPanel, wxID_ANY, wxEmptyString);
     metadataForm->Add(m_metadataDiagnostic, 0, wxEXPAND | wxTOP, FromDIP(StudioTheme::InputGap));
     m_metadataDiagnostic->Hide();

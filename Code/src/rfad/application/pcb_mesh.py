@@ -213,6 +213,8 @@ def mesh_lines(case):
             fail("E_GEOMETRY", "PML 8 cells와 모델 사이의 공기 격자가 부족합니다.", "mesh")
         total *= len(points)
         if total > maximum:
-            fail("E_RESOURCE", f"PCB profile의 실제 격자점 상한 {maximum}을 초과했습니다.", "mesh")
+            raise ProjectError("E_RESOURCE", f"PCB profile의 실제 격자점 상한 {maximum}을 초과했습니다.",
+                               details={"field_path": "mesh", "grid_point_limit": maximum,
+                                        "grid_points_lower_bound": total})
         result["xyz"[axis]] = points
     return result

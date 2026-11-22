@@ -128,7 +128,35 @@ int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page
     recovery->GetSizer()->Add(status, 0, wxALL, pad);
     auto* saved = Table(*recovery, {{"항목", 132}, {"정상 저장본", 310}, {"현재의 영속 적용 개정", 350}});
     Rows(*saved, evidence.at("recovery"));
-    recovery->GetSizer()->Add(saved, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
+    saved->SetMinSize(dialog.FromDIP(wxSize(-1, 82)));
+    recovery->GetSizer()->Add(saved, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
+    const auto recoveryDetails = evidence.value("recovery_details", Json::object());
+    const auto recoveryRows = recoveryDetails.value("rows", Json::array());
+    const auto recoverySummary = recoveryRows.empty() ? Display("표시할 속성 변경 없음") :
+        wxString::Format(Display("속성 변경 %zu건%s"), recoveryRows.size(),
+            recoveryDetails.value("has_more", false) ? Display(" 표시 / 나머지 변경 있음") : wxString());
+    auto* changesLabel = new wxStaticText(recovery, wxID_ANY, recoverySummary);
+    StudioTheme::Heading(*changesLabel);
+    recovery->GetSizer()->Add(changesLabel, 0, wxLEFT | wxRIGHT | wxBOTTOM, pad);
+    auto* detailTable = Table(*recovery, {{"분류", 100}, {"대상", 155}, {"변경 항목", 145},
+                                        {"저장본", 195}, {"현재 개정", 195}});
+    detailTable->SetName("project.recovery.changes");
+    Rows(*detailTable, recoveryRows);
+    detailTable->SetMinSize(dialog.FromDIP(wxSize(-1, 88)));
+    recovery->GetSizer()->Add(detailTable, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
+    auto* savedDetail = ReadOnly(*recovery, "project.recovery.detail",
+        Display(recoveryRows.empty() ? "저장본과 현재 개정의 표시 대상 값이 같습니다."
+                                     : "변경 행을 선택하면 저장본과 현재 값의 상세를 읽을 수 있습니다."));
+    savedDetail->SetMinSize(dialog.FromDIP(wxSize(-1, 96)));
+    recovery->GetSizer()->Add(savedDetail, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
+    detailTable->Bind(wxEVT_LIST_ITEM_SELECTED, [savedDetail, &recoveryRows](wxListEvent& event)
+    {
+        const auto& row = recoveryRows.at(static_cast<std::size_t>(event.GetIndex()));
+        const auto& target = row.at(1).get_ref<const std::string&>();
+        savedDetail->ChangeValue(Display(row.at(0).get<std::string>() + (target.empty() ? "" : " / " + target) +
+            " / " + row.at(2).get<std::string>() + "\n저장본  " + row.at(3).get<std::string>() +
+            "\n현재 개정  " + row.at(4).get<std::string>()));
+    });
     auto* instructions = new wxStaticText(recovery, wxID_ANY,
         Display("저장 상태를 확인한 후 현재 개정을 다시 읽거나, 보존 묶음을 별도 작업 영역으로 복원할 수 있습니다."));
     StudioTheme::BindSecondary(*instructions);

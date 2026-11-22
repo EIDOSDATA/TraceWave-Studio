@@ -1,102 +1,10 @@
 /** @file @brief 주 창의 solver 책임을 구현한다. */
 #include "studio_internal.h"
 #include "radiation_dialog.h"
-#include "studio_theme.h"
-#include <wx/display.h>
+#include "solver_review_dialog.h"
 
 namespace
 {
-/** @brief 종료·출력과 같은 계획의 자원값을 분리해 명시적인 실행 전 검토를 표시한다. */
-bool ConfirmSolverPreview(wxWindow* parent, const Json& preview, const Json& scene, bool canRun)
-{
-    wxDialog dialog(parent, wxID_ANY, Display("해석 전 검토 / 메시와 기록"), wxDefaultPosition, wxDefaultSize,
-                    wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
-    dialog.SetName("solver.preview.dialog");
-    StudioTheme::ApplyTypography(dialog);
-    StudioTheme::BindSurface(dialog);
-    const int pad = dialog.FromDIP(StudioTheme::PanelPadding);
-    auto* root = new wxBoxSizer(wxVERTICAL);
-    auto* title = new wxStaticText(&dialog, wxID_ANY, Display("해석 입력과 출력 범위"));
-    StudioTheme::Title(*title);
-    root->Add(title, 0, wxLEFT | wxTOP, pad);
-    auto* revision = new wxStaticText(&dialog, wxID_ANY,
-        Display("검토한 개정  " + preview.at("revision_id").get<std::string>()));
-    StudioTheme::BindSecondary(*revision);
-    root->Add(revision, 0, wxEXPAND | wxALL, pad);
-    auto* tabs = new StudioNotebook(&dialog);
-    root->Add(tabs, 1, wxEXPAND | wxLEFT | wxRIGHT, pad);
-    const auto page = [&](const char* label)
-    {
-        auto* value = new wxPanel(tabs);
-        StudioTheme::BindSurface(*value);
-        value->SetSizer(new wxBoxSizer(wxVERTICAL));
-        tabs->AddPage(value, Display(label));
-        return value;
-    };
-    const auto info = [&](wxPanel* control, const std::string& label, const wxString& value)
-    {
-        auto* heading = new wxStaticText(control, wxID_ANY, Display(label));
-        StudioTheme::Heading(*heading);
-        control->GetSizer()->Add(heading, 0, wxLEFT | wxTOP, pad);
-        auto* body = new wxStaticText(control, wxID_ANY, value);
-        body->Wrap(dialog.FromDIP(590));
-        control->GetSizer()->Add(body, 0, wxEXPAND | wxALL, pad);
-    };
-    auto* resource = page("메시 / 자원");
-    const auto& settings = preview.at("settings");
-    const auto estimate = preview.value("estimated", Json::object());
-    info(resource, "격자 설정",
-         wxString::Format(Display("최대 격자 간격 %.8g mm / 공기 여유 %.8g mm"),
-                          settings.at("grid_mm").get<double>(), settings.at("air_padding_mm").get<double>()));
-    if (!estimate.empty())
-    {
-        const auto count = estimate.at("estimated_grid_points").get<unsigned long long>();
-        const double memory = estimate.at("estimated_memory_bytes").get<double>() / (1024.0 * 1024.0);
-        info(resource, "계획에서 예상한 자원",
-             wxString::Format(Display("격자 규모 %llu / 메모리 약 %.1f MiB. 준비된 실제 메시와 실행 실측은 별도입니다."),
-                              count, memory));
-    }
-    else
-    {
-        info(resource, "자원 추정 보류", Display(preview.value("error", std::string())));
-    }
-    auto* geometry = new DesignCanvas(resource);
-    geometry->SetEditingEnabled(false);
-    geometry->SetScene(scene);
-    resource->GetSizer()->Add(geometry, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
-    auto* geometryLabel = new wxStaticText(resource, wxID_ANY, Display("입력 형상 참고 / 아래 격자는 설계 눈금입니다."));
-    StudioTheme::BindSecondary(*geometryLabel);
-    resource->GetSizer()->Add(geometryLabel, 0, wxLEFT | wxBOTTOM, pad);
-
-    auto* output = page("종료 / 기록 출력");
-    info(output, "종료 기준",
-         wxString::Format(Display("최대 %d 시간 단계 / 종료 에너지 비율 %.8g"),
-                          settings.at("max_timesteps").get<int>(), settings.at("end_criterion").get<double>()));
-    info(output, "기본 결과", Display("기록된 복소 표본, 원본 개정과 해석 조건을 보존합니다."));
-    info(output, "방사 기록", Display(settings.contains("radiation") ? "NF2FF 기록 사용" : "NF2FF 기록 끔"));
-    info(output, "독립 손실 기록",
-         Display(settings.contains("power_balance") ? "전력 평형 기록 사용" : "이 조건에서는 독립 손실 기록을 요청하지 않았습니다."));
-    info(output, "내부 전계 / 자계", Display("현재 기본 PCB 실행은 내부 필드를 자동 기록하지 않습니다. 보존한 필드 자료는 결과에서 조회합니다."));
-    auto* actions = new wxBoxSizer(wxHORIZONTAL);
-    actions->AddStretchSpacer();
-    auto* cancel = new wxButton(&dialog, wxID_CANCEL, Display("닫기"));
-    StudioTheme::Button(*cancel);
-    actions->Add(cancel, 0, wxALIGN_CENTER_VERTICAL);
-    auto* run = new wxButton(&dialog, wxID_OK, Display("검토한 조건으로 실행"));
-    StudioTheme::Button(*run, true);
-    run->Enable(canRun);
-    actions->Add(run, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, pad);
-    root->Add(actions, 0, wxEXPAND | wxALL, pad);
-    dialog.SetSizer(root);
-    const auto area = wxDisplay(parent).GetClientArea().Deflate(dialog.FromDIP(12));
-    const auto ideal = dialog.FromDIP(wxSize(820, 660));
-    dialog.SetSize(std::min(ideal.x, area.width), std::min(ideal.y, area.height));
-    dialog.CentreOnParent();
-    dialog.Layout();
-    geometry->FitView();
-    return dialog.ShowModal() == wxID_OK && canRun;
-}
-
 /** @brief 서비스의 내부 단계 이름을 긴 작업 설명과 분리한다. */
 std::string PhaseLabel(const std::string& phase)
 {
@@ -177,92 +85,24 @@ void StudioFrame::ConfigureSolver()
         Log("해석 검토 전에 현재 편집을 적용하거나 취소하세요.");
         return;
     }
-    Json values = m_solverDraft;
-    if (!AskNumbers("PCB 해석 조건",
-                    {{"start_hz", "시작 주파수 (Hz)", 2.4e9},
-                     {"stop_hz", "끝 주파수 (Hz)", 2.4835e9},
-                     {"count", "주파수 표본 수 (정수)", 101},
-                     {"grid_mm", "최대 격자 간격 (mm)", 1.0},
-                     {"air_padding_mm", "외부 공기 여유 (mm)", 30.0},
-                     {"curve_tolerance_mm", "곡선 근사 허용오차 (mm)", 0.05},
-                     {"max_timesteps", "최대 시간 단계 (정수)", 30000},
-                     {"end_criterion", "종료 에너지 비율", 1e-5}},
-                    values))
-    {
-        return;
-    }
-    for (const auto* key : {"count", "max_timesteps"})
-    {
-        const double value = values.at(key);
-        if (value != std::floor(value) || value < 1 || value > 10000000)
-        {
-            wxMessageBox(Display("표본 수와 최대 시간 단계에는 양의 정수를 입력하세요."), Display("해석 조건"),
-                         wxOK | wxICON_WARNING, this);
-            return;
-        }
-    }
-    m_solverDraft = values;
-    Json settings{{"frequency_hz", Json{{"start", values.at("start_hz")},
-                                                  {"stop", values.at("stop_hz")},
-                                                  {"count", static_cast<int>(values.at("count").get<double>())}}},
-                            {"grid_mm", values.at("grid_mm")},
-                            {"air_padding_mm", values.at("air_padding_mm")},
-                            {"curve_tolerance_mm", values.at("curve_tolerance_mm")},
-                            {"max_timesteps", static_cast<int>(values.at("max_timesteps").get<double>())},
-                            {"end_criterion", values.at("end_criterion")}};
-    if (m_recordRadiation->GetValue())
-    {
-        Json radiation = m_radiationDraft;
-        if (!AskNumbers("방사 기록 조건 / 계산 결과이며 제작 및 측정 검증 전",
-                        {{"frequency_hz", "방사 계산 주파수 (Hz)", (values.at("start_hz").get<double>() + values.at("stop_hz").get<double>()) / 2},
-                         {"theta_step_deg", "theta 간격 (5/10/15/30 deg)", 15},
-                         {"phi_step_deg", "phi 간격 (5/10/15/30 deg)", 15}}, radiation))
-        {
-            return;
-        }
-        const std::vector<double> allowed = {5, 10, 15, 30};
-        if (radiation.at("frequency_hz").get<double>() < values.at("start_hz").get<double>() ||
-            radiation.at("frequency_hz").get<double>() > values.at("stop_hz").get<double>() ||
-            std::find(allowed.begin(), allowed.end(), radiation.at("theta_step_deg").get<double>()) == allowed.end() ||
-            std::find(allowed.begin(), allowed.end(), radiation.at("phi_step_deg").get<double>()) == allowed.end())
-        {
-            wxMessageBox(Display("방사 주파수는 해석 대역 안에, 각도 간격은 5/10/15/30 중에서 지정하세요."), Display("방사 조건"), wxOK | wxICON_WARNING, this);
-            return;
-        }
-        m_radiationDraft = radiation;
-        settings["radiation"] = Json{{"frequency_hz", Json::array({radiation.at("frequency_hz")})},
-                                             {"theta_step_deg", static_cast<int>(radiation.at("theta_step_deg").get<double>())},
-                                             {"phi_step_deg", static_cast<int>(radiation.at("phi_step_deg").get<double>())}};
-    }
     const auto project = m_project;
     const auto revision = m_revision;
-    const auto preview = [this, project, revision, settings](const Json& result, bool canRun)
-    {
-        CallAfter([this, project, revision, settings, result, canRun]()
+    const auto settings = Studio::ShowSolverReview(this, revision, m_solverDraft, m_radiationDraft,
+        m_recordRadiation->GetValue(), [this, project, revision](const Json& input, auto accepted, auto rejected)
         {
-            if (m_closing || !m_connected || m_project != project || m_revision != revision || HasDraft())
+            if (!m_connected || m_closing || m_project != project || m_revision != revision || HasDraft())
             {
+                rejected(Json{{"message", "현재 개정 또는 서비스 연결이 바뀌었습니다. 다시 열어 검토하세요."}});
                 return;
             }
-            if (ConfirmSolverPreview(this, result, m_scene, canRun) && m_revision == revision && !HasDraft())
-            {
-                m_solverSettings = settings;
-                StartSolver();
-            }
+            Send("solver.preview", Json{{"expected_revision", revision}, {"settings", input}}, false, Context(),
+                 std::move(accepted), std::move(rejected));
         });
-    };
-    Send("solver.preview", Json{{"expected_revision", revision}, {"settings", settings}}, false, Context(),
-         [preview, revision](const Json& result)
-         {
-             if (result.at("revision_id") == revision)
-             {
-                 preview(result, true);
-             }
-         },
-         [preview, revision, settings](const Json& error)
-         {
-             preview(Json{{"revision_id", revision}, {"settings", settings}, {"error", DiagnosticMessage(error)}}, false);
-         });
+    if (settings && m_connected && !m_closing && m_project == project && m_revision == revision && !HasDraft())
+    {
+        m_solverSettings = *settings;
+        StartSolver();
+    }
 }
 
 void StudioFrame::OpenRadiation()

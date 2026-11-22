@@ -7429,11 +7429,11 @@
       "assessment": "rfad.target-assessment/0.1",
       "automatic_interpolation": false,
       "engine": {
-        "available": null,
+        "available": false,
         "installed": {
-          "numpy": "2.5.4",
-          "scikit-rf": "2.2.0",
-          "scipy": "1.18.1"
+          "numpy": null,
+          "scikit-rf": null,
+          "scipy": null
         },
         "name": "scikit-rf",
         "required": {
@@ -7449,17 +7449,17 @@
         "hdf5"
       ],
       "hdf5": {
-        "available": null,
+        "available": false,
         "profile": "rfad.network-hdf5/0.1",
         "required_versions": {
           "h5py": "3.16.0",
           "numpy": "2.5.4"
         },
         "runtime_checked": false,
-        "version_matches": true,
+        "version_matches": false,
         "versions": {
-          "h5py": "3.16.0",
-          "numpy": "2.5.4"
+          "h5py": null,
+          "numpy": null
         }
       },
       "import_bytes": 524288,
@@ -7597,16 +7597,16 @@
         "offset"
       ],
       "planar_engine": {
-        "available": null,
+        "available": false,
         "geos_version": null,
-        "installation_detected": true,
+        "installation_detected": false,
         "name": "Shapely/GEOS",
-        "reason": "정밀 편집 요청에서 실제 GEOS 엔진과 고정 버전을 확인합니다.",
+        "reason": "선택 평면 연산 엔진을 설치해야 합니다.",
         "required_geos_version": "3.14.1",
         "required_version": "2.2.0",
         "runtime_checked": false,
-        "version": "2.2.0",
-        "version_matches": true
+        "version": null,
+        "version_matches": false
       },
       "preview_required": true,
       "profile": "rfad.precision-editor/0.1"
@@ -14228,8 +14228,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "text_sha256": "5a65b1943373191cffbfa2dd52f05cc8d841705941540c9ff7f9e0b2094dabfc",
-      "utf8_bytes": 20372
+      "text_sha256": "f09b6cb406dd9ff346a358711fad319fba1239eeeb72b8a0cd18a18a5055076b",
+      "utf8_bytes": 21279
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
@@ -14293,8 +14293,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
-      "text_sha256": "b494433e57fdd3e211b24f16e526c09b6ba9719f48dac76a7b78d34dade4c48c",
-      "utf8_bytes": 17190
+      "text_sha256": "f8f4bb13c97b1777890d3d3ac1011c7d6a6088c9439b639d921e9a7f430be236",
+      "utf8_bytes": 18446
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
@@ -15078,8 +15078,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_mesh.py",
-      "text_sha256": "21c07e629194477a3b6113b7a71dab0cdd94b87e539c505fd3271a79f7c9c696",
-      "utf8_bytes": 13154
+      "text_sha256": "912c3624d86d395c61bf09d00bf17a947b2338c9ff6a6196682087d75a90f2f8",
+      "utf8_bytes": 13326
     },
     {
       "path": "Code/src/rfad/application/pcb_power.py",
@@ -15118,8 +15118,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "a8d6cc9375e555c273b0025be3139d66c7d594b034e1a29456924b35d3022d9e",
-      "utf8_bytes": 8072
+      "text_sha256": "52ddceecfb254335f1b969d6a8115058a974908eff7a0b4420e69a5b332f6db7",
+      "utf8_bytes": 8214
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
@@ -16633,8 +16633,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "8b34435c25d3e18c611ba4b642d6788c2e74fd3bf0a1f56cb1c6f4238cbb2f12",
-      "utf8_bytes": 32672
+      "text_sha256": "67b20776174974511dbd1d898d1a5c7b52913366318163178cd053aface181d9",
+      "utf8_bytes": 33385
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",

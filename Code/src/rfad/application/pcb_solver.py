@@ -48,8 +48,10 @@ def validate_settings(settings):
         value = settings[key]
         if type(value) not in (int, float) or not low <= value <= high:
             fail("E_RESOURCE", "PCB 수치 설정의 지원 범위를 벗어났습니다.", "settings." + key)
-    if settings["air_padding_mm"] < 10 * settings["grid_mm"] or settings["curve_tolerance_mm"] > settings["grid_mm"] / 2:
-        fail("E_GEOMETRY", "공기 여백은 격자의 10배 이상, 곡선 근사 오차는 격자의 절반 이하여야 합니다.", "settings")
+    if settings["air_padding_mm"] < 10 * settings["grid_mm"]:
+        fail("E_GEOMETRY", "공기 여백은 모델 최대 격자 간격의 10배 이상이어야 합니다.", "settings.air_padding_mm")
+    if settings["curve_tolerance_mm"] > settings["grid_mm"] / 2:
+        fail("E_GEOMETRY", "곡선 근사 오차는 모델 최대 격자 간격의 절반 이하여야 합니다.", "settings.curve_tolerance_mm")
     if type(settings["max_timesteps"]) is not int or not 1000 <= settings["max_timesteps"] <= 200000:
         fail("E_RESOURCE", "최대 time step은 1000~200000입니다.", "settings.max_timesteps")
     if "feature_subdivisions" in settings and (type(settings["feature_subdivisions"]) is not int or not 1 <= settings["feature_subdivisions"] <= 8):

@@ -100,12 +100,16 @@ void StudioFrame::RefreshProject()
     m_description->ChangeValue(Display(m_editor.at("metadata").at("description").get<std::string>()));
     RebuildNavigation();
     std::string selectedLabel = "프로젝트 속성";
-    for (const auto& item : m_editor.at("items"))
+    const bool metadata = m_selection.at("kind") == "project";
+    if (!metadata)
     {
-        if (item.at("kind") == m_selection.at("kind") && item.at("id") == m_selection.at("id"))
+        for (const auto& item : m_editor.at("items"))
         {
-            selectedLabel = item.at("label").get<std::string>();
-            break;
+            if (item.at("kind") == m_selection.at("kind") && item.at("id") == m_selection.at("id"))
+            {
+                selectedLabel = item.at("label").get<std::string>();
+                break;
+            }
         }
     }
     if (m_selection.at("kind").get<std::string>().rfind("new_", 0) == 0)
@@ -113,7 +117,7 @@ void StudioFrame::RefreshProject()
         selectedLabel = "새 객체 / 미적용 입력";
     }
     m_selectionLabel->SetLabel(Display(selectedLabel));
-    const bool metadata = m_selection.at("kind") == "project";
+    m_selectionLabel->SetToolTip(Display(selectedLabel));
     m_metadataDiagnostic->Hide();
     m_metadataPanel->Show(metadata);
     m_editorPanel->Show(!metadata);
