@@ -207,7 +207,7 @@ void PhysicalSetupDialog::ReviewStep(const wxString& path)
     }
     m_stepReview = nullptr;
     RenderReview();
-    SetStatus("별도 CAD 작업에서 STEP 원본과 단일 고체를 확인하는 중입니다.");
+    SetStatus("별도 CAD 작업에서 STEP 원본, 단위와 고체를 확인하는 중입니다.");
     Request("physical.step.preview", {{"expected_revision", m_revision}, {"name", Utf8(wxFileName(path).GetFullName())},
                                       {"chunks", chunks}}, false,
             [this](const Json& result)

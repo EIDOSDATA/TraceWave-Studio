@@ -28319,8 +28319,8 @@
       "path": "01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 19560,
-      "working_tree_sha256": "b523cc6d01a68ff3eed1590500a9d2620ff5eae91eee8ba7ad6d9047ffbf1d73",
+      "bytes": 19896,
+      "working_tree_sha256": "054fb64d5ae8bccc3967fc27b2a892d9a880aab06a3eb9afdbc958740156f88f",
       "text_lines": 88,
       "text_status": "utf8_read"
     },
@@ -28747,8 +28747,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 643890,
-      "working_tree_sha256": "76d934a4af0c5709ad49ffed9f6f1bde9f0b5cc75fd0c0554cae7d1d6d68ee11"
+      "bytes": 643891,
+      "working_tree_sha256": "3ce939d818f1a9b06514e8c4488396a6a3428b6dea3389864f5285da2a8cce83"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -31695,9 +31695,9 @@
       "path": "01_개발문서/07_검증/330_스텝_단위와_간극_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 1098,
-      "working_tree_sha256": "873b1a08d19b3be1b53c2571dc49395c5c7cbf0b7973fca3f259da7bda5df7c0",
-      "text_lines": 8,
+      "bytes": 1852,
+      "working_tree_sha256": "08628445ae2c0b4b0b18913bad408d59220ec406109e7cb129e359ee34dea159",
+      "text_lines": 15,
       "text_status": "utf8_read"
     },
     {
@@ -32419,8 +32419,8 @@
       "path": "01_개발문서/09_개발계획/11_캐드와_기계도면_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 23367,
-      "working_tree_sha256": "6e9164b03f4c68a317bf55943ee0464c708517868b3acc35b1f5f92ae2349ddc",
+      "bytes": 23427,
+      "working_tree_sha256": "bf21c36f8a976e195e97e927a466b06e4a8c95baa0f7e3c65be01133616495e3",
       "text_lines": 78,
       "text_status": "utf8_read"
     },
@@ -32455,8 +32455,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 25859,
-      "working_tree_sha256": "d854f667c1d0b29413e57231c05590595e90c2667e808f4e2a169ddcf81e500c",
+      "bytes": 25914,
+      "working_tree_sha256": "c420dff8a3b790f653387555cbe7e1f1772a7bb70dd463bdce9545c5f18df44f",
       "text_lines": 183,
       "text_status": "utf8_read"
     },

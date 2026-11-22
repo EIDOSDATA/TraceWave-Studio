@@ -230,11 +230,25 @@ void PhysicalSetupDialog::RenderReview()
     {
         const auto& box = m_stepReview.at("bbox_mm");
         const auto unit = m_stepReview.value("source_length_unit", std::string("mm"));
+        const auto solid = m_stepReview.at("solid_count").get<int>();
+        const bool assembly = m_stepReview.at("shape") == "assembly";
         text += "\n\nSTEP 미리보기 " + m_stepReview.at("name").get<std::string>() +
-                "\n닫힌 단일 고체 / 면 " + std::to_string(m_stepReview.at("faces").get<int>()) +
+                (assembly ? "\n조립 STEP / 닫힌 고체 " + std::to_string(solid) + "개" : "\n닫힌 단일 고체") +
+                " / 면 " + std::to_string(m_stepReview.at("faces").get<int>()) +
                 "개\n원본 단위 " + unit + " / 변환 배율 " + m_stepReview.value("source_to_mm", Json(1.0)).dump() +
                 "\n변환한 범위 " + box.dump() + " mm\nSHA-256 " +
                 m_stepReview.at("sha256").get<std::string>() + "\n재료 미정";
+        if (assembly)
+        {
+            text += "\n\n조립 트리 / 원본 좌표 (mm)";
+            for (const auto& item : m_stepReview.at("assembly_instances"))
+            {
+                const auto& transform = item.at("transform_mm");
+                const Json position = Json::array({transform.at(0).at(3), transform.at(1).at(3), transform.at(2).at(3)});
+                text += "\n" + std::string(2 * item.at("path").size(), ' ') + item.at("path").dump() +
+                        " " + item.at("name").get<std::string>() + "  " + position.dump();
+            }
+        }
     }
     else if (!m_context.at("step").is_null())
     {

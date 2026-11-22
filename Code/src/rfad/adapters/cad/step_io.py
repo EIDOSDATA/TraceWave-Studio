@@ -88,7 +88,7 @@ def _compare_external(name, left, right, tolerance):
     _require(bbox_error <= tolerance and center_error <= tolerance and volume_error <= volume_tolerance,
              "외부 고체의 경계, 중심 또는 부피가 STEP 재입력에서 달라졌습니다.")
     return {"name": name, "bbox_error_mm": bbox_error, "center_error_mm": center_error,
-            "volume_error_mm3": volume_error, "volume_tolerance_mm3": volume_tolerance, "solid_count": 1}
+            "volume_error_mm3": volume_error, "volume_tolerance_mm3": volume_tolerance, "solid_count": right["solid_count"]}
 
 
 def _compare(expected: dict, actual: dict, tolerance: float) -> dict:

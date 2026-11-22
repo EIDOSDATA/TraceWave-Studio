@@ -81,6 +81,49 @@ class CadNativeTests(unittest.TestCase):
         self.assertEqual(caught.exception.details["body_ids"], ["dielectric", "environment"])
         self.assertAlmostEqual(caught.exception.details["overlap_mm3"], .5)
 
+    def test_nested_step_instances_remain_placed_through_board_export(self):
+        """! @brief 중첩 조립의 반복 정의와 변환을 실제 B-rep와 독립 좌표에 대조한다."""
+        import cadquery as cq
+        from rfad.adapters.cad.physical import inspect_step
+        from rfad.domain.physical_setup import KEY
+
+        part = cq.Solid.makeBox(2, 1, 1)
+        child = cq.Assembly(name="nested").add(part, name="left").add(
+            part, name="right", loc=cq.Location((4, 0, 0)))
+        assembly = cq.Assembly(name="fixture").add(child, name="nested", loc=cq.Location((7, 8, 9)))
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            original = root / "assembly.step"
+            assembly.export(str(original), "STEP")
+            raw = original.read_bytes()
+            encoded = base64.b64encode(raw).decode("ascii")
+            source = {"name": original.name, "sha256": hashlib.sha256(raw).hexdigest(),
+                      "chunks": [encoded[index:index + 4096] for index in range(0, len(encoded), 4096)]}
+            preview = inspect_step(source)
+            self.assertEqual((preview["shape"], preview["solid_count"]), ("assembly", 2))
+            self.assertEqual([row["path"] for row in preview["assembly_instances"]], [[1], [1, 1], [1, 1, 1], [1, 1, 2]])
+            left, right = [row for row in preview["assembly_instances"] if not row["assembly"]]
+            self.assertEqual(left["definition"], right["definition"])
+            self.assertEqual([[axis[3] for axis in leaf["transform_mm"]] for leaf in (left, right)], [[7, 8, 9], [11, 8, 9]])
+            projection = fixture()
+            identity_part = identity("assembly")
+            projection["environment_parts"] = [{"id": identity_part, "kind": "step", "yaw_deg": 90,
+                                                "translation_mm": [10, 20, 3], "material_id": None}]
+            projection["source_semantics"]["extensions"] = {KEY: {"parts": [{"id": identity_part, "step": source}]}}
+            output = root / "output"
+            result = build_package(projection, output)
+            self.assertEqual(result["solid_count"], 5)
+            sidecar = json.loads((output / "sidecar.json").read_bytes())
+            environment = next(row for row in sidecar["body_map"] if row["id"] == identity_part)
+            self.assertEqual(environment["source_step"]["sha256"], source["sha256"])
+            self.assertEqual(environment["source_step"]["assembly_instances"], preview["assembly_instances"])
+            restored = read_step(output / "model.step")["environment_" + identity_part]
+            self.assertEqual(restored["solid_count"], 2)
+            for actual, expected in zip(restored["bbox_mm"], (1, 27, 12, 2, 33, 13)):
+                self.assertAlmostEqual(actual, expected, places=8)
+            self.assertAlmostEqual(restored["volume_mm3"], 4)
+            self.assertEqual(original.read_bytes(), raw)
+
     def test_external_inch_and_mm_place_same_solid(self):
         """! @brief 다른 STEP 단위의 같은 고체를 한 번만 mm로 바꾸고 배치한다."""
         import cadquery as cq

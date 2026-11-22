@@ -68,7 +68,7 @@ def step_bytes(source):
     if (not data.startswith("ISO-10303-21;") or not data.endswith("END-ISO-10303-21;")
             or len(re.findall(r"\bDATA\s*;", data)) != 1 or "@" in data
             or re.search(r"\b(ANCHOR|REFERENCE|SIGNATURE)\s*;|\b(?:EXTERNAL[A-Z_]*|DOCUMENT_FILE|DRAUGHTING_MODEL)\s*\(", data)):
-        _fail("E_UNSUPPORTED", "단일 DATA의 자체 포함 STEP 고체 파일만 지원합니다.", field)
+        _fail("E_UNSUPPORTED", "단일 DATA의 자체 포함 STEP 파일만 지원합니다.", field)
     return raw
 
 
