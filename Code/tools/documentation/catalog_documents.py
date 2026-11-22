@@ -5,6 +5,7 @@
 """
 
 from collections import Counter, defaultdict
+from datetime import date, datetime, timedelta, timezone
 import argparse
 from pathlib import Path
 import hashlib
@@ -39,6 +40,9 @@ def category(path):
             return "reference_support_tool", "자료 묶음의 지원 도구; 파일 목록/해시"
         return "reference_original_or_asset", "파일 목록/해시; 원문 내용 재검증 아님"
     if relative.startswith("Code/runtime_profiles/"):
+        if path.name in {"python-exchange-windows-x64.json", "python-exchange-windows-x64.txt",
+                         "windows-internal-bundle-x64.json"}:
+            return "runtime_definition", "내부 배포와 도면 교환의 고정 의존성 및 고지 정의"
         return "historical_verification", "당시 실행 기록 보존; 새 실행/합격 아님"
     if relative.startswith("01_개발문서/"):
         suffix = path.suffix.lower()
@@ -76,8 +80,9 @@ def relative_link(path, folder=CATALOG):
     return "<" + value + ">" if " " in value else value
 
 
-def build():
+def build(catalog_date=None):
     """! @brief 현재 존재하는 추적 자료와 새 문서를 빠짐없이 목록에 포함한다."""
+    catalog_date = catalog_date or datetime.now(timezone(timedelta(hours=9))).date()
     tracked = subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT).decode("utf-8").split("\0")
     paths = set()
     for name in tracked:
@@ -103,7 +108,7 @@ def build():
     duplicates = defaultdict(list)
     for record in records:
         duplicates[record["working_tree_sha256"]].append(record["path"])
-    return {"schema": "rfad.documentation-inventory/0.1", "date_kst": "2026-11-16",
+    return {"schema": "rfad.documentation-inventory/0.1", "date_kst": catalog_date.isoformat(),
             "scope": "current_development_docs_and_preserved_reference_files",
             "exclusions": ["Git/build/venv/.local", "제품 코드와 테스트 fixture", "이 파일과 생성 요약(자기 해시 순환 제외)"],
             "not_claimed": ["PDF 전 페이지/수식 재검증", "새 GUI/FDTD/실측 시험", "R1 수용 완료"],
@@ -115,13 +120,10 @@ def build():
 def main():
     """! @brief 기계 목록과 사람이 읽는 집계를 함께 갱신한다."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--date", help="이번 목록을 작성한 KST 날짜. 과거 개별 기록의 날짜는 변경하지 않음")
+    parser.add_argument("--date", type=date.fromisoformat, help="이번 목록을 작성한 KST 날짜. 과거 개별 기록의 날짜는 변경하지 않음")
     options = parser.parse_args()
     CATALOG.mkdir(parents=True, exist_ok=True)
-    inventory = build()
-    if options.date:
-        from datetime import date
-        inventory["date_kst"] = date.fromisoformat(options.date).isoformat()
+    inventory = build(options.date)
     (CATALOG / "02_문서목록.json").write_text(json.dumps(inventory, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
     lines = ["# 문서와 참고 자료 전수 파일 집계", "", f"기준일: {inventory['date_kst']} KST. `catalog_documents.py` 생성 결과다. 분류/파일 읽기와 전문 내용의 검토 수준은 다르며 각 파일의 review_scope를 함께 읽는다.", "", "| 분류 | 파일 수 |", "| --- | --- |"]
     for role, count in inventory["counts_by_category"].items():
