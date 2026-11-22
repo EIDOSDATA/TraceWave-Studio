@@ -18,9 +18,10 @@ struct SolverMeshBand
     std::array<double, 2> bounds;
 };
 
-/** @brief 실제 도체 경계의 최근접 두 점과 이를 통과하는 XY 셀이다. */
+/** @brief 실제 도체 경계의 최근접 두 점을 지정한 평면과 셀에 투영한다. */
 struct SolverMeshClearance
 {
+    int plane;
     std::array<std::array<double, 2>, 2> points;
     std::vector<std::array<std::size_t, 2>> cells;
 };
@@ -38,7 +39,7 @@ public:
     void HighlightBand(int axis, const std::array<double, 2>& bounds, bool applied,
                        std::optional<SolverMeshBand> comparison = std::nullopt);
 
-    /** @brief XY 격자에 선택한 간극의 위치를 확대 표시한다. */
+    /** @brief 선택한 간극의 평면에 위치를 확대 표시한다. */
     void HighlightClearance(SolverMeshClearance clearance);
 
 private:

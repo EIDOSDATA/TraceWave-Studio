@@ -31,15 +31,17 @@ def _piece(primitive):
 
 
 def _nearest(pieces_a, pieces_b, radius, budget):
-    """! @brief 다각형이 접하거나 내부에 포함되면 양의 간극을 보고하지 않는다."""
+    """! @brief 투영이 접하거나 겹칠 때의 공통점도 반환한다."""
     best = None
     for points_a, bounds_a, edges_a in pieces_a:
         for points_b, bounds_b, edges_b in pieces_b:
             lower = _box_gap(bounds_a, bounds_b)
             if lower > (best[0] if best is not None else radius):
                 continue
-            if lower == 0 and (point_in_loop(points_a[0], points_b) or point_in_loop(points_b[0], points_a)):
-                return None, budget
+            if lower == 0:
+                for point, loop in ((points_a[0], points_b), (points_b[0], points_a)):
+                    if point_in_loop(point, loop):
+                        return (0.0, point, point), budget
             for edge_a, box_a in edges_a:
                 if _box_gap(box_a, bounds_b) > (best[0] if best is not None else radius):
                     continue
@@ -51,15 +53,15 @@ def _nearest(pieces_a, pieces_b, radius, budget):
                         continue
                     distance, a, b = boundary_distance(edge_a, edge_b)
                     if distance <= 1e-12:
-                        return None, budget
+                        return (0.0, a, a), budget
                     if distance <= radius and (best is None or distance < best[0]):
                         best = distance, a, b
     return best, budget
 
 
 def _crossed_cells(a, b, lines):
-    """! @brief 간극 선분과 길이가 겹치는 XY 셀의 인덱스를 진행 순서대로 반환한다."""
-    axes = [lines["x"], lines["y"]]
+    """! @brief 간극 선분과 길이가 겹치는 셀 인덱스를 축과 진행 순서대로 반환한다."""
+    axes = [lines[axis] for axis in "xyz"[:len(a)]]
     events = [0.0, 1.0]
     for start, stop, axis in zip(a, b, axes):
         if start != stop:
@@ -80,9 +82,9 @@ def _crossed_cells(a, b, lines):
 
 
 def planar_clearances(included, lines, grid_mm):
-    """! @brief 같은 높이의 해석 도체 중 기본 셀 폭 2배 이내의 양의 간극을 표시한다."""
+    """! @brief 실제 평면 도체의 3D 간극 중 기본 셀 폭 2배 이내의 간극을 표시한다."""
     radius = 2 * grid_mm
-    by_height = {}
+    conductors = []
     for conductor in included:
         if conductor["role"] != "conductor":
             continue
@@ -92,30 +94,42 @@ def planar_clearances(included, lines, grid_mm):
         height = primitives[0]["z_mm"][0]
         pieces = [_piece(primitive) for primitive in primitives]
         overall = _bounds([point for points, _, _ in pieces for point in points])
-        by_height.setdefault(height, []).append((conductor, pieces, overall))
+        conductors.append((conductor, height, pieces, overall))
 
     candidates = []
-    for height, conductors in by_height.items():
-        for (a, pieces_a, box_a), (b, pieces_b, box_b) in combinations(conductors, 2):
-            lower = _box_gap(box_a, box_b)
-            if lower <= radius:
-                candidates.append((lower, height, a, b, pieces_a, pieces_b))
-    candidates.sort(key=lambda row: (row[0], row[1], row[2]["id"], row[3]["id"]))
+    for left, right in combinations(conductors, 2):
+        height_delta = abs(left[1] - right[1])
+        lower = math.hypot(_box_gap(left[3], right[3]), height_delta)
+        if lower <= radius:
+            candidates.append((lower, left, right))
+    candidates.sort(key=lambda row: (row[0], row[1][1], row[1][0]["id"], row[2][0]["id"]))
     budget = EDGE_PAIR_LIMIT
     rows = []
     evaluated = 0
-    for _, height, a, b, pieces_a, pieces_b in candidates:
-        nearest, budget = _nearest(pieces_a, pieces_b, radius, budget)
+    for _, (a, height, pieces_a, _), (b, other, pieces_b, _) in candidates:
+        dz = abs(other - height)
+        limit = math.sqrt((radius - dz) * (radius + dz))
+        nearest, budget = _nearest(pieces_a, pieces_b, limit, budget)
         if budget < 0:
             break
         evaluated += 1
         if nearest is not None:
-            distance, start, stop = nearest
-            rows.append({"object_ids": [a["id"], b["id"]], "object_names": [a["name"], b["name"]],
-                         "distance_mm": distance, "z_mm": height, "points_mm": [start, stop]})
+            horizontal, start, stop = nearest
+            distance = math.hypot(horizontal, dz)
+            if distance <= 1e-12 or distance > radius:
+                continue
+            row = {"object_ids": [a["id"], b["id"]], "object_names": [a["name"], b["name"]],
+                   "distance_mm": distance, "z_mm": height, "points_mm": [start, stop]}
+            if dz:
+                row["other_z_mm"] = other
+            rows.append(row)
     rows.sort(key=lambda row: (row["distance_mm"], row["z_mm"], row["object_ids"]))
     visible = rows[:DISPLAY_LIMIT]
     for row in visible:
-        row["cells_xy"] = _crossed_cells(*row["points_mm"], lines)
+        a, b = row["points_mm"]
+        if "other_z_mm" in row:
+            row["cells_xyz"] = _crossed_cells((*a, row["z_mm"]), (*b, row["other_z_mm"]), lines)
+        else:
+            row["cells_xy"] = _crossed_cells(a, b, lines)
     return {"search_radius_mm": radius, "pair_total": len(candidates), "pair_evaluated": evaluated,
             "clearance_total": len(rows), "clearances": visible}

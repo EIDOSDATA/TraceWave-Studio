@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 215,
+    "current_07_검증": 216,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -31722,8 +31722,8 @@
       "path": "01_개발문서/07_검증/333_투영도체_간극과_인계그래프_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 2124,
-      "working_tree_sha256": "dc313d5310be3fe8a76ffc7fe17ca6a4bd1170a87cc48fc58a7d5ea75c8206d9",
+      "bytes": 2247,
+      "working_tree_sha256": "3c4301434e6e983a1c624a798e6256c7ca9fe12b3bc9a52550928facc3e0c8d2",
       "text_lines": 20,
       "text_status": "utf8_read"
     },
@@ -31769,6 +31769,15 @@
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
       "bytes": 1403,
       "working_tree_sha256": "4c4ed2a01560c1c17bdec80e3f1bfb0e214c1d72d2df43c127d143cbd070d5d4",
+      "text_lines": 16,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/339_동박층_간극과_격자셀_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1471,
+      "working_tree_sha256": "a50e9f7abc165b1b4dd9ae987e2f5e5e9da14d2fdace4d728674957dc717278d",
       "text_lines": 16,
       "text_status": "utf8_read"
     },
@@ -32491,8 +32500,8 @@
       "path": "01_개발문서/09_개발계획/13_전자기해석과_후처리_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 31509,
-      "working_tree_sha256": "df895cd8ab5bc4c9ed91dccfadeab73a56a19e9d7683d572ee247fe2b6c6ca11",
+      "bytes": 31636,
+      "working_tree_sha256": "44ee302d4c9e40bf58e1f6cfdc5605f271d1270b0f159e5c2037dc8140665e01",
       "text_lines": 96,
       "text_status": "utf8_read"
     },
@@ -32509,8 +32518,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 27480,
-      "working_tree_sha256": "0bc93a7520fe3ca0a12c8121e48bf2e22b5293b45357bd82486ab42d6ec94f71",
+      "bytes": 27721,
+      "working_tree_sha256": "e8133510c0456e3ea9d49919f9775055facc3abf1fa6f1e423a7cee1fbfd0244",
       "text_lines": 187,
       "text_status": "utf8_read"
     },

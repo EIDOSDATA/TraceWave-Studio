@@ -848,28 +848,56 @@ private:
         m_coordinates->LocateCell(firstLine);
     }
 
-    /** @brief 도체 간극의 최근접점과 실제 통과 셀을 XY 격자에 표시한다. */
+    /** @brief 간극이 동일 높이인지 층간인지에 따라 실제 격자 투영을 선택한다. */
     void LocateClearance(const Json& row)
     {
+        const bool layered = row.contains("other_z_mm");
+        const auto points = row.at("points_mm").get<std::array<std::array<double, 2>, 2>>();
+        SolverMeshClearance clearance{0, points, {}};
+        int axis = 0;
+        if (layered)
+        {
+            const auto& [a, b] = points;
+            const int horizontal = std::abs(a[0] - b[0]) >= std::abs(a[1] - b[1]) ? 0 : 1;
+            clearance.plane = horizontal + 1;
+            clearance.points = {{{a[horizontal], row.at("z_mm").get<double>()},
+                                 {b[horizontal], row.at("other_z_mm").get<double>()}}};
+            for (const auto& index : row.at("cells_xyz"))
+            {
+                const auto cell = index.get<std::array<std::size_t, 3>>();
+                const std::array<std::size_t, 2> projected{cell[horizontal], cell[2]};
+                if (clearance.cells.empty() || clearance.cells.back() != projected)
+                {
+                    clearance.cells.push_back(projected);
+                }
+            }
+            axis = 2;
+        }
+        else
+        {
+            clearance.cells = row.at("cells_xy").get<std::vector<std::array<std::size_t, 2>>>();
+        }
         m_book->SetSelection(1);
-        m_plane->SetSelection(0);
+        m_plane->SetSelection(clearance.plane);
         m_full->SetValue(false);
-        m_axis->SetSelection(0);
+        m_axis->SetSelection(axis);
         UpdatePlot();
         UpdateAxis();
-        SolverMeshClearance clearance{
-            row.at("points_mm").get<std::array<std::array<double, 2>, 2>>(),
-            row.at("cells_xy").get<std::vector<std::array<std::size_t, 2>>>()
-        };
         if (!clearance.cells.empty())
         {
-            m_coordinates->LocateCell(static_cast<long>(clearance.cells.front()[0]));
+            m_coordinates->LocateCell(static_cast<long>(clearance.cells.front()[layered ? 1 : 0]));
         }
         m_plot->HighlightClearance(std::move(clearance));
         const auto names = row.at("object_names").get<std::array<std::string, 2>>();
-        SetStatus(Utf8(wxString::Format(Display("%s / %s | Z %.6g mm | 간극 %.6g mm, XY %llu셀"),
-            Display(names[0]), Display(names[1]), row.at("z_mm").get<double>(),
-            row.at("distance_mm").get<double>(), static_cast<unsigned long long>(row.at("cells_xy").size()))));
+        const auto distance = row.at("distance_mm").get<double>();
+        const auto height = row.at("z_mm").get<double>();
+        const auto details = layered
+            ? wxString::Format(Display("Z %.6g ~ %.6g mm | 층간 간극 %.6g mm, XYZ %llu셀"), height,
+                               row.at("other_z_mm").get<double>(), distance,
+                               static_cast<unsigned long long>(row.at("cells_xyz").size()))
+            : wxString::Format(Display("Z %.6g mm | 간극 %.6g mm, XY %llu셀"), height, distance,
+                               static_cast<unsigned long long>(row.at("cells_xy").size()));
+        SetStatus(Utf8(Display(names[0] + " / " + names[1] + " | ") + details));
         SetGridRepair("settings.local_mesh");
     }
 
@@ -1341,14 +1369,23 @@ private:
                 const auto total = gaps.at("pair_total").get<unsigned long long>();
                 const auto evaluated = gaps.at("pair_evaluated").get<unsigned long long>();
                 m_intervals->SetToolTip(wxString::Format(
-                    Display("같은 높이의 도체 간극 %.6g mm 이내 | 검사 %llu/%llu쌍, 표시 %llu/%llu건"),
+                    Display("평면 도체 간극 %.6g mm 이내 | 검사 %llu/%llu쌍, 표시 %llu/%llu건"),
                     gaps.at("search_radius_mm").get<double>(), evaluated, total,
                     static_cast<unsigned long long>(rows.size()), gaps.at("clearance_total").get<unsigned long long>()));
                 for (const auto& row : rows)
                 {
-                    m_intervals->Append(wxString::Format(Display("도체 간극 %.6g mm / Z %.6g mm / XY %llu셀"),
-                        row.at("distance_mm").get<double>(), row.at("z_mm").get<double>(),
-                        static_cast<unsigned long long>(row.at("cells_xy").size())));
+                    if (row.contains("other_z_mm"))
+                    {
+                        m_intervals->Append(wxString::Format(Display("층간 도체 간극 %.6g mm / XYZ %llu셀"),
+                            row.at("distance_mm").get<double>(),
+                            static_cast<unsigned long long>(row.at("cells_xyz").size())));
+                    }
+                    else
+                    {
+                        m_intervals->Append(wxString::Format(Display("도체 간극 %.6g mm / Z %.6g mm / XY %llu셀"),
+                            row.at("distance_mm").get<double>(), row.at("z_mm").get<double>(),
+                            static_cast<unsigned long long>(row.at("cells_xy").size())));
+                    }
                 }
             }
             m_intervals->SetSelection(0);

@@ -242,12 +242,13 @@ void SolverMeshView::Paint(wxPaintEvent&)
     {
         const double low = axisLines.front().get<double>();
         const double high = axisLines.back().get<double>();
-        if (!m_full && m_plane == 0 && m_clearance)
+        if (!m_full && m_clearance && m_plane == m_clearance->plane)
         {
             const auto& [a, b] = m_clearance->points;
             const double margin = std::max(std::hypot(b[0] - a[0], b[1] - a[1]) * 2, 0.15);
-            return Span{std::max(low, std::min(a[axis], b[axis]) - margin),
-                        std::min(high, std::max(a[axis], b[axis]) + margin)};
+            const int coordinate = axis == first ? 0 : 1;
+            return Span{std::max(low, std::min(a[coordinate], b[coordinate]) - margin),
+                        std::min(high, std::max(a[coordinate], b[coordinate]) + margin)};
         }
         const double margin = std::max((model[axis][1] - model[axis][0]) * 0.08, 0.5);
         return m_full ? Span{low, high}
@@ -423,7 +424,7 @@ void SolverMeshView::Paint(wxPaintEvent&)
     {
         drawBand(m_comparison->axis, m_comparison->bounds, wxPENSTYLE_DOT);
     }
-    if (m_plane == 0 && m_clearance)
+    if (m_clearance && m_plane == m_clearance->plane)
     {
         dc.SetPen(wxPen(palette.accent, FromDIP(1), wxPENSTYLE_DOT));
         for (const auto& [x, y] : m_clearance->cells)

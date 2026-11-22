@@ -34,13 +34,25 @@ class SolverReviewFollowup(unittest.TestCase):
         a = conductor("a", 0, 0, 1)
         b = conductor("b", 2, 2, 1)
         lines = {axis: [0, 1, 1.25, 1.5, 1.75, 2, 3] for axis in "xy"}
-        rows = [a, b, conductor("another sheet", 2, 2, 1, z=1)]
+        rows = [a, b, conductor("distant sheet", 2, 2, 1, z=3)]
         exact = pcb_clearance_review.planar_clearances(rows, lines, 1)
         gap, = exact["clearances"]
         self.assertEqual((exact["pair_evaluated"], exact["pair_total"]), (1, 1))
         self.assertAlmostEqual(gap["distance_mm"], 2**0.5)
         self.assertEqual(gap["points_mm"], [(1, 1), (2, 2)])
         self.assertEqual(gap["cells_xy"], [[1, 1], [2, 2], [3, 3], [4, 4]])
+        layered = {**lines, "z": [0, .25, .5, .75, 1, 2]}
+        direct = conductor("upper layer", 0, 0, 1, z=1)
+        vertical, = pcb_clearance_review.planar_clearances([a, direct], layered, 1)["clearances"]
+        self.assertEqual(vertical["distance_mm"], 1)
+        self.assertEqual(vertical["other_z_mm"], 1)
+        self.assertEqual(vertical["points_mm"], [(0, 0), (0, 0)])
+        self.assertEqual(vertical["cells_xyz"], [[0, 0, i] for i in range(4)])
+        offset = conductor("offset upper layer", 2, 2, 1, z=1)
+        diagonal, = pcb_clearance_review.planar_clearances([a, offset], layered, 1)["clearances"]
+        self.assertAlmostEqual(diagonal["distance_mm"], 3**0.5)
+        self.assertEqual(diagonal["points_mm"], [(1, 1), (2, 2)])
+        self.assertEqual(diagonal["cells_xyz"], [[i + 1, i + 1, i] for i in range(4)])
         for overlap in (conductor("enclosed", .25, .25, .5), conductor("touch", 1, 1, 1),
                         conductor("crossing", .75, -.25, .75)):
             self.assertEqual(pcb_clearance_review.planar_clearances([a, overlap], lines, 1)["clearances"], [])
