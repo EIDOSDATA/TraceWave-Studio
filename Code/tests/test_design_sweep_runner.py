@@ -157,6 +157,19 @@ class DesignSweepRunnerTests(unittest.TestCase):
         self.assertEqual(self.run_all(identity)["state"], "completed")
         before = self.service.journal.read()
         ranking = self.fixture.read("sweep.rank", study_id=identity)
+        weights = {targets[0]: 3}
+        weighted = self.fixture.read("sweep.rank", study_id=identity, weights=weights)
+        self.assertEqual(weighted["excluded"], ranking["excluded"])
+        self.assertEqual([(row["ordinal"], row["front"], row["weighted_score"]) for row in weighted["items"]],
+                         [(1, 1, 1), (2, 2, .25), (3, 2, .25)])
+        self.assertEqual([row["normalized_weight"] for row in weighted["weights"]], [.75, .25])
+        relaxed = self.fixture.read("sweep.rank", study_id=identity, weights={targets[0]: 0})
+        self.assertEqual([row["weighted_score"] for row in relaxed["items"]], [1, 1, 1])
+        for invalid in ({targets[0]: True}, {targets[0]: -1}, {targets[0]: 0, targets[1]: 0}, {str(uuid4()): 1}):
+            with self.assertRaises(ProjectError):
+                self.fixture.read("sweep.rank", study_id=identity, weights=invalid)
+        self.assertEqual(weighted["ranking_sha256"], canonical_hash(
+            {key: value for key, value in weighted.items() if key != "ranking_sha256"}))
         recipe = self.fixture.read("sweep.recipe", study_id=identity)
         self.assertEqual(self.service.journal.read(), before)
         definition = load_definition(self.service, before["sweeps"][identity])
@@ -172,6 +185,7 @@ class DesignSweepRunnerTests(unittest.TestCase):
         self.service.close()
         self.service = self.fixture.service = ProjectService(self.fixture.workspace, auto_run=False)
         self.assertEqual(self.fixture.read("sweep.rank", study_id=identity), ranking)
+        self.assertEqual(self.fixture.read("sweep.rank", study_id=identity, weights=weights), weighted)
         self.assertEqual(self.fixture.read("sweep.recipe", study_id=identity), recipe)
 
     def test_circuit_lazy_failure_duplicate_and_results_keep_originals(self):

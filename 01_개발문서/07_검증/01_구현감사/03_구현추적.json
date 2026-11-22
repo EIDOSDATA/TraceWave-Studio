@@ -15001,8 +15001,8 @@
     },
     {
       "path": "Code/src/rfad/application/design_sweep_service.py",
-      "text_sha256": "59d43828ef585eaf60b0872b64a2b90fa0c915e4d2ae8486ec37d232ba883dd6",
-      "utf8_bytes": 37761
+      "text_sha256": "54cb05104f53014ad6b3239752723610355799409c0705ca026ca0d72baf9753",
+      "utf8_bytes": 37805
     },
     {
       "path": "Code/src/rfad/application/display_mesh.py",
@@ -15791,8 +15791,8 @@
     },
     {
       "path": "Code/tests/test_design_sweep_service.py",
-      "text_sha256": "c8399aacada5c098a90a2873592e19c4dc12649ff3d535f2bfe1332f2dc0459e",
-      "utf8_bytes": 19800
+      "text_sha256": "b74bffc2f446d0c4868e14bc58c92b82bf2da222e3028d5d3f07d2a52a15ffb8",
+      "utf8_bytes": 23115
     },
     {
       "path": "Code/tests/test_display_mesh.py",

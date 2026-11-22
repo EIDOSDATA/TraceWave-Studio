@@ -7,6 +7,88 @@
 #include "file_delivery.h"
 #include <wx/choicdlg.h>
 #include <wx/filedlg.h>
+#include <wx/scrolwin.h>
+#include <cmath>
+#include <optional>
+
+namespace
+{
+/** @brief 저장한 목표에 가중치를 입력하거나 기존 우열 그룹을 그대로 연다. */
+std::optional<Json> RankingWeights(wxWindow* parent, const Json& targets)
+{
+    if (targets.size() < 2)
+    {
+        return Json::object();
+    }
+    wxDialog dialog(parent, wxID_ANY, Display("후보 순위 비교"), wxDefaultPosition, wxDefaultSize,
+                    wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+    dialog.SetName("sweep.ranking.weights");
+    StudioTheme::ApplyTypography(dialog);
+    const int gap = dialog.FromDIP(12);
+    auto* layout = new wxBoxSizer(wxVERTICAL);
+    auto* guide = new wxStaticText(&dialog, wxID_ANY, Display(
+        "가중치를 입력하면 합계 점수 순으로 봅니다. 비워 둔 목표는 1을 적용합니다.\n"
+        "모든 칸을 비우면 목표별 우열 그룹을 봅니다."));
+    layout->Add(guide, 0, wxEXPAND | wxALL, gap);
+    auto* scroll = new wxScrolledWindow(&dialog, wxID_ANY);
+    scroll->SetScrollRate(0, dialog.FromDIP(14));
+    scroll->SetMinSize(dialog.FromDIP(wxSize(450, 185)));
+    auto* fields = new wxFlexGridSizer(2, gap, gap);
+    fields->AddGrowableCol(0, 1);
+    std::vector<std::pair<std::string, wxTextCtrl*>> entries;
+    for (const auto& target : targets)
+    {
+        const auto name = Display(target.at("name").get<std::string>());
+        auto* label = new wxStaticText(scroll, wxID_ANY, name.Left(60));
+        label->SetToolTip(name);
+        fields->Add(label, 0, wxALIGN_CENTER_VERTICAL);
+        auto* input = new wxTextCtrl(scroll, wxID_ANY);
+        input->SetHint("1");
+        input->SetToolTip(name);
+        input->SetMaxLength(24);
+        fields->Add(input, 0, wxEXPAND);
+        entries.emplace_back(target.at("id").get<std::string>(), input);
+    }
+    scroll->SetSizer(fields);
+    layout->Add(scroll, 1, wxEXPAND | wxLEFT | wxRIGHT, gap);
+    auto* status = new wxStaticText(&dialog, wxID_ANY, " ");
+    layout->Add(status, 0, wxEXPAND | wxALL, gap);
+    layout->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
+    Json weights = Json::object();
+    dialog.Bind(wxEVT_BUTTON, [&](wxCommandEvent&)
+    {
+        weights = Json::object();
+        bool hasPositive = false;
+        for (const auto& [id, input] : entries)
+        {
+            auto value = input->GetValue().Trim().Trim(false);
+            if (value.empty())
+            {
+                hasPositive = true;
+                continue;
+            }
+            double weight = 0;
+            if (!value.ToDouble(&weight) || !std::isfinite(weight) || weight < 0 || weight > 1e6)
+            {
+                status->SetLabel(Display("가중치는 0에서 1000000 사이의 숫자를 입력하세요."));
+                input->SetFocus();
+                return;
+            }
+            hasPositive = hasPositive || weight > 0;
+            weights[id] = weight;
+        }
+        if (!hasPositive)
+        {
+            status->SetLabel(Display("가중치가 0보다 큰 목표가 하나 이상 필요합니다."));
+            return;
+        }
+        dialog.EndModal(wxID_OK);
+    }, wxID_OK);
+    dialog.SetSizerAndFit(layout);
+    dialog.CentreOnParent();
+    return dialog.ShowModal() == wxID_OK ? std::optional<Json>(std::move(weights)) : std::nullopt;
+}
+}
 
 void StudioFrame::BuildSweepInterface()
 {
@@ -228,13 +310,26 @@ void StudioFrame::SweepCommand(const std::string& action)
     }
     const auto id = m_sweepPanel->StudyId();
     const auto project = m_project;
+    Json rankRequest = {{"study_id", id}};
+    if (action == "rank")
+    {
+        const auto weights = RankingWeights(this, selected.value("ranking_targets", Json::array()));
+        if (!weights || m_closing || m_project != project || m_sweepPanel->StudyId() != id || m_sweepPending)
+        {
+            return;
+        }
+        if (!weights->empty())
+        {
+            rankRequest["weights"] = *weights;
+        }
+    }
     const auto generation = ++m_sweepGeneration;
     m_sweepPending = true;
     if (action == "rank")
     {
         m_sweepPanel->SetStatus("봉인된 목표 표본으로 후보 순위를 비교하고 있습니다.");
         UpdateControls();
-        Send("sweep.rank", {{"study_id", id}}, false, Context(),
+        Send("sweep.rank", rankRequest, false, Context(),
              [this, project, generation, id](const Json& result)
              {
                  if (m_closing || project != m_project || generation != m_sweepGeneration)
@@ -272,6 +367,11 @@ void StudioFrame::SweepCommand(const std::string& action)
                      {
                          auto label = wxString::Format(Display("%d그룹 / 후보 %d"),
                              row.at("front").get<int>(), row.at("ordinal").get<int>() + 1);
+                         if (row.contains("weighted_score"))
+                         {
+                             label += wxString::Format(Display(" / 가중 점수 %.2f%%"),
+                                 row.at("weighted_score").get<double>() * 100);
+                         }
                          const auto& scores = row.at("target_scores");
                          const std::size_t limit = std::min<std::size_t>(3, scores.size());
                          for (std::size_t index = 0; index < limit; ++index)
@@ -285,9 +385,24 @@ void StudioFrame::SweepCommand(const std::string& action)
                          }
                          labels.Add(label);
                      }
-                     wxSingleChoiceDialog dialog(this,
-                         summary + Display("\n각 목표에서 기준별 통과율의 최솟값을 비교합니다.\n확인을 누르면 선택 후보의 전체 평가를 엽니다."),
-                         Display("목표별 후보 순위"), labels);
+                     auto explanation = summary + Display("\n각 목표에서 기준별 통과율의 최솟값을 비교합니다.");
+                     if (result.contains("weights"))
+                     {
+                         explanation += Display("\n가중치 비율");
+                         const auto& weights = result.at("weights");
+                         const auto visible = std::min<std::size_t>(4, weights.size());
+                         for (std::size_t index = 0; index < visible; ++index)
+                         {
+                             explanation += " | " + Display(targets.at(index).at("name").get<std::string>()).Left(28) +
+                                 wxString::Format(" %.2f%%", weights.at(index).at("normalized_weight").get<double>() * 100);
+                         }
+                         if (weights.size() > visible)
+                         {
+                             explanation += wxString::Format(Display(" | 외 %zu개"), weights.size() - visible);
+                         }
+                     }
+                     explanation += Display("\n확인을 누르면 선택 후보의 전체 평가를 엽니다.");
+                     wxSingleChoiceDialog dialog(this, explanation, Display("목표별 후보 순위"), labels);
                      dialog.SetName("sweep.rank.dialog");
                      if (dialog.ShowModal() == wxID_OK && m_sweepPanel->StudyId() == id)
                      {

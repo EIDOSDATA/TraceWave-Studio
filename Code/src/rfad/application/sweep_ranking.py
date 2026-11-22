@@ -5,6 +5,7 @@ from fractions import Fraction
 
 from rfad.application.canonical import canonical_hash, canonical_hash_from_bytes
 from rfad.application.design_sweep_store import fail, load_candidate, read_json
+from rfad.domain.network_data import finite
 
 
 def target_score(assessment):
@@ -51,9 +52,22 @@ def fronts(vectors):
     return ranking
 
 
-def read(service, study, definition, source, project):
+def _weights(identities, raw):
+    """! @brief 명시한 가중치만 바꾸며 생략한 목표의 가중치는 1이다."""
+    if raw is None:
+        return None
+    if type(raw) is not dict or not raw or not set(raw) <= set(identities):
+        fail("저장한 연구의 목표별 가중치를 지정하십시오.")
+    values = [finite(raw.get(identity, 1), "weights." + identity) for identity in identities]
+    if any(not 0 <= value <= 1e6 for value in values) or not any(values):
+        fail("가중치는 0~1000000이며 최소 한 목표의 가중치는 양수여야 합니다.")
+    return [Fraction(str(value)) for value in values]
+
+
+def read(service, study, definition, source, project, weights=None):
     """! @brief 현재 설계나 결과를 바꾸지 않고 연구에 소속된 봉인 평가만 사용한다."""
     ids = definition["specification"]["target_ids"]
+    weights = _weights(ids, weights)
     targets = {row["id"]: row["name"] for row in source["targets"]}
     root = project["path"] + "/sweeps/" + study["study_id"] + "/results/"
     vectors, hashes, dataset_hashes, excluded = {}, {}, {}, Counter()
@@ -98,4 +112,15 @@ def read(service, study, definition, source, project):
               "scope": "pareto_worst_criterion_sample_pass_fraction", "continuous_band_verified": False,
               "targets": [{"id": identity, "name": targets[identity]} for identity in ids],
               "excluded": dict(sorted(excluded.items())), "items": rows}
+    if weights is not None:
+        total_weight = sum(weights)
+        normalized = [value / total_weight for value in weights]
+        scores = {index: sum(a * b for a, b in zip(vector, normalized))
+                  for index, vector in vectors.items()}
+        rows.sort(key=lambda row: (-scores[row["ordinal"]], row["front"], row["ordinal"]))
+        for row in rows:
+            row["weighted_score"] = float(scores[row["ordinal"]])
+        report["weights"] = [{"id": identity, "weight": float(raw), "normalized_weight": float(value)}
+                             for identity, raw, value in zip(ids, weights, normalized)]
+        report["scope"] = "weighted_worst_criterion_sample_pass_fraction"
     return {**report, "ranking_sha256": canonical_hash(report)}

@@ -5,13 +5,15 @@ import csv
 import io
 import json
 from pathlib import Path
+import subprocess
+import sys
 from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 from uuid import uuid4
 
-from rfad.application import design_sweep_service as sweep, network_service
-from rfad.application.canonical import canonical_bytes
+from rfad.application import design_sweep_service as sweep, network_service, project_archive
+from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.design_sweep_store import baseline, load_definition
 from rfad.application.projects import ProjectService
 from rfad.application.rpc import handle_frame
@@ -104,6 +106,56 @@ class DesignSweepServiceTests(unittest.TestCase):
         self.assertFalse(changed["checks"]["calculation_engine"])
         self.assertFalse(changed["checks"]["review_hash"])
         self.assertFalse(changed["matches"])
+        self.assertEqual(self.service.journal.read(), before)
+
+    def test_replay_tool_restores_circuit_reference_and_runs_in_clean_workspace(self):
+        """! @brief 계산 명세와 원문 백업에서만 별도 실행을 만들고 기존 원본은 연결하지 않는다."""
+        study = self.create()
+        before = self.service.journal.read()
+        recipe = self.read("sweep.recipe", study_id=study)
+        revision = recipe["design_revision_id"]
+        preview = project_archive.prepare(self.service, self.project, revision, True)
+        backup = project_archive.build(self.service, self.project, revision, True, preview["review_hash"])
+        with TemporaryDirectory() as folder:
+            root = Path(folder)
+            recipe_path, backup_path = root / "recipe.json", root / "archive.zip"
+            recipe_path.write_bytes(canonical_bytes(recipe))
+            backup_path.write_bytes(backup)
+            tool = Path(__file__).resolve().parents[1] / "tools" / "replay_sweep.py"
+
+            def execute(destination, *options):
+                """! @brief 도구의 명령행 진입점을 별도 프로세스로 실행한다."""
+                return subprocess.run([sys.executable, str(tool), "--recipe", str(recipe_path),
+                    "--archive", str(backup_path), "--workspace", str(root / destination), *options],
+                    capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=90, check=False)
+
+            reviewed = execute("review")
+            self.assertEqual(reviewed.returncode, 0, reviewed.stderr)
+            report = json.loads(reviewed.stdout)
+            self.assertTrue(all(report["checks"].values()))
+            self.assertFalse(report["performed_calculation"])
+            self.assertIsNone(report["replayed_study_id"])
+            self.assertNotEqual(execute("review", "--run").returncode, 0)
+            replayed = execute("run", "--run")
+            self.assertEqual(replayed.returncode, 0, replayed.stderr)
+            report = json.loads(replayed.stdout)
+            self.assertTrue(report["performed_calculation"])
+            self.assertEqual(report["state"], "completed")
+            self.assertEqual(report["result_counts"]["completed"], 2)
+            with ProjectService(root / "run", auto_run=False) as reopened:
+                state = reopened.journal.read()
+                self.assertEqual(canonical_hash(reopened._load(state["projects"][self.project])),
+                                 recipe["snapshot"]["content_hash"])
+                replayed_id = report["replayed_study_id"]
+                self.assertEqual(list(state["sweeps"]), [replayed_id])
+                result = sweep.read(reopened.host_calculation_context, "sweep.result", self.request(
+                    {"study_id": replayed_id, "index": 1, "offset": 0, "limit": 3, "row": 0, "column": 0}))
+                self.assertEqual(result["page"]["total"], 3)
+                self.assertAlmostEqual(result["page"]["samples"][0]["real"], 11 / 29, places=12)
+            recipe["candidate_count"] += 1
+            recipe_path.write_bytes(canonical_bytes(recipe))
+            self.assertNotEqual(execute("bad", "--run").returncode, 0)
+            self.assertFalse((root / "bad").exists())
         self.assertEqual(self.service.journal.read(), before)
 
     def test_preview_dedup_and_atomic_definition_preserve_all_originals(self):

@@ -42,7 +42,9 @@ def validate_input(method, context, data):
     """! @brief 공개 요청을 닫힌 계약과 프로젝트 소유권으로 제한한다."""
     _fields(context, {"project_id"})
     _uuid(context["project_id"])
-    _fields(data, FIELDS[method])
+    _fields(data, FIELDS[method], {"weights"} if method == "sweep.rank" else set())
+    if "weights" in data and (type(data["weights"]) is not dict or not 1 <= len(data["weights"]) <= 32):
+        fail("순위에는 연구 목표의 명시 가중치를 입력하십시오.")
     for name in ("study_id", "expected_revision"):
         if name in data:
             _uuid(data[name])
@@ -359,6 +361,8 @@ def view(service, state, study):
                                            for key in ("wall_seconds", "ram_bytes", "disk_bytes")}),
         "usage_display": _budget_display(study["usage"]),
         "variable_labels": _labels(source, None if definition["network"] is None else definition["network"]["circuit"]),
+        "ranking_targets": [{"id": row["id"], "name": row["name"]} for row in source["targets"]
+                            if row["id"] in definition["specification"]["target_ids"]],
         "allowed_actions": allowed, "stop_reason": reason or study.get("stop_reason"),
         "convergence_status": "not_established", "physical_validation": "not_established"})
 
@@ -424,7 +428,7 @@ def _recipe(study, definition, source):
     recipe = {"schema": "rfad.sweep-recipe/0.1", "study_id": study["study_id"],
               "project_id": source["project_id"], "design_revision_id": source["revision_id"],
               "snapshot": {key: snapshot[key] for key in ("snapshot_id", "revision_id", "content_hash")},
-              "definition_sha256": study["definition"]["sha256"],
+              "definition_sha256": study["definition"]["sha256"], "review_sha256": definition["review_hash"],
               "installation_scenario_id": setup(source)["active_scenario_id"],
               "original_specification": definition["original_specification"], "specification": definition["specification"],
               "candidate_count": definition["candidate_count"], "runtime_identity": definition["runtime_identity"],
@@ -490,7 +494,7 @@ def read(service, method, params):
         return bounded(_replay_preview(service, state, project, study, definition, source))
     if method == "sweep.rank":
         from rfad.application import sweep_ranking
-        return bounded(sweep_ranking.read(service, study, definition, source, project))
+        return bounded(sweep_ranking.read(service, study, definition, source, project, data.get("weights")))
     labels = _labels(source, None if definition["network"] is None else definition["network"]["circuit"])
     if method == "sweep.page":
         total, offset = study["counts"]["total"], data["offset"]
