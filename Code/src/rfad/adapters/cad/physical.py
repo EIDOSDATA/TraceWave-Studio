@@ -171,17 +171,26 @@ def surface_bodies(cq, projection, mechanical=()):
     return result
 
 
-def _shift_instances(cq, leaves, offsets, part_id, tolerance):
-    """! @brief 원본 누적 자세를 보존하며 지정 말단만 이동하고 새 체적 간섭을 확인한다."""
+def _shift_instances(cq, leaves, instances, offsets, part_id, tolerance):
+    """! @brief 원본 말단 원점을 중심으로 조립 고정 X Y Z축 회전과 이동을 적용한다."""
     validate_instance_offsets(offsets)
-    translations = {tuple(row["path"]): row["translation_mm"] for row in offsets}
+    placements = {tuple(row["path"]): row for row in offsets}
     field = "part." + part_id + ".instance_offsets"
-    _require(translations.keys() <= leaves.keys(), "STEP 원본의 말단 부품 경로를 확인하십시오.", field=field)
+    _require(placements.keys() <= leaves.keys(), "STEP 원본의 말단 부품 경로를 확인하십시오.", field=field)
+    origins = {tuple(row["path"]): tuple(axis[3] for axis in row["transform_mm"])
+               for row in instances if not row["assembly"]}
     shapes = {path: cq.Shape.cast(value) for path, value in leaves.items()}
-    for path, shift in translations.items():
-        shapes[path] = shapes[path].translate(tuple(shift))
+    for path, placement in placements.items():
+        shape = shapes[path]
+        origin = origins[path]
+        for axis, angle in enumerate(placement.get("rotation_deg", [])):
+            angle = math.remainder(angle, 360)
+            if angle:
+                end = tuple(value + (index == axis) for index, value in enumerate(origin))
+                shape = shape.rotate(origin, end, angle)
+        shapes[path] = shape.translate(tuple(placement["translation_mm"]))
     for (first, a), (second, b) in combinations(shapes.items(), 2):
-        if first in translations or second in translations:
+        if first in placements or second in placements:
             bounds_a, bounds_b = a.BoundingBox(), b.BoundingBox()
             if any(min(getattr(bounds_a, axis + "max"), getattr(bounds_b, axis + "max")) -
                    max(getattr(bounds_a, axis + "min"), getattr(bounds_b, axis + "min")) <= tolerance
@@ -221,7 +230,8 @@ def part_bodies(cq, projection):
             source_step = {"source_step": {"sha256": source["sha256"], "source_length_unit": source_unit,
                                           "source_to_mm": scale, "assembly_instances": instances}}
             if row.get("instance_offsets"):
-                placed_leaves = _shift_instances(cq, leaves, row["instance_offsets"], row["id"], projection["tolerance_mm"])
+                placed_leaves = _shift_instances(cq, leaves, instances, row["instance_offsets"],
+                                                  row["id"], projection["tolerance_mm"])
                 shape = cq.Compound.makeCompound(list(placed_leaves.values()))
         def place(solid):
             """! @brief 조립 원점 회전 후 기판 좌표로 이동한다."""

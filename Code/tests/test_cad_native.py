@@ -136,14 +136,22 @@ class CadNativeTests(unittest.TestCase):
             moved = read_step(shifted / "model.step")["environment_" + identity_part]
             for actual, expected in zip(moved["bbox_mm"], (0, 27, 12, 2, 35, 14)):
                 self.assertAlmostEqual(actual, expected, places=8)
+            rotate = [{"path": [1, 1, 2], "translation_mm": [2, 1, 1], "rotation_deg": [0, 0, 90]}]
+            projection["environment_parts"][0]["instance_offsets"] = rotate
+            turned = root / "turned"
+            build_package(projection, turned)
+            placed = read_step(turned / "model.step")["environment_" + identity_part]
+            for actual, expected in zip(placed["bbox_mm"], (-1, 27, 12, 2, 33, 14)):
+                self.assertAlmostEqual(actual, expected, places=8)
+            self.assertAlmostEqual(placed["volume_mm3"], 4)
             with self.assertRaisesRegex(ProjectError, "부품끼리") as overlap:
                 projection["environment_parts"][0]["instance_offsets"] = [
-                    {"path": [1, 1, 2], "translation_mm": [-3, 0, 0]}]
+                    {"path": [1, 1, 2], "translation_mm": [-2, 0, 0], "rotation_deg": [0, 0, 90]}]
                 build_package(projection, root / "overlap")
             self.assertEqual(overlap.exception.details["paths"], [[1, 1, 1], [1, 1, 2]])
             self.assertAlmostEqual(overlap.exception.details["overlap_mm3"], 1.0)
             self.assertEqual(original.read_bytes(), raw)
-            self._check_persisted_instance_offsets(root, source, offsets)
+            self._check_persisted_instance_offsets(root, source, rotate)
 
     def _check_persisted_instance_offsets(self, root, source, offsets):
         """! @brief 실제 읽기 검토, 적용, 저장, 재열기 및 과거 STEP 바이트를 대조한다."""
@@ -165,7 +173,7 @@ class CadNativeTests(unittest.TestCase):
                 "contract_version": "rfad.api/2.0", "context": {"project_id": doc["project_id"]},
                 "input": {"expected_revision": doc["revision_id"], "name": source["name"], "chunks": source["chunks"]}})
             fields = {"kind": "step", "x": "10", "y": "20", "z": "3", "yaw": "90",
-                      "include_in_export": True, "instance_offsets": "1.1.2 2 1 1"}
+                      "include_in_export": True, "instance_offsets": "1.1.2 2 1 1 0 0 90"}
             params = parameters(service, doc, "part", fields, identity=prior["id"], step_token=inspected["preview_token"])
             service.mutate(METHOD, params)
             moved = load(service, doc)
@@ -173,7 +181,7 @@ class CadNativeTests(unittest.TestCase):
             self.assertEqual(stored["step"], source)
             self.assertEqual(stored["instance_offsets"], offsets)
             self.assertIsNone(stored["material_id"])
-            for invalid in ("1.1 2 1 1", "1.1.4 2 1 1", "1.1.2 0 0 0"):
+            for invalid in ("1.1 2 1 1", "1.1.4 2 1 1", "1.1.2 0 0 0", "1.1.2 0 0 0 0 400 0"):
                 with self.assertRaises(ProjectError):
                     service.mutate(METHOD, parameters(service, moved, "part", {"instance_offsets": invalid},
                                                        identity=prior["id"]))
@@ -187,8 +195,17 @@ class CadNativeTests(unittest.TestCase):
             self.assertEqual(saved_doc, moved)
             self.assertEqual(build_cad_input(saved_doc, snapshot_for(saved_doc))["environment_parts"][0]["instance_offsets"],
                              offsets)
-            cleared = reopened.mutate(METHOD, parameters(reopened, saved_doc, "part", {"instance_offsets": ""},
-                                                         identity=prior["id"]))
+            boxed = reopened.mutate(METHOD, parameters(reopened, saved_doc, "part",
+                                     {"kind": "box", "width": "2", "height": "1", "depth": "1"}, identity=prior["id"]))
+            changed = setup(load(reopened, doc))["parts"][0]
+            self.assertIsNone(changed["step"])
+            self.assertNotIn("instance_offsets", changed)
+            reopened.mutate("project.undo", request(reopened, doc["project_id"], {
+                "expected_revision": boxed["new_revision"], "command_id": identity("undo rotation fixture")}))
+            restored = load(reopened, doc)
+            self.assertEqual(setup(restored)["parts"][0]["instance_offsets"], offsets)
+            cleared = reopened.mutate(METHOD, parameters(reopened, restored, "part", {"instance_offsets": ""},
+                                                        identity=prior["id"]))
             current = load(reopened, doc)
             self.assertNotIn("instance_offsets", setup(current)["parts"][0])
             self.assertEqual(setup(current)["parts"][0]["step"], source)

@@ -222,7 +222,7 @@ void PhysicalSetupDialog::RenderReview()
         text += "\n접지 금속은 최상층의 사각 급전 기준 접지 패드 윗면에 놓으십시오.";
         if (Value("kind") == "step")
         {
-            text += "\nSTEP 말단 이동은 한 줄에 경로와 조립 X Y Z 이동량(mm)을 입력합니다. 예시 1.1.2 2 0 0";
+            text += "\nSTEP 말단 배치는 경로와 조립 X Y Z 이동(mm), 선택 X Y Z 회전(deg)을 한 줄에 입력합니다. 예시 1.1.2 2 0 0 0 0 90";
         }
     }
     if (m_context.at("section") == "surface")
@@ -282,7 +282,8 @@ Json PhysicalSetupDialog::Changes() const
     {
         const std::string key = row.at("key");
         if ((key == "case_thickness" && Value("kind") != "dielectric_case") ||
-            (key == "supply_thickness" && Value("kind") != "bondply"))
+            (key == "supply_thickness" && Value("kind") != "bondply") ||
+            (key == "instance_offsets" && Value("kind") != "step"))
         {
             continue;
         }

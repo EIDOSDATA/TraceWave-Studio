@@ -36,13 +36,13 @@ FIELDS = {
     "x": "X", "y": "Y", "z": "Z",
     "width": "폭", "height": "길이", "depth": "높이", "yaw": "Z축 회전",
     "case_thickness": "벽과 덮개 두께 (케이스용)",
-    "instance_offsets": "STEP 말단 이동 (경로 X Y Z, mm)",
+    "instance_offsets": "STEP 말단 배치 (경로 XYZ, 선택 회전)",
     "openings": "개구 (mm, 줄마다 X Y 폭 길이)", "active_scenario_id": "활성 시나리오",
 }
 
 
 def _instance_offsets(text):
-    """! @brief 경로.번호와 X Y Z 이동값 입력을 STEP 전용 레코드로 변환한다."""
+    """! @brief 경로 번호와 X Y Z 이동, 선택 각도를 STEP 전용 레코드로 변환한다."""
     from rfad.domain.physical_setup import validate_instance_offsets
 
     result = []
@@ -50,13 +50,16 @@ def _instance_offsets(text):
         columns = line.split()
         if not columns:
             continue
-        if len(columns) != 4:
-            fail("한 줄마다 원본 경로와 X Y Z 이동량(mm)을 입력하십시오.", "instance_offsets")
+        if len(columns) not in (4, 7):
+            fail("한 줄마다 경로, X Y Z 이동(mm), 선택 X Y Z 회전(deg)을 입력하십시오.", "instance_offsets")
         tokens = columns[0].split(".")
         if not all(token.isascii() and token.isdecimal() and len(token) <= 2 for token in tokens):
             fail("원본 경로는 점으로 구분한 번호입니다. 예시 1.1.2", "instance_offsets")
-        result.append({"path": [int(token) for token in tokens],
-                       "translation_mm": [number(value, "instance_offsets") for value in columns[1:]]})
+        row = {"path": [int(token) for token in tokens],
+               "translation_mm": [number(value, "instance_offsets") for value in columns[1:4]]}
+        if len(columns) == 7:
+            row["rotation_deg"] = [number(value, "instance_offsets") for value in columns[4:]]
+        result.append(row)
     result.sort(key=lambda row: row["path"])
     if result:
         validate_instance_offsets(result)
@@ -140,7 +143,8 @@ def _descriptors(document, model, section, row):
                                                        for rect in row[key]))
         elif key == "instance_offsets":
             entry.update(kind="lines", value="\n".join(
-                ".".join(map(str, item["path"])) + " " + " ".join(format(value, ".17g") for value in item["translation_mm"])
+                ".".join(map(str, item["path"])) + " " + " ".join(
+                    format(value, ".17g") for value in [*item["translation_mm"], *item.get("rotation_deg", [])])
                 for item in row.get(key, [])))
         elif key == "name":
             entry.update(kind="text", value=row[key])
@@ -331,8 +335,9 @@ class PhysicalSetupService:
                 if record["kind"] == "step" and record["step"] is None:
                     fail("STEP 파일의 읽기 미리보기가 필요합니다.", "step_token")
                 if record["kind"] != "step":
-                    if record.get("instance_offsets"):
-                        fail("말단 이동은 외부 STEP 조립에만 적용할 수 있습니다.", "instance_offsets")
+                    if "instance_offsets" in data["changes"] and record.get("instance_offsets"):
+                        fail("말단 배치는 외부 STEP 조립에만 적용할 수 있습니다.", "instance_offsets")
+                    record.pop("instance_offsets", None)
                     record["step"] = None
                 offsets = record.get("instance_offsets", [])
                 original_offsets = (original or {}).get("instance_offsets", [])

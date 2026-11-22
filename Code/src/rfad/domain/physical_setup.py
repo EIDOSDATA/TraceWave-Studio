@@ -76,21 +76,31 @@ def step_bytes(source):
 
 
 def validate_instance_offsets(rows):
-    """! @brief 원본 STEP의 안정 경로별 조립 좌표 평행 이동만 보존한다."""
+    """! @brief 원본 STEP의 안정 경로별 조립 좌표 이동과 회전을 보존한다."""
     field = "part.instance_offsets"
     if type(rows) is not list or not 1 <= len(rows) <= MAX_STEP_INSTANCE_OFFSETS:
         _fail("E_RESOURCE", "STEP 조립 말단의 이동은 최대 16개입니다.", field)
     paths = []
     for row in rows:
-        _fields(row, {"path", "translation_mm"}, field)
+        keys = {"path", "translation_mm"}
+        if isinstance(row, dict) and "rotation_deg" in row:
+            keys.add("rotation_deg")
+        _fields(row, keys, field)
         path, shift = row["path"], row["translation_mm"]
         if (type(path) is not list or not 2 <= len(path) <= 8 or path[0] != 1
                 or any(type(index) is not int or not 1 <= index <= 32 for index in path)):
             _fail("E_SCHEMA", "STEP 원본의 말단 경로를 입력하십시오.", field)
         if (type(shift) is not list or len(shift) != 3
                 or any(type(value) not in (float, int) or not -1e6 <= value <= 1e6 or not math.isfinite(value)
-                       for value in shift) or not any(shift)):
-            _fail("E_GEOMETRY", "조립 좌표에서 0이 아닌 유한한 X Y Z 이동량을 mm로 입력하십시오.", field)
+                       for value in shift)):
+            _fail("E_GEOMETRY", "조립 좌표에서 유한한 X Y Z 이동량을 mm로 입력하십시오.", field)
+        rotation = row.get("rotation_deg", [0, 0, 0])
+        if (type(rotation) is not list or len(rotation) != 3
+                or any(type(value) not in (float, int) or not -360 <= value <= 360 or not math.isfinite(value)
+                       for value in rotation)):
+            _fail("E_GEOMETRY", "X Y Z 회전은 각 축 -360~360도로 입력하십시오.", field)
+        if not (any(shift) or any(value % 360 for value in rotation)):
+            _fail("E_GEOMETRY", "조립 말단의 실제 위치나 방향이 바뀌는 값을 입력하십시오.", field)
         paths.append(tuple(path))
     if paths != sorted(set(paths)):
         _fail("E_CONFLICT", "같은 STEP 부품 경로를 중복 지정할 수 없습니다.", field)
