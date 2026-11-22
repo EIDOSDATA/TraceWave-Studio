@@ -8268,6 +8268,10 @@
       "extension_profile": "rfad.result-workspace/0.1",
       "status": "implemented"
     },
+    "result.project_activity": {
+      "extension_profile": "rfad.project-activity/0.1",
+      "status": "implemented"
+    },
     "result.radiation": {
       "extension_profile": "rfad.result-workspace/0.1",
       "status": "implemented"
@@ -14305,8 +14309,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
-      "text_sha256": "230ebe44546d343b74bcf44db0ee1ded3584fc4b952a328d2ae2122f5b7c1e42",
-      "utf8_bytes": 28612
+      "text_sha256": "91425431a6ab17b180e979c8e12fe6033cac0c3a393833a1e9f55c8694f5df1c",
+      "utf8_bytes": 30005
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
@@ -15200,8 +15204,8 @@
     },
     {
       "path": "Code/src/rfad/application/project_study_results.py",
-      "text_sha256": "2e9315f7c42353a25f954fd428fadc5eefa3d79054948a9c5b73dc22e00c0b55",
-      "utf8_bytes": 7554
+      "text_sha256": "8a6465db3d447c4bdb617f506904ce22ff5cc2a7f081b4700476d25933d5be65",
+      "utf8_bytes": 7715
     },
     {
       "path": "Code/src/rfad/application/radiation.py",
@@ -15290,8 +15294,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "baa2f1b5f8dec65be921073eb905e30d117174f4ff09abf0682d363bf8c10419",
-      "utf8_bytes": 39073
+      "text_sha256": "6240b995035648c1e623b2816874d8aab365c6be565456fe3fec512dd1fdfaf4",
+      "utf8_bytes": 39358
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -16650,8 +16654,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
-      "text_sha256": "fb80620ee4ab28b2154d87a66e38882b46ddfe08a8c9a83a03ca6bb274490b2c",
-      "utf8_bytes": 22256
+      "text_sha256": "de07599bcaf76d2eee1fb62d78d4d01a10423d6ee88f4d2f3cfc219fad421f53",
+      "utf8_bytes": 24783
     },
     {
       "path": "Code/ui/wxwidgets/studio_precision.cpp",

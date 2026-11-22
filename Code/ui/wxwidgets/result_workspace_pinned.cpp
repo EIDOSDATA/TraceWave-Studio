@@ -47,8 +47,8 @@ void ResultWorkspace::LocatePinnedSource(const Json& source, const Json& pin, in
                 m_catalog = response;
                 m_browser->SetCatalog(response, source);
                 m_browser->SetStatus(
-                    found ? "검증 보고서와 동일한 봉인 해석 원본을 표시합니다."
-                          : "보고서의 봉인 원본을 표시 중입니다. 조회한 목록 범위에는 없어 선택 행을 두지 않습니다.");
+                    found ? "선택한 기록과 동일한 봉인 해석 원본을 표시합니다."
+                          : "선택한 봉인 원본을 표시 중입니다. 조회한 목록 범위에는 없어 선택 행을 두지 않습니다.");
                 return;
             }
             /** @brief 한 번의 직접 열기는 최대 64페이지까지만 읽으며 곡선의 원본을 대체하지 않는다. */

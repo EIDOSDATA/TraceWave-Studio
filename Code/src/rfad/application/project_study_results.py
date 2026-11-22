@@ -64,6 +64,15 @@ def assessment(service, study):
             "fabrication_validated": False, "measurement_validated": False}
 
 
+def read_assessment(service, study):
+    """! @brief 프로젝트에 등록한 연구 판정의 봉인 바이트와 원본 개정을 대조한다."""
+    result = json.loads(service.journal.read_artifact(study["assessment"]))
+    if (result.get("study_id") != study["study_id"] or result.get("snapshot") != study["snapshot"]
+            or result.get("definition") != study["definition"]):
+        raise ProjectError("E_HASH", "격자 판정의 연구/원본 참조가 다릅니다.")
+    return result
+
+
 def view(service, state, study):
     """! @brief 원본 전체와 큰 복소 필드를 보내지 않고 상태/전력만 표시 DTO로 투영한다."""
     project = state["projects"][study["project_id"]]
@@ -90,10 +99,7 @@ def view(service, state, study):
               "power_unit": "W*s^2", "absolute_power_w": None, "physics_validated": False,
               "fabrication_validated": False, "measurement_validated": False}
     if "assessment" in study:
-        result["assessment"] = json.loads(service.journal.read_artifact(study["assessment"]))
-        if (result["assessment"].get("study_id") != study["study_id"] or result["assessment"].get("snapshot") != study["snapshot"]
-                or result["assessment"].get("definition") != study["definition"]):
-            raise ProjectError("E_HASH", "격자 판정의 연구/원본 참조가 다릅니다.")
+        result["assessment"] = read_assessment(service, study)
         losses = result["assessment"].get("individual_loss_stability")
         if losses is not None:
             for comparison in losses["comparisons"]:

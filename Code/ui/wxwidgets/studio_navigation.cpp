@@ -2,6 +2,8 @@
 #include "studio_internal.h"
 #include "editor_sync.h"
 #include "object_rename_dialog.h"
+#include "project_activity_dialog.h"
+#include "result_workspace.h"
 #include "studio_theme.h"
 #include "studio_shell.h"
 #include "workspace_bar.h"
@@ -61,6 +63,43 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
     m_navigationLabel = new wxStaticText(parent, wxID_ANY, Display("프로젝트 객체 찾기"));
     StudioTheme::Heading(*m_navigationLabel);
     layout->Add(m_navigationLabel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, FromDIP(StudioTheme::InputGap));
+    const auto openActivity = [this](const std::string& object)
+    {
+        if (m_project.empty() || !m_connected || m_closing || m_busy)
+        {
+            return;
+        }
+        const auto project = m_project, epoch = m_epoch;
+        DialogGateway gateway = [this, project, epoch](const std::string& method, const Json& input, bool mutation,
+                                                       std::function<void(const Json&)> success,
+                                                       std::function<void(const Json&)> failure)
+        {
+            if (mutation || m_closing || !m_connected || project != m_project || epoch != m_epoch)
+            {
+                failure({{"code", "E_STATE"}, {"message", "프로젝트 연결이 바뀌었습니다. 기록 찾기를 다시 여세요."}});
+                return;
+            }
+            Send(method, input, false, Context(), std::move(success), std::move(failure));
+        };
+        const auto chosen = ShowProjectActivity(this, m_revision, object, std::move(gateway));
+        if (chosen.is_object() && project == m_project && epoch == m_epoch && m_connected && !m_closing)
+        {
+            m_views->SetSelection(9);
+            m_results->OpenPinned(chosen.at("source"), chosen.at("pin"));
+        }
+    };
+    auto* activity = new wxButton(parent, wxID_ANY, Display("프로젝트 기록 찾기"));
+    activity->SetName("navigation.activity.open");
+    StudioTheme::Button(*activity);
+    activity->Bind(wxEVT_BUTTON, [openActivity](wxCommandEvent&)
+    {
+        openActivity("");
+    });
+    activity->Bind(wxEVT_UPDATE_UI, [this](wxUpdateUIEvent& event)
+    {
+        event.Enable(m_connected && !m_project.empty() && !m_closing && !m_busy);
+    });
+    layout->Add(activity, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, FromDIP(8));
     m_objectSearch = new wxSearchCtrl(parent, wxID_ANY);
     m_objectSearch->SetDescriptiveText(Display("객체 이름 검색"));
     m_objectSearch->SetName("navigation.search");
@@ -169,7 +208,7 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
                      event.Skip();
                  });
     m_tree->Bind(wxEVT_TREE_ITEM_MENU,
-                 [this](wxTreeEvent& event)
+                 [this, openActivity](wxTreeEvent& event)
                  {
                      if (m_busy || !event.GetItem().IsOk() ||
                          !Studio::EditableProject(m_editor, m_scene, m_project, m_revision))
@@ -202,6 +241,17 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
                                  }
                              },
                              rename);
+                         const int jump = wxWindow::NewControlId();
+                         if (selection.contains("id"))
+                         {
+                             menu.Append(jump, Display("이 객체의 프로젝트 기록"));
+                             menu.Bind(wxEVT_MENU,
+                                       [openActivity, selection](wxCommandEvent&)
+                                       {
+                                           openActivity(selection.at("id").get<std::string>());
+                                       },
+                                       jump);
+                         }
                          PopupMenu(&menu);
                      }
                  });
