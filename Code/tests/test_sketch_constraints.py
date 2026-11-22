@@ -82,6 +82,79 @@ class SketchConstraintTests(unittest.TestCase):
                     self.assertEqual(group["selection_ids"], [identity])
                     self.assertEqual(group["constraints"][0]["refs"][1]["id"], guide["id"])
 
+    def test_coincident_endpoints_move_while_opposite_anchors_and_ports_stay_fixed(self):
+        """! @brief 원호의 반경과 다른 접선, IFA의 끝점 사슬과 급전 원본을 보존한다."""
+        for kind in ("arc", "ifa"):
+            with self.subTest(kind=kind), TemporaryDirectory() as folder:
+                root = Path(folder)
+                with ProjectService(root, auto_run=False) as service:
+                    source, _ = register_fixture(service, sketch_fixture(kind)[0])
+                    project = source["project_id"]
+                    layer = next(row["layer_id"] for row in source["geometry"] if row["kind"] == "line_path")
+
+                    def current():
+                        """! @brief 저장소가 가리키는 원본 개정을 반환한다."""
+                        return service._load(service.journal.read()["projects"][project])
+
+                    def submit(operation, values):
+                        """! @brief 실제 2D 끝점 편집과 같은 API로 적용한다."""
+                        return service.mutate("canvas.apply", request(service, project, {
+                            "operation": operation, "values": values, "command_id": str(uuid4()),
+                            "expected_revision": current()["revision_id"]}))
+
+                    def line(start, end, target=None, tangent=False):
+                        """! @brief 시작점의 관계를 저장한 시험 도체를 만든다."""
+                        identity = str(uuid4())
+                        values = {"id": identity, "layer_id": layer, "width_mm": .4, "start": start, "end": end}
+                        if target:
+                            kinds = ("coincident", "tangent") if tangent else ("coincident",)
+                            values["relations"] = [{"kind": relation, "endpoint": "start", "target": target}
+                                                    for relation in kinds]
+                        submit("create_line", values)
+                        return identity
+
+                    if kind == "arc":
+                        a = str(uuid4())
+                        submit("create_arc", {"id": a, "layer_id": layer, "width_mm": .4, "center": [2, 2],
+                            "radius_mm": 1, "start_angle_deg": 0, "sweep_angle_deg": 90})
+                        line([3, 2], [3, 1], sketch.anchor(a, "start"), tangent=True)
+                        joint, target, expected = [2, 3], [3.5, 3.5], [2 + 2**-.5, 2 + 2**-.5]
+                    else:
+                        a = line([2, 53], [4, 53])
+                        joint, target, expected = [4, 53], [4.5, 54], [4.5, 54]
+                    b = line(joint, [joint[0] - 1, joint[1] + 1], sketch.anchor(a, "end"))
+                    c = line(joint, [joint[0], joint[1] + 2], sketch.anchor(b, "start"))
+                    before = current()
+                    moved = submit("move_endpoint", {"id": b, "endpoint": "start", "point": target})
+                    self.assertEqual(set(moved["changed_ids"]), {a, b, c})
+                    after = current()
+                    model, original = sketch.Model(after), sketch.Model(before)
+                    for identity, endpoint in ((a, "end"), (b, "start"), (c, "start")):
+                        for actual, coordinate in zip(model.location(sketch.anchor(identity, endpoint)), expected):
+                            self.assertAlmostEqual(actual, coordinate)
+                        opposite = sketch.anchor(identity, "start" if endpoint == "end" else "end")
+                        self.assertEqual(model.location(opposite), original.location(opposite))
+                    self.assertEqual(after["extensions"], before["extensions"])
+                    self.assertEqual(after["ports"], source["ports"])
+                    self.assertEqual(after["connections"], source["connections"])
+                    if kind == "arc":
+                        self.assertEqual(model.geometry[a]["radius"], original.geometry[a]["radius"])
+                        with self.assertRaisesRegex(ProjectError, "tangent"):
+                            submit("move_endpoint", {"id": a, "endpoint": "start", "point": [1, 2]})
+                        self.assertEqual(current(), after)
+                    for operation, document in (("project.undo", before), ("project.redo", after)):
+                        service.mutate(operation, request(service, project, {
+                            "command_id": str(uuid4()), "expected_revision": current()["revision_id"]}))
+                        self.assertEqual(current()["geometry"], document["geometry"])
+                    task = service.mutate("project.save", request(service, project,
+                        {"expected_revision": current()["revision_id"]}))
+                    service.run_next()
+                    self.assertEqual(status(service, task["job_id"])["state"], "completed")
+                with ProjectService(root, auto_run=False) as reopened:
+                    recovered = reopened._load(reopened.journal.read()["projects"][project])
+                    self.assertEqual(recovered["geometry"], after["geometry"])
+                    self.assertEqual(recovered["extensions"], before["extensions"])
+
     def test_linked_canvas_drag_is_atomic_and_keeps_feed(self):
         """! @brief 원호와 IFA에서 연결 드래그와 급전 보호를 서비스 진입점으로 확인한다."""
         for kind in ("arc", "ifa"):

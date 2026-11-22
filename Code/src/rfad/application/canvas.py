@@ -179,6 +179,45 @@ def _move_endpoint(document: dict, geometry: dict, endpoint: object, point: obje
     return {"type": "geometry.set", "payload": {"geometry": changed}}
 
 
+def _move_coincident_endpoints(document, geometry, endpoint, point):
+    """! @brief 접한 끝점만 원자적으로 바꾸고 나머지 기하와 저장 구속을 검증한다."""
+    if endpoint not in ("start", "end"):
+        return _move_endpoint(document, geometry, endpoint, point)
+    selected = (geometry["id"], endpoint)
+    anchors = sketch_constraints.coincident_anchors(document, selected)
+    if len(anchors) == 1:
+        return _move_endpoint(document, geometry, endpoint, point)
+
+    original = {row["id"]: row for row in document["geometry"]}
+    members = {identity for identity, _ in anchors}
+    if len(members) != len(anchors) or any(name not in ("start", "end") for _, name in anchors):
+        _fail("한 객체의 두 끝점이나 고정 중심을 함께 이동할 수 없습니다.", "values.endpoint", "E_CONFLICT")
+    blocked = _translation_block(document, members, original, require_movable=False)
+    if blocked:
+        _fail(blocked, "values.id", "E_CONFLICT")
+
+    # @brief 원호가 있으면 고정한 중심과 반경에 투영한 실제 끝점을 같은 접속의 목표로 사용한다.
+    lead, lead_endpoint = next(((key, name) for key, name in anchors if original[key]["kind"] == "arc_path"),
+                                selected)
+    first = _move_endpoint(document, original[lead], lead_endpoint, point)["payload"]["geometry"]
+    model = sketch_constraints.Model(document)
+    model.geometry[lead] = first
+    target = list(model.location(sketch_constraints.anchor(lead, lead_endpoint)))
+    moved = {lead: first}
+    for identity, name in anchors:
+        if identity != lead:
+            row = _move_endpoint(document, original[identity], name, target)["payload"]["geometry"]
+            moved[identity] = row
+
+    from rfad.domain.pcb_features import COMMAND, finalize_pcb_edits, make_patch
+
+    candidate = deepcopy(document)
+    candidate["geometry"] = [moved.get(row["id"], row) for row in candidate["geometry"]]
+    finalize_pcb_edits(document, candidate, "geometry.set")
+    return {"type": COMMAND, "payload": make_patch(document, candidate, "sketch.move_endpoint",
+                                                   "일치하는 스케치 끝점 연동 이동")}
+
+
 def _retarget_arc(document: dict, arc: dict, endpoint: str, target: list[float]) -> None:
     """! @brief 고정 중심/반지름과 반대쪽 끝점에서 기존 회전 방향을 유지한다."""
     center = _display_point(document, arc["center"], "geometry.center")
@@ -224,9 +263,9 @@ def _port_marker(document: dict, port: dict) -> dict:
     return marker
 
 
-def _translation_block(document, members, geometry):
+def _translation_block(document, members, geometry, *, require_movable=True):
     """! @brief 연결된 급전, 비아 패드 및 입력 위치가 잠긴 묶음의 이동을 막는다."""
-    if any(not _movable(geometry[identity]) for identity in members):
+    if require_movable and any(not _movable(geometry[identity]) for identity in members):
         return "연결된 도체에 매개변수에 연결되었거나 미정인 좌표가 있습니다."
     if any(any(port[key] in members for key in ("positive_geometry_id", "reference_geometry_id"))
            for port in document["ports"]):
@@ -456,7 +495,7 @@ def canvas_command(document: dict, operation: str, values: dict) -> dict:
     if operation == "remove":
         return {"type": "geometry.remove", "payload": {"id": identity}}
     if operation == "move_endpoint":
-        return _move_endpoint(document, geometry, values["endpoint"], values["point"])
+        return _move_coincident_endpoints(document, geometry, values["endpoint"], values["point"])
     if not _movable(geometry):
         _fail("매개변수에 연결되었거나 미정인 좌표는 직접 이동할 수 없습니다. 원래 속성을 편집하십시오.", "values.id", "E_CONFLICT")
     offsets = [Quantity(**_quantity(values[key], "mm", "values." + key)).value_si for key in ("dx_mm", "dy_mm")]

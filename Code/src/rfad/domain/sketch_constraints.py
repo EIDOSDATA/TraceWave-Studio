@@ -75,6 +75,24 @@ def translation_groups(document):
     return indices
 
 
+def coincident_anchors(document, selected):
+    """! @brief 같은 좌표에 고정된 기준점만 모으며 같은 객체의 다른 점은 따로 유지한다."""
+    neighbors = {}
+    for group in groups(document):
+        for row in (*group["constraints"], *group["protected"]):
+            if row["kind"] == "coincident":
+                a, b = ((ref["id"], ref["point"]) for ref in row["refs"])
+                neighbors.setdefault(a, set()).add(b)
+                neighbors.setdefault(b, set()).add(a)
+    component, pending = set(), [selected]
+    while pending:
+        current = pending.pop()
+        if current not in component:
+            component.add(current)
+            pending.extend(neighbors.get(current, set()) - component)
+    return [selected, *sorted(component - {selected})]
+
+
 def anchor(identity, point_name):
     """! @brief 현재 이름과 무관한 기준 객체 및 기하점 ID를 반환한다."""
     return {"id": identity, "point": point_name}

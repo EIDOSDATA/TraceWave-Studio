@@ -14806,23 +14806,23 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/native.py",
-      "text_sha256": "6835af5657bf571b6d087ce1f40713731dec6f32289eac97f63ef040a9adc709",
-      "utf8_bytes": 7431
+      "text_sha256": "5495fe39f39af934a90ae5826040187e9018ccb9c7da9d78e669b8de0b7a6104",
+      "utf8_bytes": 7651
     },
     {
       "path": "Code/src/rfad/adapters/cad/physical.py",
-      "text_sha256": "e7113e9c8834ca3d2c93375895875a01f9cffd86e27c710399d5c43e232f7218",
-      "utf8_bytes": 15804
+      "text_sha256": "46bceb2e84a9cb68b1c075bdab00150981ab8b6f07903206be3576f820dfe2b2",
+      "utf8_bytes": 18122
     },
     {
       "path": "Code/src/rfad/adapters/cad/step_io.py",
-      "text_sha256": "df93c287d893627487c38f79cd372d99ff008de709bff3ce94d22def00684bd5",
-      "utf8_bytes": 7727
+      "text_sha256": "93d01b9b56524f64d1b6fdb88eeaaf0a60429e04e0a9e5753d41d378df3cbb0a",
+      "utf8_bytes": 11482
     },
     {
       "path": "Code/src/rfad/adapters/cad/verification.py",
-      "text_sha256": "58dd3ddb64fb6effe07b9e374466f74e9982d139b7958ceddb9aa5af85e19fcc",
-      "utf8_bytes": 5330
+      "text_sha256": "00e56dfb34f3c202ad57df66fa4cd76843881fedc6baf22a8d9c68948e17061a",
+      "utf8_bytes": 5545
     },
     {
       "path": "Code/src/rfad/adapters/exchange/cam_reader.py",
@@ -14976,8 +14976,8 @@
     },
     {
       "path": "Code/src/rfad/application/canvas.py",
-      "text_sha256": "5b0764edd022af1f37f4b4753f14335b7cd5a9284556b9074ab74513175874ff",
-      "utf8_bytes": 31815
+      "text_sha256": "1f73075f56a9871a54cec3277c668cb70edeb71e50dbdb11d39cc27de5b64bf0",
+      "utf8_bytes": 34099
     },
     {
       "path": "Code/src/rfad/application/catalog_api.py",
@@ -15546,8 +15546,8 @@
     },
     {
       "path": "Code/src/rfad/domain/pcb_features.py",
-      "text_sha256": "85f9d16b9cc94206c1b14b7cb695e1821bba975042c25e51e0fb8bdf9e02c249",
-      "utf8_bytes": 34471
+      "text_sha256": "0e613c92712935d1526a706f6966bb7c9f468ec483add595551096dac65462e6",
+      "utf8_bytes": 34495
     },
     {
       "path": "Code/src/rfad/domain/pcb_selection_evidence.py",
