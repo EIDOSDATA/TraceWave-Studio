@@ -14964,8 +14964,8 @@
     },
     {
       "path": "Code/src/rfad/application/canvas.py",
-      "text_sha256": "1ad42bd965ad53bafabe4b433240dcef1da1598dda0994b96bed7cb95141d01a",
-      "utf8_bytes": 25297
+      "text_sha256": "fc56e67bcebc48aabbe7c1fd6d4beeda95551787ecd13f5b494377ed98d0b715",
+      "utf8_bytes": 28423
     },
     {
       "path": "Code/src/rfad/application/catalog_api.py",
@@ -15574,8 +15574,8 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "9bcd51de2ea2b829582422da2f321b3067e8f0d898ae4715f81258bb0734e29f",
-      "utf8_bytes": 25831
+      "text_sha256": "51329726c5b7b52c156879bd4764ac68ef31af2300aaffb8442b6ecdeae050ef",
+      "utf8_bytes": 25988
     },
     {
       "path": "Code/src/rfad/domain/radiation_polarization.py",
@@ -15729,8 +15729,8 @@
     },
     {
       "path": "Code/tests/test_canvas_service.py",
-      "text_sha256": "a48bdc301a87472cc93a3fd6138a9ee49144a2f7a9728bbfa238fdf7eca2190d",
-      "utf8_bytes": 27248
+      "text_sha256": "ccb2888b05fd90872fa90a47a87c6269697609db1f05fe7f9df5703c130b3b64",
+      "utf8_bytes": 29442
     },
     {
       "path": "Code/tests/test_catalog_api.py",
@@ -16374,8 +16374,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas.cpp",
-      "text_sha256": "024b8efdf3d2dbf679014b7f09f692a50e8c35b6a1dbadd5ef3a53e2bc179926",
-      "utf8_bytes": 31211
+      "text_sha256": "54366bdef9b720e26b027e6379fa44fa834d04b8da6745a598178ecc729940c9",
+      "utf8_bytes": 32547
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_dimensions.cpp",
@@ -16384,8 +16384,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_precision.cpp",
-      "text_sha256": "c9b9b0ede6b8332a026f4a6fc07508a625b7ddd5c7f6bb18f0a68fd54472dd85",
-      "utf8_bytes": 8078
+      "text_sha256": "604a5b1aace43456df9eca0375e5feb2173c84bfd808e8db30175ae083bc1459",
+      "utf8_bytes": 10183
     },
     {
       "path": "Code/ui/wxwidgets/design_rules_dialog.cpp",
@@ -16674,8 +16674,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "26e50f6f6f55aecab865888bef14b4788ac56b4a1a98124c1b3b5fe943034d25",
-      "utf8_bytes": 33831
+      "text_sha256": "75778baafc53278a0e871d280f51d060e9de7f875cb9b718c752d74abf0dfe24",
+      "utf8_bytes": 34247
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",

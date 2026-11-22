@@ -327,7 +327,7 @@ class ProjectService:
                 raise ProjectError("E_UNSUPPORTED", "후보 채택은 sweep.selection.preview/apply를 사용하십시오.")
             if data["type"] == "network.library.replace":
                 raise ProjectError("E_UNSUPPORTED", "자료 변경은 network.preview와 network.apply를 사용하십시오.")
-            if data["type"] == sketch_service.sketch.COMMAND:
+            if data["type"] in (sketch_service.sketch.COMMAND, sketch_service.sketch.DRAW_COMMAND):
                 raise ProjectError("E_UNSUPPORTED", "스케치 구속은 precision.sketch.preview/apply를 사용하십시오.")
             if data["type"] == smart_dimension_service.model.COMMAND:
                 raise ProjectError("E_UNSUPPORTED", "스마트 치수는 precision.smart.preview/apply를 사용하십시오.")

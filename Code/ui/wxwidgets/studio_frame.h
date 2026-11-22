@@ -425,6 +425,7 @@ private:
     wxChoice* m_layerChoice = nullptr;
     wxSpinCtrlDouble* m_width = nullptr;
     wxCheckBox* m_snapCheck = nullptr;
+    wxCheckBox* m_drawingRelations = nullptr;
     wxStaticText* m_canvasHint = nullptr;
     wxPanel* m_startActions = nullptr;
     wxButton* m_startCreate = nullptr;

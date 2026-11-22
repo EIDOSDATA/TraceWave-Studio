@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 205,
+    "current_07_검증": 206,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28747,8 +28747,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 643660,
-      "working_tree_sha256": "072e60df51f40477516c64fcab1072f1e1872cd3da4236e012c80853551adc79"
+      "bytes": 643661,
+      "working_tree_sha256": "7bc137b7fb120e30dbb9c287bc74a1b5d1843183c9a77af11576d9543794f68f"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -31676,6 +31676,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/329_그리기_관계_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1228,
+      "working_tree_sha256": "cdffc46cb6a6f25c8622c709af7a7429b54d33a00584cb28d47a0dee31015710",
+      "text_lines": 8,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/32_프로젝트_편집복원_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -32383,8 +32392,8 @@
       "path": "01_개발문서/09_개발계획/11_캐드와_기계도면_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 22873,
-      "working_tree_sha256": "73a4d1be3d3a1373ec9786969d5e390d1201dda16d10b0ce2c741177c1b986ef",
+      "bytes": 23080,
+      "working_tree_sha256": "f5080ef49156859d50ff81b6e95ae3f780437e15be614d84b1f37362fe07acb7",
       "text_lines": 78,
       "text_status": "utf8_read"
     },
@@ -32419,9 +32428,9 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 23027,
-      "working_tree_sha256": "67740e7161881c9936e7ab47f3078a3fa8d2bb5790c35a7d579b6cf5fccded7c",
-      "text_lines": 161,
+      "bytes": 23388,
+      "working_tree_sha256": "172022f1901356e540e842b88f33db48d4fbb6e8e1ac05223f3f2ae8a683467c",
+      "text_lines": 163,
       "text_status": "utf8_read"
     },
     {

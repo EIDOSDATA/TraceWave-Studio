@@ -26,6 +26,15 @@ void DesignCanvas::SetSnapEnabled(bool enabled)
     Refresh(false);
 }
 
+/** @brief 스냅 안내에서 채택한 관계를 보존하는 입력 모드를 전환한다. */
+void DesignCanvas::SetDrawingRelations(bool enabled)
+{
+    m_drawingRelations = enabled;
+    m_startSnap.reset();
+    m_snap.reset();
+    Refresh(false);
+}
+
 const DesignCanvas::Shape* DesignCanvas::SelectedPath() const
 {
     const auto* shape = FindShape(m_selection);
@@ -56,7 +65,8 @@ void DesignCanvas::UpdateCursor(const wxPoint& pixel)
     using namespace CanvasPrecision;
     m_cursor = ScreenToWorld(pixel);
     m_snap.reset();
-    if (!m_snapEnabled || !m_editingEnabled || !GetClientRect().Contains(pixel))
+    const bool infer = m_drawingRelations && (m_tool == "arc" || m_tool == "line");
+    if ((!m_snapEnabled && !infer) || !m_editingEnabled || !GetClientRect().Contains(pixel))
     {
         return;
     }
@@ -78,7 +88,8 @@ void DesignCanvas::UpdateCursor(const wxPoint& pixel)
     }
     const auto viewport = Viewport();
     const auto cursor = GeometryPoint(m_cursor);
-    Nearest nearest(cursor, FromDIP(8) / viewport.pixelsPerMm, circle);
+    const double tolerance = FromDIP(8) / viewport.pixelsPerMm;
+    Nearest nearest(cursor, tolerance, circle);
     for (auto shape = m_scene.shapes.rbegin(); shape != m_scene.shapes.rend(); ++shape)
     {
         if (shape->layer != layer || (editing && shape->id == editing->id) || !HasEndpoints(*shape) ||
@@ -92,12 +103,42 @@ void DesignCanvas::UpdateCursor(const wxPoint& pixel)
             const auto projected = viewport.Project(candidate);
             if (projected.x >= 0 && projected.x < viewport.width && projected.y >= 0 && projected.y < viewport.height)
             {
-                nearest.Consider(candidate, SnapKind::Endpoint);
+                nearest.Consider(candidate, SnapKind::Endpoint, shape->id, end);
             }
         }
     }
     m_snap = nearest.Result();
-    if (!m_snap && m_showGrid)
+    if (!m_snap && infer && (m_tool == "line" || !m_points.empty()))
+    {
+        for (auto shape = m_scene.shapes.rbegin(); shape != m_scene.shapes.rend(); ++shape)
+        {
+            if (shape->layer == layer && shape->kind == "line_path" && Visible(*shape) && Renderable(*shape))
+            {
+                const Point middle{(shape->start.x + shape->end.x) / 2, (shape->start.y + shape->end.y) / 2};
+                const auto screen = viewport.Project(middle);
+                if (screen.x >= 0 && screen.x < viewport.width && screen.y >= 0 && screen.y < viewport.height)
+                {
+                    nearest.Consider(middle, SnapKind::Midpoint, shape->id);
+                }
+            }
+        }
+        m_snap = nearest.Result();
+    }
+    if (!m_snap && infer && m_tool == "line" && m_points.size() == 1)
+    {
+        const auto start = GeometryPoint(m_points.front());
+        const double dx = std::abs(cursor.x - start.x);
+        const double dy = std::abs(cursor.y - start.y);
+        if (dx >= 2 * tolerance && dy <= tolerance)
+        {
+            m_snap = Snap{{cursor.x, start.y}, SnapKind::Horizontal, {}};
+        }
+        else if (dy >= 2 * tolerance && dx <= tolerance)
+        {
+            m_snap = Snap{{start.x, cursor.y}, SnapKind::Vertical, {}};
+        }
+    }
+    if (!m_snap && m_snapEnabled && m_showGrid)
     {
         nearest.Consider(GridPoint(cursor, viewport.GridStep()), SnapKind::Grid);
         m_snap = nearest.Result();
@@ -201,7 +242,12 @@ void DesignCanvas::DrawPrecision(wxDC& dc, const Shape* selected) const
             dc.DrawLine(pixel.x - radius, pixel.y, pixel.x + radius + 1, pixel.y);
             dc.DrawLine(pixel.x, pixel.y - radius, pixel.x, pixel.y + radius + 1);
         }
-        const wxString label = wxString::FromUTF8(m_snap->kind == SnapKind::Endpoint ? "끝점 스냅" : "격자 스냅");
+        const auto kind = m_snap->kind;
+        const char* description = kind == SnapKind::Horizontal ? "수평 관계" : kind == SnapKind::Vertical ? "수직 관계" :
+            kind == SnapKind::Midpoint ? "중점 관계" : kind == SnapKind::Endpoint ?
+            (m_drawingRelations && m_tool != "select" && (m_tool != "arc" || !m_points.empty()) ? "끝점 일치 관계" : "끝점 스냅") :
+            "격자 스냅";
+        const wxString label = wxString::FromUTF8(description);
         const wxSize size = dc.GetTextExtent(label);
         const int padding = FromDIP(4);
         const auto client = GetClientSize();

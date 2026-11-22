@@ -14,7 +14,7 @@ POINTS = {"start": "시작점", "end": "끝점", "center": "중심"}
 LABELS = {"fixed": "기준점 고정", "offset": "기준점과의 거리", "scalar": "치수 고정",
           "length": "선 길이", "angle": "기준축과의 각도", "parallel": "기준축과 평행",
           "perpendicular": "기준축과 수직", "coincident": "점 일치", "point_on_line": "선 위의 점",
-          "tangent": "접선", "contact": "급전 접촉"}
+          "midpoint": "선분 중점", "tangent": "접선", "contact": "급전 접촉"}
 FIELDS = {"radius": "원호 반경", "start": "원호 시작각", "sweep": "원호 회전량", "rotation": "패드 회전각",
           "sx": "시작점 X", "sy": "시작점 Y", "ex": "끝점 X", "ey": "끝점 Y", "cx": "중심 X", "cy": "중심 Y"}
 
@@ -30,7 +30,7 @@ def label(document, geometry, row):
         return f"{name} / {port} {terminal} / {names[0]}"
     if kind in ("length", "parallel", "perpendicular", "angle"):
         items = names[0]
-    elif kind == "point_on_line":
+    elif kind in ("point_on_line", "midpoint"):
         items = names[0] + " " + POINTS[row["refs"][0]["point"]] + " / " + names[1] + " 선분"
     else:
         items = " / ".join(name + " " + POINTS[ref["point"]] for name, ref in zip(names, row["refs"]))

@@ -4,7 +4,7 @@ from copy import deepcopy
 import math
 
 from rfad.application.canonical import canonical_bytes
-from rfad.domain.design import _fields, _uuid
+from rfad.domain.design import _fields, _uuid, apply_design_command
 from rfad.domain.errors import ProjectError
 from rfad.domain.layer_surface import single_dielectric_contact
 from rfad.domain.object_names import validate_name
@@ -14,6 +14,7 @@ from rfad.domain.precision_transform import fail, number, point, scalar
 KEY = "rfad.sketch-constraints"
 PROFILE = "rfad.sketch-constraints/0.1"
 COMMAND = "sketch.constraints.replace"
+DRAW_COMMAND = "sketch.drawing.apply"
 TOLERANCE = 1e-7
 MAX_GROUPS = 16
 MAX_SELECTION = 12
@@ -35,6 +36,7 @@ SPEC = {
     "parallel": (1, {"axis"}),
     "perpendicular": (1, {"axis"}),
     "coincident": (2, set()),
+    "midpoint": (3, set()),
     "point_on_line": (2, set()),
     "tangent": (2, set()),
     "contact": (1, {"port_id", "end"}),
@@ -236,6 +238,9 @@ class Model:
         axis = 0 if row.get("axis") == "x" else 1
         if kind == "fixed":
             return (p[axis] - row["value"],)
+        if kind == "midpoint":
+            start, end = (self.location(ref) for ref in row["refs"][1:])
+            return tuple(value - (left + right) / 2 for value, left, right in zip(p, start, end))
         if kind in ("offset", "coincident"):
             q = self.location(row["refs"][1])
             if kind == "coincident":
@@ -331,3 +336,17 @@ def apply(document, payload):
         document["extensions"].pop(KEY, None)
     return [identity], ["revision", "sketch_constraints"], {"type": COMMAND, "payload": {
         "id": identity, "expected": deepcopy(replacement), "replacement": deepcopy(old)}}
+
+
+
+def apply_drawing(document, payload):
+    """! @brief 새 도체와 선택한 기하 관계를 원자적으로 저장하거나 함께 취소한다."""
+    _fields(payload, {"geometry", "sketch"}, "command.payload")
+    geometry, sketch = payload["geometry"], payload["sketch"]
+    operation = geometry["type"]
+    if operation not in ("geometry.set", "geometry.remove"):
+        fail("지원하지 않는 그리기 이력입니다.", "command.payload", "E_SCHEMA")
+    ids, affected, reversed_geometry = apply_design_command(document, operation, geometry["payload"])
+    groups_changed, flags, reversed_sketch = apply(document, sketch)
+    return [*ids, *groups_changed], list(dict.fromkeys([*affected, *flags])), {
+        "type": DRAW_COMMAND, "payload": {"geometry": reversed_geometry, "sketch": reversed_sketch["payload"]}}

@@ -85,6 +85,11 @@ void StudioFrame::BindCanvas()
                           SetStatusText(Display(enabled ? "mm / 스냅 켬" : "mm / 스냅 끔"), 2);
                           m_canvas->SetFocus();
                       });
+    m_drawingRelations->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
+    {
+        m_canvas->SetDrawingRelations(m_drawingRelations->GetValue());
+        m_canvas->SetFocus();
+    });
     m_layerChoice->Bind(wxEVT_CHOICE,
                         [this](wxCommandEvent&)
                         {

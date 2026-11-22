@@ -3,8 +3,9 @@
 from copy import deepcopy
 import json
 import math
-from uuid import UUID
+from uuid import UUID, uuid5
 
+from rfad.domain import sketch_constraints
 from rfad.domain.design import resolve_scalar
 from rfad.domain.errors import ProjectError
 from rfad.domain.units import Quantity, QuantityError
@@ -309,11 +310,57 @@ def build_canvas_dto(document: dict, *, extended: bool = False) -> dict:
     return result
 
 
+def _with_drawing_relations(document, command, geometry, requested):
+    """! @brief 사용자가 채택한 관계만 새 도체와 하나의 명령으로 묶는다."""
+    if type(requested) is not list or not 1 <= len(requested) <= 3:
+        _fail("한 번에 그리기 관계를 1~3개 선택하세요.", "values.relations")
+    existing = {row["id"]: row for row in document["geometry"]}
+    identity = geometry["id"]
+    origin = sketch_constraints.anchor(identity, "start")
+    rows = []
+    keys = set()
+    for spec in requested:
+        kind = spec.get("kind") if type(spec) is dict else None
+        if kind == "parallel" and spec.keys() == {"kind", "axis"} and geometry["kind"] == "line_path":
+            if spec["axis"] not in ("x", "y"):
+                _fail("수평 또는 수직 기준축을 선택하세요.", "values.relations")
+            key = "axis"
+            constraint = sketch_constraints.relation(kind, origin, axis=spec["axis"])
+        elif kind in ("coincident", "midpoint") and spec.keys() == {"kind", "endpoint", "target"}:
+            endpoint, target = spec["endpoint"], spec["target"]
+            sketch_constraints.validate_anchor(target)
+            candidate = existing.get(target["id"])
+            if (endpoint not in ("start", "end") or candidate is None or candidate["layer_id"] != geometry["layer_id"]
+                    or candidate["frame_id"] != geometry["frame_id"] or candidate["kind"] not in ("line_path", "arc_path")
+                    or target["point"] not in ("start", "end")
+                    or (kind == "midpoint" and (candidate["kind"] != "line_path" or target["point"] != "start"))):
+                _fail("같은 층에서 그리기 관계를 연결할 끝점이나 중점을 선택하세요.", "values.relations", "E_CONFLICT")
+            refs = [sketch_constraints.anchor(identity, endpoint), target]
+            if kind == "midpoint":
+                refs.append(sketch_constraints.anchor(target["id"], "end"))
+            key = endpoint
+            constraint = sketch_constraints.relation(kind, *refs)
+        else:
+            _fail("지원하는 그리기 관계를 선택하세요.", "values.relations")
+        if key in keys:
+            _fail("같은 기준에 관계를 중복 지정했습니다.", "values.relations", "E_CONFLICT")
+        keys.add(key)
+        rows.append(constraint)
+    group_id = str(uuid5(UUID(identity), "rfad.sketch.drawing"))
+    group = {"id": group_id, "name": geometry["name"] + " 그리기 관계", "selection_ids": [identity],
+             "datum": origin, "axis": "x", "constraints": rows, "protected": []}
+    return {"type": sketch_constraints.DRAW_COMMAND,
+            "payload": {"geometry": command, "sketch": {"id": group_id, "expected": None, "replacement": group}}}
+
+
 def canvas_command(document: dict, operation: str, values: dict) -> dict:
     """! @brief 제한된 화면 조작을 기존 도메인 명령 하나로 변환한다."""
     if type(operation) is not str or operation not in OPERATIONS:
         _fail("지원하지 않는 2D 편집 작업입니다.", "operation", "E_UNSUPPORTED")
-    if type(values) is not dict or set(values) != OPERATIONS[operation]:
+    optional = set()
+    if operation in ("create_line", "create_arc") and isinstance(values, dict) and "relations" in values:
+        optional.add("relations")
+    if type(values) is not dict or set(values) != OPERATIONS[operation] | optional:
         _fail("작업에 필요한 필드와 허용한 필드를 확인하십시오.", "values")
     identity = _uuid(values["id"], "values.id")
     if operation.startswith("create_") and identity in _existing_ids(document):
@@ -370,7 +417,8 @@ def canvas_command(document: dict, operation: str, values: dict) -> dict:
                 value = values[name + "_mm"]
                 geometry[name] = Quantity.missing("length", "mm").to_dict() if value is None else _quantity(value, "mm", "values." + name + "_mm")
         geometry["name"] = allocate_name(document, geometry)
-        return {"type": "geometry.set", "payload": {"geometry": geometry}}
+        command = {"type": "geometry.set", "payload": {"geometry": geometry}}
+        return _with_drawing_relations(document, command, geometry, values["relations"]) if optional else command
     geometry = next((item for item in document["geometry"] if item["id"] == identity), None)
     if geometry is None:
         _fail("선택한 패턴이 없습니다.", "values.id", "E_CONFLICT")

@@ -338,6 +338,7 @@ void DesignCanvas::CancelGesture()
 {
     const bool changed = HasGesture() || m_snap.has_value();
     m_points.clear();
+    m_startSnap.reset();
     m_endpoint.reset();
     m_snap.reset();
     m_gesture.Reset();
@@ -737,9 +738,38 @@ void DesignCanvas::CommitDrawing(bool clockwise)
         Status("표시 좌표 범위를 벗어나 입력하지 않았습니다.");
         return;
     }
+    const auto storeRelations = [this](Json& action)
+    {
+        if (!m_drawingRelations)
+        {
+            return;
+        }
+        using CanvasPrecision::SnapKind;
+        auto relations = Json::array();
+        const auto attach = [&](const auto& snap, const char* end)
+        {
+            if (snap && !snap->target.empty())
+            {
+                relations.push_back({{"kind", snap->kind == SnapKind::Midpoint ? "midpoint" : "coincident"},
+                    {"endpoint", end}, {"target", {{"id", snap->target},
+                    {"point", snap->endpoint == CanvasPrecision::Endpoint::End ? "end" : "start"}}}});
+            }
+        };
+        attach(m_startSnap, "start");
+        attach(m_snap, "end");
+        if (m_snap && (m_snap->kind == SnapKind::Horizontal || m_snap->kind == SnapKind::Vertical))
+        {
+            relations.push_back({{"kind", "parallel"}, {"axis", m_snap->kind == SnapKind::Horizontal ? "x" : "y"}});
+        }
+        if (!relations.empty())
+        {
+            action["relations"] = std::move(relations);
+        }
+    };
     if (m_points.empty())
     {
         m_points.push_back(m_cursor);
+        m_startSnap = m_tool == "line" ? m_snap : std::nullopt;
         Status(m_tool == "line" ? "선의 끝점을 클릭하세요." : "원호의 시작점을 클릭하세요.");
     }
     else if (m_tool == "line")
@@ -749,12 +779,14 @@ void DesignCanvas::CommitDrawing(bool clockwise)
             Status("시작점과 다른 끝점을 선택하세요.");
             return;
         }
-        const Json action{{"type", "create_line"},
+        Json action{{"type", "create_line"},
                           {"layer_id", m_drawingLayer},
                           {"width", m_strokeWidth},
                           {"start", Coordinates(GeometryPoint(m_points[0]))},
                           {"end", Coordinates(GeometryPoint(m_cursor))}};
+        storeRelations(action);
         m_points.clear();
+        m_startSnap.reset();
         Emit(action);
     }
     else if (m_points.size() == 1)
@@ -765,6 +797,7 @@ void DesignCanvas::CommitDrawing(bool clockwise)
             return;
         }
         m_points.push_back(m_cursor);
+        m_startSnap = m_snap;
         Status("원호의 끝 방향을 클릭하세요. 기본 CCW, Shift는 CW입니다.");
     }
     else
@@ -775,11 +808,13 @@ void DesignCanvas::CommitDrawing(bool clockwise)
             Status("중심이나 시작 방향과 다른 끝 방향을 선택하세요.");
             return;
         }
-        const Json action{{"type", "create_arc"},         {"layer_id", m_drawingLayer},
+        Json action{{"type", "create_arc"},         {"layer_id", m_drawingLayer},
                           {"width", m_strokeWidth},       {"center", Coordinates(arc.center)},
                           {"radius", arc.radius},         {"start_angle", arc.startAngle},
                           {"sweep_angle", arc.sweepAngle}};
+        storeRelations(action);
         m_points.clear();
+        m_startSnap.reset();
         Emit(action);
     }
     Refresh(false);
@@ -961,6 +996,7 @@ void DesignCanvas::OnCaptureLost(wxMouseCaptureLostEvent&)
 {
     m_gesture.Reset();
     m_points.clear();
+    m_startSnap.reset();
     m_endpoint.reset();
     m_snap.reset();
     m_dragOffset = Point(0.0, 0.0);

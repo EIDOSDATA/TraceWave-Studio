@@ -343,6 +343,10 @@ void StudioFrame::BuildInterface()
     m_snapCheck->SetName("canvas.snap");
     m_snapCheck->SetToolTip(Display("같은 층의 보이는 선·원호 끝점에 우선 맞춥니다. 십자 표시는 격자 스냅입니다."));
     drawingTools->Add(m_snapCheck, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::InputGap));
+    m_drawingRelations = new wxCheckBox(center, wxID_ANY, Display("그리기 구속"));
+    m_drawingRelations->SetName("canvas.drawing_relations");
+    m_drawingRelations->SetToolTip(Display("켜고 관계 후보를 클릭하면 수평, 수직, 일치 및 중점을 형상과 함께 저장합니다."));
+    drawingTools->Add(m_drawingRelations, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::InputGap));
     BuildPrecisionTools(center, context);
     centerSizer->Add(context, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::Space));
     m_canvas = new DesignCanvas(center);

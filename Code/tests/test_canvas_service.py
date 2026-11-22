@@ -85,6 +85,42 @@ class CanvasServiceTests(unittest.TestCase):
         self.apply("create_arc", {"id": identity, "layer_id": layer, "width_mm": 0.5, "center": [12, 13], "radius_mm": 5, "start_angle_deg": 30, "sweep_angle_deg": sweep})
         return identity
 
+    def test_drawing_relations_undo_reopen_and_reject_conflict(self):
+        """! @brief 선과 원호의 채택한 관계를 같은 편집으로 기록하고 다시 읽는다."""
+        _, layer = self.board_layer()
+        guide = self.line(layer)
+        horizontal = str(uuid4())
+        arc = str(uuid4())
+        self.apply("create_line", {
+            "id": horizontal, "layer_id": layer, "width_mm": 0.5, "start": [5.5, 2], "end": [15, 2],
+            "relations": [{"kind": "parallel", "axis": "x"},
+                          {"kind": "midpoint", "endpoint": "start", "target": {"id": guide, "point": "start"}}]})
+        before = self.document()
+        arc_values = {
+            "id": arc, "layer_id": layer, "width_mm": 0.5, "center": [15, 6],
+            "radius_mm": 4, "start_angle_deg": -90, "sweep_angle_deg": 90,
+            "relations": [{"kind": "coincident", "endpoint": "start", "target": {"id": horizontal, "point": "end"}}]}
+        with self.assertRaisesRegex(ProjectError, "보존 관계"):
+            self.apply("create_arc", {**arc_values, "radius_mm": 3})
+        self.assertEqual(self.document(), before)
+        self.apply("create_arc", arc_values)
+        saved = self.document()
+        key = "rfad.sketch-constraints"
+        self.assertEqual(len(saved["extensions"][key]["groups"]), 2)
+        self.history("undo")
+        self.assertEqual(self.document()["extensions"][key], before["extensions"][key])
+        self.assertFalse(any(row["id"] == arc for row in self.document()["geometry"]))
+        self.history("redo")
+        self.assertEqual(self.document()["extensions"][key], saved["extensions"][key])
+        with self.assertRaisesRegex(ProjectError, "보존 관계"):
+            self.apply("move_endpoint", {"id": guide, "endpoint": "start", "point": [1, 3]})
+        self.service.mutate("project.save", self.request({"expected_revision": self.revision}))
+        self.service.run_next()
+        self.service.close()
+        self.service = ProjectService(self.workspace, auto_run=False)
+        self.assertEqual(self.document()["extensions"][key], saved["extensions"][key])
+        self.assertEqual(self.document()["geometry"], saved["geometry"])
+
     def shape(self, identity):
         """! @brief 안정 ID를 사용해 실제 원본 형상을 조회한다."""
         return next(item for item in self.document()["geometry"] if item["id"] == identity)

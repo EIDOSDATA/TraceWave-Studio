@@ -55,6 +55,33 @@ def sketch_fixture(kind):
 
 
 class SketchConstraintTests(unittest.TestCase):
+    def test_drawing_relation_preserves_actual_arc_and_ifa_feeds(self):
+        """! @brief 새 스케치 관계가 기존 급전과 설계의 연결 원문을 바꾸지 않게 한다."""
+        for kind in ("arc", "ifa"):
+            with self.subTest(kind=kind), TemporaryDirectory() as folder:
+                with ProjectService(Path(folder), auto_run=False) as service:
+                    document, _ = register_fixture(service, sketch_fixture(kind)[0])
+                    project = document["project_id"]
+                    guide = next(row for row in document["geometry"] if row["kind"] == "line_path")
+                    x, y = sketch.Model(document).location(sketch.anchor(guide["id"], "start"))
+                    identity = str(uuid4())
+                    result = service.mutate("canvas.apply", request(service, project, {
+                        "operation": "create_line", "command_id": str(uuid4()), "expected_revision": document["revision_id"],
+                        "values": {"id": identity, "layer_id": guide["layer_id"], "width_mm": .4,
+                            "start": [x, y], "end": [x + 1, y],
+                            "relations": [{"kind": "coincident", "endpoint": "start",
+                                           "target": sketch.anchor(guide["id"], "start")}]}}))
+                    service.mutate("project.save", request(service, project, {"expected_revision": result["new_revision"]}))
+                    service.run_next()
+                with ProjectService(Path(folder), auto_run=False) as reopened:
+                    after = reopened._load(reopened.journal.read()["projects"][project])
+                    self.assertEqual(after["ports"], document["ports"])
+                    self.assertEqual(after["connections"], document["connections"])
+                    self.assertEqual([row for row in after["geometry"] if row["id"] != identity], document["geometry"])
+                    group, = sketch.groups(after)
+                    self.assertEqual(group["selection_ids"], [identity])
+                    self.assertEqual(group["constraints"][0]["refs"][1]["id"], guide["id"])
+
     def test_analysis_apply_and_reopen_both_designs(self):
         """! @brief 모순된 후보, 실제 자유도와 기존 치수/해석형 원본을 대조한다."""
         for kind, degrees, variables in (("arc", 6, 13), ("ifa", 10, 15)):

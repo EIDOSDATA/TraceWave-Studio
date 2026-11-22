@@ -384,6 +384,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         changed_ids, invalidation_set, inverse = smart_dimensions.apply(result, payload)
     elif command_type == drawing_annotations.COMMAND:
         changed_ids, invalidation_set, inverse = drawing_annotations.apply(result, payload)
+    elif command_type == sketch_constraints.DRAW_COMMAND:
+        changed_ids, invalidation_set, inverse = sketch_constraints.apply_drawing(result, payload)
     elif command_type == sketch_constraints.COMMAND:
         changed_ids, invalidation_set, inverse = sketch_constraints.apply(result, payload)
     elif command_type == SELECTION_COMMAND:

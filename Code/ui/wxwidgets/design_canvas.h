@@ -42,6 +42,7 @@ public:
     bool IsBoardVisible() const;
     void SetGridVisible(bool visible);
     void SetSnapEnabled(bool enabled);
+    void SetDrawingRelations(bool enabled);
     /** @brief 선택 필터와 연관 치수는 표시 상태이며 원본을 변경하지 않는다. */
     void SetSelectionFilter(const std::string& kind, bool activeLayerOnly);
     void SetDimensions(const Json& dimensions);
@@ -118,11 +119,13 @@ private:
     bool m_editingEnabled = true;
     bool m_showGrid = true;
     bool m_snapEnabled = false;
+    bool m_drawingRelations = false;
     bool m_showBoard = true;
     bool m_fitted = false;
     CanvasGestureState m_gesture;
     std::optional<CanvasPrecision::Endpoint> m_endpoint;
     std::optional<CanvasPrecision::Snap> m_snap;
+    std::optional<CanvasPrecision::Snap> m_startSnap;
     bool m_clockwise = false;
     wxPoint m_mouseDown;
     wxPoint m_panLast;

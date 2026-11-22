@@ -18,6 +18,9 @@ enum class Endpoint
 enum class SnapKind
 {
     Endpoint,
+    Midpoint,
+    Horizontal,
+    Vertical,
     Grid
 };
 
@@ -25,6 +28,8 @@ struct Snap
 {
     Point point;
     SnapKind kind;
+    std::string target;
+    Endpoint endpoint = Endpoint::Start;
 };
 
 struct Circle
@@ -101,7 +106,7 @@ public:
     {
     }
 
-    void Consider(Point point, SnapKind kind)
+    void Consider(Point point, SnapKind kind, const std::string& target = {}, Endpoint endpoint = Endpoint::Start)
     {
         const double distance = Distance(m_cursor, point);
         if (!CanvasGeometry::Valid(point) || distance > m_limit || (m_result && distance == m_limit) ||
@@ -110,7 +115,7 @@ public:
             return;
         }
         m_limit = distance;
-        m_result = Snap{point, kind};
+        m_result = Snap{point, kind, target, endpoint};
     }
 
     std::optional<Snap> Result() const
