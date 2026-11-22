@@ -88,9 +88,9 @@ class StudyCoordinator:
                 self.service.solver.reconcile(job["job_id"])
             elif job is not None and job["state"] not in TERMINAL:
                 return False
-            elif study["state"] == "running" and job is None and any(row.get("solver", {}).get("resource_reserved") for row in state["jobs"].values()):
+            elif study["state"] in {"running", "resuming"} and job is None and any(row.get("solver", {}).get("resource_reserved") for row in state["jobs"].values()):
                 return False
-            if not (study["state"] == "running" and job is None and self._assess(study)):
+            if not (study["state"] in {"running", "resuming"} and job is None and self._assess(study)):
                 self.service.journal.transaction(lambda current: self._advance(current, identity))
             self.service.solver.wake.set()
             return True
@@ -150,7 +150,7 @@ class StudyCoordinator:
         def publish(current):
             """! @brief 취소와 경합한 판정을 완료로 승격하지 않는다."""
             active = current["studies"][identity]
-            if active["state"] == "running":
+            if active["state"] in {"running", "resuming"}:
                 for case in active["cases"]:
                     if case["phase"] != "done":
                         case["phase"] = "skipped"
@@ -176,7 +176,9 @@ class StudyCoordinator:
                 else:
                     case.update(phase="done", result_id=result["artifact_id"])
                 study["current_job_id"] = None
-                if case["phase"] == "done" and study["state"] == "running" and "adaptive_mesh" in study["specification"]:
+                if (case["phase"] == "done" and study["state"] in {"running", "resuming"}
+                        and "adaptive_mesh" in study["specification"]):
+                    study["state"] = "running"
                     return
             elif study["state"] == "resuming":
                 if job["solver"].get("resource_reserved"):

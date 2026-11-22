@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 import json
+import math
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
@@ -132,6 +133,35 @@ class ProjectStudyTests(unittest.TestCase):
             self.assertEqual(outcome["adaptive_mesh_decision"]["reason"],
                              "stability_reached" if stable else "levels_exhausted")
             self.assertEqual(study["specification"], spec)
+
+    def test_adaptive_resume_checks_memory_before_admitting_the_next_grid(self):
+        """! @brief 완료 직후 중단과 재개가 다음 격자 메모리 상한을 우회하지 못하게 한다."""
+        spec = specification([0.5, 0.38])
+        baseline = self.create(spec)["study_id"]
+        levels = self.service.journal.read()["studies"][baseline]["cases"]
+        first, second = [row["resource_estimate"]["estimated_memory_bytes"] / 1024**2 for row in levels]
+        limit = math.ceil(first)
+        self.assertLess(limit, second)
+        spec["adaptive_mesh"] = {"memory_limit_mib": limit}
+        identity = self.create(spec)["study_id"]
+
+        def interrupt(state):
+            """! @brief 첫 수준 결과를 수집한 직후의 영속 중단 상태를 구성한다."""
+            study = state["studies"][identity]
+            study["cases"][0].update(phase="done", result_id=str(uuid4()))
+            study["state"] = "interrupted"
+
+        self.service.journal.transaction(interrupt)
+        self.control("study.resume", identity)
+        outcome = {"port_stability": "not_established"}
+        with patch.object(self.service.solver, "admit") as admit, \
+             patch("rfad.application.project_studies.assessment", return_value=outcome):
+            self.assertTrue(self.service.studies.run_next())
+            admit.assert_not_called()
+        study = self.service.journal.read()["studies"][identity]
+        self.assertEqual(study["state"], "completed")
+        self.assertEqual(study["cases"][1]["phase"], "skipped")
+        self.assertEqual(outcome["adaptive_mesh_decision"]["reason"], "memory_limit")
 
     def test_missing_material_or_stale_revision_is_rejected_atomically(self):
         """! @brief 미정 입력을 임의로 채우거나 실패한 연구를 등록하지 않는다."""
