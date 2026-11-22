@@ -62,6 +62,26 @@ std::string IpcSummary(const Json& parsed)
     }
     return text + "\n이 원본에서는 지원하는 단일 보드 직선 프로파일을 찾지 못했습니다.";
 }
+/** @brief ODB++ ZIP의 보드와 층 및 적용할 수 있는 외곽 범위를 표시한다. */
+std::string OdbSummary(const Json& parsed)
+{
+    const auto& data = parsed.at("records").at(0).at("data");
+    std::string text = "ODB++ 원본 검토 완료\n보드 정의 " + std::to_string(data.at("steps").size()) +
+        "개 | 층 " + std::to_string(data.at("layer_count").get<int>()) +
+        "개 | EDA 자료가 있는 정의 " + std::to_string(data.at("steps_with_eda").size()) + "개";
+    const auto profile = data.value("editable_profile", Json());
+    if (profile.is_object())
+    {
+        text += "\n" + profile.at("step").get<std::string>() + " / 원본 단위 " +
+            profile.at("units").get<std::string>() + "\n같은 기판 외곽을 확인한 뒤 직선 내부 절삭 " +
+            std::to_string(profile.at("cutouts_mm").size()) + "개를 적용할 수 있습니다.";
+    }
+    else
+    {
+        text += "\n이 원본에서는 지원하는 단일 보드 직선 프로파일을 찾지 못했습니다.";
+    }
+    return text;
+}
 }
 
 void PcbImportDialog::Browse()
@@ -72,11 +92,13 @@ void PcbImportDialog::Browse()
     }
     const bool vendor = VendorFormat();
     const bool ipc = Format() == "ipc2581_revc";
+    const bool odb = Format() == "odbpp_zip";
     const auto filter = ipc ? "IPC-2581 Rev C XML (*.xml)|*.xml" :
+        odb ? "ODB++ 데이터셋 (*.zip)|*.zip" :
         vendor ? "제조사 원본 (*.zip;*.dxf;*.spl;*.gbr)|*.zip;*.dxf;*.spl;*.gbr|모든 파일 (*.*)|*.*" :
                                 "PCB / CAM (*.kicad_pcb;*.kicad_mod;*.gbr;*.gbrjob;*.drl;*.xnc)|"
                                 "*.kicad_pcb;*.kicad_mod;*.gbr;*.gbrjob;*.drl;*.xnc|모든 파일 (*.*)|*.*";
-    const long flags = wxFD_OPEN | wxFD_FILE_MUST_EXIST | ((vendor || ipc) ? 0 : wxFD_MULTIPLE);
+    const long flags = wxFD_OPEN | wxFD_FILE_MUST_EXIST | ((vendor || ipc || odb) ? 0 : wxFD_MULTIPLE);
     wxFileDialog dialog(this, Display("가져올 PCB / CAM 원문 파일"), wxEmptyString, wxEmptyString,
                         Display(filter), flags);
     if (dialog.ShowModal() != wxID_OK)
@@ -348,6 +370,10 @@ void PcbImportDialog::RenderUpload(const Json& response)
         if (format == "ipc2581_revc")
         {
             summary += "\n" + IpcSummary(response.at("parsed"));
+        }
+        else if (format == "odbpp_zip")
+        {
+            summary += "\n" + OdbSummary(response.at("parsed"));
         }
         else
         {

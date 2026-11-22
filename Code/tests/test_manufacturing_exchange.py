@@ -85,7 +85,8 @@ class ManufacturingExchangeTests(unittest.TestCase):
                     profile, = xml.iter(ns + "Profile")
                     xy = [(float(row.get("x")), float(row.get("y"))) for row in profile.iter() if row.get("x") is not None]
                     self.assertEqual([max(axis) - min(axis) for axis in zip(*xy)], expected)
-                    with ZipFile(BytesIO(result.read("board-odb.zip"))) as odb:
+                    odb_bytes = result.read("board-odb.zip")
+                    with ZipFile(BytesIO(odb_bytes)) as odb:
                         profile = odb.read("steps/pcb/profile").decode("utf-8")
                         coordinates = [tuple(map(float, row.split()[1:3])) for row in profile.splitlines()
                                        if row.startswith(("OB ", "OS "))]
@@ -96,33 +97,36 @@ class ManufacturingExchangeTests(unittest.TestCase):
                         self.assertIn("NET ", eda)
                 with ProjectService(folder / "workspace", auto_run=False, exchange_runtime=runtime) as service:
                     fixture = SimpleNamespace(service=service, request=lambda data: request(service, project_id, data))
-                    name = "board.xml"
-                    source_id = begin(fixture, ipc_bytes, name, "ipc2581_revc")
-                    upload(fixture, source_id, ipc_bytes, name)
-                    service.mutate("pcb.import.parse", fixture.request({"upload_id": source_id}))
-                    self.assertTrue(service.exchange.run_next())
                     context = {"project_id": project_id}
                     def read(method, value):
                         """! @brief 실제 봉인한 제조 원문 조회와 적용 미리보기를 호출한다."""
                         return read_import(service, method, {"contract_version": "rfad.api/2.0",
                                                              "context": context, "input": value})
-                    original = read("pcb.import.get", {"upload_id": source_id})
-                    self.assertTrue(original["mapping_sources"]["ipc_profile_available"], original)
-                    inputs = {"upload_id": source_id, "expected_revision": document["revision_id"],
-                              "mapping": {"board_id": document["board"]["id"], "frame_id": document["board"]["frame_id"],
-                                          "layers": [], "nets": [], "placement": None},
-                              "acknowledged_losses": [canonical_hash(row) for row in original["parsed"]["losses"]],
-                              "reason": "독립 수신 보드 외곽 재검토"}
-                    review = read("pcb.import.preview", inputs)
-                    self.assertTrue(review["can_apply"], review.get("issues"))
-                    applied = service.mutate("pcb.import.apply", fixture.request(
-                        {**inputs, "command_id": str(uuid4()), "review_hash": review["review_hash"]}))
-                    self.assertNotEqual(applied["new_revision"], document["revision_id"])
-                    after = service._load(service.journal.read()["projects"][project_id])
-                    for key in ("geometry", "stackup", "ports", "connections", "materials"):
-                        self.assertEqual(after[key], document[key])
-                    self.assertEqual(after["board"], document["board"])
-                    self.assertEqual(service.journal.read_artifact(original["result"]["source_files"][0]["artifact"]), ipc_bytes)
+                    revision = document["revision_id"]
+                    for name, raw, format_name in (("board.xml", ipc_bytes, "ipc2581_revc"),
+                                                   ("board-odb.zip", odb_bytes, "odbpp_zip")):
+                        source_id = begin(fixture, raw, name, format_name)
+                        upload(fixture, source_id, raw, name)
+                        service.mutate("pcb.import.parse", fixture.request({"upload_id": source_id}))
+                        self.assertTrue(service.exchange.run_next())
+                        original = read("pcb.import.get", {"upload_id": source_id})
+                        self.assertTrue(original["mapping_sources"]["manufacturing_profile_available"], original)
+                        inputs = {"upload_id": source_id, "expected_revision": revision,
+                                  "mapping": {"board_id": document["board"]["id"], "frame_id": document["board"]["frame_id"],
+                                              "layers": [], "nets": [], "placement": None},
+                                  "acknowledged_losses": [canonical_hash(row) for row in original["parsed"]["losses"]],
+                                  "reason": "독립 수신 보드 외곽 재검토"}
+                        review = read("pcb.import.preview", inputs)
+                        self.assertTrue(review["can_apply"], review.get("issues"))
+                        applied = service.mutate("pcb.import.apply", fixture.request(
+                            {**inputs, "command_id": str(uuid4()), "review_hash": review["review_hash"]}))
+                        self.assertNotEqual(applied["new_revision"], revision)
+                        revision = applied["new_revision"]
+                        after = service._load(service.journal.read()["projects"][project_id])
+                        for key in ("geometry", "stackup", "ports", "connections", "materials"):
+                            self.assertEqual(after[key], document[key])
+                        self.assertEqual(after["board"], document["board"])
+                        self.assertEqual(service.journal.read_artifact(original["result"]["source_files"][0]["artifact"]), raw)
                 before = recipient.read_bytes()
                 with self.assertRaisesRegex(ValueError, "기존 파일"):
                     export_package(package, recipient, executable, ["odb"])

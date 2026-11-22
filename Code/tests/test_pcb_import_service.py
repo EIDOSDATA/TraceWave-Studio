@@ -51,6 +51,35 @@ class PcbImportTransferTests(unittest.TestCase):
                 read(raw)
             self.assertEqual(error.exception.code, "E_UNSUPPORTED")
 
+    def test_odb_profile_reads_hole_only_from_a_single_matching_linear_step(self):
+        """! @brief ODB++의 섬·구멍, 패널 제외와 원문 경로 상한을 확인한다."""
+        from io import BytesIO
+        from zipfile import ZipFile
+
+        from rfad.adapters.exchange.odb_reader import read
+
+        outline = ("UNITS=MM\nF 1\nS P 0\nOB 0 0 I\nOS 0 0\nOS 60 0\nOS 60 40\nOS 0 40\nOS 0 0\nOE\n"
+                   "OB 43 27 H\nOS 46 27\nOS 46 29\nOS 43 29\nOS 43 27\nOE\nSE\n")
+        def example(profile, header="", extra=None):
+            """! @brief 다른 위치에 풀지 않고 명시한 제조 파일을 ZIP으로 구성한다."""
+            result = BytesIO()
+            with ZipFile(result, "w") as archive:
+                archive.writestr("job/matrix/matrix", "STEP {\nNAME=BOARD\n}\nLAYER {\nNAME=F.CU\n}")
+                archive.writestr("job/steps/board/profile", profile)
+                archive.writestr("job/steps/board/stephdr", header)
+                archive.writestr("job/steps/board/eda/data", "UNITS=MM")
+                if extra:
+                    archive.writestr(extra, "outside")
+            return result.getvalue()
+
+        converted = read(example(outline))
+        self.assertEqual(converted["steps_with_eda"], ["board"])
+        self.assertEqual(converted["editable_profile"]["cutouts_mm"], [[[43, 27], [46, 27], [46, 29], [43, 29]]])
+        self.assertIsNone(read(example(outline, "STEP-REPEAT {"))["editable_profile"])
+        self.assertIsNone(read(example(outline.replace("OS 46 27", "OC 46 27 44 27 N")))["editable_profile"])
+        with self.assertRaises(ProjectError):
+            read(example(outline, extra="../outside"))
+
     def test_chunk_receipt_duplicate_and_reopen_preserve_exact_bytes(self):
         f = self.f
         raw = bytes(range(256)) * 40

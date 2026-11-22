@@ -558,11 +558,11 @@ class _ImportCandidate:
                        include_in_em=False)
             self.append("geometry", row)
 
-    def ipc_profile(self, data):
-        """! @brief 원본 IPC 외곽을 현재 보드와 확인하고 내부 절삭만 적용한다."""
+    def manufacturing_profile(self, data):
+        """! @brief 제조 데이터 외곽을 현재 보드와 확인하고 내부 절삭만 적용한다."""
         profile = data["editable_profile"]
         if self.mapping["placement"] is not None or self.layers or self.nets:
-            fail("IPC-2581 프로파일의 현재 범위는 기준 외곽과 절삭입니다. 배치·층·넷을 바꾸지 않습니다.",
+            fail("이 프로파일은 기준 외곽과 절삭을 지원합니다. 배치·층·넷의 대응을 해제하십시오.",
                  "mapping", "E_UNSUPPORTED")
         self.board([{"kind": "rect", "outer_mm": loop} for loop in [profile["outer_mm"], *profile["cutouts_mm"]]])
 
@@ -576,8 +576,8 @@ class _ImportCandidate:
                 self.kicad(data)
             elif data["schema"] == "rfad.vendor-pattern-read/0.1":
                 self.vendor(data)
-            elif data["schema"] == "rfad.ipc2581-read/0.1":
-                self.ipc_profile(data)
+            elif data["schema"] in {"rfad.ipc2581-read/0.1", "rfad.odbpp-read/0.1"}:
+                self.manufacturing_profile(data)
             else:
                 self.cam(data)
         for key in self.document["pcb"]:
@@ -598,7 +598,7 @@ class _ImportCandidate:
 
 def _loss_message(row, prefix):
     """! @brief 업체 원문의 생략·근사 근거를 고정 보고서에 정의한 문구로 표시한다."""
-    if row.get("code", "").startswith(("vendor_", "cam_", "xnc_", "ipc2581_")) and row.get("message"):
+    if row.get("code", "").startswith(("vendor_", "cam_", "xnc_", "ipc2581_", "odbpp_")) and row.get("message"):
         return row["message"]
     return prefix + str(row.get("code", "unknown"))
 
@@ -610,8 +610,8 @@ def import_candidate(document, parsed, import_record, mapping, acknowledged_loss
             "profile": "rfad.pcb-import-candidate/0.1", "operation": "import.apply", "manufacturing_verified": False, "physics_verified": False}
     losses = [{"id": canonical_hash(row), "message": _loss_message(row, "원문에 보존되지만 편집 모델에서 지원하지 않는 항목: "), "original": deepcopy(row)} for row in parsed.get("losses", [])]
     try:
-        if parsed.get("format") == "ipc2581_revc" and not _has_ipc_profile(parsed):
-            fail("IPC-2581 Rev C의 지원하는 단일 보드 프로파일이 필요합니다.", "parsed", "E_UNSUPPORTED")
+        if parsed.get("format") in {"ipc2581_revc", "odbpp_zip"} and not _has_manufacturing_profile(parsed):
+            fail("지원하는 단일 보드의 직선 프로파일이 필요합니다.", "parsed", "E_UNSUPPORTED")
         _text(reason, "reason", limit=512)
         if parsed.get("schema") != "rfad.pcb-parse/0.1" or parsed.get("raw_preservation_required") is not True or len(canonical_bytes(parsed)) > 768 * 1024:
             fail("지원하지 않거나 상한을 넘은 고정 parser 결과입니다.", "parsed", "E_UNSUPPORTED")
@@ -631,7 +631,7 @@ def import_candidate(document, parsed, import_record, mapping, acknowledged_loss
         return bounded({**base, "can_apply": False, "review_hash": None, "scene": None, "changes": [], "losses": losses, "issues": [{"severity": "blocker", "code": "E_SCHEMA", "message_ko": "원본 대응 또는 parser 필수 필드가 유효하지 않습니다.", "details": {"error_type": type(error).__name__}}]}), None
 
 
-def _has_ipc_profile(parsed):
+def _has_manufacturing_profile(parsed):
     """! @brief 구형 읽기 자료를 유지하며 새 parser가 제공한 단일 프로파일만 받는다."""
     records = parsed.get("records", [])
     return len(records) == 1 and bool(records[0]["data"].get("editable_profile"))
@@ -691,5 +691,8 @@ def import_sources(parsed):
                     add_net(names[0], names[0] or None)
             elif function and function[0] in ("Soldermask", "Paste"):
                 add_layer(record["path"], "solder_mask" if function[0] == "Soldermask" else "solder_paste", "top" if "Top" in function else "bottom" if "Bot" in function or "Bottom" in function else None)
-    return {"layers": list(layers.values()), "nets": list(nets.values()), "ipc_profile_available": _has_ipc_profile(parsed),
+    profile_available = _has_manufacturing_profile(parsed)
+    return {"layers": list(layers.values()), "nets": list(nets.values()),
+            "manufacturing_profile_available": profile_available,
+            "ipc_profile_available": parsed.get("format") == "ipc2581_revc" and profile_available,
             "losses": [{"id": canonical_hash(row), "message": _loss_message(row, "원문에 보존되는 미지원 항목: "), "original": deepcopy(row)} for row in parsed["losses"]]}

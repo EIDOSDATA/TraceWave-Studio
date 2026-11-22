@@ -125,6 +125,10 @@ void PcbImportDialog::DescribeFormat()
     std::string detail = Format() == "ipc2581_revc"
         ? "압축에서 꺼낸 IPC-2581 Rev C XML을 선택합니다. 층·넷·홀·부품을 검토하고 지원하는 내부 절삭을 반영합니다."
         : "KiCad, Gerber 또는 Excellon 원본을 선택하세요.";
+    if (Format() == "odbpp_zip")
+    {
+        detail = "ODB++ ZIP 하나를 선택합니다. 보드 정의와 층을 확인하고 지원하는 내부 절삭을 반영합니다.";
+    }
     for (const auto& pattern : m_context.value("vendor_patterns", Json::array()))
     {
         if (pattern.at("format") == Format())
@@ -162,8 +166,10 @@ void PcbImportDialog::UpdateActions()
     const bool editable = Editable() && !m_pending && !m_recovering && !Uncertain();
     const bool parsed = m_uploadState.is_object() && m_uploadState.value("parsed", Json(nullptr)).is_object();
     const auto mappingSources = m_uploadState.is_object() ? m_uploadState.value("mapping_sources", Json()) : Json();
-    const bool canMap = parsed && (Format() != "ipc2581_revc" ||
-        (mappingSources.is_object() && mappingSources.value("ipc_profile_available", false)));
+    const auto format = Format();
+    const bool profileOnly = format == "ipc2581_revc" || format == "odbpp_zip";
+    const bool canMap = parsed && (!profileOnly || (mappingSources.is_object() &&
+        mappingSources.value("manufacturing_profile_available", mappingSources.value("ipc_profile_available", false))));
     const bool applied = m_uploadState.is_object() && !m_uploadState.value("applied_revision", Json(nullptr)).is_null();
     const bool runtime = m_context.value("runtime_configured", false);
     const Json state = m_uploadState.is_object() ? m_uploadState : Json::object();

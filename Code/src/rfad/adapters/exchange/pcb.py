@@ -154,6 +154,12 @@ def parse_package(files,format_name,options):
         if not name.lower().endswith(".xml"):
             raise ProjectError("E_UNSUPPORTED", "압축에서 꺼낸 IPC-2581 Rev C XML 원문 하나를 선택하십시오.")
         records.append({"path": name, "data": read(raw)})
+    elif format_name == "odbpp_zip" and len(files) == 1:
+        from rfad.adapters.exchange.odb_reader import read
+        name, raw = next(iter(files.items()))
+        if not name.lower().endswith(".zip"):
+            raise ProjectError("E_UNSUPPORTED", "ODB++ 데이터셋의 ZIP 원문 하나를 선택하십시오.")
+        records.append({"path": name, "data": read(raw)})
     elif format_name in VENDOR_FORMATS and len(files) == 1:
         from rfad.adapters.exchange.vendor_pattern import read_pattern
         name, raw = next(iter(files.items()))

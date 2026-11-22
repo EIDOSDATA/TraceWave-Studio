@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from rfad.adapters.exchange import pcb
 from rfad.adapters.exchange.ipc2581_reader import read as read_ipc2581
+from rfad.adapters.exchange.odb_reader import read as read_odb
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.domain.errors import ProjectError
 
@@ -62,28 +63,6 @@ def _run(exe, arguments, stage):
     return process.stdout.strip()
 
 
-def _odb_summary(path):
-    """! @brief ZIP을 풀지 않고 경로, 크기, ODB++ matrix 및 각 Step의 자료 존재를 확인한다."""
-    with ZipFile(path) as archive:
-        entries = archive.infolist()
-        names = {row.filename for row in entries if not row.is_dir()}
-        if (len(entries) > 4096 or len(names) != sum(not row.is_dir() for row in entries)
-                or sum(row.file_size for row in entries) > pcb.MAX_PACKAGE_BYTES
-                or any(name.startswith("/") or ".." in PurePosixPath(name).parts or chr(92) in name
-                       or ":" in name for name in names)):
-            raise ValueError("ODB++ ZIP의 경로, 멤버 수 또는 확장 크기가 유효하지 않습니다.")
-        steps = sorted(name.removeprefix("steps/").removesuffix("/profile") for name in names
-                       if name.startswith("steps/") and name.endswith("/profile"))
-        if ("matrix/matrix" not in names or not steps
-                or any(f"steps/{step}/eda/data" not in names for step in steps)):
-            raise ValueError("ODB++ matrix 또는 보드 profile/EDA 자료가 누락됐습니다.")
-        matrix = archive.read("matrix/matrix").decode("utf-8")
-        if "STEP {" not in matrix or "LAYER {" not in matrix:
-            raise ValueError("ODB++ matrix의 step 및 층 선언을 확인할 수 없습니다.")
-        return {"steps_with_eda": steps, "layer_count": matrix.count("LAYER {"),
-                "feature_files": sum(name.endswith("/features") for name in names)}
-
-
 def export_package(source, destination, executable, formats):
     """! @brief 원본을 재작성하지 않고 두 출력과 추적 기록을 한 ZIP으로 원자 게시한다."""
     if not formats or set(formats) - set(FORMATS) or len(formats) != len(set(formats)):
@@ -110,10 +89,12 @@ def export_package(source, destination, executable, formats):
                          *options, "--output", name, "board.kicad_pcb"]
             _run(exe, arguments, stage)
             raw = pcb._read(output)
-            summary = read_ipc2581(raw) if mode == "ipc2581" else _odb_summary(output)
+            summary = read_ipc2581(raw) if mode == "ipc2581" else read_odb(raw)
             if mode == "ipc2581" and (summary["units"] != "MILLIMETER" or not any(
                     step["profile"] and step["profile"]["outer"] for step in summary["steps"])):
                 raise ValueError("IPC-2581C 파일에 mm 단위의 보드 외곽이 필요합니다.")
+            if mode == "odb" and summary["steps"] != summary["steps_with_eda"]:
+                raise ValueError("ODB++ 보드 프로파일에 대응하는 EDA 자료가 누락됐습니다.")
             outputs[name] = {"bytes": len(raw), "sha256": pcb._hash(raw), "inspection": summary,
                              "arguments": arguments}
         report = {"schema": "rfad.manufacturing-exchange-candidate/0.1",

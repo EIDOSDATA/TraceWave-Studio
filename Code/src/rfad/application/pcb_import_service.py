@@ -18,7 +18,7 @@ from rfad.storage.sealed_files import verify
 
 PROFILE = "rfad.pcb-import/0.1"
 MAX_FILES, MAX_BYTES, CHUNK_BYTES = 40, 16 * 1024 * 1024, 256 * 1024
-FORMATS = {"ipc2581_revc": "ipc2581_revc", "kicad_pcb": "kicad_board", "kicad_mod": "kicad_footprint", "gerber_job": "gerber_job", "gerber_x2": "gerber_x2", "xnc": "xnc",
+FORMATS = {"ipc2581_revc": "ipc2581_revc", "odbpp_zip": "odbpp_zip", "kicad_pcb": "kicad_board", "kicad_mod": "kicad_footprint", "gerber_job": "gerber_job", "gerber_x2": "gerber_x2", "xnc": "xnc",
            **dict.fromkeys(VENDOR_FORMATS, "vendor_antenna")}
 READS = {"pcb.import.context", "pcb.import.get", "pcb.import.preview", "pcb.import.receipt"}
 MUTATIONS = {"pcb.import.begin", "pcb.import.chunk", "pcb.import.parse", "pcb.import.apply", "pcb.import.abandon"}
@@ -55,6 +55,8 @@ def validate_input(method, context, data):
             raise ProjectError("E_UNSUPPORTED", "지원하는 PCB 가져오기 형식을 선택하십시오.")
         if type(data["files"]) is not list or not 1 <= len(data["files"]) <= MAX_FILES:
             raise ProjectError("E_RESOURCE", "가져오기 원문은 1~40개 파일입니다.")
+        if data["format"] == "odbpp_zip" and len(data["files"]) != 1:
+            raise ProjectError("E_SCHEMA", "ODB++ ZIP 하나를 선택하십시오.")
         if data["format"] in VENDOR_FORMATS and len(data["files"]) != 1:
             raise ProjectError("E_SCHEMA", "선택한 제조사 예제에 해당하는 원문 또는 ZIP 하나를 선택하십시오.")
         names, total = set(), 0
