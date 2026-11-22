@@ -90,16 +90,7 @@ class StudyCoordinator:
                 return False
             elif study["state"] == "running" and job is None and any(row.get("solver", {}).get("resource_reserved") for row in state["jobs"].values()):
                 return False
-            if study["state"] == "running" and job is None and all(case["phase"] == "done" for case in study["cases"]):
-                result = assessment(self.service, study)
-                artifact = self.service.journal.put_immutable(f"study-artifacts/{identity}/assessment-{uuid4()}.json", canonical_bytes(result))
-                def publish(current):
-                    """! @brief 취소와 경합한 판정을 완료로 승격하지 않는다."""
-                    active = current["studies"][identity]
-                    if active["state"] == "running":
-                        active.update(state="completed", assessment=artifact, message="모든 계산과 격자 비교를 완료했습니다. 제조/실측 검증은 별개입니다.")
-                self.service.journal.transaction(publish)
-            else:
+            if not (study["state"] == "running" and job is None and self._assess(study)):
                 self.service.journal.transaction(lambda current: self._advance(current, identity))
             self.service.solver.wake.set()
             return True
@@ -113,6 +104,60 @@ class StudyCoordinator:
             return False
         finally:
             self.lock.release()
+
+    def _assess(self, study):
+        """! @brief 완료한 격자만 비교하고 다음 수준, 수렴 또는 예산 중단을 결정한다."""
+        pending = [case for case in study["cases"] if case["phase"] != "done"]
+        completed = len(study["cases"]) - len(pending)
+        adaptive = study["specification"].get("adaptive_mesh")
+        decision = None
+        if adaptive and pending and completed:
+            memory_limit = adaptive["memory_limit_mib"] * 1024 ** 2
+            next_memory = pending[0]["resource_estimate"]["estimated_memory_bytes"]
+            if next_memory > memory_limit:
+                decision = "memory_limit"
+            elif completed < 3:
+                return False
+        elif pending:
+            return False
+        result = assessment(self.service, study)
+        message = "모든 계산과 격자 비교를 완료했습니다."
+        if adaptive:
+            stable = result["port_stability"] == "established"
+            settings = study["specification"]["settings"]
+            if "radiation" in settings:
+                stable = stable and result["radiation_mesh_stability"] == "passed"
+            if "power_balance" in settings:
+                loss = result["individual_loss_stability"] or {}
+                stable = (stable and loss.get("status") == "passed"
+                          and result["reference_energy_closure"] == "within_initial_numerical_budget")
+            if stable:
+                decision = "stability_reached"
+                message = "지정한 격자 안정성 기준을 충족했습니다."
+            elif decision == "memory_limit":
+                message = "다음 격자가 예상 메모리 상한을 넘어 중단했습니다."
+            elif not pending:
+                decision = "levels_exhausted"
+                message = "지정한 격자 수준을 모두 사용했습니다."
+            else:
+                return False
+            result["adaptive_mesh_decision"] = {"reason": decision, "completed_levels": completed,
+                                                "skipped_levels_mm": [case["settings"]["grid_mm"] for case in pending],
+                                                "memory_limit_mib": adaptive["memory_limit_mib"]}
+        identity = study["study_id"]
+        artifact = self.service.journal.put_immutable(f"study-artifacts/{identity}/assessment-{uuid4()}.json", canonical_bytes(result))
+
+        def publish(current):
+            """! @brief 취소와 경합한 판정을 완료로 승격하지 않는다."""
+            active = current["studies"][identity]
+            if active["state"] == "running":
+                for case in active["cases"]:
+                    if case["phase"] != "done":
+                        case["phase"] = "skipped"
+                active.update(state="completed", assessment=artifact, message=message)
+
+        self.service.journal.transaction(publish)
+        return True
 
     def _advance(self, state, identity):
         """! @brief 완료 결과를 수집하고 취소/명시적 재개를 처리한 뒤 한 단계만 접수한다."""
@@ -131,6 +176,8 @@ class StudyCoordinator:
                 else:
                     case.update(phase="done", result_id=result["artifact_id"])
                 study["current_job_id"] = None
+                if case["phase"] == "done" and study["state"] == "running" and "adaptive_mesh" in study["specification"]:
+                    return
             elif study["state"] == "resuming":
                 if job["solver"].get("resource_reserved"):
                     raise ProjectError("E_CONFLICT", "이전 guest 종료 확인 전에는 새 단계를 실행할 수 없습니다.")

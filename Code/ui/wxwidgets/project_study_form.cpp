@@ -54,6 +54,7 @@ void ProjectStudyDialog::Build()
             for (const auto& field : std::vector<std::pair<std::string, std::string>>{
                      {"name", "새 연구 이름"},
                      {"grids", "격자 수준 (mm, 쉼표 / 감소 순서, 최대 6개)"},
+                     {"adaptive_memory_limit_mib", "적응 격자 메모리 상한 (MiB, 비우면 모든 수준 실행)"},
                      {"start", "시작 주파수 (Hz)"},
                      {"stop", "끝 주파수 (Hz)"},
                      {"count", "포트 주파수 표본 수"},

@@ -103,6 +103,36 @@ class ProjectStudyTests(unittest.TestCase):
         self.assertEqual(plan["source_semantics"]["geometry"][0]["width"], {"parameter_id": param})
         self.assertEqual(canonical_hash(self.document), created["snapshot"]["content_hash"])
 
+    def test_adaptive_mesh_stops_after_stability_or_reports_spent_levels(self):
+        """! @brief 논리 결과 대역으로 중간 평가와 미실행 수준 보존을 검증한다."""
+        spec = specification([0.5, 0.46, 0.42, 0.38])
+        spec["adaptive_mesh"] = {"memory_limit_mib": 512}
+        for stable in (True, False):
+            identity = self.create(spec)["study_id"]
+            self.control("study.start", identity)
+
+            def mark_completed(state, count):
+                """! @brief 실행 자료를 생성하지 않고 코디네이터 분기를 구성한다."""
+                study = state["studies"][identity]
+                for case in study["cases"][:count]:
+                    case.update(phase="done", result_id=str(uuid4()))
+
+            self.service.journal.transaction(lambda state: mark_completed(state, 3))
+            outcome = {"port_stability": "established" if stable else "failed"}
+            coordinator = self.service.studies
+            with patch("rfad.application.project_studies.assessment", return_value=outcome):
+                study = self.service.journal.read()["studies"][identity]
+                self.assertEqual(coordinator._assess(study), stable)
+                if not stable:
+                    self.service.journal.transaction(lambda state: mark_completed(state, 4))
+                    self.assertTrue(coordinator._assess(self.service.journal.read()["studies"][identity]))
+            study = self.service.journal.read()["studies"][identity]
+            self.assertEqual(study["state"], "completed")
+            self.assertEqual(study["cases"][-1]["phase"], "skipped" if stable else "done")
+            self.assertEqual(outcome["adaptive_mesh_decision"]["reason"],
+                             "stability_reached" if stable else "levels_exhausted")
+            self.assertEqual(study["specification"], spec)
+
     def test_missing_material_or_stale_revision_is_rejected_atomically(self):
         """! @brief 미정 입력을 임의로 채우거나 실패한 연구를 등록하지 않는다."""
         with self.assertRaises(ProjectError):

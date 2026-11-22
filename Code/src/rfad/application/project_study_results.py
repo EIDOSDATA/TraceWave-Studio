@@ -38,7 +38,8 @@ def read_case(service, study, case):
 
 def assessment(service, study):
     """! @brief 마지막 인접 격자 쌍만 판정하며 전체 세 축 수렴/실측 합격을 선언하지 않는다."""
-    records = [read_case(service, study, case) for case in study["cases"]]
+    completed = [case for case in study["cases"] if case["phase"] == "done"]
+    records = [read_case(service, study, case) for case in completed]
     spec = study["specification"]
     comparisons = []
     for index, (left, right) in enumerate(zip(records, records[1:])):
@@ -56,7 +57,7 @@ def assessment(service, study):
     balance = records[-1][2]["full_energy_closure"] if records[-1][2] is not None else "not_evaluated"
     losses = assess_losses([item[2] for item in records], spec["loss_profile"]) if "loss_profile" in spec and all(item[2] is not None for item in records) else None
     return {"schema": "rfad.project-study-assessment/0.1", "study_id": study["study_id"], "snapshot": study["snapshot"],
-            "definition": study["definition"], "case_result_ids": [case["result_id"] for case in study["cases"]],
+            "definition": study["definition"], "case_result_ids": [case["result_id"] for case in completed],
             "scope": "mesh_axis_only", "minimum_levels_met": enough,
             "port_stability": port, "radiation_mesh_stability": radiation, "comparisons": comparisons,
             "reference_radiation_budget": budget, "reference_energy_closure": balance, "individual_loss_stability": losses,
@@ -80,7 +81,8 @@ def view(service, state, study):
     rows = []
     for index, case in enumerate(study["cases"]):
         row = {"index": index, "grid_mm": case["settings"]["grid_mm"], "phase": case["phase"],
-               "attempt_count": len(case["attempts"]), "result_id": case.get("result_id"), "power_balance": None}
+               "attempt_count": len(case["attempts"]), "result_id": case.get("result_id"), "power_balance": None,
+               "estimated_memory_bytes": case["resource_estimate"]["estimated_memory_bytes"]}
         if "result_id" in case:
             _, _, power = read_case(service, study, case)
             if power is not None:

@@ -1,9 +1,9 @@
 """! @brief 일반 프로젝트 연구의 유한 입력과 원본 보존 계획을 정의한다."""
 
 from copy import deepcopy
-import math
 
 from rfad.application.canonical import canonical_hash
+from rfad.application.pcb_boundary import axis_info, conditions
 from rfad.application.pcb_solver import build_pcb_plan, validate_settings
 from rfad.application.solver_requests import require_fields, require_uuid
 from rfad.application.radiation_study import validate_profile
@@ -38,7 +38,7 @@ def initial_specification():
 
 def validate_specification(spec):
     """! @brief 계산 완료와 수렴 판정을 구분하며 모든 설정/기준을 생성 시 고정한다."""
-    require_fields(spec, {"name", "grid_levels_mm", "settings", "port_profile", "radiation_profile"}, {"loss_profile"})
+    require_fields(spec, {"name", "grid_levels_mm", "settings", "port_profile", "radiation_profile"}, {"loss_profile", "adaptive_mesh"})
     if "loss_profile" in spec:
         validate_loss_profile(spec["loss_profile"])
     if type(spec["name"]) is not str or not 1 <= len(spec["name"].strip()) <= 120:
@@ -48,6 +48,11 @@ def validate_specification(spec):
             or any(type(value) not in (int, float) or not 0.05 <= value <= 5 for value in levels)
             or any(a <= b for a, b in zip(levels, levels[1:]))):
         raise ProjectError("E_SCHEMA", "격자 수준은 1~6개, 0.05~5 mm 범위의 감소하는 값이어야 합니다.")
+    if "adaptive_mesh" in spec:
+        adaptive = spec["adaptive_mesh"]
+        require_fields(adaptive, {"memory_limit_mib"})
+        if type(adaptive["memory_limit_mib"]) is not int or not 128 <= adaptive["memory_limit_mib"] <= 16384:
+            raise ProjectError("E_SCHEMA", "적응 격자의 예상 메모리 상한은 128~16384 MiB 정수여야 합니다.")
     validate_settings(spec["settings"])
     if spec["settings"]["grid_mm"] != levels[-1]:
         raise ProjectError("E_SCHEMA", "기준 격자는 마지막 수준과 같아야 합니다.")
@@ -83,8 +88,14 @@ def build_cases(document, snapshot, identity, spec):
         settings = deepcopy(spec["settings"])
         settings["grid_mm"] = level
         plans.append(build_pcb_plan(document, snapshot, identity, settings))
+    adaptive = spec.get("adaptive_mesh")
+    if adaptive and plans[0]["resource_estimate"]["estimated_memory_bytes"] > adaptive["memory_limit_mib"] * 1024 ** 2:
+        raise ProjectError("E_RESOURCE", "첫 격자부터 적응 격자의 예상 메모리 상한을 초과합니다.")
     guards = []
+    modes = conditions(spec["settings"])
     for a, b in zip(plans, plans[1:]):
+        if adaptive and a["resource_estimate"]["estimated_memory_bytes"] >= b["resource_estimate"]["estimated_memory_bytes"]:
+            raise ProjectError("E_GEOMETRY", "적응 격자 수준마다 예상 메모리 용량이 늘어나야 합니다.")
         if "radiation" in spec["settings"]:
             try:
                 guards.append(plan_guards(a, b, "mesh"))
@@ -94,7 +105,9 @@ def build_cases(document, snapshot, identity, spec):
             from rfad.application.pcb_mesh import mesh_lines
 
             x, y = mesh_lines(a["case"]), mesh_lines(b["case"])
-            fixed = all([x[key][0], x[key][8], x[key][-9], x[key][-1]] == [y[key][0], y[key][8], y[key][-9], y[key][-1]] for key in "xyz")
+            fixed = all((x[key][0], x[key][-1], axis_info(modes, index, x[key])[2]) ==
+                        (y[key][0], y[key][-1], axis_info(modes, index, y[key])[2])
+                        for index, key in enumerate("xyz"))
             if not fixed:
                 raise ProjectError("E_GEOMETRY", "격자 연구는 외곽/PML 시작면을 고정해야 합니다. graded air 설정을 확인하십시오.")
             guards.append({"fixed_outer_domain_and_pml_interfaces": True})

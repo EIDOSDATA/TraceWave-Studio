@@ -15005,8 +15005,8 @@
     },
     {
       "path": "Code/src/rfad/application/design_sweep_service.py",
-      "text_sha256": "70483c79fec3bb8b97650fecd9121271f6a67c15a7c6fef4511938e81bc955ba",
-      "utf8_bytes": 38600
+      "text_sha256": "6a6f02c82462f14b7bc4ad8e9ef05769f909467b5d6f46a5d68a6e7cb1a4d3d8",
+      "utf8_bytes": 38843
     },
     {
       "path": "Code/src/rfad/application/display_mesh.py",
@@ -15230,8 +15230,8 @@
     },
     {
       "path": "Code/src/rfad/application/project_studies.py",
-      "text_sha256": "51d45b8493ead01d048c18abad9e19db120900d9f4d3c7044cec6971d618d09a",
-      "utf8_bytes": 8949
+      "text_sha256": "7e6cd491299d8690d8ad1c49cf5f946693f0aa33628a66e94f01373cf4aba1bb",
+      "utf8_bytes": 11299
     },
     {
       "path": "Code/src/rfad/application/project_study_commands.py",
@@ -15240,13 +15240,13 @@
     },
     {
       "path": "Code/src/rfad/application/project_study_contract.py",
-      "text_sha256": "6b017b2b24bf23afba6e2474c4ae4059ae4e1628a3a22d7a977f703f686220b1",
-      "utf8_bytes": 5621
+      "text_sha256": "52958fc147a814f951a3d0d7253306fd2eb95ee344233a76fbe9163fd58828fa",
+      "utf8_bytes": 6724
     },
     {
       "path": "Code/src/rfad/application/project_study_results.py",
-      "text_sha256": "8a6465db3d447c4bdb617f506904ce22ff5cc2a7f081b4700476d25933d5be65",
-      "utf8_bytes": 7715
+      "text_sha256": "7c6b23720f20487c2ad80126af14e0114f1a831b8e29031e210e33679078f388",
+      "utf8_bytes": 7876
     },
     {
       "path": "Code/src/rfad/application/radiation.py",
@@ -16130,8 +16130,8 @@
     },
     {
       "path": "Code/tests/test_project_studies.py",
-      "text_sha256": "df819de5eeed7dc8802b49377985efd2c07ac3ad76b6a1d9b415db6e847a52c3",
-      "utf8_bytes": 17080
+      "text_sha256": "5c7b452afc2984f9afe6a389a3e889dfec7719f0126250d9cebfea734c672e01",
+      "utf8_bytes": 18963
     },
     {
       "path": "Code/tests/test_pth_loss_reference.py",

@@ -96,6 +96,9 @@ Studio::StudyFields Studio::StudyDraft(const Json& specification)
     const auto& settings = specification.at("settings");
     const auto& frequency = settings.at("frequency_hz");
     StudyFields fields{{"name", specification.at("name")}, {"grids", List(specification.at("grid_levels_mm"))}};
+    fields["adaptive_memory_limit_mib"] = specification.contains("adaptive_mesh")
+        ? InputFormat(specification.at("adaptive_mesh").at("memory_limit_mib"))
+        : "";
     for (const auto* key : {"start", "stop", "count"})
     {
         fields[key] = InputFormat(frequency.at(key));
@@ -151,6 +154,12 @@ Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bo
     if (result.at("grid_levels_mm").empty())
     {
         throw std::runtime_error("격자 수준을 지정하십시오.");
+    }
+    result.erase("adaptive_mesh");
+    const auto& adaptiveLimit = fields.at("adaptive_memory_limit_mib");
+    if (!adaptiveLimit.empty())
+    {
+        result["adaptive_mesh"] = Json{{"memory_limit_mib", Integer(adaptiveLimit)}};
     }
     auto& settings = result["settings"];
     settings["grid_mm"] = result.at("grid_levels_mm").back();
@@ -224,6 +233,10 @@ std::string Studio::StudyStatus(const std::string& state)
                                                     {"prepare", "준비"},
                                                     {"solve", "해석"},
                                                     {"done", "완료"},
+                                                    {"skipped", "미실행"},
+                                                    {"stability_reached", "격자 안정성 기준 충족"},
+                                                    {"memory_limit", "예상 메모리 상한"},
+                                                    {"levels_exhausted", "격자 수준 소진"},
                                                     {"passed", "초기 기준 충족"},
                                                     {"established", "초기 기준 충족"},
                                                     {"not_established", "미확립"},
@@ -273,6 +286,11 @@ std::string Studio::StudySummary(const Json& view)
     for (const auto& row : view.at("cases"))
     {
         output << "\n격자 " << Format(row.at("grid_mm")) << " mm / " << StudyStatus(row.at("phase")) << '\n';
+        if (row.contains("estimated_memory_bytes"))
+        {
+            output << "예상 메모리 " << Format(row.at("estimated_memory_bytes").get<double>() / (1024 * 1024))
+                   << " MiB\n";
+        }
         if (row.at("power_balance").is_null())
         {
             output << "독립 손실 수지: 미평가 또는 계산 전\n";
@@ -306,6 +324,12 @@ std::string Studio::StudySummary(const Json& view)
         output << "\n포트 격자 안정성: " << StudyStatus(value.at("port_stability"))
                << "\n방사 격자 안정성: " << StudyStatus(value.at("radiation_mesh_stability"))
                << "\n기준 전력 수지: " << StudyStatus(value.at("reference_energy_closure")) << '\n';
+        if (value.contains("adaptive_mesh_decision"))
+        {
+            const auto& decision = value.at("adaptive_mesh_decision");
+            output << "적응 격자 종료 사유 " << StudyStatus(decision.at("reason"))
+                   << " / 실행 수준 " << decision.at("completed_levels") << '\n';
+        }
         if (value.contains("individual_loss_stability") && !value.at("individual_loss_stability").is_null())
         {
             output << "개별 유전체 / 도체 / 비아 손실 안정성: "
