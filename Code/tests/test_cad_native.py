@@ -148,6 +148,26 @@ class CadNativeTests(unittest.TestCase):
             for actual, expected in zip(placed["bbox_mm"], (-1, 27, 12, 2, 33, 14)):
                 self.assertAlmostEqual(actual, expected, places=8)
             self.assertAlmostEqual(placed["volume_mm3"], 4)
+            mate = [{"path": [1, 1, 2], "target_origin_mm": [7, 34, 13], "rotation_deg": [0, 0, 90]}]
+            assembly_row = projection["environment_parts"][0]
+            assembly_row["instance_offsets"] = mate
+            for label, yaw, translation, expected in (
+                    ("mated", 90, [10, 20, 3], (5, 33, 13, 7, 34, 14)),
+                    ("mated-reposition", -90, [-2, 8, 1], (7, 34, 13, 9, 35, 14))):
+                assembly_row.update(yaw_deg=yaw, translation_mm=translation)
+                package = root / label
+                result_mate = build_package(projection, package)
+                self.assertEqual(result_mate["validation"]["environment_assembly_hierarchy"],
+                                 result["validation"]["environment_assembly_hierarchy"])
+                step_payload = json.loads((package / "sidecar.json").read_bytes())
+                source_step = next(row for row in step_payload["body_map"] if row["id"] == identity_part)["source_step"]
+                self.assertEqual(source_step["instance_offsets"], mate)
+                for actual, coordinate in zip(source_step["placed_instances"][1]["bbox_mm"], expected):
+                    self.assertAlmostEqual(actual, coordinate, places=8)
+                exported = read_step(package / "model.step")["environment_" + identity_part]
+                self.assertEqual(exported["solid_count"], 2)
+                self.assertAlmostEqual(exported["volume_mm3"], 4)
+            assembly_row.update(yaw_deg=90, translation_mm=[10, 20, 3])
             with self.assertRaisesRegex(ProjectError, "부품끼리") as overlap:
                 projection["environment_parts"][0]["instance_offsets"] = [
                     {"path": [1, 1, 2], "translation_mm": [-2, 0, 0], "rotation_deg": [0, 0, 90]}]
@@ -155,9 +175,9 @@ class CadNativeTests(unittest.TestCase):
             self.assertEqual(overlap.exception.details["paths"], [[1, 1, 1], [1, 1, 2]])
             self.assertAlmostEqual(overlap.exception.details["overlap_mm3"], 1.0)
             self.assertEqual(original.read_bytes(), raw)
-            self._check_persisted_instance_offsets(root, source, rotate)
+            self._check_persisted_instance_offsets(root, source, rotate, mate)
 
-    def _check_persisted_instance_offsets(self, root, source, offsets):
+    def _check_persisted_instance_offsets(self, root, source, offsets, mate):
         """! @brief 실제 읽기 검토, 적용, 저장, 재열기 및 과거 STEP 바이트를 대조한다."""
         import sys
         from rfad.application.cad import build_cad_input
@@ -190,6 +210,11 @@ class CadNativeTests(unittest.TestCase):
                     service.mutate(METHOD, parameters(service, moved, "part", {"instance_offsets": invalid},
                                                        identity=prior["id"]))
                 self.assertEqual(load(service, doc), moved)
+            new_placement = {"instance_offsets": "1.1.2 = 7 34 13 0 0 90"}
+            service.mutate(METHOD, parameters(service, moved, "part", new_placement, identity=prior["id"]))
+            moved = load(service, doc)
+            self.assertEqual(setup(moved)["parts"][0]["instance_offsets"], mate)
+            self.assertEqual(setup(moved)["parts"][0]["step"], source)
             saved = service.mutate("project.save", request(service, doc["project_id"], {
                 "expected_revision": moved["revision_id"]}))
             service.run_next()
@@ -198,7 +223,7 @@ class CadNativeTests(unittest.TestCase):
             saved_doc = load(reopened, doc)
             self.assertEqual(saved_doc, moved)
             self.assertEqual(build_cad_input(saved_doc, snapshot_for(saved_doc))["environment_parts"][0]["instance_offsets"],
-                             offsets)
+                             mate)
             boxed = reopened.mutate(METHOD, parameters(reopened, saved_doc, "part",
                                      {"kind": "box", "width": "2", "height": "1", "depth": "1"}, identity=prior["id"]))
             changed = setup(load(reopened, doc))["parts"][0]
@@ -207,7 +232,7 @@ class CadNativeTests(unittest.TestCase):
             reopened.mutate("project.undo", request(reopened, doc["project_id"], {
                 "expected_revision": boxed["new_revision"], "command_id": identity("undo rotation fixture")}))
             restored = load(reopened, doc)
-            self.assertEqual(setup(restored)["parts"][0]["instance_offsets"], offsets)
+            self.assertEqual(setup(restored)["parts"][0]["instance_offsets"], mate)
             cleared = reopened.mutate(METHOD, parameters(reopened, restored, "part", {"instance_offsets": ""},
                                                         identity=prior["id"]))
             current = load(reopened, doc)

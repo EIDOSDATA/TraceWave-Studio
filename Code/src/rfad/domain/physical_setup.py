@@ -76,30 +76,32 @@ def step_bytes(source):
 
 
 def validate_instance_offsets(rows):
-    """! @brief 원본 STEP의 안정 경로별 조립 좌표 이동과 회전을 보존한다."""
+    """! @brief 원본 STEP의 경로별 조립 이동 또는 기판 원점 맞춤과 회전을 검사한다."""
     field = "part.instance_offsets"
     if type(rows) is not list or not 1 <= len(rows) <= MAX_STEP_INSTANCE_OFFSETS:
-        _fail("E_RESOURCE", "STEP 조립 말단의 이동은 최대 16개입니다.", field)
+        _fail("E_RESOURCE", "STEP 조립 말단 배치는 최대 16개입니다.", field)
     paths = []
     for row in rows:
-        keys = {"path", "translation_mm"}
+        point_mate = isinstance(row, dict) and "target_origin_mm" in row
+        position_key = "target_origin_mm" if point_mate else "translation_mm"
+        keys = {"path", position_key}
         if isinstance(row, dict) and "rotation_deg" in row:
             keys.add("rotation_deg")
         _fields(row, keys, field)
-        path, shift = row["path"], row["translation_mm"]
+        path, position = row["path"], row[position_key]
         if (type(path) is not list or not 2 <= len(path) <= 8 or path[0] != 1
                 or any(type(index) is not int or not 1 <= index <= 32 for index in path)):
             _fail("E_SCHEMA", "STEP 원본의 말단 경로를 입력하십시오.", field)
-        if (type(shift) is not list or len(shift) != 3
+        if (type(position) is not list or len(position) != 3
                 or any(type(value) not in (float, int) or not -1e6 <= value <= 1e6 or not math.isfinite(value)
-                       for value in shift)):
-            _fail("E_GEOMETRY", "조립 좌표에서 유한한 X Y Z 이동량을 mm로 입력하십시오.", field)
+                       for value in position)):
+            _fail("E_GEOMETRY", "유한한 X Y Z 위치 또는 이동량을 mm로 입력하십시오.", field)
         rotation = row.get("rotation_deg", [0, 0, 0])
         if (type(rotation) is not list or len(rotation) != 3
                 or any(type(value) not in (float, int) or not -360 <= value <= 360 or not math.isfinite(value)
                        for value in rotation)):
             _fail("E_GEOMETRY", "X Y Z 회전은 각 축 -360~360도로 입력하십시오.", field)
-        if not (any(shift) or any(value % 360 for value in rotation)):
+        if not (point_mate or any(position) or any(value % 360 for value in rotation)):
             _fail("E_GEOMETRY", "조립 말단의 실제 위치나 방향이 바뀌는 값을 입력하십시오.", field)
         paths.append(tuple(path))
     if paths != sorted(set(paths)):

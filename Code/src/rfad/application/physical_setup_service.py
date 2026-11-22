@@ -36,13 +36,13 @@ FIELDS = {
     "x": "X", "y": "Y", "z": "Z",
     "width": "폭", "height": "길이", "depth": "높이", "yaw": "Z축 회전",
     "case_thickness": "벽과 덮개 두께 (케이스용)",
-    "instance_offsets": "STEP 말단 배치 (경로 XYZ, 선택 회전)",
+    "instance_offsets": "STEP 말단 배치와 기판 원점 맞춤",
     "openings": "개구 (mm, 줄마다 X Y 폭 길이)", "active_scenario_id": "활성 시나리오",
 }
 
 
 def _instance_offsets(text):
-    """! @brief 경로 번호와 X Y Z 이동, 선택 각도를 STEP 전용 레코드로 변환한다."""
+    """! @brief 경로별 상대 이동 또는 기판 좌표 원점 맞춤과 선택 각도를 읽는다."""
     from rfad.domain.physical_setup import validate_instance_offsets
 
     result = []
@@ -50,15 +50,19 @@ def _instance_offsets(text):
         columns = line.split()
         if not columns:
             continue
-        if len(columns) not in (4, 7):
-            fail("한 줄마다 경로, X Y Z 이동(mm), 선택 X Y Z 회전(deg)을 입력하십시오.", "instance_offsets")
+        point_mate = len(columns) > 1 and columns[1] == "="
+        values = columns[2:] if point_mate else columns[1:]
+        if len(values) not in (3, 6):
+            fail("경로 뒤에 X Y Z 이동 또는 = X Y Z 기판 목표점(mm)을 입력하십시오. 마지막에 회전 세 축(deg)을 추가할 수 있습니다.",
+                 "instance_offsets")
         tokens = columns[0].split(".")
         if not all(token.isascii() and token.isdecimal() and len(token) <= 2 for token in tokens):
             fail("원본 경로는 점으로 구분한 번호입니다. 예시 1.1.2", "instance_offsets")
+        position_key = "target_origin_mm" if point_mate else "translation_mm"
         row = {"path": [int(token) for token in tokens],
-               "translation_mm": [number(value, "instance_offsets") for value in columns[1:4]]}
-        if len(columns) == 7:
-            row["rotation_deg"] = [number(value, "instance_offsets") for value in columns[4:]]
+               position_key: [number(value, "instance_offsets") for value in values[:3]]}
+        if len(values) == 6:
+            row["rotation_deg"] = [number(value, "instance_offsets") for value in values[3:]]
         result.append(row)
     result.sort(key=lambda row: row["path"])
     if result:
@@ -143,8 +147,8 @@ def _descriptors(document, model, section, row):
                                                        for rect in row[key]))
         elif key == "instance_offsets":
             entry.update(kind="lines", value="\n".join(
-                ".".join(map(str, item["path"])) + " " + " ".join(
-                    format(value, ".17g") for value in [*item["translation_mm"], *item.get("rotation_deg", [])])
+                ".".join(map(str, item["path"])) + (" = " if "target_origin_mm" in item else " ") + " ".join(
+                    format(value, ".17g") for value in [*item.get("target_origin_mm", item.get("translation_mm")), *item.get("rotation_deg", [])])
                 for item in row.get(key, [])))
         elif key == "name":
             entry.update(kind="text", value=row[key])

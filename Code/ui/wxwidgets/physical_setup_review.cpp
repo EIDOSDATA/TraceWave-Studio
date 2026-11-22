@@ -222,7 +222,9 @@ void PhysicalSetupDialog::RenderReview()
         text += "\n접지 금속은 최상층의 사각 급전 기준 접지 패드 윗면에 놓으십시오.";
         if (Value("kind") == "step")
         {
-            text += "\nSTEP 말단 배치는 경로와 조립 X Y Z 이동(mm), 선택 X Y Z 회전(deg)을 한 줄에 입력합니다. 예시 1.1.2 2 0 0 0 0 90";
+            text += "\nSTEP 말단은 경로 뒤에 조립 X Y Z 이동(mm)을 입력합니다. 예시 1.1.2 2 0 0"
+                    "\n기판 좌표에 원점을 맞추려면 = X Y Z를 입력합니다. 예시 1.1.2 = 7 34 13"
+                    "\n두 방식 모두 마지막에 X Y Z 회전(deg)을 추가할 수 있습니다.";
         }
     }
     if (m_context.at("section") == "surface")

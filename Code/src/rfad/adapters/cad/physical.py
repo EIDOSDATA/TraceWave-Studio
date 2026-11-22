@@ -171,11 +171,23 @@ def surface_bodies(cq, projection, mechanical=()):
     return result
 
 
-def _shift_instances(cq, leaves, instances, offsets, part_id, tolerance):
+def _instance_translation(row, placement, origin):
+    """! @brief 기판 목표점을 조립 로컬 좌표로 변환하고 원본 원점과의 차이를 구한다."""
+    if "target_origin_mm" not in placement:
+        return tuple(placement["translation_mm"])
+    dx, dy, dz = (target - base for target, base in zip(placement["target_origin_mm"], row["translation_mm"]))
+    angle = math.radians(math.remainder(row["yaw_deg"], 360))
+    cosine, sine = math.cos(angle), math.sin(angle)
+    target_local = (cosine * dx + sine * dy, -sine * dx + cosine * dy, dz)
+    return tuple(target - base for target, base in zip(target_local, origin))
+
+
+def _shift_instances(cq, leaves, instances, row, tolerance):
     """! @brief 원본 말단 원점을 중심으로 조립 고정 X Y Z축 회전과 이동을 적용한다."""
+    offsets = row["instance_offsets"]
     validate_instance_offsets(offsets)
-    placements = {tuple(row["path"]): row for row in offsets}
-    field = "part." + part_id + ".instance_offsets"
+    placements = {tuple(item["path"]): item for item in offsets}
+    field = "part." + row["id"] + ".instance_offsets"
     _require(placements.keys() <= leaves.keys(), "STEP 원본의 말단 부품 경로를 확인하십시오.", field=field)
     origins = {tuple(row["path"]): tuple(axis[3] for axis in row["transform_mm"])
                for row in instances if not row["assembly"]}
@@ -188,7 +200,7 @@ def _shift_instances(cq, leaves, instances, offsets, part_id, tolerance):
             if angle:
                 end = tuple(value + (index == axis) for index, value in enumerate(origin))
                 shape = shape.rotate(origin, end, angle)
-        shapes[path] = shape.translate(tuple(placement["translation_mm"]))
+        shapes[path] = shape.translate(_instance_translation(row, placement, origin))
     for (first, a), (second, b) in combinations(shapes.items(), 2):
         if first in placements or second in placements:
             bounds_a, bounds_b = a.BoundingBox(), b.BoundingBox()
@@ -239,7 +251,7 @@ def _assembly_export(row, instances, leaves):
             for axis, angle in enumerate(row_offset.get("rotation_deg", [])):
                 if angle:
                     location = rotation(origin, axis, angle).Multiplied(location)
-            location = translation(row_offset["translation_mm"]).Multiplied(location)
+            location = translation(_instance_translation(row, row_offset, origin)).Multiplied(location)
         placed[path] = TopLoc_Location(root.Multiplied(location))
     return {"definitions": definitions, "locations": placed, "instances": instances}
 
@@ -273,8 +285,7 @@ def part_bodies(cq, projection):
             if instances:
                 assembly_export["_step_assembly"] = _assembly_export(row, instances, leaves)
             if row.get("instance_offsets"):
-                placed_leaves = _shift_instances(cq, leaves, instances, row["instance_offsets"],
-                                                  row["id"], projection["tolerance_mm"])
+                placed_leaves = _shift_instances(cq, leaves, instances, row, projection["tolerance_mm"])
                 shape = cq.Compound.makeCompound(list(placed_leaves.values()))
         def place(solid):
             """! @brief 조립 원점 회전 후 기판 좌표로 이동한다."""

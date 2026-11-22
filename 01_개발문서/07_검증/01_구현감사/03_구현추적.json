@@ -15725,8 +15725,8 @@
     },
     {
       "path": "Code/tests/test_cad_native.py",
-      "text_sha256": "609705abc99e57a091782f2c8b3bddf38617f208984e7595b3488f9441028669",
-      "utf8_bytes": 28535
+      "text_sha256": "36884e92c0fb302f19ebcc22213ed3ca4887bc641a1be101a5e94e35ef0965ea",
+      "utf8_bytes": 30451
     },
     {
       "path": "Code/tests/test_cad_pcb_features.py",
@@ -16570,8 +16570,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_review.cpp",
-      "text_sha256": "2a26891dced2768e9286c472b643f6072452d2f0482ab7382d49ddc5fe850e70",
-      "utf8_bytes": 13913
+      "text_sha256": "b9a750cd73dafd490abefdad31118cfa252a0995636e9d91489f44ba047aa0bd",
+      "utf8_bytes": 14085
     },
     {
       "path": "Code/ui/wxwidgets/precision_dialog.cpp",
