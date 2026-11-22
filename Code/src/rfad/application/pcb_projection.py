@@ -17,6 +17,7 @@ from rfad.application.pcb_surfaces import project_surfaces
 from rfad.application.pcb_voids import project_voids
 from rfad.application.pcb_results import normalization_contract
 from rfad.domain.design import material_input_fields, resolve_scalar
+from rfad.domain.errors import ProjectError
 from rfad.domain.material_models import TOTAL_TAN_DELTA_MODEL
 from rfad.domain.planar import validate_region
 
@@ -38,13 +39,19 @@ class MaterialProjection:
         if material_id not in self.sources:
             fail("E_MATERIAL_UNKNOWN", "해석에 소비할 실제 재료를 지정하십시오.", field)
         source = self.sources[material_id]
-        fields = material_input_fields(model=source["model"], conductor_only=conductor, volume_conductor=volume,
-                                       field="materials." + material_id + ".model")
-        low = scalar(self.document, source["validity_hz"]["min"], "frequency", field + ".validity_hz.min", positive=True)
-        high = scalar(self.document, source["validity_hz"]["max"], "frequency", field + ".validity_hz.max", positive=True)
+        material = "materials." + material_id
+        try:
+            fields = material_input_fields(model=source["model"], conductor_only=conductor, volume_conductor=volume,
+                                           field=material + ".model")
+        except ProjectError as error:
+            error.details["repair_field"] = field
+            raise
+        low = scalar(self.document, source["validity_hz"]["min"], "frequency", material + ".validity_hz.min", positive=True)
+        high = scalar(self.document, source["validity_hz"]["max"], "frequency", material + ".validity_hz.max", positive=True)
         if not low <= self.frequency["start"] < self.frequency["stop"] <= high:
-            fail("E_MATERIAL_RANGE", "재료 물성의 유효 대역이 해석 대역을 포함하지 않습니다.", field)
-        values = {name: scalar(self.document, source[name], dimension, field + "." + name,
+            bound = "min" if self.frequency["start"] < low else "max"
+            fail("E_MATERIAL_RANGE", "재료 물성의 유효 대역이 해석 대역을 포함하지 않습니다.", material + ".validity_hz." + bound)
+        values = {name: scalar(self.document, source[name], dimension, material + "." + name,
                                positive=name == "epsilon_r", nonnegative=name != "epsilon_r")
                   for name, dimension in fields}
         result = {"id": material_id, "name": source["name"],
@@ -58,7 +65,7 @@ class MaterialProjection:
             if volume:
                 result["epsilon_r"] = values["epsilon_r"]
                 if not 1 <= result["epsilon_r"] <= 100:
-                    fail("E_MATERIAL_RANGE", "초기 유한 전도 체적의 상대 유전율 범위는 1~100입니다.", field + ".epsilon_r")
+                    fail("E_MATERIAL_RANGE", "초기 유한 전도 체적의 상대 유전율 범위는 1~100입니다.", material + ".epsilon_r")
                 result["consumed_properties"].append("epsilon_r")
                 result["unconsumed_properties"] = ["tan_delta"]
         else:
@@ -72,8 +79,10 @@ class MaterialProjection:
                 result["consumed_properties"] = ["epsilon_r", "tan_delta"]
                 result["unconsumed_properties"] = ["conductivity"]
                 result["loss_partition"] = "total_electric_loss_from_tan_delta_no_separate_conductivity"
-            if result["epsilon_r"] < 1 or result["epsilon_r"] > 100 or result["tan_delta"] > 1:
-                fail("E_MATERIAL_RANGE", "초기 PCB profile의 물성 범위를 벗어났습니다.", field)
+            if not 1 <= result["epsilon_r"] <= 100:
+                fail("E_MATERIAL_RANGE", "초기 PCB 프로필의 상대 유전율 범위는 1~100입니다.", material + ".epsilon_r")
+            if result["tan_delta"] > 1:
+                fail("E_MATERIAL_RANGE", "초기 PCB 프로필의 손실 탄젠트 범위는 0~1입니다.", material + ".tan_delta")
         if material_id in self.consumed and self.consumed[material_id] != result:
             previous = self.consumed[material_id]
             if "dielectric" in previous["consumption_models"] or not conductor:
@@ -129,33 +138,48 @@ def project_board(document):
 
 def project_port(document, shapes, frequency, settings):
     """! @brief 한 개의 명시적 급전 모델과 실제 도체 접점을 투영한다."""
-    if len(document["ports"]) != 1 or not shapes:
-        fail("E_PORT", "하나의 명시적 lumped 포트와 해석 도체가 필요합니다.", "ports")
+    if len(document["ports"]) != 1:
+        fail("E_PORT", "설계 메뉴에서 급전을 추가하고 양단 도체와 급전 영역을 지정하십시오.", "ports")
     source = document["ports"][0]
+    field = "ports." + source["id"]
     shape_map = {item["id"]: item for item in shapes}
-    if source["positive_geometry_id"] not in shape_map or source["reference_geometry_id"] not in shape_map or "excitation_box" not in source:
-        fail("E_PORT", "포트 양단의 해석 도체와 명시적 excitation_box가 필요합니다.", "ports." + source["id"])
+    for terminal in ("positive_geometry_id", "reference_geometry_id"):
+        if source[terminal] not in shape_map:
+            fail("E_PORT", "급전 양단에 해석에 포함되는 도체를 지정하십시오.", field + "." + terminal)
+    box = field + ".excitation_box"
+    if "excitation_box" not in source:
+        fail("E_PORT", "급전 영역의 시작점과 끝점을 입력하십시오.", box + ".start[0]")
     pos, ref = shape_map[source["positive_geometry_id"]], shape_map[source["reference_geometry_id"]]
-    start, stop = (point(document, source["excitation_box"][key], "ports." + source["id"] + ".excitation_box." + key) for key in ("start", "stop"))
+    start, stop = (point(document, source["excitation_box"][key], box + "." + key) for key in ("start", "stop"))
     direction = source["direction"]
     axis = next((i for i in (0, 1, 2) if abs(direction[i]) == 1 and all(direction[j] == 0 for j in range(3) if j != i)), None)
-    if (axis is None or source["polarity"] != 1 or (axis != 2 and start[2] != stop[2]) or not math.isclose(stop[2], pos["sheet_z_mm"], abs_tol=1e-8)
-            or not math.isclose(start[2], ref["sheet_z_mm"], abs_tol=1e-8) or (stop[axis] - start[axis]) * direction[axis] <= 0):
-        fail("E_PORT", "포트는 x/y 평면 gap 또는 두 sheet 사이 z gap과 +1 극성을 지원합니다.", "ports." + source["id"])
-    if any(start[i] != stop[i] for i in range(3) if i != axis):
-        fail("E_UNSUPPORTED", "초기 PCB 포트는 명시적 1D gap을 지원합니다.", "ports." + source["id"] + ".excitation_box")
+    if axis is None:
+        fail("E_PORT", "급전 방향을 x, y 또는 z축의 단위 벡터로 지정하십시오.", field + ".direction[0]")
+    if source["polarity"] != 1:
+        fail("E_PORT", "현재 PCB 해석은 +1 극성을 지원합니다.", field + ".polarity")
+    for endpoint, position, shape in (("start", start, ref), ("stop", stop, pos)):
+        if not math.isclose(position[2], shape["sheet_z_mm"], abs_tol=1e-8):
+            fail("E_PORT", "급전 좌표의 높이를 연결 도체의 높이와 일치시키십시오.", f"{box}.{endpoint}[2]")
+    if axis != 2 and start[2] != stop[2]:
+        fail("E_PORT", "평면 급전의 양끝 높이는 같아야 합니다.", box + ".stop[2]")
+    if (stop[axis] - start[axis]) * direction[axis] <= 0:
+        fail("E_PORT", "급전 방향과 시작점에서 끝점으로 향하는 방향을 일치시키십시오.", f"{field}.direction[{axis}]")
+    for index in range(3):
+        if index != axis and start[index] != stop[index]:
+            fail("E_UNSUPPORTED", "급전 영역을 한 축의 1차원 간극으로 지정하십시오.", f"{box}.stop[{index}]")
     if axis != 2 and abs(stop[axis] - start[axis]) < 2 * settings["grid_mm"]:
-        fail("E_PORT", "급전 간극은 최소 두 격자로 표현해야 합니다.", "ports." + source["id"])
-    for position, shape in ((start, ref), (stop, pos)):
+        fail("E_PORT", "급전 간극은 최소 두 격자로 표현해야 합니다. 모델 최대 격자 간격을 확인하십시오.", "settings.grid_mm")
+    for endpoint, position, shape in (("start", start, ref), ("stop", stop, pos)):
         if axis != 2 and shape["kind"] in ("line_path", "arc_path") and abs(distance_to_shape(position[:2], shape) - shape["width_mm"] / 2) > 1e-6:
-            fail("E_PORT", "포트 양끝은 참조한 도체의 가장자리와 접해야 합니다.", "ports." + source["id"])
-    low = scalar(document, source["validity_hz"]["min"], "frequency", "ports.validity_hz.min", positive=True)
-    high = scalar(document, source["validity_hz"]["max"], "frequency", "ports.validity_hz.max", positive=True)
+            fail("E_PORT", "포트 양끝은 참조한 도체의 가장자리와 접해야 합니다.", f"{box}.{endpoint}[{axis}]")
+    low = scalar(document, source["validity_hz"]["min"], "frequency", field + ".validity_hz.min", positive=True)
+    high = scalar(document, source["validity_hz"]["max"], "frequency", field + ".validity_hz.max", positive=True)
     if not low <= frequency["start"] < frequency["stop"] <= high:
-        fail("E_PORT", "포트 유효 대역이 해석 대역을 포함하지 않습니다.", "ports.validity_hz")
+        bound = "min" if frequency["start"] < low else "max"
+        fail("E_PORT", "포트 유효 대역이 해석 대역을 포함하지 않습니다.", field + ".validity_hz." + bound)
     port = {"id": source["id"], "number": 1, "start_mm": start, "stop_mm": stop, "axis": "xyz"[axis], "direction": direction,
             "positive_geometry_id": pos["id"], "reference_geometry_id": ref["id"], "reference_plane": source["reference_plane"],
-            "resistance_ohm": scalar(document, source["resistance"], "impedance", "ports.resistance", positive=True)}
+            "resistance_ohm": scalar(document, source["resistance"], "impedance", field + ".resistance", positive=True)}
     return port
 
 
@@ -201,9 +225,12 @@ def project_pcb(document, settings):
         if len(shapes) + len(vias) >= 64 or source["net_id"] is None:
             fail("E_CONNECTIVITY", "명시적인 net이 필요하며 최대 64개 도체를 지원합니다.", field + ".net_id")
         layer = layer_map[source["layer_id"]]
-        mat = materials.consume(source["material_ref"] or layer["material_id"], field + ".material_ref", conductor=True, volume=source["kind"] == "via")
-        if not 1e3 <= mat["conductivity_s_per_m"] <= 1e9 or layer["thickness_mm"] > 0.2:
-            fail("E_MATERIAL_RANGE", "유한 전도도와 0.2 mm 이하 동박 두께가 필요한 sheet 모델입니다.", field)
+        assignment = field + ".material_ref" if source["material_ref"] else "stackup." + layer["id"] + ".material_id"
+        mat = materials.consume(source["material_ref"] or layer["material_id"], assignment, conductor=True, volume=source["kind"] == "via")
+        if not 1e3 <= mat["conductivity_s_per_m"] <= 1e9:
+            fail("E_MATERIAL_RANGE", "도체 전도도는 1000~1000000000 S/m 범위여야 합니다.", "materials." + mat["id"] + ".conductivity")
+        if layer["thickness_mm"] > 0.2:
+            fail("E_MATERIAL_RANGE", "현재 도체 모델에서 동박 두께는 0.2 mm 이하여야 합니다.", "stackup." + layer["id"] + ".thickness")
         item = {key: deepcopy(source[key]) for key in ("id", "kind", "role", "layer_id", "net_id", "material_ref", "source_ref")}
         if item["kind"] == "via":
             conductor_layers = [entry["id"] for entry in layers if entry["role"] == "conductor"]

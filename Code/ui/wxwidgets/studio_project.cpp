@@ -55,6 +55,7 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
                          if (m_project != openedProject)
                          {
                              m_solverDraft = Json::object();
+                             m_solverRepairPending = false;
                          }
                          m_project = openedProject;
                          m_revision = result.at("revision_id").get<std::string>();

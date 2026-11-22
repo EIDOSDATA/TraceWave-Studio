@@ -96,16 +96,37 @@ class PcbPlanTests(unittest.TestCase):
             self.assertEqual(len(plan["case"]["shapes"]), 3)
 
     def test_missing_material_and_port_geometry_are_blocked(self):
-        """! @brief 미정 물성이나 급전 위치를 임의 기본값으로 채우지 않는다."""
-        for mode in ("material", "port"):
-            document = fixture_document()
-            if mode == "material":
-                dielectric = next(m for m in document["materials"] if m["id"] == document["stackup"][0]["material_id"])
-                dielectric["epsilon_r"] = Quantity.missing("dimensionless", "1").to_dict()
-            else:
-                del document["ports"][0]["excitation_box"]
-            with self.assertRaises(ProjectError):
-                build_pcb_plan(document, snapshot_for(document), runtime_identity(), SETTINGS)
+        """! @brief 미정 물성과 급전의 실제 편집 객체와 입력 위치를 반환한다."""
+        document = fixture_document(arc=True)
+        layer = document["stackup"][0]
+        material = next(m for m in document["materials"] if m["id"] == layer["material_id"])
+        metal_layer = document["stackup"][1]
+        metal = next(m for m in document["materials"] if m["id"] == metal_layer["material_id"])
+        port = document["ports"][0]
+        cases = (
+            (layer, "material_id", None, f"stackup.{layer['id']}.material_id"),
+            (material, "epsilon_r", Quantity.missing("dimensionless", "1").to_dict(),
+             f"materials.{material['id']}.epsilon_r"),
+            (material["validity_hz"], "max", quantity(11, "GHz"), f"materials.{material['id']}.validity_hz.max"),
+            (metal, "conductivity", quantity(100, "S/m"), f"materials.{metal['id']}.conductivity"),
+            (metal_layer, "thickness", quantity(0.201, "mm"), f"stackup.{metal_layer['id']}.thickness"),
+            (port, "resistance", Quantity.missing("impedance", "ohm").to_dict(), f"ports.{port['id']}.resistance"),
+            (port, "polarity", -1, f"ports.{port['id']}.polarity"),
+            (port["excitation_box"]["stop"], 0, Quantity.missing("length", "mm").to_dict(),
+             f"ports.{port['id']}.excitation_box.stop[0]"),
+        )
+        for owner, key, invalid, path in cases:
+            with self.subTest(field=path):
+                original = owner[key]
+                owner[key] = invalid
+                with self.assertRaises(ProjectError) as error:
+                    build_pcb_plan(document, snapshot_for(document), runtime_identity(), SETTINGS)
+                self.assertEqual(error.exception.details["field_path"], path)
+                owner[key] = original
+        del port["excitation_box"]
+        with self.assertRaises(ProjectError) as error:
+            build_pcb_plan(document, snapshot_for(document), runtime_identity(), SETTINGS)
+        self.assertEqual(error.exception.details["field_path"], f"ports.{port['id']}.excitation_box.start[0]")
 
     def test_sheet_does_not_require_unconsumed_dielectric_properties(self):
         """! @brief 금속 sheet에서 소비하지 않는 유전율/손실을 임의 수치로 채우지 않는다."""

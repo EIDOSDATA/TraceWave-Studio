@@ -14301,8 +14301,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
-      "text_sha256": "91ebd10bc666490b347f8c0ba27b4077ea323d08fc364aacf862e8c1e2245c20",
-      "utf8_bytes": 20044
+      "text_sha256": "48c40c05bbf8952f7aeee7965b67b813f4143e4665773aaafaa9f77adba97129",
+      "utf8_bytes": 20817
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
@@ -15056,8 +15056,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_contacts.py",
-      "text_sha256": "3a5eddd3f269712c07c40e5906c81be0095381f3af32bfaf495c89fa948aa595",
-      "utf8_bytes": 15097
+      "text_sha256": "be4afc2a355b71f321783237a7be141f07ab23c2abfd01ab57f4cfd66f0b461a",
+      "utf8_bytes": 15384
     },
     {
       "path": "Code/src/rfad/application/pcb_exchange_projection.py",
@@ -15096,8 +15096,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_projection.py",
-      "text_sha256": "6955f50f3aaa1cc524cec819932ef32cacfefd52f5eba4ce64e20c12bc01a95f",
-      "utf8_bytes": 26739
+      "text_sha256": "86202f3daaa1a118f8a57220011e6312d2d2bdb41acd418c1ac950fa204f15f3",
+      "utf8_bytes": 28321
     },
     {
       "path": "Code/src/rfad/application/pcb_radiation.py",
@@ -16641,8 +16641,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "49d8bcd5ebbd54195b45e04142c47b0064ea5687669800a5dfc5d017dd47a348",
-      "utf8_bytes": 33472
+      "text_sha256": "26e50f6f6f55aecab865888bef14b4788ac56b4a1a98124c1b3b5fe943034d25",
+      "utf8_bytes": 33831
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
@@ -16676,8 +16676,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_validation.cpp",
-      "text_sha256": "6123b7503749729f3889eb482e616069b46f1db841a4716536072d3a65ed772b",
-      "utf8_bytes": 6052
+      "text_sha256": "feb03e4b8c41f335a7d0542af90bf13305551248c6932161d7f05cd3f4e7afce",
+      "utf8_bytes": 6163
     },
     {
       "path": "Code/ui/wxwidgets/studio_workspace.cpp",

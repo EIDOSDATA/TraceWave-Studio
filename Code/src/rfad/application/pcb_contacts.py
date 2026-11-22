@@ -149,19 +149,22 @@ def validate_native_contacts(shapes, port, tolerance, polygons_by_id, vias=None)
         point_count += sum(len(p["points"]) for p in polygons[identity])
         if point_count > 8192:
             _fail("E_RESOURCE", "접촉 검사의 전체 polygon 점 상한 8192개를 초과했습니다.", "geometry")
-    field = "ports." + port["id"]
+    field = "ports." + port["id"] + ".excitation_box"
     start, stop = port["start_mm"], port["stop_mm"]
-    if any(type(p) is not list or len(p) != 3 or any(type(v) not in (int, float) or not math.isfinite(v) for v in p) for p in (start, stop)):
-        _fail("E_PORT", "급전 양끝의 유한 좌표가 필요합니다.", field)
+    for endpoint, point in (("start", start), ("stop", stop)):
+        if type(point) is not list or len(point) != 3 or any(type(v) not in (int, float) or not math.isfinite(v) for v in point):
+            _fail("E_PORT", "급전 양끝의 유한 좌표가 필요합니다.", f"{field}.{endpoint}[0]")
     vertical = port.get("axis") == "z"
     if not vertical and start[2] != stop[2]:
-        _fail("E_PORT", "평면 급전 양끝의 sheet 높이가 다릅니다.", field)
-    for point, identity in ((start, port["reference_geometry_id"]), (stop, port["positive_geometry_id"])):
+        _fail("E_PORT", "평면 급전 양끝의 sheet 높이가 다릅니다.", field + ".stop[2]")
+    axis = {"x": 0, "y": 1, "z": 2}.get(port.get("axis"), 0)
+    for endpoint, point, identity in (("start", start, port["reference_geometry_id"]), ("stop", stop, port["positive_geometry_id"])):
         if identity not in polygons or not math.isclose(point[2], shape_map[identity]["sheet_z_mm"], rel_tol=0.0, abs_tol=SHEET_EPSILON_MM):
-            _fail("E_PORT", "급전 양끝의 native 도체 높이 또는 식별이 다릅니다.", field)
+            _fail("E_PORT", "급전 양끝의 native 도체 높이 또는 식별이 다릅니다.", f"{field}.{endpoint}[2]")
         predicate = _inside if vertical else _on_boundary
         if not any(predicate(point[:2], polygon) for polygon in polygons[identity]):
-            _fail("E_PORT", "급전 양끝이 실제 native polygon 경계에 닿지 않습니다. 곡선 근사 접촉점을 보존하거나 급전 위치를 수정하십시오.", field)
+            _fail("E_PORT", "급전 양끝이 실제 native polygon 경계에 닿지 않습니다. 곡선 근사 접촉점을 보존하거나 급전 위치를 수정하십시오.", f"{field}.{endpoint}[{0 if vertical else axis}]")
+    field += f".stop[{axis}]"
     gap = math.dist(start, stop)
     if gap <= 8 * CONTACT_EPSILON_MM:
         _fail("E_PORT", "급전 간극이 접촉 판정 정밀도보다 작습니다.", field)

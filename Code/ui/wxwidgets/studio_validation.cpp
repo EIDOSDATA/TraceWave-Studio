@@ -113,37 +113,52 @@ void StudioFrame::OpenProblem(long index)
         return;
     }
     const Json diagnostic = m_diagnostics.at(index);
-    const auto paths = diagnostic.value("field_paths", Json::array());
-    const std::map<std::string, std::string> collections{{"geometry", "geometry"}, {"materials", "material"},
-        {"stackup", "layer"}, {"ports", "port"}, {"parameters", "parameter"}};
-    for (const auto& field : paths)
+    const auto message = DiagnosticMessage(diagnostic);
+    for (const auto& field : diagnostic.value("field_paths", Json::array()))
     {
         const std::string path = field.get<std::string>();
-        for (const auto& item : m_editor.at("items"))
+        const auto target = DiagnosticSelection(path);
+        if (!target.is_null())
         {
-            const std::string kind = item.at("kind");
-            const std::string id = item.at("id");
-            bool matches = kind == "board" && AtPath(path, "board");
-            for (const auto& mapping : collections)
+            RefreshEditor(target, [this, path, message]()
             {
-                matches = matches || (kind == mapping.second && AtPath(path, mapping.first + "." + id));
-            }
-            if (matches)
-            {
-                RefreshEditor(Json{{"kind", kind}, {"id", id}},
-                              [this, path, diagnostic]()
-                              {
-                                  Ready("문제 위치로 이동했습니다.");
-                                  m_shell->ShowProperties(false);
-                                  m_editorPanel->ShowDiagnostic(path, DiagnosticMessage(diagnostic));
-                                  if (m_portProblem->IsShownOnScreen() && m_portProblem->IsEnabled())
-                                  {
-                                      m_portProblem->SetFocus();
-                                  }
-                              });
-                return;
-            }
+                Ready("문제 위치로 이동했습니다.");
+                ShowDiagnosticField(path, message);
+                if (m_portProblem->IsShownOnScreen() && m_portProblem->IsEnabled())
+                {
+                    m_portProblem->SetFocus();
+                }
+            });
+            return;
         }
     }
-    Log(DiagnosticMessage(diagnostic));
+    Log(message);
+}
+
+Json StudioFrame::DiagnosticSelection(const std::string& path) const
+{
+    if (!m_editor.contains("items"))
+    {
+        return nullptr;
+    }
+    static const std::map<std::string, std::string> collections{{"geometry", "geometry"}, {"material", "materials"},
+        {"layer", "stackup"}, {"port", "ports"}, {"parameter", "parameters"}};
+    for (const auto& item : m_editor.at("items"))
+    {
+        const std::string kind = item.at("kind");
+        const std::string id = item.at("id");
+        const auto collection = collections.find(kind);
+        if ((kind == "board" && AtPath(path, "board")) ||
+            (collection != collections.end() && AtPath(path, collection->second + "." + id)))
+        {
+            return Json{{"kind", kind}, {"id", id}};
+        }
+    }
+    return nullptr;
+}
+
+void StudioFrame::ShowDiagnosticField(const std::string& path, const std::string& message)
+{
+    m_shell->ShowProperties(false);
+    m_editorPanel->ShowDiagnostic(path, message);
 }

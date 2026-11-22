@@ -183,6 +183,12 @@ void StudioFrame::UpdateControls()
                                            ? "도체층을 추가한 뒤 선 또는 원호 도구를 선택하세요."
                                            : "선택: 객체 속성 / 휠: 확대·축소 / 가운데 버튼: 이동 / Esc: 취소"));
     }
+    if (m_solverRepairBack->IsShown() != m_solverRepairPending)
+    {
+        m_solverRepairBack->Show(m_solverRepairPending);
+        m_properties->Layout();
+    }
+    m_solverRepairBack->Enable(GetMenuBar()->IsEnabled(IdRunSolver));
     UpdateDraftState();
     UpdateModelState();
     UpdatePortLinks();
@@ -210,6 +216,15 @@ void StudioFrame::UpdateDraftState()
             canApply = canApply && !name.empty();
         }
         m_apply->Enable(m_connected && !m_busy && canApply);
+        if (m_solverRepairPending)
+        {
+            const auto label = Display(draft ? "변경 적용 후 해석 검토로" : "해석 검토로 돌아가기");
+            if (m_solverRepairBack->GetLabel() != label)
+            {
+                m_solverRepairBack->SetLabel(label);
+                m_properties->Layout();
+            }
+        }
         if (hasProject && !opened)
         {
             const bool loading = m_busy && m_connected;

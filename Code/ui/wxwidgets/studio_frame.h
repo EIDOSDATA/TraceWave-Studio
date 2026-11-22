@@ -199,6 +199,10 @@ private:
     void ShowProblems();
     /** @brief 진단이 가리키는 현재 개정의 객체와 필드로 이동한다. */
     void OpenProblem(long index);
+    /** @brief 현재 편집 목록에서 진단 경로가 명시한 객체를 찾는다. */
+    Json DiagnosticSelection(const std::string& path) const;
+    /** @brief 속성 창을 열고 전달된 진단의 입력에 초점을 둔다. */
+    void ShowDiagnosticField(const std::string& path, const std::string& message);
     /** @brief 제한된 로그 길이를 유지하고 기존 입력 초점을 복원한다. */
     void Log(const std::string& text);
     /** @brief CAD는 별도 작업으로 추적하여 편집/저장 작업의 callback을 보존한다. */
@@ -380,6 +384,7 @@ private:
     bool m_solverRestoring = false;
     std::string m_solverState = "idle";
     Json m_solverDraft = Json::object();
+    bool m_solverRepairPending = false;
     Json m_solverSettings = Json::object();
     Json m_solverResult = Json::object();
     Json m_solverSamples = Json::object();
@@ -462,6 +467,7 @@ private:
     wxStaticText* m_metadataDiagnostic = nullptr;
     wxTextCtrl* m_log = nullptr;
     wxButton* m_apply = nullptr;
+    wxButton* m_solverRepairBack = nullptr;
     wxStaticText* m_revisionLabel = nullptr;
     bool m_connected = false;
     bool m_busy = true;

@@ -190,10 +190,12 @@ class SolverReviewDialog final : public wxDialog
 {
 public:
     SolverReviewDialog(wxWindow* parent, const std::string& revision, Json& draft, const Json& catalog,
-                       const std::string& resultId, Studio::SolverReviewRequest request)
+                       const std::string& resultId, Studio::SolverReviewRequest request,
+                       Studio::SolverPropertyAvailable propertyAvailable)
         : wxDialog(parent, wxID_ANY, Display("해석 전 검토"), wxDefaultPosition, wxDefaultSize,
                    wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
-          m_revision(revision), m_draft(draft), m_catalog(catalog), m_request(std::move(request))
+          m_revision(revision), m_draft(draft), m_catalog(catalog), m_request(std::move(request)),
+          m_propertyAvailable(std::move(propertyAvailable))
     {
         SetName("solver.preview.dialog");
         StudioTheme::ApplyTypography(*this);
@@ -223,6 +225,18 @@ public:
         StudioTheme::Button(*back);
         back->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { FocusInput("grid_mm"); });
         actions->Add(back, 0);
+        m_jump = new wxButton(this, wxID_ANY, Display("문제 속성으로 이동"));
+        m_jump->SetName("solver.review.issue");
+        StudioTheme::Button(*m_jump);
+        m_jump->Hide();
+        m_jump->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+        {
+            if (m_repair && !m_pending)
+            {
+                EndModal(wxID_FORWARD);
+            }
+        });
+        actions->Add(m_jump, 0, wxLEFT, pad);
         actions->AddStretchSpacer();
         auto* close = new wxButton(this, wxID_CANCEL, Display("닫기"));
         StudioTheme::Button(*close);
@@ -264,9 +278,13 @@ public:
         }
     }
 
-    Studio::SolverReviewDecision Decision() const
+    Studio::SolverReviewDecision Decision(int outcome) const
     {
-        return {m_result.at("settings"), m_saveName};
+        if (outcome == wxID_FORWARD)
+        {
+            return {Json(), "", m_repair};
+        }
+        return {m_result.at("settings"), m_saveName, std::nullopt};
     }
 
 private:
@@ -746,12 +764,14 @@ private:
         m_output->Clear();
         m_run->Enable(false);
         m_save->Enable(false);
+        m_repair.reset();
+        m_jump->Hide();
     }
 
     void Invalidate()
     {
         RefreshComparison();
-        if (!m_result.empty())
+        if (!m_result.empty() || m_repair)
         {
             ClearResult();
             SetStatus("입력값이 바뀌었습니다. 현재 조건을 다시 검토하세요.");
@@ -906,8 +926,19 @@ private:
         {
             problem += " 조건을 확인한 뒤 필요하면 다시 검토하세요.";
         }
-        SetStatus(problem);
         FocusInput(FieldFor(field));
+        const auto repairField = details.value("repair_field", field);
+        if (m_propertyAvailable(repairField))
+        {
+            m_repair = Studio::SolverRepair{repairField, problem};
+            m_jump->Show();
+            SetStatus(problem + " 속성에서 수정한 뒤 같은 조건으로 다시 검토할 수 있습니다.");
+            m_jump->SetFocus();
+        }
+        else
+        {
+            SetStatus(problem);
+        }
     }
 
     void Accept(const Json& result)
@@ -986,10 +1017,12 @@ private:
     Json& m_draft;
     const Json& m_catalog;
     Studio::SolverReviewRequest m_request;
+    Studio::SolverPropertyAvailable m_propertyAvailable;
     Json m_sources = Json::array();
     Json m_selected = Json::object();
     std::size_t m_sourceGeneration = 0;
     std::string m_saveName;
+    std::optional<Studio::SolverRepair> m_repair;
     wxChoice* m_source = nullptr;
     wxListCtrl* m_comparison = nullptr;
     wxStaticText* m_summary = nullptr;
@@ -1005,6 +1038,7 @@ private:
     wxCheckBox* m_graded = nullptr;
     wxStaticText* m_status = nullptr;
     wxButton* m_check = nullptr;
+    wxButton* m_jump = nullptr;
     wxButton* m_run = nullptr;
     wxTextCtrl* m_output = nullptr;
     SolverMeshView* m_plot = nullptr;
@@ -1022,13 +1056,14 @@ private:
 }
 
 std::optional<Studio::SolverReviewDecision> Studio::ShowSolverReview(wxWindow* parent, const std::string& revision,
-    Json& draft, const Json& catalog, const std::string& resultId, Studio::SolverReviewRequest request)
+    Json& draft, const Json& catalog, const std::string& resultId, Studio::SolverReviewRequest request,
+    Studio::SolverPropertyAvailable propertyAvailable)
 {
-    SolverReviewDialog dialog(parent, revision, draft, catalog, resultId, std::move(request));
+    SolverReviewDialog dialog(parent, revision, draft, catalog, resultId, std::move(request), std::move(propertyAvailable));
     const int outcome = dialog.ShowModal();
-    if (outcome == wxID_OK || outcome == wxID_SAVE)
+    if (outcome == wxID_OK || outcome == wxID_SAVE || outcome == wxID_FORWARD)
     {
-        return dialog.Decision();
+        return dialog.Decision(outcome);
     }
     return std::nullopt;
 }

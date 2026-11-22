@@ -425,6 +425,11 @@ void StudioFrame::BuildInterface()
     m_apply = new wxButton(m_properties, IdApply, Display("변경 적용"));
     StudioTheme::Button(*m_apply, true);
     form->Add(m_apply, 0, wxALL | wxALIGN_RIGHT, FromDIP(StudioTheme::PanelPadding));
+    m_solverRepairBack = new wxButton(m_properties, wxID_ANY, Display("해석 검토로 돌아가기"));
+    m_solverRepairBack->SetName("solver.repair.resume");
+    StudioTheme::Button(*m_solverRepairBack);
+    m_solverRepairBack->Hide();
+    form->Add(m_solverRepairBack, 0, wxLEFT | wxRIGHT | wxBOTTOM | wxALIGN_RIGHT, FromDIP(StudioTheme::PanelPadding));
     m_revisionLabel = new wxStaticText(m_properties, wxID_ANY, Display("프로젝트를 만들거나 열어 시작하세요."));
     StudioTheme::BindSecondary(*m_revisionLabel);
     form->Add(m_revisionLabel, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::PanelPadding));

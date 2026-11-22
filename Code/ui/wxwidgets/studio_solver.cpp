@@ -48,6 +48,13 @@ std::string ProgressLabel(const std::string& phase, const std::string& state)
 
 void StudioFrame::BindSolver()
 {
+    m_solverRepairBack->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        if (m_solverRepairPending && GetMenuBar()->IsEnabled(IdRunSolver))
+        {
+            ApplyCurrent([this]() { ConfigureSolver(); });
+        }
+    });
     Bind(
         wxEVT_MENU,
         [this](wxCommandEvent&)
@@ -102,8 +109,13 @@ void StudioFrame::ConfigureSolver(const std::string& resultId)
             CallAfter([this, project, revision, resultId, catalog]()
             {
                 m_busy = false;
+                const bool current = m_connected && !m_closing && m_project == project && m_revision == revision;
+                if (current)
+                {
+                    m_solverRepairPending = false;
+                }
                 UpdateControls();
-                if (m_connected && !m_closing && m_project == project && m_revision == revision)
+                if (current)
                 {
                     OpenSolverReview(project, revision, catalog, resultId);
                 }
@@ -130,9 +142,37 @@ void StudioFrame::OpenSolverReview(const std::string& project, const std::string
             auto request = input;
             request["expected_revision"] = revision;
             Send(method, request, false, Context(), std::move(accepted), std::move(rejected));
+        },
+        [this](const std::string& path)
+        {
+            const auto target = DiagnosticSelection(path);
+            if (target.is_null())
+            {
+                return false;
+            }
+            const std::string kind = target.at("kind");
+            const std::string id = target.at("id");
+            return kind == "material" || kind == "port" ||
+                path == "stackup." + id + ".material_id" || path == "stackup." + id + ".thickness" ||
+                path == "geometry." + id + ".material_ref";
         });
     if (!decision || !m_connected || m_closing || m_project != project || m_revision != revision || HasDraft())
     {
+        return;
+    }
+    if (decision->repair)
+    {
+        const auto repair = *decision->repair;
+        const auto target = DiagnosticSelection(repair.fieldPath);
+        if (!target.is_null())
+        {
+            m_solverRepairPending = true;
+            RefreshEditor(target, [this, repair]()
+            {
+                Ready("해석 오류의 속성으로 이동했습니다.");
+                ShowDiagnosticField(repair.fieldPath, repair.message);
+            });
+        }
         return;
     }
     if (decision->saveName.empty())
