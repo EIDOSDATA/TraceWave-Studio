@@ -18,7 +18,7 @@ from rfad.storage.sealed_files import verify
 
 PROFILE = "rfad.pcb-import/0.1"
 MAX_FILES, MAX_BYTES, CHUNK_BYTES = 40, 16 * 1024 * 1024, 256 * 1024
-FORMATS = {"kicad_pcb": "kicad_board", "kicad_mod": "kicad_footprint", "gerber_job": "gerber_job", "gerber_x2": "gerber_x2", "xnc": "xnc",
+FORMATS = {"ipc2581_revc": "ipc2581_revc", "kicad_pcb": "kicad_board", "kicad_mod": "kicad_footprint", "gerber_job": "gerber_job", "gerber_x2": "gerber_x2", "xnc": "xnc",
            **dict.fromkeys(VENDOR_FORMATS, "vendor_antenna")}
 READS = {"pcb.import.context", "pcb.import.get", "pcb.import.preview", "pcb.import.receipt"}
 MUTATIONS = {"pcb.import.begin", "pcb.import.chunk", "pcb.import.parse", "pcb.import.apply", "pcb.import.abandon"}

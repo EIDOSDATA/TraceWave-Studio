@@ -148,6 +148,12 @@ def parse_package(files,format_name,options):
             if item["kind"]=="planar_region":
                 decoded["losses"].append({"code":"zone_rules_not_in_edit_model","owner":item["id"],"original_policy":deepcopy(item.get("fill_settings")),"message":"명시 planar_region은 KiCad 자동 zone 재채움/연결/섬 정책을 계승하지 않습니다. 원문 정책과 cache는 파일에 보존됩니다.","raw_preserved":True})
         records.append({"path":names[0],"data":decoded})
+    elif format_name == "ipc2581_revc" and len(files) == 1:
+        from rfad.adapters.exchange.ipc2581_reader import read
+        name, raw = next(iter(files.items()))
+        if not name.lower().endswith(".xml"):
+            raise ProjectError("E_UNSUPPORTED", "압축에서 꺼낸 IPC-2581 Rev C XML 원문 하나를 선택하십시오.")
+        records.append({"path": name, "data": read(raw)})
     elif format_name in VENDOR_FORMATS and len(files) == 1:
         from rfad.adapters.exchange.vendor_pattern import read_pattern
         name, raw = next(iter(files.items()))

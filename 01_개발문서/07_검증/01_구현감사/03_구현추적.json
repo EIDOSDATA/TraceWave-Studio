@@ -7522,6 +7522,7 @@
       "formats": [
         "gerber_job",
         "gerber_x2",
+        "ipc2581_revc",
         "kicad_mod",
         "kicad_pcb",
         "vendor_qorvo_wb003",
@@ -14861,8 +14862,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/exchange/pcb.py",
-      "text_sha256": "f069142d366270e7db4e7bd7c515d93ac4b32ffb356f3ccef71073ee6906df60",
-      "utf8_bytes": 13636
+      "text_sha256": "b4247e8e04323efb644105d3fa536f340c514459ad61e1397668510a56e9d28c",
+      "utf8_bytes": 14036
     },
     {
       "path": "Code/src/rfad/adapters/exchange/pcb_geometry.py",
@@ -15116,13 +15117,13 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_import_mapping.py",
-      "text_sha256": "282a5f1d721d65fa646f46bf41e89d43ddf082a41eed27bf7cc7314b8cf38319",
-      "utf8_bytes": 49954
+      "text_sha256": "e0392116d5412f62a730c09b938412a56dcf30230d19456edd4bae308d7fe323",
+      "utf8_bytes": 50128
     },
     {
       "path": "Code/src/rfad/application/pcb_import_service.py",
-      "text_sha256": "388514188d12381f78a4358b0d16a39b2a2916dde4174fad118be5768daf9cee",
-      "utf8_bytes": 23740
+      "text_sha256": "4e15eefaaaeea8d5ec9fe1990f6baf2a0bdfd8dcf9ff10e83dd73c06b5686dbd",
+      "utf8_bytes": 23772
     },
     {
       "path": "Code/src/rfad/application/pcb_loss_convergence.py",
@@ -15531,8 +15532,8 @@
     },
     {
       "path": "Code/src/rfad/domain/network_transform.py",
-      "text_sha256": "40f57d3cfdd2ca8cf3d1567151af7fa7c90cb9ea3ba275d1a3bb378e3566abc5",
-      "utf8_bytes": 13703
+      "text_sha256": "d35f527e8a61592cbd7cfea5fb212cec9d9667c9c37207b450c0f96b65d2d6c4",
+      "utf8_bytes": 17608
     },
     {
       "path": "Code/src/rfad/domain/object_names.py",
@@ -15996,8 +15997,8 @@
     },
     {
       "path": "Code/tests/test_network_service.py",
-      "text_sha256": "5653b4522ffe1907c266ab597376ab360b864cd30d71ef345daccdf886122f2f",
-      "utf8_bytes": 25886
+      "text_sha256": "b7b764d9ec388997c777e541c95cb5ef012dd15506148edc3cbec5175815d0c6",
+      "utf8_bytes": 29209
     },
     {
       "path": "Code/tests/test_object_names.py",
@@ -16051,8 +16052,8 @@
     },
     {
       "path": "Code/tests/test_pcb_import_service.py",
-      "text_sha256": "841932a4b2b7bc8292230f54085dcbec3a96fc992323abd8cdf3a7462f44a779",
-      "utf8_bytes": 16990
+      "text_sha256": "89675d9fe9c7fa7510bdb26eec7b69d387fc3649f1518b2c28c4d85597193cd0",
+      "utf8_bytes": 21138
     },
     {
       "path": "Code/tests/test_pcb_loss_convergence.py",
@@ -16496,8 +16497,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/network_transform_dialog.cpp",
-      "text_sha256": "72f9198ecb8791f96b124527d92ec707e73c19b593fac822e1a8690b196ef13b",
-      "utf8_bytes": 25819
+      "text_sha256": "2fed42cd9c4824c71c4e4de8be211a4354d34b2935d72d3409537537f76646de",
+      "utf8_bytes": 27415
     },
     {
       "path": "Code/ui/wxwidgets/object_rename_dialog.cpp",
@@ -16546,8 +16547,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_dialog.cpp",
-      "text_sha256": "0e31cab2ae3672eb63f00a4cd8d65e56d2579e7be59ee54afc68ecc6a06f0cdb",
-      "utf8_bytes": 8174
+      "text_sha256": "5aa0712cad8d5ea727d45acb637008fdfea74c5ac6050aa6bff9ed9f35613c90",
+      "utf8_bytes": 8396
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_review.cpp",
@@ -16556,8 +16557,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_transfer.cpp",
-      "text_sha256": "82a682113aa55ee71693d0fb5b5d978581c24ce971f861f5d40aa46e79f9bb0b",
-      "utf8_bytes": 13262
+      "text_sha256": "379409040e0ff553fde9fcab0190d0c48414d2199c7de8edbe4c9af44f588bc5",
+      "utf8_bytes": 15805
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_dialog.cpp",

@@ -41,6 +41,16 @@ class PcbImportTransferTests(unittest.TestCase):
     def tearDown(self):
         self.f.close()
 
+    def test_ipc2581_rejects_unknown_revision_and_document_type(self):
+        """! @brief 다른 표준 버전이나 사용자 정의 XML 문서 형식은 대체하지 않는다."""
+        from rfad.adapters.exchange.ipc2581_reader import read
+
+        for raw in (b'<IPC-2581 xmlns="http://webstds.ipc.org/2581" revision="B"/>',
+                    b'<!DOCTYPE root><IPC-2581 xmlns="http://webstds.ipc.org/2581" revision="C"/>'):
+            with self.assertRaises(ProjectError) as error:
+                read(raw)
+            self.assertEqual(error.exception.code, "E_UNSUPPORTED")
+
     def test_chunk_receipt_duplicate_and_reopen_preserve_exact_bytes(self):
         f = self.f
         raw = bytes(range(256)) * 40
@@ -164,6 +174,59 @@ class PcbImportTransferTests(unittest.TestCase):
 @unittest.skipUnless(os.environ.get("RFAD_EXCHANGE_PYTHON"), "별도 PCB parser 환경을 명시합니다.")
 class PcbImportNativeTests(unittest.TestCase):
     """! @brief 실제 writer 출력의 원시 바이트를 별도 parser로 읽고 환경 없이 다시 연다."""
+    def test_ipc2581_revc_review_preserves_source_and_cannot_apply_geometry(self):
+        """! @brief 실제 격리 파서의 인치 환산, 미정 속성, 읽기 전용 보존을 확인한다."""
+        raw = b"""<IPC-2581 xmlns="http://webstds.ipc.org/2581" revision="C">
+          <HistoryRecord software="Test CAD"/>
+          <Ecad><CadHeader units="INCH"/><CadData>
+            <Layer name="top" layerFunction="CONDUCTOR" side="TOP"/>
+            <Stackup name="test" overallThickness="0.05"><StackupGroup>
+              <StackupLayer layerOrGroupRef="top" thickness="0.001" sequence="1"/>
+            </StackupGroup></Stackup>
+            <Step name="BOARD1"><Profile><Polygon/><Cutout/></Profile>
+              <LogicalNet name="SIGNAL"/><PhyNetGroup name="All"><PhyNet name="SIGNAL"/></PhyNetGroup>
+              <Component refDes="J1" packageRef="DUT" layerRef="top"><Location x="-0.1" y="0.25"/></Component>
+              <LayerFeature layerRef="pad-to-pad"><Set><Hole name="H1" diameter="0.02" x="1.25" y="0.5"/></Set></LayerFeature>
+            </Step>
+          </CadData></Ecad>
+        </IPC-2581>"""
+        name = "IPC 시험.xml"
+        f = ExchangeFixture(ExchangeRuntime(Path(os.environ["RFAD_EXCHANGE_PYTHON"])))
+        try:
+            prepare(f)
+            original = f.service._load(f.service.journal.read()["projects"][f.project])
+            identity = begin(f, raw, name, "ipc2581_revc")
+            upload(f, identity, raw, name)
+            f.service.mutate("pcb.import.parse", f.request({"upload_id": identity}))
+            f.service.exchange.run_next()
+            status = f.read("pcb.import.get", {"upload_id": identity})
+            self.assertEqual(status["parse_state"], "completed", status)
+            review = status["parsed"]["records"][0]["data"]
+            self.assertEqual(review["source_sha256"], hashlib.sha256(raw).hexdigest())
+            self.assertEqual(review["stackups"][0]["thickness_mm"], {"source": "0.05", "converted": 1.27})
+            board, = review["steps"]
+            self.assertEqual((board["logical_nets"], board["physical_nets"], board["components"], board["holes"]),
+                             (1, 1, 1, 1))
+            self.assertEqual(board["profile"], {"outer": 1, "cutouts": 1})
+            self.assertEqual(board["hole_plating"], {"unspecified": 1})
+            self.assertIsNone(board["hole_examples"][0]["platingStatus"])
+            self.assertEqual(board["hole_examples"][0]["diameter_mm"]["converted"], .508)
+            self.assertEqual(board["component_examples"][0]["x_mm"]["converted"], -2.54)
+            self.assertIsNone(board["component_examples"][0]["rotation_deg"])
+            reference = status["result"]["source_files"][0]["artifact"]
+            f.complete("project.save", {"expected_revision": f.revision})
+            f.service.close()
+            f.service = ProjectService(f.workspace, auto_run=False)
+            self.assertEqual(f.read("pcb.import.get", {"upload_id": identity})["parsed"], status["parsed"])
+            self.assertEqual(f.service.journal.read_artifact(reference), raw)
+            self.assertEqual(f.service._load(f.service.journal.read()["projects"][f.project]), original)
+            preview = f.read("pcb.import.preview", {"upload_id": identity, "expected_revision": f.revision,
+                "mapping": {}, "acknowledged_losses": [], "reason": "읽기만 확인"})
+            self.assertFalse(preview["can_apply"])
+            self.assertEqual(preview["issues"][0]["code"], "E_UNSUPPORTED")
+        finally:
+            f.close()
+
     def test_g85_loss_acknowledgement_and_source_id_survive_reopen(self):
         """! @brief G85를 실제 parser로 읽고 도금 미정 및 원본 ID를 저장한 뒤 다시 확인한다."""
         raw = (b"M48\nMETRIC\nT01C1.2\n%\nG90\nT01\n"

@@ -39,8 +39,8 @@ void PcbImportDialog::BuildSource(wxWindow* page)
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* inputs = new wxWrapSizer(wxHORIZONTAL);
     m_format = new wxChoice(page, wxID_ANY);
-    m_formats = {"kicad_pcb", "kicad_mod", "gerber_job", "gerber_x2", "xnc"};
-    for (const auto& label : {"KiCad 보드", "KiCad 풋프린트", "Gerber Job", "Gerber X2", "Excellon / XNC"})
+    m_formats = {"kicad_pcb", "kicad_mod", "gerber_job", "gerber_x2", "xnc", "ipc2581_revc"};
+    for (const auto& label : {"KiCad 보드", "KiCad 풋프린트", "Gerber Job", "Gerber X2", "Excellon / XNC", "IPC-2581 Rev C 읽기"})
     {
         m_format->Append(Display(label));
     }

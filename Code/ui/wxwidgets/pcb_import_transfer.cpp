@@ -14,6 +14,50 @@
 #include <algorithm>
 #include <set>
 
+namespace
+{
+/** @brief 파서가 정리한 IPC-2581 제조 구조와 지원 범위를 읽기 전용으로 표시한다. */
+std::string IpcSummary(const Json& parsed)
+{
+    const auto& data = parsed.at("records").at(0).at("data");
+    std::string text = "IPC-2581 Rev C 원본 검토 완료\n원본 단위 " +
+        OutputUi::Text(data.at("units"), "미정") + " | 작성 도구 " + OutputUi::Text(data.at("writer"), "미정");
+    text += "\n층 " + std::to_string(data.at("layers").size()) +
+        "개 | 적층 " + std::to_string(data.at("stackups").size()) +
+        "개 | 보드 정의 " + std::to_string(data.at("steps").size()) + "개";
+    for (const auto& stack : data.at("stackups"))
+    {
+        const auto& thickness = stack.at("thickness_mm");
+        text += "\n적층 " + OutputUi::Text(stack.at("name"), "이름 미정") +
+            " | 적층층 " + std::to_string(stack.at("layers").size()) + "개";
+        if (thickness.is_object())
+        {
+            text += " | " + Utf8(wxString::Format("%.6g mm", thickness.at("converted").get<double>()));
+        }
+    }
+    for (const auto& board : data.at("steps"))
+    {
+        text += "\n" + OutputUi::Text(board.at("name"), "이름 미정") +
+            " | 논리 넷 " + std::to_string(board.at("logical_nets").get<int>()) +
+            "개 | 물리 넷 " + std::to_string(board.at("physical_nets").get<int>()) +
+            "개 | 홀 " + std::to_string(board.at("holes").get<int>()) +
+            "개 | 슬롯 " + std::to_string(board.at("slots").get<int>()) +
+            "개 | 부품 " + std::to_string(board.at("components").get<int>()) + "개";
+        for (const auto& [category, count] : board.at("hole_plating").items())
+        {
+            text += "\n  도금 구분 " + category + " " + std::to_string(count.get<int>()) + "개";
+        }
+    }
+    for (const auto& layer : data.at("layers"))
+    {
+        text += "\n층 " + OutputUi::Text(layer.at("name"), "이름 미정") + " | " +
+            OutputUi::Text(layer.at("layerFunction"), "기능 미정") + " | " +
+            OutputUi::Text(layer.at("side"), "면 미정");
+    }
+    return text + "\n이 원본은 제조 구조를 확인하는 데 사용합니다. 설계 반영과 재출력은 후속 범위입니다.";
+}
+}
+
 void PcbImportDialog::Browse()
 {
     if (!Editable() || m_pending || Uncertain())
@@ -21,10 +65,12 @@ void PcbImportDialog::Browse()
         return;
     }
     const bool vendor = VendorFormat();
-    const auto filter = vendor ? "제조사 원본 (*.zip;*.dxf;*.spl;*.gbr)|*.zip;*.dxf;*.spl;*.gbr|모든 파일 (*.*)|*.*" :
+    const bool ipc = Format() == "ipc2581_revc";
+    const auto filter = ipc ? "IPC-2581 Rev C XML (*.xml)|*.xml" :
+        vendor ? "제조사 원본 (*.zip;*.dxf;*.spl;*.gbr)|*.zip;*.dxf;*.spl;*.gbr|모든 파일 (*.*)|*.*" :
                                 "PCB / CAM (*.kicad_pcb;*.kicad_mod;*.gbr;*.gbrjob;*.drl;*.xnc)|"
                                 "*.kicad_pcb;*.kicad_mod;*.gbr;*.gbrjob;*.drl;*.xnc|모든 파일 (*.*)|*.*";
-    const long flags = wxFD_OPEN | wxFD_FILE_MUST_EXIST | (vendor ? 0 : wxFD_MULTIPLE);
+    const long flags = wxFD_OPEN | wxFD_FILE_MUST_EXIST | ((vendor || ipc) ? 0 : wxFD_MULTIPLE);
     wxFileDialog dialog(this, Display("가져올 PCB / CAM 원문 파일"), wxEmptyString, wxEmptyString,
                         Display(filter), flags);
     if (dialog.ShowModal() != wxID_OK)
@@ -293,7 +339,14 @@ void PcbImportDialog::RenderUpload(const Json& response)
     if (response.value("parsed", Json(nullptr)).is_object())
     {
         RenderMapping(response);
-        summary += "\n읽기 완료. 층 / 넷을 직접 선택하고 손실 항목을 확인한 뒤 변환 후보를 검토하세요.";
+        if (format == "ipc2581_revc")
+        {
+            summary += "\n" + IpcSummary(response.at("parsed"));
+        }
+        else
+        {
+            summary += "\n읽기 완료. 층 / 넷을 직접 선택하고 손실 항목을 확인한 뒤 변환 후보를 검토하세요.";
+        }
         m_poll.Stop();
     }
     else if (parse == "queued" || parse == "running")

@@ -122,7 +122,9 @@ bool PcbImportDialog::VendorFormat() const
 
 void PcbImportDialog::DescribeFormat()
 {
-    std::string detail = "KiCad, Gerber 또는 Excellon 원본을 선택하세요.";
+    std::string detail = Format() == "ipc2581_revc"
+        ? "압축에서 꺼낸 IPC-2581 Rev C XML 하나를 선택합니다. 층, 넷, 홀 및 부품을 검토합니다."
+        : "KiCad, Gerber 또는 Excellon 원본을 선택하세요.";
     for (const auto& pattern : m_context.value("vendor_patterns", Json::array()))
     {
         if (pattern.at("format") == Format())
@@ -159,6 +161,7 @@ void PcbImportDialog::UpdateActions()
     }
     const bool editable = Editable() && !m_pending && !m_recovering && !Uncertain();
     const bool parsed = m_uploadState.is_object() && m_uploadState.value("parsed", Json(nullptr)).is_object();
+    const bool canMap = parsed && Format() != "ipc2581_revc";
     const bool applied = m_uploadState.is_object() && !m_uploadState.value("applied_revision", Json(nullptr)).is_null();
     const bool runtime = m_context.value("runtime_configured", false);
     const Json state = m_uploadState.is_object() ? m_uploadState : Json::object();
@@ -174,10 +177,10 @@ void PcbImportDialog::UpdateActions()
     }
     m_parseButton->Enable(editable && runtime && complete && state.value("parse_job_id", Json(nullptr)).is_null() &&
                           state.value("status", "") == "uploading");
-    m_mappingPage->Enable(editable && parsed && !applied);
-    m_losses->Enable(editable && parsed && !applied);
-    m_reason->Enable(editable && parsed && !applied);
-    m_preview->Enable(editable && parsed && !applied && m_boardConfirmed->GetValue());
+    m_mappingPage->Enable(editable && canMap && !applied);
+    m_losses->Enable(editable && canMap && !applied);
+    m_reason->Enable(editable && canMap && !applied);
+    m_preview->Enable(editable && canMap && !applied && m_boardConfirmed->GetValue());
     m_apply->Enable(editable && m_review.is_object() && m_review.value("can_apply", false) &&
                     !m_review.value("review_hash", Json(nullptr)).is_null());
     m_recover->Enable(!m_mutating && !m_recovering && m_recovery->checkpoint.is_object());

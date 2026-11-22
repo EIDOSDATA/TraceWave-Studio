@@ -600,6 +600,8 @@ def import_candidate(document, parsed, import_record, mapping, acknowledged_loss
             "profile": "rfad.pcb-import-candidate/0.1", "operation": "import.apply", "manufacturing_verified": False, "physics_verified": False}
     losses = [{"id": canonical_hash(row), "message": _loss_message(row, "원문에 보존되지만 편집 모델에서 지원하지 않는 항목: "), "original": deepcopy(row)} for row in parsed.get("losses", [])]
     try:
+        if parsed.get("format") == "ipc2581_revc":
+            fail("IPC-2581 Rev C 읽기 검토는 설계에 적용할 대상이 없습니다.", "parsed", "E_UNSUPPORTED")
         _text(reason, "reason", limit=512)
         if parsed.get("schema") != "rfad.pcb-parse/0.1" or parsed.get("raw_preservation_required") is not True or len(canonical_bytes(parsed)) > 768 * 1024:
             fail("지원하지 않거나 상한을 넘은 고정 parser 결과입니다.", "parsed", "E_UNSUPPORTED")
