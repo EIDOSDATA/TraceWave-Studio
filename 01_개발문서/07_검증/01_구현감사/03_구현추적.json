@@ -14886,8 +14886,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/network_backend.py",
-      "text_sha256": "30106d397da039dde6e3b105bd70c9b7384fcc3540dd99757530775d161a58af",
-      "utf8_bytes": 8422
+      "text_sha256": "02748a86c19adee496619830977dcdb3865c6f1836d86b85b005dccfc18b45eb",
+      "utf8_bytes": 8446
     },
     {
       "path": "Code/src/rfad/adapters/network_csv.py",
@@ -15786,8 +15786,8 @@
     },
     {
       "path": "Code/tests/test_design_sweep_runner.py",
-      "text_sha256": "23282d78f9456b9d489270153a435bb8319016870c0c3ee330df3e204d34b600",
-      "utf8_bytes": 34758
+      "text_sha256": "adf5bdaa5b4805e9949d8338f6c427a2e7315e2ad1b2dd1d9e8e2ad06ad22df0",
+      "utf8_bytes": 39283
     },
     {
       "path": "Code/tests/test_design_sweep_service.py",
@@ -15856,8 +15856,8 @@
     },
     {
       "path": "Code/tests/test_gui_network_process.py",
-      "text_sha256": "b50440c8034738b32e00cf945cf99a5107d07a8d1a1e389be7f94378d2ea78fb",
-      "utf8_bytes": 12584
+      "text_sha256": "11e33febc83b589d3ba89c1c3f8dad722f14e32a8832763ef72df88583bfe3d6",
+      "utf8_bytes": 12648
     },
     {
       "path": "Code/tests/test_gui_output_process.py",
@@ -15996,8 +15996,8 @@
     },
     {
       "path": "Code/tests/test_network_service.py",
-      "text_sha256": "a2f05efd63e07b983716b2269cac08b5040ac84f5c61fa96c31f7a02266c57a9",
-      "utf8_bytes": 25896
+      "text_sha256": "5653b4522ffe1907c266ab597376ab360b864cd30d71ef345daccdf886122f2f",
+      "utf8_bytes": 25886
     },
     {
       "path": "Code/tests/test_object_names.py",

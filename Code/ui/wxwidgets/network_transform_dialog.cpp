@@ -59,7 +59,10 @@ NetworkTransformDialog::NetworkTransformDialog(wxWindow* parent, const Json& con
     int selected = wxNOT_FOUND;
     for (const auto& item : context.at("datasets"))
     {
-        const int index = m_datasets->Append(Display(item.at("name").get<std::string>()));
+        const auto name = Display(item.at("name").get<std::string>());
+        const int index = m_datasets->Append(name);
+        m_leftFixture->Append(name);
+        m_rightFixture->Append(name);
         if (!selection.is_null() && item.at("id") == selection.at("entry").at("id"))
         {
             selected = index;
@@ -93,7 +96,7 @@ void NetworkTransformDialog::BuildInterface()
     layout->Add(title, 0, wxALL, FromDIP(16));
     auto* introduction = new wxStaticText(
         this, wxID_ANY,
-        Display("복소 종류와 Z0를 변환하거나 명시한 정합 선로로 기준면을 이동합니다. 결과를 별도 자료로 저장합니다."));
+        Display("복소 종류와 Z0를 변환하고, 정합 선로 또는 2포트 치구로 기준면을 이동합니다. 결과를 별도 자료로 저장합니다."));
     StudioTheme::BindSecondary(*introduction);
     introduction->Wrap(FromDIP(980));
     layout->Add(introduction, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(16));
@@ -115,6 +118,7 @@ void NetworkTransformDialog::BuildInterface()
     m_mode->Append(Display("S / Z / Y 종류 변환"));
     m_mode->Append(Display("S 기준 임피던스 재정규화"));
     m_mode->Append(Display("S 기준면 이동 (정합 선로)"));
+    m_mode->Append(Display("양쪽 2포트 치구 제거"));
     m_mode->SetSelection(0);
     Field(options, fields, "변환 작업", m_mode);
     m_kind = new wxChoice(options, wxID_ANY);
@@ -141,6 +145,20 @@ void NetworkTransformDialog::BuildInterface()
     StudioTheme::BindSecondary(*lineHelp);
     m_lineFields->Add(lineHelp, 0, wxEXPAND | wxBOTTOM, FromDIP(10));
     fields->Add(m_lineFields, 0, wxEXPAND);
+    m_fixtureFields = new wxBoxSizer(wxVERTICAL);
+    m_leftFixture = new wxChoice(options, wxID_ANY);
+    m_leftFixture->SetName("network.transform.left-fixture");
+    Field(options, m_fixtureFields, "왼쪽 치구 (포트 1 바깥, 포트 2 안쪽)", m_leftFixture);
+    m_rightFixture = new wxChoice(options, wxID_ANY);
+    m_rightFixture->SetName("network.transform.right-fixture");
+    Field(options, m_fixtureFields, "오른쪽 치구 (포트 1 안쪽, 포트 2 바깥)", m_rightFixture);
+    auto* fixtureHelp = new wxStaticText(
+        options, wxID_ANY, Display("원본에는 왼쪽 치구, DUT, 오른쪽 치구가 차례로 연결되어 있어야 합니다.\n"
+                                  "세 자료의 주파수, 양의 실수 Z0, 파 규약 및 바깥 기준면을 확인합니다."));
+    fixtureHelp->Wrap(FromDIP(400));
+    StudioTheme::BindSecondary(*fixtureHelp);
+    m_fixtureFields->Add(fixtureHelp, 0, wxEXPAND | wxBOTTOM, FromDIP(10));
+    fields->Add(m_fixtureFields, 0, wxEXPAND);
     auto* scope = new wxStaticText(
         options, wxID_ANY,
         Display("기준면, 파 정의와 포트/전류 규약을 확인해야 합니다.\n복소 Z0는 보존하되 현재 변환에서는 지원하지 "
@@ -236,7 +254,7 @@ void NetworkTransformDialog::BuildInterface()
                         Changed();
                     });
     }
-    for (auto* input : {m_mode, m_kind})
+    for (auto* input : {m_mode, m_kind, m_leftFixture, m_rightFixture})
     {
         input->Bind(wxEVT_CHOICE,
                     [this](wxCommandEvent&)
@@ -342,9 +360,15 @@ Json NetworkTransformDialog::Input() const
             {"operation", "renormalize"},
             {"reference", {{"text", Utf8(m_reference->GetValue())}, {"unit", "ohm"}, {"source_refs", Json::array()}}}};
     }
-    else
+    else if (m_mode->GetSelection() == 2)
     {
         options = {{"operation", "shift_plane"}, {"line_table", Utf8(m_lines->GetValue())}};
+    }
+    else
+    {
+        options = {{"operation", "deembed_fixtures"},
+                   {"left_id", m_context.at("datasets").at(m_leftFixture->GetSelection()).at("id")},
+                   {"right_id", m_context.at("datasets").at(m_rightFixture->GetSelection()).at("id")}};
     }
     return {
         {"expected_revision", m_revision},
@@ -355,7 +379,7 @@ Json NetworkTransformDialog::Input() const
 
 void NetworkTransformDialog::Preview()
 {
-    if (!Editable() || m_pending || m_selection.is_null())
+    if (!m_preview->IsEnabled())
     {
         return;
     }
@@ -512,15 +536,20 @@ void NetworkTransformDialog::UpdateActions()
     m_kind->Enable(enabled && m_mode->GetSelection() == 0);
     m_reference->Enable(enabled && m_mode->GetSelection() == 1);
     const bool shift = m_mode->GetSelection() == 2;
-    if (m_lines->IsShown() != shift)
+    const bool fixtures = m_mode->GetSelection() == 3;
+    if (m_lines->IsShown() != shift || m_leftFixture->IsShown() != fixtures)
     {
         m_lineFields->ShowItems(shift);
+        m_fixtureFields->ShowItems(fixtures);
         auto* options = static_cast<wxScrolledWindow*>(m_lines->GetParent());
         options->Layout();
         options->FitInside();
     }
     m_lines->Enable(enabled && shift);
-    m_preview->Enable(enabled && !m_selection.is_null());
+    m_leftFixture->Enable(enabled && fixtures);
+    m_rightFixture->Enable(enabled && fixtures);
+    const bool chosen = m_leftFixture->GetSelection() != wxNOT_FOUND && m_rightFixture->GetSelection() != wxNOT_FOUND;
+    m_preview->Enable(enabled && !m_selection.is_null() && (!fixtures || chosen));
     m_apply->Enable(enabled && !m_review.is_null() && m_review.value("can_apply", false));
 }
 

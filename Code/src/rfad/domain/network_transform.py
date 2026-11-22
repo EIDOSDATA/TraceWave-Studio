@@ -119,11 +119,62 @@ def _shift_planes(data, options):
             "diagnostics": diagnostics, "engine": engine}
 
 
+def _deembed_fixtures(data, options):
+    """! @brief 표시된 두 기준면의 치구를 동일 주파수의 결합 S행렬에서 제거한다."""
+    if set(options) != {"operation", "left", "right", "fixture_ids"}:
+        fail("왼쪽과 오른쪽 치구의 봉인 자료가 필요합니다.", "options", "E_SCHEMA")
+    left, right = options["left"], options["right"]
+    networks = (left, data, right)
+    for item in networks:
+        validate_dataset(item)
+        require_basis(item)
+        if item["parameter_kind"] != "S" or len(item["port_ids"]) != 2:
+            fail("결합 자료와 양쪽 치구에 모두 단일종단 2포트 S 자료가 필요합니다.", "options", "E_UNSUPPORTED")
+        if item["frequency_hz"] != data["frequency_hz"]:
+            fail("세 자료의 주파수 축이 정확히 같아야 합니다.", "frequency_hz", "E_CONFLICT")
+        if (item["phasor_convention"] == "unknown" or item["phasor_convention"] != data["phasor_convention"]
+                or item["wave_definition"] != data["wave_definition"]):
+            fail("세 자료의 파 정의와 시간/위상 규약이 같아야 합니다.", "options", "E_CONFLICT")
+    if [left["reference_planes"][0], right["reference_planes"][1]] != data["reference_planes"]:
+        fail("왼쪽 치구의 포트 1과 오른쪽 치구의 포트 2를 결합 자료의 바깥 기준면에 맞추십시오.",
+             "reference_planes", "E_CONFLICT")
+    planes = [left["reference_planes"][1], right["reference_planes"][0]]
+    engine = network_backend.runtime()[3]
+    values, masks, statuses, diagnostics = [], [], [], []
+    for index, frequency in enumerate(data["frequency_hz"]):
+        reference, other = real_references(data, index)
+        if reference != other or any(real_references(item, index) != [reference, reference] for item in (left, right)):
+            fail("각 주파수의 양의 실수 Z0가 세 자료의 모든 포트에서 같아야 합니다.", "z0_ohm", "E_CONFLICT")
+        missing = [label for label, item in zip(("left", "combined", "right"), networks)
+                   if not all(value for row in item["valid_mask"][index] for value in row)]
+        if missing:
+            result, diagnostic = None, {"status": "missing", "missing_inputs": missing}
+        else:
+            matrix = [[[complex_value(sample, "values_ri") for sample in row] for row in item["values_ri"][index]]
+                      for item in networks]
+            result, diagnostic = network_backend.remove_two_port_fixtures(*matrix)
+        valid = result is not None
+        values.append([[[float(value.real), float(value.imag)] for value in row] for row in result]
+                      if valid else [[None, None], [None, None]])
+        masks.append([[valid] * 2 for _ in range(2)])
+        statuses.append([[diagnostic["status"]] * 2 for _ in range(2)])
+        diagnostics.append({"frequency_hz": frequency, **diagnostic})
+    evidence = {"operation": "deembed_fixtures", "fixture_ids": options["fixture_ids"],
+                "fixture_sha256": {"left": canonical_hash(left), "right": canonical_hash(right)},
+                "source_reference_planes": data["reference_planes"], "reference_planes": planes,
+                "port_order": {"left": ["outside", "inside"], "right": ["inside", "outside"]}}
+    return {"dataset": derived(data, values, masks, statuses, evidence, engine, planes=planes),
+            "diagnostics": diagnostics, "engine": engine}
+
+
 def transform_dataset(data, options):
     """! @brief 고정 주파수의 명시 S/Z/Y 변환, Z0 재정규화 또는 정합 선로 기준면 이동을 수행한다."""
     validate_dataset(data)
-    if type(options) is dict and options.get("operation") == "shift_plane":
-        return _shift_planes(data, options)
+    if type(options) is dict:
+        if options.get("operation") == "shift_plane":
+            return _shift_planes(data, options)
+        if options.get("operation") == "deembed_fixtures":
+            return _deembed_fixtures(data, options)
     if type(options) is not dict or options.get("operation") not in ("convert", "renormalize"):
         fail("지원하지 않는 네트워크 변환입니다.", "options", "E_UNSUPPORTED")
     renormalize = options["operation"] == "renormalize"

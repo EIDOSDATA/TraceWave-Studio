@@ -128,7 +128,17 @@ def build_candidate(service, state, project, document, request):
         source, source_entry = read_dataset(service, project, model, parameters["dataset_id"])
         inputs = [source_entry["id"]]
         if operation == "transform":
-            derived, execution = service.calculate("network.transform", {"dataset": source, "options": parameters["options"]})
+            options = parameters["options"]
+            if type(options) is dict and options.get("operation") == "deembed_fixtures":
+                _fields(options, {"operation", "left_id", "right_id"})
+                fixture_ids = {side: _uuid(options[side + "_id"]) for side in ("left", "right")}
+                if len({*inputs, *fixture_ids.values()}) != 3:
+                    fail("결합 자료와 양쪽 치구 자료를 서로 다르게 선택하십시오.", "options", "E_CONFLICT")
+                fixtures = {side: read_dataset(service, project, model, identity)[0]
+                            for side, identity in fixture_ids.items()}
+                inputs.extend(fixture_ids.values())
+                options = {"operation": options["operation"], "fixture_ids": fixture_ids, **fixtures}
+            derived, execution = service.calculate("network.transform", {"dataset": source, "options": options})
         else:
             circuit = find_record(model, "circuits", parameters["circuit_id"])
             circuit_id = circuit["id"]

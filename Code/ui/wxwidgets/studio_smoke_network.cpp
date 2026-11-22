@@ -313,6 +313,20 @@ void StudioSmokeDriver::NetworkSmokeTick()
     {
         if (m_setupStage == 24)
         {
+            SetupSmoke::Choose(transform->m_mode, 3);
+            CanvasAssert(transform->m_leftFixture->IsShown() && transform->m_rightFixture->IsShown() &&
+                             !transform->m_preview->IsEnabled(),
+                         "치구 제거가 양쪽 조건을 명시적으로 받지 않습니다.");
+            SetupSmoke::Choose(transform->m_leftFixture, 0);
+            CanvasAssert(!transform->m_preview->IsEnabled(), "오른쪽 치구가 미정인 상태에서 검토가 열렸습니다.");
+            SetupSmoke::Choose(transform->m_rightFixture, 1);
+            CanvasAssert(transform->m_preview->IsEnabled() &&
+                             transform->Input().at("parameters").at("options").at("operation") == "deembed_fixtures",
+                         "치구의 역할과 선택 ID가 검토 입력에 전달되지 않았습니다.");
+            SetupSmoke::Choose(transform->m_mode, 0);
+            CanvasAssert(!transform->m_leftFixture->IsShown() && !transform->m_rightFixture->IsShown(),
+                         "치구 선택 표시가 일반 변환에 남아 있습니다.");
+            m_setupChecks.push_back("network_fixture_roles_and_explicit_selection");
             transform->m_name->SetValue(Display("GUI Z 변환"));
             SetupSmoke::Choose(transform->m_kind, 1);
             m_setupStage = 25;

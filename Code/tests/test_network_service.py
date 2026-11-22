@@ -178,6 +178,67 @@ class NetworkServiceTests(unittest.TestCase):
         self.assertEqual(get(source, 0, 0), original)
         self.assertAlmostEqual(get(shifted, 0, 0)[0]["real"], expectations[0][0], places=12)
 
+    def test_unequal_fixture_removal_recovers_independent_abcd_network(self):
+        """! @brief 서로 다른 양쪽 치구를 개별로 제거하고 복소 전송 및 반사 전체를 재열기한다."""
+        def product(a, b):
+            """! @brief 라이브러리 변환과 별개로 회로의 ABCD 행렬을 곱한다."""
+            return [[sum(a[i][k] * b[k][j] for k in range(2)) for j in range(2)] for i in range(2)]
+
+        def scattering(matrix):
+            """! @brief 등실수 기준 임피던스의 전압/전류 경계식으로 참값을 계산한다."""
+            (a, b), (c, d) = matrix
+            divisor = a + b / 50 + c * 50 + d
+            return ((a + b / 50 - c * 50 - d) / divisor, 2 / divisor,
+                    2 * (a * d - b * c) / divisor, (-a + b / 50 - c * 50 + d) / divisor)
+
+        frequencies = (1e9, 1.7e9, 2e9)
+        expected, sources = [], [[], [], []]
+        for index, frequency in enumerate(frequencies, 1):
+            left = [[1, 18 + 3j * index], [0, 1]]
+            right = [[1, 0], [.012 + .004j * index, 1]]
+            dut = product([[1, 23 - 1j * index], [0, 1]], [[1, 0], [.005j * index, 1]])
+            expected.append(scattering(dut))
+            for rows, samples in zip(sources, (scattering(left), scattering(product(product(left, dut), right)),
+                                               scattering(right) if index < 3 else (.1, 0, 0, .2))):
+                rows.append(f"{frequency:.17g} " + " ".join(f"{complex(v).real:.17g} {complex(v).imag:.17g}"
+                                                           for v in samples))
+
+        def add(name, rows, planes):
+            """! @brief 해시를 보존하는 실제 2포트 Touchstone 교환으로 시험 자료를 등록한다."""
+            raw = ("# Hz S RI R 50\n" + "\n".join(rows) + "\n").encode("ascii")
+            parameters = import_parameters()
+            parameters.update(name=name, file_name=name + ".s2p", source_base64=base64.b64encode(raw).decode("ascii"))
+            parameters["declarations"].update(reference_planes=planes, current_orientation=["into_dut"] * 2,
+                                              port_modes=["single_ended"] * 2)
+            return self.apply("import", parameters)
+
+        left = add("직렬 치구", sources[0], ["외부 A", "DUT A"])
+        combined = add("치구가 포함된 독립 회로", sources[1], ["외부 A", "외부 B"])
+        right = add("션트 치구", sources[2], ["DUT B", "외부 B"])
+        before = self.read("network.library")["datasets"]
+        parameters = {"name": "치구 제거 회로", "dataset_id": combined,
+                      "options": {"operation": "deembed_fixtures", "left_id": left, "right_id": right}}
+        swapped = deepcopy(parameters)
+        swapped["options"].update(left_id=right, right_id=left)
+        self.assertEqual(self.preview("transform", swapped)["issues"][0]["code"], "E_CONFLICT")
+        result = self.apply("transform", parameters)
+        self.save_reopen()
+        final = self.read("network.library")["datasets"]
+        self.assertEqual({x["id"]: x for x in final if x["id"] != result}, {x["id"]: x for x in before})
+        self.assertEqual(next(x for x in final if x["id"] == result)["inputs"], [combined, left, right])
+        for channel, position in zip(((0, 0), (1, 0), (0, 1), (1, 1)), range(4)):
+            report = self.read("network.get", dataset_id=result, offset=0, limit=3, row=channel[0], column=channel[1])
+            self.assertEqual(report["descriptor"]["reference_planes"], ["DUT A", "DUT B"])
+            self.assertEqual(report["descriptor"]["conditions"], {"manufacturing": None, "measurement": None})
+            samples = report["page"]["samples"]
+            for sample, basis in zip(samples[:2], expected[:2]):
+                self.assertAlmostEqual(complex(sample["real"], sample["imag"]), basis[position], places=12)
+            self.assertEqual(samples[-1]["status"], "singular")
+        exported = self.read("network.export", dataset_id=result, format="hdf5")
+        provenance = exported["sidecar"]["provenance"]["network_operations"][-1]
+        self.assertEqual(provenance["options"]["fixture_ids"], {"left": left, "right": right})
+        self.assertEqual(set(provenance["options"]["fixture_sha256"]), {"left", "right"})
+
     def test_preview_hash_stale_revision_and_internal_command_bypass(self):
         """! @brief 검토와 다른 입력 및 내부 명령 직접 적용을 거절한다."""
         parameters = import_parameters()

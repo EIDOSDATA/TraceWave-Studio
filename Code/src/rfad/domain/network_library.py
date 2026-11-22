@@ -81,7 +81,7 @@ def validate_library(value):
                     artifact(row["raw"], collection + ".raw")
                 if row["diagnostics"] is not None:
                     artifact(row["diagnostics"], collection + ".diagnostics")
-                if type(row["inputs"]) is not list or len(row["inputs"]) > 2:
+                if type(row["inputs"]) is not list or len(row["inputs"]) > 3:
                     fail("입력 자료 참조 목록이 유효하지 않습니다.", collection + ".inputs")
                 for source in row["inputs"]:
                     _uuid(source, collection + ".inputs")

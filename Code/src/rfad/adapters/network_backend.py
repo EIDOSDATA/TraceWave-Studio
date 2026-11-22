@@ -116,3 +116,47 @@ def convert(matrix, source_kind, target_kind, z0):
             return _convert(matrix, source_kind, target_kind, z0)
     except (np.linalg.LinAlgError, FloatingPointError, OverflowError, ValueError, ZeroDivisionError):
         return None, {"status": "nonfinite", "condition_number": None, "relative_residual": None}, engine
+
+
+def remove_two_port_fixtures(left, measured, right):
+    """! @brief S행렬을 T행렬로 바꾸어 양쪽 치구를 풀고 원래 결합의 잔차를 검증한다."""
+    np, _, skrf, _ = runtime()
+    matrices = [np.asarray(matrix, dtype=np.complex128) for matrix in (left, measured, right)]
+    conditions = [None, None]
+    diagnostic = {"status": "valid", "fixture_condition_numbers": conditions, "relative_residual": None}
+    if any(abs(matrix[1, 0]) <= 1e-12 for matrix in matrices):
+        diagnostic["status"] = ("singular" if any(matrix[1, 0] == 0 for matrix in matrices) else "ill_conditioned")
+        diagnostic["reason"] = "forward_transmission"
+        return None, diagnostic
+    try:
+        with np.errstate(over="raise", invalid="raise", divide="raise"):
+            start, combined, stop = [skrf.network.s2t(matrix[None, :, :])[0] for matrix in matrices]
+            for index, fixture in enumerate((start, stop)):
+                status, conditions[index] = _condition(np, fixture)
+                if status != "valid":
+                    diagnostic.update(status=status, reason="fixture_transfer")
+                    return None, diagnostic
+            # @brief U * stop = inverse(start) * combined을 우측 역행렬을 만들지 않고 푼다.
+            unleft = np.linalg.solve(start, combined)
+            transfer = np.linalg.solve(stop.T, unleft.T).T
+            if abs(transfer[1, 1]) <= 1e-12:
+                diagnostic.update(status="singular" if transfer[1, 1] == 0 else "ill_conditioned",
+                                  reason="derived_transfer")
+                return None, diagnostic
+            corrected = skrf.network.t2s(transfer[None, :, :])[0]
+            if not np.isfinite(corrected).all():
+                diagnostic.update(status="nonfinite", reason="derived_scattering")
+                return None, diagnostic
+            reconstructed = start @ skrf.network.s2t(corrected[None, :, :])[0] @ stop
+            error = float(np.max(np.abs(reconstructed - combined)) / max(1e-30, np.max(np.abs(combined))))
+    except np.linalg.LinAlgError:
+        diagnostic.update(status="singular", reason="fixture_transfer")
+        return None, diagnostic
+    except FloatingPointError:
+        diagnostic.update(status="nonfinite", reason="derived_scattering")
+        return None, diagnostic
+    diagnostic["relative_residual"] = error if math.isfinite(error) else None
+    if not math.isfinite(error) or error > RESIDUAL_LIMIT:
+        diagnostic.update(status="ill_conditioned", reason="cascade_residual")
+        return None, diagnostic
+    return corrected.tolist(), diagnostic

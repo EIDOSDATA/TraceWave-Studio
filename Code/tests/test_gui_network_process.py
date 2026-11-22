@@ -108,6 +108,7 @@ class GuiNetworkTests(unittest.TestCase):
                 "network_rlc_saved_definition_and_derived_candidate", "network_target_assessment_preserves_validation_boundary",
                 "network_csv_explicit_mapping_preserves_unknown", "network_saved_service_restart_preserves_library",
                 "network_explicit_s_to_z_preserves_source", "network_z_load_plane_and_ideal_loss_display",
+                "network_fixture_roles_and_explicit_selection",
                 "network_export_pair_and_existing_workspace_protection",
                 "network_studio_results_marker_and_design_return",
                 "network_studio_assessment_source_points_and_design_return",
