@@ -427,16 +427,26 @@ bool DesignCanvas::HasGesture() const
     return !m_points.empty() || m_gesture.Active();
 }
 
+/** @brief 구속 묶음의 모든 형상에 현재 또는 적용 대기 중인 이동량을 표시한다. */
+wxPoint2DDouble DesignCanvas::TranslationOffset(const Shape& shape, const Shape* active) const
+{
+    if (active && (shape.id == active->id ||
+                   (!shape.translationGroup.empty() && shape.translationGroup == active->translationGroup)))
+    {
+        return m_gesture.Dragging() ? m_dragOffset : m_pendingOffset;
+    }
+    return Point(0.0, 0.0);
+}
+
 std::size_t DesignCanvas::DisplayOmissionCount() const
 {
+    const auto* active = FindShape(m_gesture.Dragging() ? m_selection : m_pendingId);
     return m_scene.omissionCount + m_scene.rangeOmissionCount +
            static_cast<std::size_t>(std::count_if(
                m_scene.shapes.begin(), m_scene.shapes.end(),
                [&](const Shape& shape)
                {
-                   const Point offset = m_gesture.Dragging() && shape.id == m_selection
-                                            ? m_dragOffset
-                                            : (shape.id == m_pendingId ? m_pendingOffset : Point(0.0, 0.0));
+                   const Point offset = TranslationOffset(shape, active);
                    return Visible(shape) && !Renderable(shape, offset);
                }));
 }
@@ -502,6 +512,7 @@ void DesignCanvas::PaintScene(wxDC& dc, const wxRect& damage)
                                 wxColour(177, 74, 96)};
     const auto preview = EndpointPreview();
     std::size_t nativeOmissions = m_scene.rangeOmissionCount;
+    const auto* active = FindShape(m_gesture.Dragging() ? m_selection : m_pendingId);
     for (const Shape& shape : m_scene.shapes)
     {
         if (!Visible(shape))
@@ -510,15 +521,7 @@ void DesignCanvas::PaintScene(wxDC& dc, const wxRect& damage)
         }
         const auto layer = m_scene.layers.find(shape.layer);
         const std::size_t index = static_cast<std::size_t>(std::distance(m_scene.layers.begin(), layer)) % 4;
-        Point offset(0.0, 0.0);
-        if (m_gesture.Dragging() && shape.id == m_selection)
-        {
-            offset = m_dragOffset;
-        }
-        else if (shape.id == m_pendingId)
-        {
-            offset = m_pendingOffset;
-        }
+        const Point offset = TranslationOffset(shape, active);
         const bool highlighted = shape.id == m_selection ||
                                  (!m_selection.empty() && shape.ownerFootprint == m_selection) ||
                                  std::find(m_inspection.begin(), m_inspection.end(), shape.id) != m_inspection.end();
@@ -845,7 +848,8 @@ void DesignCanvas::RefreshDragPreview(const Shape& shape, const Point& offset)
     const auto previous = GeometryPoint(m_dragOffset);
     const auto next = GeometryPoint(offset);
     const bool line = shape.kind == "line_path";
-    if (!m_gesture.Dragging() || shape.selectionKind != "geometry" || (!line && shape.kind != "arc_path") ||
+    if (!m_gesture.Dragging() || !shape.translationGroup.empty() || shape.selectionKind != "geometry" ||
+        (!line && shape.kind != "arc_path") ||
         !view.Renderable(shape, previous) || !view.Renderable(shape, next))
     {
         Refresh(false);
@@ -906,7 +910,8 @@ void DesignCanvas::OnMotion(wxMouseEvent& event)
         }
         else if (shape != nullptr && !shape->movable)
         {
-            Status("참조나 표현식에 연결된 형상은 속성에서 편집하세요.");
+            Status(shape->translationBlock.empty() ? "참조나 표현식에 연결된 형상은 속성에서 편집하세요."
+                                                   : shape->translationBlock);
         }
     }
     else if (m_gesture.Reshaping() || !m_points.empty() || hadSnap || m_snap)

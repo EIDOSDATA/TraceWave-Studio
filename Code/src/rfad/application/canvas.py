@@ -224,6 +224,22 @@ def _port_marker(document: dict, port: dict) -> dict:
     return marker
 
 
+def _translation_block(document, members, geometry):
+    """! @brief 연결된 급전, 비아 패드 및 입력 위치가 잠긴 묶음의 이동을 막는다."""
+    if any(not _movable(geometry[identity]) for identity in members):
+        return "연결된 도체에 매개변수에 연결되었거나 미정인 좌표가 있습니다."
+    if any(any(port[key] in members for key in ("positive_geometry_id", "reference_geometry_id"))
+           for port in document["ports"]):
+        return "연결된 도체가 급전 단자를 포함합니다. 급전 위치를 유지하려면 이 묶음을 이동할 수 없습니다."
+    if any(any(identity in members for identity in row.get("pad_ids", [])) for row in geometry.values()):
+        return "연결된 도체가 비아에 연결된 패드를 포함합니다. 해당 접합을 유지해야 합니다."
+    member_ids = set(members)
+    if any(member_ids.intersection(row["object_ids"]) and not member_ids.issuperset(row["object_ids"])
+           for row in document["connections"] if row["kind"] == "connected"):
+        return "연결된 도체에 묶음 밖의 접속 대상이 있습니다. 접속을 유지하려면 이 묶음을 이동할 수 없습니다."
+    return ""
+
+
 def project_canvas(document: dict) -> dict:
     """! @brief mm/deg의 표시 모델만 만들며 미정 형상과 생략 사유를 분리한다."""
     result = {"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
@@ -251,6 +267,10 @@ def project_canvas(document: dict) -> dict:
     if document["ports"]:
         result["port_marker"] = _port_marker(document, document["ports"][0])
     labels = display_names(document)
+    translation_groups = sketch_constraints.translation_groups(document)
+    by_id = {row["id"]: row for row in document["geometry"]} if translation_groups else {}
+    blockers = {members[0]: _translation_block(document, members, by_id)
+                for identity, members in translation_groups.items() if identity == members[0]}
     for geometry in document["geometry"]:
         try:
             prefix = "geometry." + geometry["id"]
@@ -259,6 +279,12 @@ def project_canvas(document: dict) -> dict:
                      **name_dto(document, geometry, labels=labels),
                      "layer_id": geometry["layer_id"], "role": geometry["role"],
                      "movable": _movable(geometry)}
+            members = translation_groups.get(geometry["id"])
+            if members:
+                shape["translation_group"] = members[0]
+                if blockers[members[0]]:
+                    shape["movable"] = False
+                    shape["translation_block"] = blockers[members[0]]
             if kind in ("line_path", "arc_path"):
                 shape["width"] = _display_length(document, geometry["width"], prefix + ".width")
                 shape["endpoint_mask"] = _endpoint_mask(geometry)
@@ -436,6 +462,26 @@ def canvas_command(document: dict, operation: str, values: dict) -> dict:
     offsets = [Quantity(**_quantity(values[key], "mm", "values." + key)).value_si for key in ("dx_mm", "dy_mm")]
     if offsets == [0.0, 0.0]:
         _fail("이동량이 0입니다.", "values", "E_CONFLICT")
+    members = sketch_constraints.translation_groups(document).get(identity)
+    if members:
+        from rfad.domain.pcb_features import COMMAND, finalize_pcb_edits, make_patch
+
+        original = {row["id"]: row for row in document["geometry"]}
+        blocked = _translation_block(document, members, original)
+        if blocked:
+            _fail(blocked, "values.id", "E_CONFLICT")
+        candidate = deepcopy(document)
+        candidate["geometry"] = [_translated(row, offsets) if row["id"] in members else row
+                                 for row in candidate["geometry"]]
+        finalize_pcb_edits(document, candidate, "geometry.set")
+        patch = make_patch(document, candidate, "sketch.translate", "보존한 스케치 관계의 도체 연동 이동")
+        return {"type": COMMAND, "payload": patch}
+    return {"type": "geometry.set", "payload": {"geometry": _translated(geometry, offsets)}}
+
+
+def _translated(geometry, offsets):
+    """! @brief mm에서 환산한 이동량을 원래 수량 단위와 출처를 유지하여 더한다."""
+    identity = geometry["id"]
     moved = deepcopy(geometry)
     for name, point in _coordinate_points(moved):
         for index, offset in enumerate(offsets):
@@ -449,4 +495,4 @@ def canvas_command(document: dict, operation: str, values: dict) -> dict:
                 point[index] = Quantity(number, original.dimension, original.display_unit, "user_entered", original.source_refs).to_dict()
             except QuantityError as error:
                 _fail(str(error), f"geometry.{identity}.{name}.{index}", "E_UNIT")
-    return {"type": "geometry.set", "payload": {"geometry": moved}}
+    return moved

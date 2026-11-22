@@ -388,7 +388,7 @@ def _apply_pcb_command(document, payload):
     if payload["schema"] != "rfad.pcb-command/0.1":
         fail("지원하지 않는 PCB 명령 버전입니다.", "pcb.command.schema", "E_VERSION")
     _text(payload["operation"], "pcb.command.operation", limit=128)
-    if payload["operation"] not in {"history.restore", "import.apply", "footprint.place", "footprint.member_edit", "footprint.detach", "smart_dimension.drive",
+    if payload["operation"] not in {"history.restore", "import.apply", "footprint.place", "footprint.member_edit", "footprint.detach", "smart_dimension.drive", "sketch.translate",
             *(section + suffix for section in ("cutout", "hole", "footprint", "artwork_layer", "aperture", "keepout") for suffix in (".set", ".remove"))}:
         fail("미지원 PCB patch 작업입니다.", "pcb.command.operation", "E_UNSUPPORTED")
     _text(payload["reason"], "pcb.command.reason", limit=512)

@@ -73,6 +73,7 @@ private:
 
     void OnPaint(wxPaintEvent& event);
     void PaintScene(wxDC& dc, const wxRect& damage);
+    wxPoint2DDouble TranslationOffset(const Shape& shape, const Shape* active) const;
     void RefreshDragPreview(const Shape& shape, const wxPoint2DDouble& offset);
     void OnLeftDown(wxMouseEvent& event);
     void OnLeftUp(wxMouseEvent& event);

@@ -145,6 +145,8 @@ Model Model::Parse(const nlohmann::json& scene)
             shape.ownerFootprint = owner.is_string() ? owner.get<std::string>() : "";
             shape.width = (shape.kind == "line_path" || shape.kind == "arc_path") ? Positive(item.at("width")) : 0.0;
             shape.movable = item.value("movable", false);
+            shape.translationGroup = item.value("translation_group", std::string());
+            shape.translationBlock = item.value("translation_block", std::string());
             if (item.contains("endpoint_mask"))
             {
                 const auto& mask = item.at("endpoint_mask");

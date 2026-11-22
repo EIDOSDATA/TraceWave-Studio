@@ -7,7 +7,7 @@ from tempfile import TemporaryDirectory
 import unittest
 from uuid import uuid4
 
-from rfad.application import sketch_service as api
+from rfad.application import canvas, sketch_service as api
 from rfad.application.canonical import canonical_bytes
 from rfad.application.pcb_solver import build_pcb_plan
 from rfad.application.projects import ProjectService
@@ -81,6 +81,91 @@ class SketchConstraintTests(unittest.TestCase):
                     group, = sketch.groups(after)
                     self.assertEqual(group["selection_ids"], [identity])
                     self.assertEqual(group["constraints"][0]["refs"][1]["id"], guide["id"])
+
+    def test_linked_canvas_drag_is_atomic_and_keeps_feed(self):
+        """! @brief 원호와 IFA에서 연결 드래그와 급전 보호를 서비스 진입점으로 확인한다."""
+        for kind in ("arc", "ifa"):
+            with self.subTest(kind=kind), TemporaryDirectory() as folder:
+                root = Path(folder)
+                source, _ = sketch_fixture(kind)
+                port = source["ports"][0]
+                base = next(row for row in source["geometry"] if row["kind"] == "line_path")
+                layer = base["layer_id"]
+                with ProjectService(root, auto_run=False) as service:
+                    original, _ = register_fixture(service, source)
+                    project = original["project_id"]
+
+                    def current():
+                        """! @brief 마지막으로 게시한 설계를 읽는다."""
+                        return service._load(service.journal.read()["projects"][project])
+
+                    def edit(operation, values):
+                        """! @brief 실제 2D 편집과 같은 입력을 전송한다."""
+                        return service.mutate("canvas.apply", request(service, project, {
+                            "operation": operation, "values": values, "command_id": str(uuid4()),
+                            "expected_revision": current()["revision_id"]}))
+
+                    def add_line(start, stop, relations):
+                        """! @brief 시험 도체와 선택한 사용자 관계를 보존한다."""
+                        identity = str(uuid4())
+                        values = {"id": identity, "layer_id": layer, "width_mm": .4, "start": start, "end": stop}
+                        if relations:
+                            values["relations"] = relations
+                        edit("create_line", values)
+                        return identity
+
+                    a = str(uuid4())
+                    if kind == "arc":
+                        edit("create_arc", {"id": a, "layer_id": layer, "width_mm": .4, "center": [2, 2],
+                            "radius_mm": 1, "start_angle_deg": 0, "sweep_angle_deg": 90})
+                        anchor, start, stop = "end", [2, 3], [1, 3]
+                    else:
+                        a = add_line([2, 53], [4, 53], [])
+                        anchor, start, stop = "end", [4, 53], [4, 55]
+                    ref = sketch.anchor(a, anchor)
+                    relations = [{"kind": "coincident", "endpoint": "start", "target": ref}]
+                    if kind == "arc":
+                        relations.append({"kind": "tangent", "endpoint": "start", "target": ref})
+                    b = add_line(start, stop, relations)
+                    before = current()
+                    scene = {row["id"]: row for row in canvas.project_canvas(before)["shapes"]}
+                    self.assertEqual(scene[a]["translation_group"], scene[b]["translation_group"])
+                    reply = edit("translate", {"id": b, "dx_mm": .75, "dy_mm": -.5})
+                    self.assertEqual(set(reply["changed_ids"]), {a, b})
+                    moved = current()
+                    moved_shapes = {row["id"]: row for row in canvas.project_canvas(moved)["shapes"]}
+                    for identity in (a, b):
+                        for key in ("center", "start", "end"):
+                            if key in scene[identity]:
+                                for got, old, delta in zip(moved_shapes[identity][key], scene[identity][key], (.75, -.5)):
+                                    self.assertAlmostEqual(got, old + delta)
+                    self.assertEqual(moved["extensions"], before["extensions"])
+                    for operation, expected in (("project.undo", before), ("project.redo", moved)):
+                        service.mutate(operation, request(service, project, {"command_id": str(uuid4()),
+                            "expected_revision": current()["revision_id"]}))
+                        self.assertEqual(current()["geometry"], expected["geometry"])
+                    terminal = next(row for row in current()["geometry"] if row["id"] == port["positive_geometry_id"])
+                    if terminal["kind"] == "line_path":
+                        terminal_ref = sketch.anchor(terminal["id"], "end")
+                        x, y = sketch.Model(current()).location(terminal_ref)
+                        lock = add_line([x, y], [x + 1, y],
+                                        [{"kind": "coincident", "endpoint": "start", "target": terminal_ref}])
+                        pinned = current()
+                        shape = next(row for row in canvas.project_canvas(pinned)["shapes"] if row["id"] == lock)
+                        self.assertFalse(shape["movable"])
+                        self.assertIn("급전", shape["translation_block"])
+                        with self.assertRaisesRegex(ProjectError, "급전"):
+                            edit("translate", {"id": lock, "dx_mm": 1, "dy_mm": 0})
+                        self.assertEqual(current(), pinned)
+                    saved = current()
+                    save = service.mutate("project.save", request(service, project, {"expected_revision": saved["revision_id"]}))
+                    service.run_next()
+                    self.assertEqual(status(service, save["job_id"])["state"], "completed")
+                with ProjectService(root, auto_run=False) as reopened:
+                    loaded = reopened._load(reopened.journal.read()["projects"][project])
+                    self.assertEqual(loaded, saved)
+                    self.assertEqual(loaded["ports"], original["ports"])
+                    self.assertEqual(loaded["connections"], original["connections"])
 
     def test_analysis_apply_and_reopen_both_designs(self):
         """! @brief 모순된 후보, 실제 자유도와 기존 치수/해석형 원본을 대조한다."""

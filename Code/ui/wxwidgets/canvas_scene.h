@@ -37,6 +37,9 @@ struct Shape
     double holeRadius = 0.0;
     bool incomplete = false;
     bool movable = false;
+    /** @brief 저장 구속으로 함께 평행 이동하는 객체의 공통 ID와 차단 사유다. */
+    std::string translationGroup;
+    std::string translationBlock;
     unsigned endpointMask = 0;
 };
 

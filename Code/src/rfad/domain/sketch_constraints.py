@@ -48,6 +48,33 @@ def groups(document):
     return document["extensions"].get(KEY, {}).get("groups", [])
 
 
+def translation_groups(document):
+    """! @brief 평행 이동에 불변인 객체 간 보존 관계의 연결 성분을 구한다."""
+    adjacency = {}
+    for group in groups(document):
+        for row in (*group["constraints"], *group["protected"]):
+            if row["kind"] not in {"offset", "coincident", "midpoint", "point_on_line", "tangent"}:
+                continue
+            identities = {ref["id"] for ref in row["refs"]}
+            if len(identities) > 1:
+                for identity in identities:
+                    adjacency.setdefault(identity, set()).update(identities - {identity})
+
+    indices = {}
+    for identity in sorted(adjacency):
+        if identity in indices:
+            continue
+        component, pending = set(), [identity]
+        while pending:
+            current = pending.pop()
+            if current not in component:
+                component.add(current)
+                pending.extend(adjacency[current] - component)
+        members = tuple(sorted(component))
+        indices.update(dict.fromkeys(members, members))
+    return indices
+
+
 def anchor(identity, point_name):
     """! @brief 현재 이름과 무관한 기준 객체 및 기하점 ID를 반환한다."""
     return {"id": identity, "point": point_name}
