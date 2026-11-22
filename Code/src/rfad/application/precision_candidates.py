@@ -6,7 +6,9 @@ from uuid import UUID, uuid5
 
 from rfad.adapters.planar_backend import operate, runtime
 from rfad.application.canonical import canonical_hash
+from rfad.domain.curve_boolean import _intersections, _piece, TOLERANCE_MM
 from rfad.domain.design import _uuid
+from rfad.domain.errors import ProjectError
 from rfad.domain.object_names import allocate_name, object_label
 from rfad.domain.precision_dimensions import bind_dimension, dimensions, set_dimension
 from rfad.domain.precision_transform import MAX_SELECTION, fail, number, point, point_fields, replace_literal, scalar, transform
@@ -18,6 +20,8 @@ OPERATIONS = {
     "mirror": ("미러", {"axis", "offset_mm"}),
     "linear_pattern": ("직선 반복 복사", {"count", "dx_mm", "dy_mm"}),
     "circular_pattern": ("원형 반복 복사", {"count", "pivot_x_mm", "pivot_y_mm", "step_deg"}),
+    "line_fillet": ("두 직선 사이 필렛", {"radius_mm"}),
+    "curve_trim": ("교차점에서 선·원호 자르기", {"target_id", "keep"}),
     "arc_offset": ("원호 중심선 오프셋", {"distance_mm"}),
     "dimension_set": ("치수 변경", {"dimension_key", "value", "unit"}),
     "bind_dimension": ("매개변수 연결", {"dimension_key", "parameter_id"}),
@@ -65,6 +69,19 @@ def operation_reason(document, rows, operation):
         return "도체 객체를 선택하십시오."
     if operation in ("dimension_set", "bind_dimension", "offset", "arc_offset") and len(rows) != 1:
         return "이 작업에는 객체 한 개를 선택하십시오."
+    if operation == "line_fillet":
+        if len(rows) != 2 or any(row["kind"] != "line_path" for row in rows):
+            return "공통 끝점을 가진 직선 도체 두 개를 선택하십시오."
+        fields = ("frame_id", "layer_id", "net_id", "material_ref", "role", "include_in_em", "include_in_export")
+        if any(rows[0][key] != rows[1][key] for key in fields):
+            return "같은 좌표계, 층, 넷, 재료, 역할, 선폭 및 포함 상태인 직선만 필렛으로 연결할 수 있습니다."
+        return _referenced(document, [row["id"] for row in rows])
+    if operation == "curve_trim":
+        if len(rows) != 2 or any(row["kind"] not in {"line_path", "arc_path"} for row in rows):
+            return "자르는 도체와 경계 도체를 선 또는 원호로 두 개 선택하십시오."
+        if rows[0]["frame_id"] != rows[1]["frame_id"] or rows[0]["layer_id"] != rows[1]["layer_id"]:
+            return "같은 좌표계와 층의 도체 두 개를 선택하십시오."
+        return ""
     if operation in PLANAR_OPERATIONS:
         engine = runtime()[1]
         if not engine["available"]:
@@ -204,6 +221,108 @@ def _pattern_objects(document, rows, operation, values, origin_id):
     return output
 
 
+def _centerline(document, row):
+    """! @brief 저장된 선과 signed 원호를 교차 계산 형식으로 해석한다."""
+    if row["kind"] == "line_path":
+        return {"kind": "line", **{key: point(document, row[key], "geometry." + key) for key in ("start", "end")}}
+    return {"kind": "arc", "center": point(document, row["center"], "geometry.center"),
+            "radius": scalar(document, row["radius"], field="geometry.radius"),
+            **{axis: scalar(document, row[key], "angle", "deg", "geometry." + key)
+               for axis, key in (("start_deg", "start_angle"), ("sweep_deg", "sweep_angle"))}}
+
+
+def _trim(document, rows, values):
+    """! @brief 선택한 끝에서 첫 교차점까지만 잘라 내고 절삭 경계와 원래 ID를 보존한다."""
+    target = _uuid(values["target_id"], "target_id")
+    keep = values["keep"]
+    if target not in {row["id"] for row in rows} or keep not in ("start", "end"):
+        fail("두 도체 중 절삭 대상과 남길 끝을 지정하십시오.", "selection_ids", "E_SCHEMA")
+    original = next(row for row in rows if row["id"] == target)
+    protected = _referenced(document, [target])
+    if protected:
+        fail(protected, "target_id", "E_CONFLICT")
+    cutter = next(row for row in rows if row["id"] != target)
+    subject = _centerline(document, original)
+    if subject["kind"] == "arc" and abs(subject["sweep_deg"]) >= 360 - 1e-9:
+        fail("접점에서 열린 원호를 만든 후 시작 또는 끝을 자르십시오.", "target_id", "E_UNSUPPORTED")
+    try:
+        points = _intersections(subject, _centerline(document, cutter))
+    except ProjectError as error:
+        fail(error.message, "target_id", error.code)
+    span = (math.dist(subject["start"], subject["end"]) if subject["kind"] == "line"
+            else subject["radius"] * math.radians(abs(subject["sweep_deg"])))
+    epsilon = TOLERANCE_MM / span
+    interior = [t for t, _ in points if epsilon < t < 1 - epsilon]
+    if not interior:
+        fail("대상 내부에서 경계와 만나는 교차점을 찾을 수 없습니다.", "target_id")
+    start, end = (0, max(interior)) if keep == "start" else (min(interior), 1)
+    cut = _piece(subject, start, end)
+    result = deepcopy(original)
+    if subject["kind"] == "line":
+        change = "end" if keep == "start" else "start"
+        result[change] = [replace_literal(document, old, value, "mm", "geometry." + change)
+                          for old, value in zip(original[change], cut[change])]
+    else:
+        if keep == "end":
+            result["start_angle"] = replace_literal(document, original["start_angle"], cut["start_deg"], "deg", "geometry.start_angle")
+        result["sweep_angle"] = replace_literal(document, original["sweep_angle"], cut["sweep_deg"], "deg", "geometry.sweep_angle")
+    return [result if row["id"] == target else deepcopy(row) for row in rows]
+
+
+def _fillet(document, rows, values, origin_id):
+    """! @brief 두 유한 직선에 동시에 접하는 정확한 원호를 만들고 접점까지만 줄인다."""
+    radius = number(values["radius_mm"], "radius_mm")
+    if not 0 < radius <= 1e6:
+        fail("필렛 반경은 0보다 크고 1000000 mm 이하여야 합니다.", "radius_mm")
+    first_width, second_width = (scalar(document, row["width"], field="geometry.width") for row in rows)
+    if abs(first_width - second_width) > TOLERANCE_MM:
+        fail("필렛의 두 직선에 같은 폭을 지정하십시오.", "selection_ids")
+    lines = [{end: point(document, row[end], "geometry." + end) for end in ("start", "end")} for row in rows]
+    shared = [(left, right) for left in lines[0] for right in lines[1]
+              if math.dist(lines[0][left], lines[1][right]) <= TOLERANCE_MM]
+    if len(shared) != 1:
+        fail("두 직선은 유일한 공통 끝점에서 만나야 합니다.", "selection_ids")
+    ends = shared[0]
+    corners = [line[end] for line, end in zip(lines, ends)]
+    deltas = [[b - a for a, b in zip(corner, line["end" if end == "start" else "start"])]
+              for corner, line, end in zip(corners, lines, ends)]
+    lengths = [math.hypot(*delta) for delta in deltas]
+    if min(lengths) <= TOLERANCE_MM:
+        fail("공통 끝점 밖에 길이가 있는 직선이 필요합니다.", "selection_ids")
+    first, second = [[value / length for value in delta] for delta, length in zip(deltas, lengths)]
+    cross = first[0] * second[1] - first[1] * second[0]
+    dot = sum(a * b for a, b in zip(first, second))
+    if abs(cross) <= 1e-9:
+        fail("같은 직선이나 거의 평행한 직선에는 필렛을 만들 수 없습니다.", "selection_ids")
+    half = math.atan2(abs(cross), dot) / 2
+    distance = radius / math.tan(half)
+    if not TOLERANCE_MM < distance < min(lengths) - TOLERANCE_MM:
+        fail("이 반경은 직선 범위 안에 두 접점을 만들지 못합니다.", "radius_mm")
+    corner = [(a + b) / 2 for a, b in zip(*corners)]
+    bisector = [a + b for a, b in zip(first, second)]
+    scale = radius / (math.sin(half) * math.hypot(*bisector))
+    center = [value + direction * scale for value, direction in zip(corner, bisector)]
+    if max(map(abs, center)) > 1e6:
+        fail("필렛 중심이 좌표 범위를 벗어났습니다.", "radius_mm", "E_RESOURCE")
+    contacts = [[value + direction * distance for value, direction in zip(corner, tangent)]
+                for tangent in (first, second)]
+    angles = [math.degrees(math.atan2(y - center[1], x - center[0])) for x, y in contacts]
+    output = []
+    for row, end, contact in zip(rows, ends, contacts):
+        changed = deepcopy(row)
+        changed[end] = [replace_literal(document, old, value, "mm", "geometry." + end)
+                        for old, value in zip(row[end], contact)]
+        output.append(changed)
+    arc = {key: deepcopy(value) for key, value in rows[0].items() if key not in {"start", "end"}}
+    arc.update(id=str(uuid5(UUID(origin_id), "fillet")), kind="arc_path",
+               center=[Quantity.from_value(value, "mm").to_dict() for value in center],
+               radius=Quantity.from_value(radius, "mm").to_dict(),
+               start_angle=Quantity.from_value(angles[0], "deg").to_dict(),
+               sweep_angle=Quantity.from_value(math.remainder(angles[1] - angles[0], 360), "deg").to_dict())
+    arc["name"] = allocate_name(document, arc)
+    return [*output, arc]
+
+
 def replacements(document, rows, operation, values, origin_id):
     """! @brief 지원 범위만 실행하고 서비스 검토 전에 원본을 변경하지 않는다."""
     reason = operation_reason(document, rows, operation)
@@ -219,6 +338,10 @@ def replacements(document, rows, operation, values, origin_id):
         return [bind_dimension(document, rows[0], values["dimension_key"], values["parameter_id"])], engine
     if operation in PATTERNS:
         return _pattern_objects(document, rows, operation, values, origin_id), engine
+    if operation == "line_fillet":
+        return _fillet(document, rows, values, origin_id), engine
+    if operation == "curve_trim":
+        return _trim(document, rows, values), engine
     if operation == "arc_offset":
         row = deepcopy(rows[0])
         radius = scalar(document, row["radius"], field="geometry.radius")

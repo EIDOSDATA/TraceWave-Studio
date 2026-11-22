@@ -160,6 +160,7 @@ void PrecisionDialog::BuildFields()
     m_dimension = nullptr;
     m_parameter = nullptr;
     m_axis = nullptr;
+    m_trimTarget = nullptr;
     m_join = nullptr;
     m_unit = nullptr;
     m_dimensionNote = nullptr;
@@ -217,6 +218,29 @@ void PrecisionDialog::BuildFields()
             number("pivot_y_mm", "회전 중심 Y (mm)", "0");
             number("step_deg", "회전 간격 (deg, 반시계 양수)", "90");
         }
+    }
+    else if (id == "line_fillet")
+    {
+        number("radius_mm", "필렛 반경 (mm)", "1");
+    }
+    else if (id == "curve_trim" && operation.at("enabled") == true)
+    {
+        m_trimTarget = new wxChoice(m_fields, wxID_ANY);
+        m_trimTarget->SetName("precision.trim_target");
+        for (const auto& item : m_context.at("selection"))
+        {
+            m_trimTarget->Append(Display(item.at("label")));
+        }
+        m_trimTarget->SetSelection(0);
+        row("자를 도체", m_trimTarget);
+        m_trimTarget->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { ChangeInputs(); });
+        m_axis = new wxChoice(m_fields, wxID_ANY);
+        m_axis->SetName("precision.trim_keep");
+        m_axis->Append(Display("시작점에서 마지막 교차점까지 남기기"));
+        m_axis->Append(Display("첫 교차점에서 끝점까지 남기기"));
+        m_axis->SetSelection(0);
+        row("남길 부분", m_axis);
+        m_axis->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { ChangeInputs(); });
     }
     else if (id == "arc_offset")
     {
@@ -345,7 +369,12 @@ Json PrecisionDialog::Input() const
         }
         values[key] = value;
     }
-    if (m_axis)
+    if (m_trimTarget)
+    {
+        values["target_id"] = m_context.at("selection").at(m_trimTarget->GetSelection()).at("id");
+        values["keep"] = m_axis->GetSelection() == 0 ? "start" : "end";
+    }
+    else if (m_axis)
     {
         values["axis"] = m_axis->GetSelection() == 0 ? "x" : "y";
     }

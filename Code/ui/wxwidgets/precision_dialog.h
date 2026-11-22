@@ -42,6 +42,7 @@ private:
     wxChoice* m_dimension = nullptr;
     wxChoice* m_parameter = nullptr;
     wxChoice* m_axis = nullptr;
+    wxChoice* m_trimTarget = nullptr;
     wxChoice* m_join = nullptr;
     wxChoice* m_unit = nullptr;
     wxPanel* m_fields = nullptr;

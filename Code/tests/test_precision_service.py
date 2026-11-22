@@ -225,6 +225,61 @@ class PrecisionServiceTests(unittest.TestCase):
                         self.assertAlmostEqual(Quantity(**value).as_unit("mm"), expected)
                     self.assertEqual(copied_via["plating_thickness"], via["plating_thickness"])
 
+    def test_centerline_trim_keeps_signed_arc_and_preserves_the_cutting_edge(self):
+        """! @brief 직선과 원호 교차점, 양방향 절삭과 보존 관계를 확인한다."""
+        line, arc = str(uuid4()), str(uuid4())
+        self.canvas("create_line", {"id": line, "layer_id": self.layer, "width_mm": 0.4,
+                                    "start": [13, 4], "end": [13, 19]})
+        self.canvas("create_arc", {"id": arc, "layer_id": self.layer, "width_mm": 0.8,
+                                   "center": [10, 12], "radius_mm": 5, "start_angle_deg": 100, "sweep_angle_deg": -200})
+        original_arc, original_line = self.shape(arc), self.shape(line)
+        review, _ = self.preview([line, arc], "curve_trim", {"target_id": arc, "keep": "start"})
+        self.assertEqual([row["id"] for row in review["changes"]], [arc])
+        self.apply([line, arc], "curve_trim", {"target_id": arc, "keep": "start"})
+        self.assertAlmostEqual(Quantity(**self.shape(arc)["sweep_angle"]).as_unit("deg"),
+                               -100 - math.degrees(math.acos(.6)), places=9)
+        self.assertEqual(self.shape(arc)["center"], original_arc["center"])
+        self.assertEqual(self.shape(arc)["radius"], original_arc["radius"])
+        self.assertEqual(self.shape(line), original_line)
+        self.history("undo")
+        self.assertEqual(self.shape(arc), original_arc)
+        self.apply([arc, line], "curve_trim", {"target_id": line, "keep": "end"})
+        self.assertAlmostEqual(Quantity(**self.shape(line)["start"][1]).as_unit("mm"), 8)
+        self.assertEqual(self.shape(line)["end"], original_line["end"])
+        self.assertEqual(self.shape(arc), original_arc)
+        saved = self.document()
+        self.service.close()
+        self.service = ProjectService(self.workspace, auto_run=False)
+        self.assertEqual(self.document(), saved)
+
+    def test_line_fillet_has_exact_radius_and_keeps_both_line_ids(self):
+        """! @brief 90도 모서리의 접점과 원호 중심을 확인하고 초과 반경을 차단한다."""
+        left, up = str(uuid4()), str(uuid4())
+        self.canvas("create_line", {"id": left, "layer_id": self.layer, "width_mm": 0.4,
+                                    "start": [2, 8], "end": [10, 8]})
+        self.canvas("create_line", {"id": up, "layer_id": self.layer, "width_mm": 0.4,
+                                    "start": [10, 8], "end": [10, 14]})
+        originals = [self.shape(left), self.shape(up)]
+        failed, _ = self.preview([left, up], "line_fillet", {"radius_mm": 7})
+        self.assertFalse(failed["can_apply"])
+        result, _ = self.apply([left, up], "line_fillet", {"radius_mm": 2})
+        self.assertEqual(result["selection_ids"][:2], [left, up])
+        arc = self.shape(result["selection_ids"][2])
+        self.assertEqual(arc["kind"], "arc_path")
+        for actual, expected in ((self.shape(left)["end"], (8, 8)), (self.shape(up)["start"], (10, 10)),
+                                 (arc["center"], (8, 10))):
+            for value, coordinate in zip(actual, expected):
+                self.assertAlmostEqual(Quantity(**value).as_unit("mm"), coordinate)
+        self.assertAlmostEqual(Quantity(**arc["radius"]).as_unit("mm"), 2)
+        self.assertAlmostEqual(Quantity(**arc["sweep_angle"]).as_unit("deg"), 90)
+        self.assertEqual(self.shape(left)["start"], originals[0]["start"])
+        self.assertEqual(self.shape(up)["end"], originals[1]["end"])
+        final = self.document()
+        self.history("undo")
+        self.assertEqual([self.shape(left), self.shape(up)], originals)
+        self.history("redo")
+        self.assertEqual(self.document()["geometry"], final["geometry"])
+
     def test_rotate_two_objects_is_one_undo_and_preserves_unknowns_and_sources(self):
         line, arc = self.line(), self.arc()
         source = self.shape(line)

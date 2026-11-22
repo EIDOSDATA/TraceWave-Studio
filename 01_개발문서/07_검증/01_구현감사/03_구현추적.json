@@ -7592,6 +7592,7 @@
         "mirror",
         "linear_pattern",
         "circular_pattern",
+        "line_fillet",
         "curve_trim",
         "arc_offset",
         "dimension_set",
@@ -15191,8 +15192,8 @@
     },
     {
       "path": "Code/src/rfad/application/precision_candidates.py",
-      "text_sha256": "3a6beb9fcc9e0c8580289fc64126d95850b21c3d33436e3a5490471f190d7bc2",
-      "utf8_bytes": 17001
+      "text_sha256": "508b8f4aa969bd337c67e40beb23f618a2f18d24497ddcb9be9a81d0ed5681fc",
+      "utf8_bytes": 21259
     },
     {
       "path": "Code/src/rfad/application/precision_service.py",
@@ -15231,8 +15232,8 @@
     },
     {
       "path": "Code/src/rfad/application/project_studies.py",
-      "text_sha256": "7e6cd491299d8690d8ad1c49cf5f946693f0aa33628a66e94f01373cf4aba1bb",
-      "utf8_bytes": 11299
+      "text_sha256": "7faa2c4547ed18fd7f5808e1491f05191058fb1613898f72163fa0fd96ff2e33",
+      "utf8_bytes": 11428
     },
     {
       "path": "Code/src/rfad/application/project_study_commands.py",
@@ -16111,8 +16112,8 @@
     },
     {
       "path": "Code/tests/test_precision_service.py",
-      "text_sha256": "474056e11e03ee86fd938fc8d1064574ee6f7806865fb533ab6cf17b4116fdb5",
-      "utf8_bytes": 35656
+      "text_sha256": "753eb6baf11229f26ab83f03c7bf2fd9ecbd773d9899992e3e819d61fc8468db",
+      "utf8_bytes": 37476
     },
     {
       "path": "Code/tests/test_printed_seeds.py",
@@ -16131,8 +16132,8 @@
     },
     {
       "path": "Code/tests/test_project_studies.py",
-      "text_sha256": "5c7b452afc2984f9afe6a389a3e889dfec7719f0126250d9cebfea734c672e01",
-      "utf8_bytes": 18963
+      "text_sha256": "802d02b481a393b50a65d54567df991d2741a67a8b989b51e7e4fef42b700cdf",
+      "utf8_bytes": 20614
     },
     {
       "path": "Code/tests/test_pth_loss_reference.py",
@@ -16576,8 +16577,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/precision_dialog.cpp",
-      "text_sha256": "7fc58376666d8998bec60b32a69bf51084372b503435a7ddf8430ffe7ebe7e89",
-      "utf8_bytes": 20439
+      "text_sha256": "5f22ddff712b9aac472714f8709f4568d4b3660cade35f79e72adc93a9d6c830",
+      "utf8_bytes": 20541
     },
     {
       "path": "Code/ui/wxwidgets/project_setup_dialog.cpp",
