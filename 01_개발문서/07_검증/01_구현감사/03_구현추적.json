@@ -15397,8 +15397,8 @@
     },
     {
       "path": "Code/src/rfad/application/template_candidates.py",
-      "text_sha256": "ef36fb3ca48d594be37b6f8c22de36e5b95f58d082482a979a22ca5036ff520b",
-      "utf8_bytes": 13715
+      "text_sha256": "63609166f683f21689fd8496a659ed1d0e455e5e650ec1d1156ea09a14c9e267",
+      "utf8_bytes": 13810
     },
     {
       "path": "Code/src/rfad/application/wsl_process.py",
@@ -15652,8 +15652,8 @@
     },
     {
       "path": "Code/src/rfad/domain/template_seeds.py",
-      "text_sha256": "ee31b55454863ae902cc195739f03bf0bbcd36abe976ddd803e734ef8ade7b37",
-      "utf8_bytes": 3699
+      "text_sha256": "5d0368017ff8de3ebfeb77e05b6f0b32572e229d4a6e446cca4a42e1803840a8",
+      "utf8_bytes": 5772
     },
     {
       "path": "Code/src/rfad/domain/units.py",
@@ -16002,8 +16002,8 @@
     },
     {
       "path": "Code/tests/test_network_service.py",
-      "text_sha256": "b7b764d9ec388997c777e541c95cb5ef012dd15506148edc3cbec5175815d0c6",
-      "utf8_bytes": 29209
+      "text_sha256": "cf3c9e49f0001a0de6cb9827bd197190affcdfef6ebc983bc67984a8917b476c",
+      "utf8_bytes": 30303
     },
     {
       "path": "Code/tests/test_object_names.py",
@@ -16767,8 +16767,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/template_dialog.cpp",
-      "text_sha256": "7c14c7e7b44f756f90650514a38584c74426117d7531d0fb9b359298a752805d",
-      "utf8_bytes": 14657
+      "text_sha256": "f9588f01f48f396568f1a3e342dff293a177afa2cc1a87913dd806287139c66f",
+      "utf8_bytes": 14873
     },
     {
       "path": "Code/ui/wxwidgets/template_seed_view.cpp",

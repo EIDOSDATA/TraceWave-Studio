@@ -164,6 +164,20 @@ class NetworkServiceTests(unittest.TestCase):
             sample = get(shifted, *channel)[0]
             self.assertAlmostEqual(sample["real"], expected[0], places=12)
             self.assertAlmostEqual(sample["imag"], expected[1], places=12)
+        positioned = deepcopy(inputs)
+        positioned["name"] = "좌표로 정합 선로 부가"
+        positioned["options"]["line_table"] = ("1 | 1,2,3 > 31,42,3 > 3,4,0 | 2e8 | 20 | 외부 포트 A\n"
+                                                "2 | 1,2,3 > 1,2,28 > 0,0,1 | 2e8 | 20 | 외부 포트 B")
+        coordinate_result = self.apply("transform", positioned)
+        for row in (0, 1):
+            for column in (0, 1):
+                for old, new in zip(get(shifted, row, column), get(coordinate_result, row, column)):
+                    self.assertAlmostEqual(old["real"], new["real"], places=13)
+                    self.assertAlmostEqual(old["imag"], new["imag"], places=13)
+        bad_position = deepcopy(positioned)
+        for invalid in ("31,40,3 > 3,4,0", "31,42,3 > 0,0,0"):
+            bad_position["options"]["line_table"] = f"1 | 1,2,3 > {invalid} | 2e8 | 0 | 축 오류"
+            self.assertFalse(self.preview("transform", bad_position)["can_apply"])
         inverse = self.apply("transform", {"name": "정합 선로 제거", "dataset_id": shifted, "options": {
             "operation": "shift_plane", "line_table": "1 | -50 | 2e8 | 20 | 원래 포트 A\n2 | -25 | 2e8 | 20 | 원래 포트 B"}})
         for row in (0, 1):
@@ -178,6 +192,7 @@ class NetworkServiceTests(unittest.TestCase):
         self.save_reopen()
         self.assertEqual(get(source, 0, 0), original)
         self.assertAlmostEqual(get(shifted, 0, 0)[0]["real"], expectations[0][0], places=12)
+        self.assertAlmostEqual(get(coordinate_result, 0, 0)[0]["real"], expectations[0][0], places=12)
 
     def test_unequal_fixture_removal_recovers_independent_abcd_network(self):
         """! @brief 서로 다른 양쪽 치구를 개별로 제거하고 복소 전송 및 반사 전체를 재열기한다."""

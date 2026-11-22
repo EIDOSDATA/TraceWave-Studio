@@ -55,6 +55,34 @@ def derived(data, values, masks, statuses, options, engine, *, kind=None, z0=Non
     return result
 
 
+def _segment_length(segment):
+    """! @brief 선로 축의 두 점과 바깥 방향으로부터 부호 있는 mm 거리를 산출한다."""
+    field = "options.lines.segment"
+    names = ("from_mm", "to_mm", "outward")
+    if type(segment) is not dict or set(segment) != set(names):
+        fail("현재 점, 새 점과 바깥 방향의 XYZ를 입력하십시오.", field, "E_SCHEMA")
+    vectors = []
+    for name in names:
+        values = segment[name]
+        if type(values) is not list or len(values) != 3:
+            fail("XYZ 세 수치가 필요합니다.", f"{field}.{name}", "E_SCHEMA")
+        vector = [finite(item, f"{field}.{name}") for item in values]
+        if max(map(abs, vector)) > 1e6:
+            fail("기준면 좌표·방향 성분이 입력 상한을 넘었습니다.", f"{field}.{name}", "E_RESOURCE")
+        vectors.append(vector)
+    start, stop, direction = vectors
+    magnitude = math.hypot(*direction)
+    if not magnitude:
+        fail("바깥 방향은 영벡터일 수 없습니다.", f"{field}.outward", "E_GEOMETRY")
+    unit = [component / magnitude for component in direction]
+    displacement = [b - a for a, b in zip(start, stop)]
+    distance = math.fsum(value * axis for value, axis in zip(displacement, unit))
+    transverse = math.hypot(*(value - distance * axis for value, axis in zip(displacement, unit)))
+    if transverse > max(1e-9, 1e-9 * abs(distance)):
+        fail("새 기준면의 점은 같은 정합 선로 축 위에 있어야 합니다.", f"{field}.to_mm", "E_GEOMETRY")
+    return distance
+
+
 def _shift_planes(data, options):
     """! @brief 포트별 정합 선로를 더하거나 제거하여 S 파의 기준면을 이동한다."""
     if set(options) != {"operation", "lines"} or data["parameter_kind"] != "S":
@@ -69,16 +97,22 @@ def _shift_planes(data, options):
     planes = list(data["reference_planes"])
     delays, log_gains = [0.0] * len(planes), [0.0] * len(planes)
     used = set()
-    fields = {"port_id", "length_mm", "phase_velocity_m_per_s", "attenuation_db_per_m", "reference_plane"}
+    fields = {"port_id", "phase_velocity_m_per_s", "attenuation_db_per_m", "reference_plane"}
+    coordinate_lengths = {}
     for line in lines:
-        if type(line) is not dict or set(line) != fields:
+        if type(line) is not dict or set(line) not in (fields | {"length_mm"}, fields | {"segment"}):
             fail("포트, 길이, 전파 속도, 감쇠와 새 기준면을 입력하십시오.", "options.lines")
         identity = line["port_id"]
         if type(identity) is not str or identity not in port_ids or identity in used:
             fail("현재 자료의 서로 다른 포트를 선택하십시오.", "options.lines.port_id")
         used.add(identity)
         index = port_ids.index(identity)
-        length = finite(line["length_mm"], "options.lines.length_mm") * 1e-3
+        if "segment" in line:
+            length_mm = _segment_length(line["segment"])
+            coordinate_lengths[identity] = length_mm
+        else:
+            length_mm = finite(line["length_mm"], "options.lines.length_mm")
+        length = length_mm * 1e-3
         velocity = finite(line["phase_velocity_m_per_s"], "options.lines.phase_velocity_m_per_s")
         loss = finite(line["attenuation_db_per_m"], "options.lines.attenuation_db_per_m")
         new_plane = line["reference_plane"]
@@ -115,6 +149,8 @@ def _shift_planes(data, options):
                             "valid_channels": count, "operation": "shift_plane"})
     engine = {"name": "rfad.matched-line-reference", "version": "0.1", "available": True}
     evidence = {**options, "source_reference_planes": data["reference_planes"], "matched_to_port_z0": True}
+    if coordinate_lengths:
+        evidence["coordinate_lengths_mm"] = coordinate_lengths
     return {"dataset": derived(data, values, data["valid_mask"], data["sample_status"], evidence, engine, planes=planes),
             "diagnostics": diagnostics, "engine": engine}
 

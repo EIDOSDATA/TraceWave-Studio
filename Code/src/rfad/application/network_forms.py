@@ -60,6 +60,16 @@ def circuit_display(definition):
     return result
 
 
+def _reference_segment(text):
+    """! @brief 기준면의 시작점, 새 점과 바깥 방향을 같은 좌표계의 XYZ로 읽는다."""
+    field = "options.line_table"
+    vectors = [[item.strip() for item in group.split(",")] for group in text.split(">")]
+    if len(vectors) != 3 or any(len(vector) != 3 for vector in vectors):
+        fail("현재 X,Y,Z > 새 X,Y,Z > 바깥 방향 X,Y,Z를 입력하십시오.", field)
+    return {key: [number(value, field=field) for value in vector]
+            for key, vector in zip(("from_mm", "to_mm", "outward"), vectors)}
+
+
 def transform_input(data, options):
     """! @brief 표시용 정규화 및 기준면 문자열을 명시 수치와 포트 ID로 바꾼다."""
     if type(options) is dict and set(options) == {"operation", "line_table"} and options["operation"] == "shift_plane":
@@ -72,10 +82,11 @@ def transform_input(data, options):
                 continue
             fields = [item.strip() for item in line.split("|", 4)]
             if len(fields) != 5 or fields[0] not in {str(i) for i in range(1, len(data["port_ids"]) + 1)}:
-                fail("포트 번호 | 길이(mm) | 위상 속도(m/s) | 감쇠(dB/m) | 새 기준면 순으로 입력하십시오.", "options.line_table")
+                fail("포트 번호 | 거리 또는 좌표(mm) | 위상 속도(m/s) | 감쇠(dB/m) | 새 기준면 순으로 입력하십시오.", "options.line_table")
             index, length, velocity, attenuation, plane = fields
-            rows.append({"port_id": data["port_ids"][int(index) - 1],
-                         "length_mm": number(length, field="options.line_table.length_mm"),
+            position = {"segment": _reference_segment(length)} if ">" in length else {
+                "length_mm": number(length, field="options.line_table.length_mm")}
+            rows.append({"port_id": data["port_ids"][int(index) - 1], **position,
                          "phase_velocity_m_per_s": number(velocity, field="options.line_table.phase_velocity_m_per_s"),
                          "attenuation_db_per_m": number(attenuation, field="options.line_table.attenuation_db_per_m"),
                          "reference_plane": plane})

@@ -138,10 +138,12 @@ void NetworkTransformDialog::BuildInterface()
     m_lines = new wxTextCtrl(options, wxID_ANY, wxEmptyString, wxDefaultPosition,
                              FromDIP(wxSize(400, 72)), wxTE_MULTILINE);
     m_lines->SetName("network.transform.reference-lines");
-    Field(options, m_lineFields, "포트 | 길이(mm) | 위상 속도(m/s) | 감쇠(dB/m) | 새 기준면", m_lines);
+    Field(options, m_lineFields, "포트 | 거리 또는 좌표(mm) | 위상 속도(m/s) | 감쇠(dB/m) | 새 기준면", m_lines);
     auto* lineHelp = new wxStaticText(options, wxID_ANY, Display(
         "포트마다 한 줄을 입력합니다. 양수 길이는 추가, 음수 길이는 제거입니다.\n"
-        "예시 1 | -5 | 2e8 | 0 | 기판 패드"));
+        "거리 예시 1 | -5 | 2e8 | 0 | 기판 패드\n"
+        "좌표는 현재 점 > 새 점 > 바깥 방향을 XYZ로 입력합니다.\n"
+        "좌표 예시 1 | 0,0,0 > 3,4,0 > 3,4,0 | 2e8 | 0 | 정합 선로 끝"));
     lineHelp->Wrap(FromDIP(400));
     StudioTheme::BindSecondary(*lineHelp);
     m_lineFields->Add(lineHelp, 0, wxEXPAND | wxBOTTOM, FromDIP(10));
