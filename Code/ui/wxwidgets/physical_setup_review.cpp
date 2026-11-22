@@ -220,6 +220,10 @@ void PhysicalSetupDialog::RenderReview()
         text += "\n하부 개방 케이스는 바깥 치수와 벽 두께, 재료가 필요합니다. 해석에서는 Z축 회전 0도를 지정하십시오.";
         text += "\n비접촉 금속 상자는 이상 도체(PEC)로 계산합니다. PCB·케이스·다른 금속과 간극이 필요합니다.";
         text += "\n접지 금속은 최상층의 사각 급전 기준 접지 패드 윗면에 놓으십시오.";
+        if (Value("kind") == "step")
+        {
+            text += "\nSTEP 말단 이동은 한 줄에 경로와 조립 X Y Z 이동량(mm)을 입력합니다. 예시 1.1.2 2 0 0";
+        }
     }
     if (m_context.at("section") == "surface")
     {
@@ -245,7 +249,16 @@ void PhysicalSetupDialog::RenderReview()
             {
                 const auto& transform = item.at("transform_mm");
                 const Json position = Json::array({transform.at(0).at(3), transform.at(1).at(3), transform.at(2).at(3)});
-                text += "\n" + std::string(2 * item.at("path").size(), ' ') + item.at("path").dump() +
+                std::string path;
+                for (const auto& index : item.at("path"))
+                {
+                    if (!path.empty())
+                    {
+                        path += ".";
+                    }
+                    path += index.dump();
+                }
+                text += "\n" + std::string(2 * item.at("path").size(), ' ') + path +
                         " " + item.at("name").get<std::string>() + "  " + position.dump();
             }
         }
@@ -303,6 +316,10 @@ void PhysicalSetupDialog::UpdateActions()
     if (const auto wall = m_inputs.find("case_thickness"); wall != m_inputs.end())
     {
         wall->second->Enable(ready && Value("kind") == "dielectric_case");
+    }
+    if (const auto offsets = m_inputs.find("instance_offsets"); offsets != m_inputs.end())
+    {
+        offsets->second->Enable(ready && Value("kind") == "step");
     }
     if (const auto supply = m_inputs.find("supply_thickness"); supply != m_inputs.end())
     {

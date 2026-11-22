@@ -122,7 +122,77 @@ class CadNativeTests(unittest.TestCase):
             for actual, expected in zip(restored["bbox_mm"], (1, 27, 12, 2, 33, 13)):
                 self.assertAlmostEqual(actual, expected, places=8)
             self.assertAlmostEqual(restored["volume_mm3"], 4)
+            offsets = [{"path": [1, 1, 2], "translation_mm": [2, 1, 1]}]
+            projection["environment_parts"][0]["instance_offsets"] = offsets
+            shifted = root / "shifted"
+            build_package(projection, shifted)
+            sidecar = json.loads((shifted / "sidecar.json").read_bytes())
+            environment = next(row for row in sidecar["body_map"] if row["id"] == identity_part)["source_step"]
+            self.assertEqual(environment["assembly_instances"], preview["assembly_instances"])
+            self.assertEqual(environment["instance_offsets"], offsets)
+            for details, bounds in zip(environment["placed_instances"], ((1, 27, 12, 2, 29, 13), (0, 33, 13, 1, 35, 14))):
+                for actual, expected in zip(details["bbox_mm"], bounds):
+                    self.assertAlmostEqual(actual, expected, places=8)
+            moved = read_step(shifted / "model.step")["environment_" + identity_part]
+            for actual, expected in zip(moved["bbox_mm"], (0, 27, 12, 2, 35, 14)):
+                self.assertAlmostEqual(actual, expected, places=8)
+            with self.assertRaisesRegex(ProjectError, "부품끼리") as overlap:
+                projection["environment_parts"][0]["instance_offsets"] = [
+                    {"path": [1, 1, 2], "translation_mm": [-3, 0, 0]}]
+                build_package(projection, root / "overlap")
+            self.assertEqual(overlap.exception.details["paths"], [[1, 1, 1], [1, 1, 2]])
+            self.assertAlmostEqual(overlap.exception.details["overlap_mm3"], 1.0)
             self.assertEqual(original.read_bytes(), raw)
+            self._check_persisted_instance_offsets(root, source, offsets)
+
+    def _check_persisted_instance_offsets(self, root, source, offsets):
+        """! @brief 실제 읽기 검토, 적용, 저장, 재열기 및 과거 STEP 바이트를 대조한다."""
+        import sys
+        from rfad.application.cad import build_cad_input
+        from rfad.application.cad_runtime import CadRuntime
+        from rfad.application.projects import ProjectService
+        from rfad.domain.physical_setup import setup
+        from test_cad_worker_process import register_fixture, request, status
+        from test_physical_setup import fixture, load, METHOD, parameters
+        from test_cad_projection import snapshot_for
+
+        workspace = root / "workspace"
+        runtime = CadRuntime(Path(sys.executable))
+        with ProjectService(workspace, cad_runtime=runtime, auto_run=False) as service:
+            doc, _ = register_fixture(service, fixture())
+            prior = setup(doc)["parts"][0]
+            inspected = service.physical_setup.read("physical.step.preview", {
+                "contract_version": "rfad.api/2.0", "context": {"project_id": doc["project_id"]},
+                "input": {"expected_revision": doc["revision_id"], "name": source["name"], "chunks": source["chunks"]}})
+            fields = {"kind": "step", "x": "10", "y": "20", "z": "3", "yaw": "90",
+                      "include_in_export": True, "instance_offsets": "1.1.2 2 1 1"}
+            params = parameters(service, doc, "part", fields, identity=prior["id"], step_token=inspected["preview_token"])
+            service.mutate(METHOD, params)
+            moved = load(service, doc)
+            stored = setup(moved)["parts"][0]
+            self.assertEqual(stored["step"], source)
+            self.assertEqual(stored["instance_offsets"], offsets)
+            self.assertIsNone(stored["material_id"])
+            for invalid in ("1.1 2 1 1", "1.1.4 2 1 1", "1.1.2 0 0 0"):
+                with self.assertRaises(ProjectError):
+                    service.mutate(METHOD, parameters(service, moved, "part", {"instance_offsets": invalid},
+                                                       identity=prior["id"]))
+                self.assertEqual(load(service, doc), moved)
+            saved = service.mutate("project.save", request(service, doc["project_id"], {
+                "expected_revision": moved["revision_id"]}))
+            service.run_next()
+            self.assertEqual(status(service, saved["job_id"])["state"], "completed")
+        with ProjectService(workspace, cad_runtime=runtime, auto_run=False) as reopened:
+            saved_doc = load(reopened, doc)
+            self.assertEqual(saved_doc, moved)
+            self.assertEqual(build_cad_input(saved_doc, snapshot_for(saved_doc))["environment_parts"][0]["instance_offsets"],
+                             offsets)
+            cleared = reopened.mutate(METHOD, parameters(reopened, saved_doc, "part", {"instance_offsets": ""},
+                                                         identity=prior["id"]))
+            current = load(reopened, doc)
+            self.assertNotIn("instance_offsets", setup(current)["parts"][0])
+            self.assertEqual(setup(current)["parts"][0]["step"], source)
+            self.assertEqual(current["revision_id"], cleared["new_revision"])
 
     def test_external_inch_and_mm_place_same_solid(self):
         """! @brief 다른 STEP 단위의 같은 고체를 한 번만 mm로 바꾸고 배치한다."""

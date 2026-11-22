@@ -36,8 +36,31 @@ FIELDS = {
     "x": "X", "y": "Y", "z": "Z",
     "width": "폭", "height": "길이", "depth": "높이", "yaw": "Z축 회전",
     "case_thickness": "벽과 덮개 두께 (케이스용)",
+    "instance_offsets": "STEP 말단 이동 (경로 X Y Z, mm)",
     "openings": "개구 (mm, 줄마다 X Y 폭 길이)", "active_scenario_id": "활성 시나리오",
 }
+
+
+def _instance_offsets(text):
+    """! @brief 경로.번호와 X Y Z 이동값 입력을 STEP 전용 레코드로 변환한다."""
+    from rfad.domain.physical_setup import validate_instance_offsets
+
+    result = []
+    for line in text.splitlines():
+        columns = line.split()
+        if not columns:
+            continue
+        if len(columns) != 4:
+            fail("한 줄마다 원본 경로와 X Y Z 이동량(mm)을 입력하십시오.", "instance_offsets")
+        tokens = columns[0].split(".")
+        if not all(token.isascii() and token.isdecimal() and len(token) <= 2 for token in tokens):
+            fail("원본 경로는 점으로 구분한 번호입니다. 예시 1.1.2", "instance_offsets")
+        result.append({"path": [int(token) for token in tokens],
+                       "translation_mm": [number(value, "instance_offsets") for value in columns[1:]]})
+    result.sort(key=lambda row: row["path"])
+    if result:
+        validate_instance_offsets(result)
+    return result
 
 
 def _missing(key):
@@ -104,7 +127,7 @@ def _descriptors(document, model, section, row):
     keys = {"surface": ("name", "kind", "side", "coverage", "offset", "thickness", "supply_thickness", "x", "y", "width", "height", "openings",
                         "material_id", "visible", "include_in_em", "include_in_export"),
             "part": ("name", "scenario_id", "kind", "x", "y", "z", "yaw", "width", "height", "depth", "case_thickness",
-                     "material_id", "visible", "include_in_em", "include_in_export"),
+                     "instance_offsets", "material_id", "visible", "include_in_em", "include_in_export"),
             "stack": ("nominal", "scope"), "scenario": ("name",), "activation": ("active_scenario_id",)}[section]
     for key in keys:
         entry = {"key": key, "label": FIELDS[key]}
@@ -115,6 +138,10 @@ def _descriptors(document, model, section, row):
         elif key == "openings":
             entry.update(kind="lines", value="\n".join(" ".join(_value(document, rect[item], item, "mm") or "-" for item in ("x","y","width","height"))
                                                        for rect in row[key]))
+        elif key == "instance_offsets":
+            entry.update(kind="lines", value="\n".join(
+                ".".join(map(str, item["path"])) + " " + " ".join(format(value, ".17g") for value in item["translation_mm"])
+                for item in row.get(key, [])))
         elif key == "name":
             entry.update(kind="text", value=row[key])
         else:
@@ -171,6 +198,12 @@ def _parse_changes(document, model, section, row, changes, reason):
             result[key] = value or None
         elif entry["kind"] == "quantity":
             result[key] = _quantity(entry["original"], key, value, reason)
+        elif key == "instance_offsets":
+            offsets = _instance_offsets(value)
+            if offsets:
+                result[key] = offsets
+            else:
+                result.pop(key, None)
         elif entry["kind"] == "lines":
             result[key] = _openings(document, row, value, reason)
         else:
@@ -266,7 +299,7 @@ class PhysicalSetupService:
             fail("CAD 미리보기 결과 hash가 다릅니다.", "step", "E_HASH")
         token = str(uuid4())
         with self.lock:
-            self.previews[token] = (document["project_id"], document["revision_id"], deepcopy(source))
+            self.previews[token] = (document["project_id"], document["revision_id"], deepcopy(source), deepcopy(result))
             if len(self.previews) > 16:
                 self.previews.popitem(last=False)
         return {"preview_token": token, "name": source["name"], **result}
@@ -298,7 +331,21 @@ class PhysicalSetupService:
                 if record["kind"] == "step" and record["step"] is None:
                     fail("STEP 파일의 읽기 미리보기가 필요합니다.", "step_token")
                 if record["kind"] != "step":
+                    if record.get("instance_offsets"):
+                        fail("말단 이동은 외부 STEP 조립에만 적용할 수 있습니다.", "instance_offsets")
                     record["step"] = None
+                offsets = record.get("instance_offsets", [])
+                original_offsets = (original or {}).get("instance_offsets", [])
+                previous_source = (original or {}).get("step")
+                if (offsets and original_offsets and previous_source and record["step"]["sha256"] != previous_source["sha256"]
+                        and "instance_offsets" not in data["changes"]):
+                    fail("원본 STEP이 바뀌었습니다. 말단 이동값을 지우거나 새 경로와 이동을 입력하십시오.",
+                         "instance_offsets", "E_CONFLICT")
+                if offsets and (offsets != original_offsets or data["step_token"] is not None):
+                    inspected = preview[3] if data["step_token"] is not None else self.service.cad.inspect_step(record["step"])
+                    paths = {tuple(row["path"]) for row in inspected.get("assembly_instances", []) if not row["assembly"]}
+                    if any(tuple(offset["path"]) not in paths for offset in offsets):
+                        fail("원본 STEP에서 확인된 말단 부품 경로를 입력하십시오.", "instance_offsets", "E_CONFLICT")
                 if record["kind"] == "dielectric_case":
                     record.setdefault("case_thickness", _missing("case_thickness"))
                 else:

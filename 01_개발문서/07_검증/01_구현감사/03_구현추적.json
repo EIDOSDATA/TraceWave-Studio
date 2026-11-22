@@ -14811,8 +14811,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/physical.py",
-      "text_sha256": "26ee54f89782163b459ed7773dd1654f39ee613be66fdf40cf0f9fd441bdfa41",
-      "utf8_bytes": 12772
+      "text_sha256": "084fa34130ae9c7fdcf1dee89c12bc3adf631129fc77aafc9dac1e8aea2a1e69",
+      "utf8_bytes": 15257
     },
     {
       "path": "Code/src/rfad/adapters/cad/step_io.py",
@@ -15176,13 +15176,13 @@
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
-      "text_sha256": "17b1699ea41b173479da121d9bfa8e6af4e1f519af8c56460b4bd77989ac6386",
-      "utf8_bytes": 3465
+      "text_sha256": "8e522d5428035dc38148fc45f3bc3a2c18bcbc8457968e4fa18ca890dadac640",
+      "utf8_bytes": 3583
     },
     {
       "path": "Code/src/rfad/application/physical_setup_service.py",
-      "text_sha256": "e381fe4d97118c5129c38ac024e55e28e13dc9576015a64d0058739f23f2ea9e",
-      "utf8_bytes": 18689
+      "text_sha256": "0b1a1b1afaf15a7bc8c80f259d406d955963536a798ca940875b91dae30ca4f9",
+      "utf8_bytes": 21622
     },
     {
       "path": "Code/src/rfad/application/precision_candidates.py",
@@ -15531,8 +15531,8 @@
     },
     {
       "path": "Code/src/rfad/domain/network_transform.py",
-      "text_sha256": "ae8a44f66232e6956b204352eae527847c2a3fb808fa72e1bed8b2d8cfc05099",
-      "utf8_bytes": 5639
+      "text_sha256": "2f5d33b7f8e36212e74c2aac4f723c471d7b3673e15f6405e7f262645e18b7f1",
+      "utf8_bytes": 10111
     },
     {
       "path": "Code/src/rfad/domain/object_names.py",
@@ -15556,8 +15556,8 @@
     },
     {
       "path": "Code/src/rfad/domain/physical_setup.py",
-      "text_sha256": "72955d605ad2e37214c2fbcef749cf667e9898828aa6e60380f153f512b5b2e5",
-      "utf8_bytes": 15107
+      "text_sha256": "9daec624bb28752129ea5197ab883a2f3f3df210d65fe9bbed995df978b9f8f3",
+      "utf8_bytes": 16715
     },
     {
       "path": "Code/src/rfad/domain/planar.py",
@@ -15721,8 +15721,8 @@
     },
     {
       "path": "Code/tests/test_cad_native.py",
-      "text_sha256": "787946277ec7e710fa6df7e827b30c6569ce4400c8fecc6419d266bda477b3c5",
-      "utf8_bytes": 21952
+      "text_sha256": "ec49d748f3077377b6ce34eac023a5e70a717db33e2f5dd0e6f31ac52f939d59",
+      "utf8_bytes": 26831
     },
     {
       "path": "Code/tests/test_cad_pcb_features.py",
@@ -16496,8 +16496,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/network_transform_dialog.cpp",
-      "text_sha256": "018a3031694f8dfdbecd0b294764bdaf7a051ac443451b790b1ee5781d44f0ec",
-      "utf8_bytes": 22384
+      "text_sha256": "363c3efc91ced127fd675c8dd754af0ba34690bbbc206a8ad852665d39de3929",
+      "utf8_bytes": 23928
     },
     {
       "path": "Code/ui/wxwidgets/object_rename_dialog.cpp",
@@ -16566,8 +16566,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_review.cpp",
-      "text_sha256": "ef90cf0496f3328c03f6a3b4d0c2533e8810afa5c01bf9bb04a5638ef9e3e584",
-      "utf8_bytes": 13180
+      "text_sha256": "57e3ac9d0c4361e95e17afe6b5c1f0b0b69177592b6cccb13ad6a5d599761a29",
+      "utf8_bytes": 13813
     },
     {
       "path": "Code/ui/wxwidgets/precision_dialog.cpp",

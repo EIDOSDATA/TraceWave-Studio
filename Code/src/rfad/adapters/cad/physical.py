@@ -1,12 +1,14 @@
 """! @brief 표면 피복과 자체 포함 STEP 고체의 격리 CAD 변환을 담당한다."""
 
+from itertools import combinations
 import math
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from rfad.adapters.cad.geometry import _require
 from rfad.adapters.cad.mechanical import board_solid, cut_surface
-from rfad.domain.physical_setup import KEY, step_bytes
+from rfad.domain.errors import ProjectError
+from rfad.domain.physical_setup import KEY, step_bytes, validate_instance_offsets
 
 
 def _positive_solid(shape):
@@ -38,7 +40,7 @@ def _assembly_instances(tool, root):
     from OCP.TopAbs import TopAbs_SOLID
     from OCP.TopLoc import TopLoc_Location
 
-    result = []
+    result, leaves = [], {}
 
     def walk(label, parent, path):
         """! @brief 각 참조의 위치를 부모에 합성하고 같은 정의의 반복을 유지한다."""
@@ -54,7 +56,8 @@ def _assembly_instances(tool, root):
         title = " ".join(name.Get().ToExtString().split())[:120] if named else ""
         transform = location.Transformation()
         assembled = tool.IsAssembly_s(definition)
-        _require(assembled or tool.GetShape_s(definition).ShapeType() == TopAbs_SOLID,
+        source_shape = tool.GetShape_s(definition)
+        _require(assembled or source_shape.ShapeType() == TopAbs_SOLID,
                  "조립의 각 말단 부품은 하나의 닫힌 B-rep 고체여야 합니다.", code="E_UNSUPPORTED")
         result.append({"path": path, "name": title, "definition": entry.ToCString(), "assembly": assembled,
                        "transform_mm": [[transform.Value(i, j) for j in range(1, 5)] for i in range(1, 4)]})
@@ -63,9 +66,11 @@ def _assembly_instances(tool, root):
             tool.GetComponents_s(definition, components, False)
             for index in range(1, components.Length() + 1):
                 walk(components.Value(index), location, [*path, index])
+        else:
+            leaves[tuple(path)] = source_shape.Moved(location)
 
     walk(root, TopLoc_Location(), [1])
-    return result
+    return result, leaves
 
 
 def _read_external(source):
@@ -106,10 +111,10 @@ def _read_external(source):
         _require(shape.ShapeType() == "Solid" or (assembly and shape.ShapeType() == "Compound"),
                  "닫힌 STEP 고체 또는 자체 포함 조립 루트를 선택하세요.", code="E_UNSUPPORTED")
         solids = _external_solids(shape)
-        instances = _assembly_instances(tool, root) if assembly else []
-        _require(not assembly or sum(not row["assembly"] for row in instances) == len(solids),
+        instances, leaves = _assembly_instances(tool, root) if assembly else ([], {})
+        _require(not assembly or len(leaves) == len(solids),
                  "STEP의 조립 인스턴스와 실제 닫힌 고체를 대응하지 못했습니다.", code="E_UNSUPPORTED")
-        return shape, source_unit, scale, instances
+        return shape, source_unit, scale, instances, leaves
 
 
 def external_metrics(shape):
@@ -126,7 +131,7 @@ def external_metrics(shape):
 
 def inspect_step(item):
     """! @brief 가져오기 미리보기에는 실제 B-rep 확인 범위와 미정 물성을 반환한다."""
-    shape, source_unit, scale, instances = _read_external(item)
+    shape, source_unit, scale, instances, _ = _read_external(item)
     return {"sha256": item["sha256"], "unit": "mm", "source_length_unit": source_unit, "source_to_mm": scale,
             "shape": "assembly" if instances else "single_solid", "faces": len(shape.Faces()),
             "assembly_instances": instances,
@@ -166,6 +171,30 @@ def surface_bodies(cq, projection, mechanical=()):
     return result
 
 
+def _shift_instances(cq, leaves, offsets, part_id, tolerance):
+    """! @brief 원본 누적 자세를 보존하며 지정 말단만 이동하고 새 체적 간섭을 확인한다."""
+    validate_instance_offsets(offsets)
+    translations = {tuple(row["path"]): row["translation_mm"] for row in offsets}
+    field = "part." + part_id + ".instance_offsets"
+    _require(translations.keys() <= leaves.keys(), "STEP 원본의 말단 부품 경로를 확인하십시오.", field=field)
+    shapes = {path: cq.Shape.cast(value) for path, value in leaves.items()}
+    for path, shift in translations.items():
+        shapes[path] = shapes[path].translate(tuple(shift))
+    for (first, a), (second, b) in combinations(shapes.items(), 2):
+        if first in translations or second in translations:
+            bounds_a, bounds_b = a.BoundingBox(), b.BoundingBox()
+            if any(min(getattr(bounds_a, axis + "max"), getattr(bounds_b, axis + "max")) -
+                   max(getattr(bounds_a, axis + "min"), getattr(bounds_b, axis + "min")) <= tolerance
+                   for axis in "xyz"):
+                continue
+            overlap = a.intersect(b).Volume()
+            if overlap > tolerance ** 3:
+                raise ProjectError("E_GEOMETRY", "배치한 STEP 말단 부품끼리 체적이 겹칩니다.",
+                                   details={"field_path": field, "paths": [list(first), list(second)],
+                                            "overlap_mm3": overlap})
+    return shapes
+
+
 def part_bodies(cq, projection):
     """! @brief 원점 기준 yaw를 적용한 뒤 기판 좌표계의 x/y/z만 더한다."""
     result = []
@@ -175,6 +204,7 @@ def part_bodies(cq, projection):
     storage = {row["id"]: row["step"] for row in projection["source_semantics"]["extensions"][KEY]["parts"]}
     for row in rows:
         source_step = {}
+        placed_leaves = {}
         if row["kind"] == "dielectric_case":
             width, length, height = row["size_mm"]
             wall = row["wall_mm"]
@@ -187,10 +217,22 @@ def part_bodies(cq, projection):
             shape = cq.Solid.makeBox(*row["size_mm"])
         else:
             source = storage[row["id"]]
-            shape, source_unit, scale, instances = _read_external(source)
+            shape, source_unit, scale, instances, leaves = _read_external(source)
             source_step = {"source_step": {"sha256": source["sha256"], "source_length_unit": source_unit,
                                           "source_to_mm": scale, "assembly_instances": instances}}
-        shape = shape.rotate((0, 0, 0), (0, 0, 1), row["yaw_deg"]).translate(tuple(row["translation_mm"]))
+            if row.get("instance_offsets"):
+                placed_leaves = _shift_instances(cq, leaves, row["instance_offsets"], row["id"], projection["tolerance_mm"])
+                shape = cq.Compound.makeCompound(list(placed_leaves.values()))
+        def place(solid):
+            """! @brief 조립 원점 회전 후 기판 좌표로 이동한다."""
+            return solid.rotate((0, 0, 0), (0, 0, 1), row["yaw_deg"]).translate(tuple(row["translation_mm"]))
+
+        shape = place(shape)
+        if placed_leaves:
+            source_step["source_step"]["instance_offsets"] = row["instance_offsets"]
+            source_step["source_step"]["placed_instances"] = [
+                {"path": path, "bbox_mm": external_metrics(place(solid))["bbox_mm"]}
+                for path, solid in sorted(placed_leaves.items())]
         result.append({"id": row["id"], "name": "environment_" + row["id"], "role": "environment", "layer_id": row["id"],
                        "net_id": None, "material_id": row["material_id"], "source_entity_ids": [row["id"]],
                        "feature_kind": row["kind"], "shape": shape, **source_step})

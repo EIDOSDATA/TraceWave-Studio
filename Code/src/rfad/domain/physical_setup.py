@@ -12,6 +12,7 @@ from rfad.domain.design import _fail, _fields, _indexes, _number, _reference, _s
 KEY = "rfad.physical_setup"
 PROFILE = "rfad.physical-setup/0.1"
 MAX_STEP_BYTES = 48 * 1024
+MAX_STEP_INSTANCE_OFFSETS = 16
 SURFACE_KINDS = ("solder_mask", "coverlay", "adhesive", "bondply", "finish", "ferrite", "plating", "coating")
 FLAGS = {"visible", "include_in_em", "include_in_export"}
 SURFACE_NUMBERS = ("offset", "thickness", "x", "y", "width", "height")
@@ -33,6 +34,8 @@ def record_fields(section, record):
     fields = ROW_FIELDS[section]
     if section == "part" and isinstance(record, dict) and record.get("kind") == "dielectric_case":
         return fields | {"case_thickness"}
+    if section == "part" and isinstance(record, dict) and record.get("kind") == "step" and "instance_offsets" in record:
+        return fields | {"instance_offsets"}
     if section == "surface" and isinstance(record, dict) and record.get("kind") == "bondply" and "supply_thickness" in record:
         return fields | {"supply_thickness"}
     return fields
@@ -70,6 +73,27 @@ def step_bytes(source):
             or re.search(r"\b(ANCHOR|REFERENCE|SIGNATURE)\s*;|\b(?:EXTERNAL[A-Z_]*|DOCUMENT_FILE|DRAUGHTING_MODEL)\s*\(", data)):
         _fail("E_UNSUPPORTED", "단일 DATA의 자체 포함 STEP 파일만 지원합니다.", field)
     return raw
+
+
+def validate_instance_offsets(rows):
+    """! @brief 원본 STEP의 안정 경로별 조립 좌표 평행 이동만 보존한다."""
+    field = "part.instance_offsets"
+    if type(rows) is not list or not 1 <= len(rows) <= MAX_STEP_INSTANCE_OFFSETS:
+        _fail("E_RESOURCE", "STEP 조립 말단의 이동은 최대 16개입니다.", field)
+    paths = []
+    for row in rows:
+        _fields(row, {"path", "translation_mm"}, field)
+        path, shift = row["path"], row["translation_mm"]
+        if (type(path) is not list or not 2 <= len(path) <= 8 or path[0] != 1
+                or any(type(index) is not int or not 1 <= index <= 32 for index in path)):
+            _fail("E_SCHEMA", "STEP 원본의 말단 경로를 입력하십시오.", field)
+        if (type(shift) is not list or len(shift) != 3
+                or any(type(value) not in (float, int) or not -1e6 <= value <= 1e6 or not math.isfinite(value)
+                       for value in shift) or not any(shift)):
+            _fail("E_GEOMETRY", "조립 좌표에서 0이 아닌 유한한 X Y Z 이동량을 mm로 입력하십시오.", field)
+        paths.append(tuple(path))
+    if paths != sorted(set(paths)):
+        _fail("E_CONFLICT", "같은 STEP 부품 경로를 중복 지정할 수 없습니다.", field)
 
 
 def _rect(document, data, field):
@@ -139,6 +163,8 @@ def validate_setup(document):
                     _number(document, row["case_thickness"], "length", "part.case_thickness", positive=True)
                 if row["kind"] == "step":
                     source_total += len(step_bytes(row["step"]))
+                    if "instance_offsets" in row:
+                        validate_instance_offsets(row["instance_offsets"])
                 elif row["kind"] not in PART_KINDS or row["step"] is not None:
                     _fail("E_SCHEMA", "지원하는 외부 물체 종류를 선택하십시오.", "part.kind")
         if [row["id"] for row in rows] != sorted(row["id"] for row in rows):
