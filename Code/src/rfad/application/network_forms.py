@@ -80,6 +80,9 @@ def transform_input(data, options):
                          "attenuation_db_per_m": number(attenuation, field="options.line_table.attenuation_db_per_m"),
                          "reference_plane": plane})
         return {"operation": "shift_plane", "lines": rows}
+    if type(options) is dict and set(options) == {"operation", "start_ns", "stop_ns"} and options["operation"] == "time_gate":
+        return {**options, **{key: number(value, field="options." + key) if type(value) is str else value
+                              for key, value in options.items() if key != "operation"}}
     if type(options) is dict and set(options) == {"operation", "reference"} and options["operation"] == "renormalize":
         quantity = Quantity(**input_quantity(options["reference"], "impedance", "reference"))
         if quantity.value_si is None or quantity.value_si <= 0:

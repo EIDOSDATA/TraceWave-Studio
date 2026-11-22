@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 225,
+    "current_07_검증": 226,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28748,7 +28748,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 644041,
-      "working_tree_sha256": "da2512cfda1e43d1a66c45273d32e842fa216d96a69a2fa1fb15efad47baed61"
+      "working_tree_sha256": "9daebf088b83a75bfa26d22af5c970d44ec3a8baa10f7bc0841bc89c71e4e84c"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -31872,6 +31872,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/349_복소대역_시간게이트_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2110,
+      "working_tree_sha256": "9d0409cbd4a7cce39541828506ad52247a26320e87a5783e251015ab8635a684",
+      "text_lines": 12,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/34_스튜디오_보존묶음복원_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -32536,8 +32545,8 @@
       "path": "01_개발문서/09_개발계획/08_새채팅_개발인계.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 3968,
-      "working_tree_sha256": "acbd1a913a60db13b51108ce97fef13395dd45c54d78b7fcfdd4d8a45392c37e",
+      "bytes": 3988,
+      "working_tree_sha256": "4375e97092dc0494722431283c3260696383a9e63c72e6c665d696161c4c3856",
       "text_lines": 28,
       "text_status": "utf8_read"
     },
@@ -32581,8 +32590,8 @@
       "path": "01_개발문서/09_개발계획/13_전자기해석과_후처리_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 32004,
-      "working_tree_sha256": "6edb86e1aae7f7900ff793ade670fa2a8e34a596b927f313e5e53b9dd66f552f",
+      "bytes": 32263,
+      "working_tree_sha256": "21bf6ffc587e4c7c96b4d18ded200958a0130feabedd53765e3cfdd5818b2855",
       "text_lines": 96,
       "text_status": "utf8_read"
     },
@@ -32599,8 +32608,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 30036,
-      "working_tree_sha256": "d6ddc37e8d873330cb6c7f663590b4c14ffdcb548921e59072a0728162eab51d",
+      "bytes": 30279,
+      "working_tree_sha256": "1421c7e0ea5940b41e248dfb078fc655769a473514d2b0fa052fc709237be456",
       "text_lines": 187,
       "text_status": "utf8_read"
     },

@@ -323,6 +323,16 @@ void StudioSmokeDriver::NetworkSmokeTick()
             CanvasAssert(transform->m_preview->IsEnabled() &&
                              transform->Input().at("parameters").at("options").at("operation") == "deembed_fixtures",
                          "치구의 역할과 선택 ID가 검토 입력에 전달되지 않았습니다.");
+            SetupSmoke::Choose(transform->m_mode, 4);
+            CanvasAssert(transform->m_gateStart->IsShown() && transform->m_gateStop->IsShown() &&
+                             !transform->m_preview->IsEnabled(),
+                         "시간 게이트가 지연 시작과 끝을 명시적으로 받지 않습니다.");
+            transform->m_gateStart->SetValue("-1");
+            transform->m_gateStop->SetValue("1");
+            CanvasAssert(transform->m_preview->IsEnabled() &&
+                             transform->Input().at("parameters").at("options").at("start_ns") == "-1",
+                         "게이트 지연 범위가 검토 입력에 전달되지 않았습니다.");
+            m_setupChecks.push_back("network_time_gate_delay_inputs");
             SetupSmoke::Choose(transform->m_mode, 0);
             CanvasAssert(!transform->m_leftFixture->IsShown() && !transform->m_rightFixture->IsShown(),
                          "치구 선택 표시가 일반 변환에 남아 있습니다.");

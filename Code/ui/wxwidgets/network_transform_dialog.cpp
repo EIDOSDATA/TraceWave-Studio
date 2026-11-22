@@ -96,7 +96,7 @@ void NetworkTransformDialog::BuildInterface()
     layout->Add(title, 0, wxALL, FromDIP(16));
     auto* introduction = new wxStaticText(
         this, wxID_ANY,
-        Display("복소 종류와 Z0를 변환하고, 정합 선로 또는 2포트 치구로 기준면을 이동합니다. 결과를 별도 자료로 저장합니다."));
+        Display("복소 종류와 Z0를 변환하고, 기준면을 이동하거나 시간 게이트를 적용합니다. 결과를 별도 자료로 저장합니다."));
     StudioTheme::BindSecondary(*introduction);
     introduction->Wrap(FromDIP(980));
     layout->Add(introduction, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(16));
@@ -119,6 +119,7 @@ void NetworkTransformDialog::BuildInterface()
     m_mode->Append(Display("S 기준 임피던스 재정규화"));
     m_mode->Append(Display("S 기준면 이동 (정합 선로)"));
     m_mode->Append(Display("양쪽 2포트 치구 제거"));
+    m_mode->Append(Display("S 시간 게이트"));
     m_mode->SetSelection(0);
     Field(options, fields, "변환 작업", m_mode);
     m_kind = new wxChoice(options, wxID_ANY);
@@ -159,6 +160,20 @@ void NetworkTransformDialog::BuildInterface()
     StudioTheme::BindSecondary(*fixtureHelp);
     m_fixtureFields->Add(fixtureHelp, 0, wxEXPAND | wxBOTTOM, FromDIP(10));
     fields->Add(m_fixtureFields, 0, wxEXPAND);
+    m_timeGateFields = new wxBoxSizer(wxVERTICAL);
+    m_gateStart = new wxTextCtrl(options, wxID_ANY);
+    m_gateStart->SetName("network.transform.gate.start");
+    Field(options, m_timeGateFields, "유지할 시간 시작 (ns)", m_gateStart);
+    m_gateStop = new wxTextCtrl(options, wxID_ANY);
+    m_gateStop->SetName("network.transform.gate.stop");
+    Field(options, m_timeGateFields, "유지할 시간 끝 (ns)", m_gateStop);
+    auto* gateHelp = new wxStaticText(
+        options, wxID_ANY, Display("균일 주파수 표본의 복소 대역에서 입력한 지연 구간을 남깁니다.\n"
+                                  "시간 간격과 주기는 원본 주파수 간격과 표본 수로 결정됩니다."));
+    gateHelp->Wrap(FromDIP(400));
+    StudioTheme::BindSecondary(*gateHelp);
+    m_timeGateFields->Add(gateHelp, 0, wxEXPAND | wxBOTTOM, FromDIP(10));
+    fields->Add(m_timeGateFields, 0, wxEXPAND);
     auto* scope = new wxStaticText(
         options, wxID_ANY,
         Display("기준면, 파 정의와 포트/전류 규약을 확인해야 합니다.\n복소 Z0는 보존하되 현재 변환에서는 지원하지 "
@@ -246,7 +261,7 @@ void NetworkTransformDialog::BuildInterface()
                      {
                          SelectDataset();
                      });
-    for (auto* input : {m_name, m_reference, m_lines})
+    for (auto* input : {m_name, m_reference, m_lines, m_gateStart, m_gateStop})
     {
         input->Bind(wxEVT_TEXT,
                     [this](wxCommandEvent&)
@@ -364,11 +379,16 @@ Json NetworkTransformDialog::Input() const
     {
         options = {{"operation", "shift_plane"}, {"line_table", Utf8(m_lines->GetValue())}};
     }
-    else
+    else if (m_mode->GetSelection() == 3)
     {
         options = {{"operation", "deembed_fixtures"},
                    {"left_id", m_context.at("datasets").at(m_leftFixture->GetSelection()).at("id")},
                    {"right_id", m_context.at("datasets").at(m_rightFixture->GetSelection()).at("id")}};
+    }
+    else
+    {
+        options = {{"operation", "time_gate"}, {"start_ns", Utf8(m_gateStart->GetValue())},
+                   {"stop_ns", Utf8(m_gateStop->GetValue())}};
     }
     return {
         {"expected_revision", m_revision},
@@ -461,6 +481,16 @@ void NetworkTransformDialog::RenderResult(const Json& result)
     m_resultConditions->ChangeValue(Display(Conditions(result.at("descriptor"))));
     std::string diagnostics = "표시 " + std::to_string(result.at("diagnostics").size()) + " / 전체 " +
                               Value(result.at("diagnostic_count")) + "개. 저장하면 전체 계산 진단을 함께 보존합니다.\n";
+    const auto& rows = result.at("diagnostics");
+    if (!rows.empty() && rows.front().contains("retained_bins"))
+    {
+        const auto& gate = rows.front();
+        const auto& interval = gate.at("selected_bin_range_ns");
+        diagnostics += "\n시간 게이트 " + Value(gate.at("retained_bins")) + " / " + Value(gate.at("total_bins")) +
+            "개 지연 표본 | 지연 간격 " + Value(gate.at("time_step_ns")) + " ns | 주기 " +
+            Value(gate.at("period_ns")) + " ns\n남긴 지연 " + Value(interval.at(0)) +
+            "~" + Value(interval.at(1)) + " ns\n";
+    }
     for (const auto& item : result.at("diagnostics"))
     {
         diagnostics += "\n" + StudioFrequency::Value(item.at("frequency_hz"), frequencyScale) + " " +
@@ -469,7 +499,13 @@ void NetworkTransformDialog::RenderResult(const Json& result)
         {
             diagnostics += " / 유효 복소 채널 " + Value(item.at("valid_channels")) + "개";
         }
-        else
+        else if (item.contains("fixture_condition_numbers"))
+        {
+            const auto& fixtures = item.at("fixture_condition_numbers");
+            diagnostics += " / 치구 조건수 왼쪽 " + Value(fixtures.at(0)) + " / 오른쪽 " + Value(fixtures.at(1)) +
+                " / 재결합 상대 잔차 " + Value(item.at("relative_residual"));
+        }
+        else if (!item.contains("retained_bins"))
         {
             diagnostics += " / 조건수 " + Value(item.value("condition_number", Json(nullptr))) + " / 상대 잔차 " +
                            Value(item.value("relative_residual", Json(nullptr)));
@@ -537,10 +573,12 @@ void NetworkTransformDialog::UpdateActions()
     m_reference->Enable(enabled && m_mode->GetSelection() == 1);
     const bool shift = m_mode->GetSelection() == 2;
     const bool fixtures = m_mode->GetSelection() == 3;
-    if (m_lines->IsShown() != shift || m_leftFixture->IsShown() != fixtures)
+    const bool gate = m_mode->GetSelection() == 4;
+    if (m_lines->IsShown() != shift || m_leftFixture->IsShown() != fixtures || m_gateStart->IsShown() != gate)
     {
         m_lineFields->ShowItems(shift);
         m_fixtureFields->ShowItems(fixtures);
+        m_timeGateFields->ShowItems(gate);
         auto* options = static_cast<wxScrolledWindow*>(m_lines->GetParent());
         options->Layout();
         options->FitInside();
@@ -549,7 +587,11 @@ void NetworkTransformDialog::UpdateActions()
     m_leftFixture->Enable(enabled && fixtures);
     m_rightFixture->Enable(enabled && fixtures);
     const bool chosen = m_leftFixture->GetSelection() != wxNOT_FOUND && m_rightFixture->GetSelection() != wxNOT_FOUND;
-    m_preview->Enable(enabled && !m_selection.is_null() && (!fixtures || chosen));
+    m_gateStart->Enable(enabled && gate);
+    m_gateStop->Enable(enabled && gate);
+    const bool interval = !m_gateStart->GetValue().Trim().Trim(false).empty() &&
+                          !m_gateStop->GetValue().Trim().Trim(false).empty();
+    m_preview->Enable(enabled && !m_selection.is_null() && (!fixtures || chosen) && (!gate || interval));
     m_apply->Enable(enabled && !m_review.is_null() && m_review.value("can_apply", false));
 }
 

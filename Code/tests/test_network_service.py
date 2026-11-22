@@ -1,6 +1,7 @@
 """! @brief 복소 원본/미정/파생 자료의 검토와 원자 저장 및 재열기를 검증한다."""
 
 import base64
+import cmath
 from copy import deepcopy
 import hashlib
 import json
@@ -238,6 +239,55 @@ class NetworkServiceTests(unittest.TestCase):
         provenance = exported["sidecar"]["provenance"]["network_operations"][-1]
         self.assertEqual(provenance["options"]["fixture_ids"], {"left": left, "right": right})
         self.assertEqual(set(provenance["options"]["fixture_sha256"]), {"left", "right"})
+
+    def test_time_gate_keeps_known_echo_and_original_for_both_phasors(self):
+        """! @brief 실제 대역 통과 게이트가 두 위상 규약에서 같은 시간 지연을 선택한다."""
+        frequency_options = [1.03e9 + i * 125e6 for i in range(8)]
+        first_echo, later_echo = .24 - .07j, -.11 + .08j
+
+        def add(sign, phasor, frequencies, suffix):
+            """! @brief 알려진 전달 지연 0, 2, 3 ns의 복소 성분을 원본으로 저장한다."""
+            raw = "# Hz S RI R 50\n"
+            expected = []
+            for frequency in frequencies:
+                angle = sign * math.tau * frequency * 1e-9
+                expected.append(first_echo * cmath.exp(2j * angle))
+                sample = .1 + .05j + expected[-1] + later_echo * cmath.exp(3j * angle)
+                raw += f"{frequency:.17g} {sample.real:.17g} {sample.imag:.17g}\n"
+            parameters = import_parameters()
+            parameters.update(name="시간 원본 " + suffix, file_name="echo.s1p",
+                              source_base64=base64.b64encode(raw.encode("ascii")).decode("ascii"))
+            parameters["declarations"]["phasor_convention"] = phasor
+            return self.apply("import", parameters), expected
+
+        options = {"operation": "time_gate", "start_ns": "1.6", "stop_ns": "2.4"}
+        results = []
+        for sign, phasor, name in ((-1, "exp(+j*omega*t)", "양"), (1, "exp(-j*omega*t)", "음")):
+            source, expected = add(sign, phasor, frequency_options, name)
+            inputs = {"dataset_id": source, "name": "2 ns 게이트 " + name, "options": options}
+            record = self.apply("transform", inputs)
+            results.append((source, record, expected))
+        bad_axis = frequency_options.copy()
+        bad_axis[-1] += 1e6
+        irregular, _ = add(-1, "exp(+j*omega*t)", bad_axis, "비균일")
+        self.assertEqual(self.preview("transform", {"dataset_id": irregular, "name": "불가",
+                                                    "options": options})["issues"][0]["code"], "E_CONFLICT")
+        self.save_reopen()
+        for source, result, expected in results:
+            keys = {"offset": 0, "limit": len(expected), "row": 0, "column": 0}
+            report = self.read("network.get", dataset_id=result, **keys)
+            original = self.read("network.get", dataset_id=source, **keys)
+            for sample, value, frequency in zip(report["page"]["samples"], expected, frequency_options):
+                self.assertEqual(sample["frequency_hz"], frequency)
+                self.assertAlmostEqual(complex(sample["real"], sample["imag"]), value, places=12)
+            self.assertNotEqual(report["page"]["samples"], original["page"]["samples"])
+            self.assertEqual(report["descriptor"]["reference_planes"], original["descriptor"]["reference_planes"])
+            extension = self.read("network.export", dataset_id=result, format="hdf5")["sidecar"]
+            evidence = extension["provenance"]["network_operations"][-1]["options"]
+            self.assertEqual(evidence["method"], "complex_bandpass_rectangular_gate")
+            self.assertEqual(evidence["retained_bins"], 1)
+            self.assertEqual(evidence["time_step_ns"], 1)
+            self.assertEqual(evidence["selected_bin_range_ns"], [2, 2])
 
     def test_preview_hash_stale_revision_and_internal_command_bypass(self):
         """! @brief 검토와 다른 입력 및 내부 명령 직접 적용을 거절한다."""

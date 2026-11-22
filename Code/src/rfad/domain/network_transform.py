@@ -167,6 +167,61 @@ def _deembed_fixtures(data, options):
             "diagnostics": diagnostics, "engine": engine}
 
 
+def _time_gate(data, options):
+    """! @brief 균일 복소 대역의 IFFT 지연 표본을 선택해서 같은 주파수로 돌아간다."""
+    if set(options) != {"operation", "start_ns", "stop_ns"} or data["parameter_kind"] != "S":
+        fail("시간 게이트에는 S 자료와 시작·끝 지연 시간이 필요합니다.", "options", "E_UNSUPPORTED")
+    require_basis(data)
+    if data["phasor_convention"] == "unknown":
+        fail("시간 게이트에는 시간/위상 부호 규약이 필요합니다.", "phasor_convention", "E_UNSUPPORTED")
+    frequencies = data["frequency_hz"]
+    count = len(frequencies)
+    if count < 4:
+        fail("시간 게이트에는 균일한 주파수 표본 4개 이상이 필요합니다.", "frequency_hz", "E_CONFLICT")
+    start, stop = [finite(options[key], "options." + key) for key in ("start_ns", "stop_ns")]
+    step = (frequencies[-1] - frequencies[0]) / (count - 1)
+    tolerance = max(4 * math.ulp(frequencies[-1]), step * 1e-10)
+    if tolerance >= step / 100 or any(abs(right - left - step) > tolerance for left, right in zip(frequencies, frequencies[1:])):
+        fail("시간 게이트에는 균일한 원본 주파수 축이 필요합니다.", "frequency_hz", "E_CONFLICT")
+    period_ns = 1e9 / step
+    if not math.isfinite(period_ns):
+        fail("주파수 간격으로 시간 주기를 표현할 수 없습니다.", "frequency_hz", "E_RESOURCE")
+    if not -period_ns / 2 <= start < stop <= period_ns / 2:
+        fail(f"게이트 시작과 끝을 {-period_ns / 2:.6g}~{period_ns / 2:.6g} ns 안에서 순서대로 지정하십시오.",
+             "options.start_ns", "E_CONFLICT")
+    reference = real_references(data, 0)
+    for index, mask in enumerate(data["valid_mask"]):
+        if not all(value for row in mask for value in row):
+            fail("누락 또는 특이 표본을 보간하지 않습니다. 모든 복소 값이 필요합니다.", "valid_mask", "E_CONFLICT")
+        if real_references(data, index) != reference:
+            fail("시간 게이트에서는 각 포트의 기준 임피던스가 주파수에 따라 일정해야 합니다.", "z0_ohm", "E_CONFLICT")
+    np, _, _, engine = network_backend.runtime()
+    data_ri = np.asarray(data["values_ri"], dtype=float)
+    matrix = data_ri[..., 0] + 1j * data_ri[..., 1]
+    offsets = np.fft.fftshift(np.fft.fftfreq(count, d=step)) * 1e9
+    selected = (start <= offsets) & (offsets <= stop)
+    retained = int(np.count_nonzero(selected))
+    if not retained:
+        fail(f"선택한 구간에 지연 표본이 없습니다. 표본 간격은 {period_ns / count:.6g} ns입니다.",
+             "options.start_ns", "E_CONFLICT")
+    positive = data["phasor_convention"] == "exp(+j*omega*t)"
+    with np.errstate(over="ignore", invalid="ignore"):
+        response = np.fft.ifft(matrix, axis=0) if positive else np.fft.fft(matrix, axis=0) / count
+        shifted = np.fft.fftshift(response, axes=0)
+        cropped = np.fft.ifftshift(np.where(selected[:, None, None], shifted, 0), axes=0)
+        result = np.fft.fft(cropped, axis=0) if positive else np.fft.ifft(cropped, axis=0) * count
+    if not np.isfinite(response).all() or not np.isfinite(result).all():
+        fail("시간 게이트 결과가 유한한 복소 범위를 넘습니다.", "values_ri", "E_RESOURCE")
+    values = np.stack((result.real, result.imag), axis=-1).tolist()
+    selected_range = (float(offsets[selected][0]), float(offsets[selected][-1]))
+    details = {"method": "complex_bandpass_rectangular_gate", "retained_bins": retained, "total_bins": count,
+               "time_step_ns": period_ns / count, "period_ns": period_ns, "selected_bin_range_ns": list(selected_range)}
+    evidence = {**options, **details, "frequency_spacing_hz": step, "source_band_start_hz": frequencies[0]}
+    return {"dataset": derived(data, values, data["valid_mask"], data["sample_status"], evidence, engine),
+            "diagnostics": [{"frequency_hz": f, "status": "valid", **details} for f in frequencies],
+            "engine": engine}
+
+
 def transform_dataset(data, options):
     """! @brief 고정 주파수의 명시 S/Z/Y 변환, Z0 재정규화 또는 정합 선로 기준면 이동을 수행한다."""
     validate_dataset(data)
@@ -175,6 +230,8 @@ def transform_dataset(data, options):
             return _shift_planes(data, options)
         if options.get("operation") == "deembed_fixtures":
             return _deembed_fixtures(data, options)
+        if options.get("operation") == "time_gate":
+            return _time_gate(data, options)
     if type(options) is not dict or options.get("operation") not in ("convert", "renormalize"):
         fail("지원하지 않는 네트워크 변환입니다.", "options", "E_UNSUPPORTED")
     renormalize = options["operation"] == "renormalize"

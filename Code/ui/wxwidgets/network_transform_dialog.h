@@ -47,6 +47,9 @@ private:
     wxSizer* m_fixtureFields = nullptr;
     wxChoice* m_leftFixture = nullptr;
     wxChoice* m_rightFixture = nullptr;
+    wxSizer* m_timeGateFields = nullptr;
+    wxTextCtrl* m_gateStart = nullptr;
+    wxTextCtrl* m_gateStop = nullptr;
     wxTextCtrl* m_name = nullptr;
     wxTextCtrl* m_source = nullptr;
     wxTextCtrl* m_resultConditions = nullptr;
