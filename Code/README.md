@@ -52,7 +52,7 @@ $env:PYTHONPATH = 'src'
 .\tools\launch_gui.ps1
 ```
 
-현재 Windows 내부 검증용 후보의 고정 ZIP과 개발 PC의 새 경로 수신 결과는 [배포 검증](../01_개발문서/07_검증/300_윈도우_알원_내부후보_재현과_수신.md)에 있다. 별도 Windows/WSL2의 오프라인 설치와 수령자 검수는 환경 준비까지 보류한다. [운영 안내](../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md)
+현재 Windows 내부 검증용 후보의 고정 ZIP과 개발 PC의 새 경로 수신 결과는 [배포 검증](../01_개발문서/07_검증/300_윈도우_알원_내부후보_재현과_수신.md)에 있다. 별도 클린 Windows/WSL2 PC에서 온라인으로 공개 후보와 고정 의존성을 받아 실제 작업 흐름을 검수한다. [운영 안내](../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md)
 
 GUI 실행 스크립트는 존재하는 `.venv-cad`, `.venv-exchange`와 `.local/pcb-catalog/catalog.sqlite`를 연결한다. `-CadPython <경로>`, `-ExchangePython <경로>`, `-Catalog <경로>`, `-NoCatalog`로 선택할 수 있다. 해석 환경 구성 후에는 `launch_gui.ps1 -OpenEmsWsl`을 사용한다. CAD/출력/solver가 없어도 가능한 편집/저장과 보존 결과 읽기는 유지한다.
 

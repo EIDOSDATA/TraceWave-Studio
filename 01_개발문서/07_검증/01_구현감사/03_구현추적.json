@@ -2218,7 +2218,7 @@
       "id": "NFR-002-AC01",
       "source": "`A::NFR-002`",
       "stage": "M/R1",
-      "text": "네트워크 차단 상태에서 기준 프로젝트를 열고 수정, 해석, 출력하며 온라인 기능 의존 여부를 확인한다."
+      "text": "온라인 상태의 별도 클린 Windows/WSL2 PC에서 공개 후보와 고정 의존성을 설치하고 기준 프로젝트의 편집, 로컬 해석, 출력과 복구를 확인한다. R1 수신 검수 조건은 2026-11-23 사용자 결정에 따른다."
     },
     {
       "id": "NFR-002-AC02",
@@ -6843,7 +6843,7 @@
     {
       "ac_id": "NFR-002-AC01",
       "acceptance_status": "open",
-      "assertion_summary": "네트워크 차단 상태에서 기준 프로젝트를 열고 수정, 해석, 출력하며 온라인 기능 의존 여부를 확인한다",
+      "assertion_summary": "온라인 상태의 별도 클린 Windows/WSL2 PC에서 공개 후보와 고정 의존성을 설치하고 기준 프로젝트의 편집, 로컬 해석, 출력과 복구를 확인한다",
       "required_evidence": [
         "ENV",
         "RUN",
@@ -7837,8 +7837,8 @@
   "design_sources": [
     {
       "path": "01_개발문서/01_요구사항/01_사용자_요구사항.md",
-      "text_sha256": "1eb2f9384e5c22d9cfe87d4a8bd8aefe3e97414b4059aac8ca6fca712ce60ef0",
-      "utf8_bytes": 331370
+      "text_sha256": "808afebcea3d0a289f0495bb4b6afb8896bef523d25a6eefdae72932d52cf638",
+      "utf8_bytes": 331485
     },
     {
       "path": "01_개발문서/05_기능설계/01_기능_설계.md",
@@ -7852,13 +7852,13 @@
     },
     {
       "path": "01_개발문서/07_검증/01_검증과_수용_기준.md",
-      "text_sha256": "04510130e1764afbd0f29e54b5e7eec2d8ee6f6bd2851a7926f28ef8fdf678bb",
-      "utf8_bytes": 91856
+      "text_sha256": "f28b8bed7505cd84e2fae57b2b0a4cdec8911cd5f90826e1ecd5f9bc2c57a728",
+      "utf8_bytes": 92082
     },
     {
       "path": "01_개발문서/07_검증/03_요구사항_추적표.md",
-      "text_sha256": "fb41232b4ccf30b8a35447cc68183d3db9a6fcf5c3f2b017c0900917298a1546",
-      "utf8_bytes": 216502
+      "text_sha256": "35e4136c787c092eab7de6f1af5f2658dff45731c3f04a9f87c1be8f89210315",
+      "utf8_bytes": 216663
     },
     {
       "path": "01_개발문서/04_화면설계/02_화면_선정과_성능_설계.md",
@@ -10478,7 +10478,7 @@
       ],
       "gaps": [
         "실제 Windows에서 한글 IME 조합, 스크린리더 오류 안내와 혼합 DPI 이동을 검수한다. 도킹, GPU 및 WSL 복구의 기능 증거도 확인한다.",
-        "명시적 지원표/설치 진단, 새 PC 오프라인 설치/패키지/라이선스, 전체 GUI-CLI 작업 흐름을 검증한다.",
+        "명시적 지원표/설치 진단, 온라인 클린 PC 설치/패키지/라이선스, 전체 GUI-CLI 작업 흐름을 검증한다.",
         "KiCad 보드 외 다른 EDA의 단위/좌표/net/port 의미 변환과 여러 외부 host는 추가 검증이 필요하다. Linux GUI와 remote/HPC는 후속이다."
       ],
       "id": "FN-046",
@@ -14227,7 +14227,7 @@
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/02_해석기능.json",
-      "text_sha256": "f14cb21b263e36a5e6cecdfff1dd919eab358b66166e6abf45af0d9520e241f7",
+      "text_sha256": "c2714898330aeedbc73c8d11320197f9e59b9f9065eb0220e62d4233f356ae84",
       "utf8_bytes": 68511
     }
   ],
@@ -14607,8 +14607,8 @@
     },
     {
       "path": "01_개발문서/07_검증/300_윈도우_알원_내부후보_재현과_수신.md",
-      "text_sha256": "194b9e51a307edcf1e8e24e3641e948913eec1e1addffbbb9f60680f7930e133",
-      "utf8_bytes": 3538
+      "text_sha256": "ca358e867999b1487ad8597a9e070787316aada4dc1991f114fb1d3567dea854",
+      "utf8_bytes": 3795
     },
     {
       "path": "01_개발문서/07_검증/301_급전격자와_관통홀_표면손실_독립대조.md",
@@ -14637,8 +14637,8 @@
     },
     {
       "path": "01_개발문서/07_검증/310_공개_검증후보_배포와_독립수신_인계.md",
-      "text_sha256": "e5692790da1dfb7be21eb6f86d38a41aa770ca2395ea52dc8011e9f8a8fdeca5",
-      "utf8_bytes": 2724
+      "text_sha256": "c54d2c6c521c718be15e89d949cde04d02b871541ade395ee165461dab05900b",
+      "utf8_bytes": 2727
     },
     {
       "path": "01_개발문서/07_검증/311_설치후보_격자와_외부경계_대역검증.md",
@@ -14677,8 +14677,8 @@
     },
     {
       "path": "01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md",
-      "text_sha256": "5844221f6514d578330e0c521ab711d652e2a4e338b7a797dfcf5d44e52dca04",
-      "utf8_bytes": 8918
+      "text_sha256": "f692ecf8c527a35ed6bc80b4cd1312299f51b1614bfef8e5f0531a518598efdc",
+      "utf8_bytes": 8356
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
