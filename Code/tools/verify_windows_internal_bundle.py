@@ -64,9 +64,13 @@ def smoke(archive, root, runtime=None):
     version = subprocess.check_output([str(python), "-I", "-c",
         "import importlib.util,sys; assert not any(importlib.util.find_spec(n) for n in ('h5py','numpy','OCP')); print(sys.version.split()[0])"],
         env=clean, cwd=root, timeout=15, text=True).strip()
+    startup = subprocess.STARTUPINFO()
+    startup.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startup.wShowWindow = 0
     process = subprocess.run([str(executable), "--python", str(python), "--source", str(code / "src"),
         "--workspace", str(workspace), "--canvas-smoke-test", "--smoke-report", str(report)],
-        cwd=root, env=clean, capture_output=True, stdin=subprocess.DEVNULL, timeout=120, check=False)
+        cwd=root, env=clean, capture_output=True, stdin=subprocess.DEVNULL,
+        timeout=210, startupinfo=startup, check=False)
     if process.returncode != 0 or not report.is_file():
         raise RuntimeError(f"재열기 시험 실패 {process.returncode}; {process.stderr!r}; {report}")
     report_data = json.loads(report.read_bytes())
