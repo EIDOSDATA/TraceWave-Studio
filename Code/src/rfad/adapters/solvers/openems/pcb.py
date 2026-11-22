@@ -117,6 +117,10 @@ def prepare(stage, plan, runtime):
             "lines_mm": observed, "line_counts": counts, "interval_counts": [c - 1 for c in counts],
             "native_grid_points": math.prod(counts), "yee_interval_cells": math.prod(c - 1 for c in counts),
             "pml_cells_per_end": 8, "native_preprocessing_executed": False, "fdtd_executed": False}
+    from rfad.application.pcb_boundary import DEFAULT, pml_cells
+
+    if tuple(case["boundary_conditions"]) != DEFAULT:
+        mesh.update(pml_cells_per_end=None, pml_cells_by_face=pml_cells(case["boundary_conditions"]))
     if "mesh_policy_report" in case:
         mesh["mesh_policy_report"] = case["mesh_policy_report"]
     if "local_mesh_report" in case:

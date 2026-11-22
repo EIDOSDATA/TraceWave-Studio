@@ -8,6 +8,7 @@ from copy import deepcopy
 import math
 from uuid import uuid4
 
+from rfad.application.pcb_boundary import conditions
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.pcb_geometry import (MAX_POLYGON_POINTS, fail, scalar, length, point,
                                             shape_polygons, distance_to_shape, _bounds, _inside_board)
@@ -37,8 +38,9 @@ PROFILE = "rfad.openems.pcb-single-port/0.1"
 def validate_settings(settings):
     """! @brief 공개 설정을 명시적이고 유한한 범위로 한정한다."""
     keys = {"frequency_hz", "grid_mm", "air_padding_mm", "curve_tolerance_mm", "max_timesteps", "end_criterion"}
-    if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance", "feature_subdivisions", "compute_profile", "local_mesh"}:
+    if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance", "feature_subdivisions", "compute_profile", "local_mesh", "boundary_conditions"}:
         fail("E_SCHEMA", "PCB 해석 설정의 필수 필드가 다릅니다.", "settings")
+    conditions(settings)
     frequency = settings["frequency_hz"]
     required = {"start", "stop", "count"}
     if type(frequency) is not dict or not required <= set(frequency) or set(frequency) - required - {"points"}:

@@ -4,6 +4,7 @@ from functools import lru_cache
 import math
 
 from rfad.domain.errors import ProjectError
+from rfad.application.pcb_boundary import DEFAULT, axis_info, pml_cells
 from rfad.application.pcb_geometry import _bounds, fail
 from rfad.application.pcb_environment import scene_extents
 from rfad.application import pcb_local_mesh
@@ -125,16 +126,18 @@ def policy_report(case, lines):
     physical = scene_extents(case)
     model_bounds = scene_extents(case, sheet=True)
     axes = {}
-    for axis, bounds, model in zip("xyz", physical, model_bounds):
+    modes = case.get("boundary_conditions", DEFAULT)
+    for index, (axis, bounds, model) in enumerate(zip("xyz", physical, model_bounds)):
         values = lines[axis]
+        _, (pml_low, pml_high), interface = axis_info(modes, index, values)
         steps = [b - a for a, b in zip(values, values[1:])]
         lower = min(range(len(values)), key=lambda i: abs(values[i] - model[0]))
         upper = min(range(len(values)), key=lambda i: abs(values[i] - model[1]))
         air_pairs = list(zip(steps[:lower + 1], steps[1:lower + 1])) + list(zip(steps[upper - 1:], steps[upper:]))
         axes[axis] = {"physical_bounds_mm": bounds, "outer_boundary_mm": [values[0], values[-1]],
-                      "pml_inner_boundary_mm": [values[8], values[-9]],
-                      "pml_clearance_mm": [bounds[0] - values[8], values[-9] - bounds[1]],
-                      "pml_cell_widths_mm": [steps[:8], steps[-8:]],
+                      "pml_inner_boundary_mm": interface,
+                      "pml_clearance_mm": [bounds[0] - interface[0], interface[1] - bounds[1]],
+                      "pml_cell_widths_mm": [steps[:pml_low], steps[len(steps) - pml_high:]],
                       "axis_min_cell_mm": min(steps), "axis_max_cell_mm": max(steps),
                       "air_and_interface_max_adjacent_ratio": max(max(a / b, b / a) for a, b in air_pairs),
                       "axis_max_adjacent_ratio": max(max(a / b, b / a) for a, b in zip(steps, steps[1:]))}
@@ -147,6 +150,9 @@ def policy_report(case, lines):
             "interior_growth_postcondition_enforced": False,
             "highest_excitation_frequency_hz": highest_excitation, "vacuum_wavelength_mm": 299792458.0 / highest_excitation * 1000,
             "air_cells_per_minimum_wavelength": 299792458.0 / highest_excitation * 1000 / policy["air_cell_mm"], "axes": axes}
+    if tuple(modes) != DEFAULT:
+        report.update(pml_cells_per_end=None, pml_thickness_mm=None, pml_cells_by_face=pml_cells(modes),
+                      boundary_conditions=modes)
     if "feature_subdivisions" in settings:
         report.update(feature_subdivisions=settings["feature_subdivisions"],
                       interior_critical_intervals_unchanged=settings["feature_subdivisions"] == 1)

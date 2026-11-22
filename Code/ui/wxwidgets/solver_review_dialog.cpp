@@ -112,7 +112,7 @@ std::string FieldFor(const std::string& path)
         {"settings.frequency_hz", "stop_hz"}, {"settings.frequency_hz.start", "start_hz"},
         {"settings.frequency_hz.stop", "stop_hz"}, {"settings.frequency_hz.count", "count"},
         {"settings.frequency_hz.points", "sample_points_hz"},
-        {"settings.mesh_policy", "mesh_policy"}, {"settings.mesh_policy.air_cell_mm", "air_cell_mm"},
+        {"settings.boundary_conditions", "boundary_conditions"}, {"settings.mesh_policy", "mesh_policy"}, {"settings.mesh_policy.air_cell_mm", "air_cell_mm"},
         {"settings.mesh_policy.growth_ratio", "growth_ratio"}, {"settings.radiation", "frequency_hz"},
         {"settings.radiation.frequency_hz", "frequency_hz"}, {"mesh", "grid_mm"}, {"settings", "grid_mm"}};
     const auto item = aliases.find(path);
@@ -130,7 +130,7 @@ void CompareValues(wxListCtrl& table, const Json& current, const Json& source, c
     static const std::map<std::string, std::string> labels{
         {"frequency_hz.start", "시작 주파수 (Hz)"}, {"frequency_hz.stop", "끝 주파수 (Hz)"},
         {"frequency_hz.count", "주파수 표본 수"}, {"frequency_hz.points", "직접 주파수 표본"}, {"grid_mm", "모델 최대 격자 간격 (mm)"},
-        {"air_padding_mm", "외부 공기 여유 (mm)"}, {"curve_tolerance_mm", "곡선 근사 허용오차 (mm)"},
+        {"boundary_conditions", "면별 경계 조건"}, {"air_padding_mm", "외부 공기 여유 (mm)"}, {"curve_tolerance_mm", "곡선 근사 허용오차 (mm)"},
         {"feature_subdivisions", "임계 구간 최소 분할"}, {"mesh_policy.kind", "외부 공기 격자 방식"},
         {"mesh_policy.air_cell_mm", "바깥 공기 격자 간격 (mm)"}, {"mesh_policy.growth_ratio", "공기 격자 성장률"},
         {"max_timesteps", "최대 시간 단계"}, {"end_criterion", "종료 에너지 비율"},
@@ -412,6 +412,29 @@ private:
             SetOptionalControls();
             Invalidate();
         });
+        auto* boundaries = group("해석 영역의 외벽");
+        const std::array<const char*, 6> faces{"X 최소", "X 최대", "Y 최소", "Y 최대", "Z 최소", "Z 최대"};
+        auto* rows = new wxFlexGridSizer(2, FromDIP(6), FromDIP(12));
+        rows->AddGrowableCol(1);
+        for (std::size_t i = 0; i < faces.size(); ++i)
+        {
+            auto* label = new wxStaticText(boundaries->GetStaticBox(), wxID_ANY, Display(faces[i]));
+            rows->Add(label, 0, wxALIGN_CENTER_VERTICAL);
+            auto* choice = new wxChoice(boundaries->GetStaticBox(), wxID_ANY);
+            choice->SetName(Display(std::string(faces[i]) + " 경계"));
+            for (const auto* mode : {"PML_8", "MUR", "PEC", "PMC"})
+            {
+                choice->Append(Display(mode));
+            }
+            choice->SetSelection(0);
+            choice->Bind(wxEVT_CHOICE, [this](wxCommandEvent&)
+            {
+                Invalidate();
+            });
+            m_boundary[i] = choice;
+            rows->Add(choice, 1, wxEXPAND);
+        }
+        boundaries->Add(rows, 0, wxEXPAND | wxALL, FromDIP(8));
         m_input->SetSizer(columns);
         page->GetSizer()->Add(m_input, 1, wxEXPAND);
     }
@@ -936,6 +959,15 @@ private:
         const auto& values = mesh.at("axes").at(axis);
         const auto pml = values.at("pml_inner_mm").get<std::array<double, 2>>();
         const auto air = values.at("air_before_pml_mm").get<std::array<double, 2>>();
+        const auto modes = values.value("boundary_modes", std::array<std::string, 2>{"PML_8", "PML_8"});
+        if (modes[0] != "PML_8" || modes[1] != "PML_8")
+        {
+            m_axisSummary->SetLabel(wxString::Format(
+                Display("셀 간격 %.8g~%.8g mm | %s %.8g / %s %.8g mm | 모델과 경계 사이 %.8g / %.8g mm"),
+                values.at("min_cell_mm").get<double>(), values.at("max_cell_mm").get<double>(),
+                Display(modes[0]), pml[0], Display(modes[1]), pml[1], air[0], air[1]));
+            return;
+        }
         m_axisSummary->SetLabel(wxString::Format(
             Display("셀 간격 %.8g~%.8g mm | PML 안쪽 %.8g / %.8g mm | 모델과 PML 사이 %.8g / %.8g mm"),
             values.at("min_cell_mm").get<double>(), values.at("max_cell_mm").get<double>(),
@@ -1002,6 +1034,11 @@ private:
             frequencies.Add(Display(value.dump()));
         }
         m_fields.at("frequency_hz")->ChangeValue(wxJoin(frequencies, ','));
+        const auto modes = settings.value("boundary_conditions", Json::array());
+        for (std::size_t i = 0; i < m_boundary.size(); ++i)
+        {
+            m_boundary[i]->SetStringSelection(i < modes.size() ? Display(modes[i].get<std::string>()) : "PML_8");
+        }
         m_graded->SetValue(!mesh.empty());
         m_nf->SetValue(!radiation.empty());
         m_local->LoadRules(settings.value("local_mesh", Json::array()));
@@ -1023,6 +1060,10 @@ private:
         {
             found->second->SetFocus();
             found->second->SelectAll();
+        }
+        else if (key == "boundary_conditions")
+        {
+            m_boundary.front()->SetFocus();
         }
         else if (key == "mesh_policy")
         {
@@ -1177,6 +1218,16 @@ private:
         else
         {
             settings.erase("radiation");
+        }
+        Json modes = Json::array();
+        for (const auto* choice : m_boundary)
+        {
+            modes.push_back(Utf8(choice->GetStringSelection()));
+        }
+        if (m_draft.contains("boundary_conditions") ||
+            std::any_of(modes.begin(), modes.end(), [](const Json& mode) { return mode != "PML_8"; }))
+        {
+            settings["boundary_conditions"] = std::move(modes);
         }
         PreserveUnchangedValues(m_draft, settings);
         return true;
@@ -1469,6 +1520,7 @@ private:
     bool m_pending = false;
     wxScrolledWindow* m_input = nullptr;
     StudioNotebook* m_book = nullptr;
+    std::array<wxChoice*, 6> m_boundary{};
     wxCheckBox* m_graded = nullptr;
     wxStaticText* m_status = nullptr;
     wxButton* m_check = nullptr;

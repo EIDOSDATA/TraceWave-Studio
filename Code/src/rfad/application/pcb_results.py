@@ -68,6 +68,12 @@ def validate_preparation(plan, preparation):
         fail("E_HASH", "NF2FF 준비 기록이 계획과 다릅니다.")
     lines = mesh_lines(plan["case"])
     mesh = preparation["mesh_statistics"]
+    from rfad.application.pcb_boundary import DEFAULT, pml_cells
+
+    modes = plan["case"]["boundary_conditions"]
+    mixed = tuple(modes) != DEFAULT
+    if mesh.get("pml_cells_per_end") != (None if mixed else 8) or mesh.get("pml_cells_by_face") != (pml_cells(modes) if mixed else None):
+        fail("E_HASH", "준비 산출물의 면별 흡수층 수가 계획과 다릅니다.")
     consumption = preparation["consumption_report"]
     counts = [len(lines[axis]) for axis in "xyz"]
     mappings = []

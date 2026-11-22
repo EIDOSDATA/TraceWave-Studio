@@ -98,6 +98,41 @@ class SolverReviewFollowup(unittest.TestCase):
         self.assertEqual(gap["distance_mm"], 1)
         self.assertEqual(gap["points_mm"][0], gap["points_mm"][1])
 
+    def test_boundary_faces_follow_native_order_and_do_not_mark_absent_pml(self):
+        """! @brief 기존 격자와 혼합 외벽을 원호·IFA의 실제 계획 조회에서 비교한다."""
+        modes = ["MUR", "PML_8", "PEC", "PMC", "PML_8", "MUR"]
+        for fixture, base in ((fixture_document(arc=True), SETTINGS), (ifa_document(), IFA_SETTINGS)):
+            with self.subTest(fixture=fixture["metadata"]["name"]), TemporaryDirectory() as directory:
+                with ProjectService(Path(directory), auto_run=False) as service:
+                    service.solver.runtime = SimpleNamespace(identity=runtime_identity())
+                    document, _ = register_fixture(service, fixture)
+                    scope = {"project_id": document["project_id"]}
+                    settings = {key: value for key, value in base.items() if key not in {"radiation", "power_balance"}}
+
+                    def preview(current):
+                        """! @brief 같은 설계 개정에 실제 검토 요청을 보낸다."""
+                        return solver_preview.read(service, {"contract_version": "rfad.api/2.0", "context": scope,
+                            "input": {"expected_revision": document["revision_id"], "settings": current}})
+
+                    original = preview(settings)
+                    result = preview({**settings, "boundary_conditions": modes})
+                    self.assertEqual(result["mesh"]["lines_mm"], original["mesh"]["lines_mm"])
+                    for i, (axis, values) in enumerate(result["mesh"]["lines_mm"].items()):
+                        report = result["mesh"]["axes"][axis]
+                        pair = modes[i * 2:i * 2 + 2]
+                        pml = tuple(8 if mode == "PML_8" else 0 for mode in pair)
+                        self.assertEqual(report["boundary_modes"], pair)
+                        self.assertEqual(report["pml_cells"], pml)
+                        self.assertEqual(report["pml_inner_mm"], [values[pml[0]], values[-1 - pml[1]]])
+                    self.assertIn("boundary_conditions", result["settings"])
+                    self.assertNotEqual(result["mesh"]["case_sha256"], original["mesh"]["case_sha256"])
+                    with self.assertRaises(ProjectError) as invalid:
+                        preview({**settings, "boundary_conditions": [*modes[:5], "periodic"]})
+                    self.assertEqual(invalid.exception.code, "E_SCHEMA")
+                    with self.assertRaises(ProjectError) as unsupported:
+                        preview({**settings, "boundary_conditions": modes, "radiation": {}})
+                    self.assertEqual(unsupported.exception.code, "E_UNSUPPORTED")
+
     def test_conditions_comparison_and_multiple_blockers(self):
         """! @brief 원호와 IFA의 보존값은 편집과 독립이며 같은 요청에서 재료와 급전을 확인한다."""
         for document, settings in ((fixture_document(arc=True), SETTINGS), (ifa_document(), IFA_SETTINGS)):

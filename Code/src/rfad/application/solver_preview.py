@@ -182,6 +182,7 @@ def _blocking_diagnostics(document, original):
 
 def read(service, params):
     """! @brief 영속 스냅샷을 쓰지 않고 개정의 준비 입력과 정확히 같은 격자선을 반환한다."""
+    from rfad.application.pcb_boundary import axis_info
     from rfad.application.pcb_clearance_review import planar_clearances
     from rfad.application.pcb_environment import scene_extents
     from rfad.application.pcb_execution import estimate
@@ -216,12 +217,13 @@ def read(service, params):
     lines = mesh_lines(case)
     bounds = scene_extents(case)
     axes = {}
-    for axis, interval in zip("xyz", bounds):
+    for index, (axis, interval) in enumerate(zip("xyz", bounds)):
         values = lines[axis]
-        pml = [values[8], values[-9]]
+        modes, counts, pml = axis_info(case["boundary_conditions"], index, values)
         steps = [b - a for a, b in zip(values, values[1:])]
         axes[axis] = {"pml_inner_mm": pml, "air_before_pml_mm": [interval[0] - pml[0], pml[1] - interval[1]],
-                      "min_cell_mm": min(steps), "max_cell_mm": max(steps)}
+                      "min_cell_mm": min(steps), "max_cell_mm": max(steps),
+                      "boundary_modes": modes, "pml_cells": counts}
     model = model_review(document, plan)
     return {"revision_id": expected, "estimated": plan["resource_estimate"],
             "execution_estimate": estimate(plan, lines),

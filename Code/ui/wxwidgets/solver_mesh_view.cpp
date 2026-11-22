@@ -316,9 +316,16 @@ void SolverMeshView::Paint(wxPaintEvent&)
     }
     auto markPml = [&](int axis, bool horizontal, const Span& visible)
     {
-        for (const auto& coordinate : mesh.at("axes").at(Axes[axis]).at("pml_inner_mm"))
+        const auto& record = mesh.at("axes").at(Axes[axis]);
+        const auto counts = record.value("pml_cells", std::array<int, 2>{8, 8});
+        const auto& coordinates = record.at("pml_inner_mm");
+        for (std::size_t side = 0; side < counts.size(); ++side)
         {
-            const double value = coordinate;
+            if (counts[side] == 0)
+            {
+                continue;
+            }
+            const double value = coordinates.at(side);
             if (visible[0] <= value && value <= visible[1])
             {
                 if (horizontal)

@@ -5,6 +5,8 @@
 """
 
 from copy import deepcopy
+
+from rfad.application.pcb_boundary import conditions
 import math
 
 from rfad.application.canonical import canonical_hash
@@ -305,7 +307,7 @@ def project_pcb(document, settings):
     excitation = {"kind": "gaussian", "center_hz": center_hz, "width_hz": center_hz / 2}
     case = {"source": "user_project", "board": board, "layers": layers, "shapes": shapes, "vias": vias, "connectivity": connectivity, "materials": list(materials.consumed.values()),
             "port": port, "settings": deepcopy(settings), "frequency_hz": deepcopy(frequency), "excitation": excitation,
-            "native_length_unit": "mm", "delta_unit_m": 0.001, "coordinate_round_decimals_mm": 12, "boundary_conditions": ["PML_8"] * 6, "num_threads": compute_limits(settings)["num_threads"],
+            "native_length_unit": "mm", "delta_unit_m": 0.001, "coordinate_round_decimals_mm": 12, "boundary_conditions": conditions(settings), "num_threads": compute_limits(settings)["num_threads"],
             "stop_criteria": {"max_timesteps": settings["max_timesteps"], "energy_decay": settings["end_criterion"], "exact_end_criteria": True}}
     def volume(material_id, field):
         """! @brief 설치와 표면층 물성을 같은 대역 기준으로 소비한다."""

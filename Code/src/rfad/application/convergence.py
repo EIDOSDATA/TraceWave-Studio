@@ -94,8 +94,12 @@ def _result(result):
                  "실제 격자선과 Yee 구간 수가 다릅니다.")
         _require(mesh["grid_mm"] == settings["grid_mm"] and _finite(settings["grid_mm"]) and settings["grid_mm"] > 0,
                  "격자 간격 설정이 결과와 다릅니다.")
-        pml = mesh["pml_cells_per_end"]
-        _require(type(pml) is int and pml > 0 and all(n > 2 * pml + 1 for n in counts), "PML 내부 격자 근거가 부족합니다.")
+        flat_pml = mesh.get("pml_cells_by_face", [mesh["pml_cells_per_end"]] * 6)
+        expected = [8 if mode == "PML_8" else 0 for mode in plan["case"].get("boundary_conditions", ["PML_8"] * 6)]
+        _require(len(flat_pml) == 6 and all(type(value) is int for value in flat_pml) and flat_pml == expected,
+                 "면별 흡수층 기록이 해석 계획과 다릅니다.")
+        pml = dict(zip("xyz", zip(flat_pml[::2], flat_pml[1::2])))
+        _require(all(n > sum(pml[axis]) + 1 for axis, n in zip("xyz", counts)), "경계 내부 격자 근거가 부족합니다.")
         native = result["native_statistics"]
         termination = result["termination"]
         _require(type(native["native_cells"]) is int and native["native_cells"] == count, "실행한 native 격자 수가 다릅니다.")
@@ -178,8 +182,10 @@ def _pml_grid(left, right):
         first, second = left["lines"][axis], right["lines"][axis]
         a = [b - a for a, b in zip(first, first[1:])]
         b = [b - a for a, b in zip(second, second[1:])]
-        a = a[:left["pml"]] + a[-left["pml"]:]
-        b = b[:right["pml"]] + b[-right["pml"]:]
+        a0, a1 = left["pml"][axis]
+        b0, b1 = right["pml"][axis]
+        a = a[:a0] + a[len(a) - a1:]
+        b = b[:b0] + b[len(b) - b1:]
         widths[axis] = len(a) == len(b) and all(math.isclose(x, y, rel_tol=0, abs_tol=1e-9) for x, y in zip(a, b))
     count_matches = left["pml"] == right["pml"]
     return {"pml_cell_count_matches": count_matches, "pml_cell_width_axes_match": widths,
@@ -192,7 +198,9 @@ def _mesh_boundary_grid(left, right):
     for axis in "xyz":
         first, second = left["lines"][axis], right["lines"][axis]
         outer[axis] = [first[0], first[-1]] == [second[0], second[-1]]
-        interface[axis] = [first[left["pml"]], first[-left["pml"] - 1]] == [second[right["pml"]], second[-right["pml"] - 1]]
+        start_a, end_a = left["pml"][axis]
+        start_b, end_b = right["pml"][axis]
+        interface[axis] = [first[start_a], first[-end_a - 1]] == [second[start_b], second[-end_b - 1]]
     pml = _pml_grid(left, right)
     return {"outer_boundary_axes_match": outer, "pml_interface_axes_match": interface, **pml,
             "passed": all(outer.values()) and all(interface.values()) and pml["pml_passed"]}
@@ -208,11 +216,13 @@ def _boundary_grids(left, right):
     for axis, (low, high) in zip("xyz", bounds):
         first, second = left["lines"][axis], right["lines"][axis]
         domain[axis] = second[0] < first[0] and second[-1] > first[-1]
-        interface[axis] = second[right["pml"]] < first[left["pml"]] and second[-right["pml"] - 1] > first[-left["pml"] - 1]
+        start_a, end_a = left["pml"][axis]
+        start_b, end_b = right["pml"][axis]
+        interface[axis] = second[start_b] < first[start_a] and second[-end_b - 1] > first[-end_a - 1]
         a, b = _slice(first, low, high), _slice(second, low, high)
         board[axis] = bool(a) and a == b
-        low = max(first[left["pml"]], second[right["pml"]])
-        high = min(first[-left["pml"] - 1], second[-right["pml"] - 1])
+        low = max(first[start_a], second[start_b])
+        high = min(first[-end_a - 1], second[-end_b - 1])
         a, b = _slice(first, low, high), _slice(second, low, high)
         common[axis] = low < high and len(a) >= 2 and a == b
     pml = _pml_grid(left, right)
