@@ -27,6 +27,7 @@ from rfad.domain.physical_setup import KEY as PHYSICAL_KEY, em_exclusions
 from rfad.application.physical_projection import check_em
 from rfad.domain.errors import ProjectError
 from rfad.domain.solver_conditions import KEY as SOLVER_CONDITIONS_KEY
+from rfad.domain.smart_dimensions import KEY as SMART_DIMENSIONS_KEY
 
 PROFILE = "rfad.openems.pcb-single-port/0.1"
 
@@ -87,7 +88,7 @@ def _payload(document, snapshot, runtime, settings):
         fail("E_HASH", "PCB 원본과 스냅샷 참조가 다릅니다.", "snapshot")
     # @brief validate_project가 검증한 편집 출처/외부 복소 자료는 원문에 보존하며 EM 형상에 투영하지 않는다.
     supported_extensions = {PCB_SELECTION_EXTENSION, TEMPLATE_ORIGIN_EXTENSION, PHYSICAL_KEY,
-                            PRECISION_ORIGIN_EXTENSION, NETWORK_LIBRARY_EXTENSION, "rfad.sweep-selection", "rfad.measurement", SOLVER_CONDITIONS_KEY}
+                            PRECISION_ORIGIN_EXTENSION, NETWORK_LIBRARY_EXTENSION, "rfad.sweep-selection", "rfad.measurement", SOLVER_CONDITIONS_KEY, SMART_DIMENSIONS_KEY}
     if document["extensions"].keys() - supported_extensions:
         fail("E_UNSUPPORTED", "의미를 해석하지 않은 확장이 있는 PCB는 실행할 수 없습니다.", "extensions")
     check_em(document)

@@ -25,19 +25,19 @@ void DesignCanvas::SetDimensions(const Json& dimensions)
 
 void DesignCanvas::DrawDimensions(wxDC& dc) const
 {
-    if (m_dimensions.empty() || m_selection.empty())
-    {
-        return;
-    }
-    const auto* shape = FindShape(m_selection);
-    if (!shape || !Visible(*shape))
+    if (m_dimensions.empty())
     {
         return;
     }
     const auto& dimension = m_dimensions.front();
-    if (dimension.value("object_id", "") != m_selection)
+    const bool independent = dimension.value("independent", false);
+    if (!independent)
     {
-        return;
+        const auto* shape = m_selection.empty() ? nullptr : FindShape(m_selection);
+        if (!shape || !Visible(*shape) || dimension.value("object_id", "") != m_selection)
+        {
+            return;
+        }
     }
     const auto anchors = dimension.value("anchors_mm", Json::array());
     if (anchors.size() < 2 || dimension.at("value").is_null())
@@ -54,6 +54,19 @@ void DesignCanvas::DrawDimensions(wxDC& dc) const
     const double dx = last.x - first.x;
     const double dy = last.y - first.y;
     const double length = std::hypot(dx, dy);
+    if (independent)
+    {
+        dc.SetPen(wxPen(m_colours.Detail(wxColour(26, 99, 178)), FromDIP(2)));
+        dc.SetBrush(*wxTRANSPARENT_BRUSH);
+        dc.SetTextForeground(m_colours.Detail(wxColour(26, 99, 178)));
+        dc.DrawCircle(first, FromDIP(5));
+        dc.DrawCircle(last, FromDIP(5));
+        if (length >= FromDIP(16))
+        {
+            dc.DrawText("A", first + wxPoint(FromDIP(7), FromDIP(3)));
+            dc.DrawText("B", last + wxPoint(FromDIP(7), FromDIP(3)));
+        }
+    }
     if (length < 1.0)
     {
         return;

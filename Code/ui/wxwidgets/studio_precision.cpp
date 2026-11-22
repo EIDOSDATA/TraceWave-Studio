@@ -2,12 +2,70 @@
 #include "studio_internal.h"
 #include "editor_sync.h"
 #include "precision_dialog.h"
+#include "smart_dimension_dialog.h"
+#include "studio_theme.h"
 
 void StudioFrame::BuildPrecisionTools(wxWindow* parent, wxSizer* layout)
 {
     GetMenuBar()->GetMenu(1)->AppendSeparator();
     GetMenuBar()->GetMenu(1)->Append(IdPrecision, Display("정밀 2D 편집 / 치수"));
     AddTool(parent, layout, IdPrecision, "정밀 편집");
+    const int smartId = wxWindow::NewControlId();
+    GetMenuBar()->GetMenu(1)->Append(smartId, Display("스마트 치수"));
+    auto* smart = new wxButton(parent, smartId, Display("스마트 치수"));
+    smart->SetName("smart.dimension.open");
+    StudioTheme::Button(*smart);
+    layout->Add(smart, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(4));
+    const auto canOpen = [this]()
+    {
+        return !m_busy && m_connected && !m_closing && !m_project.empty() && !m_setupDialog &&
+               m_precisionSupported && Studio::EditableProject(m_editor, m_scene, m_project, m_revision);
+    };
+    const auto open = [this, canOpen]()
+    {
+        if (!canOpen())
+        {
+            return;
+        }
+        const auto project = m_project, revision = m_revision;
+        const auto selection = m_selection;
+        m_busy = true;
+        UpdateControls();
+        Send("precision.smart.get", {{"expected_revision", revision}}, false, Context(),
+            [this, project, revision, selection](const Json& result)
+            {
+                CallAfter([this, project, revision, selection, result]()
+                {
+                    m_busy = false;
+                    if (m_closing || !m_connected || m_project != project || m_revision != revision)
+                    {
+                        UpdateControls();
+                        return;
+                    }
+                    ShowObjectTool(std::make_unique<SmartDimensionDialog>(this, result, m_scene, selection,
+                                                                         ObjectToolGateway()), selection);
+                });
+            },
+            [this](const Json& error)
+            {
+                Failure(DiagnosticMessage(error));
+            });
+    };
+    const auto activate = [this, canOpen, open](wxCommandEvent&)
+    {
+        if (canOpen() && HasDraft())
+        {
+            ApplyCurrent(open);
+            return;
+        }
+        open();
+    };
+    smart->Bind(wxEVT_BUTTON, activate);
+    Bind(wxEVT_MENU, activate, smartId);
+    Bind(wxEVT_UPDATE_UI, [canOpen](wxUpdateUIEvent& event)
+    {
+        event.Enable(canOpen());
+    }, smartId);
     auto* filter = new wxChoice(parent, wxID_ANY);
     const std::vector<std::string> kinds{"", "line_path", "arc_path", "planar_region", "pad", "via"};
     for (const auto* label : {"모두 선택", "선만", "원호만", "면만", "패드만", "비아만"})

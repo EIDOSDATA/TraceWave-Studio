@@ -8192,6 +8192,18 @@
       "extension_profile": "rfad.precision-editor/0.1",
       "status": "implemented"
     },
+    "precision.smart.apply": {
+      "extension_profile": "rfad.smart-dimensions/0.1",
+      "status": "implemented"
+    },
+    "precision.smart.get": {
+      "extension_profile": "rfad.smart-dimensions/0.1",
+      "status": "implemented"
+    },
+    "precision.smart.preview": {
+      "extension_profile": "rfad.smart-dimensions/0.1",
+      "status": "implemented"
+    },
     "project.evidence": {
       "extension_profile": "rfad.project-evidence/0.1",
       "status": "implemented"
@@ -14304,8 +14316,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/13_정밀편집과_평면연산.md",
-      "text_sha256": "0933313124761fac9dc514fdd7373ab16bcaf5996cf5126b7d9adbd896eea881",
-      "utf8_bytes": 14367
+      "text_sha256": "663f1cdcea2862303caab1ad331a514703645802870c558e4e0f08e0bd055232",
+      "utf8_bytes": 17282
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
@@ -15134,8 +15146,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "a9f7bccb48bb2379c26b37511965041e0270aeb12403ee91c97288f4ce9188db",
-      "utf8_bytes": 8461
+      "text_sha256": "1877d437841d837fd3d935f760193b786f8b4acc025bc251e27d4fd864260d70",
+      "utf8_bytes": 8552
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
@@ -15294,8 +15306,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "6240b995035648c1e623b2816874d8aab365c6be565456fe3fec512dd1fdfaf4",
-      "utf8_bytes": 39358
+      "text_sha256": "47b7ad7f2c083cdff7c351a643f811acb31ef05994697838fa0be078349f378e",
+      "utf8_bytes": 39827
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -15329,8 +15341,8 @@
     },
     {
       "path": "Code/src/rfad/application/sweep_copy.py",
-      "text_sha256": "43eb862e69b1dc28f0205f69752aeba8fa72ee527d67b210a226e45367c83a56",
-      "utf8_bytes": 8960
+      "text_sha256": "06c31873d02bac3974de6e23048554025002c056e00191f7f356a23b4ff2a882",
+      "utf8_bytes": 9051
     },
     {
       "path": "Code/src/rfad/application/sweep_selection.py",
@@ -15509,8 +15521,8 @@
     },
     {
       "path": "Code/src/rfad/domain/pcb_features.py",
-      "text_sha256": "3e68530d1cb67928014a3eb9a726ce3ec70f60a63495de10e7eb03109a0fffb0",
-      "utf8_bytes": 34426
+      "text_sha256": "ac34b1fc8b564c0d28abe634b75b18ba8143c0bab372f74defb3c69d0046e168",
+      "utf8_bytes": 34451
     },
     {
       "path": "Code/src/rfad/domain/pcb_selection_evidence.py",
@@ -15549,8 +15561,8 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "30fe25af71720e2b8eb0da59ea37714b26b7f3225a26be6b075ae41d35454b78",
-      "utf8_bytes": 25188
+      "text_sha256": "194fb461d8ba015d31d605fd40717ea10867a8831c64dcb9de2c739abd420cf3",
+      "utf8_bytes": 25386
     },
     {
       "path": "Code/src/rfad/domain/radiation_polarization.py",
@@ -16354,8 +16366,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_dimensions.cpp",
-      "text_sha256": "54177c6f4e0098a83b8b0b01a26601b2db145e83427abe25da89386a8beaa4f6",
-      "utf8_bytes": 3589
+      "text_sha256": "26fb5312cbb07f34aeda33af79837656abf1ef01c06eacb1bc922ab1f1804069",
+      "utf8_bytes": 4191
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_precision.cpp",
@@ -16659,8 +16671,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_precision.cpp",
-      "text_sha256": "7f4aa9837e0812dd0213948d8823b07d560288f9a9b50f6f3d0c34515774aff7",
-      "utf8_bytes": 4941
+      "text_sha256": "443ae59485963293725ca7498c395ada662422ce355e53ece458313baaad41a8",
+      "utf8_bytes": 7165
     },
     {
       "path": "Code/ui/wxwidgets/studio_shell.cpp",

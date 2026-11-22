@@ -6,7 +6,7 @@ import math
 from uuid import UUID, uuid4
 
 from rfad.domain.errors import ProjectError
-from rfad.domain import solver_conditions
+from rfad.domain import smart_dimensions, solver_conditions
 from rfad.domain.resource_limits import MAX_PARAMETERS
 from rfad.domain.units import Quantity, QuantityError
 from rfad.domain.parameter_graph import evaluate_parameters, expression_record, restore_parameter_command
@@ -288,6 +288,7 @@ def validate_project(document: dict) -> None:
     solver_conditions.validate(document)
     validate_selection_origin(document)
     validate_pcb(document)
+    smart_dimensions.validate(document)
 
 
 def apply_command(document: dict, command: dict, expected_revision: str) -> tuple[dict, list[str], list[str], dict]:
@@ -377,6 +378,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         changed_ids, invalidation_set, inverse = apply_template_command(result, payload)
     elif command_type in PRECISION_COMMANDS:
         changed_ids, invalidation_set, inverse = apply_precision_command(result, payload)
+    elif command_type == smart_dimensions.COMMAND:
+        changed_ids, invalidation_set, inverse = smart_dimensions.apply(result, payload)
     elif command_type == SELECTION_COMMAND:
         changed_ids, invalidation_set, inverse = apply_selection_command(result, payload)
     elif command_type in (solver_conditions.INSERT, solver_conditions.REMOVE):

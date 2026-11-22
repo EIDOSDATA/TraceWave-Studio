@@ -32,7 +32,7 @@ from rfad.application.pcb_selection_contract import MUTATION_METHODS as PCB_SELE
 from rfad.application.project_studies import StudyCoordinator
 from rfad.application.project_study_contract import MUTATIONS as STUDY_MUTATIONS
 from rfad.application import target_editor
-from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, rf_validation_records, sweep_selection
+from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, rf_validation_records, smart_dimension_service, sweep_selection
 from rfad.application import large_results
 from rfad.application import pcb_exchange_service
 from rfad.application import pcb_import_service
@@ -47,7 +47,7 @@ ASYNC_METHODS = {
 } | CAD_METHODS | SOLVER_METHODS | large_results.MUTATIONS
 MUTATION_METHODS = ASYNC_METHODS | {
     "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "job.cancel",
-} | {archive_export_service.MUTATION} | archive_receiver.MUTATIONS | HOST_MUTATIONS | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION, handoff_service.MUTATION}
+} | {archive_export_service.MUTATION} | archive_receiver.MUTATIONS | HOST_MUTATIONS | PCB_SELECTION_MUTATIONS | STUDY_MUTATIONS | design_sweep_service.MUTATIONS | rf_validation_records.MUTATIONS | sweep_selection.MUTATIONS | pcb_import_service.MUTATIONS | {"target.editor.apply", "template.apply", "design.rules.apply", physical_setup_service.MUTATION, precision_service.MUTATION, network_service.MUTATION, pcb_exchange_service.MUTATION, handoff_service.MUTATION, smart_dimension_service.MUTATION}
 
 
 class ProjectService:
@@ -224,6 +224,8 @@ class ProjectService:
             network_service.validate_input(context, data)
         elif method == precision_service.MUTATION:
             precision_service.validate_input(context, data)
+        elif method == smart_dimension_service.MUTATION:
+            smart_dimension_service.validate_input(context, data)
         elif method == physical_setup_service.MUTATION:
             physical_setup_service.validate_input(context, data)
         elif method == "design.rules.apply":
@@ -296,6 +298,8 @@ class ProjectService:
             return self.host_calculation_context._dispatch(state, method, context, data)
         elif method == precision_service.MUTATION:
             return precision_service.admit(self, state, context, data)
+        elif method == smart_dimension_service.MUTATION:
+            return smart_dimension_service.admit(self, state, context, data)
         elif method == physical_setup_service.MUTATION:
             return self.physical_setup.admit(state, context, data)
         elif method == "design.rules.apply":
@@ -319,6 +323,8 @@ class ProjectService:
                 raise ProjectError("E_UNSUPPORTED", "후보 채택은 sweep.selection.preview/apply를 사용하십시오.")
             if data["type"] == "network.library.replace":
                 raise ProjectError("E_UNSUPPORTED", "자료 변경은 network.preview와 network.apply를 사용하십시오.")
+            if data["type"] == smart_dimension_service.model.COMMAND:
+                raise ProjectError("E_UNSUPPORTED", "스마트 치수는 precision.smart.preview/apply를 사용하십시오.")
             if data["type"] == "geometry.precision.apply":
                 raise ProjectError("E_UNSUPPORTED", "정밀 편집은 precision.preview와 precision.apply를 사용하십시오.")
             if data["type"] == PHYSICAL_COMMAND:
