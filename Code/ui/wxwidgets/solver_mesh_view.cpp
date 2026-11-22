@@ -118,6 +118,7 @@ void SolverMeshView::DisplayPlan(const Json* review)
     m_highlight.clear();
     m_bandAxis = -1;
     m_comparison.reset();
+    m_clearance.reset();
     Refresh(false);
 }
 
@@ -139,6 +140,8 @@ void SolverMeshView::StartRegionPick(std::function<void(const Json&)> selected)
 {
     if (m_review && m_plane == 0)
     {
+        m_clearance.reset();
+        m_scale = 0;
         m_region = std::move(selected);
         m_corner.reset();
         SetCursor(wxCursor(wxCURSOR_CROSS));
@@ -187,6 +190,7 @@ void SolverMeshView::Highlight(const std::string& id)
     m_highlight = id;
     m_bandAxis = -1;
     m_comparison.reset();
+    m_clearance.reset();
     Refresh(false);
 }
 
@@ -198,6 +202,19 @@ void SolverMeshView::HighlightBand(int axis, const std::array<double, 2>& bounds
     m_bandBounds = bounds;
     m_bandApplied = applied;
     m_comparison = comparison;
+    m_clearance.reset();
+    Refresh(false);
+}
+
+void SolverMeshView::HighlightClearance(SolverMeshClearance clearance)
+{
+    m_region = {};
+    m_corner.reset();
+    SetCursor(wxNullCursor);
+    m_highlight.clear();
+    m_bandAxis = -1;
+    m_comparison.reset();
+    m_clearance = std::move(clearance);
     Refresh(false);
 }
 
@@ -225,6 +242,13 @@ void SolverMeshView::Paint(wxPaintEvent&)
     {
         const double low = axisLines.front().get<double>();
         const double high = axisLines.back().get<double>();
+        if (!m_full && m_plane == 0 && m_clearance)
+        {
+            const auto& [a, b] = m_clearance->points;
+            const double margin = std::max(std::hypot(b[0] - a[0], b[1] - a[1]) * 2, 0.15);
+            return Span{std::max(low, std::min(a[axis], b[axis]) - margin),
+                        std::min(high, std::max(a[axis], b[axis]) + margin)};
+        }
         const double margin = std::max((model[axis][1] - model[axis][0]) * 0.08, 0.5);
         return m_full ? Span{low, high}
                       : Span{std::max(low, model[axis][0] - margin), std::min(high, model[axis][1] + margin)};
@@ -398,6 +422,24 @@ void SolverMeshView::Paint(wxPaintEvent&)
     if (m_comparison)
     {
         drawBand(m_comparison->axis, m_comparison->bounds, wxPENSTYLE_DOT);
+    }
+    if (m_plane == 0 && m_clearance)
+    {
+        dc.SetPen(wxPen(palette.accent, FromDIP(1), wxPENSTYLE_DOT));
+        for (const auto& [x, y] : m_clearance->cells)
+        {
+            Rectangle(dc, point(uLines.at(x), vLines.at(y + 1)),
+                      point(uLines.at(x + 1), vLines.at(y)));
+        }
+        const auto& [a, b] = m_clearance->points;
+        const auto start = point(a[0], a[1]);
+        const auto stop = point(b[0], b[1]);
+        dc.SetPen(wxPen(palette.accent, FromDIP(3)));
+        dc.DrawLine(start, stop);
+        dc.SetBrush(wxBrush(palette.content));
+        dc.DrawCircle(start, FromDIP(4));
+        dc.DrawCircle(stop, FromDIP(4));
+        dc.SetBrush(*wxTRANSPARENT_BRUSH);
     }
     dc.DestroyClippingRegion();
     dc.SetPen(wxPen(palette.border));

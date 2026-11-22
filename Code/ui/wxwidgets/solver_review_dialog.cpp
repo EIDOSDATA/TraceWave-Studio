@@ -723,9 +723,19 @@ private:
             const auto selection = m_intervals->GetSelection();
             if (selection <= 0)
             {
+                m_plot->Highlight({});
+                SetGridRepair({});
                 return;
             }
-            const auto& row = m_result.at("mesh").at("interval_report").at("intervals").at(selection - 1);
+            const auto& mesh = m_result.at("mesh");
+            const auto& intervals = mesh.at("interval_report").at("intervals");
+            const auto index = static_cast<std::size_t>(selection - 1);
+            if (index >= intervals.size())
+            {
+                LocateClearance(mesh.at("planar_clearances").at("clearances").at(index - intervals.size()));
+                return;
+            }
+            const auto& row = intervals.at(index);
             const int axis = row.at("axis").get<std::string>().at(0) - 'x';
             LocateBand(axis, row.at("bounds_mm").get<std::array<double, 2>>(),
                        row.at("first_line").get<long>(), true);
@@ -826,6 +836,31 @@ private:
         UpdateAxis();
         m_plot->HighlightBand(axis, bounds, applied, cross);
         m_coordinates->LocateCell(firstLine);
+    }
+
+    /** @brief 도체 간극의 최근접점과 실제 통과 셀을 XY 격자에 표시한다. */
+    void LocateClearance(const Json& row)
+    {
+        m_book->SetSelection(1);
+        m_plane->SetSelection(0);
+        m_full->SetValue(false);
+        m_axis->SetSelection(0);
+        UpdatePlot();
+        UpdateAxis();
+        SolverMeshClearance clearance{
+            row.at("points_mm").get<std::array<std::array<double, 2>, 2>>(),
+            row.at("cells_xy").get<std::vector<std::array<std::size_t, 2>>>()
+        };
+        if (!clearance.cells.empty())
+        {
+            m_coordinates->LocateCell(static_cast<long>(clearance.cells.front()[0]));
+        }
+        m_plot->HighlightClearance(std::move(clearance));
+        const auto names = row.at("object_names").get<std::array<std::string, 2>>();
+        SetStatus(Utf8(wxString::Format(Display("%s / %s | Z %.6g mm | 간극 %.6g mm, XY %llu셀"),
+            Display(names[0]), Display(names[1]), row.at("z_mm").get<double>(),
+            row.at("distance_mm").get<double>(), static_cast<unsigned long long>(row.at("cells_xy").size()))));
+        SetGridRepair("settings.local_mesh");
     }
 
     void SetGridRepair(const std::string& path)
@@ -1246,6 +1281,23 @@ private:
                 m_intervals->Append(wxString::Format(Display("%s %s / %.6g mm / 교차 %d셀, 완전 %d셀"),
                     Display(label), Display(row.at("axis").get<std::string>()), row.at("width_mm").get<double>(),
                     row.at("cells").get<int>(), row.at("full_cells").get<int>()));
+            }
+            if (mesh.contains("planar_clearances"))
+            {
+                const auto& gaps = mesh.at("planar_clearances");
+                const auto& rows = gaps.at("clearances");
+                const auto total = gaps.at("pair_total").get<unsigned long long>();
+                const auto evaluated = gaps.at("pair_evaluated").get<unsigned long long>();
+                m_intervals->SetToolTip(wxString::Format(
+                    Display("같은 높이의 도체 간극 %.6g mm 이내 | 검사 %llu/%llu쌍, 표시 %llu/%llu건"),
+                    gaps.at("search_radius_mm").get<double>(), evaluated, total,
+                    static_cast<unsigned long long>(rows.size()), gaps.at("clearance_total").get<unsigned long long>()));
+                for (const auto& row : rows)
+                {
+                    m_intervals->Append(wxString::Format(Display("도체 간극 %.6g mm / Z %.6g mm / XY %llu셀"),
+                        row.at("distance_mm").get<double>(), row.at("z_mm").get<double>(),
+                        static_cast<unsigned long long>(row.at("cells_xy").size())));
+                }
             }
             m_intervals->SetSelection(0);
             m_intervals->Show();

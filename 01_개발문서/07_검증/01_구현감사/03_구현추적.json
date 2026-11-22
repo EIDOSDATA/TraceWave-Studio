@@ -15031,18 +15031,18 @@
     },
     {
       "path": "Code/src/rfad/application/handoff_archive.py",
-      "text_sha256": "230793fbcb7590c588f83a03bf0649fa98df102def31eaee328e0c14d6a47b88",
-      "utf8_bytes": 11234
+      "text_sha256": "073807f600469533516685d302355f80ed9a9309158bf8303c810496dd677d1a",
+      "utf8_bytes": 11703
     },
     {
       "path": "Code/src/rfad/application/handoff_evidence.py",
-      "text_sha256": "1102a9ad124a1115c6c90a629ef21e13b0e95fd9fa83a05370e304f587a409ba",
-      "utf8_bytes": 11276
+      "text_sha256": "dface3a92e817bf71981f96ab9a853fe1a70ddf7f1222bb1b1fc1672ce95e709",
+      "utf8_bytes": 11264
     },
     {
       "path": "Code/src/rfad/application/handoff_service.py",
-      "text_sha256": "57934520ab4ca7f38315fa48d5a6648e45f8ae6c8536b3a142c693453fe881ed",
-      "utf8_bytes": 12579
+      "text_sha256": "3f1a95fc5a8c86ecf7750714e3f88aeb444eed4e62d32b2fa17faa23d04d1feb",
+      "utf8_bytes": 13016
     },
     {
       "path": "Code/src/rfad/application/job_state.py",
@@ -15916,8 +15916,8 @@
     },
     {
       "path": "Code/tests/test_handoff_service.py",
-      "text_sha256": "8e596523516762b6cf1c722f1f588d3c8aef10890321b349de102517ad872840",
-      "utf8_bytes": 10316
+      "text_sha256": "189e2de9437eb621c8c7a3ac2f4e69036e95a49b74a1f17257e1635d90c9c28f",
+      "utf8_bytes": 11356
     },
     {
       "path": "Code/tests/test_internal_bundle.py",

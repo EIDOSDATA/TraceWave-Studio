@@ -6,7 +6,7 @@ from io import BytesIO
 
 from rfad.application import handoff_archive as archive, handoff_evidence as evidence
 from rfad.application.canonical import canonical_bytes, canonical_hash
-from rfad.application import package_publication as publication
+from rfad.application import handoff_plot, package_publication as publication
 from rfad.application.network_records import reference
 from rfad.application.project_contract import _fields, _uuid
 from rfad.application.result_sources import owned_reference
@@ -55,7 +55,7 @@ def _label(value):
     return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\\", "\\\\").replace("|", "\\|").replace("`", "\\`").replace("[", "\\[").replace("]", "\\]")
 
 
-def _report_text(report):
+def _report_text(report, graph):
     """! @brief 외부 렌더러나 스크립트 없이 읽을 수 있는 UTF-8 인계 보고서를 작성한다."""
     lines = ["# TraceWave Studio 인계 보고서", "", "프로젝트 " + _label(report["project_name"]),
              "개정 `" + report["revision_id"] + "`", "스냅샷 `" + report["snapshot_id"] + "`",
@@ -84,6 +84,10 @@ def _report_text(report):
                 minimum = min(series, key=lambda row: row[1])
                 lines.extend(["", f'S11 {len(series)}점, 최저 {minimum[1]:.4g} dB @ {minimum[0]:.9g} Hz',
                               "주파수별 S11 수치와 출처 파일 참조는 report.json에 있습니다."])
+    if graph:
+        lines.extend(["", "## 주파수별 S11 그래프", "",
+                      f"![실제 주파수와 S11 dB]({handoff_plot.FILE_NAME})", "",
+                      "표본이 없거나 크기가 0인 위치에서 선을 끊습니다. 수치는 report.json에 있습니다."])
     lines.extend(["", "## 적용 범위", ""])
     lines.extend("- " + _label(line) for line in report["limitations"])
     return ("\n".join(lines) + "\n").encode("utf-8")
@@ -145,9 +149,12 @@ def prepare(service, state, context, data):
     report = evidence.summary(snapshot, document, reported)
     report.update(limitations=limitations, inclusion=data["inclusion"], rights_confirmed=data["rights_confirmed"],
                   solver_details=evidence.solver_details(service, project, state, reported))
-    files = {"report.json": canonical_bytes(report), "report.md": _report_text(report),
+    graph = handoff_plot.render(report)
+    files = {"report.json": canonical_bytes(report), "report.md": _report_text(report, graph),
              "project-index.json": canonical_bytes({"schema": "rfad.handoff-index/0.1", "snapshot": snapshot,
                 "project_path": project["path"], "view_only": True, "active_restore_supported": False})}
+    if graph is not None:
+        files[handoff_plot.FILE_NAME] = graph
     entries = sorted([*submitted.values(), *(reference(name, raw) for name, raw in files.items())], key=lambda item: item["uri"])
     plan = archive.manifest({"schema": PROFILE, "project_id": document["project_id"], "project_path": project["path"],
         "snapshot_id": snapshot["snapshot_id"], "revision_id": document["revision_id"], "content_hash": snapshot["content_hash"],

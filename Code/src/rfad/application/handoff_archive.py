@@ -8,6 +8,7 @@ import stat
 import unicodedata
 from zipfile import BadZipFile, ZIP_STORED, ZipFile, ZipInfo
 
+from rfad.application import handoff_plot
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.project_contract import _fields, _path, _uuid
 from rfad.domain.errors import ProjectError
@@ -62,10 +63,10 @@ def manifest(value):
     for key in ("project_id", "revision_id", "snapshot_id"):
         _uuid(value[key])
     digest(value["content_hash"], "content_hash")
-    return validate_members(value, META_FILES)
+    return validate_members(value, META_FILES, optional={handoff_plot.FILE_NAME})
 
 
-def validate_members(value, metadata):
+def validate_members(value, metadata, *, optional=frozenset()):
     """! @brief 두 인계 프로파일의 소유 경로, 파일 목록과 상한을 공통으로 확인한다."""
     project = _path(value["project_path"])
     files = value["files"]
@@ -77,7 +78,7 @@ def validate_members(value, metadata):
         validate_reference(item)
         name = item["uri"]
         entry_path(name)
-        if name not in metadata and not name.startswith("workspace/" + project + "/"):
+        if name not in metadata and name not in optional and not name.startswith("workspace/" + project + "/"):
             fail("선택 프로젝트에 속하지 않는 파일이 인계 목록에 있습니다.", "E_CONFLICT")
         paths.append(name)
         total += item["bytes"]
@@ -147,6 +148,11 @@ def _verify_design(archive, plan):
         fail("인계 고정 입력과 읽기 전용 범위가 다릅니다.", "E_CONFLICT")
     snapshot = index["snapshot"]
     report = read_canonical(archive, "report.json", 8 * 1024 * 1024)
+    if handoff_plot.FILE_NAME in archive.namelist():
+        graph = handoff_plot.render(report)
+        entry = archive.getinfo(handoff_plot.FILE_NAME)
+        if graph is None or entry.file_size != len(graph) or archive.read(entry) != graph:
+            fail("인계 그래프가 보고서의 고정 S11 표본과 다릅니다.", "E_HASH")
     for key in ("project_id", "revision_id", "snapshot_id", "content_hash"):
         if snapshot[key] != plan[key] or report[key] != plan[key]:
             fail("인계 스냅샷과 보고서가 같은 고정 입력을 가리키지 않습니다.", "E_HASH")

@@ -119,9 +119,8 @@ def solver_details(service, project, state, rows):
         series = []
         for sample in result.get("samples", [])[:201]:
             value = sample.get("s11")
-            if value is not None:
-                magnitude = math.hypot(*value)
-                series.append([sample["frequency_hz"], 20 * math.log10(magnitude) if magnitude else None])
+            magnitude = math.hypot(*value) if value is not None else 0.0
+            series.append([sample["frequency_hz"], 20 * math.log10(magnitude) if magnitude else None])
         details.append({"id": identity, "state": "verified", "artifact": record["normalized"],
                         "case_sha256": canonical_hash(case), "settings": case.get("settings", {}),
                         "omissions": [*plan.get("model_report", {}).get("omissions", []),

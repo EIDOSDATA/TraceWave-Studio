@@ -7,6 +7,7 @@
 #include <functional>
 #include <optional>
 #include <string>
+#include <vector>
 
 class wxPaintEvent;
 
@@ -15,6 +16,13 @@ struct SolverMeshBand
 {
     int axis;
     std::array<double, 2> bounds;
+};
+
+/** @brief 실제 도체 경계의 최근접 두 점과 이를 통과하는 XY 셀이다. */
+struct SolverMeshClearance
+{
+    std::array<std::array<double, 2>, 2> points;
+    std::vector<std::array<std::size_t, 2>> cells;
 };
 
 /** @brief 설계 장면과 독립된 읽기 전용 Cartesian 격자 보기다. */
@@ -29,6 +37,9 @@ public:
     /** @brief 선택한 국부 격자 구간의 양쪽 실제 격자선을 강조한다. */
     void HighlightBand(int axis, const std::array<double, 2>& bounds, bool applied,
                        std::optional<SolverMeshBand> comparison = std::nullopt);
+
+    /** @brief XY 격자에 선택한 간극의 위치를 확대 표시한다. */
+    void HighlightClearance(SolverMeshClearance clearance);
 
 private:
     void Paint(wxPaintEvent& event);
@@ -46,4 +57,5 @@ private:
     std::array<double, 2> m_bandBounds{};
     bool m_bandApplied = false;
     std::optional<SolverMeshBand> m_comparison;
+    std::optional<SolverMeshClearance> m_clearance;
 };

@@ -7,16 +7,33 @@ import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+from xml.etree import ElementTree
 from uuid import uuid4
 from zipfile import ZipFile
 
-from rfad.application import handoff_archive, rpc
+from rfad.application import handoff_archive, handoff_plot, rpc
 from rfad.application.canonical import canonical_bytes
 from rfad.application.projects import ProjectService
 from rfad.domain.errors import ProjectError
 from test_cad_worker_process import register_fixture
 from test_design_rules import scenario
 from test_network_service import import_parameters
+
+
+class HandoffPlotTests(unittest.TestCase):
+    def test_report_curve_does_not_interpolate_missing_samples(self):
+        """! @brief 실제 표본 위치와 끊어진 곡선을 고정 보고서에서 확인한다."""
+        result = {"id": "result", "state": "verified",
+                  "s11_db_by_frequency_hz": [[1e9, -10], [1.1e9, None], [1.5e9, -20], [2e9, -15]]}
+        report = {"solver_details": {"items": [result]}}
+        graph = ElementTree.fromstring(handoff_plot.render(report))
+        namespace = {"svg": "http://www.w3.org/2000/svg"}
+        curve, = (path for path in graph.findall(".//svg:path", namespace)
+                  if path.get("stroke") == "#1d4ed8")
+        self.assertEqual(curve.get("d").split(), ["M102.000", "43.000", "M425.000", "164.000", "L748.000", "103.500"])
+        self.assertEqual(len(graph.findall(".//svg:circle", namespace)), 3)
+        result["s11_db_by_frequency_hz"] = [[1e9, None]]
+        self.assertIsNone(handoff_plot.render(report))
 
 
 class HandoffTests(unittest.TestCase):

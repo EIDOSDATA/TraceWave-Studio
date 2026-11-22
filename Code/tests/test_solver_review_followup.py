@@ -7,7 +7,7 @@ from types import SimpleNamespace
 import unittest
 from uuid import uuid4
 
-from rfad.application import solver_preview
+from rfad.application import pcb_clearance_review, solver_preview
 from rfad.application.pcb_execution import energy_observations, latest_energy_observation, valid_energy_observation
 from rfad.application.projects import ProjectService
 from rfad.domain.errors import ProjectError
@@ -21,6 +21,35 @@ from test_solver_conditions import query
 
 
 class SolverReviewFollowup(unittest.TestCase):
+    def test_planar_clearance_uses_solver_polygons_and_grid_cells(self):
+        """! @brief 대각선 간극과 격자 교차, 도체 겹침 및 다른 층을 구분한다."""
+        from unittest.mock import patch
+
+        def conductor(identity, x, y, size, z=0):
+            """! @brief 실제 해석 입력 DTO와 같은 폐곡선 도체를 구성한다."""
+            return {"id": identity, "name": identity, "role": "conductor", "primitives": [
+                {"kind": "polygon", "points_mm": [(x, y), (x + size, y),
+                    (x + size, y + size), (x, y + size)], "z_mm": [z, z]}]}
+
+        a = conductor("a", 0, 0, 1)
+        b = conductor("b", 2, 2, 1)
+        lines = {axis: [0, 1, 1.25, 1.5, 1.75, 2, 3] for axis in "xy"}
+        rows = [a, b, conductor("another sheet", 2, 2, 1, z=1)]
+        exact = pcb_clearance_review.planar_clearances(rows, lines, 1)
+        gap, = exact["clearances"]
+        self.assertEqual((exact["pair_evaluated"], exact["pair_total"]), (1, 1))
+        self.assertAlmostEqual(gap["distance_mm"], 2**0.5)
+        self.assertEqual(gap["points_mm"], [(1, 1), (2, 2)])
+        self.assertEqual(gap["cells_xy"], [[1, 1], [2, 2], [3, 3], [4, 4]])
+        for overlap in (conductor("enclosed", .25, .25, .5), conductor("touch", 1, 1, 1),
+                        conductor("crossing", .75, -.25, .75)):
+            self.assertEqual(pcb_clearance_review.planar_clearances([a, overlap], lines, 1)["clearances"], [])
+        with patch.object(pcb_clearance_review, "EDGE_PAIR_LIMIT", 0):
+            limited = pcb_clearance_review.planar_clearances(rows, lines, 1)
+        self.assertEqual((limited["pair_evaluated"], limited["pair_total"]), (0, 1))
+        self.assertEqual(limited["clearances"], [])
+
+
     def test_conditions_comparison_and_multiple_blockers(self):
         """! @brief 원호와 IFA의 보존값은 편집과 독립이며 같은 요청에서 재료와 급전을 확인한다."""
         for document, settings in ((fixture_document(arc=True), SETTINGS), (ifa_document(), IFA_SETTINGS)):

@@ -182,6 +182,7 @@ def _blocking_diagnostics(document, original):
 
 def read(service, params):
     """! @brief 영속 스냅샷을 쓰지 않고 개정의 준비 입력과 정확히 같은 격자선을 반환한다."""
+    from rfad.application.pcb_clearance_review import planar_clearances
     from rfad.application.pcb_environment import scene_extents
     from rfad.application.pcb_execution import estimate
     from rfad.application.pcb_mesh import wavelength_reference
@@ -221,6 +222,7 @@ def read(service, params):
         steps = [b - a for a, b in zip(values, values[1:])]
         axes[axis] = {"pml_inner_mm": pml, "air_before_pml_mm": [interval[0] - pml[0], pml[1] - interval[1]],
                       "min_cell_mm": min(steps), "max_cell_mm": max(steps)}
+    model = model_review(document, plan)
     return {"revision_id": expected, "estimated": plan["resource_estimate"],
             "execution_estimate": estimate(plan, lines),
             "omissions": plan.get("physical_setup_omissions", {}),
@@ -228,6 +230,7 @@ def read(service, params):
             "mesh": {"lines_mm": lines, "model_bounds_mm": bounds, "axes": axes,
                      "quality_reference": wavelength_reference(case),
                      "interval_report": mesh_intervals(case, lines),
+                     "planar_clearances": planar_clearances(model["included"], lines, case["settings"]["grid_mm"]),
                      **({"local_mesh_report": case["local_mesh_report"]} if "local_mesh_report" in case else {}),
                      "case_sha256": canonical_hash(case), "lines_sha256": canonical_hash(lines)},
-            "model": model_review(document, plan)}
+            "model": model}
