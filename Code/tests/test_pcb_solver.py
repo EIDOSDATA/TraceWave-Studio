@@ -110,6 +110,48 @@ class PcbPlanTests(unittest.TestCase):
             validate_settings({**with_power, "radiation": {**with_power["radiation"], "frequency_hz": [9e9]}})
 
 
+    def test_optional_field_plane_pins_actual_grid_and_resource_limits(self):
+        """! @brief 원호와 IFA의 선택 전기장 단면을 실제 내부 격자와 대조한다."""
+        from rfad.application.pcb_radiation import raw_names
+        from test_pcb_ifa import IFA_SETTINGS, ifa_document
+
+        for document, settings, frequency in ((fixture_document(arc=True), SETTINGS, 10e9),
+                                               (ifa_document(), IFA_SETTINGS, 2.45e9)):
+            snapshot = snapshot_for(document)
+            without_probe = build_pcb_plan(document, snapshot, runtime_identity(), settings)
+            requested = {"frequency_hz": frequency, "x_mm": [2.2, 5.3], "y_mm": [2, 5], "z_mm": 2.1}
+            with_probe = build_pcb_plan(document, snapshot, runtime_identity(), {**settings, "field_probe": requested})
+            validate_pcb_plan(with_probe)
+            case = with_probe["case"]
+            lines = mesh_lines(case)
+            self.assertEqual(lines, mesh_lines(without_probe["case"]))
+            probe = case["field_recording"]
+            self.assertEqual(case["settings"]["field_probe"], requested)
+            self.assertEqual(probe["frequency_hz"], [frequency])
+            self.assertEqual(probe["dump_type"], 10)
+            self.assertEqual(probe["start_mm"], [lines[axis][i] for axis, i in zip("xyz", probe["start_indices"])])
+            self.assertEqual(probe["stop_mm"], [lines[axis][i] for axis, i in zip("xyz", probe["stop_indices"])])
+            self.assertGreaterEqual(probe["start_mm"][0], requested["x_mm"][0])
+            self.assertLessEqual(probe["stop_mm"][0], requested["x_mm"][1])
+            self.assertEqual(probe["start_mm"][2], probe["stop_mm"][2])
+            self.assertEqual(probe["start_mm"][2], min(lines["z"], key=lambda node: abs(node - requested["z_mm"])))
+            self.assertEqual(raw_names(with_probe), (*raw_names(without_probe), "pcb_probe_E.h5"))
+            self.assertGreater(estimate(with_probe, lines)["raw_output_bytes"],
+                               estimate(without_probe, lines)["raw_output_bytes"])
+            for changed, code in (({"frequency_hz": frequency * 4}, "E_SCHEMA"),
+                                  ({"x_mm": [5, 2]}, "E_SCHEMA"), ({"y_mm": [2.01, 2.02]}, "E_GEOMETRY"),
+                                  ({"z_mm": 1000}, "E_GEOMETRY"), ({"z_mm": True}, "E_SCHEMA")):
+                with self.assertRaises(ProjectError) as failure:
+                    build_pcb_plan(document, snapshot, runtime_identity(),
+                                   {**settings, "field_probe": {**requested, **changed}})
+                self.assertEqual(failure.exception.code, code)
+                self.assertEqual(failure.exception.details["field_path"], "settings.field_probe")
+        with self.assertRaises(ProjectError) as failure:
+            build_pcb_plan(document, snapshot, runtime_identity(),
+                           {**settings, "field_probe": {**requested, "x_mm": [0, 40], "y_mm": [0, 60]}})
+        self.assertEqual(failure.exception.code, "E_RESOURCE")
+        self.assertEqual(failure.exception.details["field_path"], "settings.field_probe")
+
     def test_circle_and_rectangle_preserve_source(self):
         """! @brief 두 기판 외곽은 원본 불변성과 실제 형상 의미를 유지한다."""
         for circle in (False, True):

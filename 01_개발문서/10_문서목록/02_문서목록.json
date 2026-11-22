@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 239,
+    "current_07_검증": 240,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28748,7 +28748,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 644378,
-      "working_tree_sha256": "ca80ed56efc66bdfda5de8dbc7e48c52748bbdeb8678d11f6a50bc8ea87d498b"
+      "working_tree_sha256": "5be8da73242a67f55938f89a21b06bb996c18447b134079e19349e0f6073fffe"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32014,6 +32014,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/363_지정_전기장_단면_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1997,
+      "working_tree_sha256": "d47e25690ebbd7fe57a384d0b2126d79e7c5cd12f4f1c369dfb0644b9cf92aa1",
+      "text_lines": 14,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/36_스튜디오_보존묶음발행_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -32707,8 +32716,8 @@
       "path": "01_개발문서/09_개발계획/13_전자기해석과_후처리_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 32775,
-      "working_tree_sha256": "03ca703bd3ff36fd28c3d772272e9286c9a10ec85339047d579441191e35031e",
+      "bytes": 33094,
+      "working_tree_sha256": "53720c524e51514fcd6c2f68695fd2f5ffebc226c58b5c4fd9424ac916a72d6b",
       "text_lines": 96,
       "text_status": "utf8_read"
     },
@@ -32725,8 +32734,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 33418,
-      "working_tree_sha256": "c0e41b0172812839636ce6d11f33dce49e3308f3d49ac19cfe7f48281bac2d0d",
+      "bytes": 33850,
+      "working_tree_sha256": "d0e0e7def98a12c6e2286ba8e9946aa3a37fb7a0eb7cc0b691689cebf2364c1b",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

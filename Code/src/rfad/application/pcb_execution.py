@@ -28,6 +28,8 @@ def estimate(plan, lines):
         raw_bytes += 12 * 16 * 1024 + 4 * (x * y + y * z + x * z) * 24 * len(radiation["frequency_hz"])
     if "loss_recording" in case:
         raw_bytes += case["loss_recording"]["estimated_field_bytes"] + 3 * 16 * 1024
+    if "field_recording" in case:
+        raw_bytes += 64 * 1024 + case["field_recording"]["point_count"] * 24
     return {"schema": SCHEMA, "time_basis": "reference_throughput_at_max_timesteps",
             "wall_seconds_low": work / rates[1], "wall_seconds_high": work / rates[0],
             "memory_bytes": resource["estimated_memory_bytes"], "raw_output_bytes": raw_bytes,

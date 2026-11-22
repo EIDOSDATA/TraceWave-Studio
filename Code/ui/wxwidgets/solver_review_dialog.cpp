@@ -111,7 +111,7 @@ std::string FieldFor(const std::string& path)
     static const std::map<std::string, std::string> aliases{
         {"settings.frequency_hz", "stop_hz"}, {"settings.frequency_hz.start", "start_hz"},
         {"settings.frequency_hz.stop", "stop_hz"}, {"settings.frequency_hz.count", "count"},
-        {"settings.frequency_hz.points", "sample_points_hz"},
+        {"settings.frequency_hz.points", "sample_points_hz"}, {"settings.field_probe", "field_probe"},
         {"settings.boundary_conditions", "boundary_conditions"}, {"settings.mesh_policy", "mesh_policy"}, {"settings.mesh_policy.air_cell_mm", "air_cell_mm"},
         {"settings.mesh_policy.growth_ratio", "growth_ratio"}, {"settings.radiation", "frequency_hz"},
         {"settings.radiation.frequency_hz", "frequency_hz"}, {"mesh", "grid_mm"}, {"settings", "grid_mm"}};
@@ -134,6 +134,8 @@ void CompareValues(wxListCtrl& table, const Json& current, const Json& source, c
         {"feature_subdivisions", "임계 구간 최소 분할"}, {"mesh_policy.kind", "외부 공기 격자 방식"},
         {"mesh_policy.air_cell_mm", "바깥 공기 격자 간격 (mm)"}, {"mesh_policy.growth_ratio", "공기 격자 성장률"},
         {"max_timesteps", "최대 시간 단계"}, {"end_criterion", "종료 에너지 비율"},
+        {"field_probe.frequency_hz", "전기장 단면 주파수 (Hz)"}, {"field_probe.x_mm", "전기장 단면 X 범위 (mm)"},
+        {"field_probe.y_mm", "전기장 단면 Y 범위 (mm)"}, {"field_probe.z_mm", "전기장 단면 Z (mm)"},
         {"radiation.frequency_hz", "NF2FF 기록 주파수 (Hz)"}, {"radiation.theta_step_deg", "NF2FF theta 간격 (deg)"},
         {"radiation.phi_step_deg", "NF2FF phi 간격 (deg)"},
         {"compute_profile.kind", "계산 예산 프로필"}, {"compute_profile.num_threads", "계산 스레드"},
@@ -384,6 +386,12 @@ private:
         Field(*frequency, "frequency_hz", "방사 기록 주파수 (Hz, 쉼표로 구분)");
         Field(*frequency, "theta_step_deg", "theta 간격 (5/10/15/30 deg)");
         Field(*frequency, "phi_step_deg", "phi 간격 (5/10/15/30 deg)");
+        Field(*frequency, "field_probe", "전기장 XY 단면 (선택)");
+        auto* probeOrder = new wxStaticText(frequency->GetStaticBox(), wxID_ANY,
+            Display("쉼표로 구분해 주파수 (Hz), X 최소/최대, Y 최소/최대, Z (mm) 입력"));
+        StudioTheme::BindSecondary(*probeOrder);
+        frequency->Add(probeOrder, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
+        m_fields.at("field_probe")->SetHint(Display("2450000000, 2, 5, 2, 5, 2"));
         m_advanced = new wxStaticText(frequency->GetStaticBox(), wxID_ANY, wxEmptyString);
         StudioTheme::BindSecondary(*m_advanced);
         frequency->Add(m_advanced, 0, wxEXPAND | wxALL, FromDIP(8));
@@ -1034,6 +1042,17 @@ private:
             frequencies.Add(Display(value.dump()));
         }
         m_fields.at("frequency_hz")->ChangeValue(wxJoin(frequencies, ','));
+        wxArrayString probeValues;
+        if (settings.contains("field_probe"))
+        {
+            const auto& probe = settings.at("field_probe");
+            for (const auto& item : {probe.at("frequency_hz"), probe.at("x_mm").at(0), probe.at("x_mm").at(1),
+                                     probe.at("y_mm").at(0), probe.at("y_mm").at(1), probe.at("z_mm")})
+            {
+                probeValues.Add(Display(item.dump()));
+            }
+        }
+        m_fields.at("field_probe")->ChangeValue(wxJoin(probeValues, ','));
         const auto modes = settings.value("boundary_conditions", Json::array());
         for (std::size_t i = 0; i < m_boundary.size(); ++i)
         {
@@ -1127,7 +1146,7 @@ private:
         Json values = Json::object();
         for (const auto& [key, input] : m_fields)
         {
-            if (!input->IsThisEnabled() || key == "frequency_hz" || key == "sample_points_hz")
+            if (!input->IsThisEnabled() || key == "frequency_hz" || key == "sample_points_hz" || key == "field_probe")
             {
                 continue;
             }
@@ -1218,6 +1237,30 @@ private:
         else
         {
             settings.erase("radiation");
+        }
+        const auto probe = m_fields.at("field_probe")->GetValue().Strip(wxString::both);
+        if (probe.empty())
+        {
+            settings.erase("field_probe");
+        }
+        else
+        {
+            std::array<double, 6> coordinates{};
+            wxStringTokenizer tokens(probe, ",", wxTOKEN_RET_EMPTY_ALL);
+            for (auto& value : coordinates)
+            {
+                if (!tokens.HasMoreTokens() || !tokens.GetNextToken().Strip(wxString::both).ToDouble(&value) ||
+                    !std::isfinite(value))
+                {
+                    return fail("field_probe", "주파수와 좌표 6개를 쉼표로 구분해 입력하세요.");
+                }
+            }
+            if (tokens.HasMoreTokens())
+            {
+                return fail("field_probe", "주파수와 좌표 6개를 쉼표로 구분해 입력하세요.");
+            }
+            settings["field_probe"] = {{"frequency_hz", coordinates[0]}, {"x_mm", {coordinates[1], coordinates[2]}},
+                                       {"y_mm", {coordinates[3], coordinates[4]}}, {"z_mm", coordinates[5]}};
         }
         Json modes = Json::array();
         for (const auto* choice : m_boundary)
@@ -1472,11 +1515,22 @@ private:
         FillModel();
         const std::string radiation = settings.contains("radiation") ? "NF2FF 기록 사용" : "NF2FF 기록 끔";
         const std::string loss = settings.contains("power_balance") ? "독립 손실 기록 사용" : "독립 손실 기록 요청 없음";
+        wxString fieldSummary = Display("전기장 XY 단면 기록 요청 없음");
+        if (m_result.contains("field_recording"))
+        {
+            const auto& field = m_result.at("field_recording");
+            const auto& start = field.at("start_mm");
+            const auto& stop = field.at("stop_mm");
+            fieldSummary = wxString::Format(Display("전기장 XY 단면 %.10g Hz / X %.6g~%.6g / Y %.6g~%.6g / Z %.6g mm / %d점"),
+                field.at("frequency_hz").at(0).get<double>(), start.at(0).get<double>(), stop.at(0).get<double>(),
+                start.at(1).get<double>(), stop.at(1).get<double>(), start.at(2).get<double>(),
+                field.at("point_count").get<int>());
+        }
         const auto cost = Studio::SolverEstimateText(m_result.value("execution_estimate", Json::object()));
         m_output->ChangeValue(wxString::Format(
             Display("최대 %d 시간 단계 / 종료 에너지 비율 %.8g\n\n복소 표본, 사용한 개정과 해석 조건을 보존합니다.\n"),
             settings.at("max_timesteps").get<int>(), settings.at("end_criterion").get<double>()) +
-            cost + "\n\n" + Display(radiation + "\n" + loss + "\n기본 PCB 실행의 내부 전계 / 자계는 자동으로 기록하지 않습니다.\n\n격자 SHA-256 " +
+            cost + "\n\n" + Display(radiation + "\n" + loss + "\n") + fieldSummary + Display("\n\n격자 SHA-256 " +
                     mesh.at("lines_sha256").get<std::string>() + "\n해석 입력 SHA-256 " +
                     mesh.at("case_sha256").get<std::string>() + "\n검토한 프로젝트 개정 " + m_revision));
         m_book->SetSelection(1);

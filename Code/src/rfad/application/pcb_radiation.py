@@ -86,7 +86,9 @@ def raw_names(plan):
     from rfad.application.pcb_results import RAW_NAMES
     from rfad.application.pcb_power import raw_names as loss_names
 
-    return (*RAW_NAMES, *surface_names(plan), *loss_names(plan))
+    from rfad.application.pcb_field_probe import raw_names as probe_names
+
+    return (*RAW_NAMES, *surface_names(plan), *loss_names(plan), *probe_names(plan))
 
 
 def _number(value):

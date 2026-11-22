@@ -354,6 +354,11 @@ def project_pcb(document, settings):
     losses = loss_recording(case, lines)
     if losses is not None:
         case["loss_recording"] = losses
+    from rfad.application.pcb_field_probe import recording as field_recording
+
+    probe = field_recording(case, lines)
+    if probe is not None:
+        case["field_recording"] = probe
     cells = math.prod(len(values) for values in lines.values())
     return {"case": case,
             "normalization": normalization_contract(port, radiation=radiation is not None),

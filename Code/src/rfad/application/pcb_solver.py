@@ -38,7 +38,7 @@ PROFILE = "rfad.openems.pcb-single-port/0.1"
 def validate_settings(settings):
     """! @brief 공개 설정을 명시적이고 유한한 범위로 한정한다."""
     keys = {"frequency_hz", "grid_mm", "air_padding_mm", "curve_tolerance_mm", "max_timesteps", "end_criterion"}
-    if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance", "feature_subdivisions", "compute_profile", "local_mesh", "boundary_conditions"}:
+    if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance", "feature_subdivisions", "compute_profile", "local_mesh", "boundary_conditions", "field_probe"}:
         fail("E_SCHEMA", "PCB 해석 설정의 필수 필드가 다릅니다.", "settings")
     conditions(settings)
     frequency = settings["frequency_hz"]
@@ -83,6 +83,9 @@ def validate_settings(settings):
     from rfad.application.pcb_power import validate_settings as validate_power_settings
 
     validate_power_settings(settings)
+    from rfad.application.pcb_field_probe import validate_settings as validate_probe
+
+    validate_probe(settings)
     from rfad.application.pcb_compute import limits
 
     limits(settings)

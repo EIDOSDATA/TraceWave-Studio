@@ -1,4 +1,4 @@
-"""! @brief 보존된 손실 검증용 필드의 성분/실제 좌표/유한 단면을 읽기 전용으로 제공한다."""
+"""! @brief 보존된 전기장 및 손실 필드의 실제 좌표와 유한 단면을 제공한다."""
 
 from copy import deepcopy
 import math
@@ -6,6 +6,7 @@ import math
 from rfad.adapters import field_hdf5
 from rfad.application.canonical import canonical_bytes
 from rfad.application.project_contract import _fields
+from rfad.application.pcb_field_probe import NAME as PROBE_NAME, SCHEMA as PROBE_SCHEMA
 from rfad.application.result_sources import validate_solver_artifact
 from rfad.domain.errors import ProjectError
 
@@ -17,6 +18,7 @@ MONITORS = {
     "electric": ("pcb_loss_E.h5", "전기장 E / 기록 성분", "E", 0, "V*s/m"),
     "material_current": ("pcb_loss_J.h5", "재료 전류 J / 기록 성분", "J", 2, "A*s/m^2"),
     "total_current": ("pcb_loss_rotH.h5", "총 전류 rotH / 원문 시간 위치", "rotH", 3, "A*s/m^2"),
+    "probe_electric": (PROBE_NAME, "전기장 E / 지정 XY 단면", "E", 0, "V*s/m"),
 }
 WARNINGS = [
     "펄스 Fourier 원문 단위이며 연속파/실측 절대 전계가 아닙니다.",
@@ -45,20 +47,28 @@ def _base(resolved):
             "warnings": list(WARNINGS), "physics_validated": False}
 
 
-def _model(resolved):
-    """! @brief 실제 손실 기록을 요청한 봉인 계획과 정규화 근거가 있을 때만 제공한다."""
+def _model(resolved, monitor_id):
+    """! @brief 선택한 모니터의 봉인 계획과 정규화 근거가 있을 때만 제공한다."""
     result, record = resolved.get("normalized"), resolved.get("solver_record")
     if result is None or record is None:
         return None
     plan = result.get("provenance", {}).get("analysis_plan", {})
     case = plan.get("case", {})
-    recording = case.get("loss_recording")
-    if recording is None:
-        return None
-    if (recording.get("schema") not in ("rfad.pcb-loss-recording/0.1", "rfad.pcb-loss-recording/0.2")
-            or recording.get("dump_mode") != 0 or recording.get("dump_types") != [10, 12, 13]
-            or result.get("power_balance", {}).get("recording") != recording):
-        fail("필드 기록 계획과 원래 손실 기록 profile이 다릅니다.", "E_UNSUPPORTED")
+    if monitor_id == "probe_electric":
+        recording = case.get("field_recording")
+        if recording is None:
+            return None
+        if (recording.get("schema") != PROBE_SCHEMA or recording.get("dump_mode") != 0
+                or recording.get("dump_type") != 10):
+            fail("지정 전기장과 봉인한 기록 계획이 다릅니다.", "E_UNSUPPORTED")
+    else:
+        recording = case.get("loss_recording")
+        if recording is None:
+            return None
+        if (recording.get("schema") not in ("rfad.pcb-loss-recording/0.1", "rfad.pcb-loss-recording/0.2")
+                or recording.get("dump_mode") != 0 or recording.get("dump_types") != [10, 12, 13]
+                or result.get("power_balance", {}).get("recording") != recording):
+            fail("필드 기록 계획과 원래 손실 기록 profile이 다릅니다.", "E_UNSUPPORTED")
     normalization = result.get("normalization", {})
     if (normalization.get("fourier_convention") != "exp(-j*2*pi*f*t)"
             or normalization.get("native_fourier_scale") != "2*dt*sum(value*exp(-j*2*pi*f*t))"):
@@ -153,11 +163,10 @@ def describe(service, resolved):
     """! @brief 실제 기록한 성분과 좌표만 열거하며 없는 모니터를 생성하지 않는다."""
     response = _base(resolved)
     response.update(status="unavailable", monitors=[])
-    model = _model(resolved)
-    if model is None:
-        response["warnings"].insert(0, "선택한 원본에는 지원하는 내부 복소 필드가 기록되지 않았습니다.")
-        return _bounded(response)
     for monitor_id, (_, label, prefix, _, unit) in MONITORS.items():
+        model = _model(resolved, monitor_id)
+        if model is None:
+            continue
         observed, reference = _read(service, resolved, model, monitor_id)
         components = [{"component": axis, "label": prefix + axis,
                        "coordinates_mm": _coordinates(model, observed["primary_coordinates_mm"], axis),
@@ -166,7 +175,12 @@ def describe(service, resolved):
             "normalization": "pulse_fourier_spectrum_native_2dt", "frequency_hz": deepcopy(model["frequency_hz"]),
             "components": components, "source_ref": deepcopy(reference),
             "coordinate_basis": "primary_Yee_electric_edge_midpoints", "phase_correction": "none_raw_time_location"})
-    response["status"] = "available"
+    if response["monitors"]:
+        response["status"] = "available"
+        if all(item["monitor_id"] == "probe_electric" for item in response["monitors"]):
+            response["warnings"] = [WARNINGS[index] for index in (0, 1, 4)]
+    else:
+        response["warnings"].insert(0, "선택한 원본에는 지원하는 내부 복소 필드가 기록되지 않았습니다.")
     return _bounded(response)
 
 
@@ -203,12 +217,18 @@ def _selection(model, parameters, monitors=MONITORS):
 
 def page(service, resolved, parameters):
     """! @brief 실제 단면의 복소값/크기/위상을 보존하고 색만 현재 반환 타일에 대응한다."""
-    model = _model(resolved)
+    monitor = parameters.get("monitor_id")
+    if type(monitor) is not str or monitor not in MONITORS:
+        fail("지원하지 않는 필드 모니터입니다.")
+    model = _model(resolved, monitor)
     if model is None:
         fail("선택한 원본에 표시할 복소 필드가 없습니다.", "E_MISSING_ARTIFACT")
     axes, selection, indices = _selection(model, parameters)
     observed, reference = _read(service, resolved, model, parameters["monitor_id"], selection)
-    return present_page(_base(resolved), model, observed["primary_coordinates_mm"], observed["values"],
+    response = _base(resolved)
+    if monitor == "probe_electric":
+        response["warnings"] = [WARNINGS[index] for index in (0, 1, 4)]
+    return present_page(response, model, observed["primary_coordinates_mm"], observed["values"],
                         reference, parameters, axes, indices, unit=MONITORS[parameters["monitor_id"]][4],
                         normalization="pulse_fourier_spectrum_native_2dt",
                         coordinate_basis="primary_Yee_electric_edge_midpoints")

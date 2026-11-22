@@ -229,6 +229,7 @@ def read(service, params):
             "execution_estimate": estimate(plan, lines),
             "omissions": plan.get("physical_setup_omissions", {}),
             "outputs": plan.get("outputs", []), "settings": case["settings"],
+            **({"field_recording": case["field_recording"]} if "field_recording" in case else {}),
             "mesh": {"lines_mm": lines, "model_bounds_mm": bounds, "axes": axes,
                      "quality_reference": wavelength_reference(case),
                      "interval_report": mesh_intervals(case, lines),

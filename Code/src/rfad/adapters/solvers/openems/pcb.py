@@ -108,6 +108,13 @@ def prepare(stage, plan, runtime):
         from .pcb_absorption import create_dumps
 
         create_dumps(csx, case["loss_recording"])
+    if "field_recording" in case:
+        from rfad.application.pcb_field_probe import NAME as field_filename
+
+        plane = case["field_recording"]
+        probe = csx.AddDump(field_filename[:-3], dump_type=plane["dump_type"], dump_mode=plane["dump_mode"],
+                            file_type=1, frequency=plane["frequency_hz"])
+        probe.AddBox(plane["primitive_start_mm"], plane["primitive_stop_mm"])
     xml = output / "pcb.xml"
     solver.Write2XML(str(xml))
     observed = {axis: [float(value) for value in grid.GetLines(axis)] for axis in "xyz"}
