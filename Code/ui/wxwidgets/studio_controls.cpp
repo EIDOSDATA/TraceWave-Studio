@@ -129,6 +129,12 @@ void StudioFrame::UpdateControls()
         {
             enabled = opened && m_solverConfigured && !m_solverWorkflow.Active() && !m_solverRestoring;
         }
+        else if (item.first == IdReuseSolverConditions)
+        {
+            enabled = opened && m_solverConfigured && !m_solverWorkflow.Active() && !m_solverRestoring &&
+                      !m_solverSamples.empty() &&
+                      m_solverSamples.at("metadata").value("profile", "") == "rfad.openems.pcb-single-port/0.1";
+        }
         else if (item.first == IdCancelSolver)
         {
             enabled = m_connected && m_solverWorkflow.CanRequestCancel();
@@ -152,13 +158,12 @@ void StudioFrame::UpdateControls()
                       m_drawTool == "line" ? 1 : (m_drawTool == "arc" ? 2 : 0));
     for (const int id :
          {IdBoard, IdCircularBoard, IdLayer, IdDielectric, IdCoordinates, IdDeleteShape, IdValidate, IdExportStep,
-          IdBuild3D, IdCancelCad, IdOutputFolder, IdRunSolver, IdCancelSolver, IdRadiation})
+          IdBuild3D, IdCancelCad, IdOutputFolder, IdRunSolver, IdReuseSolverConditions, IdCancelSolver, IdRadiation})
     {
         GetMenuBar()->Enable(id, m_tools.at(id)->IsEnabled());
     }
     m_steps->Enable(opened);
     GetMenuBar()->Enable(IdPrecision, opened && synchronized && m_precisionSupported);
-    m_recordRadiation->Enable(opened && m_solverConfigured && !m_solverWorkflow.Active() && !m_solverRestoring);
     m_layerChoice->Enable(drawing);
     m_width->Enable(drawing);
     m_snapCheck->Enable(opened && synchronized);

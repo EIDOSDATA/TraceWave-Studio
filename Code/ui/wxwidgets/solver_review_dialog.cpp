@@ -8,9 +8,13 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <ctime>
 #include <map>
 #include <utility>
 #include <wx/display.h>
+#include <wx/datetime.h>
+#include <wx/tokenzr.h>
+#include <set>
 #include <wx/listctrl.h>
 #include <wx/scrolwin.h>
 #include <wx/weakref.h>
@@ -108,15 +112,88 @@ std::string FieldFor(const std::string& path)
     return path.rfind("settings.", 0) == 0 ? path.substr(field + 1) : std::string();
 }
 
+/** @brief 두 입력에서 실제로 달라진 설정만 표시한다. */
+void CompareValues(wxListCtrl& table, const Json& current, const Json& source, const std::string& path = {})
+{
+    static const std::map<std::string, std::string> labels{
+        {"frequency_hz.start", "시작 주파수 (Hz)"}, {"frequency_hz.stop", "끝 주파수 (Hz)"},
+        {"frequency_hz.count", "주파수 표본 수"}, {"grid_mm", "모델 최대 격자 간격 (mm)"},
+        {"air_padding_mm", "외부 공기 여유 (mm)"}, {"curve_tolerance_mm", "곡선 근사 허용오차 (mm)"},
+        {"feature_subdivisions", "임계 구간 최소 분할"}, {"mesh_policy.kind", "외부 공기 격자 방식"},
+        {"mesh_policy.air_cell_mm", "바깥 공기 격자 간격 (mm)"}, {"mesh_policy.growth_ratio", "공기 격자 성장률"},
+        {"max_timesteps", "최대 시간 단계"}, {"end_criterion", "종료 에너지 비율"},
+        {"radiation.frequency_hz", "NF2FF 기록 주파수 (Hz)"}, {"radiation.theta_step_deg", "NF2FF theta 간격 (deg)"},
+        {"radiation.phi_step_deg", "NF2FF phi 간격 (deg)"},
+        {"compute_profile.kind", "계산 예산 프로필"}, {"compute_profile.num_threads", "계산 스레드"},
+        {"power_balance.kind", "독립 손실 기록 방식"}};
+    if (current == source)
+    {
+        return;
+    }
+    if (current.is_object() || source.is_object())
+    {
+        std::set<std::string> keys;
+        for (const auto* value : {&current, &source})
+        {
+            if (value->is_object())
+            {
+                for (auto item = value->begin(); item != value->end(); ++item)
+                {
+                    keys.insert(item.key());
+                }
+            }
+        }
+        for (const auto& key : keys)
+        {
+            CompareValues(table, current.contains(key) ? current.at(key) : Json(), source.contains(key) ? source.at(key) : Json(),
+                          path.empty() ? key : path + "." + key);
+        }
+        return;
+    }
+    const auto value = [](const Json& item)
+    {
+        return Display(item.is_null() ? "사용 안 함" : item.is_string() ? item.get<std::string>() : item.dump());
+    };
+    const auto label = labels.find(path);
+    const long row = table.InsertItem(table.GetItemCount(), Display(label == labels.end() ? path : label->second));
+    table.SetItem(row, 1, value(current));
+    table.SetItem(row, 2, value(source));
+}
+
+/** @brief 변경하지 않은 수치는 과거 계획의 JSON 표현까지 그대로 보존한다. */
+void PreserveUnchangedValues(const Json& original, Json& edited)
+{
+    if (original == edited)
+    {
+        edited = original;
+    }
+    else if (original.is_object() && edited.is_object())
+    {
+        for (auto value = edited.begin(); value != edited.end(); ++value)
+        {
+            if (original.contains(value.key()))
+            {
+                PreserveUnchangedValues(original.at(value.key()), value.value());
+            }
+        }
+    }
+    else if (original.is_array() && edited.is_array() && original.size() == edited.size())
+    {
+        for (std::size_t index = 0; index < edited.size(); ++index)
+        {
+            PreserveUnchangedValues(original.at(index), edited.at(index));
+        }
+    }
+}
+
 class SolverReviewDialog final : public wxDialog
 {
 public:
-    SolverReviewDialog(wxWindow* parent, const std::string& revision, Json& draft, Json& radiationDraft,
-                       bool recordRadiation, Studio::SolverPreviewRequest request)
+    SolverReviewDialog(wxWindow* parent, const std::string& revision, Json& draft, const Json& catalog,
+                       const std::string& resultId, Studio::SolverReviewRequest request)
         : wxDialog(parent, wxID_ANY, Display("해석 전 검토"), wxDefaultPosition, wxDefaultSize,
                    wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
-          m_revision(revision), m_draft(draft), m_radiationDraft(radiationDraft),
-          m_recordRadiation(recordRadiation), m_request(std::move(request))
+          m_revision(revision), m_draft(draft), m_catalog(catalog), m_request(std::move(request))
     {
         SetName("solver.preview.dialog");
         StudioTheme::ApplyTypography(*this);
@@ -134,6 +211,7 @@ public:
         BuildInputs();
         BuildMeshPage();
         BuildModelPage();
+        BuildConditions();
         m_output = new wxTextCtrl(Page("종료 / 기록 출력"), wxID_ANY, wxEmptyString, wxDefaultPosition,
                                   wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
         m_output->SetName("solver.review.output");
@@ -174,11 +252,21 @@ public:
         SetMinSize(wxSize(std::min(FromDIP(800), area.width), std::min(FromDIP(540), area.height)));
         CentreOnParent();
         SetStatus("해석 조건을 입력한 후 검토하세요.");
+        for (std::size_t index = 0; !resultId.empty() && index < m_sources.size(); ++index)
+        {
+            if (m_sources.at(index).at("id") == resultId)
+            {
+                m_book->SetSelection(3);
+                m_source->SetSelection(static_cast<int>(index + 1));
+                SelectSource();
+                break;
+            }
+        }
     }
 
-    const Json& ReviewedSettings() const
+    Studio::SolverReviewDecision Decision() const
     {
-        return m_result.at("settings");
+        return {m_result.at("settings"), m_saveName};
     }
 
 private:
@@ -207,50 +295,229 @@ private:
             return box;
         };
         auto* frequency = group("주파수와 종료");
-        Field(*frequency, "start_hz", "시작 주파수 (Hz)", m_draft, 2.4e9);
-        Field(*frequency, "stop_hz", "끝 주파수 (Hz)", m_draft, 2.4835e9);
-        Field(*frequency, "count", "주파수 표본 수 (3~201)", m_draft, 101);
-        Field(*frequency, "max_timesteps", "최대 시간 단계", m_draft, 30000);
-        Field(*frequency, "end_criterion", "종료 에너지 비율", m_draft, 1e-5);
-        if (m_recordRadiation)
+        Field(*frequency, "start_hz", "시작 주파수 (Hz)");
+        Field(*frequency, "stop_hz", "끝 주파수 (Hz)");
+        Field(*frequency, "count", "주파수 표본 수 (3~201)");
+        Field(*frequency, "max_timesteps", "최대 시간 단계");
+        Field(*frequency, "end_criterion", "종료 에너지 비율");
+        m_nf = new wxCheckBox(frequency->GetStaticBox(), wxID_ANY, Display("NF2FF 기록"));
+        m_nf->SetName("solver.radiation.enabled");
+        frequency->Add(m_nf, 0, wxEXPAND | wxALL, FromDIP(8));
+        Field(*frequency, "frequency_hz", "방사 기록 주파수 (Hz, 쉼표로 구분)");
+        Field(*frequency, "theta_step_deg", "theta 간격 (5/10/15/30 deg)");
+        Field(*frequency, "phi_step_deg", "phi 간격 (5/10/15/30 deg)");
+        m_advanced = new wxStaticText(frequency->GetStaticBox(), wxID_ANY, wxEmptyString);
+        StudioTheme::BindSecondary(*m_advanced);
+        frequency->Add(m_advanced, 0, wxEXPAND | wxALL, FromDIP(8));
+        m_nf->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
         {
-            Field(*frequency, "frequency_hz", "방사 기록 주파수 (Hz)", m_radiationDraft,
-                  (m_draft.value("start_hz", 2.4e9) + m_draft.value("stop_hz", 2.4835e9)) / 2);
-            Field(*frequency, "theta_step_deg", "theta 간격 (5/10/15/30 deg)", m_radiationDraft, 15);
-            Field(*frequency, "phi_step_deg", "phi 간격 (5/10/15/30 deg)", m_radiationDraft, 15);
-        }
+            SetOptionalControls();
+            Invalidate();
+        });
         auto* grid = group("해석 격자");
-        Field(*grid, "grid_mm", "모델 최대 격자 간격 (mm)", m_draft, 1.0);
-        Field(*grid, "air_padding_mm", "외부 공기 여유 (mm)", m_draft, 30.0);
-        Field(*grid, "curve_tolerance_mm", "곡선 근사 허용오차 (mm)", m_draft, 0.05);
-        Field(*grid, "feature_subdivisions", "임계 구간 최소 분할 (1~8)", m_draft, 1);
+        Field(*grid, "grid_mm", "모델 최대 격자 간격 (mm)");
+        Field(*grid, "air_padding_mm", "외부 공기 여유 (mm)");
+        Field(*grid, "curve_tolerance_mm", "곡선 근사 허용오차 (mm)");
+        Field(*grid, "feature_subdivisions", "임계 구간 최소 분할 (1~8)");
         auto* box = grid->GetStaticBox();
         m_graded = new wxCheckBox(box, wxID_ANY, Display("외부 공기 영역에 가변 격자 사용"));
         m_graded->SetName("solver.mesh_policy");
-        m_graded->SetValue(m_draft.value("graded_air", false));
         grid->Add(m_graded, 0, wxEXPAND | wxALL, FromDIP(8));
-        Field(*grid, "air_cell_mm", "바깥 공기 격자 간격 (mm)", m_draft, 6.0);
-        Field(*grid, "growth_ratio", "공기 격자 성장률 (1.05~1.5)", m_draft, 1.5);
+        Field(*grid, "air_cell_mm", "바깥 공기 격자 간격 (mm)");
+        Field(*grid, "growth_ratio", "공기 격자 성장률 (1.05~1.5)");
         auto* note = new wxStaticText(box, wxID_ANY, Display("가변 격자에서 공기 여유는 바깥 격자 간격의 정수배이며 최소 12배입니다."));
         StudioTheme::BindSecondary(*note);
         note->Wrap(FromDIP(300));
         grid->Add(note, 0, wxEXPAND | wxALL, FromDIP(8));
         m_graded->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
         {
-            SetGradedControls();
+            SetOptionalControls();
             Invalidate();
         });
-        SetGradedControls();
         m_input->SetSizer(columns);
+        LoadFields(m_draft);
         page->GetSizer()->Add(m_input, 1, wxEXPAND);
     }
 
-    void Field(wxStaticBoxSizer& group, const char* key, const char* label, const Json& draft, double initial)
+    /** @brief 과거 조건 비교와 새 이름 저장을 같은 검토 창에서 수행한다. */
+    void BuildConditions()
+    {
+        auto* page = Page("조건 저장 / 재사용");
+        const int gap = FromDIP(StudioTheme::InputGap);
+        auto* layout = page->GetSizer();
+        m_source = new wxChoice(page, wxID_ANY);
+        m_source->SetName("solver.conditions.source");
+        m_source->Append(Display("비교할 저장 조건 또는 과거 결과 선택"));
+        for (const auto& row : m_catalog.at("saved"))
+        {
+            m_sources.push_back(row);
+            m_source->Append(Display("저장 조건 / " + row.at("name").get<std::string>()));
+        }
+        for (const auto& row : m_catalog.at("results"))
+        {
+            m_sources.push_back(row);
+            const wxDateTime time(static_cast<time_t>(row.at("snapshot_time").get<double>()));
+            const auto label = "과거 결과 / " + row.at("name").get<std::string>() + " / " +
+                Utf8(time.Format("%Y-%m-%d %H:%M:%S")) + " / " + row.at("id").get<std::string>().substr(0, 8);
+            m_source->Append(Display(label));
+        }
+        m_source->SetSelection(0);
+        layout->Add(m_source, 0, wxEXPAND | wxALL, gap);
+        m_summary = new wxStaticText(page, wxID_ANY, Display("저장 조건이나 과거 결과를 선택하면 현재 입력과 비교합니다."));
+        m_summary->SetName("solver.conditions.summary");
+        StudioTheme::BindSecondary(*m_summary);
+        layout->Add(m_summary, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
+        m_comparison = new wxListCtrl(page, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL);
+        m_comparison->SetName("solver.conditions.diff");
+        StudioTheme::Table(*m_comparison);
+        m_comparison->AppendColumn(Display("변경 항목"), wxLIST_FORMAT_LEFT, FromDIP(225));
+        m_comparison->AppendColumn(Display("현재 입력"), wxLIST_FORMAT_LEFT, FromDIP(225));
+        m_comparison->AppendColumn(Display("선택한 조건"), wxLIST_FORMAT_LEFT, FromDIP(240));
+        layout->Add(m_comparison, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
+
+        m_load = new wxButton(page, wxID_ANY, Display("선택 조건 불러오기"));
+        m_load->SetName("solver.conditions.apply");
+        StudioTheme::Button(*m_load);
+        m_load->Disable();
+        layout->Add(m_load, 0, wxLEFT | wxRIGHT | wxBOTTOM, gap);
+
+        auto* save = new wxBoxSizer(wxHORIZONTAL);
+        auto* caption = new wxStaticText(page, wxID_ANY, Display("조건 이름"));
+        save->Add(caption, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, gap);
+        auto* name = new wxTextCtrl(page, wxID_ANY);
+        name->SetName("solver.conditions.name");
+        name->SetMaxLength(96);
+        save->Add(name, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, gap);
+        m_save = new wxButton(page, wxID_ANY, Display("검토한 조건 저장"));
+        m_save->SetName("solver.conditions.save");
+        StudioTheme::Button(*m_save);
+        m_save->Disable();
+        save->Add(m_save, 0);
+        layout->Add(save, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
+        layout->Add(new wxStaticText(page, wxID_ANY, Display("조건 검토를 마치면 이름으로 저장할 수 있습니다.")),
+                    0, wxLEFT | wxRIGHT | wxBOTTOM, gap);
+
+        m_source->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { SelectSource(); });
+        m_load->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+        {
+            if (m_pending || m_selected.empty())
+            {
+                return;
+            }
+            ClearResult();
+            LoadFields(m_selected.at("settings"));
+            RefreshComparison();
+            SetStatus("선택한 설정을 입력란에 불러왔습니다. 현재 설계에서 조건을 다시 검토하세요.");
+            FocusInput("grid_mm");
+        });
+        m_save->Bind(wxEVT_BUTTON, [this, name](wxCommandEvent&)
+        {
+            if (m_result.empty() || m_pending)
+            {
+                return;
+            }
+            const auto value = Utf8(name->GetValue().Strip(wxString::both));
+            if (value.empty())
+            {
+                SetStatus("저장할 해석 조건의 이름을 입력하세요.");
+                name->SetFocus();
+                return;
+            }
+            m_saveName = value;
+            EndModal(wxID_SAVE);
+        });
+    }
+
+    void SelectSource()
+    {
+        const int selection = m_source->GetSelection() - 1;
+        const auto generation = ++m_sourceGeneration;
+        m_selected = Json::object();
+        m_comparison->DeleteAllItems();
+        m_load->Disable();
+        if (selection < 0)
+        {
+            m_summary->SetLabel(Display("저장 조건이나 과거 결과를 선택하면 현재 입력과 비교합니다."));
+            m_summary->GetParent()->Layout();
+            return;
+        }
+        const auto& row = m_sources.at(static_cast<std::size_t>(selection));
+        if (row.contains("settings"))
+        {
+            m_selected = row;
+            RefreshComparison();
+            return;
+        }
+        m_summary->SetLabel(Display("과거 결과가 사용한 해석 조건을 읽고 있습니다."));
+        const wxWeakRef<SolverReviewDialog> weak(this);
+        m_request("solver.conditions", Json{{"artifact_id", row.at("id")}},
+            [weak, generation](const Json& selected)
+            {
+                if (weak && weak->m_sourceGeneration == generation)
+                {
+                    weak->m_selected = selected;
+                    weak->RefreshComparison();
+                }
+            },
+            [weak, generation](const Json& error)
+            {
+                if (weak && weak->m_sourceGeneration == generation)
+                {
+                    weak->m_summary->SetLabel(Display(DiagnosticMessage(error)));
+                    weak->m_summary->GetParent()->Layout();
+                }
+            });
+    }
+
+    /** @brief 현재 설계의 급전/설치와 선택 결과의 출처를 수치 설정 비교와 함께 표시한다. */
+    void RefreshComparison()
+    {
+        if (m_selected.empty())
+        {
+            return;
+        }
+        Json current;
+        const bool valid = ReadSettings(current, false);
+        m_comparison->Freeze();
+        m_comparison->DeleteAllItems();
+        if (valid)
+        {
+            auto source = m_selected.at("settings");
+            current["feature_subdivisions"] = current.value("feature_subdivisions", 1);
+            source["feature_subdivisions"] = source.value("feature_subdivisions", 1);
+            CompareValues(*m_comparison, current, source);
+        }
+        m_comparison->Thaw();
+        std::string note = valid ? "달라진 설정 " + std::to_string(m_comparison->GetItemCount()) + "개"
+                                 : "현재 입력을 읽을 수 없습니다. 선택한 조건은 불러올 수 있습니다.";
+        const auto& own = m_catalog.at("design");
+        const auto& prior = m_selected.at("design");
+        const auto revision = m_selected.at("revision_id").get<std::string>();
+        note += revision == m_revision ? " / 같은 설계 개정" : " / 다른 설계 개정 " + revision.substr(0, 8);
+        for (const auto* kind : {"ports", "installation"})
+        {
+            const std::string path = kind;
+            const auto key = path + "_label";
+            const auto hash = path + "_sha256";
+            note += "\n" + std::string(path == "ports" ? "급전  " : "설치  ") + own.at(key).get<std::string>();
+            if (own.at(hash) != prior.at(hash))
+            {
+                note += " / 선택 조건 " + prior.at(key).get<std::string>() + " (입력 다름)";
+            }
+        }
+        m_summary->SetLabel(Display(note));
+        auto* page = m_summary->GetParent();
+        m_summary->Wrap(std::max(FromDIP(480), page->GetClientSize().x - FromDIP(20)));
+        page->Layout();
+        m_load->Enable(!m_pending);
+    }
+
+    void Field(wxStaticBoxSizer& group, const char* key, const char* label)
     {
         auto* parent = group.GetStaticBox();
         auto* caption = new wxStaticText(parent, wxID_ANY, Display(label));
         group.Add(caption, 0, wxLEFT | wxTOP, FromDIP(8));
-        auto* input = new wxTextCtrl(parent, wxID_ANY, wxString::Format("%.12g", draft.value(key, initial)));
+        auto* input = new wxTextCtrl(parent, wxID_ANY);
         input->SetName(Display(std::string("solver.") + key));
         input->SetToolTip(Display(label));
         m_fields.emplace(key, input);
@@ -401,12 +668,52 @@ private:
         Layout();
     }
 
-    void SetGradedControls()
+    void SetOptionalControls()
     {
         for (const auto* field : {"air_cell_mm", "growth_ratio"})
         {
             m_fields.at(field)->Enable(m_graded->GetValue());
         }
+        for (const auto* field : {"frequency_hz", "theta_step_deg", "phi_step_deg"})
+        {
+            m_fields.at(field)->Enable(m_nf->GetValue());
+        }
+    }
+
+    /** @brief 저장 또는 실행한 설정에서 입력을 채우고 편집 범위 밖의 옵션도 유지한다. */
+    void LoadFields(const Json& settings)
+    {
+        const auto band = settings.value("frequency_hz", Json{{"start", 2.4e9}, {"stop", 2.4835e9}, {"count", 101}});
+        const auto mesh = settings.value("mesh_policy", Json::object());
+        const auto radiation = settings.value("radiation", Json::object());
+        const Json values{{"start_hz", band.at("start")}, {"stop_hz", band.at("stop")}, {"count", band.at("count")},
+                          {"grid_mm", settings.value("grid_mm", 1.0)}, {"air_padding_mm", settings.value("air_padding_mm", 30.0)},
+                          {"curve_tolerance_mm", settings.value("curve_tolerance_mm", .05)},
+                          {"feature_subdivisions", settings.value("feature_subdivisions", 1)},
+                          {"max_timesteps", settings.value("max_timesteps", 30000)}, {"end_criterion", settings.value("end_criterion", 1e-5)},
+                          {"air_cell_mm", mesh.value("air_cell_mm", 6.0)}, {"growth_ratio", mesh.value("growth_ratio", 1.5)},
+                          {"theta_step_deg", radiation.value("theta_step_deg", 15)}, {"phi_step_deg", radiation.value("phi_step_deg", 15)}};
+        for (auto value = values.begin(); value != values.end(); ++value)
+        {
+            m_fields.at(value.key())->ChangeValue(Display(value.value().dump()));
+        }
+        wxArrayString frequencies;
+        for (const auto& value : radiation.value("frequency_hz", Json::array({
+                (band.at("start").get<double>() + band.at("stop").get<double>()) / 2})))
+        {
+            frequencies.Add(Display(value.dump()));
+        }
+        m_fields.at("frequency_hz")->ChangeValue(wxJoin(frequencies, ','));
+        m_graded->SetValue(!mesh.empty());
+        m_nf->SetValue(!radiation.empty());
+        m_draft = settings;
+        SetOptionalControls();
+        const bool useBudget = settings.contains("compute_profile");
+        const bool useLoss = settings.contains("power_balance");
+        m_advanced->SetLabel(Display(useBudget && useLoss ? "불러온 계산 예산 / 독립 손실 기록 사용"
+            : useBudget ? "불러온 계산 예산 사용" : useLoss ? "불러온 독립 손실 기록 사용" : ""));
+        m_advanced->Show(useBudget || useLoss);
+        m_input->Layout();
     }
 
     void FocusInput(const std::string& key)
@@ -438,10 +745,12 @@ private:
         m_modelSummary->SetLabel(wxEmptyString);
         m_output->Clear();
         m_run->Enable(false);
+        m_save->Enable(false);
     }
 
     void Invalidate()
     {
+        RefreshComparison();
         if (!m_result.empty())
         {
             ClearResult();
@@ -449,76 +758,104 @@ private:
         }
     }
 
-    /** @brief 입력된 수를 원본 단위로 읽고 정수 조건은 변환 전에 검사한다. */
-    bool ReadFields(Json& ordinary, Json& radiation)
+    /** @brief 편집값을 정확히 읽고 불러온 고급 설정을 보존한다. */
+    bool ReadSettings(Json& settings, bool report)
     {
         static const std::map<std::string, std::array<double, 2>> integers{
             {"count", {3, 201}}, {"max_timesteps", {1000, 200000}}, {"feature_subdivisions", {1, 8}},
             {"theta_step_deg", {5, 30}}, {"phi_step_deg", {5, 30}}};
-        ordinary = m_draft;
-        ordinary["graded_air"] = m_graded->GetValue();
-        radiation = m_radiationDraft;
+        const auto fail = [this, report](const std::string& key, const std::string& message)
+        {
+            if (report)
+            {
+                SetStatus(Utf8(m_fields.at(key)->GetToolTipText()) + " / " + message);
+                FocusInput(key);
+            }
+            return false;
+        };
+        Json values = Json::object();
         for (const auto& [key, input] : m_fields)
         {
-            if (!m_graded->GetValue() && (key == "air_cell_mm" || key == "growth_ratio"))
+            if (!input->IsThisEnabled() || key == "frequency_hz")
             {
                 continue;
             }
-            double value = 0;
+            double number = 0;
             const auto range = integers.find(key);
-            const bool integral = range != integers.end();
-            if (!input->GetValue().ToDouble(&value) || !std::isfinite(value) ||
-                (integral && (value != std::floor(value) || value < range->second[0] || value > range->second[1])))
+            const bool whole = range != integers.end();
+            if (!input->GetValue().ToDouble(&number) || !std::isfinite(number) ||
+                (whole && (number != std::floor(number) || number < range->second[0] || number > range->second[1])))
             {
-                const auto message = integral ? "정수 범위에 맞는 값을 입력하세요." : "유한한 수를 입력하세요.";
-                SetStatus(Utf8(input->GetToolTipText()) + " / " + message);
-                FocusInput(key);
-                return false;
+                return fail(key, whole ? "정수 범위에 맞는 값을 입력하세요." : "유한한 수를 입력하세요.");
             }
-            auto& target = key == "frequency_hz" || key == "theta_step_deg" || key == "phi_step_deg" ? radiation : ordinary;
-            target[key] = integral ? Json(static_cast<int>(value)) : Json(value);
+            values[key] = whole ? Json(static_cast<int>(number)) : Json(number);
         }
-        return true;
-    }
-
-    /** @brief 입력한 값만 기존 solver 설정 계약으로 보낸다. */
-    void Review()
-    {
-        if (m_pending)
+        settings = m_draft;
+        settings.update(Json{{"frequency_hz", {{"start", values.at("start_hz")}, {"stop", values.at("stop_hz")},
+                                                {"count", values.at("count")}}},
+                             {"grid_mm", values.at("grid_mm")}, {"air_padding_mm", values.at("air_padding_mm")},
+                             {"curve_tolerance_mm", values.at("curve_tolerance_mm")}, {"max_timesteps", values.at("max_timesteps")},
+                             {"end_criterion", values.at("end_criterion")}});
+        if (m_draft.contains("feature_subdivisions") || values.at("feature_subdivisions") != 1)
         {
-            return;
+            settings["feature_subdivisions"] = values.at("feature_subdivisions");
         }
-        Json values, radiation;
-        if (!ReadFields(values, radiation))
-        {
-            return;
-        }
-        m_draft = values;
-        m_radiationDraft = radiation;
-        Json settings{{"frequency_hz", {{"start", values.at("start_hz")}, {"stop", values.at("stop_hz")},
-                                        {"count", values.at("count")}}},
-                      {"grid_mm", values.at("grid_mm")}, {"air_padding_mm", values.at("air_padding_mm")},
-                      {"curve_tolerance_mm", values.at("curve_tolerance_mm")}, {"max_timesteps", values.at("max_timesteps")},
-                      {"end_criterion", values.at("end_criterion")},
-                      {"feature_subdivisions", values.at("feature_subdivisions")}};
         if (m_graded->GetValue())
         {
             settings["mesh_policy"] = {{"kind", "graded_air"}, {"air_cell_mm", values.at("air_cell_mm")},
                                        {"growth_ratio", values.at("growth_ratio")}};
         }
-        if (m_recordRadiation)
+        else
         {
-            settings["radiation"] = {{"frequency_hz", Json::array({radiation.at("frequency_hz")})},
-                                     {"theta_step_deg", radiation.at("theta_step_deg")},
-                                     {"phi_step_deg", radiation.at("phi_step_deg")}};
+            settings.erase("mesh_policy");
         }
+        if (m_nf->GetValue())
+        {
+            Json frequencies = Json::array();
+            wxStringTokenizer tokens(m_fields.at("frequency_hz")->GetValue(), ",", wxTOKEN_RET_EMPTY_ALL);
+            while (tokens.HasMoreTokens())
+            {
+                double number = 0;
+                if (!tokens.GetNextToken().Strip(wxString::both).ToDouble(&number) || !std::isfinite(number))
+                {
+                    return fail("frequency_hz", "주파수는 유한한 수를 쉼표로 구분해 입력하세요.");
+                }
+                frequencies.push_back(number);
+            }
+            if (frequencies.empty() || frequencies.size() > 3)
+            {
+                return fail("frequency_hz", "1~3개의 주파수를 입력하세요.");
+            }
+            Json radiation = settings.value("radiation", Json::object());
+            radiation.update(Json{{"frequency_hz", frequencies}, {"theta_step_deg", values.at("theta_step_deg")},
+                                  {"phi_step_deg", values.at("phi_step_deg")}});
+            settings["radiation"] = radiation;
+        }
+        else
+        {
+            settings.erase("radiation");
+        }
+        PreserveUnchangedValues(m_draft, settings);
+        return true;
+    }
+
+    /** @brief 저장하거나 실행하기 전에 현재 입력으로 계획을 다시 검토한다. */
+    void Review()
+    {
+        Json settings;
+        if (m_pending || !ReadSettings(settings, true))
+        {
+            return;
+        }
+        m_draft = settings;
         ClearResult();
         m_pending = true;
         m_input->Enable(false);
+        m_load->Enable(false);
         m_check->Enable(false);
         SetStatus("해석 계획과 실제 입력 격자선을 확인하고 있습니다.");
         const wxWeakRef<SolverReviewDialog> weak(this);
-        m_request(settings,
+        m_request("solver.preview", Json{{"settings", settings}},
             [weak](const Json& result)
             {
                 if (weak)
@@ -540,7 +877,8 @@ private:
         m_pending = false;
         m_input->Enable(true);
         m_check->Enable(true);
-        SetGradedControls();
+        m_load->Enable(!m_selected.empty());
+        SetOptionalControls();
     }
 
     void Reject(const Json& error)
@@ -617,6 +955,7 @@ private:
         m_meshSummary->GetParent()->Layout();
         SetStatus("격자와 포함 형상 확인을 완료했습니다. 해석 실행 대기 중입니다.");
         m_run->Enable(true);
+        m_save->Enable(true);
     }
 
     void FillModel()
@@ -645,9 +984,19 @@ private:
 
     const std::string m_revision;
     Json& m_draft;
-    Json& m_radiationDraft;
-    const bool m_recordRadiation;
-    Studio::SolverPreviewRequest m_request;
+    const Json& m_catalog;
+    Studio::SolverReviewRequest m_request;
+    Json m_sources = Json::array();
+    Json m_selected = Json::object();
+    std::size_t m_sourceGeneration = 0;
+    std::string m_saveName;
+    wxChoice* m_source = nullptr;
+    wxListCtrl* m_comparison = nullptr;
+    wxStaticText* m_summary = nullptr;
+    wxStaticText* m_advanced = nullptr;
+    wxButton* m_load = nullptr;
+    wxButton* m_save = nullptr;
+    wxCheckBox* m_nf = nullptr;
     std::map<std::string, wxTextCtrl*> m_fields;
     Json m_result = Json::object();
     bool m_pending = false;
@@ -672,13 +1021,14 @@ private:
 };
 }
 
-std::optional<Json> Studio::ShowSolverReview(wxWindow* parent, const std::string& revision, Json& draft,
-    Json& radiationDraft, bool recordRadiation, SolverPreviewRequest request)
+std::optional<Studio::SolverReviewDecision> Studio::ShowSolverReview(wxWindow* parent, const std::string& revision,
+    Json& draft, const Json& catalog, const std::string& resultId, Studio::SolverReviewRequest request)
 {
-    SolverReviewDialog dialog(parent, revision, draft, radiationDraft, recordRadiation, std::move(request));
-    if (dialog.ShowModal() == wxID_OK)
+    SolverReviewDialog dialog(parent, revision, draft, catalog, resultId, std::move(request));
+    const int outcome = dialog.ShowModal();
+    if (outcome == wxID_OK || outcome == wxID_SAVE)
     {
-        return dialog.ReviewedSettings();
+        return dialog.Decision();
     }
     return std::nullopt;
 }

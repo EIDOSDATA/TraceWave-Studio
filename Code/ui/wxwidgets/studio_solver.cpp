@@ -55,6 +55,13 @@ void StudioFrame::BindSolver()
             ConfigureSolver();
         },
         IdRunSolver);
+    Bind(wxEVT_MENU, [this](wxCommandEvent&)
+    {
+        if (!m_solverSamples.empty())
+        {
+            ConfigureSolver(m_solverSamples.at("artifact_id").get<std::string>());
+        }
+    }, IdReuseSolverConditions);
     Bind(
         wxEVT_MENU,
         [this](wxCommandEvent&)
@@ -73,10 +80,10 @@ void StudioFrame::BindSolver()
                          });
 }
 
-/** @brief 해석 조건은 사용자가 확인한 입력이며 보드 물성을 대신 생성하지 않는다. */
-void StudioFrame::ConfigureSolver()
+/** @brief 프로젝트의 저장 조건과 과거 결과 목록을 현재 검토에 연결한다. */
+void StudioFrame::ConfigureSolver(const std::string& resultId)
 {
-    if (m_busy || !m_solverConfigured || m_project.empty() || m_solverWorkflow.Active() || m_solverRestoring)
+    if (m_busy || !m_connected || !m_solverConfigured || m_project.empty() || m_solverWorkflow.Active() || m_solverRestoring)
     {
         return;
     }
@@ -87,22 +94,74 @@ void StudioFrame::ConfigureSolver()
     }
     const auto project = m_project;
     const auto revision = m_revision;
-    const auto settings = Studio::ShowSolverReview(this, revision, m_solverDraft, m_radiationDraft,
-        m_recordRadiation->GetValue(), [this, project, revision](const Json& input, auto accepted, auto rejected)
+    m_busy = true;
+    UpdateControls();
+    Send("solver.conditions", Json{{"expected_revision", revision}}, false, Context(),
+        [this, project, revision, resultId](const Json& catalog)
+        {
+            CallAfter([this, project, revision, resultId, catalog]()
+            {
+                m_busy = false;
+                UpdateControls();
+                if (m_connected && !m_closing && m_project == project && m_revision == revision)
+                {
+                    OpenSolverReview(project, revision, catalog, resultId);
+                }
+            });
+        },
+        [this](const Json& error)
+        {
+            Failure("해석 조건 조회 실패. " + DiagnosticMessage(error));
+        });
+}
+
+/** @brief 조건 저장은 프로젝트 개정에 반영하고 실행은 다시 검토한 입력으로 시작한다. */
+void StudioFrame::OpenSolverReview(const std::string& project, const std::string& revision, const Json& catalog,
+                                   const std::string& resultId)
+{
+    const auto decision = Studio::ShowSolverReview(this, revision, m_solverDraft, catalog, resultId,
+        [this, project, revision](const char* method, const Json& input, auto accepted, auto rejected)
         {
             if (!m_connected || m_closing || m_project != project || m_revision != revision || HasDraft())
             {
                 rejected(Json{{"message", "현재 개정 또는 서비스 연결이 바뀌었습니다. 다시 열어 검토하세요."}});
                 return;
             }
-            Send("solver.preview", Json{{"expected_revision", revision}, {"settings", input}}, false, Context(),
-                 std::move(accepted), std::move(rejected));
+            auto request = input;
+            request["expected_revision"] = revision;
+            Send(method, request, false, Context(), std::move(accepted), std::move(rejected));
         });
-    if (settings && m_connected && !m_closing && m_project == project && m_revision == revision && !HasDraft())
+    if (!decision || !m_connected || m_closing || m_project != project || m_revision != revision || HasDraft())
     {
-        m_solverSettings = *settings;
-        StartSolver();
+        return;
     }
+    if (decision->saveName.empty())
+    {
+        m_solverSettings = decision->settings;
+        StartSolver();
+        return;
+    }
+    const bool clean = m_savedRevision == revision;
+    m_busy = true;
+    UpdateControls();
+    Send("solver.conditions.save", Json{{"expected_revision", revision}, {"command_id", Uuid()},
+                                       {"name", decision->saveName}, {"settings", decision->settings}}, true, Context(),
+        [this, clean](const Json& result)
+        {
+            m_revision = result.at("new_revision").get<std::string>();
+            RefreshEditor(m_selection, [this, clean]()
+            {
+                Ready("현재 프로젝트에 해석 조건을 추가했습니다.");
+                if (clean)
+                {
+                    SaveProject();
+                }
+            });
+        },
+        [this](const Json& error)
+        {
+            Failure("해석 조건 저장 실패. " + DiagnosticMessage(error));
+        });
 }
 
 void StudioFrame::OpenRadiation()

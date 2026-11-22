@@ -13,8 +13,7 @@ void StudioFrame::BuildSolverInterface()
     auto* tools = new wxWrapSizer(wxHORIZONTAL);
     AddTool(panel, tools, IdRunSolver, "설정 및 해석 실행");
     AddTool(panel, tools, IdCancelSolver, "해석 취소");
-    m_recordRadiation = new wxCheckBox(panel, wxID_ANY, Display("NF2FF 기록"));
-    tools->Add(m_recordRadiation, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::Space));
+    AddTool(panel, tools, IdReuseSolverConditions, "결과 조건 다시 사용");
     AddTool(panel, tools, IdRadiation, "방사 패턴 조회");
     AddTool(panel, tools, IdProjectStudy, "프로젝트 연구");
     layout->Add(tools, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));

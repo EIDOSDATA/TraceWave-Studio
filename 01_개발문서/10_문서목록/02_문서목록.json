@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 193,
+    "current_07_검증": 194,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28409,9 +28409,9 @@
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 18539,
-      "working_tree_sha256": "38f6fe03490b666c683370431645197e5b0b2368bc2602bf26aff27444f136d8",
-      "text_lines": 93,
+      "bytes": 20145,
+      "working_tree_sha256": "0bafc9de830bd3e9ca2e9c2c42e5be62aebd154cb08239ed1687598c0291f1f1",
+      "text_lines": 101,
       "text_status": "utf8_read"
     },
     {
@@ -28747,8 +28747,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 642331,
-      "working_tree_sha256": "456d86f97e52804169a0007428c1422ba66d0acd31e989974da3809ecead3b7a"
+      "bytes": 642586,
+      "working_tree_sha256": "a3b624e5e33a5e9e1eca52ea17b5b4433b3b5a130228a646206f80d10b113ece"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -31559,6 +31559,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/317_해석조건_저장재사용과_원호아이에프에이_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2875,
+      "working_tree_sha256": "53e5e4cc712b4012b4359f960ca73947354ece81aea973f7987a2971c70d766a",
+      "text_lines": 20,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/31_프로젝트_편집복원_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
@@ -32113,9 +32122,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 32181,
-      "working_tree_sha256": "96be2620d3925ffc23a4607f047570b669aaa373592ae5dadfc52534daba6520",
-      "text_lines": 213,
+      "bytes": 32406,
+      "working_tree_sha256": "922c648ae18e81dc2299849b38027991fe619818e77198ff7e287ed237eb8992",
+      "text_lines": 215,
       "text_status": "utf8_read"
     },
     {
@@ -32293,8 +32302,8 @@
       "path": "01_개발문서/09_개발계획/13_전자기해석과_후처리_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 30018,
-      "working_tree_sha256": "40d770f955574b27b7e45647681b49be67fcf282a13540a909d80131b17dd275",
+      "bytes": 30131,
+      "working_tree_sha256": "cb2d023a36ef1b7712049bdc24e5842af6c4638ba8388d8e8cfcc35aad487b23",
       "text_lines": 96,
       "text_status": "utf8_read"
     },
@@ -32311,9 +32320,9 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 19348,
-      "working_tree_sha256": "34e42a9b239e99fcb34c97170005518e2bf864bf250f782e4cbe4d3aaa475fdc",
-      "text_lines": 141,
+      "bytes": 19477,
+      "working_tree_sha256": "87c37a6492ff9503c3dc10188770821834a11615f1a98f18e97c3148cd80f12f",
+      "text_lines": 143,
       "text_status": "utf8_read"
     },
     {
@@ -33089,9 +33098,9 @@
       "path": "Code/ui/wxwidgets/README.md",
       "category": "repository_guide",
       "review_scope": "개발 문서 진입/현재 상태 검토",
-      "bytes": 42398,
-      "working_tree_sha256": "3157b351762eb52ca1b9a0ca2383a6b73a541afb54f76e2abfc3413ebb753ca0",
-      "text_lines": 247,
+      "bytes": 42771,
+      "working_tree_sha256": "2b91f1516d3f78bdf3de88a7dce6133cdf84cca07efc75f48b43330b7244daed",
+      "text_lines": 249,
       "text_status": "utf8_read"
     },
     {

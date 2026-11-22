@@ -8316,6 +8316,14 @@
       "extension_profile": "rfad.rf-validation/0.1",
       "status": "implemented"
     },
+    "solver.conditions": {
+      "extension_profile": "rfad.solver-conditions/0.1",
+      "status": "implemented"
+    },
+    "solver.conditions.save": {
+      "extension_profile": "rfad.solver-conditions/0.1",
+      "status": "implemented"
+    },
     "solver.latest": {
       "extension_profile": "rfad.solver-view/0.1",
       "status": "implemented"
@@ -14293,8 +14301,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
-      "text_sha256": "f8f4bb13c97b1777890d3d3ac1011c7d6a6088c9439b639d921e9a7f430be236",
-      "utf8_bytes": 18446
+      "text_sha256": "91ebd10bc666490b347f8c0ba27b4077ea323d08fc364aacf862e8c1e2245c20",
+      "utf8_bytes": 20044
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
@@ -15118,8 +15126,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "52ddceecfb254335f1b969d6a8115058a974908eff7a0b4420e69a5b332f6db7",
-      "utf8_bytes": 8214
+      "text_sha256": "4cb38dcd1c35e806590969c644db1fa6d686a3c4a4b6618be7a367eeeb9cf7f4",
+      "utf8_bytes": 8308
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
@@ -15278,8 +15286,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "ce0f6a2abfcbc569247a69449353c6d3118588768199bdc647f6fe081dc1ecd0",
-      "utf8_bytes": 38363
+      "text_sha256": "c8f1a48a20cfa6115442d53c418008851a4757d7ca45bbd2d529b3ecff99023a",
+      "utf8_bytes": 38791
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -15313,8 +15321,8 @@
     },
     {
       "path": "Code/src/rfad/application/sweep_copy.py",
-      "text_sha256": "f8c73ef3c69deb28811892247149c5c273781961e367bf7854a01dcb55e6966c",
-      "utf8_bytes": 8866
+      "text_sha256": "43eb862e69b1dc28f0205f69752aeba8fa72ee527d67b210a226e45367c83a56",
+      "utf8_bytes": 8960
     },
     {
       "path": "Code/src/rfad/application/sweep_selection.py",
@@ -15533,8 +15541,8 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "a4f2c9bccee1aa604cf428c858a256b6eb4c3dda7f0a6df72d9fbaed21adb4bf",
-      "utf8_bytes": 24922
+      "text_sha256": "30fe25af71720e2b8eb0da59ea37714b26b7f3225a26be6b075ae41d35454b78",
+      "utf8_bytes": 25188
     },
     {
       "path": "Code/src/rfad/domain/radiation_polarization.py",
@@ -16633,8 +16641,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "67b20776174974511dbd1d898d1a5c7b52913366318163178cd053aface181d9",
-      "utf8_bytes": 33385
+      "text_sha256": "49d8bcd5ebbd54195b45e04142c47b0064ea5687669800a5dfc5d017dd47a348",
+      "utf8_bytes": 33472
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",

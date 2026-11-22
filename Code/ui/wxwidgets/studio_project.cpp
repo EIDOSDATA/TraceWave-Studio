@@ -51,7 +51,12 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
              WaitJob(task,
                      [this, path](const Json& result)
                      {
-                         m_project = result.at("project_id").get<std::string>();
+                         const auto openedProject = result.at("project_id").get<std::string>();
+                         if (m_project != openedProject)
+                         {
+                             m_solverDraft = Json::object();
+                         }
+                         m_project = openedProject;
                          m_revision = result.at("revision_id").get<std::string>();
                          m_savedRevision = result.at("saved_revision").get<std::string>();
                          ResetNetwork();

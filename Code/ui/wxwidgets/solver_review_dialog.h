@@ -11,9 +11,15 @@ class wxWindow;
 namespace Studio
 {
 using PreviewCallback = std::function<void(const nlohmann::json&)>;
-using SolverPreviewRequest = std::function<void(const nlohmann::json&, PreviewCallback, PreviewCallback)>;
+using SolverReviewRequest = std::function<void(const char*, const nlohmann::json&, PreviewCallback, PreviewCallback)>;
+
+struct SolverReviewDecision
+{
+    nlohmann::json settings;
+    std::string saveName;
+};
 
 /** @brief 사용자가 같은 입력의 검토 결과를 확인하고 실행을 누르면 그 입력을 반환한다. */
-std::optional<nlohmann::json> ShowSolverReview(wxWindow* parent, const std::string& revision,
-    nlohmann::json& draft, nlohmann::json& radiationDraft, bool recordRadiation, SolverPreviewRequest request);
+std::optional<SolverReviewDecision> ShowSolverReview(wxWindow* parent, const std::string& revision,
+    nlohmann::json& draft, const nlohmann::json& catalog, const std::string& resultId, SolverReviewRequest request);
 }

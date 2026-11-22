@@ -130,6 +130,7 @@ void StudioFrame::BuildInterface()
     bar->Append(design, Display("설계"));
     auto* analysis = new wxMenu;
     analysis->Append(IdRunSolver, Display("설정 및 해석 실행"));
+    analysis->Append(IdReuseSolverConditions, Display("결과 조건 다시 사용"));
     analysis->Append(IdCancelSolver, Display("해석 작업 취소"));
     analysis->Append(IdRadiation, Display("방사 패턴 조회"));
     analysis->Append(IdProjectStudy, Display("프로젝트 연구 / 격자·방사·손실"));

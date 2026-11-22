@@ -16,7 +16,7 @@ from rfad.application.catalog_api import describe as describe_catalog, query as 
 from rfad.application.pcb_selection_contract import READ_METHODS as PCB_SELECTION_READS, MUTATION_METHODS as PCB_SELECTION_MUTATIONS
 from rfad.application.project_archive import MAX_ARCHIVE_BYTES
 from rfad.application.project_study_contract import READS as STUDY_READS, MUTATIONS as STUDY_MUTATIONS
-from rfad.application import project_evidence, solver_preview, target_editor
+from rfad.application import project_evidence, solver_conditions_service, solver_preview, target_editor
 from rfad.application import edit_view_contract, edit_view_pages
 from rfad.application import exchange_service, exchange_contract
 from rfad.application import pcb_exchange_service
@@ -44,7 +44,7 @@ APPLICATION_ERRORS = {
     "E_NUMERIC": 1020,
 }
 PROJECT_MUTATIONS = {"project.open", "project.apply_command", "editor.apply", "canvas.apply", "project.undo", "project.redo", "project.save", "snapshot.create", "design.validate", "job.cancel", "geometry.build", "export.build", "export.preview"}
-PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit"})
+PROJECT_MUTATIONS.update({"solver.plan", "solver.prepare", "job.submit", solver_conditions_service.SAVE})
 PROJECT_MUTATIONS.add("export.verify")
 PROJECT_MUTATIONS.add(pcb_exchange_service.MUTATION)
 PROJECT_MUTATIONS.update(pcb_import_service.MUTATIONS | archive_receiver.MUTATIONS)
@@ -99,6 +99,8 @@ def capabilities(service=None, catalog=None) -> dict:
             ("job.status", "API-015"), ("job.cancel", "API-014"),
         )})
         result["methods"][project_evidence.METHOD] = {"status": "implemented", "extension_profile": "rfad.project-evidence/0.1"}
+        for method in (solver_conditions_service.READ, solver_conditions_service.SAVE):
+            result["methods"][method] = {"status": "implemented", "extension_profile": "rfad.solver-conditions/0.1"}
         result["methods"][solver_preview.METHOD] = {"status": "implemented", "extension_profile": "rfad.solver-preview/0.1"}
         result["project_profile"] = {
             "schema_version": SCHEMA_VERSION, "readable_schema_versions": list(READABLE_SCHEMA_VERSIONS),
@@ -353,7 +355,7 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | large_results.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, project_evidence.METHOD, solver_preview.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | large_results.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, project_evidence.METHOD, solver_preview.METHOD, solver_conditions_service.READ, "target.editor.get", "job.status", "editor.get", "canvas.get", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS | archive_receiver.READS:
             return None
         try:
@@ -394,6 +396,8 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
                 result = design_rule_service.read(service, method, params)
             elif method == project_evidence.METHOD:
                 result = project_evidence.read(service, params)
+            elif method == solver_conditions_service.READ:
+                result = solver_conditions_service.read(service, params)
             elif method == solver_preview.METHOD:
                 result = solver_preview.read(service, params)
             elif method == "target.editor.get":

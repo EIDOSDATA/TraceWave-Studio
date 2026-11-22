@@ -225,7 +225,9 @@ private:
     /** @brief 해석 실행과 취소 메뉴를 연결한다. */
     void BindSolver();
     /** @brief 해석 조건은 사용자가 확인한 입력이며 보드 물성을 대신 생성하지 않는다. */
-    void ConfigureSolver();
+    void ConfigureSolver(const std::string& resultId = {});
+    void OpenSolverReview(const std::string& project, const std::string& revision, const Json& catalog,
+                          const std::string& resultId);
     /** @brief 봉인된 결과의 방사 조회 화면을 독립적으로 연다. */
     void OpenRadiation();
     /** @brief 작업 상태와 로그를 해석 패널에 표시한다. */
@@ -378,8 +380,6 @@ private:
     bool m_solverRestoring = false;
     std::string m_solverState = "idle";
     Json m_solverDraft = Json::object();
-    wxCheckBox* m_recordRadiation = nullptr;
-    Json m_radiationDraft = Json::object();
     Json m_solverSettings = Json::object();
     Json m_solverResult = Json::object();
     Json m_solverSamples = Json::object();

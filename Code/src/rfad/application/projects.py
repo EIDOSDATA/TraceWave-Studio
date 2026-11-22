@@ -15,6 +15,7 @@ from rfad.application.edit_view_pages import EditViewPages
 from rfad.application.cad_jobs import CAD_METHODS, CadCoordinator, CadRuntime
 from rfad.application.exchange_jobs import ExchangeCoordinator
 from rfad.application import exchange_service, exchange_contract
+from rfad.application import solver_conditions_service
 from rfad.application.solver_jobs import SOLVER_METHODS, SolverCoordinator, SolverRuntime
 from rfad.application.job_state import TERMINAL, append_event
 from rfad.application.project_contract import (
@@ -241,6 +242,8 @@ class ProjectService:
             exchange_contract.validate_request(method, context, data)
         elif method in CAD_METHODS | {"export.preview"}:
             self.cad.validate_input(method, context, data)
+        elif method == solver_conditions_service.SAVE:
+            solver_conditions_service.validate_save(context, data)
         elif method in SOLVER_METHODS:
             self.solver.validate_input(method, context, data)
         else:
@@ -303,7 +306,11 @@ class ProjectService:
             return self.templates.apply(state, context, data)
         elif method in STUDY_MUTATIONS:
             return self.studies.admit(state, method, context, data)
+        elif method == solver_conditions_service.SAVE:
+            return solver_conditions_service.save(self, state, context, data)
         elif method == "project.apply_command":
+            if data["type"] in ("solver.conditions.insert", "solver.conditions.remove"):
+                raise ProjectError("E_UNSUPPORTED", "해석 조건은 solver.conditions.save로 저장하십시오.")
             if data["type"] in ("measurement.registry.replace", "measurement.workspace.replace"):
                 raise ProjectError("E_UNSUPPORTED", "측정 원본 편집은 검토된 측정 API를 사용하십시오.")
             if data["type"] in ("pcb.features.replace", "pcb.features.replay"):

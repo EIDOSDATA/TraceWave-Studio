@@ -6,6 +6,7 @@ import math
 from uuid import UUID, uuid4
 
 from rfad.domain.errors import ProjectError
+from rfad.domain import solver_conditions
 from rfad.domain.resource_limits import MAX_PARAMETERS
 from rfad.domain.units import Quantity, QuantityError
 from rfad.domain.parameter_graph import evaluate_parameters, expression_record, restore_parameter_command
@@ -284,6 +285,7 @@ def validate_project(document: dict) -> None:
     validate_precision_origins(document)
     validate_project_library(document)
     validate_project_registry(document)
+    solver_conditions.validate(document)
     validate_selection_origin(document)
     validate_pcb(document)
 
@@ -377,6 +379,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         changed_ids, invalidation_set, inverse = apply_precision_command(result, payload)
     elif command_type == SELECTION_COMMAND:
         changed_ids, invalidation_set, inverse = apply_selection_command(result, payload)
+    elif command_type in (solver_conditions.INSERT, solver_conditions.REMOVE):
+        changed_ids, invalidation_set, inverse = solver_conditions.apply(result, command_type, payload)
     elif command_type == NETWORK_COMMAND:
         changed_ids, invalidation_set, inverse = apply_library_command(result, payload)
     elif command_type == MEASUREMENT_COMMAND:

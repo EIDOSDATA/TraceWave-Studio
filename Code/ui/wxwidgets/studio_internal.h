@@ -60,6 +60,7 @@ enum
     IdNewNet,
     IdNewPort,
     IdRunSolver,
+    IdReuseSolverConditions,
     IdCancelSolver,
     IdRadiation,
     IdProjectStudy,

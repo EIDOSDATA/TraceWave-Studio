@@ -200,7 +200,7 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         method.rfind("pcb.features.", 0) != 0 && method.rfind("pcb.import.", 0) != 0 &&
         method.rfind("measurement.", 0) != 0 && method.rfind("archive.", 0) != 0 && method.rfind("study.", 0) != 0 && method != "cad.latest" &&
         method != "solver.latest" && method != "solver.samples" && method != "result.open" && method != "job.cancel" &&
-        method != "project.evidence" && method != "solver.preview" &&
+        method != "project.evidence" && method != "solver.preview" && method != "solver.conditions" &&
         method != "solver.plan" && method != "solver.prepare" && method != "job.submit" &&
         !(method == "snapshot.create" && input.value("description", "") == "GUI PCB 해석 입력") &&
         !(method == "snapshot.create" && input.value("description", "") == "GUI 출력 검토 입력") &&
