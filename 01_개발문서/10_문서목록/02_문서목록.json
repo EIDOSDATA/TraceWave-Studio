@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 207,
+    "current_07_검증": 208,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28747,8 +28747,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 643661,
-      "working_tree_sha256": "c25c93e2511be65747bf81e89121aa9f7a96f1fd83f68d055bb72894c4dc777e"
+      "bytes": 643662,
+      "working_tree_sha256": "823dd0f3378074f8be8329c09bb58d073b762f672e225b3bff7d24d1a2c5fa64"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -31701,6 +31701,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/331_복소위상과_군지연_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1223,
+      "working_tree_sha256": "3eccd418a0688ddfd73f51d0acb734fec23e7382d9acfbb070eccb8db34d23b8",
+      "text_lines": 8,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/33_스튜디오_보존묶음복원_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
@@ -32419,8 +32428,8 @@
       "path": "01_개발문서/09_개발계획/13_전자기해석과_후처리_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 30896,
-      "working_tree_sha256": "af085f60c25690896357dd9c67f623b9c1b2087324a4be86d59c48e822dff091",
+      "bytes": 31005,
+      "working_tree_sha256": "b57baeeed365372546e97c675b8a4b197b19d09cf7dde70979fda238cafbc498",
       "text_lines": 96,
       "text_status": "utf8_read"
     },
@@ -32437,9 +32446,9 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 23872,
-      "working_tree_sha256": "29cd733753178364f22f49fdc26ff3f0cda0ba82a50356b82eafe49698dbbdc7",
-      "text_lines": 167,
+      "bytes": 24347,
+      "working_tree_sha256": "f3d5371c4b8dc164ee945fb924822cd4d64cdf201329c377329f02d9e5bf6b40",
+      "text_lines": 171,
       "text_status": "utf8_read"
     },
     {

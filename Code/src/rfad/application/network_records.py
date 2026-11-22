@@ -95,6 +95,50 @@ def assessment_summary(assessment):
     return result
 
 
+def _group_delay(data, row, column, index):
+    """! @brief 한 채널의 실제 인접 S 표본만으로 위상 기울기를 ns로 산출한다."""
+    if data["parameter_kind"] != "S":
+        return None, "not_applicable"
+    sign = {"exp(+j*omega*t)": -1, "exp(-j*omega*t)": 1}.get(data["phasor_convention"])
+    if sign is None:
+        return None, "unknown_phasor"
+    axis = data["frequency_hz"]
+    values = data["values_ri"]
+    mask = data["valid_mask"]
+
+    def phase(point):
+        """! @brief 크기 0 또는 실제 미정 표본에는 위상을 두지 않는다."""
+        if not mask[point][row][column]:
+            return None
+        real, imaginary = values[point][row][column]
+        return math.atan2(imaginary, real) if real or imaginary else None
+
+    center = phase(index)
+    if center is None:
+        return None, "phase_unavailable"
+    slopes = []
+    for neighbor in (index - 1, index + 1):
+        if not 0 <= neighbor < len(axis):
+            continue
+        nearby = phase(neighbor)
+        if nearby is None:
+            return None, "phase_unavailable"
+        delta = math.remainder(nearby - center, math.tau)
+        if math.isclose(abs(delta), math.pi, rel_tol=0.0, abs_tol=1e-10):
+            return None, "ambiguous_phase_step"
+        span = axis[neighbor] - axis[index]
+        slopes.append((abs(span), delta / span))
+    if not slopes:
+        return None, "insufficient_samples"
+    estimate = slopes[0][1]
+    if len(slopes) == 2:
+        (left, first), (right, second) = slopes
+        span = left + right
+        estimate = first * (right / span) + second * (left / span)
+    delay = sign * estimate * (1e9 / math.tau)
+    return (delay, "finite") if math.isfinite(delay) else (None, "nonfinite")
+
+
 def samples(data, offset=0, limit=MAX_PAGE, row=0, column=0):
     """! @brief 표본을 보간하지 않고 요청 범위의 실제 복소 값과 표시값만 투영한다."""
     if type(offset) is not int or not 0 <= offset < len(data["frequency_hz"]):
@@ -116,7 +160,9 @@ def samples(data, offset=0, limit=MAX_PAGE, row=0, column=0):
         db_state = "not_applicable" if data["parameter_kind"] != "S" else "missing" if not valid else "negative_infinity" if magnitude == 0 else "finite" if magnitude_db is not None and math.isfinite(magnitude_db) else "nonfinite"
         phase_state = "missing" if not valid else "undefined_zero_magnitude" if magnitude == 0 else "finite"
         vswr_state = "not_applicable" if data["parameter_kind"] != "S" or row != column else "missing" if not valid else "positive_infinity" if magnitude == 1 else "undefined_active" if magnitude > 1 else "finite" if math.isfinite(vswr) else "nonfinite"
+        delay, delay_state = _group_delay(data, row, column, index)
         output.append({"index": index, "frequency_hz": data["frequency_hz"][index],
+                       "group_delay_ns": delay, "group_delay_ns_state": delay_state,
                        "z0_ohm": None if data["z0_ohm"] is None else deepcopy(data["z0_ohm"][index]),
                        "real": pair[0] if valid else None, "imag": pair[1] if valid else None,
                        "magnitude": magnitude if magnitude is None or math.isfinite(magnitude) else None,

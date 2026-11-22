@@ -15,8 +15,8 @@
 namespace
 {
 const std::array<std::string, 5> Units{"auto", "Hz", "kHz", "MHz", "GHz"};
-const std::array<std::string, 6> Metrics{"magnitude_db", "phase_deg", "vswr", "real", "imag", "magnitude"};
-const std::array<std::string, 6> Labels{"크기 (dB)", "위상 (deg)", "VSWR", "실수부", "허수부", "크기"};
+const std::array<std::string, 7> Metrics{"magnitude_db", "phase_deg", "vswr", "real", "imag", "magnitude", "group_delay_ns"};
+const std::array<std::string, 7> Labels{"크기 (dB)", "위상 (deg)", "VSWR", "실수부", "허수부", "크기", "군지연 (ns)"};
 }
 ResultNetworkView::ResultNetworkView(wxWindow* parent)
     : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL | wxTAB_TRAVERSAL)
@@ -33,6 +33,7 @@ ResultNetworkView::ResultNetworkView(wxWindow* parent)
     m_row = new wxChoice(this, wxID_ANY);
     m_column = new wxChoice(this, wxID_ANY);
     m_metric = new wxChoice(this, wxID_ANY);
+    m_metric->SetToolTip(Display("군지연은 원본의 시간 위상 규약과 인접 S 표본을 사용합니다. 표본 사이 위상 변화가 180도를 넘으면 복원할 수 없습니다."));
     m_frequencyUnit = new wxChoice(this, wxID_ANY);
     for (const auto& label : Labels)
     {
@@ -209,11 +210,13 @@ void ResultNetworkView::Present()
     m_chart->SetPage(page, Display(ResultUi::Text(m_description.at("label"))));
     const auto unit = page.value("unit", std::string());
     m_chart->SetMetric(Metrics.at(metric),
-                       Display(Labels.at(metric) + (metric >= 3 && !unit.empty() ? " / " + unit : "")));
+                       Display(Labels.at(metric) + (metric >= 3 && metric <= 5 && !unit.empty() ? " / " + unit : "")));
     m_chart->SetFrequencyUnit(scale.unit);
     m_samples->ClearAll();
+    const bool delay = Metrics.at(metric) == "group_delay_ns";
     const std::array<std::string, 8> labels{
-        "표본", "주파수 (" + scale.unit + ")", "실수부", "허수부", "크기 (dB)", "위상 (deg)", "VSWR", "상태 / 출처"};
+        "표본", "주파수 (" + scale.unit + ")", "실수부", "허수부", "크기 (dB)", "위상 (deg)",
+        delay ? "군지연 (ns)" : "VSWR", "상태 / 출처"};
     for (std::size_t index = 0; index < labels.size(); ++index)
     {
         m_samples->InsertColumn(static_cast<long>(index), Display(labels[index]), wxLIST_FORMAT_LEFT,
@@ -231,7 +234,8 @@ void ResultNetworkView::Present()
             m_samples->SetItem(
                 row, static_cast<int>(index + 2),
                 Display(ResultUi::SampleValue(
-                    sample, std::array<std::string, 5>{"real", "imag", "magnitude_db", "phase_deg", "vswr"}[index])));
+                    sample, std::array<std::string, 5>{"real", "imag", "magnitude_db", "phase_deg",
+                                                      delay ? "group_delay_ns" : "vswr"}[index])));
         }
         m_samples->SetItem(row, 7,
                            Display(ResultUi::State(sample.value("status", Json(nullptr))) + " / " +

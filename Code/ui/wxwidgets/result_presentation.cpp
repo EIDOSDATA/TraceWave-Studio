@@ -147,6 +147,18 @@ std::string SampleValue(const Json& point, const std::string& key)
     {
         return "유한값 없음";
     }
+    if (state == "unknown_phasor")
+    {
+        return "시간 위상 규약 미정";
+    }
+    if (state == "ambiguous_phase_step")
+    {
+        return "인접 위상차 부호 미정";
+    }
+    if (state == "phase_unavailable" || state == "insufficient_samples")
+    {
+        return "인접 위상 표본 부족";
+    }
     return Number(point.value(key, Json(nullptr)));
 }
 

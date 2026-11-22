@@ -180,6 +180,37 @@ class NetworkSolverProjectionTests(unittest.TestCase):
         self.assertEqual(points[2]["vswr_state"], "undefined_active")
         self.assertEqual(points[2]["z0_ohm"], [[100, 0]])
 
+    def test_group_delay_irregular_grid_wrapping_phase_convention_and_missing(self):
+        """! @brief 알려진 두 방향 지연을 페이지 경계, 미정값, 위상 래핑과 대조한다."""
+        axis = [1e9, 1.12e9, 1.27e9, 1.4e9, 1.58e9]
+        ports = [str(uuid4()), str(uuid4())]
+        for convention, direction in (("exp(+j*omega*t)", -1), ("exp(-j*omega*t)", 1)):
+            matrices = []
+            for f in axis:
+                def pair(delay):
+                    angle = direction * math.tau * f * delay
+                    return [math.cos(angle), math.sin(angle)]
+
+                matrices.append([[[.2, 0], pair(.8e-9)], [pair(1.7e-9), [.3, 0]]])
+            data = make_dataset(parameter_kind="S", frequency_hz=axis, port_ids=ports, values_ri=matrices)
+            data["phasor_convention"] = convention
+            for row, column, expected in ((1, 0, 1.7), (0, 1, .8)):
+                full = samples(data, row=row, column=column)["samples"]
+                page = samples(data, offset=2, limit=2, row=row, column=column)["samples"]
+                self.assertEqual(page, full[2:4])
+                for point in full:
+                    self.assertEqual(point["group_delay_ns_state"], "finite")
+                    self.assertAlmostEqual(point["group_delay_ns"], expected, places=12)
+            data["values_ri"][2][1][0] = [0, 0]
+            missing = samples(data, row=1, column=0)["samples"]
+            self.assertEqual([point["group_delay_ns_state"] for point in missing],
+                             ["finite", "phase_unavailable", "phase_unavailable", "phase_unavailable", "finite"])
+            data["phasor_convention"] = "unknown"
+            self.assertEqual(samples(data, row=0, column=1)["samples"][0]["group_delay_ns_state"], "unknown_phasor")
+            data["phasor_convention"] = convention
+            data["values_ri"][1][0][1] = [-v for v in data["values_ri"][0][0][1]]
+            self.assertEqual(samples(data, row=0, column=1)["samples"][0]["group_delay_ns_state"], "ambiguous_phase_step")
+
     def test_existing_pcb_complex_and_unknown_physical_conditions(self):
         """! @brief 계약용 표본을 사용하며 새 FDTD나 물리 검증을 주장하지 않는다."""
         document = fixture_document()
