@@ -102,6 +102,12 @@ class ProjectReviewTests(unittest.TestCase):
             self.assertEqual(result["mesh"]["lines_sha256"], canonical_hash(expected))
             self.assertEqual(result["mesh"]["case_sha256"], canonical_hash(plan["case"]))
             self.assertEqual(result["mesh"]["axes"]["z"]["pml_inner_mm"], [expected["z"][8], expected["z"][-9]])
+            quality = result["mesh"]["quality_reference"]
+            self.assertEqual(quality["max_excitation_hz"], 15e9)
+            self.assertEqual(quality["max_epsilon_r"], 2.2)
+            self.assertEqual(quality["min_wavelength_cells"], 10)
+            self.assertAlmostEqual(quality["vacuum_wavelength_mm"], 299792458 / 15e9 * 1000)
+            self.assertAlmostEqual(quality["model_wavelength_mm"], quality["vacuum_wavelength_mm"] / (2.2 ** .5))
             conductors = {row["id"]: row for row in result["model"]["included"] if row["role"] == "conductor"}
             for shape in plan["case"]["shapes"]:
                 row = conductors[shape["id"]]

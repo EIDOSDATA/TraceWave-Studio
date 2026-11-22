@@ -99,6 +99,7 @@ void SolverMeshView::DisplayPlan(const Json* review)
     m_review = review;
     m_highlight.clear();
     m_bandAxis = -1;
+    m_comparison.reset();
     Refresh(false);
 }
 
@@ -113,15 +114,18 @@ void SolverMeshView::Highlight(const std::string& id)
 {
     m_highlight = id;
     m_bandAxis = -1;
+    m_comparison.reset();
     Refresh(false);
 }
 
-void SolverMeshView::HighlightBand(int axis, const std::array<double, 2>& bounds, bool applied)
+void SolverMeshView::HighlightBand(int axis, const std::array<double, 2>& bounds, bool applied,
+                                  std::optional<SolverMeshBand> comparison)
 {
     m_highlight.clear();
     m_bandAxis = axis;
     m_bandBounds = bounds;
     m_bandApplied = applied;
+    m_comparison = comparison;
     Refresh(false);
 }
 
@@ -288,11 +292,15 @@ void SolverMeshView::Paint(wxPaintEvent&)
     {
         drawComponent(*highlighted, true);
     }
-    if (m_bandAxis == first || m_bandAxis == second)
+    const auto drawBand = [&](int axis, const Span& bounds, wxPenStyle style)
     {
-        const bool vertical = m_bandAxis == first;
-        dc.SetPen(wxPen(palette.accent, FromDIP(3), m_bandApplied ? wxPENSTYLE_SOLID : wxPENSTYLE_SHORT_DASH));
-        for (const double value : m_bandBounds)
+        if (axis != first && axis != second)
+        {
+            return;
+        }
+        const bool vertical = axis == first;
+        dc.SetPen(wxPen(palette.accent, FromDIP(3), style));
+        for (const double value : bounds)
         {
             if (vertical)
             {
@@ -303,6 +311,11 @@ void SolverMeshView::Paint(wxPaintEvent&)
                 dc.DrawLine(point(u[0], value), point(u[1], value));
             }
         }
+    };
+    drawBand(m_bandAxis, m_bandBounds, m_bandApplied ? wxPENSTYLE_SOLID : wxPENSTYLE_SHORT_DASH);
+    if (m_comparison)
+    {
+        drawBand(m_comparison->axis, m_comparison->bounds, wxPENSTYLE_DOT);
     }
     dc.DestroyClippingRegion();
     dc.SetPen(wxPen(palette.border));

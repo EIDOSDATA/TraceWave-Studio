@@ -2,6 +2,7 @@
 #include "solver_review_dialog.h"
 #include "solver_mesh_view.h"
 #include "solver_local_mesh_panel.h"
+#include "solver_mesh_quality_panel.h"
 #include "studio_notebook.h"
 #include "studio_support.h"
 #include "studio_theme.h"
@@ -227,24 +228,42 @@ public:
                                   wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
         m_output->SetName("solver.review.output");
         m_output->GetParent()->GetSizer()->Add(m_output, 1, wxEXPAND | wxALL, pad);
+        m_localPage = m_book->GetPageCount();
         auto* local = Page("국부 격자");
         m_local = new SolverLocalMeshPanel(local, m_catalog.value("local_mesh_targets", Json::array()),
             [this]() { Invalidate(); },
             [this](int axis, const std::array<double, 2>& bounds, long firstLine, bool applied)
             {
-                m_book->SetSelection(1);
-                m_plane->SetSelection(axis == 2 ? 1 : 0);
-                m_axis->SetSelection(axis);
-                UpdatePlot();
-                UpdateAxis();
-                m_plot->HighlightBand(axis, bounds, applied);
-                m_coordinates->LocateCell(firstLine);
+                SetGridRepair({});
+                LocateBand(axis, bounds, firstLine, applied);
                 const auto status = wxString::Format(Display("국부 격자 %s축 %.8g ~ %.8g mm / %s"),
                     Display(std::string(1, "XYZ"[axis])), bounds[0], bounds[1],
                     Display(applied ? "적용 경계" : "상위 규칙이 적용된 경계"));
                 SetStatus(Utf8(status));
             });
         local->GetSizer()->Add(m_local, 1, wxEXPAND);
+        auto* quality = Page("격자 품질");
+        m_quality = new SolverMeshQualityPanel(quality,
+            [this](const Studio::MeshQuality::Report& report, const Studio::MeshQuality::Finding& row,
+                   const wxString& setting)
+            {
+                const auto bounds = report.Bounds(row.worst);
+                std::optional<SolverMeshBand> comparison;
+                if (row.cross)
+                {
+                    comparison = SolverMeshBand{row.cross->axis, report.Bounds(*row.cross)};
+                }
+                if (row.zone != Studio::MeshQuality::Zone::Model)
+                {
+                    m_full->SetValue(true);
+                }
+                SetGridRepair(row.setting);
+                LocateBand(row.worst.axis, bounds, static_cast<long>(row.worst.first), false, comparison);
+                SetStatus(Utf8(wxString::Format(Display("격자 품질 %s축 %.8g ~ %.8g mm | 확인할 설정 %s"),
+                    Display(std::string(1, "XYZ"[row.worst.axis])), bounds[0], bounds[1], setting)));
+            },
+            [this](const std::string& path) { FocusReviewSetting(path); });
+        quality->GetSizer()->Add(m_quality, 1, wxEXPAND);
         LoadFields(m_draft);
 
         auto* actions = new wxBoxSizer(wxHORIZONTAL);
@@ -595,6 +614,12 @@ private:
         m_full->SetName("solver.review.full");
         controls->Add(m_full, 0, wxALIGN_CENTER_VERTICAL);
         controls->AddStretchSpacer();
+        m_gridRepair = new wxButton(page, wxID_ANY, Display("관련 설정으로 이동"));
+        m_gridRepair->SetName("solver.review.quality_edit");
+        StudioTheme::Button(*m_gridRepair);
+        m_gridRepair->Hide();
+        controls->Add(m_gridRepair, 0, wxRIGHT, gap);
+        m_gridRepair->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { FocusReviewSetting(m_gridRepairPath); });
         controls->Add(new wxStaticText(page, wxID_ANY, Display("수치 표의 축")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, gap);
         m_axis = new wxChoice(page, wxID_ANY);
         m_axis->SetName("solver.review.axis");
@@ -661,6 +686,7 @@ private:
             const bool available = index < included.size();
             locate->Enable(available);
             const auto& row = available ? included.at(index) : model.at("excluded").at(index - included.size());
+            SetGridRepair({});
             m_plot->Highlight(available ? row.at("id").get<std::string>() : "");
             m_modelDetails->ChangeValue(Display(row.at("name").get<std::string>() + "\nID " +
                 row.at("id").get<std::string>() + "\n" +
@@ -684,6 +710,41 @@ private:
     void UpdatePlot()
     {
         m_plot->SetView(m_plane->GetSelection(), m_full->GetValue());
+    }
+
+    /** @brief 국부 규칙과 품질 경고가 모두 같은 격자와 수치 표를 이용한다. */
+    void LocateBand(int axis, const std::array<double, 2>& bounds, long firstLine, bool applied,
+                    std::optional<SolverMeshBand> cross = std::nullopt)
+    {
+        const int plane = cross ? axis + cross->axis - 1 : axis == 2 ? 1 : 0;
+        m_book->SetSelection(1);
+        m_plane->SetSelection(plane);
+        m_axis->SetSelection(axis);
+        UpdatePlot();
+        UpdateAxis();
+        m_plot->HighlightBand(axis, bounds, applied, cross);
+        m_coordinates->LocateCell(firstLine);
+    }
+
+    void SetGridRepair(const std::string& path)
+    {
+        m_gridRepairPath = path;
+        m_gridRepair->Show(!path.empty());
+        m_gridRepair->GetParent()->Layout();
+    }
+
+    /** @brief 품질 경고나 검토 오류를 다시 조정할 수 있는 입력으로 연결한다. */
+    void FocusReviewSetting(const std::string& path)
+    {
+        if (path.rfind("settings.local_mesh", 0) == 0)
+        {
+            m_book->SetSelection(m_localPage);
+            m_local->FocusRule(path);
+        }
+        else
+        {
+            FocusInput(FieldFor(path));
+        }
     }
 
     void UpdateAxis()
@@ -785,6 +846,8 @@ private:
         m_model->DeleteAllItems();
         m_modelDetails->Clear();
         m_local->DisplayReport(Json::object());
+        m_quality->DisplayMesh(nullptr);
+        SetGridRepair({});
         m_axisSummary->SetLabel(wxEmptyString);
         m_meshSummary->SetLabel(wxEmptyString);
         m_meshSettings->SetLabel(wxEmptyString);
@@ -966,8 +1029,7 @@ private:
         if (local)
         {
             SetStatus(problem);
-            m_book->SetSelection(m_book->GetPageCount() - 1);
-            m_local->FocusRule(field);
+            FocusReviewSetting(field);
             return;
         }
         if (field.empty())
@@ -1021,6 +1083,8 @@ private:
             settings.at("grid_mm").get<double>(), settings.value("feature_subdivisions", 1), grid));
         m_plot->DisplayPlan(&m_result);
         m_local->DisplayReport(mesh.value("local_mesh_report", Json::object()));
+        const bool hasQuality = mesh.contains("quality_reference");
+        m_quality->DisplayMesh(hasQuality ? &mesh : nullptr, &settings);
         UpdateAxis();
         FillModel();
         const std::string radiation = settings.contains("radiation") ? "NF2FF 기록 사용" : "NF2FF 기록 끔";
@@ -1102,6 +1166,10 @@ private:
     wxStaticText* m_modelSummary = nullptr;
     wxTextCtrl* m_modelDetails = nullptr;
     SolverLocalMeshPanel* m_local = nullptr;
+    std::size_t m_localPage = 0;
+    SolverMeshQualityPanel* m_quality = nullptr;
+    wxButton* m_gridRepair = nullptr;
+    std::string m_gridRepairPath;
 };
 }
 

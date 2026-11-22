@@ -9,6 +9,22 @@ from rfad.application.pcb_environment import scene_extents
 from rfad.application import pcb_local_mesh
 
 MAX_GRID_POINTS = 1500000
+MIN_WAVELENGTH_CELLS = 10
+
+
+def wavelength_reference(case):
+    """! @brief 여기 상한과 실제로 소비하는 유전체를 기준으로 검토용 파장을 계산한다."""
+    dielectric = [row for row in case["layers"] if row["role"] == "dielectric"]
+    dielectric.extend(case.get("surface_layers", []))
+    dielectric.extend(row for row in case.get("environment", {}).get("parts", [])
+                      if row["kind"] == "dielectric_case")
+    epsilon = max(row["epsilon_r"] for row in dielectric)
+    excitation = case["excitation"]
+    frequency = excitation["center_hz"] + excitation["width_hz"]
+    return {"max_excitation_hz": frequency, "max_epsilon_r": epsilon,
+            "vacuum_wavelength_mm": 299792458.0 / frequency * 1000,
+            "model_wavelength_mm": 299792458.0 / (frequency * math.sqrt(epsilon)) * 1000,
+            "min_wavelength_cells": MIN_WAVELENGTH_CELLS, "model_bounds_mm": scene_extents(case, sheet=True)}
 
 
 def _fail(message, field="settings.mesh_policy"):

@@ -10,7 +10,7 @@ import math
 from rfad.application.pcb_contacts import validate_native_contacts
 from rfad.application.pcb_geometry import (MAX_POLYGON_POINTS, fail, scalar, length, point,
                                             shape_polygons, distance_to_shape, _inside_board)
-from rfad.application.pcb_mesh import build_grid, policy_report
+from rfad.application.pcb_mesh import build_grid, policy_report, wavelength_reference
 from rfad.application.pcb_local_mesh import FIELD as LOCAL_MESH_FIELD, covers_feed
 from rfad.application.pcb_compute import limits as compute_limits
 from rfad.application.pcb_environment import project_environment
@@ -311,21 +311,18 @@ def project_pcb(document, settings):
         return dielectric_volume(materials, material_id, field, center_hz)
 
     environment = project_environment(document, case, volume)
-    dielectric_regions = list(dielectrics)
     if environment is not None:
         case["environment"] = environment
-        dielectric_regions.extend(part for part in environment["parts"] if part["kind"] == "dielectric_case")
     surfaces = project_surfaces(document, case, volume)
     if surfaces:
         case["surface_layers"] = surfaces
-        dielectric_regions.extend(surfaces)
     if environment is not None or surfaces:
         case["materials"] = list(materials.consumed.values())
     voids = project_voids(document, case, polygons_by_id)
     if voids:
         case["mechanical_voids"] = voids
-    shortest = 299792458.0 / (center_hz * 1.5 * math.sqrt(max(region["epsilon_r"] for region in dielectric_regions))) * 1000
-    if settings["grid_mm"] > shortest / 10:
+    reference = wavelength_reference(case)
+    if settings["grid_mm"] > reference["model_wavelength_mm"] / reference["min_wavelength_cells"]:
         fail("E_GEOMETRY", "최소 모델 파장당 10개 격자 초기 기준을 충족하지 못했습니다.", "settings.grid_mm")
     lines, local_mesh = build_grid(case)
     if local_mesh is not None:

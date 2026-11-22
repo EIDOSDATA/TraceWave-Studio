@@ -252,6 +252,8 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/solver_review_dialog.cpp
     ui/wxwidgets/solver_local_mesh_panel.cpp
     ui/wxwidgets/solver_mesh_view.cpp
+    ui/wxwidgets/solver_mesh_quality.cpp
+    ui/wxwidgets/solver_mesh_quality_panel.cpp
     ui/wxwidgets/studio_solver_view.cpp
     ui/wxwidgets/solver_chart.cpp
     ui/wxwidgets/radiation_dialog.cpp
@@ -399,6 +401,10 @@ if(BUILD_TESTING)
     target_include_directories(tracewave_gui_presentation_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_gui_presentation_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME gui_presentation COMMAND tracewave_gui_presentation_tests)
+    add_executable(tracewave_solver_mesh_quality_tests tests/solver_mesh_quality_test.cpp ui/wxwidgets/solver_mesh_quality.cpp)
+    target_include_directories(tracewave_solver_mesh_quality_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
+    set_target_properties(tracewave_solver_mesh_quality_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+    add_test(NAME solver_mesh_quality COMMAND tracewave_solver_mesh_quality_tests)
     add_executable(tracewave_result_view_tests tests/result_view_model_test.cpp
         ui/wxwidgets/result_presentation.cpp ui/wxwidgets/frequency_display.cpp ui/wxwidgets/rf_validation_model.cpp
         ui/wxwidgets/sweep_selection_model.cpp)
