@@ -10,6 +10,7 @@ import re
 
 from rfad.domain.errors import ProjectError
 from rfad.domain.curve_boolean import difference
+from rfad.domain import drawing_annotations
 
 
 PROFILE = "rfad.exchange.drawing/0.1"
@@ -478,6 +479,138 @@ def _page(width, height):
             "viewports": [], "primitives": [], "title_rows": [], "notes": []}
 
 
+def _dimension_line(primitives, a, b, metadata):
+    """! @brief 영거리선을 생략하고 치수 끝을 종이 크기의 짧은 획으로 표시한다."""
+    length = math.dist(a, b)
+    if length <= 1e-7:
+        return
+    perpendicular = [(a[1] - b[1]) / length, (b[0] - a[0]) / length]
+    primitives.append(_rule(a, b, BLUE, **metadata))
+    for point in (a, b):
+        primitives.append(_rule([coordinate - 0.8 * normal for coordinate, normal in zip(point, perpendicular)],
+                                [coordinate + 0.8 * normal for coordinate, normal in zip(point, perpendicular)],
+                                BLUE, **metadata))
+
+
+def _reference_layout(primitives, rows, holes, report, transform, bounds):
+    """! @brief 선택 뷰의 실제 기준점에 도면 주석과 확인용 치수 목록을 놓는다."""
+    x, y, scale, mirror = transform
+
+    def paper(point):
+        """! @brief 모델의 치수 기준점에 형상과 같은 축척과 뒤면 방향을 적용한다."""
+        return [x + mirror * scale * point[0], y + scale * point[1]]
+
+    def cross(point, radius, **metadata):
+        """! @brief 원본 형상에 영향을 주지 않는 홀 중심 또는 기준 마크를 그린다."""
+        px, py = point
+        primitives.append(_rule([px - radius, py], [px + radius, py], BLUE, **metadata))
+        primitives.append(_rule([px, py - radius], [px, py + radius], BLUE, **metadata))
+
+    def inside(point):
+        """! @brief 뷰 밖 기준은 수치만 유지하고 용지 바깥으로 치수선을 그리지 않는다."""
+        return bounds[0] <= point[0] <= bounds[2] and bounds[1] <= point[1] <= bounds[3]
+
+    datum = report["datum_mm"]
+    rows_text = [drawing_annotations.STYLES[report["style"]] + " / 모델 mm"]
+    if datum is not None:
+        rows_text.append("기준점 X " + format(datum[0], ".9g") + ", Y " + format(datum[1], ".9g"))
+        if inside(datum):
+            where = paper(datum)
+            cross(where, 2.2)
+            primitives.append(_text(where[0] + 2.6, where[1] - 2, "0", 2.1))
+    marked = set()
+    counters = {"linear": 0, "radial": 0}
+    x0, y0, x1, y1 = bounds
+    for row in rows:
+        kind, number_value = row["kind"], row["value"]
+        meta = {"source_id": row["source_id"], "dimension_key": row["dimension_key"]}
+        title = row["title"]
+        if kind == "hole":
+            a, b = map(paper, row["anchors_mm"])
+            if report["style"] != "ordinate" and inside(row["anchors_mm"][0]):
+                elbow = [b[0], a[1]]
+                _dimension_line(primitives, a, elbow, meta)
+                _dimension_line(primitives, elbow, b, meta)
+            cross(b, 1.35, **meta)
+            primitives.append(_text(b[0] + 1.7, b[1] + 1.3, title.split(" / ")[0], 2.25, **meta))
+            marked.add(row["source_id"])
+            rows_text.append(title + "  X " + format(number_value[0], ".9g") + ", Y " + format(number_value[1], ".9g") + " mm")
+            continue
+        actual = format(number_value, ".9g") + " " + row["unit"]
+        if kind in ("board_x", "board_y"):
+            a, b = map(paper, row["anchors_mm"])
+            if kind == "board_x":
+                height = paper([x0, y1])[1] + 4
+                p, q = [a[0], height], [b[0], height]
+                label, align = [(p[0] + q[0]) / 2, height + 1.5], "center"
+            else:
+                left = min(paper([x0, y0])[0], paper([x1, y0])[0]) - 4
+                p, q = [left, a[1]], [left, b[1]]
+                label, align = [left + 1.8, (p[1] + q[1]) / 2], "left"
+            for start, end in ((a, p), (b, q)):
+                if math.dist(start, end) > 1e-7:
+                    primitives.append(_rule(start, end, BLUE, **meta))
+            _dimension_line(primitives, p, q, meta)
+            primitives.append(_text(*label, actual, 2.35, align, **meta))
+        elif kind in counters and all(inside(point) for point in row["anchors_mm"]):
+            a, b = map(paper, row["anchors_mm"])
+            counters[kind] += 1
+            mark = ("R" if kind == "radial" else "D") + str(counters[kind])
+            if kind == "linear":
+                length = math.dist(a, b)
+                if length > 1e-7:
+                    normal = [(b[1] - a[1]) / length, (a[0] - b[0]) / length]
+                    p, q = [[coordinate + 3 * direction for coordinate, direction in zip(point, normal)] for point in (a, b)]
+                    primitives.extend([_rule(a, p, BLUE, **meta), _rule(b, q, BLUE, **meta)])
+                    a, b = p, q
+            _dimension_line(primitives, a, b, meta)
+            primitives.append(_text((a[0] + b[0]) / 2 + 1.4, (a[1] + b[1]) / 2 + 1.6, mark, 2.3, **meta))
+            title = mark + " " + title
+        rows_text.append(title + " = " + actual)
+    for row in holes:
+        if row["id"] not in marked and row["center"] is not None:
+            where = paper(row["center"])
+            cross(where, 1.35, source_id=row["id"])
+            primitives.append(_text(where[0] + 1.7, where[1] + 1.3, row["mark"], 2.25, source_id=row["id"]))
+    return rows_text
+
+
+def _hole_table_pages(holes, datum, width, height):
+    """! @brief 개별 홀, 기준 좌표와 미정 공구를 제조 원본에서 그대로 표로 나눈다."""
+    def text(value):
+        """! @brief 주어지지 않은 공구 크기와 좌표는 미정으로 표시한다."""
+        return "미정" if value is None else format(value, ".9g")
+
+    pages = []
+    columns = [14, 29, 59, 85, 111, 140, 166]
+    headings = ["기호", "형상", "X (mm)", "Y (mm)", "완성 (mm)", "공구 (mm)", "도금"]
+    kinds = {"circle": "원형", "slot": "슬롯", "via": "비아"}
+    states = {"unplated": "비도금", "plated": "도금"}
+    capacity = max(1, int((height - 95) / 6))
+    for offset in range(0, max(1, len(holes)), capacity):
+        page = _page(width, height)
+        primitives = page["primitives"]
+        page["page_role"] = "hole_table"
+        primitives.append(_text(14, height - 15, "홀 표", 4))
+        coordinate_label = "기준점 확인 필요" if datum is None else "기판 기준점 X " + text(datum[0]) + ", Y " + text(datum[1]) + " mm"
+        primitives.append(_text(14, height - 24, coordinate_label + " / 중심 좌표는 기준점 대비", 2.8))
+        primitives.append(_text(14, height - 31, "슬롯 완성 치수는 폭 x 전체 길이 / 각 행의 수량은 1", 2.7))
+        for x, heading in zip(columns, headings):
+            primitives.append(_text(x, height - 41, heading, 2.8))
+        primitives.append(_rule([12, height - 43], [width - 12, height - 43], BLUE))
+        if not holes:
+            primitives.append(_text(14, height - 50, "이 뷰에 표시할 홀이 없습니다.", 2.8))
+        for index, row in enumerate(holes[offset:offset + capacity]):
+            coords = [None, None] if datum is None or row["center"] is None else [c - d for c, d in zip(row["center"], datum)]
+            size = text(row["finished"]) if row["length"] is None else text(row["finished"]) + " x " + text(row["length"])
+            fields = [row["mark"], kinds.get(row["kind"], row["kind"]), *map(text, coords), size, text(row["tool"]),
+                      states.get(row["plating"], "미정")]
+            for x, field in zip(columns, fields):
+                primitives.append(_text(x, height - 49 - 6 * index, field, 2.55, source_id=row["id"]))
+        pages.append(page)
+    return pages
+
+
 def layout(data):
     """! @brief 축척을 자동 변경하지 않는 읽기 전용 최종 용지 배열을 반환한다."""
     if data.get("profile") != PROFILE or data.get("schema") != "rfad.exchange-input/0.1":
@@ -489,7 +622,7 @@ def layout(data):
     if options["mode"] not in ("drawing", "fabrication_geometry"):
         fail("도면과 제조 형상 모드를 명시하십시오.", "options.mode")
     fabrication = options["mode"] == "fabrication_geometry"
-    if fabrication and (scale != 1 or options["notes"] or options["dimensions"] or len(options["views"]) != 1
+    if fabrication and ("annotations" in options or scale != 1 or options["notes"] or options["dimensions"] or len(options["views"]) != 1
                         or options["views"][0]["kind"] not in ("layer", "outline") or data["format"] == "pdf"):
         fail("제조 형상은 단일 층/외형의 1:1 SVG 또는 DXF이며 주석을 포함하지 않습니다.", "options")
     size = {"A4": [210.0, 297.0], "A3": [297.0, 420.0]}.get(options["sheet"])
@@ -528,7 +661,14 @@ def layout(data):
             ids.update(item["id"] for item in mechanical.get("cutouts", []))
             if option["kind"] != "outline":
                 ids.update(item["id"] for item in mechanical.get("holes", []))
-        dimensions = _dimension_rows(data, ids) if options["dimensions"] else []
+        annotation = options.get("annotations")
+        active = annotation is not None and annotation["view"] == option
+        dimensions = _dimension_rows(data, ids) if options["dimensions"] and not active else []
+        holes = []
+        if active:
+            rows, holes, report = drawing_annotations.evaluation(data, option, bounds, ids)
+            page["annotation_review"] = report
+            dimensions = rows
         page["viewports"] = [{"rect_mm": rect, "world_bounds_mm": bounds, "label": label,
                               "transform": {"scale": scale, "x_mm": x, "y_mm": y, "mirror_x": mirror < 0},
                               "dimensions": dimensions, "primitives": []}]
@@ -549,13 +689,16 @@ def layout(data):
         primitives.extend([_rule([16, 48], [16 + bar_length, 48], width=0.35),
                            _rule([16, 46.5], [16, 49.5]), _rule([16 + bar_length, 46.5], [16 + bar_length, 49.5]),
                            _text(16, 42, "50 mm / 모델 길이", 2.8),
-                           _text(width - 74, height - 27, "연관 치수 / 원본 값", 3.2)])
+                           _text(width - 74, height - 27, "참조 치수" if active else "연관 치수 / 원본 값", 3.2)])
         # 기준축은 미러 방향을 명시하고 실제 기하 형상과 분리된 주석으로 남긴다.
         ax, ay = 20.0, height - 32
         primitives.extend([_rule([ax, ay], [ax + 9 * mirror, ay], BLUE), _rule([ax, ay], [ax, ay + 7], BLUE),
                            _text(ax + 10 * mirror, ay - 1, "+X", 2.5), _text(ax - 2, ay + 8, "+Z" if option["kind"] == "stackup" else "+Y", 2.5)])
         note_rows = []
-        if option["kind"] == "stackup" and options["dimensions"]:
+        if active:
+            note_rows = _reference_layout(primitives, dimensions, holes if annotation["hole_table"] else [],
+                                          report, (x, y, scale, mirror), bounds)
+        elif option["kind"] == "stackup" and options["dimensions"]:
             for layer in projection["layers"]:
                 note_rows.append(layer["name"] + ": z=" + format(layer["z_min_mm"], ".9g") + " mm, t=" + format(layer["thickness_mm"], ".9g") + " mm")
         elif options["dimensions"]:
@@ -564,7 +707,8 @@ def layout(data):
                           "외형 Y 범위: " + format(original_bounds[3] - original_bounds[1], ".9g") + " mm"]
             if projection["board"].get("kind") == "circle":
                 note_rows.append("기판 반지름: " + format(projection["board"]["radius_mm"], ".9g") + " mm")
-        note_rows += [row["text"] for row in dimensions]
+        if not active:
+            note_rows += [row["text"] for row in dimensions]
         if not note_rows:
             note_rows = ["선택한 연관 치수가 없습니다." if options["dimensions"] else "치수 주석 끔"]
         lines = [line_text for text in note_rows for line_text in _wrapped(text, 63, 2.8)]
@@ -574,7 +718,7 @@ def layout(data):
         pages.append(page)
         # 연관된 선 길이/반지름에는 실제 두 기준점을 잇는 읽기 전용 치수선을 둔다.
         drawn = set()
-        if option["kind"] not in ("stackup", "detail"):
+        if not active and option["kind"] not in ("stackup", "detail"):
             for row in dimensions:
                 if drawn or len(row["anchors_mm"]) != 2 or row["unit"] != "mm" or row["value"] is None:
                     continue
@@ -597,6 +741,8 @@ def layout(data):
             for index, text in enumerate(lines[offset:offset + capacity]):
                 continuation["primitives"].append(_text(14, height - 30 - index * 4.4, text, 2.8))
             pages.append(continuation)
+        if active and annotation["hole_table"]:
+            pages.extend(_hole_table_pages(holes, report["datum_mm"], width, height))
     if len(pages) > MAX_PAGES:
         fail("도면이 최대 32쪽을 초과했습니다. 원문을 생략하지 않습니다.", code="E_RESOURCE")
     if not fabrication:

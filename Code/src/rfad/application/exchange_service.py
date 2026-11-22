@@ -7,6 +7,7 @@ from uuid import uuid4
 from rfad.application import exchange_contract as contract
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.domain.errors import ProjectError
+from rfad.domain import drawing_annotations
 from rfad.domain.drawing_layout import layout
 from rfad.domain.object_names import display_names, name_dto, object_label
 from rfad.storage.journal import MAX_STATE_BYTES
@@ -125,7 +126,9 @@ def preview(service, state, context, data):
         "issues": [] if runtime is not None else [ProjectError("E_UNSUPPORTED", "별도 출력 실행 환경을 연결하십시오.").diagnostic()],
         "manufacturing_verified": False, "physics_verified": False,
         "notice": "고정 스냅샷의 출력 검토입니다. 제작 조건과 실측 정확도의 합격을 뜻하지 않습니다.",
-        **({"pcb_preview": pcb["pcb_preview"]} if pcb is not None else {})})
+        **({"pcb_preview": pcb["pcb_preview"]} if pcb is not None else {}),
+        **({"annotation_review": next(page["annotation_review"] for page in pages if "annotation_review" in page)}
+           if "annotations" in value["options"] else {})})
 
 
 def _item(job):
@@ -253,6 +256,8 @@ def read(service, method, params):
             "runtime_configured": service.exchange.runtime is not None, "cad_runtime_configured": service.cad.runtime is not None,
             "snapshots": deepcopy(snapshots[offset:offset + 25]), "snapshot_offset": offset,
             "snapshot_total": len(snapshots), "snapshot_next_offset": offset + 25 if offset + 25 < len(snapshots) else None,
+            "drawing_annotations": {**contract.annotation_catalog(source_document),
+                                    "saved": deepcopy(drawing_annotations.recipe(document))},
             "default_options": {"mode": "drawing", "sheet": "A4", "orientation": "landscape", "scale": 1,
                                 "views": views, "dimensions": True, "notes": True},
             "limits": {"views": 8, "file_bytes": contract.MAX_FILE_BYTES, "package_bytes": contract.MAX_PACKAGE_BYTES,

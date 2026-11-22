@@ -6,7 +6,7 @@ import math
 from uuid import UUID, uuid4
 
 from rfad.domain.errors import ProjectError
-from rfad.domain import sketch_constraints, smart_dimensions, solver_conditions
+from rfad.domain import drawing_annotations, sketch_constraints, smart_dimensions, solver_conditions
 from rfad.domain.resource_limits import MAX_PARAMETERS
 from rfad.domain.units import Quantity, QuantityError
 from rfad.domain.parameter_graph import evaluate_parameters, expression_record, restore_parameter_command
@@ -43,7 +43,7 @@ _QUANTITY_FIELDS = {"value_si", "dimension", "display_unit", "status", "source_r
 _IDENTITY = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
 _DESIGN_COLLECTIONS = {"geometry", "materials", "ports", "stackup", "nets"}
 DESIGN_COMMANDS = tuple(prefix + suffix for prefix in ("material", "layer", "net", "geometry", "port") for suffix in (".set", ".remove")) + ("board.set",)
-COMMANDS = ("metadata.rename", "metadata.describe", "metadata.set", "parameter.set", "parameter.set_expression", "parameter.remove", "pcb_stackup.apply", *DESIGN_COMMANDS, *TARGET_COMMANDS, *RULE_COMMANDS)
+COMMANDS = ("metadata.rename", "metadata.describe", "metadata.set", "parameter.set", "parameter.set_expression", "parameter.remove", "pcb_stackup.apply", *DESIGN_COMMANDS, *TARGET_COMMANDS, *RULE_COMMANDS, drawing_annotations.COMMAND)
 
 
 def _fail(code: str, message: str, field: str) -> None:
@@ -290,6 +290,7 @@ def validate_project(document: dict) -> None:
     validate_pcb(document)
     smart_dimensions.validate(document)
     sketch_constraints.validate(document)
+    drawing_annotations.validate(document)
 
 
 def apply_command(document: dict, command: dict, expected_revision: str) -> tuple[dict, list[str], list[str], dict]:
@@ -381,6 +382,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         changed_ids, invalidation_set, inverse = apply_precision_command(result, payload)
     elif command_type == smart_dimensions.COMMAND:
         changed_ids, invalidation_set, inverse = smart_dimensions.apply(result, payload)
+    elif command_type == drawing_annotations.COMMAND:
+        changed_ids, invalidation_set, inverse = drawing_annotations.apply(result, payload)
     elif command_type == sketch_constraints.COMMAND:
         changed_ids, invalidation_set, inverse = sketch_constraints.apply(result, payload)
     elif command_type == SELECTION_COMMAND:

@@ -10,7 +10,7 @@ from rfad.domain.errors import ProjectError
 from rfad.domain.design import resolve_scalar
 from rfad.domain.object_names import display_names
 from rfad.domain.precision_dimensions import dimensions
-from rfad.domain import drawing_layout
+from rfad.domain import drawing_annotations, drawing_layout
 
 PROFILE = "rfad.exchange.drawing/0.1"
 PCB_PROFILES = {"rfad.exchange.kicad-board/0.1": "kicad_pcb", "rfad.exchange.kicad-footprint/0.1": "kicad_mod",
@@ -92,7 +92,7 @@ def validate_request(method, context, data):
 
 def options(value, format_name, document=None):
     """! @brief 실제 축척과 명시 뷰만 허용하고 제작용 좌표와 도면 주석을 구분한다."""
-    fields(value, {"mode", "sheet", "orientation", "scale", "views", "dimensions", "notes"})
+    fields(value, {"mode", "sheet", "orientation", "scale", "views", "dimensions", "notes"}, {"annotations"})
     if value["mode"] not in ("drawing", "fabrication_geometry") or value["sheet"] not in ("A4", "A3") or value["orientation"] not in ("portrait", "landscape"):
         raise ProjectError("E_UNSUPPORTED", "지원하지 않는 도면 용지 또는 출력 mode입니다.")
     scale = value["scale"]
@@ -123,6 +123,11 @@ def options(value, format_name, document=None):
             fields(view, {"kind"})
         else:
             raise ProjectError("E_UNSUPPORTED", "지원하지 않는 도면 뷰입니다.")
+    if "annotations" in value:
+        annotation = value["annotations"]
+        drawing_annotations.validate_recipe(annotation)
+        if value["mode"] != "drawing" or not value["dimensions"] or views.count(annotation["view"]) != 1:
+            raise ProjectError("E_SCHEMA", "자동 치수에는 출력에 한 번 선택한 기술 도면 뷰와 치수 포함이 필요합니다.")
     if value["mode"] == "fabrication_geometry" and (format_name == "pdf" or scale != 1 or value["dimensions"] or value["notes"]
             or len(views) != 1 or views[0]["kind"] not in ("layer", "outline")):
         raise ProjectError("E_UNSUPPORTED", "제작 기하는 SVG/DXF의 단일 층/외곽, 1:1 축척과 주석 제외만 지원합니다.")
@@ -219,6 +224,20 @@ def mechanical_dimensions(document, item, prefix):
                        "value": None if quantity.value_si is None else quantity.as_unit(unit), "status": quantity.status.value,
                        "field_path": prefix + "." + item["id"] + "." + path, "parameter_id": original.get("parameter_id"),
                        "anchors_mm": [], "source_refs": list(quantity.source_refs)})
+    return result
+
+
+def annotation_catalog(document):
+    """! @brief 고정 도면에서 가져올 수 있는 수치에 기계 홀과 절삭 치수를 포함한다."""
+    result = drawing_annotations.catalog(document)
+    views = ["outline", *(row["id"] for row in document["stackup"] if row["role"] == "conductor")]
+    for prefix, items in (("board.cutouts", (document["board"] or {}).get("cutouts", [])),
+                          ("pcb.holes", document.get("pcb", {}).get("holes", []))):
+        for item in items:
+            for quantity in mechanical_dimensions(document, item, prefix):
+                result["model_dimensions"].append({"source_id": item["id"], "key": quantity["key"], "name": item["name"],
+                                                   "label": quantity["label"], "value": quantity["value"],
+                                                   "unit": quantity["unit"], "views": views})
     return result
 
 

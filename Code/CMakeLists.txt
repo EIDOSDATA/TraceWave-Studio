@@ -165,6 +165,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/drawing_sheet_model.cpp
     ui/wxwidgets/drawing_sheet_canvas.cpp
     ui/wxwidgets/drawing_output_view.cpp
+    ui/wxwidgets/drawing_output_annotations.cpp
     ui/wxwidgets/drawing_output_detail.cpp
     ui/wxwidgets/step_output_view.cpp
     ui/wxwidgets/output_model.cpp

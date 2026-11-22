@@ -32,6 +32,7 @@ DrawingOutputView::DrawingOutputView(wxWindow* parent)
     m_canvas->SetMinSize(FromDIP(wxSize(260, 200)));
     paper->Add(m_canvas, 1, wxEXPAND | wxBOTTOM, FromDIP(8));
     m_page = new wxChoice(this, wxID_ANY);
+    m_page->SetName(Display("도면 페이지"));
     m_page->Append(Display("미리보기 페이지 미조회"));
     m_page->SetSelection(0);
     paper->Add(m_page, 0, wxEXPAND);
@@ -107,6 +108,7 @@ DrawingOutputView::DrawingOutputView(wxWindow* parent)
     body->Add(properties, 0, wxEXPAND);
     layout->Add(body, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     m_summary = new wxStaticText(this, wxID_ANY, Display("형상·치수와 출력 조건을 검토한 뒤 파일을 생성하세요."));
+    m_summary->SetName(Display("도면 검토 요약"));
     layout->Add(m_summary, 0, wxEXPAND | wxALL, FromDIP(12));
     auto* actions = new wxWrapSizer(wxHORIZONTAL);
     m_preview = new wxButton(this, wxID_ANY, Display("출력 내용 검토"));
@@ -115,6 +117,32 @@ DrawingOutputView::DrawingOutputView(wxWindow* parent)
     StudioTheme::Button(*m_build);
     actions->Add(m_preview, 0, wxALL, FromDIP(4));
     actions->Add(m_build, 0, wxALL, FromDIP(4));
+    m_annotationEdit = new wxButton(this, wxID_ANY, Display("자동 치수"));
+    m_annotationInspect = new wxButton(this, wxID_ANY, Display("치수 검사"));
+    m_annotationSave = new wxButton(this, wxID_ANY, Display("치수 설정 저장"));
+    for (auto* button : {m_annotationEdit, m_annotationInspect, m_annotationSave})
+    {
+        StudioTheme::Button(*button);
+        actions->Add(button, 0, wxALL, FromDIP(4));
+    }
+    m_annotationEdit->Bind(wxEVT_BUTTON,
+                           [this](wxCommandEvent&)
+                           {
+                               EditAnnotations();
+                           });
+    m_annotationInspect->Bind(wxEVT_BUTTON,
+                              [this](wxCommandEvent&)
+                              {
+                                  InspectAnnotations();
+                              });
+    m_annotationSave->Bind(wxEVT_BUTTON,
+                           [this](wxCommandEvent&)
+                           {
+                               if (onSaveAnnotations)
+                               {
+                                   onSaveAnnotations(m_annotation);
+                               }
+                           });
     layout->Insert(1, actions, 0, wxEXPAND | wxLEFT | wxBOTTOM, FromDIP(8));
     SetSizer(layout);
     m_page->Bind(wxEVT_CHOICE,
@@ -190,6 +218,9 @@ void DrawingOutputView::SetContext(const Json& context)
     m_viewValues.push_back({{"kind", "outline"}});
     m_views->Append(Display("적층 단면"));
     m_viewValues.push_back({{"kind", "stackup"}});
+    m_annotationCatalog = context.value("drawing_annotations", Json::object());
+    m_storedAnnotation = m_annotationCatalog.value("saved", Json(nullptr));
+    m_annotation = m_storedAnnotation;
     const auto defaults = context.value("default_options", Json::object());
     m_mode->SetSelection(defaults.value("mode", "drawing") == "drawing" ? 0 : 1);
     m_sheet->SetSelection(defaults.value("sheet", "A4") == "A3" ? 1 : 0);
@@ -207,6 +238,7 @@ void DrawingOutputView::SetContext(const Json& context)
             }
         }
     }
+    KeepAnnotationView();
     m_refreshing = false;
     UpdateMode();
 }
@@ -221,13 +253,19 @@ Json DrawingOutputView::Options() const
             views.push_back(m_viewValues[index]);
         }
     }
-    return {{"mode", m_mode->GetSelection() == 0 ? "drawing" : "fabrication_geometry"},
+    Json result{{"mode", m_mode->GetSelection() == 0 ? "drawing" : "fabrication_geometry"},
             {"sheet", m_sheet->GetSelection() == 0 ? "A4" : "A3"},
             {"orientation", m_orientation->GetSelection() == 0 ? "landscape" : "portrait"},
             {"scale", m_scale->GetValue()},
             {"views", views},
             {"dimensions", m_dimensions->GetValue()},
             {"notes", m_notes->GetValue()}};
+    if (m_annotation.is_object() && m_dimensions->GetValue() && m_mode->GetSelection() == 0 &&
+        std::find(views.begin(), views.end(), m_annotation.at("view")) != views.end())
+    {
+        result["annotations"] = m_annotation;
+    }
+    return result;
 }
 
 std::string DrawingOutputView::Format() const
@@ -254,6 +292,7 @@ void DrawingOutputView::UpdateMode()
         }
         m_refreshing = false;
     }
+    UpdateAnnotationActions();
 }
 
 void DrawingOutputView::Changed()
@@ -261,6 +300,10 @@ void DrawingOutputView::Changed()
     if (m_refreshing)
     {
         return;
+    }
+    if (m_mode->GetSelection() == 0 && m_dimensions->GetValue())
+    {
+        KeepAnnotationView();
     }
     UpdateMode();
     if (onChanged)
@@ -273,21 +316,45 @@ void DrawingOutputView::SetPreview(const Json& review)
 {
     m_canvas->SetPages(review.at("pages"));
     m_page->Clear();
+    int chosen = 0;
     for (std::size_t index = 0; index < m_canvas->PageCount(); ++index)
     {
-        m_page->Append(Display("페이지 " + std::to_string(index + 1)));
+        const auto& page = review.at("pages").at(index);
+        std::string label = "페이지 " + std::to_string(index + 1);
+        if (page.contains("annotation_review"))
+        {
+            chosen = static_cast<int>(index);
+            label += " / 참조 치수";
+        }
+        else if (page.value("page_role", "") == "hole_table")
+        {
+            label += " / 홀 표";
+        }
+        m_page->Append(Display(label));
     }
-    m_page->SetSelection(0);
-    m_canvas->SetPage(0);
+    m_page->SetSelection(chosen);
+    m_canvas->SetPage(chosen);
     const auto issues = OutputUi::Issues(review.value("issues", Json::array()));
-    m_summary->SetLabel(
-        Display(issues.empty() ? "고정 입력의 실제 종이 배치입니다. 생성 전 포함/누락 목록을 확인하세요." : issues));
+    auto message = issues.empty() ? "고정 입력의 실제 종이 배치입니다. 생성 전 포함/누락 목록을 확인하세요." : issues;
+    m_annotationReview = review.value("annotation_review", Json(nullptr));
+    if (m_annotationReview.is_object())
+    {
+        message = Utf8(wxString::Format(Display("기입 %d개 / 누락 %zu개 / 병합 중복 %zu개 / 홀 표 %d행"),
+                                        m_annotationReview.value("dimension_count", 0),
+                                        m_annotationReview.at("missing").size(), m_annotationReview.at("duplicates").size(),
+                                        m_annotationReview.value("hole_count", 0))) +
+                  (issues.empty() ? "" : "\n" + issues);
+    }
+    m_summary->SetLabel(Display(message));
+    UpdateAnnotationActions();
     Layout();
     FitInside();
 }
 
 void DrawingOutputView::ClearPreview(const std::string& message)
 {
+    m_annotationReview = nullptr;
+    UpdateAnnotationActions();
     m_canvas->Clear(message);
     m_page->Clear();
     m_summary->SetLabel(Display(message));
@@ -299,6 +366,7 @@ void DrawingOutputView::ClearPreview(const std::string& message)
 void DrawingOutputView::SetAvailable(bool available, bool busy, bool reviewed, bool hasSnapshot)
 {
     m_available = available && !busy;
+    m_hasSnapshot = hasSnapshot;
     for (wxWindow* input : std::vector<wxWindow*>{m_format, m_mode, m_sheet, m_orientation, m_scale, m_views,
                                                   m_dimensions, m_notes, m_detailAdd, m_detailRemove})
     {

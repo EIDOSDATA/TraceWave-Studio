@@ -10,13 +10,14 @@ from rfad.domain.errors import ProjectError
 from rfad.domain.solver_conditions import KEY as SOLVER_CONDITIONS_KEY
 from rfad.domain.smart_dimensions import KEY as SMART_DIMENSIONS_KEY
 from rfad.domain.sketch_constraints import KEY as SKETCH_KEY
+from rfad.domain.drawing_annotations import KEY as DRAWING_ANNOTATIONS_KEY
 from rfad.domain.network_library import KEY as LIBRARY_KEY, validate_library, artifact
 from rfad.domain.project import validate_project
 
 MAX_COPY_REFERENCES = 32
 MAX_COPY_BYTES = 16 * 1024 * 1024
 KNOWN_EXTENSIONS = {"rfad.template-origin", "rfad.precision-origin", "rfad.pcb-selection",
-                    "rfad.physical_setup", "rfad.sweep-selection", LIBRARY_KEY, SOLVER_CONDITIONS_KEY, SMART_DIMENSIONS_KEY, SKETCH_KEY}
+                    "rfad.physical_setup", "rfad.sweep-selection", LIBRARY_KEY, SOLVER_CONDITIONS_KEY, SMART_DIMENSIONS_KEY, SKETCH_KEY, DRAWING_ANNOTATIONS_KEY}
 
 
 def _registered_host_source(service, project, project_id, reference):

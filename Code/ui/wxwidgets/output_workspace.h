@@ -21,6 +21,7 @@ public:
     OutputWorkspace(wxWindow* parent, wxWindow* conditions);
     wxWindow* ConditionsView() const;
     void SetContext(const Json& context, bool resetOptions);
+    void SetStoredDrawingAnnotation(const Json& settings);
     void SetCatalog(const Json& catalog, const std::string& preferredJob = "");
     void SetPreview(const Json& review);
     void SetRecord(const Json& record, const wxString& workspace);
@@ -51,6 +52,7 @@ public:
     std::function<void(int)> onSnapshotPage, onCatalogPage;
     std::function<void()> onChanged;
     std::function<void()> onImport;
+    std::function<void(const Json&)> onSaveDrawingAnnotations;
 
 private:
     friend class StudioSmokeDriver;

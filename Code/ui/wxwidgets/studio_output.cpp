@@ -28,6 +28,33 @@ void StudioFrame::BuildOutputInterface()
     {
         OpenPcbImport();
     };
+    m_output->View()->onSaveDrawingAnnotations = [this](const Json& recipe)
+    {
+        if (m_busy || m_output->Active() || !ConfirmDiscard())
+        {
+            return;
+        }
+        m_busy = true;
+        UpdateControls();
+        const Json request{{"expected_revision", m_revision}, {"command_id", Uuid()},
+                           {"type", "drawing.annotations.set"}, {"payload", {{"recipe", recipe}}}};
+        Send(
+            "project.apply_command", request, true, Context(),
+            [this, recipe](const Json& result)
+            {
+                m_revision = result.at("new_revision");
+                m_output->View()->SetStoredDrawingAnnotation(recipe);
+                RefreshEditor(m_selection,
+                              [this]()
+                              {
+                                  Ready("도면 치수 설정을 적용했습니다. 프로젝트를 저장하면 다시 열 수 있습니다.");
+                              });
+            },
+            [this](const Json& error)
+            {
+                Failure(DiagnosticMessage(error));
+            });
+    };
     m_output->onStatus = [this](const std::string& state, const std::string& message)
     {
         if (m_workspaceJobs != nullptr && m_workspaceJobs->GetItemCount() > 3)

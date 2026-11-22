@@ -58,7 +58,9 @@ def _geometry_report(data, output, pages):
         reader = read_svg if data["format"] == "svg" else read_dxf
         for name, page in zip(names, pages):
             readers.append(reader(output / name, page))
+    annotation_review = next((page["annotation_review"] for page in pages if "annotation_review" in page), None)
     return {"schema": REPORT_SCHEMA, "status": "passed_profile", "profile": PROFILE,
+            **({"annotation_review": annotation_review} if annotation_review is not None else {}),
             "checks": ["파일 parser 재열기", "mm와 용지 크기", "실제 선/원호 경계", "구멍과 채움 규칙",
                        "연관 치수 원문과 고정 개정", "객체/net/layer 추적", "뒤면 방향과 상세 영역"],
             "reader": {"formats": readers, "separate_writer_and_reader_paths": True},

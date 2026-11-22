@@ -7637,7 +7637,8 @@
         "connection.set",
         "connection.remove",
         "manufacturing_profile.set",
-        "manufacturing_profile.remove"
+        "manufacturing_profile.remove",
+        "drawing.annotations.set"
       ],
       "design_validation": {
         "max_returned_diagnostics": 64,
@@ -14243,8 +14244,8 @@
     },
     {
       "path": "01_개발문서/04_화면설계/24_기술도면과_스텝검수_화면.md",
-      "text_sha256": "f2efa3b03ec0fe6480bfbac0526407b1b113f1d146a46adb67283e422f5f28d1",
-      "utf8_bytes": 7096
+      "text_sha256": "6de4ea03ff1ca21720c469bbd1ce7a482c377a80116b6a406f840b575ab31175",
+      "utf8_bytes": 7705
     },
     {
       "path": "01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
@@ -14368,8 +14369,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
-      "text_sha256": "3da8c90e0694bea465d26d457183e911699ad954fde965f137b5869f0ad7a8ab",
-      "utf8_bytes": 13192
+      "text_sha256": "9b96c3136fbd1dc6adf57eae980fe88d5e58e6e443c2fee7b08d8be3d186301b",
+      "utf8_bytes": 15349
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
@@ -14823,8 +14824,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/exchange/drawing.py",
-      "text_sha256": "b4aea1217a956669db336c428a46ead3f83fcb6d5f0ff7b4a50c9d7a12391127",
-      "utf8_bytes": 8961
+      "text_sha256": "df902bd7757bbff21b7f89f4885ef2a6235c4f6ad8710e91a5273033f7f0686d",
+      "utf8_bytes": 9173
     },
     {
       "path": "Code/src/rfad/adapters/exchange/drawing_readers.py",
@@ -15003,8 +15004,8 @@
     },
     {
       "path": "Code/src/rfad/application/exchange_contract.py",
-      "text_sha256": "2720a909899a18b0ca8caa0bb1006989aac21ab802172829fa6b19ff311a09f8",
-      "utf8_bytes": 20956
+      "text_sha256": "1939670e80a63bae02c5c078be4ab1e7864833287ed3a4292c6e20056bf660be",
+      "utf8_bytes": 22297
     },
     {
       "path": "Code/src/rfad/application/exchange_jobs.py",
@@ -15013,8 +15014,8 @@
     },
     {
       "path": "Code/src/rfad/application/exchange_service.py",
-      "text_sha256": "c5458b9d4754319afa04efbdbdd8a72848ae2c02ba1c7e157c74853804f3b52f",
-      "utf8_bytes": 25706
+      "text_sha256": "cf205443aaca4aae8521a6d390e3308f021e1551870ab1ffc7d5c49b06cb19ed",
+      "utf8_bytes": 26101
     },
     {
       "path": "Code/src/rfad/application/handoff_archive.py",
@@ -15158,8 +15159,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "c6d7e66a4f600177273a732b86720d1865e82cbe34c9256994ca8913ddc5107b",
-      "utf8_bytes": 8625
+      "text_sha256": "6cbff284deb294f4a23b2e08b1a51a6c94ef2a52920f734d28544cdf1b038414",
+      "utf8_bytes": 8725
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
@@ -15353,8 +15354,8 @@
     },
     {
       "path": "Code/src/rfad/application/sweep_copy.py",
-      "text_sha256": "c8474035768a1786668cb7c5b21ff3de3e1471f7c7df68ebf2590978365fa677",
-      "utf8_bytes": 9124
+      "text_sha256": "259e4a979b0be470546349a16c8968966303120211b9e9ed8c458b36f4a90bc5",
+      "utf8_bytes": 9224
     },
     {
       "path": "Code/src/rfad/application/sweep_selection.py",
@@ -15468,8 +15469,8 @@
     },
     {
       "path": "Code/src/rfad/domain/drawing_layout.py",
-      "text_sha256": "aadfa12e1b15ad41b04703d14b8246625529bb1bcd4012f78950f259383e6109",
-      "utf8_bytes": 37034
+      "text_sha256": "34fd38d66819d645ef7f89d66fa082a7debbd124e4424d7e7a86c0df6bb89850",
+      "utf8_bytes": 45290
     },
     {
       "path": "Code/src/rfad/domain/expressions.py",
@@ -15573,8 +15574,8 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "0018b884e2c0aaeffd00bfee6eb6dfe8b878cc29a6aa787f2c102a438c2ff839",
-      "utf8_bytes": 25592
+      "text_sha256": "9bcd51de2ea2b829582422da2f321b3067e8f0d898ae4715f81258bb0734e29f",
+      "utf8_bytes": 25831
     },
     {
       "path": "Code/src/rfad/domain/radiation_polarization.py",

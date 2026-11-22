@@ -104,6 +104,13 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
         }
     };
     m_pcb->onChanged = m_drawing->onChanged;
+    m_drawing->onSaveAnnotations = [this](const Json& recipe)
+    {
+        if (onSaveDrawingAnnotations)
+        {
+            onSaveDrawingAnnotations(recipe);
+        }
+    };
     m_pcb->onImport = [this]()
     {
         if (onImport)
@@ -322,6 +329,11 @@ void OutputWorkspace::SetContext(const Json& context, bool resetOptions)
         m_pcb->SetContext(context);
     }
     m_refreshing = false;
+}
+
+void OutputWorkspace::SetStoredDrawingAnnotation(const Json& settings)
+{
+    m_drawing->SetStoredAnnotation(settings);
 }
 
 void OutputWorkspace::SelectSnapshot(const Json& snapshot)

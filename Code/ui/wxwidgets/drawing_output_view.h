@@ -17,6 +17,7 @@ class DrawingOutputView final : public wxScrolledWindow
 public:
     explicit DrawingOutputView(wxWindow* parent);
     void SetContext(const Json& context);
+    void SetStoredAnnotation(const Json& settings);
     Json Options() const;
     std::string Format() const;
     void SetPreview(const Json& review);
@@ -25,6 +26,7 @@ public:
     std::function<void()> onChanged;
     std::function<void()> onPreview;
     std::function<void()> onBuild;
+    std::function<void(const Json&)> onSaveAnnotations;
 
 private:
     /** @brief 사용자가 명시한 mm 영역만 상세 뷰로 추가한다. */
@@ -32,6 +34,10 @@ private:
     friend class StudioSmokeDriver;
     void Changed();
     void UpdateMode();
+    void EditAnnotations();
+    void InspectAnnotations();
+    void KeepAnnotationView();
+    void UpdateAnnotationActions();
     DrawingSheetCanvas* m_canvas = nullptr;
     wxChoice* m_format = nullptr;
     wxChoice* m_mode = nullptr;
@@ -46,8 +52,16 @@ private:
     wxButton* m_detailAdd = nullptr;
     wxButton* m_detailRemove = nullptr;
     wxButton* m_build = nullptr;
+    wxButton* m_annotationEdit = nullptr;
+    wxButton* m_annotationSave = nullptr;
+    wxButton* m_annotationInspect = nullptr;
     wxStaticText* m_summary = nullptr;
     std::vector<Json> m_viewValues;
     bool m_refreshing = false;
+    Json m_annotationCatalog = Json::object();
+    Json m_annotation = nullptr;
+    Json m_storedAnnotation = nullptr;
+    Json m_annotationReview = nullptr;
     bool m_available = false;
+    bool m_hasSnapshot = false;
 };
