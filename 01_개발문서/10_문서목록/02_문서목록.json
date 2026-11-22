@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 232,
+    "current_07_검증": 233,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -31942,6 +31942,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/356_표면층과_유전체_체적간극_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1318,
+      "working_tree_sha256": "d80e9e8ae12829f5cd0f1bc9e9b93bbc7ac403be5facebaa76834a7c9dae215d",
+      "text_lines": 13,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/35_스튜디오_보존묶음발행_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
@@ -32644,8 +32653,8 @@
       "path": "01_개발문서/09_개발계획/13_전자기해석과_후처리_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 32469,
-      "working_tree_sha256": "adf8825828e79b0aa34d2f863771a8965dca1b3684751a3fac5fd019d9bc8d55",
+      "bytes": 32609,
+      "working_tree_sha256": "933c4dd078ae163d9dfb687c3fe8b2c27dc9b04bebfc8b4f487331d7916edfca",
       "text_lines": 96,
       "text_status": "utf8_read"
     },
@@ -32662,8 +32671,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 31988,
-      "working_tree_sha256": "a762b61498e7f1ff9cab9626ffafaaeebc2ee5809848371e30e2b374358afed5",
+      "bytes": 32206,
+      "working_tree_sha256": "bed691cc27af93af2b5152cc3e5ecf24015379a844a1fb8934d5bb49bd3a27b2",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

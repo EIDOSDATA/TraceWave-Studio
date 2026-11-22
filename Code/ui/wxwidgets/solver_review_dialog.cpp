@@ -1420,16 +1420,34 @@ private:
                 const auto total = gaps.at("pair_total").get<unsigned long long>();
                 const auto evaluated = gaps.at("pair_evaluated").get<unsigned long long>();
                 m_intervals->SetToolTip(wxString::Format(
-                    Display("해석 형상 간극 %.6g mm 이내 | 검사 %llu/%llu쌍, 표시 %llu/%llu건"),
+                    Display("해석 형상 간극 %.6g mm 이내 | 검사 %llu/%llu쌍 | 표시 %llu/%llu건 | 미지원 체적 %llu개"),
                     gaps.at("search_radius_mm").get<double>(), evaluated, total,
-                    static_cast<unsigned long long>(rows.size()), gaps.at("clearance_total").get<unsigned long long>()));
+                    static_cast<unsigned long long>(rows.size()), gaps.at("clearance_total").get<unsigned long long>(),
+                    gaps.value("volume_omitted_count", 0ULL)));
                 for (const auto& row : rows)
                 {
                     const auto roles = row.value("object_roles", std::vector<std::string>{});
-                    const auto label = std::find(roles.begin(), roles.end(), "via") != roles.end()
-                        ? "PTH 배럴 간극"
-                        : std::find(roles.begin(), roles.end(), "environment") != roles.end()
-                        ? "설치물 간극" : "도체 간극";
+                    const auto hasRole = [&roles](const char* role)
+                    {
+                        return std::find(roles.begin(), roles.end(), role) != roles.end();
+                    };
+                    const char* label = "도체 간극";
+                    if (hasRole("surface"))
+                    {
+                        label = "표면층 간극";
+                    }
+                    else if (hasRole("dielectric"))
+                    {
+                        label = "유전체 체적 간극";
+                    }
+                    else if (hasRole("via"))
+                    {
+                        label = "PTH 배럴 간극";
+                    }
+                    else if (hasRole("environment"))
+                    {
+                        label = "설치물 간극";
+                    }
                     if (row.contains("other_z_mm"))
                     {
                         m_intervals->Append(wxString::Format(Display("%s %.6g mm / XYZ %llu셀"),

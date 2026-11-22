@@ -24,7 +24,6 @@ def _box_gap(a, b):
                         for (lo_a, hi_a), (lo_b, hi_b) in zip(a, b)))
 
 
-
 @dataclass(frozen=True)
 class _Piece:
     """! @brief 평면 경계와 Z 범위의 곱으로 실제 해석 프리미티브를 표현한다."""
@@ -49,30 +48,48 @@ def _polygon(points, z_range):
     return _Piece((*_bounds(points), tuple(z_range)), edges, points[:1], loop=points)
 
 
-def _barrel(primitives):
-    """! @brief 실제 모델과 같은 동심 내경 및 외경을 대상으로 간극을 계산한다."""
-    outer, bore = primitives
+def _round_piece(outer, inner=0):
+    """! @brief 실제 원통 또는 배럴의 닫힌 투영과 Z 경계를 만든다."""
     center = tuple(outer["center_mm"])
-    inner, outer_radius = bore["radius_mm"], outer["radius_mm"]
-    arcs = tuple(Arc(center, radius) for radius in (outer_radius, inner))
+    outer_radius = outer["radius_mm"]
+    arcs = [Arc(center, outer_radius)]
+    if inner:
+        arcs.append(Arc(center, inner))
     edges = tuple((arc, tuple((axis - arc.radius, axis + arc.radius) for axis in center)) for arc in arcs)
     return _Piece((*edges[0][1], tuple(outer["z_mm"])), edges,
                   tuple(arc.point(0) for arc in arcs), rings=(center, inner, outer_radius))
 
 
-def _pieces(row):
-    """! @brief 도체 시트, PTH 배럴과 해석에 들어간 설치물 상자만 사용한다."""
+def _height(primitive):
+    """! @brief 투영 primitive들의 저장 형식에서 공통 Z 범위를 읽는다."""
+    return primitive["bounds_mm"][2] if primitive["kind"] == "box" else primitive["z_mm"]
+
+
+def _solid_piece(primitive):
+    """! @brief 선형 다각형, 사각 타일 또는 원통을 실제 소비 경계로 바꾼다."""
+    if primitive["kind"] == "box":
+        (x0, x1), (y0, y1), z_range = primitive["bounds_mm"]
+        return _polygon(((x0, y0), (x1, y0), (x1, y1), (x0, y1)), z_range)
+    if primitive["kind"] == "circle":
+        return _round_piece(primitive)
+    return _polygon(primitive["points_mm"], primitive["z_mm"])
+
+
+def _pieces(row, cut_heights):
+    """! @brief 원래 프리미티브와 절삭된 체적을 구분하여 유효한 경계만 간극 계산에 사용한다."""
     primitives = row["primitives"]
-    if row["role"] == "conductor":
-        return [_polygon(primitive["points_mm"], primitive["z_mm"]) for primitive in primitives]
-    if row["role"] == "via" and primitives:
-        return [_barrel(primitives)]
-    if row["role"] == "environment":
-        result = []
-        for primitive in primitives:
-            (x0, x1), (y0, y1), z_range = primitive["bounds_mm"]
-            result.append(_polygon(((x0, y0), (x1, y0), (x1, y1), (x0, y1)), z_range))
-        return result
+    role = row["role"]
+    if role == "via" and primitives:
+        outer, bore = primitives
+        return [_round_piece(outer, bore["radius_mm"])]
+    if role in {"surface", "dielectric"}:
+        if any(primitive.get("opening") for primitive in primitives):
+            return []
+        if any(max(_height(primitive)[0], lo) < min(_height(primitive)[1], hi)
+               for primitive in primitives for lo, hi in cut_heights):
+            return []
+    if role in {"conductor", "environment", "surface", "dielectric"}:
+        return [_solid_piece(primitive) for primitive in primitives]
     return []
 
 
@@ -162,12 +179,17 @@ def planar_clearances(included, lines, grid_mm):
     """! @brief 실제 해석 형상의 기본 셀 폭 2배 이내의 간극을 표시한다."""
     radius = 2 * grid_mm
     objects = []
+    omitted = 0
+    cut_heights = [_height(primitive) for row in included for primitive in row["primitives"]
+                   if row["role"] == "void" or (row["role"] == "via" and primitive.get("opening"))]
     for row in included:
-        pieces = _pieces(row)
+        pieces = _pieces(row, cut_heights)
         if pieces:
             box = tuple((min(axis[0] for axis in bounds), max(axis[1] for axis in bounds))
                         for bounds in zip(*(piece.bounds for piece in pieces)))
             objects.append((row, pieces, box))
+        elif row["role"] in {"surface", "dielectric"}:
+            omitted += 1
 
     candidates = []
     for left, right in combinations(objects, 2):
@@ -202,4 +224,4 @@ def planar_clearances(included, lines, grid_mm):
         else:
             row["cells_xy"] = _crossed_cells(a, b, lines)
     return {"search_radius_mm": radius, "pair_total": len(candidates), "pair_evaluated": evaluated,
-            "clearance_total": len(rows), "clearances": visible}
+            "clearance_total": len(rows), "clearances": visible, "volume_omitted_count": omitted}

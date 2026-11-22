@@ -98,6 +98,20 @@ class SolverReviewFollowup(unittest.TestCase):
         self.assertEqual(gap["distance_mm"], 1)
         self.assertEqual(gap["points_mm"][0], gap["points_mm"][1])
 
+    def test_unpierced_dielectric_cylinder_and_overwritten_material_are_distinct(self):
+        """! @brief 원통 경계를 쓰고 보어나 음의 개구가 겹친 솔리드는 간극에서 제외한다."""
+        dielectric = {"id": "core", "name": "core", "role": "dielectric", "primitives": [
+            {"kind": "circle", "center_mm": [0, 0], "radius_mm": 2, "z_mm": [0, 1]}]}
+        surface = {"id": "coat", "name": "coat", "role": "surface", "primitives": [
+            {"kind": "box", "bounds_mm": [[2.4, 3], [-.5, .5], [.25, .75]]}]}
+        lines = {axis: [count / 4 for count in range(-16, 17)] for axis in "xyz"}
+        gap, = pcb_clearance_review.planar_clearances([dielectric, surface], lines, 1)["clearances"]
+        self.assertAlmostEqual(gap["distance_mm"], .4)
+        self.assertEqual(gap["points_mm"], [(2.0, 0.0), (2.4, 0.0)])
+        drilled = {"id": "hole", "name": "hole", "role": "void", "primitives": [
+            {"kind": "circle", "center_mm": [0, 0], "radius_mm": .5, "z_mm": [0, 1]}]}
+        self.assertEqual(pcb_clearance_review.planar_clearances([dielectric, surface, drilled], lines, 1)["clearances"], [])
+
     def test_boundary_faces_follow_native_order_and_do_not_mark_absent_pml(self):
         """! @brief 기존 격자와 혼합 외벽을 원호·IFA의 실제 계획 조회에서 비교한다."""
         modes = ["MUR", "PML_8", "PEC", "PMC", "PML_8", "MUR"]
@@ -187,6 +201,7 @@ class SolverReviewFollowup(unittest.TestCase):
                 mask = add_mask(document)
                 mask["material_id"] = dielectric
                 mask["openings"] = [rectangle(2, 2, 1, 1)]
+                mask["offset"] = Quantity.from_value(.2, "mm").to_dict()
                 with ProjectService(Path(folder), auto_run=False) as service:
                     service.solver.runtime = SimpleNamespace(identity=runtime_identity())
                     source, _ = register_fixture(service, document)
@@ -198,6 +213,12 @@ class SolverReviewFollowup(unittest.TestCase):
                     choices = query(service, source)["local_mesh_targets"]
                     opening = next(row for row in choices if row["kind"] == "surface_opening")
                     original = preview()["mesh"]
+                    substrate = next(row for row in document["stackup"] if row["role"] == "dielectric")
+                    gaps = original["planar_clearances"]["clearances"]
+                    gap = next(row for row in gaps if set(row["object_ids"]) == {substrate["id"], mask["id"]})
+                    self.assertAlmostEqual(gap["distance_mm"], .2)
+                    self.assertEqual(set(gap["object_roles"]), {"dielectric", "surface"})
+                    self.assertTrue(gap["cells_xyz"])
                     bounds = original["model_bounds_mm"]
                     region = [[lo + (hi - lo) / 4, lo + (hi - lo) / 3] for lo, hi in bounds]
                     target = {"kind": "surface_opening", "object_id": mask["id"],
