@@ -14347,8 +14347,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
-      "text_sha256": "0a8337616796d2c80189c0c511550b78e6959a41b1c83e89656cfa8fbb5ddbcb",
-      "utf8_bytes": 28457
+      "text_sha256": "bc25794581e5fd152407eb60065b93ad94d3a57f1cb4fc697670e709bb5d21c8",
+      "utf8_bytes": 28865
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
@@ -15077,8 +15077,8 @@
     },
     {
       "path": "Code/src/rfad/application/network_records.py",
-      "text_sha256": "d3784756e327789ed788cb63a41f59f60156616c8b36504843b8067416e6226c",
-      "utf8_bytes": 10081
+      "text_sha256": "e12595b6e9534d277bc13afcd612767a65586a8e6c21afa09f6a03bae99c8a71",
+      "utf8_bytes": 12456
     },
     {
       "path": "Code/src/rfad/application/network_service.py",
@@ -15962,8 +15962,8 @@
     },
     {
       "path": "Code/tests/test_network_boundaries.py",
-      "text_sha256": "eceae42a46bfe3b13509430c58ffd7e0f77f3c1a073911d7bc3954599fb27dde",
-      "utf8_bytes": 16357
+      "text_sha256": "d5a96f577c138426d2fae5783c283ab770aa1d8d4a5dd8c5eff89e5dededb859",
+      "utf8_bytes": 18288
     },
     {
       "path": "Code/tests/test_network_domain.py",
@@ -16602,8 +16602,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/result_network_view.cpp",
-      "text_sha256": "3c825369cc8066318a7eaf77bac7a2935ce6cd6cc106131981774499bf9ddb9b",
-      "utf8_bytes": 13011
+      "text_sha256": "ef43668b4446d55ce55979f56008fdd80dc6c0f60c7440a083f44d83b9f30210",
+      "utf8_bytes": 13160
     },
     {
       "path": "Code/ui/wxwidgets/result_radiation_canvas.cpp",

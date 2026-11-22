@@ -180,6 +180,35 @@ class NetworkSolverProjectionTests(unittest.TestCase):
         self.assertEqual(points[2]["vswr_state"], "undefined_active")
         self.assertEqual(points[2]["z0_ohm"], [[100, 0]])
 
+    def test_two_port_power_wave_passivity_and_reciprocity_have_distinct_states(self):
+        """! @brief 개별 열이 작아도 공통 모드가 비수동인 행렬과 단방향 결합을 구분한다."""
+        matrix = [
+            [[[0, 0], [0, .8]], [[0, .8], [0, 0]]],
+            [[[.6, 0], [.6, 0]], [[.6, 0], [.6, 0]]],
+            [[[0, 0], [.2, 0]], [[.7, 0], [0, 0]]],
+            [[[0, 0], None], [[.7, 0], [0, 0]]],
+        ]
+        data = make_dataset(parameter_kind="S", frequency_hz=[1, 2, 3, 4], port_ids=[str(uuid4()), str(uuid4())],
+                            values_ri=matrix, z0_ohm=[[[50, 0], [50, 0]]] * 4,
+                            valid_mask=[[[entry is not None for entry in row] for row in sample] for sample in matrix],
+                            sample_status=[[["valid" if entry is not None else "missing" for entry in row]
+                                            for row in sample] for sample in matrix],
+                            wave_definition="power", port_modes=["single_ended"] * 2,
+                            current_orientation=["into_dut"] * 2)
+        points = samples(data, row=1, column=0)["samples"]
+        for point, sigma in zip(points, (.8, 1.2, .7)):
+            self.assertAlmostEqual(point["sigma_max"], sigma)
+        self.assertEqual([point["sigma_max_state"] for point in points],
+                         ["finite", "over_unity", "finite", "matrix_incomplete"])
+        self.assertAlmostEqual(points[2]["reciprocity_residual"], .5)
+        self.assertEqual(points[2]["reciprocity_residual_state"], "nonzero_residual")
+        self.assertIsNone(points[3]["reciprocity_residual"])
+        unconfirmed = deepcopy(data)
+        unconfirmed["z0_ohm"][0] = [[50, 0], [75, 0]]
+        missing = samples(unconfirmed, limit=1)["samples"][0]
+        self.assertIsNone(missing["sigma_max"])
+        self.assertEqual(missing["sigma_max_state"], "quality_basis_unknown")
+
     def test_group_delay_irregular_grid_wrapping_phase_convention_and_missing(self):
         """! @brief 알려진 두 방향 지연을 페이지 경계, 미정값, 위상 래핑과 대조한다."""
         axis = [1e9, 1.12e9, 1.27e9, 1.4e9, 1.58e9]

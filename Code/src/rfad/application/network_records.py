@@ -95,6 +95,41 @@ def assessment_summary(assessment):
     return result
 
 
+def _quality(data, index):
+    """! @brief 명시 기준을 가진 S 행렬의 최대 특이값과 상호성 잔차를 계산한다."""
+    size = len(data["port_ids"])
+    if data["parameter_kind"] != "S":
+        return None, "not_applicable", None, "not_applicable"
+    references = None if data["z0_ohm"] is None else data["z0_ohm"][index]
+    if (not references or references[0] is None or references[0][1] != 0 or references[0][0] <= 0
+            or any(value != references[0] for value in references)
+            or data["wave_definition"] not in ("power", "traveling")
+            or any(mode != "single_ended" for mode in data["port_modes"])
+            or any(direction != "into_dut" for direction in data["current_orientation"])):
+        return None, "quality_basis_unknown", None, "quality_basis_unknown" if size == 2 else "not_applicable"
+    if not all(flag for row in data["valid_mask"][index] for flag in row):
+        return None, "matrix_incomplete", None, "matrix_incomplete" if size == 2 else "not_applicable"
+    pairs = [pair for row in data["values_ri"][index] for pair in row]
+    scale = max(abs(value) for pair in pairs for value in pair)
+    if scale == 0:
+        sigma, residual = 0.0, 0.0
+    elif size == 1:
+        sigma, residual = math.hypot(*pairs[0]), None
+    else:
+        a, b, c, d = (complex(x / scale, y / scale) for x, y in pairs)
+        left, right = abs(a) ** 2 + abs(c) ** 2, abs(b) ** 2 + abs(d) ** 2
+        cross = a.conjugate() * b + c.conjugate() * d
+        sigma = scale * math.sqrt((left + right + math.hypot(left - right, 2 * abs(cross))) / 2)
+        residual = scale * abs(b - c)
+    roundoff = 1e-12
+    passivity = ("over_unity" if sigma > 1 + roundoff else "finite") if math.isfinite(sigma) else "nonfinite"
+    reciprocity = "not_applicable"
+    if size == 2:
+        reciprocity = ("nonzero_residual" if residual > roundoff else "finite") if math.isfinite(residual) else "nonfinite"
+    return (sigma if passivity != "nonfinite" else None, passivity,
+            residual if reciprocity in ("nonzero_residual", "finite") else None, reciprocity)
+
+
 def _group_delay(data, row, column, index):
     """! @brief 한 채널의 실제 인접 S 표본만으로 위상 기울기를 ns로 산출한다."""
     if data["parameter_kind"] != "S":
@@ -161,7 +196,10 @@ def samples(data, offset=0, limit=MAX_PAGE, row=0, column=0):
         phase_state = "missing" if not valid else "undefined_zero_magnitude" if magnitude == 0 else "finite"
         vswr_state = "not_applicable" if data["parameter_kind"] != "S" or row != column else "missing" if not valid else "positive_infinity" if magnitude == 1 else "undefined_active" if magnitude > 1 else "finite" if math.isfinite(vswr) else "nonfinite"
         delay, delay_state = _group_delay(data, row, column, index)
+        sigma, passivity, reciprocity, reciprocity_state = _quality(data, index)
         output.append({"index": index, "frequency_hz": data["frequency_hz"][index],
+                       "sigma_max": sigma, "sigma_max_state": passivity,
+                       "reciprocity_residual": reciprocity, "reciprocity_residual_state": reciprocity_state,
                        "group_delay_ns": delay, "group_delay_ns_state": delay_state,
                        "z0_ohm": None if data["z0_ohm"] is None else deepcopy(data["z0_ohm"][index]),
                        "real": pair[0] if valid else None, "imag": pair[1] if valid else None,

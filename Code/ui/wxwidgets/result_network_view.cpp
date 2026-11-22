@@ -15,8 +15,10 @@
 namespace
 {
 const std::array<std::string, 5> Units{"auto", "Hz", "kHz", "MHz", "GHz"};
-const std::array<std::string, 7> Metrics{"magnitude_db", "phase_deg", "vswr", "real", "imag", "magnitude", "group_delay_ns"};
-const std::array<std::string, 7> Labels{"크기 (dB)", "위상 (deg)", "VSWR", "실수부", "허수부", "크기", "군지연 (ns)"};
+const std::array<std::string, 9> Metrics{"magnitude_db", "phase_deg", "vswr", "real", "imag", "magnitude",
+                                         "group_delay_ns", "sigma_max", "reciprocity_residual"};
+const std::array<std::string, 9> Labels{"크기 (dB)", "위상 (deg)", "VSWR", "실수부", "허수부", "크기",
+                                        "군지연 (ns)", "최대 특이값", "상호성 잔차"};
 }
 ResultNetworkView::ResultNetworkView(wxWindow* parent)
     : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL | wxTAB_TRAVERSAL)
@@ -213,10 +215,10 @@ void ResultNetworkView::Present()
                        Display(Labels.at(metric) + (metric >= 3 && metric <= 5 && !unit.empty() ? " / " + unit : "")));
     m_chart->SetFrequencyUnit(scale.unit);
     m_samples->ClearAll();
-    const bool delay = Metrics.at(metric) == "group_delay_ns";
+    const bool diagnostic = metric >= 6;
     const std::array<std::string, 8> labels{
         "표본", "주파수 (" + scale.unit + ")", "실수부", "허수부", "크기 (dB)", "위상 (deg)",
-        delay ? "군지연 (ns)" : "VSWR", "상태 / 출처"};
+        diagnostic ? Labels.at(metric) : "VSWR", "상태 / 출처"};
     for (std::size_t index = 0; index < labels.size(); ++index)
     {
         m_samples->InsertColumn(static_cast<long>(index), Display(labels[index]), wxLIST_FORMAT_LEFT,
@@ -235,7 +237,7 @@ void ResultNetworkView::Present()
                 row, static_cast<int>(index + 2),
                 Display(ResultUi::SampleValue(
                     sample, std::array<std::string, 5>{"real", "imag", "magnitude_db", "phase_deg",
-                                                      delay ? "group_delay_ns" : "vswr"}[index])));
+                                                      diagnostic ? Metrics.at(metric) : "vswr"}[index])));
         }
         m_samples->SetItem(row, 7,
                            Display(ResultUi::State(sample.value("status", Json(nullptr))) + " / " +

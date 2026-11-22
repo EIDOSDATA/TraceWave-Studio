@@ -151,6 +151,18 @@ std::string SampleValue(const Json& point, const std::string& key)
     {
         return "시간 위상 규약 미정";
     }
+    if (state == "quality_basis_unknown")
+    {
+        return "파·포트 또는 Z0 조건 미확인";
+    }
+    if (state == "matrix_incomplete")
+    {
+        return "행렬 표본 누락";
+    }
+    if (state == "over_unity" || state == "nonzero_residual")
+    {
+        return Number(point.value(key, Json(nullptr))) + (state == "over_unity" ? " (1 초과)" : " (비대칭)");
+    }
     if (state == "ambiguous_phase_step")
     {
         return "인접 위상차 부호 미정";
