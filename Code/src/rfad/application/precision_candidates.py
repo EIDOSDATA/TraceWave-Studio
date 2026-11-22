@@ -10,6 +10,7 @@ from rfad.domain.curve_boolean import _intersections, _piece, TOLERANCE_MM
 from rfad.domain.design import _uuid
 from rfad.domain.errors import ProjectError
 from rfad.domain.object_names import allocate_name, object_label
+from rfad.domain.precision_fillet import curved_fillet
 from rfad.domain.precision_dimensions import bind_dimension, dimensions, set_dimension
 from rfad.domain.precision_transform import MAX_SELECTION, fail, number, point, point_fields, replace_literal, scalar, transform
 from rfad.domain.units import Quantity
@@ -21,6 +22,7 @@ OPERATIONS = {
     "linear_pattern": ("직선 반복 복사", {"count", "dx_mm", "dy_mm"}),
     "circular_pattern": ("원형 반복 복사", {"count", "pivot_x_mm", "pivot_y_mm", "step_deg"}),
     "line_fillet": ("두 직선 사이 필렛", {"radius_mm"}),
+    "curved_fillet": ("원호에 접하는 필렛", {"radius_mm"}),
     "curve_trim": ("교차점에서 선·원호 자르기", {"target_id", "keep"}),
     "arc_offset": ("원호 중심선 오프셋", {"distance_mm"}),
     "dimension_set": ("치수 변경", {"dimension_key", "value", "unit"}),
@@ -69,12 +71,17 @@ def operation_reason(document, rows, operation):
         return "도체 객체를 선택하십시오."
     if operation in ("dimension_set", "bind_dimension", "offset", "arc_offset") and len(rows) != 1:
         return "이 작업에는 객체 한 개를 선택하십시오."
-    if operation == "line_fillet":
-        if len(rows) != 2 or any(row["kind"] != "line_path" for row in rows):
+    if operation in {"line_fillet", "curved_fillet"}:
+        kinds = {row["kind"] for row in rows}
+        if len(rows) != 2 or not kinds <= {"line_path", "arc_path"}:
+            return "공통 끝점을 가진 선·원호 도체 두 개를 선택하십시오."
+        if operation == "line_fillet" and kinds != {"line_path"}:
             return "공통 끝점을 가진 직선 도체 두 개를 선택하십시오."
+        if operation == "curved_fillet" and "arc_path" not in kinds:
+            return "하나 이상의 열린 원호를 선택하십시오."
         fields = ("frame_id", "layer_id", "net_id", "material_ref", "role", "include_in_em", "include_in_export")
         if any(rows[0][key] != rows[1][key] for key in fields):
-            return "같은 좌표계, 층, 넷, 재료, 역할, 선폭 및 포함 상태인 직선만 필렛으로 연결할 수 있습니다."
+            return "같은 좌표계, 층, 넷, 재료, 역할, 선폭 및 포함 상태인 도체만 필렛으로 연결할 수 있습니다."
         return _referenced(document, [row["id"] for row in rows])
     if operation == "curve_trim":
         if len(rows) != 2 or any(row["kind"] not in {"line_path", "arc_path"} for row in rows):
@@ -256,27 +263,65 @@ def _trim(document, rows, values):
     if not interior:
         fail("대상 내부에서 경계와 만나는 교차점을 찾을 수 없습니다.", "target_id")
     start, end = (0, max(interior)) if keep == "start" else (min(interior), 1)
-    cut = _piece(subject, start, end)
-    result = deepcopy(original)
-    if subject["kind"] == "line":
-        change = "end" if keep == "start" else "start"
-        result[change] = [replace_literal(document, old, value, "mm", "geometry." + change)
-                          for old, value in zip(original[change], cut[change])]
-    else:
-        if keep == "end":
-            result["start_angle"] = replace_literal(document, original["start_angle"], cut["start_deg"], "deg", "geometry.start_angle")
-        result["sweep_angle"] = replace_literal(document, original["sweep_angle"], cut["sweep_deg"], "deg", "geometry.sweep_angle")
+    result = _shorten_path(document, original, subject, start, end)
     return [result if row["id"] == target else deepcopy(row) for row in rows]
 
 
-def _fillet(document, rows, values, origin_id):
-    """! @brief 두 유한 직선에 동시에 접하는 정확한 원호를 만들고 접점까지만 줄인다."""
+def _shorten_path(document, original, curve, start, end):
+    """! @brief 절단으로 움직이는 끝점과 각도만 기록한다."""
+    cut = _piece(curve, start, end)
+    result = deepcopy(original)
+    if curve["kind"] == "line":
+        key = "end" if start == 0 else "start"
+        result[key] = [replace_literal(document, old, value, "mm", "geometry." + key)
+                       for old, value in zip(original[key], cut[key])]
+    else:
+        if start != 0:
+            result["start_angle"] = replace_literal(document, original["start_angle"], cut["start_deg"], "deg", "geometry.start_angle")
+        result["sweep_angle"] = replace_literal(document, original["sweep_angle"], cut["sweep_deg"], "deg", "geometry.sweep_angle")
+    return result
+
+
+def _fillet_radius(document, rows, values):
+    """! @brief 사용할 반경과 공통 선폭을 검증한다."""
     radius = number(values["radius_mm"], "radius_mm")
     if not 0 < radius <= 1e6:
         fail("필렛 반경은 0보다 크고 1000000 mm 이하여야 합니다.", "radius_mm")
     first_width, second_width = (scalar(document, row["width"], field="geometry.width") for row in rows)
     if abs(first_width - second_width) > TOLERANCE_MM:
-        fail("필렛의 두 직선에 같은 폭을 지정하십시오.", "selection_ids")
+        fail("필렛의 두 도체에 같은 폭을 지정하십시오.", "selection_ids")
+    return radius
+
+
+def _fillet_arc(document, source, origin_id, radius, center, start, sweep):
+    """! @brief 원래 도체의 의미와 새 중심선 형상을 하나의 원호로 묶는다."""
+    arc = {key: deepcopy(value) for key, value in source.items() if key not in {"start", "end"}}
+    arc.update(id=str(uuid5(UUID(origin_id), "fillet")), kind="arc_path",
+               center=[Quantity.from_value(value, "mm").to_dict() for value in center],
+               radius=Quantity.from_value(radius, "mm").to_dict(),
+               start_angle=Quantity.from_value(start, "deg").to_dict(),
+               sweep_angle=Quantity.from_value(sweep, "deg").to_dict())
+    arc["name"] = allocate_name(document, arc)
+    return arc
+
+
+def _curve_fillet(document, rows, values, origin_id):
+    """! @brief 접점을 기준으로 기존 중심선을 줄이고 새 필렛을 한 명령으로 작성한다."""
+    radius = _fillet_radius(document, rows, values)
+    if radius <= scalar(document, rows[0]["width"], field="geometry.width") / 2:
+        fail("원호 필렛 반경은 도체 선폭의 절반보다 커야 합니다.", "radius_mm")
+    edges = [_centerline(document, row) for row in rows]
+    ends, parameters, center, start, sweep = curved_fillet(edges, radius)
+    output = []
+    for original, edge, endpoint, parameter in zip(rows, edges, ends, parameters):
+        low, high = (parameter, 1) if endpoint == 0 else (0, parameter)
+        output.append(_shorten_path(document, original, edge, low, high))
+    return [*output, _fillet_arc(document, rows[0], origin_id, radius, center, start, sweep)]
+
+
+def _fillet(document, rows, values, origin_id):
+    """! @brief 두 유한 직선에 동시에 접하는 정확한 원호를 만들고 접점까지만 줄인다."""
+    radius = _fillet_radius(document, rows, values)
     lines = [{end: point(document, row[end], "geometry." + end) for end in ("start", "end")} for row in rows]
     shared = [(left, right) for left in lines[0] for right in lines[1]
               if math.dist(lines[0][left], lines[1][right]) <= TOLERANCE_MM]
@@ -313,14 +358,8 @@ def _fillet(document, rows, values, origin_id):
         changed[end] = [replace_literal(document, old, value, "mm", "geometry." + end)
                         for old, value in zip(row[end], contact)]
         output.append(changed)
-    arc = {key: deepcopy(value) for key, value in rows[0].items() if key not in {"start", "end"}}
-    arc.update(id=str(uuid5(UUID(origin_id), "fillet")), kind="arc_path",
-               center=[Quantity.from_value(value, "mm").to_dict() for value in center],
-               radius=Quantity.from_value(radius, "mm").to_dict(),
-               start_angle=Quantity.from_value(angles[0], "deg").to_dict(),
-               sweep_angle=Quantity.from_value(math.remainder(angles[1] - angles[0], 360), "deg").to_dict())
-    arc["name"] = allocate_name(document, arc)
-    return [*output, arc]
+    sweep = math.remainder(angles[1] - angles[0], 360)
+    return [*output, _fillet_arc(document, rows[0], origin_id, radius, center, angles[0], sweep)]
 
 
 def replacements(document, rows, operation, values, origin_id):
@@ -340,6 +379,8 @@ def replacements(document, rows, operation, values, origin_id):
         return _pattern_objects(document, rows, operation, values, origin_id), engine
     if operation == "line_fillet":
         return _fillet(document, rows, values, origin_id), engine
+    if operation == "curved_fillet":
+        return _curve_fillet(document, rows, values, origin_id), engine
     if operation == "curve_trim":
         return _trim(document, rows, values), engine
     if operation == "arc_offset":

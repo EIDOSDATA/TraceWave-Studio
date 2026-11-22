@@ -280,6 +280,51 @@ class PrecisionServiceTests(unittest.TestCase):
         self.history("redo")
         self.assertEqual(self.document()["geometry"], final["geometry"])
 
+    def test_curved_fillet_uses_exact_tangency_and_retains_existing_arc_ids(self):
+        """! @brief 선-원호와 원호-원호의 독립 중심좌표, 접점 및 재열기를 비교한다."""
+        def curve_center(row):
+            """! @brief 검증할 저장형 중심을 mm 두 좌표로 읽는다."""
+            return [Quantity(**item).as_unit("mm") for item in row["center"]]
+
+        for x, use_line in ((20, True), (50, False)):
+            first, second = str(uuid4()), str(uuid4())
+            if use_line:
+                self.canvas("create_line", {"id": first, "layer_id": self.layer, "width_mm": 0.4,
+                                            "start": [x - 10, 20], "end": [x, 20]})
+                expected = (x + 5 - math.sqrt(35), 21)
+            else:
+                self.canvas("create_arc", {"id": first, "layer_id": self.layer, "width_mm": 0.4,
+                                           "center": [x, 15], "radius_mm": 5, "start_angle_deg": 180, "sweep_angle_deg": -90})
+                shift = math.sqrt(23.5 / 2) - 2.5
+                expected = (x - shift, 20 + shift)
+            self.canvas("create_arc", {"id": second, "layer_id": self.layer, "width_mm": 0.4,
+                                       "center": [x + 5, 20], "radius_mm": 5, "start_angle_deg": 180, "sweep_angle_deg": -90})
+            originals = [self.shape(first), self.shape(second)]
+            for bad_radius in (0.2, 5):
+                blocked, _ = self.preview([first, second], "curved_fillet", {"radius_mm": bad_radius})
+                self.assertFalse(blocked["can_apply"])
+            result, _ = self.apply([first, second], "curved_fillet", {"radius_mm": 1})
+            self.assertEqual(result["selection_ids"][:2], [first, second])
+            fillet = self.shape(result["selection_ids"][2])
+            for actual, coordinate in zip(curve_center(fillet), expected):
+                self.assertAlmostEqual(actual, coordinate, places=9)
+            self.assertAlmostEqual(math.dist(curve_center(self.shape(second)), curve_center(fillet)), 6)
+            self.assertEqual(self.shape(second)["radius"], originals[1]["radius"])
+            self.assertLess(Quantity(**self.shape(second)["sweep_angle"]).as_unit("deg"), 0)
+            if use_line:
+                self.assertEqual(self.shape(first)["start"], originals[0]["start"])
+            else:
+                self.assertEqual(self.shape(first)["center"], originals[0]["center"])
+                self.assertAlmostEqual(math.dist(curve_center(self.shape(first)), curve_center(fillet)), 6)
+        old = self.document()
+        save = self.service.mutate("project.save", self.request({"expected_revision": self.revision}))
+        self.assertTrue(self.service.run_next())
+        self.assertEqual(self.service.status({"contract_version": "rfad.api/2.0", "context": {},
+                     "input": {"job_id": save["job_id"]}})["state"], "completed")
+        self.service.close()
+        self.service = ProjectService(self.workspace, auto_run=False)
+        self.assertEqual(self.document(), old)
+
     def test_rotate_two_objects_is_one_undo_and_preserves_unknowns_and_sources(self):
         line, arc = self.line(), self.arc()
         source = self.shape(line)

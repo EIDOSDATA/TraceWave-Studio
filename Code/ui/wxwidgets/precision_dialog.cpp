@@ -219,7 +219,7 @@ void PrecisionDialog::BuildFields()
             number("step_deg", "회전 간격 (deg, 반시계 양수)", "90");
         }
     }
-    else if (id == "line_fillet")
+    else if (id == "line_fillet" || id == "curved_fillet")
     {
         number("radius_mm", "필렛 반경 (mm)", "1");
     }

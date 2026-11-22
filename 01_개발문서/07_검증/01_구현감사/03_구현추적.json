@@ -15194,8 +15194,8 @@
     },
     {
       "path": "Code/src/rfad/application/precision_candidates.py",
-      "text_sha256": "21f334ddc0fbd6543c004084ab4611d53a5ae1521d4cdc40bae0582675d0a06d",
-      "utf8_bytes": 23207
+      "text_sha256": "309593c50c59bd6702a0c6767a6bd812188d4500ee6faccee9595590f4a5970b",
+      "utf8_bytes": 23389
     },
     {
       "path": "Code/src/rfad/application/precision_service.py",
@@ -16114,8 +16114,8 @@
     },
     {
       "path": "Code/tests/test_precision_service.py",
-      "text_sha256": "753eb6baf11229f26ab83f03c7bf2fd9ecbd773d9899992e3e819d61fc8468db",
-      "utf8_bytes": 37476
+      "text_sha256": "7edc282c165dd22ff647db7652bff60113972fea59ea75e415d7ccdebb577470",
+      "utf8_bytes": 40540
     },
     {
       "path": "Code/tests/test_printed_seeds.py",
