@@ -22,14 +22,15 @@ from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 from rfad.domain.units import Quantity
 
 
-READS = {"sweep.context", "sweep.preview", "sweep.list", "sweep.get", "sweep.page", "sweep.result", "sweep.quantity", "sweep.export", "sweep.rank", "sweep.recipe"}
+READS = {"sweep.context", "sweep.preview", "sweep.list", "sweep.get", "sweep.page", "sweep.result", "sweep.quantity", "sweep.export", "sweep.rank", "sweep.recipe", "sweep.replay_preview"}
 MUTATIONS = {"sweep.create", "sweep.start", "sweep.cancel", "sweep.resume"}
 MAX_STUDIES = 32
 FIELDS = {
     "sweep.context": set(), "sweep.list": set(),
     "sweep.preview": {"expected_revision", "specification"},
     "sweep.create": {"expected_revision", "specification", "review_hash"},
-    "sweep.get": {"study_id"}, "sweep.rank": {"study_id"}, "sweep.recipe": {"study_id"}, "sweep.start": {"study_id"},
+    "sweep.get": {"study_id"}, "sweep.rank": {"study_id"}, "sweep.recipe": {"study_id"},
+    "sweep.replay_preview": {"study_id"}, "sweep.start": {"study_id"},
     "sweep.cancel": {"study_id"}, "sweep.resume": {"study_id"}, "sweep.export": {"study_id"},
     "sweep.page": {"study_id", "offset", "limit"},
     "sweep.result": {"study_id", "index", "offset", "limit", "row", "column"},
@@ -323,7 +324,7 @@ def actions(service, state, study, definition):
     reason = _environment_reason(service, definition)
     exhausted = study["usage"]["wall_seconds"] >= definition["specification"]["budget"]["wall_seconds"]
     return {"start": study["state"] == "ready" and not other and reason is None and not exhausted,
-            "cancel": study["state"] in ACTIVE | {"ready"}, "export": True, "recipe": True,
+            "cancel": study["state"] in ACTIVE | {"ready"}, "export": True, "recipe": True, "replay": True,
             "rank": bool(definition["specification"]["target_ids"]) and study["counts"]["completed"] > 0,
             "resume": study["state"] in {"cancelled", "interrupted", "failed", "blocked"}
                       and not other and reason is None and not exhausted}, reason
@@ -433,8 +434,26 @@ def _recipe(study, definition, source):
               "network_circuit_sha256": canonical_hash(network["circuit"]) if network is not None else None,
               "reproduce": {"method": "sweep.preview", "input": {
                   "expected_revision": source["revision_id"], "specification_key": "original_specification"},
-                  "source_project_required": True, "automatically_runs": False}}
+                  "source_project_required": True, "automatically_runs": False,
+                  "saved_study_preview": {"method": "sweep.replay_preview", "input": {"study_id": study["study_id"]}}}}
     return {**recipe, "recipe_sha256": canonical_hash(recipe)}
+
+
+def _replay_preview(service, state, project, study, definition, source):
+    """! @brief 저장한 설계에서 후보를 다시 구성하고 실행 환경과 원래 검토 해시를 대조한다."""
+    original = {"expected_revision": source["revision_id"], "specification": definition["original_specification"]}
+    review, specification, network, runtime, engine = preview(service, state, project, source, original)
+    checks = {"normalized_specification": specification == definition["specification"],
+              "network_sources": network == definition["network"],
+              "candidate_count": review["candidate_count"] == definition["candidate_count"],
+              "solver_runtime": runtime == definition["runtime_identity"],
+              "calculation_engine": engine == definition["engine_identity"],
+              "review_hash": review["review_hash"] == definition["review_hash"]}
+    return {"profile": "rfad.sweep-replay-preview/0.1", "study_id": study["study_id"],
+            "revision_id": source["revision_id"], "snapshot_sha256": definition["snapshot"]["content_hash"],
+            "original_review_hash": definition["review_hash"], "replayed_review_hash": review["review_hash"],
+            "checks": checks, "matches": all(checks.values()), "counts": review["counts"],
+            "performed_calculation": False}
 
 
 def read(service, method, params):
@@ -467,6 +486,8 @@ def read(service, method, params):
         return _export_candidates(service, study, definition, source)
     if method == "sweep.recipe":
         return bounded(_recipe(study, definition, source))
+    if method == "sweep.replay_preview":
+        return bounded(_replay_preview(service, state, project, study, definition, source))
     if method == "sweep.rank":
         from rfad.application import sweep_ranking
         return bounded(sweep_ranking.read(service, study, definition, source, project))

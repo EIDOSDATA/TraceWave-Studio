@@ -83,6 +83,29 @@ class DesignSweepServiceTests(unittest.TestCase):
         self.assertEqual(result, self.service.mutate("sweep.create", request))
         return result["study_id"]
 
+    def test_saved_input_preview_reconstructs_candidates_after_current_edit(self):
+        """! @brief 실제 후속 편집과 계산 환경 차이를 원래 고정 개정과 구분한다."""
+        identity = self.create()
+        self.service.mutate("project.apply_command", self.request({
+            "expected_revision": self.document()["revision_id"], "command_id": str(uuid4()),
+            "type": "metadata.describe", "payload": {"description": "저장 연구 이후의 편집"}}, mutation=True))
+        before = self.service.journal.read()
+        reply = self.read("sweep.replay_preview", study_id=identity)
+        self.assertTrue(reply["matches"], reply)
+        self.assertEqual(reply["revision_id"], self.original["revision_id"])
+        self.assertNotEqual(reply["revision_id"], self.document()["revision_id"])
+        self.assertEqual(reply["counts"]["total"], 3)
+        self.assertEqual(reply["counts"]["duplicates"], 1)
+        self.assertFalse(reply["performed_calculation"])
+        self.assertEqual(self.service.journal.read(), before)
+        with patch("rfad.application.design_sweep_service._environment", return_value=(None, {"available": False})):
+            changed = self.read("sweep.replay_preview", study_id=identity)
+        self.assertTrue(changed["checks"]["normalized_specification"])
+        self.assertFalse(changed["checks"]["calculation_engine"])
+        self.assertFalse(changed["checks"]["review_hash"])
+        self.assertFalse(changed["matches"])
+        self.assertEqual(self.service.journal.read(), before)
+
     def test_preview_dedup_and_atomic_definition_preserve_all_originals(self):
         """! @brief 단위 동치 중복 행과 원문은 유지하고 검토 중 파일/이력은 쓰지 않는다."""
         before = self.service.journal.read()

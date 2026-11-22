@@ -306,6 +306,51 @@ void StudioFrame::SweepCommand(const std::string& action)
              });
         return;
     }
+    if (action == "replay")
+    {
+        m_sweepPanel->SetStatus("보존한 설계 개정에서 연구 후보를 다시 검토하고 있습니다.");
+        UpdateControls();
+        Send("sweep.replay_preview", {{"study_id", id}}, false, Context(),
+             [this, project, generation, id](const Json& result)
+             {
+                 if (m_closing || project != m_project || generation != m_sweepGeneration)
+                 {
+                     return;
+                 }
+                 m_sweepPending = false;
+                 UpdateControls();
+                 if (result.at("study_id") != id)
+                 {
+                     m_sweepPanel->SetStatus("재검토 응답이 선택한 연구와 다릅니다.");
+                     return;
+                 }
+                 static constexpr std::array<std::pair<const char*, const char*>, 6> checks{{
+                     {"normalized_specification", "정규 입력"}, {"network_sources", "회로 자료"},
+                     {"candidate_count", "후보 수"}, {"solver_runtime", "솔버 환경"},
+                     {"calculation_engine", "계산 엔진"}, {"review_hash", "검토 해시"}}};
+                 std::string text = result.at("matches").get<bool>() ? "보존 연구와 입력 검토 일치" : "보존 연구와 입력 검토에 차이가 있습니다.";
+                 text += " / 후보 " + result.at("counts").at("total").dump() + "개";
+                 for (const auto& [key, label] : checks)
+                 {
+                     if (!result.at("checks").at(key).get<bool>())
+                     {
+                         text += " / " + std::string(label) + " 다름";
+                     }
+                 }
+                 text += "\n보존 개정 " + result.at("revision_id").get<std::string>();
+                 m_sweepPanel->SetStatus(text);
+             },
+             [this, project, generation](const Json& error)
+             {
+                 if (!m_closing && project == m_project && generation == m_sweepGeneration)
+                 {
+                     m_sweepPending = false;
+                     m_sweepPanel->SetStatus("보존 입력 재검토 실패. " + DiagnosticMessage(error));
+                     UpdateControls();
+                 }
+             });
+        return;
+    }
     if (action == "export" || action == "recipe")
     {
         const bool recipe = action == "recipe";

@@ -64,7 +64,7 @@ SweepPanel::SweepPanel(wxWindow* parent, wxWindow* navigation, wxWindow* conditi
     actions->Add(m_create, 0, wxALL, FromDIP(4));
     for (const auto& item : std::vector<std::pair<std::string, std::string>>{
              {"start", "선택 연구 실행"}, {"cancel", "취소 요청"}, {"resume", "명시적 재개"}, {"rank", "목표별 후보 순위"},
-             {"recipe", "계산 명세 저장"}, {"export", "후보 CSV 저장"}})
+             {"replay", "보존 입력 다시 검토"}, {"recipe", "계산 명세 저장"}, {"export", "후보 CSV 저장"}})
     {
         auto* button = new wxButton(this, wxID_ANY, Display(item.second));
         button->SetName(Display("sweep." + item.first));

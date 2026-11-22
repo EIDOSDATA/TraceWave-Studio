@@ -8445,6 +8445,10 @@
       "extension_profile": "rfad.design-sweep/0.1",
       "status": "implemented"
     },
+    "sweep.replay_preview": {
+      "extension_profile": "rfad.design-sweep/0.1",
+      "status": "implemented"
+    },
     "sweep.result": {
       "extension_profile": "rfad.design-sweep/0.1",
       "status": "implemented"
@@ -14397,8 +14401,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/06_연구/01_명시적스윕과_실행계약.md",
-      "text_sha256": "e5552da4859eb2f9c564f1a864f863a5d50c5bde305f29dda1560fbcc787f553",
-      "utf8_bytes": 12190
+      "text_sha256": "1e07773130a1cb2c5c4d3ed4d5ac4eba6cab63f089027675099f1315909c28da",
+      "utf8_bytes": 12517
     },
     {
       "path": "01_개발문서/05_기능설계/06_연구/02_후보채택과_새작업사본.md",
@@ -14997,8 +15001,8 @@
     },
     {
       "path": "Code/src/rfad/application/design_sweep_service.py",
-      "text_sha256": "9b7ae97e8f8ed4720b4769140ff2277c4a6ec289a28f8ad9079dc33a402e9d7e",
-      "utf8_bytes": 35637
+      "text_sha256": "a5fd6ce7e6448a759d34838c825a7e09ab18b281f8bbd07b441b9ff86b4d3bd9",
+      "utf8_bytes": 37315
     },
     {
       "path": "Code/src/rfad/application/display_mesh.py",
@@ -15787,8 +15791,8 @@
     },
     {
       "path": "Code/tests/test_design_sweep_service.py",
-      "text_sha256": "f29da75bc3611b7b56ab8eddf133364ccb34811f245305b258fc70497dc319cd",
-      "utf8_bytes": 18244
+      "text_sha256": "c8399aacada5c098a90a2873592e19c4dc12649ff3d535f2bfe1332f2dc0459e",
+      "utf8_bytes": 19800
     },
     {
       "path": "Code/tests/test_display_mesh.py",
@@ -16742,8 +16746,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/sweep_panel.cpp",
-      "text_sha256": "e19638c15189ba3ba066451b81ae2dd200ebcb72a676b3be25ee45c6a9237ab1",
-      "utf8_bytes": 21718
+      "text_sha256": "30f7adf6c725cac4fac2d13b403de4da373c532e055a48b9a21119dceb41d1bf",
+      "utf8_bytes": 21761
     },
     {
       "path": "Code/ui/wxwidgets/sweep_selection_dialog.cpp",
