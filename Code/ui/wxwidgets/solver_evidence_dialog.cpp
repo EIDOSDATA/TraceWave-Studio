@@ -233,6 +233,20 @@ private:
         sourcesLayout->Add(m_source, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(6));
         source->SetSizer(sourcesLayout);
         details->AddPage(source, Display("출처"));
+        auto* history = new wxPanel(details);
+        auto* historyLayout = new wxBoxSizer(wxVERTICAL);
+        m_history = ReadOnly(history, "solver.evidence.history");
+        historyLayout->Add(m_history, 1, wxEXPAND | wxALL, FromDIP(6));
+        m_openHistory = new wxButton(history, wxID_ANY, Display("객체 편집 이력 읽기"));
+        m_openHistory->SetName("solver.evidence.history.open");
+        StudioTheme::Button(*m_openHistory);
+        historyLayout->Add(m_openHistory, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(6));
+        m_openHistory->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+        {
+            LoadHistory();
+        });
+        history->SetSizer(historyLayout);
+        details->AddPage(history, Display("편집 이력"));
         layout->Add(details, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
         panel->SetSizer(layout);
         m_tabs->AddPage(panel, Display("재료와 급전"));
@@ -309,6 +323,14 @@ private:
         Present(m_original, "");
         Present(m_source, "");
         const auto& object = m_objects.at(index);
+        const auto kind = object.at("kind").get<std::string>();
+        const bool hasHistory = kind == "geometry" || kind == "terminal";
+        m_historyOffset = 0;
+        m_historyText.clear();
+        m_openHistory->SetLabel(Display("객체 편집 이력 읽기"));
+        m_openHistory->Enable(hasHistory);
+        Present(m_history, hasHistory ? "이 결과를 계산할 때까지의 객체 편집을 조회합니다."
+                                     : "도체 또는 급전 단자 도체를 선택하십시오.");
         Read({{"page", "object"}, {"kind", object.at("kind")}, {"id", object.at("id")}},
              [this, generation](const Json& data)
              {
@@ -341,6 +363,64 @@ private:
                      Present(m_used, message);
                      Present(m_original, message);
                      Present(m_source, message);
+                 }
+             });
+    }
+
+    /** @brief 선택 결과의 봉인 개정에서 과거 방향으로 객체 편집을 읽는다. */
+    void LoadHistory()
+    {
+        const auto generation = m_objectGeneration;
+        const auto& object = m_objects.at(m_objectChoice->GetSelection());
+        m_openHistory->Disable();
+        Read({{"page", "history"}, {"kind", object.at("kind")}, {"id", object.at("id")}, {"offset", m_historyOffset}},
+             [this, generation](const Json& data)
+             {
+                 if (generation != m_objectGeneration)
+                 {
+                     return;
+                 }
+                 for (const auto& row : data.at("rows"))
+                 {
+                     const auto action = row.at("action").get<std::string>();
+                     m_historyText += action == "added" ? "객체 추가\n" : action == "removed" ? "객체 삭제\n" : "객체 편집\n";
+                     Line(m_historyText, row, "revision_id", "개정");
+                     Line(m_historyText, row, "parent_revision_id", "이전 개정");
+                     Line(m_historyText, row, "command_type", "명령");
+                     const auto& move = row.at("history_action");
+                     if (!move.is_null())
+                     {
+                         m_historyText += move.at("direction") == "undo" ? "실행 취소\n" : "다시 실행\n";
+                     }
+                     Line(m_historyText, row, "fields", "변경 속성");
+                     m_historyText += "변경 전\n" + row.at("before").dump(2) + "\n변경 후\n" +
+                                      row.at("after").dump(2) + "\n\n";
+                 }
+                 std::string status;
+                 if (data.at("status") == "continued")
+                 {
+                     m_historyOffset = data.at("next_offset").get<int>();
+                     status = "이전 개정이 더 있습니다.";
+                     m_openHistory->SetLabel(Display("이전 개정 더 읽기"));
+                     m_openHistory->Enable();
+                 }
+                 else if (data.at("status") == "unavailable")
+                 {
+                     status = "이전 개정이 이 저장소에 없습니다.\n" + data.at("boundary_revision_id").get<std::string>();
+                 }
+                 else if (m_historyText.empty())
+                 {
+                     status = "보존된 개정에 객체 속성 편집이 없습니다.";
+                 }
+                 Present(m_history, m_historyText + status);
+                 m_history->SetFocus();
+             },
+             [this, generation](const Json& error)
+             {
+                 if (generation == m_objectGeneration)
+                 {
+                     Present(m_history, m_historyText + DiagnosticMessage(error));
+                     m_openHistory->Enable();
                  }
              });
     }
@@ -406,6 +486,10 @@ private:
     wxTextCtrl* m_used = nullptr;
     wxTextCtrl* m_original = nullptr;
     wxTextCtrl* m_source = nullptr;
+    wxTextCtrl* m_history = nullptr;
+    wxButton* m_openHistory = nullptr;
+    int m_historyOffset = 0;
+    std::string m_historyText;
 };
 }
 

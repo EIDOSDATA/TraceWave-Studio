@@ -1,8 +1,10 @@
 """! @brief 이름 있는 해석 조건의 보존과 결과 출처 검사를 확인한다."""
 
+from copy import deepcopy
 from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
 from uuid import uuid4
 
 from rfad.application import solver_conditions_service, solver_evidence
@@ -15,6 +17,7 @@ from rfad.domain.project import apply_command
 from rfad.domain.units import Quantity
 from test_cad_worker_process import register_fixture, request, status
 from test_pcb_selection_domain import selection
+from test_pcb_ifa import IFA_SETTINGS, ifa_document
 from test_pcb_solver import SETTINGS, fixture_document, runtime_identity
 
 
@@ -171,3 +174,73 @@ class SolverConditionsTests(unittest.TestCase):
             self.assertEqual(evidence(service, document, result_id, page="object", **feed), port_before)
             self.assertEqual(evidence(service, document, result_id, page="source", source_index=index, **material), source)
             self.assertEqual(service.journal.read(), state)
+
+
+    def test_geometry_history_stops_at_the_result_revision_after_reopening(self):
+        """! @brief 원호와 IFA의 객체 실제 값, 취소/재실행, 페이지 및 봉인 개정을 검증한다."""
+        for fixture, settings in ((fixture_document(arc=True), SETTINGS), (ifa_document(), IFA_SETTINGS)):
+            with self.subTest(fixture=fixture["metadata"]["name"]), TemporaryDirectory() as folder:
+                root = Path(folder)
+                with ProjectService(root, auto_run=False) as service:
+                    baseline, _ = register_fixture(service, fixture)
+                    identity = baseline["project_id"]
+                    key = baseline["ports"][0]["positive_geometry_id"]
+                    geometry = deepcopy(next(row for row in baseline["geometry"] if row["id"] == key))
+                    field = "width" if "width" in geometry else "size"
+                    original = deepcopy(geometry[field])
+                    edited_quantity = geometry[field][0] if field == "size" else geometry[field]
+                    edited_quantity["source_refs"] = ["개정 전후를 확인하는 시험 근거"]
+                    edited_id, undo_id, redo_id = [str(uuid4()) for _ in range(3)]
+
+                    def mutate(method, revision, **input):
+                        """! @brief 봉인 및 편집에 제품 명령 경로를 사용한다."""
+                        return service.mutate(method, request(service, identity, {"expected_revision": revision, **input}))
+
+                    edited = mutate("project.apply_command", baseline["revision_id"], command_id=edited_id,
+                                    type="geometry.set", payload={"geometry": geometry})
+                    undone = mutate("project.undo", edited["new_revision"], command_id=undo_id)
+                    redone = mutate("project.redo", undone["new_revision"], command_id=redo_id)
+                    task = mutate("snapshot.create", redone["new_revision"], description="봉인된 객체 이력 검증")
+                    service.run_next()
+                    snapshot = status(service, task["job_id"])["events"][-1]["operation_result"]
+                    frozen = service._load(service.journal.read()["projects"][identity])
+                    plan = build_pcb_plan(frozen, snapshot, runtime_identity(), settings)
+                    reference = {"plan_id": plan["plan_id"], "content_hash": canonical_hash(plan),
+                                 "artifact": service.journal.put_immutable("solver-artifacts/test/history.json",
+                                                                          canonical_bytes(plan))}
+                    result_id = str(uuid4())
+
+                    def register(state):
+                        """! @brief 결과가 실제로 사용하는 봉인 계획으로 시험 결과를 작성한다."""
+                        state["analysis_plans"][plan["plan_id"]] = {"project_id": identity, "reference": reference}
+                        state["solver_results"][result_id] = {
+                            "project_id": identity, "artifact_id": result_id, "metadata": {"profile": PROFILE},
+                            "snapshot": snapshot, "analysis_plan_id": plan["plan_id"],
+                        }
+
+                    service.journal.transaction(register)
+                    future = mutate("project.undo", redone["new_revision"], command_id=str(uuid4()))["new_revision"]
+                    task = mutate("project.save", future)
+                    service.run_next()
+                    self.assertEqual(status(service, task["job_id"])["state"], "completed")
+
+                with ProjectService(root, auto_run=False) as reopened, patch.object(solver_evidence, "EDIT_PAGE_REVISIONS", 1):
+                    args = {"page": "history", "kind": "terminal", "id": key}
+                    state_before = reopened.journal.read()
+                    first, second, third = [evidence(reopened, frozen, result_id, offset=offset, **args)
+                                            for offset in range(3)]
+                    self.assertEqual([row["next_offset"] for row in (first, second, third)], [1, 2, None])
+                    self.assertEqual([row["status"] for row in (first, second, third)],
+                                     ["continued", "continued", "complete"])
+                    redo, undo, edit = [page["rows"][0] for page in (first, second, third)]
+                    self.assertEqual([row["command_id"] for row in (redo, undo, edit)], [redo_id, undo_id, edited_id])
+                    self.assertEqual([row["revision_id"] for row in (redo, undo, edit)],
+                                     [redone["new_revision"], undone["new_revision"], edited["new_revision"]])
+                    self.assertEqual([row["command_type"] for row in (redo, undo, edit)], ["geometry.set"] * 3)
+                    self.assertEqual([row["history_action"]["direction"] for row in (redo, undo)], ["redo", "undo"])
+                    self.assertEqual(edit["before"], {field: original})
+                    self.assertEqual(edit["after"], {field: geometry[field]})
+                    self.assertEqual(undo["before"], edit["after"])
+                    self.assertEqual(undo["after"], edit["before"])
+                    self.assertEqual(redo["after"], edit["after"])
+                    self.assertEqual(reopened.journal.read(), state_before)

@@ -62,6 +62,42 @@ class SolverReviewFollowup(unittest.TestCase):
         self.assertEqual(limited["clearances"], [])
 
 
+    def test_via_barrel_and_environment_volume_use_exact_boundaries(self):
+        """! @brief 보어 내부, 도금 접촉, Z 높이차와 설치물별 상자의 정확한 간극을 확인한다."""
+        def barrel(identity, x, inner, outer, lo=0, hi=2):
+            """! @brief 모델 검토의 관통 배럴 표현을 사용한다."""
+            circle = {"kind": "circle", "center_mm": [x, 0], "radius_mm": outer, "z_mm": [lo, hi]}
+            return {"id": identity, "name": identity, "role": "via",
+                    "primitives": [circle, {**circle, "radius_mm": inner, "opening": True}]}
+
+        def box(identity, bounds):
+            """! @brief 해석에 투입된 설치물의 닫힌 상자를 만든다."""
+            return {"id": identity, "name": identity, "role": "environment",
+                    "primitives": [{"kind": "box", "bounds_mm": bounds}]}
+
+        lines = {axis: list(range(-5, 10)) for axis in "xyz"}
+        a = barrel("a", 0, 2, 3)
+        inner = barrel("inside", 0, .25, 1)
+        separate, = pcb_clearance_review.planar_clearances([a, inner], lines, 1)["clearances"]
+        self.assertAlmostEqual(separate["distance_mm"], 1)
+        self.assertEqual(separate["points_mm"], [(2, 0), (1, 0)])
+        self.assertEqual(separate["object_roles"], ["via", "via"])
+        crossed = barrel("crossing", 4, 1, 2)
+        self.assertEqual(pcb_clearance_review.planar_clearances([a, crossed], lines, 1)["clearances"], [])
+        pad = {"id": "pad", "name": "pad", "role": "conductor", "primitives": [
+            {"kind": "polygon", "points_mm": [(2, -.5), (4, -.5), (4, .5), (2, .5)], "z_mm": [2, 2]}]}
+        self.assertEqual(pcb_clearance_review.planar_clearances([a, pad], lines, 1)["clearances"], [])
+        displaced = box("offset", [[4, 5], [-1, 1], [3, 5]])
+        gap, = pcb_clearance_review.planar_clearances([a, displaced], lines, 1)["clearances"]
+        self.assertAlmostEqual(gap["distance_mm"], 2**.5)
+        self.assertEqual(gap["points_mm"], [(3, 0), (4, 0)])
+        self.assertEqual([gap["z_mm"], gap["other_z_mm"]], [2, 3])
+        self.assertEqual(gap["cells_xyz"], [[8, 5, 7]])
+        centered = box("above", [[2.1, 2.5], [-.1, .1], [3, 5]])
+        gap, = pcb_clearance_review.planar_clearances([a, centered], lines, 1)["clearances"]
+        self.assertEqual(gap["distance_mm"], 1)
+        self.assertEqual(gap["points_mm"][0], gap["points_mm"][1])
+
     def test_conditions_comparison_and_multiple_blockers(self):
         """! @brief 원호와 IFA의 보존값은 편집과 독립이며 같은 요청에서 재료와 급전을 확인한다."""
         for document, settings in ((fixture_document(arc=True), SETTINGS), (ifa_document(), IFA_SETTINGS)):

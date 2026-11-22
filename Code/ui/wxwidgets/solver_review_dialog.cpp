@@ -1369,21 +1369,26 @@ private:
                 const auto total = gaps.at("pair_total").get<unsigned long long>();
                 const auto evaluated = gaps.at("pair_evaluated").get<unsigned long long>();
                 m_intervals->SetToolTip(wxString::Format(
-                    Display("평면 도체 간극 %.6g mm 이내 | 검사 %llu/%llu쌍, 표시 %llu/%llu건"),
+                    Display("해석 형상 간극 %.6g mm 이내 | 검사 %llu/%llu쌍, 표시 %llu/%llu건"),
                     gaps.at("search_radius_mm").get<double>(), evaluated, total,
                     static_cast<unsigned long long>(rows.size()), gaps.at("clearance_total").get<unsigned long long>()));
                 for (const auto& row : rows)
                 {
+                    const auto roles = row.value("object_roles", std::vector<std::string>{});
+                    const auto label = std::find(roles.begin(), roles.end(), "via") != roles.end()
+                        ? "PTH 배럴 간극"
+                        : std::find(roles.begin(), roles.end(), "environment") != roles.end()
+                        ? "설치물 간극" : "도체 간극";
                     if (row.contains("other_z_mm"))
                     {
-                        m_intervals->Append(wxString::Format(Display("층간 도체 간극 %.6g mm / XYZ %llu셀"),
-                            row.at("distance_mm").get<double>(),
+                        m_intervals->Append(wxString::Format(Display("%s %.6g mm / XYZ %llu셀"),
+                            Display(label), row.at("distance_mm").get<double>(),
                             static_cast<unsigned long long>(row.at("cells_xyz").size())));
                     }
                     else
                     {
-                        m_intervals->Append(wxString::Format(Display("도체 간극 %.6g mm / Z %.6g mm / XY %llu셀"),
-                            row.at("distance_mm").get<double>(), row.at("z_mm").get<double>(),
+                        m_intervals->Append(wxString::Format(Display("%s %.6g mm / Z %.6g mm / XY %llu셀"),
+                            Display(label), row.at("distance_mm").get<double>(), row.at("z_mm").get<double>(),
                             static_cast<unsigned long long>(row.at("cells_xy").size())));
                     }
                 }

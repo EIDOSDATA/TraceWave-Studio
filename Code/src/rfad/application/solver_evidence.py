@@ -1,18 +1,20 @@
 """! @brief 완료된 PCB 해석에서 봉인 개정, 조건, 입력과 출처를 읽는다."""
 
-from rfad.application.canonical import canonical_hash
+from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.pcb_solver import PROFILE as PCB_PROFILE, validate_settings
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain.errors import ProjectError
 from rfad.domain.object_names import display_names
 from rfad.domain.pcb_evidence_pool import POOL_SCHEMA
-from rfad.domain.pcb_features import records
+from rfad.domain.pcb_features import REPLAY_COMMAND, records
 from rfad.domain.pcb_selection import EXTENSION_KEY
 from rfad.domain.pcb_selection_evidence import encoded
 from rfad.domain.precision_command import EXTENSION_KEY as PRECISION_KEY
 
 
 METHOD = "result.solver_evidence"
+EDIT_PAGE_REVISIONS = 12
+EDIT_PAGE_BYTES = 8 * 1024 * 1024
 
 
 def pcb_result_plan(service, state, project_id, result_id):
@@ -153,6 +155,81 @@ def _geometry_lineage(document, current, original):
             "changed_fields": changed}
 
 
+
+def _object_edit(before, after):
+    """! @brief 객체에 실제로 남은 차이와 값 또는 전체 값의 해시를 기록한다."""
+    def fields(row, keys):
+        """! @brief 키의 존재 여부와 큰 값의 무결성 정보를 보존한다."""
+        values = {}
+        for key in keys:
+            if key in row:
+                value = row[key]
+                size = len(canonical_bytes(value))
+                values[key] = value if size <= 512 else {"content_sha256": canonical_hash(value), "bytes": size}
+        return values
+
+    old, new = before or {}, after or {}
+    keys = sorted(key for key in old.keys() | new.keys()
+                  if key not in old or key not in new or old[key] != new[key])
+    return {"action": "added" if before is None else "removed" if after is None else "edited",
+            "fields": keys, "before": fields(old, keys), "after": fields(new, keys)}
+
+
+def _edit_history(repository, state, project, document, identity, offset):
+    """! @brief 봉인 개정의 부모 방향으로만 검증된 객체 편집을 페이지 단위로 읽는다."""
+    if type(offset) is not int or not 0 <= offset <= 2048:
+        raise ProjectError("E_SCHEMA", "편집 이력의 개정 위치가 범위를 벗어났습니다.")
+    project_id = document["project_id"]
+    links = {}
+    for command_id, row in state["commands"].items():
+        if row["project_id"] == project_id:
+            links.setdefault(row["new_revision"], []).append((command_id, row))
+    revisions = project["revisions"]
+    rows, examined, size = [], 0, 0
+    seen = {document["revision_id"]}
+    while document["parent_revision_ids"]:
+        revision = document["revision_id"]
+        parent_id = document["parent_revision_ids"][0]
+        reference = revisions.get(parent_id)
+        if parent_id in seen:
+            raise ProjectError("E_HASH", "봉인 개정의 부모 연결이 순환합니다.")
+        if reference is None:
+            return {"rows": rows, "next_offset": None, "status": "unavailable", "boundary_revision_id": parent_id}
+        commands = links.get(revision, [])
+        if len(commands) > 1 or any(row["old_revision"] != parent_id or row["previous_artifact"] != reference
+                                    for _, row in commands):
+            raise ProjectError("E_HASH", "봉인 개정의 부모와 편집 명령 연결이 다릅니다.")
+        if examined >= offset and (examined - offset >= EDIT_PAGE_REVISIONS
+                                   or (examined > offset and size + reference["bytes"] > EDIT_PAGE_BYTES)):
+            return {"rows": rows, "next_offset": examined, "status": "continued", "boundary_revision_id": None}
+        # @brief 앞 페이지의 알려진 명령 연결은 재검사하되 문서 본문은 중간마다 다시 읽지 않는다.
+        if examined < offset and offset - examined > 1 and len(links.get(parent_id, [])) == 1:
+            _, previous = links[parent_id][0]
+            parent = {"project_id": project_id, "revision_id": parent_id, "parent_revision_ids": [previous["old_revision"]]}
+        else:
+            _, parent = repository.read(reference)
+            if parent["project_id"] != project_id or parent["revision_id"] != parent_id:
+                raise ProjectError("E_HASH", "편집 이력의 원래 프로젝트 또는 부모 개정이 다릅니다.")
+        if examined >= offset:
+            before, after = [next((row for row in value["geometry"] if row["id"] == identity), None)
+                             for value in (parent, document)]
+            if before != after:
+                source = commands[0] if commands else (None, {})
+                command = source[1].get("command", {})
+                if command.get("type") == REPLAY_COMMAND:
+                    command = command["payload"]["command"]
+                rows.append({"revision_id": revision, "parent_revision_id": parent_id,
+                             "command_id": source[0], "command_type": command.get("type"),
+                             "history_action": source[1].get("history_action"), **_object_edit(before, after)})
+            size += reference["bytes"]
+        examined += 1
+        seen.add(parent_id)
+        document = parent
+    if offset > examined:
+        raise ProjectError("E_SCHEMA", "편집 이력의 요청 위치에 개정이 없습니다.")
+    return {"rows": rows, "next_offset": None, "status": "complete", "boundary_revision_id": None}
+
+
 def read(service, params):
     """! @brief 현재 편집 개정과 독립적으로 선택 결과의 봉인 입력을 조회한다."""
     _fields(params, {"contract_version", "context", "input"})
@@ -160,11 +237,11 @@ def read(service, params):
         raise ProjectError("E_VERSION", "지원하지 않는 API 버전입니다.")
     context = _fields(params["context"], {"project_id"})
     project_id = _uuid(context["project_id"])
-    data = _fields(params["input"], {"artifact_id"}, {"page", "kind", "id", "source_index"})
+    data = _fields(params["input"], {"artifact_id"}, {"page", "kind", "id", "source_index", "offset"})
     result_id = _uuid(data["artifact_id"])
     page = data.get("page", "summary")
     page_fields = {"summary": set(), "revision": set(), "object": {"kind", "id"},
-                   "source": {"kind", "id", "source_index"}}
+                   "source": {"kind", "id", "source_index"}, "history": {"kind", "id", "offset"}}
     if not isinstance(page, str) or page not in page_fields or set(data) - {"artifact_id", "page"} != page_fields[page]:
         raise ProjectError("E_SCHEMA", "해석 출처 조회의 대상이나 항목이 올바르지 않습니다.")
     state = service.journal.read()
@@ -190,6 +267,11 @@ def read(service, params):
     if not isinstance(kind, str) or (kind, identity) not in objects:
         raise ProjectError("E_MISSING_ARTIFACT", "선택 대상은 이 결과의 계산 입력에 없습니다.")
     name, original, computed = objects[kind, identity]
+    if page == "history":
+        if kind not in ("geometry", "terminal"):
+            raise ProjectError("E_UNSUPPORTED", "제조 형상과 급전 단자 도체의 편집 이력을 선택하십시오.")
+        return {**reply, "kind": kind, "id": identity,
+                **_edit_history(service.repository, state, project, document, identity, data["offset"])}
     refs, parameters = _quantity_sources(document, original)
     catalog, citations = _catalog_sources(document, kind, original)
     for reference, decisions in citations.items():
