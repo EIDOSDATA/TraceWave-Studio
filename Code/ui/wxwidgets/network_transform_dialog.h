@@ -42,6 +42,8 @@ private:
     wxChoice* m_mode = nullptr;
     wxChoice* m_kind = nullptr;
     wxTextCtrl* m_reference = nullptr;
+    wxTextCtrl* m_lines = nullptr;
+    wxSizer* m_lineFields = nullptr;
     wxTextCtrl* m_name = nullptr;
     wxTextCtrl* m_source = nullptr;
     wxTextCtrl* m_resultConditions = nullptr;

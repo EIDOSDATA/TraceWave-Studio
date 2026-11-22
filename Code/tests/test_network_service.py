@@ -4,6 +4,7 @@ import base64
 from copy import deepcopy
 import hashlib
 import json
+import math
 from pathlib import Path
 import tempfile
 import unittest
@@ -134,6 +135,48 @@ class NetworkServiceTests(unittest.TestCase):
         self.assertEqual(self.read("network.library")["datasets"][0], entry)
         snapshot = self.workspace / self.snapshot["artifact"]["uri"]
         self.assertEqual(hashlib.sha256(snapshot.read_bytes()).hexdigest(), self.snapshot["artifact"]["sha256"])
+
+    def test_matched_line_port_shifts_and_exact_inverse(self):
+        """! @brief 독립 산술, 포트별 경로 합, 저장 자료 및 역방향 복원을 확인한다."""
+        parameters = import_parameters()
+        data = "# Hz S RI R 50\n1000000000 .1 0 .5 0 .5 0 .2 0\n1600000000 .1 0 .5 0 .5 0 .2 0\n"
+        parameters.update(file_name="checked.s2p", source_base64=base64.b64encode(data.encode("ascii")).decode("ascii"))
+        parameters["declarations"].update(reference_planes=["원래 포트 A", "원래 포트 B"],
+                                          current_orientation=["into_dut", "into_dut"], port_modes=["single_ended"] * 2)
+        source = self.apply("import", parameters)
+
+        def get(identity, row, column):
+            """! @brief 저장 자료의 표본 한 채널을 반환한다."""
+            result = self.read("network.get", dataset_id=identity, offset=0, limit=2, row=row, column=column)
+            return result["page"]["samples"]
+
+        original = get(source, 0, 0)
+        inputs = {"name": "정합 선로 부가", "dataset_id": source, "options": {
+            "operation": "shift_plane", "line_table": "1 | 50 | 2e8 | 20 | 외부 포트 A\n2 | 25 | 2e8 | 20 | 외부 포트 B"}}
+        shifted = self.apply("transform", inputs)
+        result = self.read("network.get", dataset_id=shifted, offset=0, limit=2, row=0, column=0)
+        self.assertEqual(result["descriptor"]["reference_planes"], ["외부 포트 A", "외부 포트 B"])
+        self.assertEqual(result["descriptor"]["conditions"], {"manufacturing": None, "measurement": None})
+        xy = .5 * 10**(-1.5 / 20) / math.sqrt(2)
+        expectations = ((-.1 * 10**(-2 / 20), 0), (-xy, -xy), (-xy, -xy), (0, -.2 * 10**(-1 / 20)))
+        for channel, expected in zip(((0, 0), (0, 1), (1, 0), (1, 1)), expectations):
+            sample = get(shifted, *channel)[0]
+            self.assertAlmostEqual(sample["real"], expected[0], places=12)
+            self.assertAlmostEqual(sample["imag"], expected[1], places=12)
+        inverse = self.apply("transform", {"name": "정합 선로 제거", "dataset_id": shifted, "options": {
+            "operation": "shift_plane", "line_table": "1 | -50 | 2e8 | 20 | 원래 포트 A\n2 | -25 | 2e8 | 20 | 원래 포트 B"}})
+        for row in (0, 1):
+            for column in (0, 1):
+                for old, new in zip(get(source, row, column), get(inverse, row, column)):
+                    self.assertAlmostEqual(old["real"], new["real"], places=12)
+                    self.assertAlmostEqual(old["imag"], new["imag"], places=12)
+        self.assertEqual(get(source, 0, 0), original)
+        blocked = deepcopy(inputs)
+        blocked["options"]["line_table"] = "1 | 50 | 2e8 | 20 | 원래 포트 A"
+        self.assertFalse(self.preview("transform", blocked)["can_apply"])
+        self.save_reopen()
+        self.assertEqual(get(source, 0, 0), original)
+        self.assertAlmostEqual(get(shifted, 0, 0)[0]["real"], expectations[0][0], places=12)
 
     def test_preview_hash_stale_revision_and_internal_command_bypass(self):
         """! @brief 검토와 다른 입력 및 내부 명령 직접 적용을 거절한다."""

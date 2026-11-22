@@ -93,7 +93,7 @@ void NetworkTransformDialog::BuildInterface()
     layout->Add(title, 0, wxALL, FromDIP(16));
     auto* introduction = new wxStaticText(
         this, wxID_ANY,
-        Display("실제 복소 표본을 변환하고 별도 결과로 저장합니다. 기준면 이동과 주파수 보간은 포함하지 않습니다."));
+        Display("복소 종류와 Z0를 변환하거나 명시한 정합 선로로 기준면을 이동합니다. 결과를 별도 자료로 저장합니다."));
     StudioTheme::BindSecondary(*introduction);
     introduction->Wrap(FromDIP(980));
     layout->Add(introduction, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(16));
@@ -114,6 +114,7 @@ void NetworkTransformDialog::BuildInterface()
     m_mode->SetName("network.transform.mode");
     m_mode->Append(Display("S / Z / Y 종류 변환"));
     m_mode->Append(Display("S 기준 임피던스 재정규화"));
+    m_mode->Append(Display("S 기준면 이동 (정합 선로)"));
     m_mode->SetSelection(0);
     Field(options, fields, "변환 작업", m_mode);
     m_kind = new wxChoice(options, wxID_ANY);
@@ -128,6 +129,18 @@ void NetworkTransformDialog::BuildInterface()
     m_reference->SetName("network.transform.reference");
     m_reference->SetHint(Display("양의 실수 입력 / 빈칸은 미정"));
     Field(options, fields, "새 Z0 (ohm, 모든 포트 / 주파수에 동일 적용)", m_reference);
+    m_lineFields = new wxBoxSizer(wxVERTICAL);
+    m_lines = new wxTextCtrl(options, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                             FromDIP(wxSize(400, 72)), wxTE_MULTILINE);
+    m_lines->SetName("network.transform.reference-lines");
+    Field(options, m_lineFields, "포트 | 길이(mm) | 위상 속도(m/s) | 감쇠(dB/m) | 새 기준면", m_lines);
+    auto* lineHelp = new wxStaticText(options, wxID_ANY, Display(
+        "포트마다 한 줄을 입력합니다. 양수 길이는 추가, 음수 길이는 제거입니다.\n"
+        "예시 1 | -5 | 2e8 | 0 | 기판 패드"));
+    lineHelp->Wrap(FromDIP(400));
+    StudioTheme::BindSecondary(*lineHelp);
+    m_lineFields->Add(lineHelp, 0, wxEXPAND | wxBOTTOM, FromDIP(10));
+    fields->Add(m_lineFields, 0, wxEXPAND);
     auto* scope = new wxStaticText(
         options, wxID_ANY,
         Display("기준면, 파 정의와 포트/전류 규약을 확인해야 합니다.\n복소 Z0는 보존하되 현재 변환에서는 지원하지 "
@@ -215,7 +228,7 @@ void NetworkTransformDialog::BuildInterface()
                      {
                          SelectDataset();
                      });
-    for (auto* input : {m_name, m_reference})
+    for (auto* input : {m_name, m_reference, m_lines})
     {
         input->Bind(wxEVT_TEXT,
                     [this](wxCommandEvent&)
@@ -323,11 +336,15 @@ Json NetworkTransformDialog::Input() const
     {
         options = {{"operation", "convert"}, {"parameter_kind", Utf8(m_kind->GetStringSelection())}};
     }
-    else
+    else if (m_mode->GetSelection() == 1)
     {
         options = {
             {"operation", "renormalize"},
             {"reference", {{"text", Utf8(m_reference->GetValue())}, {"unit", "ohm"}, {"source_refs", Json::array()}}}};
+    }
+    else
+    {
+        options = {{"operation", "shift_plane"}, {"line_table", Utf8(m_lines->GetValue())}};
     }
     return {
         {"expected_revision", m_revision},
@@ -424,8 +441,15 @@ void NetworkTransformDialog::RenderResult(const Json& result)
     {
         diagnostics += "\n" + StudioFrequency::Value(item.at("frequency_hz"), frequencyScale) + " " +
                        frequencyScale.unit + ": " + Value(item.at("status"));
-        diagnostics += " / 조건수 " + Value(item.value("condition_number", Json(nullptr))) + " / 상대 잔차 " +
-                       Value(item.value("relative_residual", Json(nullptr)));
+        if (item.contains("valid_channels"))
+        {
+            diagnostics += " / 유효 복소 채널 " + Value(item.at("valid_channels")) + "개";
+        }
+        else
+        {
+            diagnostics += " / 조건수 " + Value(item.value("condition_number", Json(nullptr))) + " / 상대 잔차 " +
+                           Value(item.value("relative_residual", Json(nullptr)));
+        }
         if (item.contains("first_conversion"))
         {
             const auto& first = item.at("first_conversion");
@@ -487,6 +511,15 @@ void NetworkTransformDialog::UpdateActions()
     }
     m_kind->Enable(enabled && m_mode->GetSelection() == 0);
     m_reference->Enable(enabled && m_mode->GetSelection() == 1);
+    const bool shift = m_mode->GetSelection() == 2;
+    if (m_lines->IsShown() != shift)
+    {
+        m_lineFields->ShowItems(shift);
+        auto* options = static_cast<wxScrolledWindow*>(m_lines->GetParent());
+        options->Layout();
+        options->FitInside();
+    }
+    m_lines->Enable(enabled && shift);
     m_preview->Enable(enabled && !m_selection.is_null());
     m_apply->Enable(enabled && !m_review.is_null() && m_review.value("can_apply", false));
 }

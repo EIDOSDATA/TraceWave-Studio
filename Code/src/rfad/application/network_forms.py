@@ -61,7 +61,25 @@ def circuit_display(definition):
 
 
 def transform_input(data, options):
-    """! @brief 상수 Z0 입력을 실제 표본/포트 순서의 명시 배열로 만든다."""
+    """! @brief 표시용 정규화 및 기준면 문자열을 명시 수치와 포트 ID로 바꾼다."""
+    if type(options) is dict and set(options) == {"operation", "line_table"} and options["operation"] == "shift_plane":
+        table = options["line_table"]
+        if type(table) is not str or len(table) > 2048:
+            fail("이동할 포트의 선로 조건을 확인하십시오.", "options.line_table")
+        rows = []
+        for line in table.splitlines():
+            if not line.strip():
+                continue
+            fields = [item.strip() for item in line.split("|", 4)]
+            if len(fields) != 5 or fields[0] not in {str(i) for i in range(1, len(data["port_ids"]) + 1)}:
+                fail("포트 번호 | 길이(mm) | 위상 속도(m/s) | 감쇠(dB/m) | 새 기준면 순으로 입력하십시오.", "options.line_table")
+            index, length, velocity, attenuation, plane = fields
+            rows.append({"port_id": data["port_ids"][int(index) - 1],
+                         "length_mm": number(length, field="options.line_table.length_mm"),
+                         "phase_velocity_m_per_s": number(velocity, field="options.line_table.phase_velocity_m_per_s"),
+                         "attenuation_db_per_m": number(attenuation, field="options.line_table.attenuation_db_per_m"),
+                         "reference_plane": plane})
+        return {"operation": "shift_plane", "lines": rows}
     if type(options) is dict and set(options) == {"operation", "reference"} and options["operation"] == "renormalize":
         quantity = Quantity(**input_quantity(options["reference"], "impedance", "reference"))
         if quantity.value_si is None or quantity.value_si <= 0:

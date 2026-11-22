@@ -1,10 +1,12 @@
 """! @brief 원시 네트워크를 바꾸지 않는 명시 변환과 조건 일치 검사를 제공한다."""
 
+import cmath
 from copy import deepcopy
+import math
 
 from rfad.application.canonical import canonical_hash
 from rfad.adapters import network_backend
-from rfad.domain.network_data import UNITS, complex_value, fail, validate_dataset
+from rfad.domain.network_data import UNITS, complex_value, fail, finite, text, validate_dataset
 
 
 def require_basis(data, *, phasor=False):
@@ -34,7 +36,7 @@ def real_references(data, index):
     return result
 
 
-def derived(data, values, masks, statuses, options, engine, *, kind=None, z0=None):
+def derived(data, values, masks, statuses, options, engine, *, kind=None, z0=None, planes=None):
     """! @brief 입력 해시와 원래 표본 종류를 남기며 별도 결과 사본을 만든다."""
     result = deepcopy(data)
     kind = data["parameter_kind"] if kind is None else kind
@@ -42,6 +44,8 @@ def derived(data, values, masks, statuses, options, engine, *, kind=None, z0=Non
                   sample_origin=["derived"] * len(values))
     if z0 is not None:
         result["z0_ohm"] = deepcopy(z0)
+    if planes is not None:
+        result["reference_planes"] = list(planes)
     operations = result["provenance"].setdefault("network_operations", [])
     if type(operations) is not list or len(operations) >= 32:
         fail("파생 연산의 출처 상한을 초과했습니다.", "provenance", "E_RESOURCE")
@@ -51,9 +55,75 @@ def derived(data, values, masks, statuses, options, engine, *, kind=None, z0=Non
     return result
 
 
+def _shift_planes(data, options):
+    """! @brief 포트별 정합 선로를 더하거나 제거하여 S 파의 기준면을 이동한다."""
+    if set(options) != {"operation", "lines"} or data["parameter_kind"] != "S":
+        fail("정합 선로 기준면 이동에는 S 자료와 선로 조건이 필요합니다.", "options", "E_UNSUPPORTED")
+    require_basis(data)
+    if data["phasor_convention"] == "unknown":
+        fail("기준면을 이동하려면 시간/위상 부호 규약이 필요합니다.", "phasor_convention", "E_UNSUPPORTED")
+    port_ids = data["port_ids"]
+    lines = options["lines"]
+    if type(lines) is not list or not 1 <= len(lines) <= len(port_ids):
+        fail("이동할 포트마다 하나의 정합 선로를 지정하십시오.", "options.lines")
+    planes = list(data["reference_planes"])
+    delays, log_gains = [0.0] * len(planes), [0.0] * len(planes)
+    used = set()
+    fields = {"port_id", "length_mm", "phase_velocity_m_per_s", "attenuation_db_per_m", "reference_plane"}
+    for line in lines:
+        if type(line) is not dict or set(line) != fields:
+            fail("포트, 길이, 전파 속도, 감쇠와 새 기준면을 입력하십시오.", "options.lines")
+        identity = line["port_id"]
+        if type(identity) is not str or identity not in port_ids or identity in used:
+            fail("현재 자료의 서로 다른 포트를 선택하십시오.", "options.lines.port_id")
+        used.add(identity)
+        index = port_ids.index(identity)
+        length = finite(line["length_mm"], "options.lines.length_mm") * 1e-3
+        velocity = finite(line["phase_velocity_m_per_s"], "options.lines.phase_velocity_m_per_s")
+        loss = finite(line["attenuation_db_per_m"], "options.lines.attenuation_db_per_m")
+        new_plane = line["reference_plane"]
+        text(new_plane, "options.lines.reference_plane", limit=256)
+        if not length or velocity <= 0 or loss < 0 or new_plane == planes[index]:
+            fail("0 아닌 길이, 양의 위상 속도, 0 이상의 감쇠와 다른 기준면 이름이 필요합니다.", "options.lines", "E_UNIT")
+        delay = length / velocity
+        gain = -loss * (math.log(10) / 20) * length
+        if abs(delay) * max(data["frequency_hz"]) > 5e7 or abs(gain) > 300:
+            fail("정합 선로의 위상 또는 감쇠가 계산 범위를 넘었습니다.", "options.lines", "E_RESOURCE")
+        planes[index], delays[index], log_gains[index] = new_plane, delay, gain
+
+    sign = -1.0 if data["phasor_convention"] == "exp(+j*omega*t)" else 1.0
+    values, diagnostics = [], []
+    for index, frequency in enumerate(data["frequency_hz"]):
+        real_references(data, index)
+        factors = [cmath.exp(complex(gain, sign * math.tau * math.remainder(frequency * delay, 1.0)))
+                   for gain, delay in zip(log_gains, delays)]
+        matrix = []
+        for i, row in enumerate(data["values_ri"][index]):
+            converted = []
+            for j, sample in enumerate(row):
+                if not data["valid_mask"][index][i][j]:
+                    converted.append(None)
+                    continue
+                value = complex_value(sample, "values_ri") * (factors[i] * factors[j])
+                if not (math.isfinite(value.real) and math.isfinite(value.imag)):
+                    fail("정합 선로 이동 결과의 복소 크기가 표현 범위를 넘었습니다.", "values_ri", "E_RESOURCE")
+                converted.append([value.real, value.imag])
+            matrix.append(converted)
+        values.append(matrix)
+        count = sum(sum(row) for row in data["valid_mask"][index])
+        diagnostics.append({"frequency_hz": frequency, "status": "valid" if count == len(planes)**2 else "missing",
+                            "valid_channels": count, "operation": "shift_plane"})
+    engine = {"name": "rfad.matched-line-reference", "version": "0.1", "available": True}
+    evidence = {**options, "source_reference_planes": data["reference_planes"], "matched_to_port_z0": True}
+    return {"dataset": derived(data, values, data["valid_mask"], data["sample_status"], evidence, engine, planes=planes),
+            "diagnostics": diagnostics, "engine": engine}
+
+
 def transform_dataset(data, options):
-    """! @brief 명시 S/Z/Y 변환 또는 Z0 재정규화만 수행하며 주파수/기준면을 이동하지 않는다."""
+    """! @brief 고정 주파수의 명시 S/Z/Y 변환, Z0 재정규화 또는 정합 선로 기준면 이동을 수행한다."""
     validate_dataset(data)
+    if type(options) is dict and options.get("operation") == "shift_plane":
+        return _shift_planes(data, options)
     if type(options) is not dict or options.get("operation") not in ("convert", "renormalize"):
         fail("지원하지 않는 네트워크 변환입니다.", "options", "E_UNSUPPORTED")
     renormalize = options["operation"] == "renormalize"
