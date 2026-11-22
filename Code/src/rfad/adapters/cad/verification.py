@@ -8,7 +8,7 @@ from rfad.adapters.cad.bodies import _metrics, _check_pairs, _check_via_contacts
 from rfad.adapters.cad.geometry import _require
 from rfad.adapters.cad.native import _file
 from rfad.adapters.cad.physical import external_metrics, placement_review
-from rfad.adapters.cad.step_io import _read_step_shapes, _compare
+from rfad.adapters.cad.step_io import _read_step_shapes, _compare, verify_assemblies
 from rfad.application.canonical import canonical_bytes, canonical_hash
 
 
@@ -38,9 +38,13 @@ def verify_package(projection: dict, source_dir: Path, output_dir: Path) -> dict
              "STEP body 식별 목록이 유효하지 않습니다.", code="E_HASH")
     expected = {body["name"]: body["metrics"] for body in bodies}
     external = {body["name"] for body in bodies if body["role"] == "environment"}
-    restored_shapes = _read_step_shapes(source_dir / "model.step")
+    assemblies = {}
+    restored_shapes = _read_step_shapes(source_dir / "model.step", assemblies)
     actual = {name: (external_metrics if name in external else _metrics)(shape) for name, shape in restored_shapes.items()}
     verification = _compare(expected, actual, projection["tolerance_mm"])
+    verified = verify_assemblies(bodies, assemblies, projection["tolerance_mm"])
+    if verified:
+        verification["environment_assembly_hierarchy"] = verified
     restored = [{**body, "shape": restored_shapes[body["name"]], "metrics": actual[body["name"]]} for body in bodies]
     _check_pairs(restored, projection["tolerance_mm"])
     _check_via_contacts(restored, projection["tolerance_mm"])

@@ -6,6 +6,42 @@ from rfad.adapters.cad.geometry import _require
 from rfad.adapters.cad.bodies import _metrics
 
 
+def _write_assembly(tool, body):
+    """! @brief 설치 부품의 조립 경로와 공유 말단 정의를 실제 XCAF 조립으로 작성한다."""
+    from OCP.TCollection import TCollection_ExtendedString
+    from OCP.TDataStd import TDataStd_Name
+    from OCP.TopLoc import TopLoc_Location
+
+    def name(label, text):
+        """! @brief 제품 정의와 인스턴스 이름을 각각 보존한다."""
+        TDataStd_Name.Set_s(label, TCollection_ExtendedString(text))
+
+    data = body["_step_assembly"]
+    locations = data["locations"]
+    root = tool.NewShape()
+    name(root, body["name"])
+    parents, definitions = {(1,): root}, {}
+    for row in data["instances"][1:]:
+        path = tuple(row["path"])
+        instance_name = row["name"] or ".".join(map(str, path))
+        if row["assembly"]:
+            definition = tool.NewShape()
+            name(definition, instance_name)
+            parents[path] = definition
+        else:
+            key = row["definition"]
+            if key not in definitions:
+                definitions[key] = tool.AddShape(data["definitions"][key], False)
+                name(definitions[key], instance_name)
+            definition = definitions[key]
+        container = path[:-1]
+        parent_location = TopLoc_Location() if container == (1,) else locations[container]
+        local = parent_location.Inverted().Multiplied(locations[path])
+        component = tool.AddComponent(parents[container], definition, local)
+        _require(not component.IsNull(), "STEP 조립 인스턴스를 구성하지 못했습니다.")
+        name(component, instance_name)
+
+
 def _write_step(bodies: list[dict], path: Path, tolerance: float) -> None:
     """! @brief stable product 이름과 명시적 mm/AP242 설정으로 XCAF 문서를 저장한다."""
     from OCP.IFSelect import IFSelect_RetDone
@@ -28,8 +64,12 @@ def _write_step(bodies: list[dict], path: Path, tolerance: float) -> None:
     shape_tool = XCAFDoc_DocumentTool.ShapeTool_s(document.Main())
     XCAFDoc_DocumentTool.SetLengthUnit_s(document, 0.001)
     for body in bodies:
-        label = shape_tool.AddShape(body["shape"].wrapped, False)
-        TDataStd_Name.Set_s(label, TCollection_ExtendedString(body["name"]))
+        if "_step_assembly" in body:
+            _write_assembly(shape_tool, body)
+        else:
+            label = shape_tool.AddShape(body["shape"].wrapped, False)
+            TDataStd_Name.Set_s(label, TCollection_ExtendedString(body["name"]))
+    shape_tool.UpdateAssemblies()
     writer = STEPCAFControl_Writer()
     writer.SetNameMode(True)
     writer.SetPropsMode(True)
@@ -37,7 +77,7 @@ def _write_step(bodies: list[dict], path: Path, tolerance: float) -> None:
     _require(writer.Write(str(path)) == IFSelect_RetDone, "STEP 파일 저장이 실패했습니다.", code="E_DISK")
 
 
-def _read_step_shapes(path: Path) -> dict:
+def _read_step_shapes(path: Path, assemblies=None) -> dict:
     """! @brief writer와 별도 OCP reader로 STEP product 이름과 B-rep를 읽는다."""
     import cadquery as cq
     from OCP.IFSelect import IFSelect_RetDone
@@ -68,6 +108,10 @@ def _read_step_shapes(path: Path) -> dict:
         _require(text not in result, "재입력한 STEP body 이름이 중복됩니다.")
         shape = cq.Shape.cast(shape_tool.GetShape_s(label))
         result[text] = shape
+        if assemblies is not None and shape_tool.IsAssembly_s(label):
+            from rfad.adapters.cad.physical import _assembly_instances
+            instances, leaves = _assembly_instances(shape_tool, label)
+            assemblies[text] = (instances, {key: cq.Shape.cast(leaf) for key, leaf in leaves.items()})
     return result
 
 
@@ -77,6 +121,36 @@ def read_step(path: Path) -> dict:
 
     return {name: (external_metrics if name.startswith("environment_") else _metrics)(shape)
             for name, shape in _read_step_shapes(path).items()}
+
+
+def verify_assemblies(bodies, assemblies, tolerance):
+    """! @brief 보존 계층, 반복 말단과 개별 경계를 STEP 재입력 바이트에서 검사한다."""
+    from rfad.adapters.cad.physical import external_metrics
+
+    def signature(instances):
+        """! @brief 원본마다 달라질 수 있는 커널 ID 대신 첫 말단의 경로로 반복 정의를 식별한다."""
+        definitions = {}
+        return [(tuple(row["path"]), row["assembly"],
+                 None if row["assembly"] else definitions.setdefault(row["definition"], tuple(row["path"])))
+                for row in instances]
+
+    verified = []
+    for body in bodies:
+        source = body.get("source_step", {})
+        if not source.get("hierarchy_in_step"):
+            continue
+        name = body["name"]
+        _require(name in assemblies, "STEP 재입력에서 설치물의 조립 계층을 찾을 수 없습니다.")
+        nodes, leaves = assemblies[name]
+        _require(signature(nodes) == signature(source["assembly_instances"]),
+                 "STEP 재입력에서 조립 경로나 반복 말단 정의가 달라졌습니다.")
+        for item in source["placed_instances"]:
+            actual = external_metrics(leaves[tuple(item["path"])])["bbox_mm"]
+            _require(max(abs(a - b) for a, b in zip(actual, item["bbox_mm"])) <= tolerance,
+                     "STEP 재입력에서 조립 말단의 위치가 달라졌습니다.")
+        verified.append({"name": name, "instances": len(nodes), "leaves": len(leaves),
+                         "shared_leaf_definitions": len({row["definition"] for row in nodes if not row["assembly"]})})
+    return verified
 
 
 def _compare_external(name, left, right, tolerance):

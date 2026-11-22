@@ -14886,8 +14886,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/network_backend.py",
-      "text_sha256": "dfad29fdd64f92a7feb75e86a52e3f759edcf05022f85cc34e7fc476c8f424e3",
-      "utf8_bytes": 5815
+      "text_sha256": "30106d397da039dde6e3b105bd70c9b7384fcc3540dd99757530775d161a58af",
+      "utf8_bytes": 8422
     },
     {
       "path": "Code/src/rfad/adapters/network_csv.py",
@@ -15071,8 +15071,8 @@
     },
     {
       "path": "Code/src/rfad/application/network_candidates.py",
-      "text_sha256": "aae724a3dff137b120b5f7ced6b83be6a74e48e31019695a0297c61daf460b02",
-      "utf8_bytes": 13131
+      "text_sha256": "3c5a854ef7faa4ca6d151e9c16681a6fbb81d23a8d1b0322a490e9848f732d0f",
+      "utf8_bytes": 13922
     },
     {
       "path": "Code/src/rfad/application/network_compare.py",
@@ -15526,13 +15526,13 @@
     },
     {
       "path": "Code/src/rfad/domain/network_library.py",
-      "text_sha256": "1b06f80bf57c73d65fa6c2d10434c9b7eb13025aece29ec2edee72e7b8f98b82",
+      "text_sha256": "36329754a4a8b0f1c1e917c201ca2aef6c3ad304f60dfe99712b87cfa93e620e",
       "utf8_bytes": 8297
     },
     {
       "path": "Code/src/rfad/domain/network_transform.py",
-      "text_sha256": "2f5d33b7f8e36212e74c2aac4f723c471d7b3673e15f6405e7f262645e18b7f1",
-      "utf8_bytes": 10111
+      "text_sha256": "40f57d3cfdd2ca8cf3d1567151af7fa7c90cb9ea3ba275d1a3bb378e3566abc5",
+      "utf8_bytes": 13703
     },
     {
       "path": "Code/src/rfad/domain/object_names.py",
@@ -15721,8 +15721,8 @@
     },
     {
       "path": "Code/tests/test_cad_native.py",
-      "text_sha256": "ecfc193eb9a5d104e1d5e78f58cb40b96ba503745a40c90ea895a1d526540245",
-      "utf8_bytes": 28137
+      "text_sha256": "609705abc99e57a091782f2c8b3bddf38617f208984e7595b3488f9441028669",
+      "utf8_bytes": 28535
     },
     {
       "path": "Code/tests/test_cad_pcb_features.py",
@@ -15996,8 +15996,8 @@
     },
     {
       "path": "Code/tests/test_network_service.py",
-      "text_sha256": "74cc181474e54ec365e79df28ceb059669ec88c9d7b2de24d1c315860e00c93d",
-      "utf8_bytes": 21574
+      "text_sha256": "a2f05efd63e07b983716b2269cac08b5040ac84f5c61fa96c31f7a02266c57a9",
+      "utf8_bytes": 25896
     },
     {
       "path": "Code/tests/test_object_names.py",
@@ -16496,8 +16496,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/network_transform_dialog.cpp",
-      "text_sha256": "363c3efc91ced127fd675c8dd754af0ba34690bbbc206a8ad852665d39de3929",
-      "utf8_bytes": 23928
+      "text_sha256": "72f9198ecb8791f96b124527d92ec707e73c19b593fac822e1a8690b196ef13b",
+      "utf8_bytes": 25819
     },
     {
       "path": "Code/ui/wxwidgets/object_rename_dialog.cpp",

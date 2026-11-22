@@ -15,7 +15,7 @@ import re
 from rfad.application.canonical import canonical_bytes
 from rfad.adapters.cad.geometry import _require
 from rfad.adapters.cad.bodies import _make_bodies, _metrics, _check_pairs, _check_via_contacts
-from rfad.adapters.cad.step_io import _write_step, _read_step_shapes, _compare, read_step
+from rfad.adapters.cad.step_io import _write_step, _read_step_shapes, _compare, read_step, verify_assemblies
 from rfad.adapters.cad.display import _write_display_mesh
 from rfad.adapters.cad.physical import external_metrics, placement_review
 
@@ -65,10 +65,14 @@ def build_package(projection: dict, output_dir: Path) -> dict:
     _require("SI_UNIT(.MILLI.,.METRE.)" in re.sub(r"\s+", "", step), "STEP 길이 단위가 mm로 선언되지 않았습니다.", code="E_UNIT")
     schema = match.group(1).strip().strip("'")
     expected = {body["name"]: body["metrics"] for body in bodies}
-    restored_shapes = _read_step_shapes(paths["model.step"])
+    assemblies = {}
+    restored_shapes = _read_step_shapes(paths["model.step"], assemblies)
     external = {body["name"] for body in bodies if body["role"] == "environment"}
     restored = {name: (external_metrics if name in external else _metrics)(shape) for name, shape in restored_shapes.items()}
     validation = _compare(expected, restored, tolerance)
+    verified = verify_assemblies(bodies, assemblies, tolerance)
+    if verified:
+        validation["environment_assembly_hierarchy"] = verified
     restored_bodies = [{**body, "shape": restored_shapes[body["name"]], "metrics": restored[body["name"]]} for body in bodies]
     _check_pairs(restored_bodies, tolerance)
     _check_via_contacts(restored_bodies, tolerance)
@@ -93,7 +97,7 @@ def build_package(projection: dict, output_dir: Path) -> dict:
                "projection_sha256": hashlib.sha256(canonical_bytes(projection)).hexdigest(),
                "unit": "mm", "transform": deepcopy(projection["transform"]), "runtime": runtime,
                "step_schema": schema, "writer": "OCP STEPCAFControl_Writer", "cap": "round",
-               "files": files, "body_map": [{key: value for key, value in body.items() if key != "shape"} for body in bodies],
+               "files": files, "body_map": [{key: value for key, value in body.items() if key not in ("shape", "_step_assembly")} for body in bodies],
                "source_semantics": deepcopy(projection["source_semantics"]), "omissions": deepcopy(projection.get("omissions", [])),
                "brep_identity_scope": "Compound geometry only. Stable identities are STEP product names and this body_map; file/body order is not an identity.",
                **({"projection_purpose": projection["purpose"]} if "purpose" in projection else {}),

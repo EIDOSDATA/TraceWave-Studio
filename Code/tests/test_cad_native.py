@@ -113,6 +113,8 @@ class CadNativeTests(unittest.TestCase):
             output = root / "output"
             result = build_package(projection, output)
             self.assertEqual(result["solid_count"], 5)
+            self.assertEqual(result["validation"]["environment_assembly_hierarchy"], [
+                {"name": "environment_" + identity_part, "instances": 4, "leaves": 2, "shared_leaf_definitions": 1}])
             sidecar = json.loads((output / "sidecar.json").read_bytes())
             environment = next(row for row in sidecar["body_map"] if row["id"] == identity_part)
             self.assertEqual(environment["source_step"]["sha256"], source["sha256"])
@@ -139,7 +141,9 @@ class CadNativeTests(unittest.TestCase):
             rotate = [{"path": [1, 1, 2], "translation_mm": [2, 1, 1], "rotation_deg": [0, 0, 90]}]
             projection["environment_parts"][0]["instance_offsets"] = rotate
             turned = root / "turned"
-            build_package(projection, turned)
+            turned_result = build_package(projection, turned)
+            self.assertEqual(turned_result["validation"]["environment_assembly_hierarchy"],
+                             result["validation"]["environment_assembly_hierarchy"])
             placed = read_step(turned / "model.step")["environment_" + identity_part]
             for actual, expected in zip(placed["bbox_mm"], (-1, 27, 12, 2, 33, 14)):
                 self.assertAlmostEqual(actual, expected, places=8)

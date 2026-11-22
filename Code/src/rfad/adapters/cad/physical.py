@@ -204,6 +204,46 @@ def _shift_instances(cq, leaves, instances, offsets, part_id, tolerance):
     return shapes
 
 
+def _assembly_export(row, instances, leaves):
+    """! @brief 원본 고체 정의와 개별 부품의 최종 위치를 STEP writer에 전달한다."""
+    from OCP.gp import gp_Ax1, gp_Dir, gp_Pnt, gp_Trsf, gp_Vec
+    from OCP.TopLoc import TopLoc_Location
+
+    def translation(values):
+        """! @brief mm 위치 변환을 만든다."""
+        move = gp_Trsf()
+        move.SetTranslation(gp_Vec(*values))
+        return move
+
+    def rotation(origin, axis, degrees):
+        """! @brief 지정한 원점과 전역 축의 회전을 만든다."""
+        turn = gp_Trsf()
+        turn.SetRotation(gp_Ax1(gp_Pnt(*origin), gp_Dir(*(float(index == axis) for index in range(3)))),
+                         math.radians(math.remainder(degrees, 360)))
+        return turn
+
+    root = translation(row["translation_mm"]).Multiplied(rotation((0, 0, 0), 2, row["yaw_deg"]))
+    offsets = {tuple(item["path"]): item for item in row.get("instance_offsets", [])}
+    definitions, placed = {}, {}
+    for instance in instances:
+        path = tuple(instance["path"])
+        matrix = instance["transform_mm"]
+        original = gp_Trsf()
+        original.SetValues(*(value for axis in matrix for value in axis))
+        if path in leaves:
+            definitions.setdefault(instance["definition"], leaves[path].Moved(TopLoc_Location(original.Inverted())))
+        location = original
+        if path in offsets:
+            row_offset = offsets[path]
+            origin = tuple(axis[3] for axis in matrix)
+            for axis, angle in enumerate(row_offset.get("rotation_deg", [])):
+                if angle:
+                    location = rotation(origin, axis, angle).Multiplied(location)
+            location = translation(row_offset["translation_mm"]).Multiplied(location)
+        placed[path] = TopLoc_Location(root.Multiplied(location))
+    return {"definitions": definitions, "locations": placed, "instances": instances}
+
+
 def part_bodies(cq, projection):
     """! @brief 원점 기준 yaw를 적용한 뒤 기판 좌표계의 x/y/z만 더한다."""
     result = []
@@ -214,6 +254,7 @@ def part_bodies(cq, projection):
     for row in rows:
         source_step = {}
         placed_leaves = {}
+        assembly_export = {}
         if row["kind"] == "dielectric_case":
             width, length, height = row["size_mm"]
             wall = row["wall_mm"]
@@ -229,6 +270,8 @@ def part_bodies(cq, projection):
             shape, source_unit, scale, instances, leaves = _read_external(source)
             source_step = {"source_step": {"sha256": source["sha256"], "source_length_unit": source_unit,
                                           "source_to_mm": scale, "assembly_instances": instances}}
+            if instances:
+                assembly_export["_step_assembly"] = _assembly_export(row, instances, leaves)
             if row.get("instance_offsets"):
                 placed_leaves = _shift_instances(cq, leaves, instances, row["instance_offsets"],
                                                   row["id"], projection["tolerance_mm"])
@@ -238,14 +281,17 @@ def part_bodies(cq, projection):
             return solid.rotate((0, 0, 0), (0, 0, 1), row["yaw_deg"]).translate(tuple(row["translation_mm"]))
 
         shape = place(shape)
-        if placed_leaves:
-            source_step["source_step"]["instance_offsets"] = row["instance_offsets"]
+        if assembly_export:
+            source_step["source_step"]["hierarchy_in_step"] = True
+            if row.get("instance_offsets"):
+                source_step["source_step"]["instance_offsets"] = row["instance_offsets"]
+            expected_leaves = placed_leaves or {path: cq.Shape.cast(solid) for path, solid in leaves.items()}
             source_step["source_step"]["placed_instances"] = [
                 {"path": path, "bbox_mm": external_metrics(place(solid))["bbox_mm"]}
-                for path, solid in sorted(placed_leaves.items())]
+                for path, solid in sorted(expected_leaves.items())]
         result.append({"id": row["id"], "name": "environment_" + row["id"], "role": "environment", "layer_id": row["id"],
                        "net_id": None, "material_id": row["material_id"], "source_entity_ids": [row["id"]],
-                       "feature_kind": row["kind"], "shape": shape, **source_step})
+                       "feature_kind": row["kind"], "shape": shape, **source_step, **assembly_export})
     return result
 
 
