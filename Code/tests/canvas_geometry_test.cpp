@@ -39,6 +39,10 @@ int main()
     Check(!nearest.Result());
     nearest.Consider({1, 6}, CanvasPrecision::SnapKind::Endpoint);
     Check(nearest.Result() && nearest.Result()->point.y == 6);
+    const auto tangent = CanvasPrecision::TangentPoint({2, 2}, {2, -1}, {6, -0.91}, 0.1);
+    Check(tangent && tangent->x == 6 && tangent->y == -1);
+    Check(!CanvasPrecision::TangentPoint({2, 2}, {2, -1}, {6, -0.88}, 0.1));
+    Check(!CanvasPrecision::TangentPoint({2, 2}, {2, -1}, {2.15, -1}, 0.1));
     const auto grid = CanvasPrecision::GridPoint({-4.8, 5.15}, 5);
     Check(grid.x == -5 && grid.y == 5);
     CanvasScene::Shape preview;

@@ -127,13 +127,25 @@ void DesignCanvas::UpdateCursor(const wxPoint& pixel)
     if (!m_snap && infer && m_tool == "line" && m_points.size() == 1)
     {
         const auto start = GeometryPoint(m_points.front());
+        if (m_startSnap && m_startSnap->kind == SnapKind::Endpoint)
+        {
+            const auto* guide = FindShape(m_startSnap->target);
+            if (guide && guide->kind == "arc_path" && guide->layer == layer && Visible(*guide))
+            {
+                const auto point = TangentPoint(guide->center, start, cursor, tolerance);
+                if (point)
+                {
+                    m_snap = Snap{*point, SnapKind::Tangent, {}};
+                }
+            }
+        }
         const double dx = std::abs(cursor.x - start.x);
         const double dy = std::abs(cursor.y - start.y);
-        if (dx >= 2 * tolerance && dy <= tolerance)
+        if (!m_snap && dx >= 2 * tolerance && dy <= tolerance)
         {
             m_snap = Snap{{cursor.x, start.y}, SnapKind::Horizontal, {}};
         }
-        else if (dy >= 2 * tolerance && dx <= tolerance)
+        else if (!m_snap && dy >= 2 * tolerance && dx <= tolerance)
         {
             m_snap = Snap{{start.x, cursor.y}, SnapKind::Vertical, {}};
         }
@@ -244,7 +256,7 @@ void DesignCanvas::DrawPrecision(wxDC& dc, const Shape* selected) const
         }
         const auto kind = m_snap->kind;
         const char* description = kind == SnapKind::Horizontal ? "수평 관계" : kind == SnapKind::Vertical ? "수직 관계" :
-            kind == SnapKind::Midpoint ? "중점 관계" : kind == SnapKind::Endpoint ?
+            kind == SnapKind::Midpoint ? "중점 관계" : kind == SnapKind::Tangent ? "접선 관계" : kind == SnapKind::Endpoint ?
             (m_drawingRelations && m_tool != "select" && (m_tool != "arc" || !m_points.empty()) ? "끝점 일치 관계" : "끝점 스냅") :
             "격자 스냅";
         const wxString label = wxString::FromUTF8(description);

@@ -19,6 +19,7 @@ enum class SnapKind
 {
     Endpoint,
     Midpoint,
+    Tangent,
     Horizontal,
     Vertical,
     Grid
@@ -69,6 +70,24 @@ inline bool OnCircle(Point candidate, const Circle& circle)
     const double scale = std::max({circle.radius, std::abs(circle.center.x), std::abs(circle.center.y)});
     const double rounding = 8.0 * std::numeric_limits<double>::epsilon() * scale;
     return std::abs(Distance(candidate, circle.center) - circle.radius) <= rounding;
+}
+
+/** @brief 원호 끝점에서 시작한 선의 포인터를 정확한 접선 위에 투영한다. */
+inline std::optional<Point> TangentPoint(Point center, Point start, Point cursor, double tolerance)
+{
+    const auto radius = Distance(center, start);
+    if (radius <= 0 || tolerance <= 0)
+    {
+        return std::nullopt;
+    }
+    const Point tangent{-(start.y - center.y) / radius, (start.x - center.x) / radius};
+    const double offset = (cursor.x - start.x) * tangent.x + (cursor.y - start.y) * tangent.y;
+    const Point point{start.x + offset * tangent.x, start.y + offset * tangent.y};
+    if (std::abs(offset) < 2 * tolerance || !CanvasGeometry::Valid(point) || Distance(point, cursor) > tolerance)
+    {
+        return std::nullopt;
+    }
+    return point;
 }
 
 inline Point GridPoint(Point point, double step)

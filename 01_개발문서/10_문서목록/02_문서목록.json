@@ -28238,8 +28238,8 @@
       "path": "01_개발문서/05_기능설계/02_설계편집/03_이차원표시와_직접편집.md",
       "category": "current_05_기능설계",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 13200,
-      "working_tree_sha256": "c35c04f380ccda16b1d4bd2fc4220576d1c81fa2beae5a1be719898f5ccc9349",
+      "bytes": 13368,
+      "working_tree_sha256": "8c2d82f111ba708d279765c6d1d700cab3acb9046a8e56bac0638bae6da674e5",
       "text_lines": 86,
       "text_status": "utf8_read"
     },
@@ -28748,7 +28748,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 643890,
-      "working_tree_sha256": "23f02ce58705a29a5db6afa465056739afa5f73222c25cc58c19d3333957dafc"
+      "working_tree_sha256": "76d934a4af0c5709ad49ffed9f6f1bde9f0b5cc75fd0c0554cae7d1d6d68ee11"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -31679,9 +31679,9 @@
       "path": "01_개발문서/07_검증/329_그리기_관계_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 1228,
-      "working_tree_sha256": "cdffc46cb6a6f25c8622c709af7a7429b54d33a00584cb28d47a0dee31015710",
-      "text_lines": 8,
+      "bytes": 1462,
+      "working_tree_sha256": "02c72d14bcfdf9e85d75c2dd33148d1b1e92ac19b4360a550c7a93d7bd894dcf",
+      "text_lines": 10,
       "text_status": "utf8_read"
     },
     {
@@ -32419,8 +32419,8 @@
       "path": "01_개발문서/09_개발계획/11_캐드와_기계도면_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 23314,
-      "working_tree_sha256": "0abc0700eb15ae80f2876110c0a6db335b10d99c3133f001a68f065bedc130e2",
+      "bytes": 23367,
+      "working_tree_sha256": "6e9164b03f4c68a317bf55943ee0464c708517868b3acc35b1f5f92ae2349ddc",
       "text_lines": 78,
       "text_status": "utf8_read"
     },
@@ -32455,8 +32455,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 25794,
-      "working_tree_sha256": "dbe5b62fce2940b62bda8a6337ef657c0dce80289a74ba10ef9ee75c3e47f4a4",
+      "bytes": 25859,
+      "working_tree_sha256": "d854f667c1d0b29413e57231c05590595e90c2667e808f4e2a169ddcf81e500c",
       "text_lines": 183,
       "text_status": "utf8_read"
     },

@@ -326,19 +326,21 @@ def _with_drawing_relations(document, command, geometry, requested):
                 _fail("수평 또는 수직 기준축을 선택하세요.", "values.relations")
             key = "axis"
             constraint = sketch_constraints.relation(kind, origin, axis=spec["axis"])
-        elif kind in ("coincident", "midpoint") and spec.keys() == {"kind", "endpoint", "target"}:
+        elif kind in ("coincident", "midpoint", "tangent") and spec.keys() == {"kind", "endpoint", "target"}:
             endpoint, target = spec["endpoint"], spec["target"]
             sketch_constraints.validate_anchor(target)
             candidate = existing.get(target["id"])
             if (endpoint not in ("start", "end") or candidate is None or candidate["layer_id"] != geometry["layer_id"]
                     or candidate["frame_id"] != geometry["frame_id"] or candidate["kind"] not in ("line_path", "arc_path")
                     or target["point"] not in ("start", "end")
-                    or (kind == "midpoint" and (candidate["kind"] != "line_path" or target["point"] != "start"))):
+                    or (kind == "midpoint" and (candidate["kind"] != "line_path" or target["point"] != "start"))
+                    or (kind == "tangent" and
+                        (geometry["kind"] != "line_path" or candidate["kind"] != "arc_path" or endpoint != "start"))):
                 _fail("같은 층에서 그리기 관계를 연결할 끝점이나 중점을 선택하세요.", "values.relations", "E_CONFLICT")
             refs = [sketch_constraints.anchor(identity, endpoint), target]
             if kind == "midpoint":
                 refs.append(sketch_constraints.anchor(target["id"], "end"))
-            key = endpoint
+            key = "tangent" if kind == "tangent" else endpoint
             constraint = sketch_constraints.relation(kind, *refs)
         else:
             _fail("지원하는 그리기 관계를 선택하세요.", "values.relations")
@@ -346,6 +348,9 @@ def _with_drawing_relations(document, command, geometry, requested):
             _fail("같은 기준에 관계를 중복 지정했습니다.", "values.relations", "E_CONFLICT")
         keys.add(key)
         rows.append(constraint)
+    for row in rows:
+        if row["kind"] == "tangent" and not any(item["kind"] == "coincident" and item["refs"] == row["refs"] for item in rows):
+            _fail("접선과 함께 같은 원호 끝점의 일치 관계가 필요합니다.", "values.relations", "E_CONFLICT")
     group_id = str(uuid5(UUID(identity), "rfad.sketch.drawing"))
     group = {"id": group_id, "name": geometry["name"] + " 그리기 관계", "selection_ids": [identity],
              "datum": origin, "axis": "x", "constraints": rows, "protected": []}

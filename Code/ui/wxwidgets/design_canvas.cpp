@@ -757,6 +757,12 @@ void DesignCanvas::CommitDrawing(bool clockwise)
         };
         attach(m_startSnap, "start");
         attach(m_snap, "end");
+        if (m_snap && m_startSnap && m_snap->kind == SnapKind::Tangent)
+        {
+            relations.push_back({{"kind", "tangent"}, {"endpoint", "start"}, {"target",
+                {{"id", m_startSnap->target},
+                 {"point", m_startSnap->endpoint == CanvasPrecision::Endpoint::End ? "end" : "start"}}}});
+        }
         if (m_snap && (m_snap->kind == SnapKind::Horizontal || m_snap->kind == SnapKind::Vertical))
         {
             relations.push_back({{"kind", "parallel"}, {"axis", m_snap->kind == SnapKind::Horizontal ? "x" : "y"}});

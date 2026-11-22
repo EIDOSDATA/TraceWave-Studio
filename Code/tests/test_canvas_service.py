@@ -121,6 +121,34 @@ class CanvasServiceTests(unittest.TestCase):
         self.assertEqual(self.document()["extensions"][key], saved["extensions"][key])
         self.assertEqual(self.document()["geometry"], saved["geometry"])
 
+    def test_line_tangent_at_an_arc_endpoint_survives_reopen(self):
+        """! @brief 같은 원호 끝점의 일치 및 접선만 한 개정에 저장한다."""
+        _, layer = self.board_layer()
+        arc = self.arc(layer)
+        identity = str(uuid4())
+        root = [12 + 5 * math.cos(math.pi / 6), 13 + 5 * math.sin(math.pi / 6)]
+        extension = [root[0] - 4 * math.sin(math.pi / 6), root[1] + 4 * math.cos(math.pi / 6)]
+        snap = {"endpoint": "start", "target": {"id": arc, "point": "start"}}
+        values = {"id": identity, "layer_id": layer, "width_mm": .5, "start": root, "end": extension}
+        before = self.document()
+        with self.assertRaisesRegex(ProjectError, "일치 관계"):
+            self.apply("create_line", {**values, "relations": [{"kind": "tangent", **snap}]})
+        self.assertEqual(self.document(), before)
+        values["relations"] = [{"kind": kind, **snap} for kind in ("tangent", "coincident")]
+        with self.assertRaisesRegex(ProjectError, "보존 관계"):
+            self.apply("create_line", {**values, "end": [extension[0] + .2, extension[1]]})
+        self.assertEqual(self.document(), before)
+        self.apply("create_line", values)
+        saved = self.document()
+        group, = saved["extensions"]["rfad.sketch-constraints"]["groups"]
+        self.assertEqual([row["kind"] for row in group["constraints"]], ["tangent", "coincident"])
+        self.assertEqual(self.shape(arc), before["geometry"][0])
+        self.service.mutate("project.save", self.request({"expected_revision": self.revision}))
+        self.service.run_next()
+        self.service.close()
+        self.service = ProjectService(self.workspace, auto_run=False)
+        self.assertEqual(self.document(), saved)
+
     def shape(self, identity):
         """! @brief 안정 ID를 사용해 실제 원본 형상을 조회한다."""
         return next(item for item in self.document()["geometry"] if item["id"] == identity)

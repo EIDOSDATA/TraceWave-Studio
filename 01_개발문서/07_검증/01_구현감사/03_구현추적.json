@@ -14292,8 +14292,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/03_이차원표시와_직접편집.md",
-      "text_sha256": "8dba36cc27397fbf7381f9e10a1599cc9ea245b3aab38aaaccbb26e1de4d54a4",
-      "utf8_bytes": 13114
+      "text_sha256": "faaf715f7dfc334a806e041046bc5149d437e4e788ee61a636999844d24e011e",
+      "utf8_bytes": 13282
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/05_도체영역과_급전모델.md",
@@ -14972,8 +14972,8 @@
     },
     {
       "path": "Code/src/rfad/application/canvas.py",
-      "text_sha256": "fc56e67bcebc48aabbe7c1fd6d4beeda95551787ecd13f5b494377ed98d0b715",
-      "utf8_bytes": 28423
+      "text_sha256": "36857725cc9323c48e7b78448801ef3791d638f5223e932094f76a359cfb61d7",
+      "utf8_bytes": 28912
     },
     {
       "path": "Code/src/rfad/application/catalog_api.py",
@@ -15737,8 +15737,8 @@
     },
     {
       "path": "Code/tests/test_canvas_service.py",
-      "text_sha256": "ccb2888b05fd90872fa90a47a87c6269697609db1f05fe7f9df5703c130b3b64",
-      "utf8_bytes": 29442
+      "text_sha256": "40052aaf98e8b68fced15156ec1a05eacb8da21395370e8774d0dd04bfab73a6",
+      "utf8_bytes": 31198
     },
     {
       "path": "Code/tests/test_catalog_api.py",
@@ -16382,8 +16382,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas.cpp",
-      "text_sha256": "54366bdef9b720e26b027e6379fa44fa834d04b8da6745a598178ecc729940c9",
-      "utf8_bytes": 32547
+      "text_sha256": "4545d85a0d96d2125898496539a95573bbf2713074ffce881279b0eeecfea067",
+      "utf8_bytes": 32880
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_dimensions.cpp",
@@ -16392,8 +16392,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_precision.cpp",
-      "text_sha256": "604a5b1aace43456df9eca0375e5feb2173c84bfd808e8db30175ae083bc1459",
-      "utf8_bytes": 10183
+      "text_sha256": "b89bbcfd96c8fa817d56359ad54d1aa4bc62732763b1bd3326dc59f4ba2b241a",
+      "utf8_bytes": 10746
     },
     {
       "path": "Code/ui/wxwidgets/design_rules_dialog.cpp",
@@ -16682,8 +16682,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "75778baafc53278a0e871d280f51d060e9de7f875cb9b718c752d74abf0dfe24",
-      "utf8_bytes": 34247
+      "text_sha256": "416bfdee5bae7409102525b3de1005055d1988977570682f04c0f5a1056e1095",
+      "utf8_bytes": 34272
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
