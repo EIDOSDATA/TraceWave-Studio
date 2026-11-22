@@ -1,4 +1,4 @@
-"""! @brief IPC-2581 Rev C의 원본 제조 속성을 읽기 전용으로 검토한다."""
+"""! @brief IPC-2581 Rev C의 제조 속성과 지원하는 선형 보드 프로파일을 읽는다."""
 
 from collections import Counter
 from decimal import Decimal, InvalidOperation
@@ -42,6 +42,33 @@ def _attrs(node, *keys):
     return {key: node.get(key) for key in keys}
 
 
+def _editable_profile(step, factor):
+    """! @brief 단일 보드의 닫힌 직선 외곽과 명시 절삭을 좌표 그대로 읽는다."""
+    profile = _one(step, "Profile")
+    if profile is None or step.get("type", "BOARD") != "BOARD" or step.find(".//" + NS + "StepRepeat") is not None:
+        return None
+    polygons = profile.findall(NS + "Polygon")
+    cutouts = profile.findall(NS + "Cutout")
+    if len(polygons) != 1 or len(cutouts) > 16 or len(profile) != 1 + len(cutouts):
+        return None
+    loops = []
+    for boundary in [*polygons, *cutouts]:
+        nodes = list(boundary)
+        if (not 4 <= len(nodes) <= 65 or nodes[0].tag != NS + "PolyBegin"
+                or any(node.tag != NS + "PolyStepSegment" for node in nodes[1:])):
+            return None
+        points = []
+        for node in nodes:
+            coordinates = [_measure(node, key, factor) for key in ("x", "y")]
+            if any(value is None for value in coordinates):
+                return None
+            points.append([value["converted"] for value in coordinates])
+        if points[0] != points[-1] or len(set(map(tuple, points[:-1]))) != len(points) - 1:
+            return None
+        loops.append(points[:-1])
+    return {"step": step.get("name"), "outer_mm": loops[0], "cutouts_mm": loops[1:]}
+
+
 def _step(node, factor):
     """! @brief 각 보드 정의의 넷, 부품, 홀과 윤곽의 명시 범위를 집계한다."""
     features = node.findall(NS + "LayerFeature")
@@ -73,7 +100,7 @@ def _step(node, factor):
 
 
 def read(raw):
-    """! @brief UTF-8 Rev C 원문과 제조 요약을 결합하되 설계 개정에 적용하지 않는다."""
+    """! @brief 원문 제조 요약과 검토 후 적용 가능한 범위를 분리한다."""
     try:
         text = raw.decode("utf-8-sig")
     except UnicodeError as error:
@@ -102,6 +129,11 @@ def read(raw):
     if total_layers > 512:
         raise ProjectError("E_RESOURCE", "IPC-2581 적층의 세부 층이 검토 한도 512개를 초과했습니다.")
     history = _one(root, "HistoryRecord")
+    editable = _editable_profile(steps[0], factor) if len(steps) == 1 else None
+    loss = ({"code": "ipc2581_profile_only", "raw_preserved": True,
+             "message": "단일 보드의 직선 외곽을 대조하고 내부 절삭만 추가합니다. 적층·넷·홀·실장 등은 원문에 보존합니다."}
+            if editable else {"code": "ipc2581_review_only", "raw_preserved": True,
+                              "message": "현재 지원하는 단일 보드의 닫힌 직선 프로파일이 없어 원문을 읽기만 합니다."})
     return {"schema": "rfad.ipc2581-read/0.1", "version": "C", "units": units,
             "source_sha256": hashlib.sha256(raw).hexdigest(),
             "writer": None if history is None else history.get("software"),
@@ -112,6 +144,4 @@ def read(raw):
                           "layers": [{**_attrs(row, "layerOrGroupRef", "sequence"),
                                       "thickness_mm": _measure(row, "thickness", factor)}
                                      for row in item.iter(NS + "StackupLayer")]} for item in stackups],
-            "steps": [_step(step, factor) for step in steps],
-            "losses": [{"code": "ipc2581_review_only", "raw_preserved": True,
-                        "message": "IPC-2581 Rev C는 층, 넷, 홀 및 부품의 원본 검토를 제공합니다. 설계 반영과 재출력은 추가 작업입니다."}]}
+            "steps": [_step(step, factor) for step in steps], "editable_profile": editable, "losses": [loss]}

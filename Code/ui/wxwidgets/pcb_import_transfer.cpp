@@ -16,7 +16,7 @@
 
 namespace
 {
-/** @brief 파서가 정리한 IPC-2581 제조 구조와 지원 범위를 읽기 전용으로 표시한다. */
+/** @brief 파서가 정리한 IPC-2581 제조 구조와 적용 가능한 범위를 표시한다. */
 std::string IpcSummary(const Json& parsed)
 {
     const auto& data = parsed.at("records").at(0).at("data");
@@ -54,7 +54,13 @@ std::string IpcSummary(const Json& parsed)
             OutputUi::Text(layer.at("layerFunction"), "기능 미정") + " | " +
             OutputUi::Text(layer.at("side"), "면 미정");
     }
-    return text + "\n이 원본은 제조 구조를 확인하는 데 사용합니다. 설계 반영과 재출력은 후속 범위입니다.";
+    const auto profile = data.value("editable_profile", Json());
+    if (profile.is_object())
+    {
+        return text + "\n같은 기판 외곽을 확인한 뒤 직선 내부 절삭 " +
+            std::to_string(profile.at("cutouts_mm").size()) + "개를 적용할 수 있습니다.";
+    }
+    return text + "\n이 원본에서는 지원하는 단일 보드 직선 프로파일을 찾지 못했습니다.";
 }
 }
 

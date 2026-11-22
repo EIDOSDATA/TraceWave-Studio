@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 236,
+    "current_07_검증": 237,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -31987,6 +31987,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/360_아이피시_프로파일_내부절삭_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1454,
+      "working_tree_sha256": "3d0e022af9a41ec012535676d92b5e42f88ce0693ce2032c35328175d2e4232f",
+      "text_lines": 15,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/36_스튜디오_보존묶음발행_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -32671,8 +32680,8 @@
       "path": "01_개발문서/09_개발계획/12_전자설계와_제조교환_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 24636,
-      "working_tree_sha256": "b52d688562b58dd1949c3d58b0144c736356f7b26dc104e5519ba6ca1e93e7e2",
+      "bytes": 24772,
+      "working_tree_sha256": "1eca2bb526371377af1371b47b2c861bd103f17adaa565eb4645cc8c064e990e",
       "text_lines": 82,
       "text_status": "utf8_read"
     },
@@ -32698,8 +32707,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 32930,
-      "working_tree_sha256": "0a62ca3c33c5602307ae3770b102a85d14596293542144f213f5e5e37ef71b3a",
+      "bytes": 33146,
+      "working_tree_sha256": "90550afee2509d12d4db5a9af35654db39ec5b18374167953f39ef1a888e4166",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

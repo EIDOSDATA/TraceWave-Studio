@@ -193,7 +193,7 @@ def _validate_pcb(document):
     artifact_count, artifact_bytes = 0, 0
     for row in model["imports"]:
         _fields(row, {"id", "format", "format_version", "parser_profile", "source_files", "report", "bindings", "source_refs"}, "pcb.imports")
-        if row["format"] not in ("kicad_board", "kicad_footprint", "gerber_x2", "xnc", "gerber_job", "vendor_antenna"):
+        if row["format"] not in ("kicad_board", "kicad_footprint", "gerber_x2", "xnc", "gerber_job", "vendor_antenna", "ipc2581_revc"):
             fail("지원하지 않는 PCB 수입 원문 종류입니다.", "pcb.imports.format", "E_UNSUPPORTED")
         for key in ("format_version", "parser_profile"):
             _text(row[key], "pcb.imports." + key)

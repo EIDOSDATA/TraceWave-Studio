@@ -7,16 +7,20 @@ import os
 from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
+from types import SimpleNamespace
 import unittest
 from xml.etree import ElementTree
 from zipfile import ZipFile
 from uuid import uuid4
 
+from rfad.application.canonical import canonical_hash
 from rfad.application.exchange_runtime import ExchangeRuntime
+from rfad.application.pcb_import_service import read as read_import
 from rfad.application.projects import ProjectService
 from rfad.domain.units import Quantity
 from test_cad_worker_process import register_fixture, request
 from test_pcb_ifa import ifa_document
+from test_pcb_import_service import begin, upload
 from test_pcb_solver import fixture_document, quantity
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
@@ -75,7 +79,8 @@ class ManufacturingExchangeTests(unittest.TestCase):
                     for name, raw in originals.items():
                         self.assertEqual(result.read("source/" + name), raw)
                         self.assertEqual((package / name).read_bytes(), raw)
-                    xml = ElementTree.fromstring(result.read("board.xml"))
+                    ipc_bytes = result.read("board.xml")
+                    xml = ElementTree.fromstring(ipc_bytes)
                     ns = xml.tag.rsplit("}", 1)[0] + "}"
                     profile, = xml.iter(ns + "Profile")
                     xy = [(float(row.get("x")), float(row.get("y"))) for row in profile.iter() if row.get("x") is not None]
@@ -89,6 +94,35 @@ class ManufacturingExchangeTests(unittest.TestCase):
                         eda = odb.read("steps/pcb/eda/data").decode("utf-8")
                         self.assertIn("LYR f.cu", eda)
                         self.assertIn("NET ", eda)
+                with ProjectService(folder / "workspace", auto_run=False, exchange_runtime=runtime) as service:
+                    fixture = SimpleNamespace(service=service, request=lambda data: request(service, project_id, data))
+                    name = "board.xml"
+                    source_id = begin(fixture, ipc_bytes, name, "ipc2581_revc")
+                    upload(fixture, source_id, ipc_bytes, name)
+                    service.mutate("pcb.import.parse", fixture.request({"upload_id": source_id}))
+                    self.assertTrue(service.exchange.run_next())
+                    context = {"project_id": project_id}
+                    def read(method, value):
+                        """! @brief 실제 봉인한 제조 원문 조회와 적용 미리보기를 호출한다."""
+                        return read_import(service, method, {"contract_version": "rfad.api/2.0",
+                                                             "context": context, "input": value})
+                    original = read("pcb.import.get", {"upload_id": source_id})
+                    self.assertTrue(original["mapping_sources"]["ipc_profile_available"], original)
+                    inputs = {"upload_id": source_id, "expected_revision": document["revision_id"],
+                              "mapping": {"board_id": document["board"]["id"], "frame_id": document["board"]["frame_id"],
+                                          "layers": [], "nets": [], "placement": None},
+                              "acknowledged_losses": [canonical_hash(row) for row in original["parsed"]["losses"]],
+                              "reason": "독립 수신 보드 외곽 재검토"}
+                    review = read("pcb.import.preview", inputs)
+                    self.assertTrue(review["can_apply"], review.get("issues"))
+                    applied = service.mutate("pcb.import.apply", fixture.request(
+                        {**inputs, "command_id": str(uuid4()), "review_hash": review["review_hash"]}))
+                    self.assertNotEqual(applied["new_revision"], document["revision_id"])
+                    after = service._load(service.journal.read()["projects"][project_id])
+                    for key in ("geometry", "stackup", "ports", "connections", "materials"):
+                        self.assertEqual(after[key], document[key])
+                    self.assertEqual(after["board"], document["board"])
+                    self.assertEqual(service.journal.read_artifact(original["result"]["source_files"][0]["artifact"]), ipc_bytes)
                 before = recipient.read_bytes()
                 with self.assertRaisesRegex(ValueError, "기존 파일"):
                     export_package(package, recipient, executable, ["odb"])

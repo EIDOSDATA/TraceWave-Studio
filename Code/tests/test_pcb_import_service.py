@@ -227,6 +227,52 @@ class PcbImportNativeTests(unittest.TestCase):
         finally:
             f.close()
 
+    def test_ipc_specific_profile_applies_internal_polygon_and_preserves_raw(self):
+        """! @brief 실제 Rev C worker가 읽은 직선 절삭만 원자 명령으로 적용한다."""
+        raw = b"""<IPC-2581 xmlns="http://webstds.ipc.org/2581" revision="C">
+          <Ecad><CadHeader units="MILLIMETER"/><CadData><Step name="BOARD" type="BOARD"><Profile>
+            <Polygon><PolyBegin x="0" y="0"/><PolyStepSegment x="60" y="0"/>
+              <PolyStepSegment x="60" y="40"/><PolyStepSegment x="0" y="40"/><PolyStepSegment x="0" y="0"/></Polygon>
+            <Cutout><PolyBegin x="43" y="27"/><PolyStepSegment x="46" y="27"/>
+              <PolyStepSegment x="46" y="29"/><PolyStepSegment x="43" y="29"/><PolyStepSegment x="43" y="27"/></Cutout>
+          </Profile><LogicalNet name="UNAPPLIED"/></Step></CadData></Ecad>
+        </IPC-2581>"""
+        name = "외곽 검토.xml"
+        f = ExchangeFixture(ExchangeRuntime(Path(os.environ["RFAD_EXCHANGE_PYTHON"])))
+        try:
+            prepare(f)
+            original = f.document
+            identity = begin(f, raw, name, "ipc2581_revc")
+            upload(f, identity, raw, name)
+            f.service.mutate("pcb.import.parse", f.request({"upload_id": identity}))
+            f.service.exchange.run_next()
+            parsed = f.read("pcb.import.get", {"upload_id": identity})
+            self.assertTrue(parsed["mapping_sources"]["ipc_profile_available"], parsed)
+            reference = parsed["result"]["source_files"][0]["artifact"]
+            inputs = {"upload_id": identity, "expected_revision": f.revision, "mapping": {
+                        "board_id": original["board"]["id"], "frame_id": original["board"]["frame_id"],
+                        "layers": [], "nets": [], "placement": None},
+                      "acknowledged_losses": [], "reason": "분리된 내부 절삭 승인"}
+            self.assertFalse(f.read("pcb.import.preview", inputs)["can_apply"])
+            inputs["acknowledged_losses"] = [canonical_hash(row) for row in parsed["parsed"]["losses"]]
+            review = f.read("pcb.import.preview", inputs)
+            self.assertTrue(review["can_apply"], review)
+            applied = f.service.mutate("pcb.import.apply", f.request(
+                {**inputs, "command_id": str(uuid4()), "review_hash": review["review_hash"]}))
+            f.complete("project.save", {"expected_revision": applied["new_revision"]})
+            f.service.close()
+            f.service = ProjectService(f.workspace, auto_run=False)
+            updated = f.service._load(f.service.journal.read()["projects"][f.project])
+            self.assertEqual(f.service.journal.read_artifact(reference), raw)
+            self.assertEqual(updated["board"]["outline"], original["board"]["outline"])
+            cut, = updated["board"]["cutouts"]
+            coords = [[round(item["value_si"] * 1000, 8) for item in row] for row in cut["shape"]["outer"]]
+            self.assertEqual(coords, [[43, 27], [46, 27], [46, 29], [43, 29]])
+            for key in ("geometry", "ports", "stackup", "materials", "nets", "connections"):
+                self.assertEqual(updated[key], original[key])
+        finally:
+            f.close()
+
     def test_g85_loss_acknowledgement_and_source_id_survive_reopen(self):
         """! @brief G85를 실제 parser로 읽고 도금 미정 및 원본 ID를 저장한 뒤 다시 확인한다."""
         raw = (b"M48\nMETRIC\nT01C1.2\n%\nG90\nT01\n"
