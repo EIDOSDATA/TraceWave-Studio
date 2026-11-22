@@ -203,6 +203,25 @@ void PrecisionDialog::BuildFields()
         m_axis->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { ChangeInputs(); });
         number("offset_mm", "축 위치 (mm)", "0");
     }
+    else if (id == "linear_pattern" || id == "circular_pattern")
+    {
+        number("count", "반복 수 (원본 포함)", "3");
+        if (id == "linear_pattern")
+        {
+            number("dx_mm", "X 피치 (mm)", "2");
+            number("dy_mm", "Y 피치 (mm)", "0");
+        }
+        else
+        {
+            number("pivot_x_mm", "회전 중심 X (mm)", "0");
+            number("pivot_y_mm", "회전 중심 Y (mm)", "0");
+            number("step_deg", "회전 간격 (deg, 반시계 양수)", "90");
+        }
+    }
+    else if (id == "arc_offset")
+    {
+        number("distance_mm", "중심선 오프셋 (mm, 양수: 반경 증가)", "1");
+    }
     else if (id == "offset")
     {
         number("distance_mm", "오프셋 (mm, 양수: 확장)", "1");

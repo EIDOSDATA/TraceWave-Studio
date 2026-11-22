@@ -140,10 +140,11 @@ def preview(document, data):
         size = len(canonical_bytes(candidate))
         if size > MAX_DOCUMENT_BYTES:
             fail("출처 사본을 포함한 프로젝트가 512 KiB 상한을 초과했습니다.", "selection_ids", "E_RESOURCE")
-        source_ids = {row["id"] for row in rows}
+        source = {row["id"]: row for row in rows}
+        source_ids = set(source)
         output_ids = {row["id"] for row in output}
         changes = [{"id": row["id"], "label": item_label(document, row), "action": "remove"} for row in rows if row["id"] not in output_ids]
-        changes += [{"id": row["id"], "label": item_label(candidate, row), "action": "modify" if row["id"] in source_ids else "create"} for row in output]
+        changes += [{"id": row["id"], "label": item_label(candidate, row), "action": "modify" if row["id"] in source_ids else "create"} for row in output if row != source.get(row["id"])]
         notices = [{"severity": "info", "code": "I_PRECISION_ONLY", "message": "명시 기하 편집 후보입니다. 연결/목표 제약/제조 규칙은 적용 후 현재 개정에서 다시 검사하십시오."}]
         if data["operation"] in PLANAR_OPERATIONS:
             notices.append({"severity": "info", "code": "I_PLANAR_REPLACEMENT", "message": "선택 영역을 새 다각형 UUID로 교체합니다. 원본/결과/출처 사본을 보존하며 자동 복구나 단순화는 수행하지 않습니다."})

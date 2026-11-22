@@ -153,6 +153,78 @@ class PrecisionServiceTests(unittest.TestCase):
         self.assertIsNone(engine["geos_version"])
         self.assertEqual(engine["required_geos_version"], "3.14.1")
 
+    def test_pattern_copies_and_arc_offset_preserve_source_and_reopen(self):
+        """! @brief 직선과 원형 피치 및 반경을 독립 수치, 원본과 영속 이력으로 대조한다."""
+        arc, line = self.arc(), self.line()
+        originals = {identity: self.shape(identity) for identity in (arc, line)}
+        values = {"count": 3, "dx_mm": 4, "dy_mm": -1}
+        review, _ = self.preview([arc, line], "linear_pattern", values)
+        self.assertEqual([row["action"] for row in review["changes"]], ["create"] * 4)
+        result, _ = self.apply([arc, line], "linear_pattern", values)
+        self.assertEqual(result["selection_ids"], review["result_ids"])
+        for copy_id, position in zip(result["selection_ids"][2::2], ((14, 11), (18, 10))):
+            item = self.shape(copy_id)
+            centers = [Quantity(**value).as_unit("mm") for value in item["center"]]
+            for value, target in zip(centers, position):
+                self.assertAlmostEqual(value, target)
+            self.assertEqual(item["radius"], originals[arc]["radius"])
+        self.assertEqual({identity: self.shape(identity) for identity in (arc, line)}, originals)
+        generated = self.document()["geometry"]
+        self.history("undo")
+        self.assertEqual(len(self.document()["geometry"]), 2)
+        self.history("redo")
+        self.assertEqual(self.document()["geometry"], generated)
+        circle, _ = self.apply([line], "circular_pattern", {"count": 4, "pivot_x_mm": 5,
+                                                           "pivot_y_mm": 5, "step_deg": 90})
+        one = self.shape(circle["selection_ids"][1])
+        self.assertEqual([Quantity(**value).as_unit("mm") for value in one["start"]], [8, 1])
+        disabled, _ = self.preview([line], "circular_pattern", {"count": 5, "pivot_x_mm": 5,
+                                                               "pivot_y_mm": 5, "step_deg": 90})
+        self.assertFalse(disabled["can_apply"])
+        self.apply([arc], "arc_offset", {"distance_mm": 2})
+        self.assertAlmostEqual(Quantity(**self.shape(arc)["radius"]).as_unit("mm"), 22)
+        for key in ("center", "start_angle", "sweep_angle", "width", "layer_id"):
+            self.assertEqual(self.shape(arc)[key], originals[arc][key])
+        final = self.document()
+        save = self.service.mutate("project.save", self.request({"expected_revision": self.revision}))
+        self.service.run_next()
+        self.assertEqual(self.service.status({"contract_version": "rfad.api/2.0", "context": {},
+                    "input": {"job_id": save["job_id"]}})["state"], "completed")
+        self.service.close()
+        self.service = ProjectService(self.workspace, auto_run=False)
+        self.assertEqual(self.document(), final)
+
+    def test_ifa_branch_and_complete_pth_pattern_preserve_connections(self):
+        """! @brief IFA 급전과 PTH의 패드 ID가 복사 뒤에도 올바른 원본을 참조하는지 검사한다."""
+        from test_cad_worker_process import register_fixture
+        from test_pcb_ifa import ifa_document, via_document
+
+        for fixture in (ifa_document, via_document):
+            with self.subTest(fixture=fixture.__name__):
+                source, _ = register_fixture(self.service, fixture())
+                self.project, self.revision = source["project_id"], source["revision_id"]
+                if fixture is ifa_document:
+                    ids = [next(row["id"] for row in source["geometry"] if row["role"] == "radiator")]
+                else:
+                    via = next(row for row in source["geometry"] if row["kind"] == "via")
+                    values = {"count": 2, "dx_mm": 4, "dy_mm": 2}
+                    preview, _ = self.preview([via["id"]], "linear_pattern", values)
+                    self.assertFalse(preview["can_apply"])
+                    ids = [via["id"], *via["pad_ids"]]
+                result, _ = self.apply(ids, "linear_pattern", {"count": 2, "dx_mm": 4, "dy_mm": 2})
+                saved = self.document()
+                original = {row["id"]: row for row in saved["geometry"] if row["id"] in ids}
+                self.assertEqual(original, {row["id"]: row for row in source["geometry"] if row["id"] in ids})
+                self.assertEqual(saved["ports"], source["ports"])
+                self.assertEqual(saved["connections"], source["connections"])
+                if fixture is via_document:
+                    copied_ids = result["selection_ids"][len(ids):]
+                    copied_via = self.shape(copied_ids[0])
+                    self.assertEqual(copied_via["pad_ids"], copied_ids[1:])
+                    for value, expected in zip(copied_via["center"], (7, 8)):
+                        self.assertAlmostEqual(Quantity(**value).as_unit("mm"), expected)
+                    self.assertEqual(copied_via["plating_thickness"], via["plating_thickness"])
+
     def test_rotate_two_objects_is_one_undo_and_preserves_unknowns_and_sources(self):
         line, arc = self.line(), self.arc()
         source = self.shape(line)

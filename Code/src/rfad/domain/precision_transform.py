@@ -109,6 +109,13 @@ def transform(document, geometry, operation, values):
         def convert_angle(value):
             """! @brief 원래 연속 각 표현에 명시 회전량을 더한다."""
             return value + angle
+    elif operation == "translate":
+        dx = number(values["dx_mm"], "dx_mm")
+        dy = number(values["dy_mm"], "dy_mm")
+
+        def convert(x, y):
+            """! @brief 기판 XY에서 같은 피치의 강체 이동을 적용한다."""
+            return [x + dx, y + dy]
     elif operation == "mirror":
         axis = values["axis"]
         if axis not in ("x", "y"):
@@ -130,6 +137,8 @@ def transform(document, geometry, operation, values):
         updated = convert(*point(document, source, prefix + "." + path))
         for index, value in enumerate(updated):
             destination[index] = replace_literal(document, source[index], value, "mm", f"{prefix}.{path}.{index}")
+    if operation == "translate":
+        return result
     if geometry["kind"] == "arc_path":
         old = scalar(document, geometry["start_angle"], "angle", "deg", prefix + ".start_angle")
         result["start_angle"] = replace_literal(document, geometry["start_angle"], convert_angle(old), "deg", prefix + ".start_angle")
