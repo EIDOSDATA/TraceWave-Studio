@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 import json
+import math
 import os
 from pathlib import Path
 import sys
@@ -206,6 +207,14 @@ class DesignSweepRunnerTests(unittest.TestCase):
         strict, relaxed = report["targets"]
         self.assertEqual((strict["nominal_score"], strict["complete_corner_score"], strict["observed_min_ordinals"]), (1, 0, [2]))
         self.assertEqual((relaxed["nominal_score"], relaxed["complete_corner_score"]), (1, 1))
+        response = strict["s11_response"]
+        self.assertEqual(response["frequency_hz"], 1e9)
+        self.assertAlmostEqual(response["nominal_db"], 20 * math.log10(14 / 59), places=12)
+        axis, = response["axes"]
+        self.assertEqual((axis["low_ordinal"], axis["high_ordinal"]), (0, 2))
+        self.assertAlmostEqual(axis["low_delta_db"], 20 * math.log10((19 / 109) / (14 / 59)), places=12)
+        self.assertAlmostEqual(axis["high_delta_db"], 20 * math.log10((11 / 29) / (14 / 59)), places=12)
+        self.assertGreater(axis["maximum_abs_delta_db"], 0)
         self.assertEqual(self.service.journal.read(), before)
 
     def test_circuit_lazy_failure_duplicate_and_results_keep_originals(self):

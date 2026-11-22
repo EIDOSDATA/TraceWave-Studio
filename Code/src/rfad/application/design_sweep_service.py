@@ -499,8 +499,9 @@ def read(service, method, params):
         return bounded(_replay_preview(service, state, project, study, definition, source))
     if method == "sweep.rank":
         from rfad.application import sweep_ranking
-        return bounded(sweep_ranking.read(service, study, definition, source, project,
-                                          data.get("weights"), data.get("tolerance", False)))
+        report = sweep_ranking.read(service, study, definition, source, project,
+                                    data.get("weights"), data.get("tolerance", False))
+        return bounded(report)
     labels = _labels(source, None if definition["network"] is None else definition["network"]["circuit"])
     if method == "sweep.page":
         total, offset = study["counts"]["total"], data["offset"]

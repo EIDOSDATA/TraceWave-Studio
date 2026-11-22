@@ -444,6 +444,7 @@ void StudioFrame::SweepCommand(const std::string& action)
                              explanation += Display(" | 누락으로 최악값 미확정");
                          }
                          const auto& objective = tolerance.at("targets");
+                         const auto axisLabels = m_sweepPanel->Selection().value("variable_labels", Json::object());
                          for (std::size_t i = 0; i < std::min<std::size_t>(4, objective.size()); ++i)
                          {
                              const auto& minimum = objective.at(i).at("complete_corner_score");
@@ -454,6 +455,22 @@ void StudioFrame::SweepCommand(const std::string& action)
                              };
                              explanation += "\n" + Display(targets.at(i).at("name").get<std::string>()).Left(28) +
                                  Display(" | 공칭 ") + percent(nominal) + Display(" | 모서리 최저 ") + percent(minimum);
+                             const auto response = objective.at(i).value("s11_response", Json());
+                             if (response.is_null() || response.at("axes").empty())
+                             {
+                                 continue;
+                             }
+                             const auto& first = response.at("axes").front();
+                             if (first.at("maximum_abs_delta_db").is_null())
+                             {
+                                 explanation += Display(" | S11 변화 미정");
+                                 continue;
+                             }
+                             const auto key = first.at("kind").get<std::string>() + ":" + first.at("id").get<std::string>();
+                             explanation += wxString::Format(Display("\n%.8g Hz S11 변화 최대 / %s %.3g dB"),
+                                 response.at("frequency_hz").get<double>(),
+                                 Display(axisLabels.value(key, std::string("연구 변수"))).Left(28),
+                                 first.at("maximum_abs_delta_db").get<double>());
                          }
                      }
                      explanation += Display("\n확인을 누르면 선택 후보의 전체 평가를 엽니다.");

@@ -3,6 +3,7 @@
 from collections import Counter
 from fractions import Fraction
 from itertools import product
+import math
 
 from rfad.application.canonical import canonical_hash, canonical_hash_from_bytes
 from rfad.application.design_sweep_store import fail, load_candidate, read_json
@@ -79,7 +80,41 @@ def tolerance_axes(specification):
     return axes
 
 
-def _tolerance_report(axes, ids, vectors):
+def _s11_trace(assessment, complete):
+    """! @brief 봉인 평가의 직접 유한 S11 dB 표본만 주파수에 대응한다."""
+    result = {}
+    for criterion in assessment["criteria"]:
+        if criterion["metric"] == "s11_db":
+            points = criterion["points"]
+            for point in points:
+                frequency, value = point["frequency_hz"], point["value"]
+                if point["status"] in {"pass", "fail"} and type(value) in (float, int) and math.isfinite(value):
+                    result[frequency] = value
+            if complete and len(result) != len(points):
+                return {}
+            break
+    return result
+
+
+def _s11_response(axes, nominal, nominal_trace, extremes, traces, identity):
+    """! @brief 공칭의 가장 높은 S11 dB 주파수에서 축 하나만 바꿨을 때의 차이를 계산한다."""
+    if not nominal_trace:
+        return None
+    frequency, base = max(nominal_trace.items(), key=lambda item: (item[1], -item[0]))
+    rows = []
+    for axis, step in zip(axes, extremes):
+        low, high = nominal - step, nominal + step
+        low_value = traces.get(low, {}).get(identity, {}).get(frequency)
+        high_value = traces.get(high, {}).get(identity, {}).get(frequency)
+        deltas = [None if value is None else value - base for value in (low_value, high_value)]
+        change = None if None in deltas else max(map(abs, deltas))
+        rows.append({"id": axis["id"], "kind": axis["kind"], "low_ordinal": low, "high_ordinal": high, "low_delta_db": deltas[0],
+                     "high_delta_db": deltas[1], "maximum_abs_delta_db": change})
+    rows.sort(key=lambda row: (row["maximum_abs_delta_db"] is None, -(row["maximum_abs_delta_db"] or 0)))
+    return {"frequency_hz": frequency, "nominal_db": base, "axes": rows}
+
+
+def _tolerance_report(axes, ids, vectors, traces):
     """! @brief 공칭점과 명시 모서리만 비교하며 누락 구간에서 최악 판정을 유보한다."""
     corners, nominal = [], None
     for ordinal, indices in enumerate(product(range(3), repeat=len(axes))):
@@ -87,6 +122,7 @@ def _tolerance_report(axes, ids, vectors):
             corners.append(ordinal)
         elif all(index == 1 for index in indices):
             nominal = ordinal
+    steps = [3**exponent for exponent in reversed(range(len(axes)))]
     reported = [ordinal for ordinal in corners if ordinal in vectors]
     missing = [ordinal for ordinal in corners if ordinal not in vectors]
     objectives = []
@@ -98,6 +134,8 @@ def _tolerance_report(axes, ids, vectors):
             "observed_min_score": float(observed) if observed is not None else None,
             "complete_corner_score": float(observed) if not missing else None,
             "observed_min_ordinals": [ordinal for ordinal in reported if vectors[ordinal][index] == observed],
+            "s11_response": _s11_response(axes, nominal, traces.get(nominal, {}).get(identity, {}),
+                                          steps, traces, identity),
         })
     return {"axes": axes, "nominal_ordinal": nominal, "nominal_available": nominal in vectors,
             "corner_ordinals": corners, "missing_corner_ordinals": missing,
@@ -117,6 +155,12 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
     root = project["path"] + "/sweeps/" + study["study_id"] + "/results/"
     vectors, hashes, dataset_hashes, excluded = {}, {}, {}, Counter()
     total = study["counts"]["total"]
+    traces = {}
+    sample_cases = set()
+    if tolerance:
+        nominal = (total - 1) // 2
+        sample_cases = {nominal, *(nominal + direction * 3**index
+                                   for index, direction in product(range(len(axes)), (-1, 1)))}
     for ordinal in range(total):
         row = load_candidate(service, study, ordinal)
         if row is None or row["state"] != "completed":
@@ -143,6 +187,8 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
             dataset_hashes[key] = canonical_hash_from_bytes(service.journal.read_artifact(dataset))
         if any(item["evidence"]["dataset_hash"] != dataset_hashes[key] for item in indexed.values()):
             fail("봉인한 후보 평가에 대응한 데이터셋 해시가 다릅니다.", "E_HASH")
+        if ordinal in sample_cases:
+            traces[ordinal] = {identity: _s11_trace(indexed[identity], ordinal == nominal) for identity in ids}
         scores = [target_score(indexed[identity]) for identity in ids]
         if None in scores:
             excluded["incomplete_targets"] += 1
@@ -169,5 +215,5 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
                              for identity, raw, value in zip(ids, weights, normalized)]
         report["scope"] = "weighted_worst_criterion_sample_pass_fraction"
     if tolerance:
-        report["tolerance_analysis"] = _tolerance_report(axes, ids, vectors)
+        report["tolerance_analysis"] = _tolerance_report(axes, ids, vectors, traces)
     return {**report, "ranking_sha256": canonical_hash(report)}
