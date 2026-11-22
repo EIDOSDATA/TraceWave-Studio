@@ -18,6 +18,7 @@ from rfad.application.projects import ProjectService
 from rfad.application.solver_capture import hydrate_job
 from rfad.domain.errors import ProjectError
 from rfad.domain.units import Quantity
+from test_network_service import circuit_definition
 from test_targets import target_input
 import test_design_sweep_service as service_fixtures
 import test_solver_jobs as solver_fixtures
@@ -215,7 +216,91 @@ class DesignSweepRunnerTests(unittest.TestCase):
         self.assertAlmostEqual(axis["low_delta_db"], 20 * math.log10((19 / 109) / (14 / 59)), places=12)
         self.assertAlmostEqual(axis["high_delta_db"], 20 * math.log10((11 / 29) / (14 / 59)), places=12)
         self.assertGreater(axis["maximum_abs_delta_db"], 0)
+        explicit = self.fixture.read("sweep.rank", study_id=tolerance_id, tolerance=True, probabilities=[[1, 2, 1]])
+        probability = explicit["tolerance_analysis"]["discrete_probability"]
+        self.assertEqual(probability["pass_probability_bounds"], [.75, .75])
+        self.assertEqual(probability["failing_mass"], .25)
+        self.assertTrue(probability["all_positive_mass_evaluated"])
+
+        def without_high(service, study, ordinal):
+            """! @brief 저장되지 않은 최대값 후보와 가중치 계산을 대조한다."""
+            return None if ordinal == 2 else load_candidate(service, study, ordinal)
+
+        with patch("rfad.application.sweep_ranking.load_candidate", side_effect=without_high):
+            partial = self.fixture.read("sweep.rank", study_id=tolerance_id, tolerance=True, probabilities=[[1, 2, 1]])
+        probability = partial["tolerance_analysis"]["discrete_probability"]
+        self.assertEqual(probability["pass_probability_bounds"], [.75, 1])
+        self.assertEqual(probability["unresolved_mass"], .25)
+        self.assertEqual(probability["unresolved_ordinals"], [2])
+        for invalid in ([[0, 0, 0]], [[1, 2]], [[1, 2, -1]], [[True, 2, 1]]):
+            with self.assertRaises(ProjectError):
+                self.fixture.read("sweep.rank", study_id=tolerance_id, tolerance=True, probabilities=invalid)
         self.assertEqual(self.service.journal.read(), before)
+
+    def test_pair_interaction_uses_exact_stored_compound_and_single_candidates(self):
+        """! @brief 두 직렬 저항의 비가산 dB 변화 및 누락 상태를 보존 산출물과 비교한다."""
+        definition = circuit_definition()
+        first = definition["elements"][0]["id"]
+        second = str(uuid4())
+        definition["elements"].append({**deepcopy(definition["elements"][0]), "id": second, "name": "R2"})
+        circuit = self.fixture.network_apply("circuit_save", {"name": "두 저항 교호 효과", "definition": definition})
+        port = self.fixture.document()["ports"][0]["id"]
+        target = target_input(start=1, end=2)
+        target.update(port_id=port, reference_impedance=Quantity.from_value(50, "ohm").to_dict(),
+                      reference_plane="입력 기준면", criteria=target["criteria"][:1])
+        target["band"]["sampling"]["count"] = 3
+        self.service.mutate("project.apply_command", self.fixture.request({
+            "expected_revision": self.fixture.document()["revision_id"], "command_id": str(uuid4()),
+            "type": "target.set", "payload": {"target": target}}, mutation=True))
+        values_a, values_b = (10, 20, 40), (12, 25, 60)
+        variables = [{"kind": "circuit_value", "id": identity, "dimension": "impedance",
+                      "values": [{"text": str(value), "unit": "ohm", "source_refs": ["회로 시험 입력"]} for value in values]}
+                     for identity, values in ((first, values_a), (second, values_b))]
+        context = {"port_id": port, "target_port_id": port, "reference_plane": "입력 기준면",
+                   "frequency_policy": "exact_only"}
+        self.fixture.spec.update(network={"dataset_id": self.fixture.dataset_id, "circuit_id": circuit},
+                                 variables=variables, target_ids=[target["id"]],
+                                 target_contexts=[{"target_id": target["id"], "context": context}])
+        identity = self.fixture.create()
+        self.command("start", identity)
+        self.assertEqual(self.run_all(identity)["state"], "completed")
+        source = self.service.journal.read()
+        ranking = self.fixture.read("sweep.rank", study_id=identity, tolerance=True)
+        response = ranking["tolerance_analysis"]["targets"][0]["s11_response"]
+        pair, = response["pair_interactions"]
+        self.assertTrue(pair["complete"])
+        self.assertEqual([field["id"] for field in pair["axes"]], [first, second])
+        self.assertEqual([row["ordinal"] for row in pair["conditions"]], [0, 2, 6, 8])
+
+        def reflection(a, b):
+            """! @brief 이상 저항과 원래 복소 반사의 해석식으로 S11 dB를 구한다."""
+            load = 50 * (1 + .1) / (1 - .1) + a + b
+            return 20 * math.log10((load - 50) / (load + 50))
+
+        nominal = reflection(values_a[1], values_b[1])
+        self.assertAlmostEqual(response["nominal_db"], nominal, places=12)
+        independent = []
+        for row, (a, b) in zip(pair["conditions"], ((x, y) for x in (0, 2) for y in (0, 2))):
+            difference = reflection(values_a[a], values_b[b]) - reflection(values_a[a], values_b[1])
+            difference -= reflection(values_a[1], values_b[b]) - nominal
+            independent.append(difference)
+            self.assertAlmostEqual(row["interaction_db"], difference, places=12)
+        self.assertAlmostEqual(pair["maximum_abs_db"], max(map(abs, independent)), places=12)
+
+        def hide_candidate(service, study, ordinal):
+            """! @brief 계산이 누락된 후보의 읽기 전용 표본 상태를 재현한다."""
+            return None if ordinal == 8 else load_candidate(service, study, ordinal)
+
+        with patch("rfad.application.sweep_ranking.load_candidate", side_effect=hide_candidate):
+            incomplete = self.fixture.read("sweep.rank", study_id=identity, tolerance=True)
+        partial, = incomplete["tolerance_analysis"]["targets"][0]["s11_response"]["pair_interactions"]
+        self.assertFalse(partial["complete"])
+        self.assertIsNone(partial["maximum_abs_db"])
+        self.assertEqual(partial["conditions"][-1]["missing_ordinals"], [8])
+        self.assertEqual(self.service.journal.read(), source)
+        self.service.close()
+        self.service = self.fixture.service = ProjectService(self.fixture.workspace, auto_run=False)
+        self.assertEqual(self.fixture.read("sweep.rank", study_id=identity, tolerance=True), ranking)
 
     def test_circuit_lazy_failure_duplicate_and_results_keep_originals(self):
         """! @brief 0 ohm 실패와 50 ohm의 독립 반사값 11/29, 동치 재사용을 구분한다."""

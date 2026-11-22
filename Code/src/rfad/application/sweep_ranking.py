@@ -2,7 +2,7 @@
 
 from collections import Counter
 from fractions import Fraction
-from itertools import product
+from itertools import combinations, product
 import math
 
 from rfad.application.canonical import canonical_hash, canonical_hash_from_bytes
@@ -96,22 +96,49 @@ def _s11_trace(assessment, complete):
     return result
 
 
+def _pair_contrasts(axes, nominal, base, steps, values):
+    """! @brief 두 축을 바꾼 반사에서 각각의 변화와 공칭을 빼 교호 효과를 계산한다."""
+    pairs = []
+    for (axis_a, step_a), (axis_b, step_b) in combinations(zip(axes, steps), 2):
+        conditions = []
+        for sign_a, sign_b in product((-1, 1), repeat=2):
+            a, b = nominal + sign_a * step_a, nominal + sign_b * step_b
+            combined = a + b - nominal
+            inputs = (combined, a, b)
+            missing = [ordinal for ordinal in inputs if values(ordinal) is None]
+            interaction = None if missing else values(combined) - values(a) - values(b) + base
+            conditions.append({"levels": ["low" if sign < 0 else "high" for sign in (sign_a, sign_b)],
+                               "ordinal": combined, "single_ordinals": [a, b], "missing_ordinals": missing,
+                               "interaction_db": interaction})
+        complete = all(condition["interaction_db"] is not None for condition in conditions)
+        pairs.append({"axes": [{key: axis[key] for key in ("id", "kind")} for axis in (axis_a, axis_b)],
+                      "conditions": conditions, "complete": complete,
+                      "maximum_abs_db": max(abs(condition["interaction_db"]) for condition in conditions)
+                      if complete else None})
+    pairs.sort(key=lambda pair: (not pair["complete"], -(pair["maximum_abs_db"] or 0)))
+    return pairs
+
+
 def _s11_response(axes, nominal, nominal_trace, extremes, traces, identity):
     """! @brief 공칭의 가장 높은 S11 dB 주파수에서 축 하나만 바꿨을 때의 차이를 계산한다."""
     if not nominal_trace:
         return None
     frequency, base = max(nominal_trace.items(), key=lambda item: (item[1], -item[0]))
+    def at(ordinal):
+        """! @brief 공칭에서 정한 동일한 주파수의 직접 표본만 읽는다."""
+        return traces.get(ordinal, {}).get(identity, {}).get(frequency)
+
     rows = []
     for axis, step in zip(axes, extremes):
         low, high = nominal - step, nominal + step
-        low_value = traces.get(low, {}).get(identity, {}).get(frequency)
-        high_value = traces.get(high, {}).get(identity, {}).get(frequency)
+        low_value, high_value = at(low), at(high)
         deltas = [None if value is None else value - base for value in (low_value, high_value)]
         change = None if None in deltas else max(map(abs, deltas))
         rows.append({"id": axis["id"], "kind": axis["kind"], "low_ordinal": low, "high_ordinal": high, "low_delta_db": deltas[0],
                      "high_delta_db": deltas[1], "maximum_abs_delta_db": change})
     rows.sort(key=lambda row: (row["maximum_abs_delta_db"] is None, -(row["maximum_abs_delta_db"] or 0)))
-    return {"frequency_hz": frequency, "nominal_db": base, "axes": rows}
+    return {"frequency_hz": frequency, "nominal_db": base, "axes": rows,
+            "pair_interactions": _pair_contrasts(axes, nominal, base, extremes, at)}
 
 
 def _tolerance_report(axes, ids, vectors, traces):
@@ -142,15 +169,62 @@ def _tolerance_report(axes, ids, vectors, traces):
             "complete_corners": not missing, "targets": objectives}
 
 
-def read(service, study, definition, source, project, weights=None, tolerance=False):
+def _probability_axes(axes, raw):
+    """! @brief 모든 축에서 사용자가 명시한 세 가중치만 정규화한다."""
+    if raw is None:
+        return None
+    if type(raw) is not list or not axes or len(raw) != len(axes):
+        fail("공차의 모든 축에 최소, 공칭, 최대 가중치를 지정하십시오.")
+    normalized = []
+    for index, values in enumerate(raw):
+        if type(values) is not list or len(values) != 3:
+            fail("각 축에는 최소, 공칭, 최대 가중치가 각각 필요합니다.")
+        numbers = [finite(value, f"probabilities.{index}") for value in values]
+        if any(not 0 <= number <= 1e6 for number in numbers) or not any(numbers):
+            fail("각 축 가중치는 0~1000000이며 적어도 하나는 양수여야 합니다.")
+        exact = [Fraction(str(number)) for number in numbers]
+        total = sum(exact)
+        normalized.append([number / total for number in exact])
+    return normalized
+
+
+def _probability_report(axes, normalized, outcomes):
+    """! @brief 독립 이산 분포에서 확인된 통과, 실패, 미확인 질량을 정확히 합친다."""
+    passing, failing = Fraction(0), Fraction(0)
+    unresolved = []
+    for ordinal, weights in enumerate(product(*normalized)):
+        mass = math.prod(weights)
+        if not mass:
+            continue
+        outcome = outcomes.get(ordinal)
+        if outcome is True:
+            passing += mass
+        elif outcome is False:
+            failing += mass
+        else:
+            unresolved.append(ordinal)
+    unknown = 1 - passing - failing
+    return {"scope": "user_assumed_independent_discrete_all_targets",
+            "distributions": [{"kind": axis["kind"], "id": axis["id"], "probability": list(map(float, values))}
+                              for axis, values in zip(axes, normalized)],
+            "passing_mass": float(passing), "failing_mass": float(failing), "unresolved_mass": float(unknown),
+            "pass_probability_bounds": [float(passing), float(1 - failing)],
+            "unresolved_ordinals": unresolved, "all_positive_mass_evaluated": not unresolved}
+
+
+def read(service, study, definition, source, project, weights=None, tolerance=False, probabilities=None):
     """! @brief 현재 설계나 결과를 바꾸지 않고 연구에 소속된 봉인 평가만 사용한다."""
     specification = definition["specification"]
     ids = specification["target_ids"]
+    if probabilities is not None and not tolerance:
+        fail("공차 검토를 선택한 경우에만 이산 분포를 적용합니다.")
     axes = tolerance_axes(specification) if tolerance else []
     if tolerance and (not axes or not ids):
         fail("공차 모서리는 목표와 오름차순 최소·공칭·최대값을 가진 카테시안 설계 또는 회로 연구가 필요합니다.",
              "E_UNSUPPORTED")
     weights = _weights(ids, weights)
+    probability_axes = _probability_axes(axes, probabilities)
+    probability_outcomes = {}
     targets = {row["id"]: row["name"] for row in source["targets"]}
     root = project["path"] + "/sweeps/" + study["study_id"] + "/results/"
     vectors, hashes, dataset_hashes, excluded = {}, {}, {}, Counter()
@@ -159,8 +233,10 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
     sample_cases = set()
     if tolerance:
         nominal = (total - 1) // 2
-        sample_cases = {nominal, *(nominal + direction * 3**index
-                                   for index, direction in product(range(len(axes)), (-1, 1)))}
+        steps = [3**index for index in range(len(axes))]
+        sample_cases = {nominal, *(nominal + direction * step for step, direction in product(steps, (-1, 1)))}
+        sample_cases.update(nominal + sign_a * a + sign_b * b for a, b in combinations(steps, 2)
+                            for sign_a, sign_b in product((-1, 1), repeat=2))
     for ordinal in range(total):
         row = load_candidate(service, study, ordinal)
         if row is None or row["state"] != "completed":
@@ -190,6 +266,11 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
         if ordinal in sample_cases:
             traces[ordinal] = {identity: _s11_trace(indexed[identity], ordinal == nominal) for identity in ids}
         scores = [target_score(indexed[identity]) for identity in ids]
+        if probability_axes is not None:
+            failed = any(point["status"] == "fail" for item in indexed.values() for criterion in item["criteria"]
+                         for point in criterion["points"])
+            if failed or all(score == 1 for score in scores):
+                probability_outcomes[ordinal] = not failed
         if None in scores:
             excluded["incomplete_targets"] += 1
             continue
@@ -216,4 +297,7 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
         report["scope"] = "weighted_worst_criterion_sample_pass_fraction"
     if tolerance:
         report["tolerance_analysis"] = _tolerance_report(axes, ids, vectors, traces)
+        if probability_axes is not None:
+            report["tolerance_analysis"]["discrete_probability"] = _probability_report(
+                axes, probability_axes, probability_outcomes)
     return {**report, "ranking_sha256": canonical_hash(report)}

@@ -14,9 +14,9 @@
 namespace
 {
 /** @brief 저장한 목표의 가중치와 별도 공차 모서리 검토를 설정한다. */
-std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, bool toleranceAvailable)
+std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, const Json& axes, const Json& labels)
 {
-    if (targets.size() < 2 && !toleranceAvailable)
+    if (targets.size() < 2 && axes.empty())
     {
         return Json::object();
     }
@@ -52,17 +52,43 @@ std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, bool t
     scroll->SetSizer(fields);
     layout->Add(scroll, 1, wxEXPAND | wxLEFT | wxRIGHT, gap);
     wxCheckBox* tolerance = nullptr;
-    if (toleranceAvailable)
+    std::vector<wxTextCtrl*> distributions;
+    if (!axes.empty())
     {
         tolerance = new wxCheckBox(&dialog, wxID_ANY, Display("최소·공칭·최대 입력의 공차 모서리 비교"));
         tolerance->SetName("sweep.ranking.tolerance");
         tolerance->SetToolTip(Display("저장한 카테시안 연구에서 공칭점과 각 축 최소/최대의 조합을 비교합니다."));
         layout->Add(tolerance, 0, wxEXPAND | wxALL, gap);
+        auto* probabilityLabel = new wxStaticText(
+            &dialog, wxID_ANY, Display("이산 분포 가중치 (선택)  /  최소, 공칭, 최대 순서"));
+        layout->Add(probabilityLabel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
+        auto* probabilities = new wxFlexGridSizer(4, gap / 2, gap);
+        probabilities->AddGrowableCol(0, 1);
+        for (const auto& axis : axes)
+        {
+            const auto key = axis.at("kind").get<std::string>() + ":" + axis.at("id").get<std::string>();
+            const auto name = Display(labels.value(key, std::string("연구 변수")));
+            auto* label = new wxStaticText(&dialog, wxID_ANY, name.Left(40));
+            label->SetToolTip(name);
+            probabilities->Add(label, 0, wxALIGN_CENTER_VERTICAL);
+            for (const auto* tip : {"최소", "공칭", "최대"})
+            {
+                auto* input = new wxTextCtrl(&dialog, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                                             dialog.FromDIP(wxSize(66, -1)));
+                input->SetHint(Display(tip));
+                input->SetToolTip(name + " / " + Display(tip));
+                input->SetMaxLength(24);
+                probabilities->Add(input, 0, wxEXPAND);
+                distributions.push_back(input);
+            }
+        }
+        layout->Add(probabilities, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
     }
     auto* status = new wxStaticText(&dialog, wxID_ANY, " ");
     layout->Add(status, 0, wxEXPAND | wxALL, gap);
     layout->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
     Json weights = Json::object();
+    Json probabilities = Json::array();
     dialog.Bind(wxEVT_BUTTON, [&](wxCommandEvent&)
     {
         weights = Json::object();
@@ -90,6 +116,39 @@ std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, bool t
             status->SetLabel(Display("가중치가 0보다 큰 목표가 하나 이상 필요합니다."));
             return;
         }
+        probabilities = Json::array();
+        const bool explicitDistribution = std::any_of(distributions.begin(), distributions.end(), [](wxTextCtrl* input)
+        {
+            return !input->GetValue().Trim().Trim(false).empty();
+        });
+        if (explicitDistribution)
+        {
+            for (std::size_t index = 0; index < distributions.size(); index += 3)
+            {
+                Json row = Json::array();
+                bool positive = false;
+                for (std::size_t level = 0; level < 3; ++level)
+                {
+                    auto* input = distributions[index + level];
+                    double weight = 0;
+                    if (!input->GetValue().ToDouble(&weight) || !std::isfinite(weight) || weight < 0 || weight > 1e6)
+                    {
+                        status->SetLabel(Display("모든 축에 0~1000000 사이의 세 가중치를 입력하세요."));
+                        input->SetFocus();
+                        return;
+                    }
+                    positive = positive || weight > 0;
+                    row.push_back(weight);
+                }
+                if (!positive)
+                {
+                    status->SetLabel(Display("각 축에서 하나 이상의 양수 가중치가 필요합니다."));
+                    distributions[index]->SetFocus();
+                    return;
+                }
+                probabilities.push_back(std::move(row));
+            }
+        }
         dialog.EndModal(wxID_OK);
     }, wxID_OK);
     dialog.SetSizerAndFit(layout);
@@ -103,9 +162,13 @@ std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, bool t
     {
         options["weights"] = std::move(weights);
     }
-    if (tolerance && tolerance->GetValue())
+    if (tolerance && (tolerance->GetValue() || !probabilities.empty()))
     {
         options["tolerance"] = true;
+    }
+    if (!probabilities.empty())
+    {
+        options["probabilities"] = std::move(probabilities);
     }
     return options;
 }
@@ -335,7 +398,8 @@ void StudioFrame::SweepCommand(const std::string& action)
     if (action == "rank")
     {
         const auto options = RankingOptions(this, selected.value("ranking_targets", Json::array()),
-                                            selected.value("ranking_tolerance_available", false));
+                                            selected.value("ranking_tolerance_axes", Json::array()),
+                                            selected.value("variable_labels", Json::object()));
         if (!options || m_closing || m_project != project || m_sweepPanel->StudyId() != id || m_sweepPending)
         {
             return;
@@ -443,6 +507,14 @@ void StudioFrame::SweepCommand(const std::string& action)
                          {
                              explanation += Display(" | 누락으로 최악값 미확정");
                          }
+                         if (tolerance.contains("discrete_probability"))
+                         {
+                             const auto& probability = tolerance.at("discrete_probability");
+                             const auto& limits = probability.at("pass_probability_bounds");
+                             explanation += wxString::Format(Display("\n가정한 이산 분포의 전체 목표 통과 %.2f~%.2f%% | 미확인 %.2f%%"),
+                                 limits.at(0).get<double>() * 100, limits.at(1).get<double>() * 100,
+                                 probability.at("unresolved_mass").get<double>() * 100);
+                         }
                          const auto& objective = tolerance.at("targets");
                          const auto axisLabels = m_sweepPanel->Selection().value("variable_labels", Json::object());
                          for (std::size_t i = 0; i < std::min<std::size_t>(4, objective.size()); ++i)
@@ -464,13 +536,41 @@ void StudioFrame::SweepCommand(const std::string& action)
                              if (first.at("maximum_abs_delta_db").is_null())
                              {
                                  explanation += Display(" | S11 변화 미정");
-                                 continue;
                              }
-                             const auto key = first.at("kind").get<std::string>() + ":" + first.at("id").get<std::string>();
-                             explanation += wxString::Format(Display("\n%.8g Hz S11 변화 최대 / %s %.3g dB"),
-                                 response.at("frequency_hz").get<double>(),
-                                 Display(axisLabels.value(key, std::string("연구 변수"))).Left(28),
-                                 first.at("maximum_abs_delta_db").get<double>());
+                             else
+                             {
+                                 const auto key = first.at("kind").get<std::string>() + ":" + first.at("id").get<std::string>();
+                                 explanation += wxString::Format(Display("\n%.8g Hz S11 변화 최대 / %s %.3g dB"),
+                                     response.at("frequency_hz").get<double>(),
+                                     Display(axisLabels.value(key, std::string("연구 변수"))).Left(28),
+                                     first.at("maximum_abs_delta_db").get<double>());
+                             }
+                             const auto pairs = response.value("pair_interactions", Json::array());
+                             if (!pairs.empty())
+                             {
+                                 const auto& interaction = pairs.front();
+                                 if (interaction.at("complete").get<bool>())
+                                 {
+                                     const auto label = [&axisLabels](const Json& axis)
+                                     {
+                                         const auto key = axis.at("kind").get<std::string>() + ":" +
+                                             axis.at("id").get<std::string>();
+                                         return Display(axisLabels.value(key, std::string("연구 변수"))).Left(21);
+                                     };
+                                     const auto& axes = interaction.at("axes");
+                                     explanation += wxString::Format(Display("\n두 변수 교호 효과 / %s + %s / %.3g dB"),
+                                         label(axes.at(0)), label(axes.at(1)), interaction.at("maximum_abs_db").get<double>());
+                                 }
+                                 const auto incomplete = std::count_if(pairs.begin(), pairs.end(), [](const Json& pair)
+                                 {
+                                     return !pair.at("complete").get<bool>();
+                                 });
+                                 if (incomplete)
+                                 {
+                                     explanation += wxString::Format(Display("\n직접 표본이 부족한 변수 쌍 %zu개"),
+                                         static_cast<std::size_t>(incomplete));
+                                 }
+                             }
                          }
                      }
                      explanation += Display("\n확인을 누르면 선택 후보의 전체 평가를 엽니다.");
