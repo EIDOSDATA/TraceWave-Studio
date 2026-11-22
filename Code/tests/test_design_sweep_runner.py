@@ -307,12 +307,47 @@ class DesignSweepRunnerTests(unittest.TestCase):
             self.assertAlmostEqual(row["interaction_db"], difference, places=12)
         self.assertAlmostEqual(pair["maximum_abs_db"], max(map(abs, independent)), places=12)
 
+        joint = {"source_label": "가정한 두 저항 동시 변화",
+                 "weights": [{"ordinal": 8, "weight": 3}, {"ordinal": 0, "weight": 2}]}
+        explicit = self.fixture.read("sweep.rank", study_id=identity, tolerance=True, joint_probabilities=joint)
+        joint_report = explicit["tolerance_analysis"]["discrete_probability"]
+        self.assertEqual(joint_report["source_label"], joint["source_label"])
+        self.assertEqual(joint_report["scope"], "user_assumed_joint_discrete_all_targets")
+        self.assertEqual(joint_report["manufacturing_validation"], "not_established")
+        self.assertEqual(joint_report["weights"], [{"ordinal": 0, "weight": 2, "probability": .4},
+                                                  {"ordinal": 8, "weight": 3, "probability": .6}])
+        self.assertEqual(joint_report["pass_probability_bounds"], [.4, .4])
+        self.assertEqual(joint_report["failing_mass"], .6)
+        self.assertTrue(joint_report["all_positive_mass_evaluated"])
+        separate = self.fixture.read("sweep.rank", study_id=identity, tolerance=True,
+                                     probabilities=[[2, 0, 3], [2, 0, 3]])["tolerance_analysis"]["discrete_probability"]
+        self.assertEqual(separate["pass_probability_bounds"], [.16, .16])
+        for invalid in ({**joint, "source_label": ""}, {**joint, "source_label": "줄\n바꿈"},
+                        {**joint, "weights": [joint["weights"][0]] * 2},
+                        {**joint, "weights": [{"ordinal": 9, "weight": 2}]},
+                        {**joint, "weights": [{"ordinal": True, "weight": 2}]},
+                        {**joint, "weights": [{"ordinal": 0, "weight": True}]},
+                        {**joint, "weights": [{"ordinal": 0, "weight": -1}]},
+                        {**joint, "weights": [{"ordinal": 0, "weight": 0}]}):
+            with self.assertRaises(ProjectError):
+                self.fixture.read("sweep.rank", study_id=identity, tolerance=True, joint_probabilities=invalid)
+        with self.assertRaises(ProjectError):
+            self.fixture.read("sweep.rank", study_id=identity, joint_probabilities=joint)
+        with self.assertRaises(ProjectError):
+            self.fixture.read("sweep.rank", study_id=identity, tolerance=True,
+                              probabilities=[[2, 0, 3], [2, 0, 3]], joint_probabilities=joint)
+
         def hide_candidate(service, study, ordinal):
             """! @brief 계산이 누락된 후보의 읽기 전용 표본 상태를 재현한다."""
             return None if ordinal == 8 else load_candidate(service, study, ordinal)
 
         with patch("rfad.application.sweep_ranking.load_candidate", side_effect=hide_candidate):
             incomplete = self.fixture.read("sweep.rank", study_id=identity, tolerance=True)
+            unknown = self.fixture.read("sweep.rank", study_id=identity, tolerance=True,
+                                        joint_probabilities=joint)["tolerance_analysis"]["discrete_probability"]
+        self.assertEqual(unknown["pass_probability_bounds"], [.4, 1])
+        self.assertEqual(unknown["unresolved_mass"], .6)
+        self.assertEqual(unknown["unresolved_ordinals"], [8])
         partial, = incomplete["tolerance_analysis"]["targets"][0]["s11_response"]["pair_interactions"]
         self.assertFalse(partial["complete"])
         self.assertIsNone(partial["maximum_abs_db"])
@@ -321,6 +356,8 @@ class DesignSweepRunnerTests(unittest.TestCase):
         self.service.close()
         self.service = self.fixture.service = ProjectService(self.fixture.workspace, auto_run=False)
         self.assertEqual(self.fixture.read("sweep.rank", study_id=identity, tolerance=True), ranking)
+        self.assertEqual(self.fixture.read("sweep.rank", study_id=identity, tolerance=True,
+                                          joint_probabilities=joint), explicit)
 
     def test_circuit_lazy_failure_duplicate_and_results_keep_originals(self):
         """! @brief 0 ohm 실패와 50 ohm의 독립 반사값 11/29, 동치 재사용을 구분한다."""

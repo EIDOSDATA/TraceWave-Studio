@@ -188,12 +188,46 @@ def _probability_axes(axes, raw):
     return normalized
 
 
-def _probability_report(axes, normalized, outcomes):
-    """! @brief 독립 이산 분포에서 확인된 통과, 실패, 미확인 질량을 정확히 합친다."""
+def _joint_distribution(axes, raw, total):
+    """! @brief 봉인 연구의 명시 후보 번호와 원문 가중치만 결합 분포로 수용한다."""
+    if raw is None:
+        return None
+    if len(axes) < 2:
+        fail("후보 조합 분포는 공차 축이 두 개 이상인 연구에 적용합니다.", "E_UNSUPPORTED")
+    label = raw["source_label"]
+    if type(label) is not str or not 1 <= len(label) <= 120 or label != label.strip() or not label.isprintable():
+        fail("후보 조합 가중치의 출처 또는 가정을 한 줄로 입력하십시오.")
+    records = raw["weights"]
+    if not 1 <= len(records) <= total:
+        fail("연구 안의 후보 번호에만 가중치를 지정하십시오.")
+    weighted = {}
+    for row in records:
+        if type(row) is not dict or set(row) != {"ordinal", "weight"}:
+            fail("후보 번호와 가중치를 지정하십시오.")
+        ordinal = row["ordinal"]
+        if type(ordinal) is not int or not 0 <= ordinal < total or ordinal in weighted:
+            fail("연구 내 후보 번호를 중복 없이 지정하십시오.")
+        weight = finite(row["weight"], "joint_probabilities.weights")
+        if not 0 <= weight <= 1e6:
+            fail("후보 가중치는 0~1000000이어야 합니다.")
+        weighted[ordinal] = Fraction(str(weight))
+    summed = sum(weighted.values())
+    if not summed:
+        fail("후보 가중치는 하나 이상 양수여야 합니다.")
+    weighted = dict(sorted(weighted.items()))
+    distribution = {ordinal: weight / summed for ordinal, weight in weighted.items()}
+    detail = {"scope": "user_assumed_joint_discrete_all_targets", "source_label": label,
+              "unlisted_weight": 0, "manufacturing_validation": "not_established",
+              "weights": [{"ordinal": ordinal, "weight": float(weight), "probability": float(distribution[ordinal])}
+                          for ordinal, weight in weighted.items()]}
+    return detail, distribution
+
+
+def _probability_totals(distribution, outcomes):
+    """! @brief 확인된 통과, 실패와 미확인 후보의 질량을 정확한 분수로 합친다."""
     passing, failing = Fraction(0), Fraction(0)
     unresolved = []
-    for ordinal, weights in enumerate(product(*normalized)):
-        mass = math.prod(weights)
+    for ordinal, mass in distribution:
         if not mass:
             continue
         outcome = outcomes.get(ordinal)
@@ -204,10 +238,7 @@ def _probability_report(axes, normalized, outcomes):
         else:
             unresolved.append(ordinal)
     unknown = 1 - passing - failing
-    return {"scope": "user_assumed_independent_discrete_all_targets",
-            "distributions": [{"kind": axis["kind"], "id": axis["id"], "probability": list(map(float, values))}
-                              for axis, values in zip(axes, normalized)],
-            "passing_mass": float(passing), "failing_mass": float(failing), "unresolved_mass": float(unknown),
+    return {"passing_mass": float(passing), "failing_mass": float(failing), "unresolved_mass": float(unknown),
             "pass_probability_bounds": [float(passing), float(1 - failing)],
             "unresolved_ordinals": unresolved, "all_positive_mass_evaluated": not unresolved}
 
@@ -269,11 +300,12 @@ def _next_candidate(study, definition, source, rows):
     return {"status": "no_distinct_valid_bracket"}
 
 
-def read(service, study, definition, source, project, weights=None, tolerance=False, probabilities=None, suggest_next=False):
+def read(service, study, definition, source, project, weights=None, tolerance=False, probabilities=None, suggest_next=False,
+         *, joint_probabilities=None):
     """! @brief 현재 설계나 결과를 바꾸지 않고 연구에 소속된 봉인 평가만 사용한다."""
     specification = definition["specification"]
     ids = specification["target_ids"]
-    if probabilities is not None and not tolerance:
+    if (probabilities is not None or joint_probabilities is not None) and not tolerance:
         fail("공차 검토를 선택한 경우에만 이산 분포를 적용합니다.")
     axes = tolerance_axes(specification) if tolerance else []
     if tolerance and (not axes or not ids):
@@ -281,11 +313,12 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
              "E_UNSUPPORTED")
     weights = _weights(ids, weights)
     probability_axes = _probability_axes(axes, probabilities)
+    total = study["counts"]["total"]
+    joint = _joint_distribution(axes, joint_probabilities, total)
     probability_outcomes = {}
     targets = {row["id"]: row["name"] for row in source["targets"]}
     root = project["path"] + "/sweeps/" + study["study_id"] + "/results/"
     vectors, hashes, dataset_hashes, excluded = {}, {}, {}, Counter()
-    total = study["counts"]["total"]
     traces = {}
     sample_cases = set()
     if tolerance:
@@ -323,7 +356,7 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
         if ordinal in sample_cases:
             traces[ordinal] = {identity: _s11_trace(indexed[identity], ordinal == nominal) for identity in ids}
         scores = [target_score(indexed[identity]) for identity in ids]
-        if probability_axes is not None:
+        if probability_axes is not None or joint is not None:
             failed = any(point["status"] == "fail" for item in indexed.values() for criterion in item["criteria"]
                          for point in criterion["points"])
             if failed or all(score == 1 for score in scores):
@@ -355,8 +388,16 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
     if tolerance:
         report["tolerance_analysis"] = _tolerance_report(axes, ids, vectors, traces)
         if probability_axes is not None:
-            report["tolerance_analysis"]["discrete_probability"] = _probability_report(
-                axes, probability_axes, probability_outcomes)
+            distribution = ((index, math.prod(weights)) for index, weights in enumerate(product(*probability_axes)))
+            report["tolerance_analysis"]["discrete_probability"] = {
+                "scope": "user_assumed_independent_discrete_all_targets",
+                "distributions": [{"kind": axis["kind"], "id": axis["id"], "probability": list(map(float, values))}
+                                  for axis, values in zip(axes, probability_axes)],
+                **_probability_totals(distribution, probability_outcomes)}
+        if joint is not None:
+            detail, distribution = joint
+            report["tolerance_analysis"]["discrete_probability"] = {
+                **detail, **_probability_totals(distribution.items(), probability_outcomes)}
     if suggest_next:
         report["next_candidate"] = _next_candidate(study, definition, source, rows)
     return {**report, "ranking_sha256": canonical_hash(report)}

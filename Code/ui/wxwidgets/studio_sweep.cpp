@@ -9,6 +9,7 @@
 #include <wx/filedlg.h>
 #include <wx/msgdlg.h>
 #include <wx/scrolwin.h>
+#include <wx/tokenzr.h>
 #include <cmath>
 #include <optional>
 
@@ -54,6 +55,8 @@ std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, const 
     layout->Add(scroll, 1, wxEXPAND | wxLEFT | wxRIGHT, gap);
     wxCheckBox* tolerance = nullptr;
     std::vector<wxTextCtrl*> distributions;
+    wxTextCtrl* jointWeights = nullptr;
+    wxTextCtrl* jointSource = nullptr;
     if (!axes.empty())
     {
         tolerance = new wxCheckBox(&dialog, wxID_ANY, Display("최소·공칭·최대 입력의 공차 모서리 비교"));
@@ -85,11 +88,29 @@ std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, const 
         }
         layout->Add(probabilities, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
     }
+    if (axes.size() >= 2)
+    {
+        auto* label = new wxStaticText(&dialog, wxID_ANY,
+            Display("후보 조합 가중치 (선택) / 축별 가중치와 함께 입력하지 않음"));
+        layout->Add(label, 0, wxEXPAND | wxLEFT | wxRIGHT, gap);
+        jointWeights = new wxTextCtrl(&dialog, wxID_ANY);
+        jointWeights->SetName("sweep.ranking.joint_weights");
+        jointWeights->SetHint(Display("후보 번호=가중치, 입력하지 않은 후보는 0"));
+        jointWeights->SetToolTip(Display("후보 목록의 번호로 입력합니다. 예시는 1=1, 5=2, 9=1입니다."));
+        jointWeights->SetMaxLength(8192);
+        layout->Add(jointWeights, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
+        jointSource = new wxTextCtrl(&dialog, wxID_ANY);
+        jointSource->SetName("sweep.ranking.joint_source");
+        jointSource->SetHint(Display("조합 가중치의 출처 또는 가정"));
+        jointSource->SetMaxLength(120);
+        layout->Add(jointSource, 0, wxEXPAND | wxLEFT | wxRIGHT, gap);
+    }
     auto* status = new wxStaticText(&dialog, wxID_ANY, " ");
     layout->Add(status, 0, wxEXPAND | wxALL, gap);
     layout->Add(dialog.CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
     Json weights = Json::object();
     Json probabilities = Json::array();
+    Json joint = nullptr;
     dialog.Bind(wxEVT_BUTTON, [&](wxCommandEvent&)
     {
         weights = Json::object();
@@ -150,6 +171,39 @@ std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, const 
                 probabilities.push_back(std::move(row));
             }
         }
+        joint = nullptr;
+        if (jointWeights != nullptr)
+        {
+            const auto supplied = jointWeights->GetValue().Strip(wxString::both);
+            const auto source = jointSource->GetValue().Strip(wxString::both);
+            if (!supplied.empty() || !source.empty())
+            {
+                if (supplied.empty() || source.empty() || explicitDistribution)
+                {
+                    status->SetLabel(Display("조합 가중치와 출처를 함께 입력하고 축별 가중치는 비워 주세요."));
+                    jointWeights->SetFocus();
+                    return;
+                }
+                Json rows = Json::array();
+                wxStringTokenizer tokens(supplied, ",", wxTOKEN_RET_EMPTY_ALL);
+                while (tokens.HasMoreTokens())
+                {
+                    const auto token = tokens.GetNextToken();
+                    long candidate = 0;
+                    double weight = 0;
+                    if (!token.Contains("=") || !token.BeforeFirst('=').Strip(wxString::both).ToLong(&candidate) ||
+                        candidate < 1 || candidate > 128 || !token.AfterFirst('=').Strip(wxString::both).ToDouble(&weight) ||
+                        !std::isfinite(weight) || weight < 0 || weight > 1e6 || rows.size() >= 128)
+                    {
+                        status->SetLabel(Display("후보 번호와 0~1000000 가중치를 번호=가중치로 입력하세요."));
+                        jointWeights->SetFocus();
+                        return;
+                    }
+                    rows.push_back({{"ordinal", candidate - 1}, {"weight", weight}});
+                }
+                joint = {{"source_label", Utf8(source)}, {"weights", std::move(rows)}};
+            }
+        }
         dialog.EndModal(wxID_OK);
     }, wxID_OK);
     dialog.SetSizerAndFit(layout);
@@ -163,13 +217,17 @@ std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, const 
     {
         options["weights"] = std::move(weights);
     }
-    if (tolerance && (tolerance->GetValue() || !probabilities.empty()))
+    if (tolerance && (tolerance->GetValue() || !probabilities.empty() || !joint.is_null()))
     {
         options["tolerance"] = true;
     }
     if (!probabilities.empty())
     {
         options["probabilities"] = std::move(probabilities);
+    }
+    if (!joint.is_null())
+    {
+        options["joint_probabilities"] = std::move(joint);
     }
     return options;
 }
@@ -521,6 +579,11 @@ void StudioFrame::SweepCommand(const std::string& action)
                          {
                              const auto& probability = tolerance.at("discrete_probability");
                              const auto& limits = probability.at("pass_probability_bounds");
+                             const auto source = probability.value("source_label", std::string());
+                             if (!source.empty())
+                             {
+                                 explanation += Display("\n후보 조합 가중치 / ") + Display(source).Left(72);
+                             }
                              explanation += wxString::Format(Display("\n가정한 이산 분포의 전체 목표 통과 %.2f~%.2f%% | 미확인 %.2f%%"),
                                  limits.at(0).get<double>() * 100, limits.at(1).get<double>() * 100,
                                  probability.at("unresolved_mass").get<double>() * 100);
