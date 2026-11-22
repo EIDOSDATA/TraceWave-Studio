@@ -5,6 +5,7 @@
 #include "studio_theme.h"
 #include "studio_shell.h"
 #include "file_delivery.h"
+#include <wx/choicdlg.h>
 #include <wx/filedlg.h>
 
 void StudioFrame::BuildSweepInterface()
@@ -229,13 +230,90 @@ void StudioFrame::SweepCommand(const std::string& action)
     const auto project = m_project;
     const auto generation = ++m_sweepGeneration;
     m_sweepPending = true;
-    const bool exporting = action == "export";
-    if (exporting)
+    if (action == "rank")
     {
-        m_sweepPanel->SetStatus("봉인된 후보와 결과의 CSV를 읽고 있습니다.");
+        m_sweepPanel->SetStatus("봉인된 목표 표본으로 후보 순위를 비교하고 있습니다.");
         UpdateControls();
-        Send("sweep.export", {{"study_id", id}}, false, Context(),
+        Send("sweep.rank", {{"study_id", id}}, false, Context(),
              [this, project, generation, id](const Json& result)
+             {
+                 if (m_closing || project != m_project || generation != m_sweepGeneration)
+                 {
+                     return;
+                 }
+                 m_sweepPending = false;
+                 UpdateControls();
+                 if (result.at("study_id") != id)
+                 {
+                     m_sweepPanel->SetStatus("순위 응답이 선택한 연구와 다릅니다.");
+                     return;
+                 }
+                 const auto ranked = result.at("ranked").get<int>();
+                 const auto total = result.at("total").get<int>();
+                 const auto counts = result.at("excluded");
+                 const auto summary = wxString::Format(Display("순위 %d / %d개. 미완료 %d, 목표 없음 %d, 평가 없음 %d, 표본 미확인 %d."),
+                     ranked, total, counts.value("not_completed", 0), counts.value("no_targets", 0),
+                     counts.value("unavailable_assessment", 0), counts.value("incomplete_targets", 0));
+                 m_sweepPanel->SetStatus(summary.ToStdString(wxConvUTF8));
+                 if (ranked == 0)
+                 {
+                     return;
+                 }
+                 CallAfter([this, project, generation, id, result, summary]()
+                 {
+                     if (m_closing || project != m_project || generation != m_sweepGeneration || m_sweepPanel->StudyId() != id)
+                     {
+                         return;
+                     }
+                     wxArrayString labels;
+                     const auto& targets = result.at("targets");
+                     const auto& rows = result.at("items");
+                     for (const auto& row : rows)
+                     {
+                         auto label = wxString::Format(Display("%d그룹 / 후보 %d"),
+                             row.at("front").get<int>(), row.at("ordinal").get<int>() + 1);
+                         const auto& scores = row.at("target_scores");
+                         const std::size_t limit = std::min<std::size_t>(3, scores.size());
+                         for (std::size_t index = 0; index < limit; ++index)
+                         {
+                             label += "  |  " + Display(targets.at(index).at("name").get<std::string>()).Left(28) +
+                                      wxString::Format(" %.1f%%", scores.at(index).get<double>() * 100);
+                         }
+                         if (scores.size() > limit)
+                         {
+                             label += wxString::Format(Display("  |  외 %zu개"), scores.size() - limit);
+                         }
+                         labels.Add(label);
+                     }
+                     wxSingleChoiceDialog dialog(this,
+                         summary + Display("\n각 목표에서 기준별 통과율의 최솟값을 비교합니다.\n확인을 누르면 선택 후보의 전체 평가를 엽니다."),
+                         Display("목표별 후보 순위"), labels);
+                     dialog.SetName("sweep.rank.dialog");
+                     if (dialog.ShowModal() == wxID_OK && m_sweepPanel->StudyId() == id)
+                     {
+                         OpenSweepResult(rows.at(dialog.GetSelection()).at("ordinal").get<int>());
+                     }
+                 });
+             },
+             [this, project, generation](const Json& error)
+             {
+                 if (!m_closing && project == m_project && generation == m_sweepGeneration)
+                 {
+                     m_sweepPending = false;
+                     m_sweepPanel->SetStatus("후보 순위 조회 실패. " + DiagnosticMessage(error));
+                     UpdateControls();
+                 }
+             });
+        return;
+    }
+    if (action == "export" || action == "recipe")
+    {
+        const bool recipe = action == "recipe";
+        const std::string label = recipe ? "계산 명세" : "후보 CSV";
+        m_sweepPanel->SetStatus("봉인된 " + label + " 자료를 읽고 있습니다.");
+        UpdateControls();
+        Send(recipe ? "sweep.recipe" : "sweep.export", {{"study_id", id}}, false, Context(),
+             [this, project, generation, id, recipe, label](const Json& result)
              {
                  if (m_closing || project != m_project || generation != m_sweepGeneration)
                  {
@@ -248,36 +326,38 @@ void StudioFrame::SweepCommand(const std::string& action)
                      m_sweepPanel->SetStatus("내보내기 응답이 선택한 연구와 다릅니다.");
                      return;
                  }
-                 CallAfter([this, project, generation, id, contents = result.at("csv").get<std::string>()]()
+                 const auto contents = recipe ? result.dump(2) + "\n" : result.at("csv").get<std::string>();
+                 CallAfter([this, project, generation, id, recipe, label, contents]()
                  {
                      if (m_closing || project != m_project || generation != m_sweepGeneration)
                      {
                          return;
                      }
-                     wxFileDialog dialog(this, Display("후보 CSV 저장"), wxEmptyString, Display("sweep-" + id.substr(0, 8) + ".csv"),
-                                         Display("CSV (*.csv)|*.csv"), wxFD_SAVE);
+                     wxFileDialog dialog(this, Display(label + " 저장"), wxEmptyString,
+                                         Display("sweep-" + id.substr(0, 8) + (recipe ? "-recipe.json" : ".csv")),
+                                         Display(recipe ? "JSON (*.json)|*.json" : "CSV (*.csv)|*.csv"), wxFD_SAVE);
                      if (dialog.ShowModal() != wxID_OK)
                      {
-                         m_sweepPanel->SetStatus("후보 CSV 저장을 취소했습니다.");
+                         m_sweepPanel->SetStatus(label + " 저장을 취소했습니다.");
                          return;
                      }
                      try
                      {
                          WriteExternalExportFile(dialog.GetPath(), m_options.workspace, contents);
-                         m_sweepPanel->SetStatus("후보 행과 불변 입력/결과 참조를 CSV로 저장했습니다.");
+                         m_sweepPanel->SetStatus(label + " 파일을 저장했습니다.");
                      }
                      catch (const std::exception& error)
                      {
-                         m_sweepPanel->SetStatus("후보 CSV 저장 실패: " + std::string(error.what()));
+                         m_sweepPanel->SetStatus(label + " 저장 실패. " + std::string(error.what()));
                      }
                  });
              },
-             [this, project, generation](const Json& error)
+             [this, project, generation, label](const Json& error)
              {
                  if (!m_closing && project == m_project && generation == m_sweepGeneration)
                  {
                      m_sweepPending = false;
-                     m_sweepPanel->SetStatus("후보 CSV 조회 실패: " + DiagnosticMessage(error));
+                     m_sweepPanel->SetStatus(label + " 조회 실패. " + DiagnosticMessage(error));
                      UpdateControls();
                  }
              });

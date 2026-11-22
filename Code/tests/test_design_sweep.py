@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 import math
+from fractions import Fraction
 import unittest
 from unittest.mock import patch
 from uuid import uuid4
@@ -385,6 +386,20 @@ class DesignSweepTests(unittest.TestCase):
                     input_quantity(value, "length", "test")
         with self.assertRaises(ProjectError):
             normalize_settings(SETTINGS, {"arbitrary.path": typed("1")})
+
+
+class TargetFrontTests(unittest.TestCase):
+    def test_pareto_front_and_unevaluated_criteria(self):
+        """! @brief 요구를 서로 다른 단위로 가중 합산하지 않고 교차 우세와 동률을 보존한다."""
+        from rfad.application.sweep_ranking import fronts, target_score
+
+        self.assertEqual(fronts({0: [1, 0], 1: [0, 1], 2: [0, 0], 3: [1, 0], 4: [Fraction(1, 2), 0]}),
+                         {0: 1, 1: 1, 3: 1, 4: 2, 2: 3})
+        assessed = {"criteria": [{"points": [{"status": "pass"}, {"status": "fail"}]},
+                                 {"points": [{"status": "pass"}]}]}
+        self.assertEqual(target_score(assessed), Fraction(1, 2))
+        assessed["criteria"][1]["points"][0]["status"] = "not_evaluated"
+        self.assertIsNone(target_score(assessed))
 
 
 if __name__ == "__main__":

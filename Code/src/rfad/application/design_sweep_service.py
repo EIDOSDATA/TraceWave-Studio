@@ -22,14 +22,14 @@ from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 from rfad.domain.units import Quantity
 
 
-READS = {"sweep.context", "sweep.preview", "sweep.list", "sweep.get", "sweep.page", "sweep.result", "sweep.quantity", "sweep.export"}
+READS = {"sweep.context", "sweep.preview", "sweep.list", "sweep.get", "sweep.page", "sweep.result", "sweep.quantity", "sweep.export", "sweep.rank", "sweep.recipe"}
 MUTATIONS = {"sweep.create", "sweep.start", "sweep.cancel", "sweep.resume"}
 MAX_STUDIES = 32
 FIELDS = {
     "sweep.context": set(), "sweep.list": set(),
     "sweep.preview": {"expected_revision", "specification"},
     "sweep.create": {"expected_revision", "specification", "review_hash"},
-    "sweep.get": {"study_id"}, "sweep.start": {"study_id"},
+    "sweep.get": {"study_id"}, "sweep.rank": {"study_id"}, "sweep.recipe": {"study_id"}, "sweep.start": {"study_id"},
     "sweep.cancel": {"study_id"}, "sweep.resume": {"study_id"}, "sweep.export": {"study_id"},
     "sweep.page": {"study_id", "offset", "limit"},
     "sweep.result": {"study_id", "index", "offset", "limit", "row", "column"},
@@ -323,7 +323,8 @@ def actions(service, state, study, definition):
     reason = _environment_reason(service, definition)
     exhausted = study["usage"]["wall_seconds"] >= definition["specification"]["budget"]["wall_seconds"]
     return {"start": study["state"] == "ready" and not other and reason is None and not exhausted,
-            "cancel": study["state"] in ACTIVE | {"ready"}, "export": True,
+            "cancel": study["state"] in ACTIVE | {"ready"}, "export": True, "recipe": True,
+            "rank": bool(definition["specification"]["target_ids"]) and study["counts"]["completed"] > 0,
             "resume": study["state"] in {"cancelled", "interrupted", "failed", "blocked"}
                       and not other and reason is None and not exhausted}, reason
 
@@ -413,6 +414,29 @@ def _export_candidates(service, study, definition, source):
                     "csv": content.getvalue()})
 
 
+def _recipe(study, definition, source):
+    """! @brief 원본과 해석 입력을 다시 대조할 수 있는 읽기 전용 계산 명세를 반환한다."""
+    from rfad.domain.physical_setup import setup
+
+    network = definition["network"]
+    snapshot = definition["snapshot"]
+    recipe = {"schema": "rfad.sweep-recipe/0.1", "study_id": study["study_id"],
+              "project_id": source["project_id"], "design_revision_id": source["revision_id"],
+              "snapshot": {key: snapshot[key] for key in ("snapshot_id", "revision_id", "content_hash")},
+              "definition_sha256": study["definition"]["sha256"],
+              "installation_scenario_id": setup(source)["active_scenario_id"],
+              "original_specification": definition["original_specification"], "specification": definition["specification"],
+              "candidate_count": definition["candidate_count"], "runtime_identity": definition["runtime_identity"],
+              "engine_identity": definition["engine_identity"],
+              "calculation_source_sha256": (definition.get("calculation_source") or {}).get("sha256"),
+              "network_dataset_sha256": network["dataset"]["sha256"] if network is not None else None,
+              "network_circuit_sha256": canonical_hash(network["circuit"]) if network is not None else None,
+              "reproduce": {"method": "sweep.preview", "input": {
+                  "expected_revision": source["revision_id"], "specification_key": "original_specification"},
+                  "source_project_required": True, "automatically_runs": False}}
+    return {**recipe, "recipe_sha256": canonical_hash(recipe)}
+
+
 def read(service, method, params):
     """! @brief 기존 결과는 native runtime 없이도 페이지 단위로 읽을 수 있다."""
     _fields(params, {"contract_version", "context", "input"})
@@ -441,6 +465,11 @@ def read(service, method, params):
     definition, source = baseline(service, study)
     if method == "sweep.export":
         return _export_candidates(service, study, definition, source)
+    if method == "sweep.recipe":
+        return bounded(_recipe(study, definition, source))
+    if method == "sweep.rank":
+        from rfad.application import sweep_ranking
+        return bounded(sweep_ranking.read(service, study, definition, source, project))
     labels = _labels(source, None if definition["network"] is None else definition["network"]["circuit"])
     if method == "sweep.page":
         total, offset = study["counts"]["total"], data["offset"]

@@ -11,11 +11,13 @@ import unittest
 from unittest.mock import patch
 from uuid import uuid4
 
-from rfad.application.canonical import canonical_bytes
+from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.design_sweep_store import load_candidate, load_definition
 from rfad.application.projects import ProjectService
 from rfad.application.solver_capture import hydrate_job
 from rfad.domain.errors import ProjectError
+from rfad.domain.units import Quantity
+from test_targets import target_input
 import test_design_sweep_service as service_fixtures
 import test_solver_jobs as solver_fixtures
 
@@ -125,6 +127,52 @@ class DesignSweepRunnerTests(unittest.TestCase):
                 break
             self.service.studies.run_next()
         return self.study(identity)
+
+    def test_target_ranking_is_read_only_and_reopens_actual_circuit_candidates(self):
+        """! @brief 실제 계산한 대역 평가, 실패 후보, 해시와 재열기 순위를 비교한다."""
+        document = self.fixture.document()
+        port = document["ports"][0]["id"]
+        targets = []
+        for limit in (-10, -7):
+            value = target_input(start=1, end=2)
+            value["name"] = f"2 GHz까지 정합 {limit} dB"
+            value["band"]["sampling"]["count"] = 3
+            value["port_id"] = port
+            value["reference_impedance"] = Quantity.from_value(50, "ohm").to_dict()
+            value["reference_plane"] = "입력 기준면"
+            value["criteria"] = value["criteria"][:1]
+            value["criteria"][0]["limit"]["value"] = float(limit)
+            self.service.mutate("project.apply_command", self.fixture.request({
+                "expected_revision": self.fixture.document()["revision_id"], "command_id": str(uuid4()),
+                "type": "target.set", "payload": {"target": value}}, mutation=True))
+            targets.append(value["id"])
+        self.fixture.spec["target_ids"] = targets
+        self.fixture.spec["target_contexts"] = [
+            {"target_id": identity, "context": {"port_id": port, "target_port_id": port,
+             "reference_plane": "입력 기준면", "frequency_policy": "exact_only"}} for identity in targets]
+        values = self.fixture.spec["variables"][0]["values"]
+        values.insert(1, {**values[1], "text": "10"})
+        identity = self.fixture.create()
+        self.command("start", identity)
+        self.assertEqual(self.run_all(identity)["state"], "completed")
+        before = self.service.journal.read()
+        ranking = self.fixture.read("sweep.rank", study_id=identity)
+        recipe = self.fixture.read("sweep.recipe", study_id=identity)
+        self.assertEqual(self.service.journal.read(), before)
+        definition = load_definition(self.service, before["sweeps"][identity])
+        self.assertEqual(recipe["original_specification"], self.fixture.spec)
+        self.assertEqual(recipe["specification"], definition["specification"])
+        self.assertEqual(recipe["snapshot"]["content_hash"], definition["snapshot"]["content_hash"])
+        self.assertEqual(recipe["recipe_sha256"], canonical_hash({key: value for key, value in recipe.items() if key != "recipe_sha256"}))
+        self.assertEqual(ranking["excluded"], {"not_completed": 1})
+        self.assertEqual([(row["ordinal"], row["front"], row["target_scores"]) for row in ranking["items"]],
+                         [(1, 1, [1, 1]), (2, 2, [0, 1]), (3, 2, [0, 1])])
+        self.assertTrue(self.fixture.read("sweep.get", study_id=identity)["allowed_actions"]["rank"])
+        self.assertFalse(ranking["continuous_band_verified"])
+        self.service.close()
+        self.service = self.fixture.service = ProjectService(self.fixture.workspace, auto_run=False)
+        self.assertEqual(self.fixture.read("sweep.rank", study_id=identity), ranking)
+        self.assertEqual(self.fixture.read("sweep.recipe", study_id=identity), recipe)
 
     def test_circuit_lazy_failure_duplicate_and_results_keep_originals(self):
         """! @brief 0 ohm 실패와 50 ohm의 독립 반사값 11/29, 동치 재사용을 구분한다."""

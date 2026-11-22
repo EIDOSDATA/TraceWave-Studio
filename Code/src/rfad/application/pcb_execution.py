@@ -125,8 +125,13 @@ def stopped(job, state, process, diagnostic):
         reason = "timestep_limit"
     else:
         reason = process["state"] if process.get("state") in {"timeout", "output_limit"} else "solver_error"
-    return {"estimate": estimate(plan, captured["preparation"]["mesh_statistics"]["lines_mm"]),
-            "estimate_retrospective": False, "execution_budget_seconds": job["input"]["budget"]["timeout_seconds"],
+    lines = (captured.get("preparation") or {}).get("mesh_statistics", {}).get("lines_mm")
+    retrospective = lines is None
+    if retrospective:
+        from rfad.application.pcb_mesh import mesh_lines
+        lines = mesh_lines(plan["case"])
+    return {"estimate": estimate(plan, lines),
+            "estimate_retrospective": retrospective, "execution_budget_seconds": job["input"]["budget"]["timeout_seconds"],
             "recovery_stage": "restart_prepared_plan" if confirmed else "confirm_guest_exit",
             "revision_id": plan["snapshot"]["revision_id"],
             "actual": {"wall_seconds": _time(measured.get("wall_seconds")), "time_scope": "native_process",

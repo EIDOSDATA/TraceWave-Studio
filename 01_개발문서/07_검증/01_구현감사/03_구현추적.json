@@ -8437,6 +8437,14 @@
       "extension_profile": "rfad.design-sweep/0.1",
       "status": "implemented"
     },
+    "sweep.rank": {
+      "extension_profile": "rfad.design-sweep/0.1",
+      "status": "implemented"
+    },
+    "sweep.recipe": {
+      "extension_profile": "rfad.design-sweep/0.1",
+      "status": "implemented"
+    },
     "sweep.result": {
       "extension_profile": "rfad.design-sweep/0.1",
       "status": "implemented"
@@ -14284,8 +14292,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/03_이차원표시와_직접편집.md",
-      "text_sha256": "9def14164b370a5bc782f7624094d398ea6ae612ec7007645bb9779a2bf4ef3e",
-      "utf8_bytes": 12600
+      "text_sha256": "8dba36cc27397fbf7381f9e10a1599cc9ea245b3aab38aaaccbb26e1de4d54a4",
+      "utf8_bytes": 13114
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/05_도체영역과_급전모델.md",
@@ -14324,8 +14332,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md",
-      "text_sha256": "b6097cb4415fe453bb289b2ef17ed1ee574ffc5c8808ab4a66fa3f69d0f805ed",
-      "utf8_bytes": 19400
+      "text_sha256": "d75b38594301f59aebebdd7df2a0c98b5681c68d9cf9c7e74cf1de478c0a6f77",
+      "utf8_bytes": 19472
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/13_정밀편집과_평면연산.md",
@@ -14339,8 +14347,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
-      "text_sha256": "e180be71ebaf1d8d460c7365023f4954cc444766920c22ad03b784202511d046",
-      "utf8_bytes": 27953
+      "text_sha256": "0a8337616796d2c80189c0c511550b78e6959a41b1c83e89656cfa8fbb5ddbcb",
+      "utf8_bytes": 28457
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
@@ -14389,8 +14397,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/06_연구/01_명시적스윕과_실행계약.md",
-      "text_sha256": "a67109a09c2e3971db3cfa5a3e7ba61ddeeefdb98cf205624817c394e83cdb26",
-      "utf8_bytes": 11384
+      "text_sha256": "e5552da4859eb2f9c564f1a864f863a5d50c5bde305f29dda1560fbcc787f553",
+      "utf8_bytes": 12190
     },
     {
       "path": "01_개발문서/05_기능설계/06_연구/02_후보채택과_새작업사본.md",
@@ -14989,8 +14997,8 @@
     },
     {
       "path": "Code/src/rfad/application/design_sweep_service.py",
-      "text_sha256": "05293d996cd440284de267bf7132e480159e432b8dd73d3c4ce3698440c0cc93",
-      "utf8_bytes": 33515
+      "text_sha256": "9b7ae97e8f8ed4720b4769140ff2277c4a6ec289a28f8ad9079dc33a402e9d7e",
+      "utf8_bytes": 35637
     },
     {
       "path": "Code/src/rfad/application/display_mesh.py",
@@ -15769,13 +15777,13 @@
     },
     {
       "path": "Code/tests/test_design_sweep.py",
-      "text_sha256": "948a065b4f023bb09d200d683438769effba475e3c2c21f5e569403b178f2637",
-      "utf8_bytes": 26290
+      "text_sha256": "96c0138df5b57b3c92fb6f74538f02a8846a6a7d7348beb771f72a84030fd4e8",
+      "utf8_bytes": 27125
     },
     {
       "path": "Code/tests/test_design_sweep_runner.py",
-      "text_sha256": "a6da80285a853add5fa5fe2a870774b6ae38739ce11a4307712ea7ffaee948b5",
-      "utf8_bytes": 28339
+      "text_sha256": "3a37f4e761e6d3b4b1089afb8024a39db0571de414a72d5e8693ccf96686ae05",
+      "utf8_bytes": 31548
     },
     {
       "path": "Code/tests/test_design_sweep_service.py",
@@ -16734,8 +16742,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/sweep_panel.cpp",
-      "text_sha256": "65fbd66724b13388fec6018cc5afa8dc0288a8aa26f3fb0d0c26c0d1cec843db",
-      "utf8_bytes": 21632
+      "text_sha256": "e19638c15189ba3ba066451b81ae2dd200ebcb72a676b3be25ee45c6a9237ab1",
+      "utf8_bytes": 21718
     },
     {
       "path": "Code/ui/wxwidgets/sweep_selection_dialog.cpp",
