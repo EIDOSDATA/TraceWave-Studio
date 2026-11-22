@@ -126,6 +126,8 @@ def options(value, format_name, document=None):
     if "annotations" in value:
         annotation = value["annotations"]
         drawing_annotations.validate_recipe(annotation)
+        if "placement" in annotation and annotation["placement"]["paper"] != {key: value[key] for key in ("sheet", "orientation", "scale")}:
+            raise ProjectError("E_SCHEMA", "치수의 용지와 축척은 기술 도면 설정과 같아야 합니다.")
         if value["mode"] != "drawing" or not value["dimensions"] or views.count(annotation["view"]) != 1:
             raise ProjectError("E_SCHEMA", "자동 치수에는 출력에 한 번 선택한 기술 도면 뷰와 치수 포함이 필요합니다.")
     if value["mode"] == "fabrication_geometry" and (format_name == "pdf" or scale != 1 or value["dimensions"] or value["notes"]

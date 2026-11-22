@@ -1,5 +1,6 @@
 /** @file @brief 고정 도면 뷰의 자동 치수 설정과 중복·누락 검토를 표시한다. */
 #include "drawing_output_view.h"
+#include "drawing_sheet_canvas.h"
 #include "output_model.h"
 #include "studio_support.h"
 #include "studio_theme.h"
@@ -39,6 +40,22 @@ wxString ReviewText(const Json& report)
     add("missing", "누락");
     add("duplicates", "병합한 중복");
     add("not_applicable", "대상 없음");
+    if (report.contains("placement"))
+    {
+        const auto& placement = report.at("placement");
+        text += Display("자동 이동 ") + wxString::Format("%d", placement.at("moved").get<int>()) +
+                Display("개 / 수동 고정 ") + wxString::Format("%d", placement.at("pinned").get<int>()) + Display("개\n");
+        text += Display("남은 치수 간섭 ") + wxString::Format("(%zu)\n", placement.at("collisions").size());
+        for (const auto& row : placement.at("collisions"))
+        {
+            text += Display("  " + row.value("title", std::string())) + "\n";
+        }
+        text += "\n" + Display("적용할 수 없는 수동 위치 ") + wxString::Format("(%zu)\n", placement.at("unavailable").size());
+        for (const auto& row : placement.at("unavailable"))
+        {
+            text += Display("  " + row.value("key", std::string()) + " / " + row.value("reason", std::string())) + "\n";
+        }
+    }
     return text;
 }
 }
@@ -69,7 +86,10 @@ void DrawingOutputView::UpdateAnnotationActions()
                                  m_viewValues.end();
     m_annotationEdit->SetLabel(Display(missingView ? "자동 치수 / 뷰 확인" : "자동 치수"));
     m_annotationEdit->Enable(m_available && m_hasSnapshot && technical);
-    m_annotationSave->Enable(m_available && technical && m_annotation != m_storedAnnotation);
+    m_annotationSave->Enable(m_available && technical && CurrentAnnotation() != m_storedAnnotation);
+    const bool movable = m_available && technical && m_placements.is_object() && !m_placements.at("items").empty();
+    m_placementEdit->Enable(movable);
+    m_canvas->SetMovable(movable);
     m_annotationInspect->Enable(m_available && m_annotationReview.is_object());
 }
 
@@ -257,6 +277,10 @@ void DrawingOutputView::EditAnnotations()
                     result = {{"view", views.at(view->GetSelection())}, {"datum", datums.at(datum->GetSelection())},
                               {"style", Styles.at(style->GetSelection())}, {"categories", selected},
                               {"model_dimensions", refs}, {"hole_table", table->GetValue()}};
+                    if (m_annotation.is_object() && m_annotation.contains("placement"))
+                    {
+                        result["placement"] = m_annotation.at("placement");
+                    }
                     dialog.EndModal(wxID_OK);
                 });
     reset->Enable(m_annotation.is_object());

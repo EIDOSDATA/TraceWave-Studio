@@ -14244,8 +14244,8 @@
     },
     {
       "path": "01_개발문서/04_화면설계/24_기술도면과_스텝검수_화면.md",
-      "text_sha256": "6de4ea03ff1ca21720c469bbd1ce7a482c377a80116b6a406f840b575ab31175",
-      "utf8_bytes": 7705
+      "text_sha256": "432e61dc61d88599783067245c73eac6fe7f3bce6b757c28e551a20c7dd1dd46",
+      "utf8_bytes": 8206
     },
     {
       "path": "01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
@@ -14369,8 +14369,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
-      "text_sha256": "9b96c3136fbd1dc6adf57eae980fe88d5e58e6e443c2fee7b08d8be3d186301b",
-      "utf8_bytes": 15349
+      "text_sha256": "8b1d150812fa0e8e92bae0108d542991603fc65351230d627f480f55b34bf5b2",
+      "utf8_bytes": 17166
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
@@ -14829,8 +14829,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/exchange/drawing_readers.py",
-      "text_sha256": "2e36f77f48512a6e2613c9189635259e44c52b6a0251bfe31a75040c261d33d1",
-      "utf8_bytes": 24139
+      "text_sha256": "0268d97572a58ea8d37e227f39df5afcebb7fc9096e9ca1ac58bec9082fcafb3",
+      "utf8_bytes": 25567
     },
     {
       "path": "Code/src/rfad/adapters/exchange/drawing_writers.py",
@@ -15004,8 +15004,8 @@
     },
     {
       "path": "Code/src/rfad/application/exchange_contract.py",
-      "text_sha256": "1939670e80a63bae02c5c078be4ab1e7864833287ed3a4292c6e20056bf660be",
-      "utf8_bytes": 22297
+      "text_sha256": "269af81c52d84399664fcbfebf6e3e9286a3ef56646963f6f9b7807b0c4b1397",
+      "utf8_bytes": 22559
     },
     {
       "path": "Code/src/rfad/application/exchange_jobs.py",
@@ -15469,8 +15469,8 @@
     },
     {
       "path": "Code/src/rfad/domain/drawing_layout.py",
-      "text_sha256": "34fd38d66819d645ef7f89d66fa082a7debbd124e4424d7e7a86c0df6bb89850",
-      "utf8_bytes": 45290
+      "text_sha256": "f985b2326c7bfd0af855d460ab47323e79dbc8e0b7866c89dc11310c5390a251",
+      "utf8_bytes": 50924
     },
     {
       "path": "Code/src/rfad/domain/expressions.py",
@@ -16404,8 +16404,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/drawing_sheet_canvas.cpp",
-      "text_sha256": "12d72d77154b74e6782d640cb4caa6b9d69d3507e287a23c78557fb3f7cf075a",
-      "utf8_bytes": 9101
+      "text_sha256": "1106e529307a1c15a00474dbebed2f78b2dddd232f891c041cc8430ef14e4bc6",
+      "utf8_bytes": 14123
     },
     {
       "path": "Code/ui/wxwidgets/field_result_view.cpp",

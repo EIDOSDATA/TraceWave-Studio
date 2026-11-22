@@ -32,7 +32,10 @@ def recipe(document):
 
 def validate_recipe(value):
     """! @brief 저장 가능한 2D 뷰, 기준점, 스타일과 참조 키를 확인한다."""
-    _fields(value, {"view", "datum", "style", "categories", "model_dimensions", "hole_table"}, FIELD)
+    required = {"view", "datum", "style", "categories", "model_dimensions", "hole_table"}
+    _fields(value, required | ({"placement"} if type(value) is dict and "placement" in value else set()), FIELD)
+    if "placement" in value:
+        _validate_placement(value["placement"])
     view, datum = value["view"], value["datum"]
     if type(view) is dict and view.get("kind") == "layer":
         _fields(view, {"kind", "layer_id"}, FIELD + ".view")
@@ -69,6 +72,38 @@ def validate_recipe(value):
         seen.add(key)
     if not (selected or model or value["hole_table"]):
         _fail("자동 치수, 모델 치수 또는 홀 표를 선택하세요.")
+
+
+def _validate_placement(value):
+    """! @brief 도면에만 쓰는 종이 mm 위치와 재열기 시 용지·축척을 검사한다."""
+    _fields(value, {"profile", "paper", "pins"}, FIELD + ".placement")
+    if value["profile"] != "rfad.drawing-placement/0.1":
+        _fail("지원하지 않는 도면 치수 배치 버전입니다.", "E_VERSION")
+    paper = value["paper"]
+    _fields(paper, {"sheet", "orientation", "scale"}, FIELD + ".placement.paper")
+    scale = paper["scale"]
+    if (paper["sheet"] not in ("A4", "A3") or paper["orientation"] not in ("portrait", "landscape")
+            or type(scale) not in (int, float) or not 0.01 <= scale <= 100):
+        _fail("치수 배치의 용지, 방향과 축척이 유효하지 않습니다.")
+    pins = value["pins"]
+    if type(pins) is not list or len(pins) > 256:
+        _fail("수동으로 고정한 치수 위치는 최대 256개까지 저장할 수 있습니다.", "E_RESOURCE")
+    seen = set()
+    for row in pins:
+        _fields(row, {"view_id", "source_id", "key", "point_mm"}, FIELD + ".placement.pins")
+        identity, key, point = row["source_id"], row["key"], row["point_mm"]
+        view_id = row["view_id"]
+        if view_id != "outline":
+            _uuid(view_id, FIELD + ".placement.pins.view_id")
+        _uuid(identity, FIELD + ".placement.pins.source_id")
+        if (type(key) is not str or not 1 <= len(key) <= 80
+                or any(not char.isascii() or not (char.isalnum() or char in "._-") for char in key)
+                or type(point) is not list or len(point) != 2
+                or any(type(coordinate) not in (int, float) or not 0 <= coordinate <= 420 for coordinate in point)):
+            _fail("도면 치수의 원본 키 또는 종이 mm 좌표가 유효하지 않습니다.")
+        if (view_id, identity, key) in seen:
+            _fail("같은 뷰의 도면 치수에 두 개의 수동 위치를 지정했습니다.", "E_CONFLICT")
+        seen.add((view_id, identity, key))
 
 
 def validate(document):
@@ -225,6 +260,8 @@ def evaluation(data, option, bounds, visible):
         row = {"source_id": source_id, "dimension_key": key[1], "title": title, "kind": kind,
                "value": value, "unit": unit, "anchors_mm": anchors,
                "origins": [{"source_id": source_id, "kind": origin, "mode": model_mode}]}
+        if "placement" in settings:
+            row["placement_source_id"] = key[0]
         keys[key] = row
         rows.append(row)
 

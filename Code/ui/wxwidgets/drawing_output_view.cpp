@@ -16,6 +16,7 @@
 #include <wx/msgdlg.h>
 #include <wx/textctrl.h>
 #include <algorithm>
+#include <cmath>
 
 DrawingOutputView::DrawingOutputView(wxWindow* parent)
     : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL | wxTAB_TRAVERSAL)
@@ -70,6 +71,7 @@ DrawingOutputView::DrawingOutputView(wxWindow* parent)
     m_scale = new wxSpinCtrlDouble(properties, wxID_ANY, "1", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0.01,
                                    100.0, 1.0, 0.1);
     m_scale->SetDigits(3);
+    m_scale->SetName(Display("출력 축척"));
     form->Add(m_scale, 0, wxEXPAND);
     form->Add(new wxStaticText(properties, wxID_ANY, Display("출력 뷰 / 최대 8개")), 0, wxTOP | wxBOTTOM, FromDIP(8));
     m_views = new wxCheckListBox(properties, wxID_ANY);
@@ -120,7 +122,9 @@ DrawingOutputView::DrawingOutputView(wxWindow* parent)
     m_annotationEdit = new wxButton(this, wxID_ANY, Display("자동 치수"));
     m_annotationInspect = new wxButton(this, wxID_ANY, Display("치수 검사"));
     m_annotationSave = new wxButton(this, wxID_ANY, Display("치수 설정 저장"));
-    for (auto* button : {m_annotationEdit, m_annotationInspect, m_annotationSave})
+    m_placementEdit = new wxButton(this, wxID_ANY, Display("치수 위치"));
+    m_placementEdit->SetToolTip(Display("미리보기의 치수 문자를 끌거나 종이 좌표를 입력해 고정합니다."));
+    for (auto* button : {m_annotationEdit, m_annotationInspect, m_placementEdit, m_annotationSave})
     {
         StudioTheme::Button(*button);
         actions->Add(button, 0, wxALL, FromDIP(4));
@@ -135,12 +139,22 @@ DrawingOutputView::DrawingOutputView(wxWindow* parent)
                               {
                                   InspectAnnotations();
                               });
+    m_placementEdit->Bind(wxEVT_BUTTON,
+                          [this](wxCommandEvent&)
+                          {
+                              EditPlacement();
+                          });
+    m_canvas->onMoveDimension = [this](const Json& item, const wxPoint2DDouble& point)
+    {
+        MoveDimension(item, Json::array({std::round(point.m_x * 1000.0) / 1000.0,
+                                         std::round(point.m_y * 1000.0) / 1000.0}));
+    };
     m_annotationSave->Bind(wxEVT_BUTTON,
                            [this](wxCommandEvent&)
                            {
                                if (onSaveAnnotations)
                                {
-                                   onSaveAnnotations(m_annotation);
+                                   onSaveAnnotations(CurrentAnnotation());
                                }
                            });
     layout->Insert(1, actions, 0, wxEXPAND | wxLEFT | wxBOTTOM, FromDIP(8));
@@ -223,9 +237,12 @@ void DrawingOutputView::SetContext(const Json& context)
     m_annotation = m_storedAnnotation;
     const auto defaults = context.value("default_options", Json::object());
     m_mode->SetSelection(defaults.value("mode", "drawing") == "drawing" ? 0 : 1);
-    m_sheet->SetSelection(defaults.value("sheet", "A4") == "A3" ? 1 : 0);
-    m_orientation->SetSelection(defaults.value("orientation", "landscape") == "portrait" ? 1 : 0);
-    m_scale->SetValue(defaults.value("scale", 1.0));
+    const auto paper = m_annotation.is_object()
+                           ? m_annotation.value("placement", Json::object()).value("paper", defaults)
+                           : defaults;
+    m_sheet->SetSelection(paper.value("sheet", "A4") == "A3" ? 1 : 0);
+    m_orientation->SetSelection(paper.value("orientation", "landscape") == "portrait" ? 1 : 0);
+    m_scale->SetValue(paper.value("scale", 1.0));
     m_dimensions->SetValue(defaults.value("dimensions", true));
     m_notes->SetValue(defaults.value("notes", true));
     for (std::size_t index = 0; index < m_viewValues.size(); ++index)
@@ -263,7 +280,7 @@ Json DrawingOutputView::Options() const
     if (m_annotation.is_object() && m_dimensions->GetValue() && m_mode->GetSelection() == 0 &&
         std::find(views.begin(), views.end(), m_annotation.at("view")) != views.end())
     {
-        result["annotations"] = m_annotation;
+        result["annotations"] = CurrentAnnotation();
     }
     return result;
 }
@@ -317,6 +334,7 @@ void DrawingOutputView::SetPreview(const Json& review)
     m_canvas->SetPages(review.at("pages"));
     m_page->Clear();
     int chosen = 0;
+    m_placements = nullptr;
     for (std::size_t index = 0; index < m_canvas->PageCount(); ++index)
     {
         const auto& page = review.at("pages").at(index);
@@ -325,6 +343,7 @@ void DrawingOutputView::SetPreview(const Json& review)
         {
             chosen = static_cast<int>(index);
             label += " / 참조 치수";
+            m_placements = page.value("dimension_placements", Json(nullptr));
         }
         else if (page.value("page_role", "") == "hole_table")
         {
@@ -344,6 +363,13 @@ void DrawingOutputView::SetPreview(const Json& review)
                                         m_annotationReview.at("missing").size(), m_annotationReview.at("duplicates").size(),
                                         m_annotationReview.value("hole_count", 0))) +
                   (issues.empty() ? "" : "\n" + issues);
+        if (m_annotationReview.contains("placement"))
+        {
+            const auto& placement = m_annotationReview.at("placement");
+            message += "\n" + Utf8(wxString::Format(Display("자동 이동 %d개 / 수동 고정 %d개 / 남은 간섭 %zu개"),
+                                       placement.value("moved", 0), placement.value("pinned", 0),
+                                       placement.at("collisions").size()));
+        }
     }
     m_summary->SetLabel(Display(message));
     UpdateAnnotationActions();
@@ -354,6 +380,7 @@ void DrawingOutputView::SetPreview(const Json& review)
 void DrawingOutputView::ClearPreview(const std::string& message)
 {
     m_annotationReview = nullptr;
+    m_placements = nullptr;
     UpdateAnnotationActions();
     m_canvas->Clear(message);
     m_page->Clear();

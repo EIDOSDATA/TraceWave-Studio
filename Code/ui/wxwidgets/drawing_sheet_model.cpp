@@ -43,6 +43,29 @@ void Colour(const Json& value)
     }
 }
 
+/** @brief 마우스/키보드 편집에 사용하기 전에 종이 치수의 선택 영역을 검증한다. */
+void DimensionPositions(const Json& layout)
+{
+    const auto validBox = [](const Json& box)
+    {
+        Require(box.is_array() && box.size() == 4, "도면 치수 배치 범위가 유효하지 않습니다.");
+        Require(Number(box.at(0)) < Number(box.at(2)) && Number(box.at(1)) < Number(box.at(3)),
+                "도면 치수 배치 범위는 양수여야 합니다.");
+    };
+    validBox(layout.at("bounds_mm"));
+    const auto& items = layout.at("items");
+    Require(items.is_array() && items.size() <= 2048, "도면 배치 치수 수가 표시 상한을 초과했습니다.");
+    for (const auto& item : items)
+    {
+        Point(item.at("point_mm"));
+        validBox(item.at("label_box"));
+        validBox(item.at("pin_bounds_mm"));
+        Require(item.at("source_id").is_string() && item.at("key").is_string() && item.at("title").is_string() &&
+                    item.at("label").is_string() && item.at("pinned").is_boolean(),
+                "도면 치수 배치의 원본 식별자 또는 표시값이 유효하지 않습니다.");
+    }
+}
+
 void Primitive(const Json& primitive)
 {
     Require(primitive.is_object(), "도면 표시 요소가 객체가 아닙니다.");
@@ -147,6 +170,10 @@ void DrawingSheet::ValidatePages(const Json& pages)
             Number(box.at(1));
             Require(Number(box.at(2)) == width && Number(box.at(3)) == height,
                     "도면 종이 크기와 표시 좌표 크기가 다릅니다.");
+        }
+        if (page.contains("dimension_placements"))
+        {
+            DimensionPositions(page.at("dimension_placements"));
         }
         const auto& primitives = page.at("primitives");
         Require(primitives.is_array(), "도면 표시 요소 목록이 없습니다.");

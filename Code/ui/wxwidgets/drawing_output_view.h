@@ -36,6 +36,9 @@ private:
     void UpdateMode();
     void EditAnnotations();
     void InspectAnnotations();
+    void EditPlacement();
+    void MoveDimension(const Json& item, const Json& point);
+    Json CurrentAnnotation() const;
     void KeepAnnotationView();
     void UpdateAnnotationActions();
     DrawingSheetCanvas* m_canvas = nullptr;
@@ -55,6 +58,7 @@ private:
     wxButton* m_annotationEdit = nullptr;
     wxButton* m_annotationSave = nullptr;
     wxButton* m_annotationInspect = nullptr;
+    wxButton* m_placementEdit = nullptr;
     wxStaticText* m_summary = nullptr;
     std::vector<Json> m_viewValues;
     bool m_refreshing = false;
@@ -62,6 +66,7 @@ private:
     Json m_annotation = nullptr;
     Json m_storedAnnotation = nullptr;
     Json m_annotationReview = nullptr;
+    Json m_placements = nullptr;
     bool m_available = false;
     bool m_hasSnapshot = false;
 };

@@ -5,6 +5,7 @@
 #include "studio_theme.h"
 #include <wx/dcbuffer.h>
 #include <wx/graphics.h>
+#include <limits>
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -129,6 +130,24 @@ DrawingSheetCanvas::DrawingSheetCanvas(wxWindow* parent) : wxPanel(parent)
     SetMinSize(FromDIP(wxSize(280, 300)));
     SetName("output.paper-preview");
     Bind(wxEVT_PAINT, &DrawingSheetCanvas::Paint, this);
+    Bind(wxEVT_LEFT_DOWN, &DrawingSheetCanvas::StartMove, this);
+    Bind(wxEVT_MOTION, &DrawingSheetCanvas::TrackMove, this);
+    Bind(wxEVT_LEFT_UP, &DrawingSheetCanvas::FinishMove, this);
+    Bind(wxEVT_MOUSE_CAPTURE_LOST,
+         [this](wxMouseCaptureLostEvent&)
+         {
+             CancelMove();
+         });
+    Bind(wxEVT_CHAR_HOOK,
+         [this](wxKeyEvent& event)
+         {
+             if (event.GetKeyCode() == WXK_ESCAPE && m_drag.is_object())
+             {
+                 CancelMove();
+                 return;
+             }
+             event.Skip();
+         });
     Bind(wxEVT_SIZE,
          [this](wxSizeEvent& event)
          {
@@ -140,6 +159,7 @@ DrawingSheetCanvas::DrawingSheetCanvas(wxWindow* parent) : wxPanel(parent)
 void DrawingSheetCanvas::SetPages(const Json& pages)
 {
     DrawingSheet::ValidatePages(pages);
+    CancelMove();
     m_pages = pages;
     m_page = std::min(m_page, pages.size() - 1);
     Refresh(false);
@@ -149,6 +169,7 @@ void DrawingSheetCanvas::SetPage(std::size_t page)
 {
     if (page < m_pages.size())
     {
+        CancelMove();
         m_page = page;
         Refresh(false);
     }
@@ -156,6 +177,7 @@ void DrawingSheetCanvas::SetPage(std::size_t page)
 
 void DrawingSheetCanvas::Clear(const std::string& message)
 {
+    CancelMove();
     m_pages = Json::array();
     m_page = 0;
     m_message = message;
@@ -172,6 +194,128 @@ const Json& DrawingSheetCanvas::Pages() const
     return m_pages;
 }
 
+void DrawingSheetCanvas::SetMovable(bool movable)
+{
+    m_movable = movable;
+    if (!movable)
+    {
+        CancelMove();
+    }
+}
+
+DrawingSheet::Placement DrawingSheetCanvas::FitSheet() const
+{
+    if (m_pages.empty())
+    {
+        return {};
+    }
+    const auto& page = m_pages.at(m_page);
+    return DrawingSheet::Fit(page.at("width_mm"), page.at("height_mm"),
+                             GetClientSize().x, GetClientSize().y, FromDIP(16));
+}
+
+wxPoint2DDouble DrawingSheetCanvas::PaperPoint(const wxPoint& pixel) const
+{
+    const auto place = FitSheet();
+    const auto& page = m_pages.at(m_page);
+    const auto box = page.value("view_box_mm", Json::array({0, 0, page.at("width_mm"), page.at("height_mm")}));
+    return {(pixel.x - place.x) / place.scale + box.at(0).get<double>(),
+            (place.y + place.height - pixel.y) / place.scale + box.at(1).get<double>()};
+}
+
+void DrawingSheetCanvas::StartMove(wxMouseEvent& event)
+{
+    if (!m_movable || m_pages.empty() || m_drag.is_object() || FitSheet().scale <= 0)
+    {
+        event.Skip();
+        return;
+    }
+    const auto& page = m_pages.at(m_page);
+    if (!page.contains("dimension_placements"))
+    {
+        event.Skip();
+        return;
+    }
+    const auto click = PaperPoint(event.GetPosition());
+    const double pad = FromDIP(5) / FitSheet().scale;
+    double best = std::numeric_limits<double>::infinity();
+    for (const auto& item : page.at("dimension_placements").at("items"))
+    {
+        const auto& rect = item.at("label_box");
+        if (click.m_x < rect.at(0).get<double>() - pad || click.m_x > rect.at(2).get<double>() + pad ||
+            click.m_y < rect.at(1).get<double>() - pad || click.m_y > rect.at(3).get<double>() + pad)
+        {
+            continue;
+        }
+        const auto& point = item.at("point_mm");
+        const double distance = std::hypot(click.m_x - point.at(0).get<double>(), click.m_y - point.at(1).get<double>());
+        if (distance < best)
+        {
+            best = distance;
+            m_drag = item;
+        }
+    }
+    if (!m_drag.is_object())
+    {
+        event.Skip();
+        return;
+    }
+    m_pressPixel = event.GetPosition();
+    m_press = click;
+    m_dragPoint = {m_drag.at("point_mm").at(0), m_drag.at("point_mm").at(1)};
+    SetFocus();
+    CaptureMouse();
+    Refresh(false);
+}
+
+void DrawingSheetCanvas::TrackMove(wxMouseEvent& event)
+{
+    if (!m_drag.is_object() || FitSheet().scale <= 0)
+    {
+        event.Skip();
+        return;
+    }
+    const auto point = PaperPoint(event.GetPosition());
+    const auto& origin = m_drag.at("point_mm");
+    const auto& limit = m_drag.at("pin_bounds_mm");
+    m_dragPoint.m_x = std::clamp(origin.at(0).get<double>() + point.m_x - m_press.m_x,
+                                limit.at(0).get<double>(), limit.at(2).get<double>());
+    m_dragPoint.m_y = std::clamp(origin.at(1).get<double>() + point.m_y - m_press.m_y,
+                                limit.at(1).get<double>(), limit.at(3).get<double>());
+    Refresh(false);
+}
+
+void DrawingSheetCanvas::FinishMove(wxMouseEvent& event)
+{
+    if (!m_drag.is_object())
+    {
+        event.Skip();
+        return;
+    }
+    TrackMove(event);
+    const auto item = m_drag;
+    const auto position = m_dragPoint;
+    const auto shift = event.GetPosition() - m_pressPixel;
+    CancelMove();
+    if (onMoveDimension && std::hypot(shift.x, shift.y) >= FromDIP(3))
+    {
+        onMoveDimension(item, position);
+    }
+}
+
+void DrawingSheetCanvas::CancelMove()
+{
+    if (m_drag.is_object())
+    {
+        m_drag = nullptr;
+        if (HasCapture())
+        {
+            ReleaseMouse();
+        }
+        Refresh(false);
+    }
+}
+
 void DrawingSheetCanvas::Paint(wxPaintEvent&)
 {
     wxAutoBufferedPaintDC dc(this);
@@ -185,8 +329,7 @@ void DrawingSheetCanvas::Paint(wxPaintEvent&)
         return;
     }
     const auto& page = m_pages.at(m_page);
-    const auto place =
-        DrawingSheet::Fit(page.at("width_mm"), page.at("height_mm"), GetClientSize().x, GetClientSize().y, FromDIP(16));
+    const auto place = FitSheet();
     if (place.scale <= 0)
     {
         return;
@@ -241,5 +384,18 @@ void DrawingSheetCanvas::Paint(wxPaintEvent&)
             Shape(*graphics, primitive);
         }
         graphics->PopState();
+    }
+    if (m_drag.is_object())
+    {
+        const auto& original = m_drag.at("point_mm");
+        const auto& box = m_drag.at("label_box");
+        const double x = box.at(0).get<double>() + m_dragPoint.m_x - original.at(0).get<double>();
+        const double y = box.at(3).get<double>() + m_dragPoint.m_y - original.at(1).get<double>();
+        const double width = box.at(2).get<double>() - box.at(0).get<double>();
+        const double height = box.at(3).get<double>() - box.at(1).get<double>();
+        graphics->SetBrush(*wxTRANSPARENT_BRUSH);
+        graphics->SetPen(wxPen(palette.accent, FromDIP(2)));
+        graphics->DrawRectangle(place.x + (x - originX) * place.scale, place.y + place.height - (y - originY) * place.scale,
+                                width * place.scale, height * place.scale);
     }
 }

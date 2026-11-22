@@ -10,7 +10,7 @@ import re
 
 from rfad.domain.errors import ProjectError
 from rfad.domain.curve_boolean import difference
-from rfad.domain import drawing_annotations
+from rfad.domain import drawing_annotations, drawing_dimension_placement
 
 
 PROFILE = "rfad.exchange.drawing/0.1"
@@ -575,6 +575,104 @@ def _reference_layout(primitives, rows, holes, report, transform, bounds):
     return rows_text
 
 
+def _aligned_reference_layout(primitives, rows, holes, report, transform, bounds, rect, pins):
+    """! @brief 모델 앵커는 고정한 채 배치한 모든 치수선을 동일한 출력 벡터로 옮긴다."""
+    x, y, scale, mirror = transform
+    x0, y0, x1, y1 = bounds
+    plot = [rect[0], rect[1], rect[0] + rect[2], rect[1] + rect[3]]
+
+    def paper(p):
+        """! @brief 도면에 사용한 좌우 반전과 축척을 기준점에도 적용한다."""
+        return [x + mirror * scale * p[0], y + scale * p[1]]
+
+    def in_view(p):
+        """! @brief 선택 뷰 밖의 모델 좌표에는 치수선을 만들지 않는다."""
+        return x0 <= p[0] <= x1 and y0 <= p[1] <= y1
+
+    def cross(p, radius, **metadata):
+        """! @brief 기준과 홀 중심 표식을 지정 위치에서만 그린다."""
+        px, py = p
+        primitives.append(_rule([px - radius, py], [px + radius, py], BLUE, **metadata))
+        primitives.append(_rule([px, py - radius], [px, py + radius], BLUE, **metadata))
+
+    notes = [drawing_annotations.STYLES[report["style"]] + " / 모델 mm"]
+    datum = report["datum_mm"]
+    fixed_labels = []
+    if datum is not None:
+        notes.append("기준점 X " + format(datum[0], ".9g") + ", Y " + format(datum[1], ".9g"))
+        if in_view(datum):
+            origin = paper(datum)
+            cross(origin, 2.1)
+            location = [origin[0] - 2.5, origin[1] - 3.2]
+            primitives.append(_text(*location, "0", 2.1, "center"))
+            fixed_labels.append(drawing_dimension_placement.fixed_label(location, "0"))
+
+    groups, marked = [], set()
+    counts = {"linear": 0, "radial": 0}
+    for row in rows:
+        source, key = row["placement_source_id"], row["dimension_key"]
+        kind, title = row["kind"], row["title"]
+        raw_anchors = row["anchors_mm"]
+        anchors = list(map(paper, raw_anchors))
+        value = row["value"]
+        if kind == "hole":
+            label = title.split(" / ")[0]
+            notes.append(title + "  X " + format(value[0], ".9g") + ", Y " + format(value[1], ".9g") + " mm")
+            center = anchors[-1]
+            cross(center, 1.25, source_id=source)
+            marked.add(source)
+            projected = report["style"] != "ordinate" and in_view(raw_anchors[0])
+            preferred = [center[0] + 5, center[1] + 8]
+        else:
+            label = format(value, ".9g") + " " + row["unit"]
+            if kind in counts and all(map(in_view, raw_anchors)):
+                counts[kind] += 1
+                mark = ("R" if kind == "radial" else "D") + str(counts[kind])
+                title = mark + " " + title
+                label = mark + " " + label
+            notes.append(title + " = " + format(value, ".9g") + " " + row["unit"])
+            if kind == "value" or len(anchors) != 2 or not all(map(in_view, raw_anchors)):
+                continue
+            projected = True
+            a, b = anchors
+            center = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]
+            if kind == "board_x":
+                preferred = [center[0], paper([x0, y1])[1] + 9]
+            elif kind == "board_y":
+                preferred = [min(paper([x0, y0])[0], paper([x1, y0])[0]) - 14, center[1]]
+            elif kind == "radial":
+                preferred = [b[0] + 9, b[1] + 8]
+            else:
+                preferred = [center[0], center[1] + 7]
+        groups.append({"source_id": source, "key": key, "title": title, "label": label,
+                       "kind": kind, "anchors": anchors, "projected": projected, "preferred": preferred})
+
+    for row in holes:
+        if row["id"] not in marked and row["center"] is not None:
+            where = paper(row["center"])
+            cross(where, 1.25, source_id=row["id"])
+            label = [where[0] + 3, where[1] + 1.6]
+            primitives.append(_text(*label, row["mark"], 2.25, "center", source_id=row["id"]))
+            fixed_labels.append(drawing_dimension_placement.fixed_label(label, row["mark"]))
+
+    arranged, summary = drawing_dimension_placement.arrange(groups, plot, pins, fixed_labels)
+    report["placement"] = summary
+    items = []
+    for item in arranged:
+        meta = {"source_id": item["source_id"], "dimension_key": item["key"]}
+        for part, a, b in item["segments"]:
+            primitives.append(_rule(a, b, BLUE, width=0.15 if part == "extension" else 0.22,
+                                    placement_part=part, **meta))
+        primitives.append(_text(*item["point_mm"], item["label"], drawing_dimension_placement.TEXT_HEIGHT, "center",
+                                placement_part="label", **meta))
+        point, box = item["point_mm"], item["label_box"]
+        pin_bounds = [plot[0] + point[0] - box[0] + 0.01, plot[1] + point[1] - box[1] + 0.01,
+                      plot[2] + point[0] - box[2] - 0.01, plot[3] + point[1] - box[3] - 0.01]
+        items.append({**{key: item[key] for key in ("source_id", "key", "title", "label", "point_mm", "label_box", "pinned")},
+                      "pin_bounds_mm": pin_bounds})
+    return notes, {"bounds_mm": plot, "items": items}
+
+
 def _hole_table_pages(holes, datum, width, height):
     """! @brief 개별 홀, 기준 좌표와 미정 공구를 제조 원본에서 그대로 표로 나눈다."""
     def text(value):
@@ -695,7 +793,13 @@ def layout(data):
         primitives.extend([_rule([ax, ay], [ax + 9 * mirror, ay], BLUE), _rule([ax, ay], [ax, ay + 7], BLUE),
                            _text(ax + 10 * mirror, ay - 1, "+X", 2.5), _text(ax - 2, ay + 8, "+Z" if option["kind"] == "stackup" else "+Y", 2.5)])
         note_rows = []
-        if active:
+        if active and "placement" in annotation:
+            view_id = option.get("layer_id", option["kind"])
+            pins = [row for row in annotation["placement"]["pins"] if row["view_id"] == view_id]
+            note_rows, placements = _aligned_reference_layout(primitives, dimensions, holes if annotation["hole_table"] else [],
+                                                               report, (x, y, scale, mirror), bounds, rect, pins)
+            page["dimension_placements"] = placements
+        elif active:
             note_rows = _reference_layout(primitives, dimensions, holes if annotation["hole_table"] else [],
                                           report, (x, y, scale, mirror), bounds)
         elif option["kind"] == "stackup" and options["dimensions"]:

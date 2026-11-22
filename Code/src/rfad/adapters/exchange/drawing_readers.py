@@ -246,9 +246,31 @@ def read_dxf(path, page):
         else:
             require(len(entities) == 1 and entities[0][1].dxftype() == "TEXT", "DXF 주석이 TEXT가 아닙니다.")
             entity = entities[0][1]
-            location = entity.dxf.insert if expected["align"] == "left" else entity.dxf.align_point
+            align = {"left": 0, "center": 1, "right": 2}[expected["align"]]
+            require(entity.dxf.halign == align and entity.dxf.valign == 0 and entity.dxf.rotation == 0,
+                    "DXF 치수 문자의 정렬 또는 방향이 다릅니다.")
+            location = entity.dxf.insert if align == 0 else entity.dxf.align_point
             require(entity.dxf.text == expected["text"] and close(list(location)[:2], expected["position"]) and close(entity.dxf.height, expected["height_mm"]), "DXF 한글 원문/위치/높이가 다릅니다.")
     return {"reader": "ezdxf 별도 readfile + 독립 bulge 산술", "objects": len(grouped), "coordinate_tolerance_mm": EPSILON, "same_library": True}
+
+
+def _pdf_text_advance(operations, fonts):
+    """! @brief 실제 PDF의 부분 글꼴 Widths와 표시한 코드로 문자열 폭을 계산한다."""
+    width, font, size = 0.0, None, 0.0
+    for values, operator in operations:
+        if operator == b"Tf":
+            font = fonts[values[0]].get_object()
+            size = float(values[1])
+        elif operator == b"Tj":
+            require(font is not None and "/Widths" in font, "PDF 정렬 주석의 명시 글꼴 폭이 없습니다.")
+            first = int(font["/FirstChar"])
+            widths = font["/Widths"]
+            codes = values[0].original_bytes
+            require(all(0 <= code - first < len(widths) for code in codes), "PDF 글꼴 폭이 원문 문자를 포함하지 않습니다.")
+            width += sum(float(widths[code - first]) for code in codes) * size / 1000
+        else:
+            require(operator not in (b"TJ", b"Tc", b"Tw", b"Tz", b"Ts"), "PDF 주석에 검토 범위 밖 문자 간격이나 변환이 있습니다.")
+    return width
 
 
 def read_pdf(path, pages):
@@ -306,8 +328,9 @@ def read_pdf(path, pages):
                 sizes = [float(values[1]) for values, op in operations if op == b"Tf"]
                 require(matrices and close(matrices[-1][:4], [1, 0, 0, 1]) and close(matrices[-1][5], expected["position"][1], PDF_EPSILON_MM)
                         and sizes and close(sizes[-1], expected["height_mm"], PDF_EPSILON_MM), "PDF 주석 위치/높이가 다릅니다.")
-                if expected["align"] == "left":
-                    require(close(matrices[-1][4], expected["position"][0], PDF_EPSILON_MM), "PDF 왼쪽 정렬 위치가 다릅니다.")
+                factor = {"left": 0, "center": 0.5, "right": 1}[expected["align"]]
+                measured_x = matrices[-1][4] + (factor * _pdf_text_advance(operations, fonts) if factor else 0)
+                require(close(measured_x, expected["position"][0], PDF_EPSILON_MM), "PDF 치수 문자 정렬의 X 위치가 다릅니다.")
                 continue
             paths = [(values, op) for values, op in operations if op in (b"m", b"l", b"c", b"h")]
             # 사각 clip은 re 연산이므로 실제 객체 경로와 혼합되지 않는다.
