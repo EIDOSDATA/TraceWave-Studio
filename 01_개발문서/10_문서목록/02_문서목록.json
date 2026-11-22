@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 242,
+    "current_07_검증": 243,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -32041,6 +32041,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/366_관통절삭_유전체_간극_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1564,
+      "working_tree_sha256": "5dde8cec316b1ce16385decbdfd2e662ff6a833e0d9a361f209404c7557b63d6",
+      "text_lines": 17,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/36_스튜디오_보존묶음발행_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -32734,8 +32743,8 @@
       "path": "01_개발문서/09_개발계획/13_전자기해석과_후처리_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 33094,
-      "working_tree_sha256": "53720c524e51514fcd6c2f68695fd2f5ffebc226c58b5c4fd9424ac916a72d6b",
+      "bytes": 33281,
+      "working_tree_sha256": "d81d6d2889538ef51e9c69ef019be7f14268c3c71fab2826e1861be6e0c9bfc6",
       "text_lines": 96,
       "text_status": "utf8_read"
     },
@@ -32752,8 +32761,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 34282,
-      "working_tree_sha256": "8dd2201b204ccfabd24b6ad498cae9962b27a13b88e43b83ca50a13be2119435",
+      "bytes": 34515,
+      "working_tree_sha256": "eb8763cbd251288e984d8ef1c8510caf4dd0e04f07b4cdede5619fe78d483b1a",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

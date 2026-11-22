@@ -1,6 +1,7 @@
 """! @brief 해석 조건 비교와 실제 격자 진단의 후속 동작을 검증한다."""
 
 from copy import deepcopy
+import math
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
@@ -98,8 +99,8 @@ class SolverReviewFollowup(unittest.TestCase):
         self.assertEqual(gap["distance_mm"], 1)
         self.assertEqual(gap["points_mm"][0], gap["points_mm"][1])
 
-    def test_unpierced_dielectric_cylinder_and_overwritten_material_are_distinct(self):
-        """! @brief 원통 경계를 쓰고 보어나 음의 개구가 겹친 솔리드는 간극에서 제외한다."""
+    def test_dielectric_cylinder_keeps_outer_and_inner_boundary_gaps(self):
+        """! @brief 비도금 관통 홀이 내부 간극을 추가하며 외곽 원통 간극도 보존한다."""
         dielectric = {"id": "core", "name": "core", "role": "dielectric", "primitives": [
             {"kind": "circle", "center_mm": [0, 0], "radius_mm": 2, "z_mm": [0, 1]}]}
         surface = {"id": "coat", "name": "coat", "role": "surface", "primitives": [
@@ -110,7 +111,69 @@ class SolverReviewFollowup(unittest.TestCase):
         self.assertEqual(gap["points_mm"], [(2.0, 0.0), (2.4, 0.0)])
         drilled = {"id": "hole", "name": "hole", "role": "void", "primitives": [
             {"kind": "circle", "center_mm": [0, 0], "radius_mm": .5, "z_mm": [0, 1]}]}
-        self.assertEqual(pcb_clearance_review.planar_clearances([dielectric, surface, drilled], lines, 1)["clearances"], [])
+        inside = {"id": "part", "name": "part", "role": "environment", "primitives": [
+            {"kind": "box", "bounds_mm": [[.1, .2], [-.2, .2], [.25, .75]]}]}
+        report = pcb_clearance_review.planar_clearances([dielectric, surface, drilled, inside], lines, 1)
+        self.assertEqual(report["volume_omitted_count"], 0)
+        clearances = {frozenset(row["object_ids"]): row for row in report["clearances"]}
+        self.assertEqual(clearances[frozenset({"core", "coat"})], gap)
+        inner = clearances[frozenset({"core", "part"})]
+        self.assertAlmostEqual(inner["distance_mm"], .5 - math.hypot(.2, .2))
+        self.assertAlmostEqual(math.hypot(*inner["points_mm"][0]), .5)
+        self.assertEqual(abs(inner["points_mm"][1][0]), .2)
+        self.assertEqual(abs(inner["points_mm"][1][1]), .2)
+        self.assertTrue(inner["cells_xy"])
+        partial = {"kind": "circle", "center_mm": [0, 0], "radius_mm": .5, "z_mm": [0, .5]}
+        report = pcb_clearance_review.planar_clearances([dielectric, {**drilled, "primitives": [partial]}], lines, 1)
+        self.assertEqual(report["volume_omitted_count"], 1)
+
+    def test_rectangular_and_slotted_cutouts_use_only_real_walls(self):
+        """! @brief 다각형의 직선 면과 슬롯의 캡 및 직선 벽에 대한 독립 최솟값을 확인한다."""
+        core = {"id": "core", "name": "core", "role": "dielectric", "primitives": [
+            {"kind": "box", "bounds_mm": [[-4, 4], [-4, 4], [0, 1]]}]}
+        slot = [{"kind": "polygon", "points_mm": [[0, .5], [0, -.5], [2, -.5], [2, .5]], "z_mm": [0, 1]},
+                {"kind": "circle", "center_mm": [0, 0], "radius_mm": .5, "z_mm": [0, 1]},
+                {"kind": "circle", "center_mm": [2, 0], "radius_mm": .5, "z_mm": [0, 1]}]
+        polygon = [{"kind": "polygon", "points_mm": [[-2, -1], [-1, -1], [-1, 0], [-2, 0]], "z_mm": [0, 1]}]
+        lines = {axis: [count / 10 for count in range(-41, 42)] for axis in "xyz"}
+        for primitives, bounds, expected in (
+                (slot, [[.9, 1.1], [-.1, .2], [.25, .75]], .3),
+                (slot, [[-.35, -.3], [-.1, .1], [.25, .75]], .5 - math.hypot(.35, .1)),
+                (polygon, [[-1.8, -1.5], [-.6, -.4], [.25, .75]], .2)):
+            with self.subTest(primitives=len(primitives), bounds=bounds):
+                void = {"id": "void", "name": "void", "role": "void", "primitives": primitives}
+                part = {"id": "part", "name": "part", "role": "environment", "primitives": [
+                    {"kind": "box", "bounds_mm": bounds}]}
+                report = pcb_clearance_review.planar_clearances([core, void, part], lines, .5)
+                self.assertEqual(report["volume_omitted_count"], 0)
+                row, = report["clearances"]
+                self.assertAlmostEqual(row["distance_mm"], expected, places=11)
+                self.assertTrue(row["cells_xy"])
+
+    def test_real_arc_and_ifa_plans_keep_mechanical_cutouts_in_clearance_review(self):
+        """! @brief 실제 검토 환경에서 원호와 IFA의 관통 절삭 후 유전체 경계를 사용한다."""
+        from rfad.domain.pcb_features import empty_pcb
+        from test_pcb_features import hole_record
+
+        for fixture, settings, center in ((fixture_document(arc=True), SETTINGS, (3, 2)),
+                                          (ifa_document(), IFA_SETTINGS, (32, 12))):
+            with self.subTest(fixture=fixture["metadata"]["name"]), TemporaryDirectory() as directory:
+                fixture["pcb"] = empty_pcb()
+                hole = hole_record(fixture, x=center[0], y=center[1], diameter=1.5)
+                hole["name"] = "비도금 관통 홀"
+                fixture["pcb"]["holes"].append(hole)
+                with ProjectService(Path(directory), auto_run=False) as service:
+                    service.solver.runtime = SimpleNamespace(identity=runtime_identity())
+                    document, _ = register_fixture(service, fixture)
+                    before = service.journal.read()
+                    preview = solver_preview.read(service, {"contract_version": "rfad.api/2.0",
+                        "context": {"project_id": document["project_id"]},
+                        "input": {"expected_revision": document["revision_id"], "settings": settings}})
+                    primitive, = next(row for row in preview["model"]["included"] if row["id"] == hole["id"])["primitives"]
+                    self.assertEqual(primitive["center_mm"], list(center))
+                    self.assertEqual(primitive["radius_mm"], .75)
+                    self.assertEqual(preview["mesh"]["planar_clearances"]["volume_omitted_count"], 0)
+                    self.assertEqual(service.journal.read(), before)
 
     def test_boundary_faces_follow_native_order_and_do_not_mark_absent_pml(self):
         """! @brief 기존 격자와 혼합 외벽을 원호·IFA의 실제 계획 조회에서 비교한다."""

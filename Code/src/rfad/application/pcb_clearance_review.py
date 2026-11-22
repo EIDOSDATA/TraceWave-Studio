@@ -1,11 +1,11 @@
 """! @brief 실제 해석 형상 사이의 간극과 통과 격자 셀을 찾는다."""
 
 from bisect import bisect_left, bisect_right
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from itertools import combinations
 import math
 
-from rfad.domain.boundary_distance import Arc, Segment, boundary_distance
+from rfad.domain.boundary_distance import Arc, Segment, boundary_distance, point_distance
 from rfad.domain.planar import point_in_loop
 
 
@@ -32,13 +32,22 @@ class _Piece:
     witnesses: tuple
     loop: tuple = ()
     rings: tuple = ()
+    capsule: tuple = ()
+    openings: tuple = ()
 
-    def contains(self, point):
-        """! @brief 배럴의 보어를 제외하고 평면 투영이 점을 포함하는지 확인한다."""
+    def contains(self, point, *, include_boundary=True):
+        """! @brief 절삭의 내부를 뺀 실제 닫힌 평면 단면에서 포함 여부를 구한다."""
         if self.rings:
             center, inner, outer = self.rings
-            return inner <= math.dist(point, center) <= outer
-        return point_in_loop(point, self.loop)
+            distance = math.dist(point, center)
+            inside = inner <= distance <= outer if include_boundary else distance < outer and (not inner or distance > inner)
+        elif self.capsule:
+            centerline, radius = self.capsule
+            distance = point_distance(point, centerline)[0]
+            inside = distance <= radius if include_boundary else distance < radius
+        else:
+            inside = point_in_loop(point, self.loop, include_boundary=include_boundary)
+        return inside and not any(opening.contains(point, include_boundary=False) for opening in self.openings)
 
 
 def _polygon(points, z_range):
@@ -75,8 +84,27 @@ def _solid_piece(primitive):
     return _polygon(primitive["points_mm"], primitive["z_mm"])
 
 
-def _pieces(row, cut_heights):
-    """! @brief 원래 프리미티브와 절삭된 체적을 구분하여 유효한 경계만 간극 계산에 사용한다."""
+def _mechanical_opening(primitives):
+    """! @brief 검증한 관통 절삭의 원형, 다각형 또는 슬롯의 바깥 경계만 구성한다."""
+    if len(primitives) == 1:
+        return _solid_piece(primitives[0])
+    # @brief 모델 검토의 슬롯은 직사각형 가운데와 동일 반경의 두 끝 원통이다.
+    middle, first, last = primitives
+    a, b = tuple(first["center_mm"]), tuple(last["center_mm"])
+    radius, height = first["radius_mm"], first["z_mm"]
+    angle = math.atan2(b[1] - a[1], b[0] - a[0])
+    start = Arc(a, radius, angle + math.pi / 2, math.pi)
+    stop = Arc(b, radius, angle - math.pi / 2, math.pi)
+    one, two, three, four = map(tuple, middle["points_mm"])
+    arcs = [(edge, tuple((v - radius, v + radius) for v in edge.center)) for edge in (start, stop)]
+    sides = [(Segment(s, e), _bounds((s, e))) for s, e in ((one, four), (two, three))]
+    bounds = tuple((min(x, y) - radius, max(x, y) + radius) for x, y in zip(a, b))
+    return _Piece((*bounds, tuple(height)), (*arcs, *sides), (one, two, three, four),
+                  capsule=(Segment(a, b), radius))
+
+
+def _pieces(row, mechanical, bore_heights):
+    """! @brief 닫힌 관통 절삭은 체적 경계에 포함하고 부분 절삭 및 겹친 보어는 제외한다."""
     primitives = row["primitives"]
     role = row["role"]
     if role == "via" and primitives:
@@ -85,10 +113,25 @@ def _pieces(row, cut_heights):
     if role in {"surface", "dielectric"}:
         if any(primitive.get("opening") for primitive in primitives):
             return []
-        if any(max(_height(primitive)[0], lo) < min(_height(primitive)[1], hi)
-               for primitive in primitives for lo, hi in cut_heights):
-            return []
-    if role in {"conductor", "environment", "surface", "dielectric"}:
+        pieces = [_solid_piece(primitive) for primitive in primitives]
+        actual = []
+        for piece in pieces:
+            low, high = piece.bounds[2]
+            if any(max(low, a) < min(high, b) for a, b in bore_heights):
+                return []
+            openings = [cut for cut in mechanical
+                        if max(low, cut.bounds[2][0]) < min(high, cut.bounds[2][1])
+                        and _box_gap(piece.bounds[:2], cut.bounds[:2]) == 0]
+            if openings:
+                # @brief 이 절삭은 계획의 기판 유전체를 관통하며, 부분 높이나 다른 재료를 재구성하지 않는다.
+                if role != "dielectric" or any(cut.bounds[2][0] > low or cut.bounds[2][1] < high for cut in openings):
+                    return []
+                piece = replace(piece, openings=tuple(openings),
+                                edges=piece.edges + tuple(edge for cut in openings for edge in cut.edges),
+                                witnesses=piece.witnesses + tuple(point for cut in openings for point in cut.witnesses))
+            actual.append(piece)
+        return actual
+    if role in {"conductor", "environment"}:
         return [_solid_piece(primitive) for primitive in primitives]
     return []
 
@@ -180,10 +223,11 @@ def planar_clearances(included, lines, grid_mm):
     radius = 2 * grid_mm
     objects = []
     omitted = 0
-    cut_heights = [_height(primitive) for row in included for primitive in row["primitives"]
-                   if row["role"] == "void" or (row["role"] == "via" and primitive.get("opening"))]
+    mechanical = [_mechanical_opening(row["primitives"]) for row in included if row["role"] == "void"]
+    bore_heights = [_height(primitive) for row in included if row["role"] == "via"
+                    for primitive in row["primitives"] if primitive.get("opening")]
     for row in included:
-        pieces = _pieces(row, cut_heights)
+        pieces = _pieces(row, mechanical, bore_heights)
         if pieces:
             box = tuple((min(axis[0] for axis in bounds), max(axis[1] for axis in bounds))
                         for bounds in zip(*(piece.bounds for piece in pieces)))
