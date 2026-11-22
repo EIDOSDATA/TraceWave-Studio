@@ -5,6 +5,7 @@ import math
 from pathlib import PurePosixPath
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
+from rfad.application.pcb_results import frequency_axis_matches
 from rfad.application.solver_requests import PCB_PROFILE, REFERENCE_PROFILE, require_fields
 from rfad.application.solver import PROFILE as WAVEGUIDE_PROFILE
 from rfad.domain.errors import ProjectError
@@ -221,12 +222,7 @@ def check_solver_result(journal, job, result, files):
         raise ProjectError("E_HASH", "결과 런타임 출처가 현재 실행과 다릅니다.")
     samples = result.get("samples", [])
     expected = captured["analysis_plan"]["case"]["frequency_hz"]
-    if (type(samples) is not list or len(samples) != expected["count"] or any(
-            type(row) is not dict or type(row.get("frequency_hz")) not in (int, float)
-            or not math.isfinite(row["frequency_hz"])
-            or abs(row["frequency_hz"] - (expected["start"] + index * (expected["stop"] - expected["start"]) / (expected["count"] - 1)
-                                         if expected["count"] > 1 else expected["start"])) > 1e-5
-            for index, row in enumerate(samples))):
+    if not frequency_axis_matches(expected, samples):
         raise ProjectError("E_HASH", "결과 주파수 축이 계획과 다릅니다.")
     if pcb or reference:
         validate_result(captured["analysis_plan"], result, captured["prepared_plan"])

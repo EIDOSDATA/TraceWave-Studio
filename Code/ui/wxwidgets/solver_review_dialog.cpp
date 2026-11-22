@@ -111,6 +111,7 @@ std::string FieldFor(const std::string& path)
     static const std::map<std::string, std::string> aliases{
         {"settings.frequency_hz", "stop_hz"}, {"settings.frequency_hz.start", "start_hz"},
         {"settings.frequency_hz.stop", "stop_hz"}, {"settings.frequency_hz.count", "count"},
+        {"settings.frequency_hz.points", "sample_points_hz"},
         {"settings.mesh_policy", "mesh_policy"}, {"settings.mesh_policy.air_cell_mm", "air_cell_mm"},
         {"settings.mesh_policy.growth_ratio", "growth_ratio"}, {"settings.radiation", "frequency_hz"},
         {"settings.radiation.frequency_hz", "frequency_hz"}, {"mesh", "grid_mm"}, {"settings", "grid_mm"}};
@@ -128,7 +129,7 @@ void CompareValues(wxListCtrl& table, const Json& current, const Json& source, c
 {
     static const std::map<std::string, std::string> labels{
         {"frequency_hz.start", "시작 주파수 (Hz)"}, {"frequency_hz.stop", "끝 주파수 (Hz)"},
-        {"frequency_hz.count", "주파수 표본 수"}, {"grid_mm", "모델 최대 격자 간격 (mm)"},
+        {"frequency_hz.count", "주파수 표본 수"}, {"frequency_hz.points", "직접 주파수 표본"}, {"grid_mm", "모델 최대 격자 간격 (mm)"},
         {"air_padding_mm", "외부 공기 여유 (mm)"}, {"curve_tolerance_mm", "곡선 근사 허용오차 (mm)"},
         {"feature_subdivisions", "임계 구간 최소 분할"}, {"mesh_policy.kind", "외부 공기 격자 방식"},
         {"mesh_policy.air_cell_mm", "바깥 공기 격자 간격 (mm)"}, {"mesh_policy.growth_ratio", "공기 격자 성장률"},
@@ -373,6 +374,8 @@ private:
         Field(*frequency, "start_hz", "시작 주파수 (Hz)");
         Field(*frequency, "stop_hz", "끝 주파수 (Hz)");
         Field(*frequency, "count", "주파수 표본 수 (3~201)");
+        Field(*frequency, "sample_points_hz", "직접 주파수 표본 (Hz, 쉼표, 선택)");
+        m_fields.at("sample_points_hz")->SetHint(Display("비우면 시작/끝/표본 수 사용"));
         Field(*frequency, "max_timesteps", "최대 시간 단계");
         Field(*frequency, "end_criterion", "종료 에너지 비율");
         m_nf = new wxCheckBox(frequency->GetStaticBox(), wxID_ANY, Display("NF2FF 기록"));
@@ -656,7 +659,14 @@ private:
         input->SetToolTip(Display(label));
         m_fields.emplace(key, input);
         group.Add(input, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
-        input->Bind(wxEVT_TEXT, [this](wxCommandEvent&) { Invalidate(); });
+        input->Bind(wxEVT_TEXT, [this, field = std::string(key)](wxCommandEvent&)
+        {
+            if (field == "sample_points_hz")
+            {
+                UpdateFrequencyControls();
+            }
+            Invalidate();
+        });
     }
 
     void BuildMeshPage()
@@ -911,8 +921,19 @@ private:
         Layout();
     }
 
+    /** @brief 직접 주파수 목록을 입력하는 동안 범위 및 균등 표본 수 입력을 잠근다. */
+    void UpdateFrequencyControls()
+    {
+        const bool uniform = m_fields.at("sample_points_hz")->GetValue().Strip(wxString::both).empty();
+        for (const auto* field : {"start_hz", "stop_hz", "count"})
+        {
+            m_fields.at(field)->Enable(uniform);
+        }
+    }
+
     void SetOptionalControls()
     {
+        UpdateFrequencyControls();
         for (const auto* field : {"air_cell_mm", "growth_ratio"})
         {
             m_fields.at(field)->Enable(m_graded->GetValue());
@@ -927,6 +948,12 @@ private:
     void LoadFields(const Json& settings)
     {
         const auto band = settings.value("frequency_hz", Json{{"start", 2.4e9}, {"stop", 2.4835e9}, {"count", 101}});
+        wxArrayString pointLabels;
+        for (const auto& point : band.value("points", Json::array()))
+        {
+            pointLabels.Add(wxString::Format("%.17g", point.get<double>()));
+        }
+        m_fields.at("sample_points_hz")->ChangeValue(wxJoin(pointLabels, ','));
         const auto mesh = settings.value("mesh_policy", Json::object());
         const auto radiation = settings.value("radiation", Json::object());
         const Json values{{"start_hz", band.at("start")}, {"stop_hz", band.at("stop")}, {"count", band.at("count")},
@@ -1031,7 +1058,7 @@ private:
         Json values = Json::object();
         for (const auto& [key, input] : m_fields)
         {
-            if (!input->IsThisEnabled() || key == "frequency_hz")
+            if (!input->IsThisEnabled() || key == "frequency_hz" || key == "sample_points_hz")
             {
                 continue;
             }
@@ -1045,9 +1072,34 @@ private:
             }
             values[key] = whole ? Json(static_cast<int>(number)) : Json(number);
         }
+        Json band;
+        const auto direct = m_fields.at("sample_points_hz")->GetValue().Strip(wxString::both);
+        if (direct.empty())
+        {
+            band = {{"start", values.at("start_hz")}, {"stop", values.at("stop_hz")}, {"count", values.at("count")}};
+        }
+        else
+        {
+            Json points = Json::array();
+            wxStringTokenizer tokens(direct, ",", wxTOKEN_RET_EMPTY_ALL);
+            while (tokens.HasMoreTokens())
+            {
+                double number = 0;
+                if (!tokens.GetNextToken().Strip(wxString::both).ToDouble(&number) || !std::isfinite(number) ||
+                    (!points.empty() && number <= points.back().get<double>()) || points.size() >= 201)
+                {
+                    return fail("sample_points_hz", "서로 다른 유한 주파수를 오름차순으로 최대 201개 입력하세요.");
+                }
+                points.push_back(number);
+            }
+            if (points.size() < 3)
+            {
+                return fail("sample_points_hz", "직접 주파수는 3개 이상 입력하세요.");
+            }
+            band = {{"start", points.front()}, {"stop", points.back()}, {"count", points.size()}, {"points", points}};
+        }
         settings = m_draft;
-        settings.update(Json{{"frequency_hz", {{"start", values.at("start_hz")}, {"stop", values.at("stop_hz")},
-                                                {"count", values.at("count")}}},
+        settings.update(Json{{"frequency_hz", band},
                              {"grid_mm", values.at("grid_mm")}, {"air_padding_mm", values.at("air_padding_mm")},
                              {"curve_tolerance_mm", values.at("curve_tolerance_mm")}, {"max_timesteps", values.at("max_timesteps")},
                              {"end_criterion", values.at("end_criterion")}});

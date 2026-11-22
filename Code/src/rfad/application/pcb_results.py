@@ -127,6 +127,23 @@ def validate_preparation(plan, preparation):
         fail("E_HASH", "PCB 준비된 격자/소비 보고 또는 정규화가 계획과 다릅니다.")
 
 
+def frequency_axis_matches(frequency, samples):
+    """! @brief 해석 worker와 게시 서비스가 같은 직접 표본 및 기존 균등 축을 검사한다."""
+    if type(samples) is not list or len(samples) != frequency["count"]:
+        return False
+    points = frequency.get("points")
+    if points is None:
+        start, span = frequency["start"], frequency["stop"] - frequency["start"]
+        divisor = max(1, frequency["count"] - 1)
+        points = [start + span * index / divisor for index in range(frequency["count"])]
+        tolerance = 1e-5
+    else:
+        tolerance = 0.0
+    return all(type(row) is dict and type(row.get("frequency_hz")) in (int, float)
+               and math.isfinite(row["frequency_hz"]) and abs(row["frequency_hz"] - target) <= tolerance
+               for row, target in zip(samples, points))
+
+
 def validate_result(plan, result, prepared_plan=None, *, expected_schema="rfad.openems-pcb-result/0.1"):
     """! @brief 유한 복소 결과와 계산 상태를 검사하되 물리 검증 합격을 만들지 않는다."""
     if result.get("schema") != expected_schema or result.get("analysis_plan_id") != plan["plan_id"] or result.get("normalization") != plan["normalization"]:
@@ -137,12 +154,10 @@ def validate_result(plan, result, prepared_plan=None, *, expected_schema="rfad.o
     samples = result.get("samples", [])
     if len(samples) != frequency["count"]:
         fail("E_SOLVER", "PCB 결과 주파수 표본 수가 다릅니다.")
-    for index, row in enumerate(samples):
-        target = (frequency["start"] + (frequency["stop"] - frequency["start"]) * index / (frequency["count"] - 1)
-                  if frequency["count"] > 1 else frequency["start"])
-        if (type(row) is not dict or type(row.get("frequency_hz")) not in (int, float)
-                or not frequency["start"] <= row["frequency_hz"] <= frequency["stop"] or abs(row["frequency_hz"] - target) > 1e-5):
-            fail("E_HASH", "PCB 결과 주파수 축이 계획과 다릅니다.")
+    if not frequency_axis_matches(frequency, samples) or any(
+            not frequency["start"] <= row["frequency_hz"] <= frequency["stop"] for row in samples):
+        fail("E_HASH", "PCB 결과 주파수 축이 계획과 다릅니다.")
+    for row in samples:
         for key in ("s11", "impedance_ohm"):
             pair = row.get(key)
             if type(pair) is not list or len(pair) != 2 or any(type(v) not in (int, float) or not math.isfinite(v) for v in pair):

@@ -83,6 +83,32 @@ def runtime_identity():
 
 class PcbPlanTests(unittest.TestCase):
     """! @brief 사용자 입력과 해석 제한의 경계를 순수 표준 라이브러리로 검사한다."""
+    def test_explicit_frequency_samples_preserve_port_and_power_consistency(self):
+        """! @brief 비균등 직접 표본은 원본을 유지하며 동일한 방사/전력 주파수를 확인한다."""
+        from rfad.application.pcb_results import frequency_axis_matches
+        from rfad.application.pcb_solver import validate_settings
+
+        document = fixture_document(arc=True)
+        snapshot = snapshot_for(document)
+        selected = [8e9, 8.17e9, 9.73e9, 12e9]
+        settings = {**SETTINGS, "frequency_hz": {
+            "start": selected[0], "stop": selected[-1], "count": len(selected), "points": selected}}
+        plan = build_pcb_plan(document, snapshot, runtime_identity(), settings)
+        self.assertEqual(plan["case"]["frequency_hz"], settings["frequency_hz"])
+        self.assertEqual(plan["source_semantics"], document)
+        same = settings["frequency_hz"]
+        self.assertTrue(frequency_axis_matches(same, [{"frequency_hz": value} for value in selected]))
+        self.assertFalse(frequency_axis_matches(same, [{"frequency_hz": value} for value in [8e9, 9e9, 10e9, 12e9]]))
+        for invalid in ([8e9, 8.17e9, 8.17e9, 12e9], [8e9, 9.73e9, 8.17e9, 12e9],
+                        [8e9, float("nan"), 9.73e9, 12e9], [8e9, 8.17e9, 9.73e9, 11e9]):
+            with self.assertRaisesRegex(ProjectError, "직접 표본"):
+                validate_settings({**settings, "frequency_hz": {**same, "points": invalid}})
+        with_power = {**settings, "power_balance": {"max_relative_residual": .02},
+                      "radiation": {"frequency_hz": [selected[1]], "theta_step_deg": 15, "phi_step_deg": 15}}
+        validate_settings(with_power)
+        with self.assertRaisesRegex(ProjectError, "직접 포트 주파수"):
+            validate_settings({**with_power, "radiation": {**with_power["radiation"], "frequency_hz": [9e9]}})
+
 
     def test_circle_and_rectangle_preserve_source(self):
         """! @brief 두 기판 외곽은 원본 불변성과 실제 형상 의미를 유지한다."""

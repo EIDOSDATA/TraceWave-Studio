@@ -60,7 +60,10 @@ def validate_study(study):
     validate_settings(base)
     require("radiation" in base and "box_clearance_mm" in base["radiation"], "독립 연구에는 명시적 기록 상자 거리가 필요합니다.")
     band = base["frequency_hz"]
-    port_frequencies = [band["start"] + (band["stop"] - band["start"]) * i / (band["count"] - 1) for i in range(band["count"])]
+    port_frequencies = band.get("points")
+    if port_frequencies is None:
+        port_frequencies = [band["start"] + (band["stop"] - band["start"]) * i / (band["count"] - 1)
+                            for i in range(band["count"])]
     require(all(any(math.isclose(frequency, port, rel_tol=0, abs_tol=1e-5) for port in port_frequencies) for frequency in base["radiation"]["frequency_hz"]),
             "전력 수지 주파수는 직접 포트 표본에 있어야 합니다. 보간하지 않습니다.")
     require(type(study["cases"]) is list and 9 <= len(study["cases"]) <= 18, "세 축 각 3수준 이상의 사례가 필요합니다.")

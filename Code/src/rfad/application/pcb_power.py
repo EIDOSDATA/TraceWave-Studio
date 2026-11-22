@@ -21,8 +21,12 @@ def validate_settings(settings):
         fail("E_SCHEMA", "전체 전력 수지에는 방사 설정과 0.0001~0.1의 명시적 상대 잔차 기준이 필요합니다.", "settings.power_balance")
     band = settings["frequency_hz"]
     for frequency in settings["radiation"]["frequency_hz"]:
-        index = (frequency - band["start"]) / (band["stop"] - band["start"]) * (band["count"] - 1)
-        if not math.isclose(index, round(index), rel_tol=0, abs_tol=1e-8):
+        if "points" in band:
+            is_direct = frequency in band["points"]
+        else:
+            index = (frequency - band["start"]) / (band["stop"] - band["start"]) * (band["count"] - 1)
+            is_direct = math.isclose(index, round(index), rel_tol=0, abs_tol=1e-8)
+        if not is_direct:
             fail("E_SCHEMA", "전체 전력 수지는 보간하지 않는 직접 포트 주파수가 필요합니다.", "settings.radiation.frequency_hz")
 
 

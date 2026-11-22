@@ -40,8 +40,9 @@ def validate_settings(settings):
     if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance", "feature_subdivisions", "compute_profile", "local_mesh"}:
         fail("E_SCHEMA", "PCB 해석 설정의 필수 필드가 다릅니다.", "settings")
     frequency = settings["frequency_hz"]
-    if type(frequency) is not dict or set(frequency) != {"start", "stop", "count"}:
-        fail("E_SCHEMA", "주파수 시작/끝/표본 수가 필요합니다.", "settings.frequency_hz")
+    required = {"start", "stop", "count"}
+    if type(frequency) is not dict or not required <= set(frequency) or set(frequency) - required - {"points"}:
+        fail("E_SCHEMA", "주파수 시작/끝/표본 수와 선택 직접 표본 목록을 확인하세요.", "settings.frequency_hz")
     for key in ("start", "stop"):
         if type(frequency[key]) not in (int, float) or not 1e6 <= frequency[key] <= 50e9:
             fail("E_SCHEMA", "지원 주파수 범위는 1 MHz~50 GHz입니다.", "settings.frequency_hz." + key)
@@ -49,6 +50,15 @@ def validate_settings(settings):
         fail("E_UNSUPPORTED", "상수 손실 근사는 stop/start가 2 이하인 대역을 지원합니다.", "settings.frequency_hz")
     if type(frequency["count"]) is not int or not 3 <= frequency["count"] <= 201:
         fail("E_RESOURCE", "주파수 표본 수는 3~201개입니다.", "settings.frequency_hz.count")
+    if "points" in frequency:
+        points = frequency["points"]
+        if (type(points) is not list or len(points) != frequency["count"]
+                or any(type(value) not in (int, float) or not frequency["start"] <= value <= frequency["stop"]
+                       for value in points)
+                or points[0] != frequency["start"] or points[-1] != frequency["stop"]
+                or any(a >= b for a, b in zip(points, points[1:]))):
+            fail("E_SCHEMA", "직접 표본은 3~201개의 오름차순 주파수이며 시작/끝과 표본 수가 일치해야 합니다.",
+                 "settings.frequency_hz.points")
     for key, low, high in (("grid_mm", 0.05, 5.0), ("air_padding_mm", 1.0, 200.0), ("curve_tolerance_mm", 0.001, 0.25), ("end_criterion", 1e-9, 1e-3)):
         value = settings[key]
         if type(value) not in (int, float) or not low <= value <= high:

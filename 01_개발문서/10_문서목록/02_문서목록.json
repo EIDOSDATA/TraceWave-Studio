@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 214,
+    "current_07_검증": 215,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28748,7 +28748,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 644015,
-      "working_tree_sha256": "40666d9b20d81fb88bac195085a2fad31e45c67b20956f870b1727f6754ae03b"
+      "working_tree_sha256": "64677e1d0a54e25edfa142192ca21e85100741a1ad6ca5a2c3145ae560f5e935"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -31758,9 +31758,18 @@
       "path": "01_개발문서/07_검증/337_가중순위와_독립재실행_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 2469,
-      "working_tree_sha256": "505f4c2ac86444d63a31d34a6dc370e2dcd7173a399e89b89a9a705e81c2c43e",
-      "text_lines": 23,
+      "bytes": 2575,
+      "working_tree_sha256": "2e7a654f743ca48ca1dba9d8e7f8910ed70d86213e218c6b4c5dde9316a3c66a",
+      "text_lines": 25,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/338_비균등_직접주파수_표본검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1403,
+      "working_tree_sha256": "4c4ed2a01560c1c17bdec80e3f1bfb0e214c1d72d2df43c127d143cbd070d5d4",
+      "text_lines": 16,
       "text_status": "utf8_read"
     },
     {
@@ -32482,8 +32491,8 @@
       "path": "01_개발문서/09_개발계획/13_전자기해석과_후처리_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 31414,
-      "working_tree_sha256": "3b42c7dbce27c649823e9a535859dc82dd70584b78bb67d7db15d89ac72b31b2",
+      "bytes": 31509,
+      "working_tree_sha256": "df895cd8ab5bc4c9ed91dccfadeab73a56a19e9d7683d572ee247fe2b6c6ca11",
       "text_lines": 96,
       "text_status": "utf8_read"
     },
@@ -32500,8 +32509,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 27232,
-      "working_tree_sha256": "79bba4f959cdcc8ad2f7f19e873c05bd3b1841d6f33942d58871c2c50af9d7c5",
+      "bytes": 27480,
+      "working_tree_sha256": "0bc93a7520fe3ca0a12c8121e48bf2e22b5293b45357bd82486ab42d6ec94f71",
       "text_lines": 187,
       "text_status": "utf8_read"
     },

@@ -227,7 +227,10 @@ def normalize_probes(raw, plan):
     import numpy as np
 
     frequency = plan["case"]["frequency_hz"]
-    frequencies = np.linspace(frequency["start"], frequency["stop"], frequency["count"])
+    if "points" in frequency:
+        frequencies = np.asarray(frequency["points"], dtype=float)
+    else:
+        frequencies = np.linspace(frequency["start"], frequency["stop"], frequency["count"])
     voltage, current = spectra(raw, frequencies)
     incident = 0.5 * (voltage + plan["case"]["port"]["resistance_ohm"] * current)
     require(np.max(np.abs(incident)) > 1e-18 and np.all(np.abs(incident) > np.max(np.abs(incident)) * 1e-4)
