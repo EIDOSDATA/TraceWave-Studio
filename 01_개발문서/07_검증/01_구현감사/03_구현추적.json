@@ -7596,6 +7596,8 @@
         "line_fillet",
         "curved_fillet",
         "curve_trim",
+        "curve_split",
+        "curve_extend",
         "arc_offset",
         "dimension_set",
         "bind_dimension",
@@ -15009,8 +15011,8 @@
     },
     {
       "path": "Code/src/rfad/application/design_sweep_service.py",
-      "text_sha256": "6a6f02c82462f14b7bc4ad8e9ef05769f909467b5d6f46a5d68a6e7cb1a4d3d8",
-      "utf8_bytes": 38843
+      "text_sha256": "95394465c12aff7cf082510cd5f088faf530be1ba0e26f402f9730175e746662",
+      "utf8_bytes": 39219
     },
     {
       "path": "Code/src/rfad/application/display_mesh.py",
@@ -15194,8 +15196,8 @@
     },
     {
       "path": "Code/src/rfad/application/precision_candidates.py",
-      "text_sha256": "309593c50c59bd6702a0c6767a6bd812188d4500ee6faccee9595590f4a5970b",
-      "utf8_bytes": 23389
+      "text_sha256": "e5b4c9888249730662518587e5f3f8714bd5f7c30c9c2dd017687e8d36b84161",
+      "utf8_bytes": 26582
     },
     {
       "path": "Code/src/rfad/application/precision_service.py",
@@ -16114,8 +16116,8 @@
     },
     {
       "path": "Code/tests/test_precision_service.py",
-      "text_sha256": "7edc282c165dd22ff647db7652bff60113972fea59ea75e415d7ccdebb577470",
-      "utf8_bytes": 40540
+      "text_sha256": "f0dc7b35e96ad0998df3eca14de46ed80cda808d6c6a7519c5f44593e892017e",
+      "utf8_bytes": 45539
     },
     {
       "path": "Code/tests/test_printed_seeds.py",
@@ -16579,8 +16581,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/precision_dialog.cpp",
-      "text_sha256": "ffa7bdd147e5e14dc8a09af89a37d658d59e6a916c8d6035d7f134b1af6f3265",
-      "utf8_bytes": 20566
+      "text_sha256": "659444e79dcf4dced6c01aab468173133ff2e26079597ad27d2dfdad2a4901b2",
+      "utf8_bytes": 21363
     },
     {
       "path": "Code/ui/wxwidgets/project_setup_dialog.cpp",

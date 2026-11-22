@@ -252,6 +252,79 @@ class PrecisionServiceTests(unittest.TestCase):
         self.service = ProjectService(self.workspace, auto_run=False)
         self.assertEqual(self.document(), saved)
 
+    def test_open_centerline_split_and_extension_preserve_shape_source_and_history(self):
+        """! @brief 직선과 시계 방향 원호의 길이, 끝점, 이력 및 재열기를 시험한다."""
+        line, arc = self.line(), self.arc(-130)
+        original_line, original_arc = self.shape(line), self.shape(arc)
+        for operation, values in (("curve_split", {"percent": 100}),
+                                  ("curve_extend", {"endpoint": "end", "distance_mm": -1})):
+            blocked, _ = self.preview([line], operation, values)
+            self.assertFalse(blocked["can_apply"])
+        result, _ = self.apply([line], "curve_split", {"percent": 40})
+        first, second = result["selection_ids"]
+        self.assertEqual(first, line)
+        first_row, second_row = self.shape(first), self.shape(second)
+        self.assertEqual(first_row["start"], original_line["start"])
+        self.assertEqual(second_row["end"], original_line["end"])
+        for point in (first_row["end"], second_row["start"]):
+            for value, expected in zip(point, (2.2, 3.6)):
+                self.assertAlmostEqual(Quantity(**value).as_unit("mm"), expected, places=12)
+        self.history("undo")
+        self.assertEqual(self.shape(line), original_line)
+        self.history("redo")
+        self.assertEqual(self.shape(second), second_row)
+        self.apply([second], "curve_extend", {"endpoint": "end", "distance_mm": 2.5})
+        for value, expected in zip(self.shape(second)["end"], (5.5, 8.0)):
+            self.assertAlmostEqual(Quantity(**value).as_unit("mm"), expected, places=12)
+        self.assertEqual(self.shape(second)["start"], second_row["start"])
+
+        result, _ = self.apply([arc], "curve_split", {"percent": 30})
+        first, second = result["selection_ids"]
+        self.assertEqual(first, arc)
+        for shape, start, sweep in ((self.shape(first), 25, -39), (self.shape(second), -14, -91)):
+            self.assertEqual(shape["center"], original_arc["center"])
+            self.assertEqual(shape["radius"], original_arc["radius"])
+            self.assertAlmostEqual(Quantity(**shape["start_angle"]).as_unit("deg"), start, places=11)
+            self.assertAlmostEqual(Quantity(**shape["sweep_angle"]).as_unit("deg"), sweep, places=11)
+        self.apply([arc], "curve_extend", {"endpoint": "start", "distance_mm": 2 * math.pi})
+        shape = self.shape(arc)
+        self.assertAlmostEqual(Quantity(**shape["start_angle"]).as_unit("deg"), 43, places=11)
+        self.assertAlmostEqual(Quantity(**shape["sweep_angle"]).as_unit("deg"), -57, places=11)
+        review, _ = self.preview([arc], "curve_extend", {"endpoint": "end", "distance_mm": 140})
+        self.assertFalse(review["can_apply"])
+        source = self.document()
+        save = self.service.mutate("project.save", self.request({"expected_revision": self.revision}))
+        self.assertTrue(self.service.run_next())
+        self.assertEqual(self.service.status({"contract_version": "rfad.api/2.0", "context": {},
+                     "input": {"job_id": save["job_id"]}})["state"], "completed")
+        self.service.close()
+        self.service = ProjectService(self.workspace, auto_run=False)
+        self.assertEqual(self.document(), source)
+
+    def test_arc_and_ifa_split_preserve_original_feed_and_solver_consumption(self):
+        """! @brief 실제 형상에서 분할 뒤 급전, 분기 및 해석 준비 입력을 함께 대조한다."""
+        from rfad.application.pcb_solver import build_pcb_plan
+        from test_cad_worker_process import register_fixture
+        from test_pcb_ifa import ifa_document, IFA_SETTINGS
+        from test_pcb_solver import SETTINGS, fixture_document, runtime_identity, snapshot_for
+
+        for source, settings, kind in ((fixture_document(arc=True), SETTINGS, "arc_path"),
+                                       (ifa_document(), IFA_SETTINGS, "line_path")):
+            with self.subTest(kind=kind):
+                source, _ = register_fixture(self.service, source)
+                self.project, self.revision = source["project_id"], source["revision_id"]
+                target = next(row for row in source["geometry"] if row["kind"] == kind and row["role"] == "radiator")
+                result, _ = self.apply([target["id"]], "curve_split", {"percent": 50})
+                self.assertEqual(result["selection_ids"][0], target["id"])
+                after = self.document()
+                original = build_pcb_plan(source, snapshot_for(source), runtime_identity(), settings)["case"]
+                edited = build_pcb_plan(after, snapshot_for(after), runtime_identity(), settings)["case"]
+                self.assertEqual(after["ports"], source["ports"])
+                self.assertEqual(after["connections"], source["connections"])
+                self.assertEqual(edited["port"], original["port"])
+                self.assertEqual(len(edited["shapes"]), len(original["shapes"]) + 1)
+                self.assertEqual(after["nets"], source["nets"])
+
     def test_line_fillet_has_exact_radius_and_keeps_both_line_ids(self):
         """! @brief 90도 모서리의 접점과 원호 중심을 확인하고 초과 반경을 차단한다."""
         left, up = str(uuid4()), str(uuid4())

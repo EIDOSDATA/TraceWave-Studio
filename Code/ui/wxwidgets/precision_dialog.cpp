@@ -242,6 +242,21 @@ void PrecisionDialog::BuildFields()
         row("남길 부분", m_axis);
         m_axis->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { ChangeInputs(); });
     }
+    else if (id == "curve_split")
+    {
+        number("percent", "시작점부터의 중심선 길이 (%)", "50");
+    }
+    else if (id == "curve_extend")
+    {
+        number("distance_mm", "중심선 연장 길이 (mm)", "1");
+        m_axis = new wxChoice(m_fields, wxID_ANY);
+        m_axis->SetName("precision.extend_endpoint");
+        m_axis->Append(Display("시작점"));
+        m_axis->Append(Display("끝점"));
+        m_axis->SetSelection(1);
+        row("연장할 끝", m_axis);
+        m_axis->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { ChangeInputs(); });
+    }
     else if (id == "arc_offset")
     {
         number("distance_mm", "중심선 오프셋 (mm, 양수: 반경 증가)", "1");
@@ -376,7 +391,14 @@ Json PrecisionDialog::Input() const
     }
     else if (m_axis)
     {
-        values["axis"] = m_axis->GetSelection() == 0 ? "x" : "y";
+        if (m_context.at("operations").at(index).at("id") == "curve_extend")
+        {
+            values["endpoint"] = m_axis->GetSelection() == 0 ? "start" : "end";
+        }
+        else
+        {
+            values["axis"] = m_axis->GetSelection() == 0 ? "x" : "y";
+        }
     }
     if (m_join)
     {

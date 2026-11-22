@@ -13,6 +13,7 @@ from rfad.domain.object_names import allocate_name, object_label
 from rfad.domain.precision_fillet import curved_fillet
 from rfad.domain.precision_dimensions import bind_dimension, dimensions, set_dimension
 from rfad.domain.precision_transform import MAX_SELECTION, fail, number, point, point_fields, replace_literal, scalar, transform
+from rfad.domain.sketch_constraints import groups as sketch_groups
 from rfad.domain.units import Quantity
 
 
@@ -24,6 +25,8 @@ OPERATIONS = {
     "line_fillet": ("두 직선 사이 필렛", {"radius_mm"}),
     "curved_fillet": ("원호에 접하는 필렛", {"radius_mm"}),
     "curve_trim": ("교차점에서 선·원호 자르기", {"target_id", "keep"}),
+    "curve_split": ("선·원호 중심선 분할", {"percent"}),
+    "curve_extend": ("선·원호 한쪽 끝 연장", {"endpoint", "distance_mm"}),
     "arc_offset": ("원호 중심선 오프셋", {"distance_mm"}),
     "dimension_set": ("치수 변경", {"dimension_key", "value", "unit"}),
     "bind_dimension": ("매개변수 연결", {"dimension_key", "parameter_id"}),
@@ -89,6 +92,15 @@ def operation_reason(document, rows, operation):
         if rows[0]["frame_id"] != rows[1]["frame_id"] or rows[0]["layer_id"] != rows[1]["layer_id"]:
             return "같은 좌표계와 층의 도체 두 개를 선택하십시오."
         return ""
+    if operation in ("curve_split", "curve_extend"):
+        if len(rows) != 1 or rows[0]["kind"] not in {"line_path", "arc_path"}:
+            return "분할하거나 연장할 열린 선 또는 원호 하나를 선택하십시오."
+        identity = rows[0]["id"]
+        for group in sketch_groups(document):
+            if any(ref["id"] == identity for relation in (*group["constraints"], *group["protected"])
+                   for ref in relation["refs"]):
+                return "스케치 구속이 참조하는 도체입니다. 구속을 먼저 편집하십시오."
+        return _referenced(document, [identity])
     if operation in PLANAR_OPERATIONS:
         engine = runtime()[1]
         if not engine["available"]:
@@ -256,19 +268,26 @@ def _trim(document, rows, values):
         points = _intersections(subject, _centerline(document, cutter))
     except ProjectError as error:
         fail(error.message, "target_id", error.code)
-    span = (math.dist(subject["start"], subject["end"]) if subject["kind"] == "line"
-            else subject["radius"] * math.radians(abs(subject["sweep_deg"])))
-    epsilon = TOLERANCE_MM / span
+    epsilon = TOLERANCE_MM / _path_span(subject)
     interior = [t for t, _ in points if epsilon < t < 1 - epsilon]
     if not interior:
         fail("대상 내부에서 경계와 만나는 교차점을 찾을 수 없습니다.", "target_id")
     start, end = (0, max(interior)) if keep == "start" else (min(interior), 1)
-    result = _shorten_path(document, original, subject, start, end)
+    result = _resize_path(document, original, subject, start, end)
     return [result if row["id"] == target else deepcopy(row) for row in rows]
 
 
-def _shorten_path(document, original, curve, start, end):
-    """! @brief 절단으로 움직이는 끝점과 각도만 기록한다."""
+def _path_span(curve):
+    """! @brief 직선 길이 또는 원호의 중심선 길이를 mm로 계산한다."""
+    span = (math.dist(curve["start"], curve["end"]) if curve["kind"] == "line"
+            else curve["radius"] * math.radians(abs(curve["sweep_deg"])))
+    if not math.isfinite(span) or span <= TOLERANCE_MM:
+        fail("유한한 길이를 가진 중심선을 선택하십시오.", "selection_ids")
+    return span
+
+
+def _resize_path(document, original, curve, start, end):
+    """! @brief 중심선의 매개 구간에서 한쪽 끝의 위치와 각도만 갱신한다."""
     cut = _piece(curve, start, end)
     result = deepcopy(original)
     if curve["kind"] == "line":
@@ -280,6 +299,38 @@ def _shorten_path(document, original, curve, start, end):
             result["start_angle"] = replace_literal(document, original["start_angle"], cut["start_deg"], "deg", "geometry.start_angle")
         result["sweep_angle"] = replace_literal(document, original["sweep_angle"], cut["sweep_deg"], "deg", "geometry.sweep_angle")
     return result
+
+
+def _split_path(document, source, values, origin_id):
+    """! @brief 같은 선 또는 원호 위에서 두 조각을 만들고 시작 쪽에 원본 ID를 남긴다."""
+    curve = _centerline(document, source)
+    if curve["kind"] == "arc" and abs(curve["sweep_deg"]) >= 360 - 1e-9:
+        fail("열린 원호를 선택하십시오.", "selection_ids", "E_UNSUPPORTED")
+    fraction = number(values["percent"], "percent") / 100
+    epsilon = TOLERANCE_MM / _path_span(curve)
+    if not epsilon < fraction < 1 - epsilon:
+        fail("분할 위치는 중심선의 시작점과 끝점 사이여야 합니다.", "percent")
+    first = _resize_path(document, source, curve, 0, fraction)
+    second = _resize_path(document, source, curve, fraction, 1)
+    second["id"] = str(uuid5(UUID(origin_id), "split-end"))
+    second["name"] = allocate_name(document, second)
+    return [first, second]
+
+
+def _extend_path(document, source, values):
+    """! @brief 지정한 끝을 직선 방향 또는 기존 원의 접선 방향으로 연장한다."""
+    end = values["endpoint"]
+    if end not in ("start", "end"):
+        fail("연장할 시작점 또는 끝점을 지정하십시오.", "endpoint", "E_SCHEMA")
+    distance = number(values["distance_mm"], "distance_mm")
+    if not TOLERANCE_MM < distance <= 1e6:
+        fail("연장 길이는 0.00000001 mm보다 크고 1000000 mm 이하여야 합니다.", "distance_mm")
+    curve = _centerline(document, source)
+    fraction = distance / _path_span(curve)
+    if curve["kind"] == "arc" and abs(curve["sweep_deg"]) * (1 + fraction) >= 360 - 1e-9:
+        fail("연장 이후에도 원호의 각도가 한 바퀴 미만이어야 합니다.", "distance_mm")
+    start, stop = (-fraction, 1) if end == "start" else (0, 1 + fraction)
+    return [_resize_path(document, source, curve, start, stop)]
 
 
 def _fillet_radius(document, rows, values):
@@ -315,7 +366,7 @@ def _curve_fillet(document, rows, values, origin_id):
     output = []
     for original, edge, endpoint, parameter in zip(rows, edges, ends, parameters):
         low, high = (parameter, 1) if endpoint == 0 else (0, parameter)
-        output.append(_shorten_path(document, original, edge, low, high))
+        output.append(_resize_path(document, original, edge, low, high))
     return [*output, _fillet_arc(document, rows[0], origin_id, radius, center, start, sweep)]
 
 
@@ -383,6 +434,10 @@ def replacements(document, rows, operation, values, origin_id):
         return _curve_fillet(document, rows, values, origin_id), engine
     if operation == "curve_trim":
         return _trim(document, rows, values), engine
+    if operation == "curve_split":
+        return _split_path(document, rows[0], values, origin_id), engine
+    if operation == "curve_extend":
+        return _extend_path(document, rows[0], values), engine
     if operation == "arc_offset":
         row = deepcopy(rows[0])
         radius = scalar(document, row["radius"], field="geometry.radius")
