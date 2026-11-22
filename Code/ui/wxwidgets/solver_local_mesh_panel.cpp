@@ -17,7 +17,9 @@ constexpr const char* AxisLabels[] = {"X", "Y", "Z"};
 
 wxString TargetLabel(const Json& target)
 {
-    return Display((target.at("kind") == "port" ? "급전 / " : "비아 / ") + target.at("name").get<std::string>());
+    const auto kind = target.at("kind").get<std::string>();
+    const std::string prefix = kind == "port" ? "급전 / " : kind == "via" ? "비아 / " : "표면 개구 / ";
+    return Display(prefix + target.at("name").get<std::string>());
 }
 
 /** @brief 간극에는 위치 범위를 받고 객체에는 현재 개정의 안정 ID를 저장한다. */
@@ -40,7 +42,8 @@ std::optional<Json> EditRule(wxWindow* parent, const Json& targets, const Json& 
     {
         target->Append(TargetLabel(item));
         options.push_back(item);
-        if (rule.contains("object_id") && item.at("id") == rule.at("object_id") && item.at("kind") == rule.at("kind"))
+        if (rule.contains("object_id") && item.at("id") == rule.at("object_id") && item.at("kind") == rule.at("kind") &&
+            item.value("opening_sha256", "") == rule.value("opening_sha256", ""))
         {
             selected = target->GetCount() - 1;
         }
@@ -48,7 +51,12 @@ std::optional<Json> EditRule(wxWindow* parent, const Json& targets, const Json& 
     if (rule.contains("object_id") && selected == 0)
     {
         target->Append(Display("현재 개정에 대상 없음 / " + rule.at("object_id").get<std::string>()));
-        options.push_back(Json{{"kind", rule.at("kind")}, {"id", rule.at("object_id")}});
+        auto missing = Json{{"kind", rule.at("kind")}, {"id", rule.at("object_id")}};
+        if (rule.contains("opening_sha256"))
+        {
+            missing["opening_sha256"] = rule.at("opening_sha256");
+        }
+        options.push_back(std::move(missing));
         selected = target->GetCount() - 1;
     }
     target->SetSelection(selected);
@@ -188,6 +196,10 @@ std::optional<Json> EditRule(wxWindow* parent, const Json& targets, const Json& 
         else
         {
             result["object_id"] = object.at("id");
+            if (object.contains("opening_sha256"))
+            {
+                result["opening_sha256"] = object.at("opening_sha256");
+            }
         }
         accepted = std::move(result);
         dialog.EndModal(wxID_OK);
@@ -297,7 +309,8 @@ wxString SolverLocalMeshPanel::Label(const Json& rule) const
     }
     for (const auto& item : m_targets)
     {
-        if (item.at("kind") == rule.at("kind") && item.at("id") == rule.at("object_id"))
+        if (item.at("kind") == rule.at("kind") && item.at("id") == rule.at("object_id") &&
+            item.value("opening_sha256", "") == rule.value("opening_sha256", ""))
         {
             return TargetLabel(item);
         }
@@ -311,9 +324,17 @@ void SolverLocalMeshPanel::LoadRules(const Json& rules)
     FillRules(-1);
 }
 
-void SolverLocalMeshPanel::Edit(long index)
+void SolverLocalMeshPanel::AddFromBounds(const Json& bounds)
 {
-    const auto rule = EditRule(this, m_targets, index < 0 ? Json::object() : m_rules.at(static_cast<std::size_t>(index)));
+    if (m_rules.size() < 16)
+    {
+        Edit(-1, Json{{"kind", "gap"}, {"name", "격자에서 선택한 영역"}, {"bounds_mm", bounds}});
+    }
+}
+
+void SolverLocalMeshPanel::Edit(long index, const Json& initial)
+{
+    const auto rule = EditRule(this, m_targets, index < 0 ? initial : m_rules.at(static_cast<std::size_t>(index)));
     if (!rule)
     {
         return;

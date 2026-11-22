@@ -4,6 +4,7 @@
 #include <wx/panel.h>
 #include <nlohmann/json.hpp>
 #include <array>
+#include <functional>
 #include <optional>
 #include <string>
 
@@ -24,12 +25,19 @@ public:
     void DisplayPlan(const nlohmann::json* review);
     void SetView(int plane, bool full);
     void Highlight(const std::string& id);
+    void StartRegionPick(std::function<void(const nlohmann::json&)> selected);
     /** @brief 선택한 국부 격자 구간의 양쪽 실제 격자선을 강조한다. */
     void HighlightBand(int axis, const std::array<double, 2>& bounds, bool applied,
                        std::optional<SolverMeshBand> comparison = std::nullopt);
 
 private:
     void Paint(wxPaintEvent& event);
+    void Pick(wxMouseEvent& event);
+    std::function<void(const nlohmann::json&)> m_region;
+    std::optional<std::array<double, 2>> m_corner;
+    std::array<double, 2> m_leftBottom{};
+    std::array<std::array<double, 2>, 2> m_visible{};
+    double m_scale = 0;
     const nlohmann::json* m_review = nullptr;
     int m_plane = 0;
     bool m_full = false;

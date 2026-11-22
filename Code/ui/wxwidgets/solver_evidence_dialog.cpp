@@ -40,7 +40,7 @@ std::string Kind(const std::string& kind)
     {
         return "양단 도체";
     }
-    return "적층";
+    return kind == "geometry" ? "해석 도체" : "적층";
 }
 
 void Line(std::string& text, const Json& values, const char* key, const char* label, const char* unit = "")
@@ -64,6 +64,8 @@ std::string UsedValues(const Json& data)
     Line(text, used, "tan_delta", "계산 손실 탄젠트");
     Line(text, used, "conductivity_s_per_m", "계산 전도도", " S/m");
     Line(text, used, "width_mm", "계산 도체 폭", " mm");
+    Line(text, used, "outer_radius_mm", "계산 비아 바깥 반경", " mm");
+    Line(text, used, "inner_radius_mm", "계산 비아 안쪽 반경", " mm");
     Line(text, used, "thickness_mm", "계산 적층 두께", " mm");
     Line(text, used, "thickness_m", "계산 도체 두께", " m");
     text += "\n계획의 계산 입력 전체\n" + used.dump(2);
@@ -96,6 +98,20 @@ std::string OriginalValues(const Json& data)
     if (!parameters.empty())
     {
         text += "\n\n참조 매개변수의 당시 값과 식\n" + parameters.dump(2);
+    }
+    if (data.contains("geometry_lineage"))
+    {
+        const auto& entry = data.at("geometry_lineage");
+        const auto state = entry.at("current_state").get<std::string>();
+        text += std::string("\n\n현재 설계와 비교: ") + (state == "removed" ? "삭제" : state == "edited" ? "편집됨" : "동일") + "\n";
+        Line(text, entry, "current_revision_id", "현재 개정");
+        Line(text, entry, "changed_fields", "변경된 속성");
+        Line(text, entry, "original_sha256", "당시 도체 SHA-256");
+        Line(text, entry, "precision_edits", "봉인 개정에 남은 정밀 편집");
+        for (const auto& source : entry.at("imports"))
+        {
+            text += "\n제조 원문, 해시 및 대응 객체\n" + source.dump(2) + "\n";
+        }
     }
     return text;
 }

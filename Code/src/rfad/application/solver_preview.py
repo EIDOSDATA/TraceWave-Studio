@@ -1,5 +1,6 @@
 """! @brief 계산을 접수하기 전 실제 PCB 격자선과 해석 입력의 기하를 읽는다."""
 
+from bisect import bisect_left, bisect_right
 import math
 
 from rfad.application.canonical import canonical_hash
@@ -113,6 +114,72 @@ def model_review(document, plan):
                                                for group in excluded for row in group]}
 
 
+def mesh_intervals(case, lines):
+    """! @brief 실제 격자의 좁은 입력 구간과 보수적인 자유공간 시간 간격을 계산한다."""
+    rows = []
+    axes = "xyz"
+    settings = "settings.feature_subdivisions"
+    minimums = []
+
+    def interval(kind, axis, endpoints, path):
+        """! @brief 경계 사이의 완전한 셀과 경계에 걸치는 셀을 구분한다."""
+        low, high = sorted(endpoints)
+        values = lines[axis]
+        if not values[0] <= low < high <= values[-1]:
+            return
+        first = bisect_right(values, low) - 1
+        stop = bisect_left(values, high)
+        full = max(0, bisect_right(values, high) - bisect_left(values, low) - 1)
+        rows.append({"kind": kind, "axis": axis, "bounds_mm": [low, high], "width_mm": high - low,
+                     "first_line": first, "cells": stop - first, "full_cells": full, "setting_path": path})
+
+    for axis in axes:
+        values = lines[axis]
+        index = min(range(len(values) - 1), key=lambda i: values[i + 1] - values[i])
+        interval("minimum_cell", axis, values[index:index + 2], "settings.grid_mm")
+        minimums.append(values[index + 1] - values[index])
+    port = case["port"]
+    axis = port["axis"]
+    index = axes.index(axis)
+    interval("feed_gap", axis, [port["start_mm"][index], port["stop_mm"][index]], settings)
+    for surface in case.get("surface_layers", []):
+        for opening in surface["openings_mm"]:
+            for axis, endpoints in zip(axes, opening):
+                interval("surface_opening", axis, endpoints, settings)
+    for via in case.get("vias", []):
+        radius = via["inner_radius_mm"]
+        for axis, center in zip(axes, via["center_mm"]):
+            interval("via_bore", axis, [center - radius, center + radius], settings)
+    for rule in case.get("local_mesh_report", {}).get("rules", []):
+        if rule["kind"] == "gap":
+            for axis, record in rule["axes"].items():
+                for segment in record["segments"]:
+                    if segment["applied"]:
+                        interval("local_gap", axis, segment["bounds_mm"], "settings.local_mesh")
+    courant_s = 1e-3 / (299_792_458 * math.hypot(*(1 / width for width in minimums)))
+    return {"intervals": rows[:128], "interval_total": len(rows), "vacuum_cartesian_cfl_seconds": courant_s}
+
+
+def _blocking_diagnostics(document, original):
+    """! @brief 실제 계획의 실패를 먼저 보이고 독립 입력 사전 검사 결과를 덧붙인다."""
+    from rfad.domain.design import preflight_design
+
+    first = original.diagnostic()
+    rows = [first]
+    seen = {first["details"].get("field_path") or first["code"]}
+    try:
+        additional = preflight_design(document, "em")
+    except ProjectError:
+        return rows
+    for issue in additional:
+        field = issue["details"].get("field_path")
+        key = field or issue["code"]
+        if issue["severity"] == "blocking" and key not in seen:
+            rows.append(issue)
+            seen.add(key)
+    return rows
+
+
 def read(service, params):
     """! @brief 영속 스냅샷을 쓰지 않고 개정의 준비 입력과 정확히 같은 격자선을 반환한다."""
     from rfad.application.pcb_environment import scene_extents
@@ -123,7 +190,10 @@ def read(service, params):
     _fields(params, {"contract_version", "context", "input"})
     if params["contract_version"] != "rfad.api/2.0":
         raise ProjectError("E_VERSION", "지원하지 않는 API 버전입니다.")
-    data = _fields(params["input"], {"expected_revision", "settings"})
+    data = _fields(params["input"], {"expected_revision", "settings"}, {"include_all_diagnostics"})
+    include_all = data.get("include_all_diagnostics", False)
+    if type(include_all) is not bool:
+        raise ProjectError("E_SCHEMA", "일괄 진단 사용 여부는 참 또는 거짓으로 입력하세요.")
     expected = _uuid(data["expected_revision"])
     state = service.journal.read()
     project = service._project(state, params["context"])
@@ -134,7 +204,13 @@ def read(service, params):
     if runtime is None:
         raise ProjectError("E_UNSUPPORTED", "openEMS 실행 환경의 연결을 확인하세요.")
     snapshot = service.operations.prepare_snapshot(state, project, document, raw, {})
-    plan = build_pcb_plan(document, snapshot, runtime.identity, data["settings"])
+    try:
+        plan = build_pcb_plan(document, snapshot, runtime.identity, data["settings"])
+    except ProjectError as error:
+        if not include_all:
+            raise
+        rows = _blocking_diagnostics(document, error)
+        return {"revision_id": expected, "blocking_diagnostics": rows[:128], "blocking_total": len(rows)}
     case = plan["case"]
     lines = mesh_lines(case)
     bounds = scene_extents(case)
@@ -151,6 +227,7 @@ def read(service, params):
             "outputs": plan.get("outputs", []), "settings": case["settings"],
             "mesh": {"lines_mm": lines, "model_bounds_mm": bounds, "axes": axes,
                      "quality_reference": wavelength_reference(case),
+                     "interval_report": mesh_intervals(case, lines),
                      **({"local_mesh_report": case["local_mesh_report"]} if "local_mesh_report" in case else {}),
                      "case_sha256": canonical_hash(case), "lines_sha256": canonical_hash(lines)},
             "model": model_review(document, plan)}

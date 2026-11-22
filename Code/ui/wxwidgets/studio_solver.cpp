@@ -160,6 +160,11 @@ void StudioFrame::OpenSolverReview(const std::string& project, const std::string
     {
         return;
     }
+    if (decision->editInstallation)
+    {
+        OpenDesignSetup(DesignSetup::Physical, Json{{"section", "activation"}, {"record_id", nullptr}});
+        return;
+    }
     if (decision->repair)
     {
         const auto repair = *decision->repair;

@@ -2,6 +2,8 @@
 
 from copy import deepcopy
 
+from rfad.application import solver_configuration, result_sources
+from rfad.application.canonical import canonical_hash
 from rfad.application.pcb_solver import PROFILE as PCB_PROFILE, validate_settings
 from rfad.application.solver_evidence import pcb_result_plan
 from rfad.application.project_contract import _fields, _uuid
@@ -41,12 +43,12 @@ def save(service, state, context, data):
                         "type": domain.INSERT, "payload": {"record": record}})
 
 
-def _result_settings(service, state, project_id, result_id):
+def _result_settings(service, state, project_id, result_id, document, offset):
     """! @brief 결과가 가리키는 봉인된 사용자 PCB 계획에서만 실행 당시 조건을 읽는다."""
     _, plan = pcb_result_plan(service, state, project_id, result_id)
     source = plan["source_semantics"]
     return {"id": result_id, "revision_id": source["revision_id"], "settings": plan["case"]["settings"],
-            "design": domain.design_context(source)}
+            "design": domain.design_context(source), "configuration": solver_configuration.compare(document, source, offset=offset)}
 
 
 def read(service, params):
@@ -54,14 +56,33 @@ def read(service, params):
     _fields(params, {"contract_version", "context", "input"})
     if params["contract_version"] != "rfad.api/2.0":
         raise ProjectError("E_VERSION", "지원하지 않는 API 버전입니다.")
-    data = _fields(params["input"], {"expected_revision"}, {"artifact_id"})
+    data = _fields(params["input"], {"expected_revision"}, {"artifact_id", "condition_id", "configuration_offset"})
     expected = _uuid(data["expected_revision"])
     context = _fields(params["context"], {"project_id"})
     project_id = _uuid(context["project_id"])
     state = service.journal.read()
     document = current(service, state, context, expected)
+    offset = data.get("configuration_offset", 0)
+    if (type(offset) is not int or not 0 <= offset <= 100000 or
+            ("artifact_id" in data and "condition_id" in data) or
+            ("configuration_offset" in data and not ({"artifact_id", "condition_id"} & data.keys()))):
+        raise ProjectError("E_SCHEMA", "한 가지 해석 조건 또는 결과와 유효한 비교 시작 위치를 지정하세요.")
     if "artifact_id" in data:
-        return _result_settings(service, state, project_id, _uuid(data["artifact_id"]))
+        return _result_settings(service, state, project_id, _uuid(data["artifact_id"]), document, offset)
+    if "condition_id" in data:
+        identity = _uuid(data["condition_id"])
+        row = next((row for row in domain.records(document) if row["id"] == identity), None)
+        if row is None:
+            raise ProjectError("E_MISSING_ARTIFACT", "이 프로젝트에 저장한 해석 조건을 찾을 수 없습니다.")
+        project = service._project(state, context)
+        try:
+            source, _ = result_sources.revision_document(service, state, project, project_id, row["revision_id"])
+            configuration = solver_configuration.compare(document, source, offset=offset)
+        except ProjectError as error:
+            if error.code != "E_MISSING_ARTIFACT":
+                raise
+            configuration = {"items": [], "total": 0, "next_offset": None, "unavailable": error.message}
+        return {**row, "configuration": configuration}
     results = [{"id": row["artifact_id"], "revision_id": row["snapshot"]["revision_id"],
                 "name": row["metadata"].get("installation_name", "PCB 해석"),
                 "snapshot_time": row["snapshot"]["sealed_at"]}
@@ -72,5 +93,11 @@ def read(service, params):
     targets = [{"kind": "port", "id": row["id"], "name": row["name"]} for row in document["ports"]]
     targets.extend({"kind": "via", "id": row["id"], "name": names[row["id"]]}
                    for row in document["geometry"] if row["kind"] == "via" and row["include_in_em"])
+    from rfad.domain.physical_setup import EM_SURFACE_KINDS, setup
+
+    for row in setup(document)["surfaces"]:
+        if row["include_in_em"] and row["kind"] in EM_SURFACE_KINDS:
+            targets.extend({"kind": "surface_opening", "id": row["id"], "opening_sha256": canonical_hash(opening),
+                            "name": f"{row['name']} / 개구 {index + 1}"} for index, opening in enumerate(row["openings"]))
     return {"revision_id": expected, "design": domain.design_context(document),
             "saved": deepcopy(domain.records(document)), "results": results, "local_mesh_targets": targets}

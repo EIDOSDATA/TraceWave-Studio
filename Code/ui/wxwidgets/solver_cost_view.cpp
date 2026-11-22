@@ -221,6 +221,39 @@ void Studio::ShowSolverCost(wxWindow* parent, const Json& completed, const Json&
             }
         }
         common += Display("\n해석 개정 ") + Display(report.at("revision_id").get<std::string>());
+        const auto recovery = report.value("recovery_stage", std::string());
+        if (recovery == "restart_prepared_plan")
+        {
+            common += Display("\n복구 가능 단계: 보존한 입력으로 처음부터 다시 실행할 수 있습니다.");
+        }
+        else if (recovery == "confirm_guest_exit")
+        {
+            common += Display("\n복구 가능 단계: WSL 프로세스 종료를 먼저 확인해야 합니다.");
+        }
+        const auto energy = report.value("energy_observations", Json::object());
+        if (!energy.empty())
+        {
+            const auto& samples = energy.at("samples");
+            common += wxString::Format(Display("\n\n에너지 감쇠 기록 %zu / %zu개 (로그 기록 간격)"),
+                samples.size(), energy.at("logged_total").get<std::size_t>());
+            for (const auto& sample : samples)
+            {
+                const auto decay = sample.value("decay_db", Json());
+                common += "\n" + Display(sample.at("step").dump()) + Display(" 단계  ");
+                if (decay.is_number())
+                {
+                    common += wxString::Format("%.4g dB", decay.get<double>());
+                }
+                else
+                {
+                    common += Display("유한한 감쇠값 없음");
+                }
+                if (sample.at("final").get<bool>())
+                {
+                    common += Display("  (종료 확인)");
+                }
+            }
+        }
         details->ChangeValue(common);
         dialog.Layout();
     };

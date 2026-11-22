@@ -16,12 +16,13 @@ public:
     SolverLocalMeshPanel(wxWindow* parent, const nlohmann::json& targets, std::function<void()> changed,
                          std::function<void(int, const std::array<double, 2>&, long, bool)> locate);
     const nlohmann::json& Rules() const { return m_rules; }
+    void AddFromBounds(const nlohmann::json& bounds);
     void LoadRules(const nlohmann::json& rules);
     void DisplayReport(const nlohmann::json& report);
     void FocusRule(const std::string& path);
 
 private:
-    void Edit(long index);
+    void Edit(long index, const nlohmann::json& initial = nlohmann::json::object());
     void FillRules(long selected);
     void UpdateActions();
     wxString Label(const nlohmann::json& rule) const;

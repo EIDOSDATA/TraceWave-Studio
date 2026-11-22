@@ -4,6 +4,7 @@ from bisect import bisect_left
 
 from rfad.application.pcb_geometry import fail
 from rfad.domain.design import _text, _uuid
+from rfad.domain.network_library import digest
 
 FIELD = "settings.local_mesh"
 AXES = "xyz"
@@ -19,8 +20,9 @@ def validate_rules(rules):
         field = f"{FIELD}[{index}]"
         kind = rule.get("kind") if type(rule) is dict else None
         keys = {"kind", "priority", "max_cell_mm"}
-        if kind not in ("port", "via", "gap") or set(rule) != keys | ({"name", "bounds_mm"} if kind == "gap" else {"object_id"}):
-            fail("E_SCHEMA", "국부 격자 대상은 급전, 비아 또는 좌표로 지정한 간극이어야 합니다.", field)
+        object_fields = {"object_id", "opening_sha256"} if kind == "surface_opening" else {"object_id"}
+        if kind not in ("port", "via", "gap", "surface_opening") or set(rule) != keys | ({"name", "bounds_mm"} if kind == "gap" else object_fields):
+            fail("E_SCHEMA", "국부 격자는 급전, 비아, 표면층 개구 또는 지정한 영역을 대상으로 합니다.", field)
         if type(rule["priority"]) is not int or not 0 <= rule["priority"] <= 100:
             fail("E_SCHEMA", "국부 격자 우선순위는 0~100의 정수여야 합니다.", field + ".priority")
         widths = rule["max_cell_mm"]
@@ -29,6 +31,8 @@ def validate_rules(rules):
             fail("E_SCHEMA", "한 축 이상에서 목표 최대 셀 폭을 0.001~5 mm로 지정하십시오.", field + ".max_cell_mm")
         if kind != "gap":
             _uuid(rule["object_id"], field + ".object_id")
+            if kind == "surface_opening":
+                digest(rule["opening_sha256"], field + ".opening_sha256")
             continue
         name = _text(rule["name"], field + ".name", limit=64)
         if name != name.strip() or any(ord(character) < 32 for character in name):
@@ -41,10 +45,17 @@ def validate_rules(rules):
             fail("E_SCHEMA", "간극은 X/Y/Z 각각 시작 좌표가 끝 좌표보다 작은 mm 범위여야 합니다.", field + ".bounds_mm")
 
 
-def _target_bounds(rule, port, vias, field):
+def _target_bounds(rule, port, vias, surfaces, field):
     """! @brief 도체의 실제 소비 위치로부터 격자의 대상 범위를 구한다."""
     if rule["kind"] == "gap":
         return rule["bounds_mm"]
+    if rule["kind"] == "surface_opening":
+        surface = surfaces.get(rule["object_id"])
+        if surface is not None:
+            for key, box in zip(surface.get("local_opening_keys", []), surface["openings_mm"]):
+                if key == rule["opening_sha256"]:
+                    return [*box, surface["bounds_mm"][2]]
+        fail("E_GEOMETRY", "개구의 위치 또는 입력이 바뀌었습니다. 현재 표면층 개구를 다시 선택하세요.", field + ".object_id")
     if rule["kind"] == "port" and rule["object_id"] == port["id"]:
         return [sorted(pair) for pair in zip(port["start_mm"], port["stop_mm"])]
     via = vias.get(rule["object_id"]) if rule["kind"] == "via" else None
@@ -69,15 +80,18 @@ def _insert_anchor(anchors, coordinate):
 def compile_rules(case, anchors, model_bounds):
     """! @brief 축별 국부 규칙을 기존 모델 내부선에 고정하고 원래 범위와 적용 범위를 분리한다."""
     vias = {via["id"]: via for via in case.get("vias", [])}
+    surfaces = {row["id"]: row for row in case.get("surface_layers", [])}
     rows = []
     for index, rule in enumerate(case["settings"]["local_mesh"]):
         field = f"{FIELD}[{index}]"
-        bounds = _target_bounds(rule, case["port"], vias, field)
+        bounds = _target_bounds(rule, case["port"], vias, surfaces, field)
         if rule["kind"] == "gap" and any(a < low - 1e-9 or b > high + 1e-9
                                          for (a, b), (low, high) in zip(bounds, model_bounds)):
             fail("E_GEOMETRY", "간극 좌표는 해석 모델의 X/Y/Z 내부 범위에 있어야 합니다.", field + ".bounds_mm")
         row = {"kind": rule["kind"], "priority": rule["priority"], "bounds_mm": bounds, "axes": {},
                **({"name": rule["name"]} if rule["kind"] == "gap" else {"object_id": rule["object_id"]})}
+        if rule["kind"] == "surface_opening":
+            row["opening_sha256"] = rule["opening_sha256"]
         for axis, name in enumerate(AXES):
             if name not in rule["max_cell_mm"]:
                 continue

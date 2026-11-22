@@ -63,6 +63,27 @@ def _report_text(report):
              "| 종류 | 이름 | 기록 상태 | 파일 사본 |", "| --- | --- | --- | --- |"]
     for item in report["items"]:
         lines.append("| " + " | ".join(_label(item[key]) for key in ("kind", "name", "status", "copy_state")) + " |")
+    solver = report["solver_details"]
+    if solver["total"]:
+        lines.extend(["", "## 해석 조건, 누락 및 출처", "",
+                      f'기록한 해석 {len(solver["items"])}개 / 같은 스냅샷의 총 {solver["total"]}개'])
+        for item in solver["items"]:
+            lines.extend(["", "### " + item["id"], "", "결과 SHA-256 " + item["artifact"]["sha256"]])
+            if item["state"] == "missing":
+                lines.append("결과 파일 누락")
+                continue
+            lines.extend(["계산 입력 SHA-256 " + item["case_sha256"], "",
+                          "| 해석 조건 | 당시 값 |", "| --- | --- |"])
+            for key, value in sorted(item["settings"].items()):
+                lines.append("| " + _label(key) + " | " + _label(canonical_bytes(value).decode("utf-8")) + " |")
+            lines.append(f'\n생략 {len(item["omissions"])}건')
+            for omission in item["omissions"]:
+                lines.append("- " + _label(canonical_bytes(omission).decode("utf-8")))
+            series = [(frequency, value) for frequency, value in item["s11_db_by_frequency_hz"] if value is not None]
+            if series:
+                minimum = min(series, key=lambda row: row[1])
+                lines.extend(["", f'S11 {len(series)}점, 최저 {minimum[1]:.4g} dB @ {minimum[0]:.9g} Hz',
+                              "주파수별 S11 수치와 출처 파일 참조는 report.json에 있습니다."])
     lines.extend(["", "## 적용 범위", ""])
     lines.extend("- " + _label(line) for line in report["limitations"])
     return ("\n".join(lines) + "\n").encode("utf-8")
@@ -122,7 +143,8 @@ def prepare(service, state, context, data):
                    "목록에 등록된 근거와 묶음에 실제 포함한 파일은 파일 사본 열과 manifest에서 확인할 수 있습니다.",
                    "물성, 제작, 환경과 측정의 미정값은 원래 설계에 보존합니다. 물리 정확도 합격은 미확립입니다."]
     report = evidence.summary(snapshot, document, reported)
-    report.update(limitations=limitations, inclusion=data["inclusion"], rights_confirmed=data["rights_confirmed"])
+    report.update(limitations=limitations, inclusion=data["inclusion"], rights_confirmed=data["rights_confirmed"],
+                  solver_details=evidence.solver_details(service, project, state, reported))
     files = {"report.json": canonical_bytes(report), "report.md": _report_text(report),
              "project-index.json": canonical_bytes({"schema": "rfad.handoff-index/0.1", "snapshot": snapshot,
                 "project_path": project["path"], "view_only": True, "active_restore_supported": False})}

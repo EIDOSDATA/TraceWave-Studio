@@ -159,7 +159,7 @@ def _recovery_fields(before, after, field=()):
 def _recovery_rows(saved, current):
     """! @brief 같은 안정 ID의 항목을 대응시키고 실제 변경된 값과 경로를 표시한다."""
     names = {**display_names(saved), **display_names(current)}
-    sections = tuple(_SECTION_NAMES) + tuple(key for key in current if key not in _SECTION_NAMES and key not in {
+    sections = tuple(_SECTION_NAMES) + tuple(key for key in dict.fromkeys((*saved, *current)) if key not in _SECTION_NAMES and key not in {
         "schema_version", "project_id", "revision_id", "parent_revision_ids",
     })
     for section in sections:

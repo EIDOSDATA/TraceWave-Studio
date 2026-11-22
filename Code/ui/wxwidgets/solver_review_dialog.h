@@ -25,6 +25,7 @@ struct SolverReviewDecision
     nlohmann::json settings;
     std::string saveName;
     std::optional<SolverRepair> repair;
+    bool editInstallation = false;
 };
 
 /** @brief 검토한 설정의 실행/저장 또는 문제 속성 이동 요청을 반환한다. */

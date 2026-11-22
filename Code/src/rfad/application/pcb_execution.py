@@ -2,6 +2,7 @@
 
 from bisect import bisect_left, bisect_right
 import math
+import re
 
 from rfad.domain.errors import ProjectError
 
@@ -55,7 +56,34 @@ def validate_measurement(measurement):
         raise ProjectError("E_HASH", "PCB native 실행 비용의 측정 범위 또는 수치가 유효하지 않습니다.")
 
 
-def completed(result, files, budget):
+_PROGRESS = re.compile(
+    r"Timestep:\s*(\d+)[^\r\n]*?Energy:\s*~\s*([+-]?\d+(?:\.\d+)?(?:e[+-]?\d+)?)\s*"
+    r"\(\s*([+-])\s*(\d+(?:\.\d+)?|inf)\s*dB\)", re.IGNORECASE)
+
+
+def energy_observations(log, termination, limit=96):
+    """! @brief 로그에 실제 기록된 진행 표본과 확인된 마지막 표본을 단계 순으로 읽는다."""
+    samples = {}
+    stop = termination["iterations"]
+    for match in _PROGRESS.finditer(log):
+        step = int(match[1])
+        energy = float(match[2])
+        decay = float(match[4])
+        if not 0 < step < stop or not math.isfinite(energy) or energy < 0 or math.isnan(decay):
+            continue
+        samples[step] = {"step": step, "reported_energy": energy,
+                         "decay_db": decay * (1 if match[3] == "-" else -1) if math.isfinite(decay) else None,
+                         "final": False}
+    ordered = [samples[step] for step in sorted(samples)]
+    ordered.append({"step": stop, "reported_energy": 0.0 if termination["reported_zero_energy"] else None,
+                    "decay_db": termination["reported_decay_db"], "final": True})
+    total = len(ordered)
+    if total > limit:
+        ordered = [ordered[index * (total - 1) // (limit - 1)] for index in range(limit)]
+    return {"samples": ordered, "logged_total": total}
+
+
+def completed(result, files, budget, native_log=""):
     """! @brief 봉인된 계획과 원시 결과에서 실제 계산을 한 번만 읽어 비교 DTO로 제공한다."""
     provenance = result["provenance"]
     execution = result["raw_manifest"]["execution"]
@@ -66,6 +94,8 @@ def completed(result, files, budget):
     termination = result["termination"]
     return {"estimate": estimate_before_run, "estimate_retrospective": "cost_estimate" not in execution,
             "execution_budget_seconds": _time(budget), "revision_id": provenance["analysis_plan"]["snapshot"]["revision_id"],
+            "energy_observations": energy_observations(native_log, termination),
+            "recovery_stage": "published",
             "actual": {"wall_seconds": _time(measured.get("wall_seconds", execution.get("elapsed_seconds"))),
                        "time_scope": "native_process" if measured else "legacy_native_log",
                        "peak_rss_bytes": _bytes(measured.get("peak_rss_bytes")),
@@ -97,6 +127,7 @@ def stopped(job, state, process, diagnostic):
         reason = process["state"] if process.get("state") in {"timeout", "output_limit"} else "solver_error"
     return {"estimate": estimate(plan, captured["preparation"]["mesh_statistics"]["lines_mm"]),
             "estimate_retrospective": False, "execution_budget_seconds": job["input"]["budget"]["timeout_seconds"],
+            "recovery_stage": "restart_prepared_plan" if confirmed else "confirm_guest_exit",
             "revision_id": plan["snapshot"]["revision_id"],
             "actual": {"wall_seconds": _time(measured.get("wall_seconds")), "time_scope": "native_process",
                        "peak_rss_bytes": _bytes(measured.get("peak_rss_bytes")),

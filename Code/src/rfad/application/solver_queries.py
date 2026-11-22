@@ -93,7 +93,16 @@ def solver_samples(service, params):
     dto = {"profile": "rfad.solver-chart/0.1", "artifact_id": record["artifact_id"], "snapshot": snapshot,
            "metadata": deepcopy(record["metadata"]), "samples": samples}
     if record["metadata"]["profile"] == PCB_PROFILE:
-        dto["execution_cost"] = completed(result, record["files"], record["metadata"].get("execution_budget_seconds"))
+        log = next((row for row in record["raw_files"] if row["role"] == "raw/native.log"), None)
+        native_log = ""
+        if log is not None:
+            try:
+                native_log = service.journal.read_artifact(log["artifact"]).decode("utf-8", errors="replace")
+            except ProjectError as error:
+                if error.code != "E_MISSING_ARTIFACT" and not isinstance(error.__cause__, FileNotFoundError):
+                    raise
+        dto["execution_cost"] = completed(result, record["files"], record["metadata"].get("execution_budget_seconds"),
+                                          native_log)
     if len(canonical_bytes(dto)) > 60 * 1024:
         raise ProjectError("E_RESOURCE", "해석 그래프 DTO가 전송 상한을 초과했습니다.")
     return dto

@@ -1,11 +1,13 @@
 """! @brief 고정 스냅샷의 원본과 등록된 검토 근거를 읽기 전용 인계 목록으로 제공한다."""
 
 from copy import deepcopy
+import json
+import math
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.measurement_records import creation_reference
 from rfad.application.project_contract import _fields, _uuid
-from rfad.application.result_sources import snapshot_document
+from rfad.application.result_sources import read_solver_artifact, snapshot_document
 from rfad.domain.errors import ProjectError
 from rfad.domain.measurement import registry as measurement_registry
 from rfad.domain.network_library import digest, library
@@ -97,6 +99,35 @@ def index(state, snapshot, document):
             rows.append(_row("output", job["job_id"], job["operation_method"], revision, "completed",
                              detail={"format": job.get("input", {}).get("format"), "artifacts": files}))
     return sorted(rows, key=lambda item: (item["kind"], item["id"]))
+
+
+def solver_details(service, project, state, rows):
+    """! @brief 해석 결과 원본의 조건, 생략과 주파수 표본을 고정 개정에 연결한다."""
+    identities = [row["id"] for row in rows if row["kind"] == "solver_result"]
+    details = []
+    for identity in identities[:12]:
+        record = state["solver_results"][identity]
+        try:
+            result = json.loads(read_solver_artifact(service, project, record, record["normalized"]))
+        except ProjectError as error:
+            if error.code != "E_MISSING_ARTIFACT" and not isinstance(error.__cause__, FileNotFoundError):
+                raise
+            details.append({"id": identity, "state": "missing", "artifact": record["normalized"]})
+            continue
+        plan = result["provenance"]["analysis_plan"]
+        case = plan["case"]
+        series = []
+        for sample in result.get("samples", [])[:201]:
+            value = sample.get("s11")
+            if value is not None:
+                magnitude = math.hypot(*value)
+                series.append([sample["frequency_hz"], 20 * math.log10(magnitude) if magnitude else None])
+        details.append({"id": identity, "state": "verified", "artifact": record["normalized"],
+                        "case_sha256": canonical_hash(case), "settings": case.get("settings", {}),
+                        "omissions": [*plan.get("model_report", {}).get("omissions", []),
+                                      *plan.get("physical_setup_omissions", [])],
+                        "s11_db_by_frequency_hz": series})
+    return {"items": details, "total": len(identities)}
 
 
 def summary(snapshot, document, rows):

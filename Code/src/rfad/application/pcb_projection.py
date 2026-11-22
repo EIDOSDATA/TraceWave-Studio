@@ -7,6 +7,7 @@
 from copy import deepcopy
 import math
 
+from rfad.application.canonical import canonical_hash
 from rfad.application.pcb_contacts import validate_native_contacts
 from rfad.application.pcb_geometry import (MAX_POLYGON_POINTS, fail, scalar, length, point,
                                             shape_polygons, distance_to_shape, _inside_board)
@@ -315,6 +316,13 @@ def project_pcb(document, settings):
         case["environment"] = environment
     surfaces = project_surfaces(document, case, volume)
     if surfaces:
+        from rfad.domain.physical_setup import setup
+        surface_ids = {row["object_id"] for row in settings.get("local_mesh", []) if row["kind"] == "surface_opening"}
+        if surface_ids:
+            sources = {row["id"]: row for row in setup(document)["surfaces"]}
+            for row in surfaces:
+                if row["id"] in surface_ids:
+                    row["local_opening_keys"] = [canonical_hash(opening) for opening in sources[row["id"]]["openings"]]
         case["surface_layers"] = surfaces
     if environment is not None or surfaces:
         case["materials"] = list(materials.consumed.values())

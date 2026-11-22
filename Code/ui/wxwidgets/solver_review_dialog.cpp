@@ -267,6 +267,11 @@ public:
         quality->GetSizer()->Add(m_quality, 1, wxEXPAND);
         LoadFields(m_draft);
 
+        m_issueList = new wxChoice(this, wxID_ANY);
+        m_issueList->SetName("solver.review.issues");
+        m_issueList->Hide();
+        m_issueList->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { SelectIssue(); });
+        root->Add(m_issueList, 0, wxEXPAND | wxLEFT | wxRIGHT, pad);
         auto* actions = new wxBoxSizer(wxHORIZONTAL);
         auto* back = new wxButton(this, wxID_ANY, Display("조건 입력으로"));
         back->SetName("solver.review.back");
@@ -331,6 +336,10 @@ public:
         if (outcome == wxID_FORWARD)
         {
             return {Json(), "", m_repair};
+        }
+        if (outcome == wxID_APPLY)
+        {
+            return {Json(), "", std::nullopt, true};
         }
         return {m_result.at("settings"), m_saveName, std::nullopt};
     }
@@ -444,7 +453,47 @@ private:
         m_load->SetName("solver.conditions.apply");
         StudioTheme::Button(*m_load);
         m_load->Disable();
-        layout->Add(m_load, 0, wxLEFT | wxRIGHT | wxBOTTOM, gap);
+        auto* sourceActions = new wxBoxSizer(wxHORIZONTAL);
+        sourceActions->Add(m_load, 0, wxRIGHT, gap);
+        m_previousConfig = new wxButton(page, wxID_ANY, Display("이전 비교"));
+        m_nextConfig = new wxButton(page, wxID_ANY, Display("다음 비교"));
+        m_previousConfig->Disable();
+        m_nextConfig->Disable();
+        sourceActions->Add(m_previousConfig, 0, wxRIGHT, gap);
+        sourceActions->Add(m_nextConfig, 0, wxRIGHT, gap);
+        auto* editPort = new wxButton(page, wxID_ANY, Display("급전 속성"));
+        auto* editInstallation = new wxButton(page, wxID_ANY, Display("설치 구성 편집"));
+        sourceActions->Add(editPort, 0, wxRIGHT, gap);
+        sourceActions->Add(editInstallation, 0);
+        layout->Add(sourceActions, 0, wxLEFT | wxRIGHT | wxBOTTOM, gap);
+        const auto targets = m_catalog.value("local_mesh_targets", Json::array());
+        const auto found = std::find_if(targets.begin(), targets.end(), [](const Json& item)
+        {
+            return item.value("kind", "") == "port";
+        });
+        const std::string path = found == targets.end() ? "" : "ports." + found->at("id").get<std::string>() + ".resistance";
+        editPort->Enable(!path.empty() && m_propertyAvailable(path));
+        editPort->Bind(wxEVT_BUTTON, [this, path](wxCommandEvent&)
+        {
+            Json draft;
+            if (!m_pending && ReadSettings(draft, true))
+            {
+                m_draft = draft;
+                m_repair = Studio::SolverRepair{path, "해석 구성의 급전 속성을 편집하세요."};
+                EndModal(wxID_FORWARD);
+            }
+        });
+        editInstallation->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+        {
+            Json draft;
+            if (!m_pending && ReadSettings(draft, true))
+            {
+                m_draft = draft;
+                EndModal(wxID_APPLY);
+            }
+        });
+        m_previousConfig->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { SelectSource(m_configurationOffset - 120); });
+        m_nextConfig->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { SelectSource(m_configurationOffset + 120); });
 
         auto* save = new wxBoxSizer(wxHORIZONTAL);
         auto* caption = new wxStaticText(page, wxID_ANY, Display("조건 이름"));
@@ -493,8 +542,11 @@ private:
         });
     }
 
-    void SelectSource()
+    void SelectSource(int offset = 0)
     {
+        m_configurationOffset = offset;
+        m_previousConfig->Disable();
+        m_nextConfig->Disable();
         const int selection = m_source->GetSelection() - 1;
         const auto generation = ++m_sourceGeneration;
         m_selected = Json::object();
@@ -507,15 +559,11 @@ private:
             return;
         }
         const auto& row = m_sources.at(static_cast<std::size_t>(selection));
-        if (row.contains("settings"))
-        {
-            m_selected = row;
-            RefreshComparison();
-            return;
-        }
-        m_summary->SetLabel(Display("과거 결과가 사용한 해석 조건을 읽고 있습니다."));
+        m_summary->SetLabel(Display("선택한 당시 개정의 구성과 해석 조건을 읽고 있습니다."));
         const wxWeakRef<SolverReviewDialog> weak(this);
-        m_request("solver.conditions", Json{{"artifact_id", row.at("id")}},
+        const Json query{{row.contains("settings") ? "condition_id" : "artifact_id", row.at("id")},
+                         {"configuration_offset", offset}};
+        m_request("solver.conditions", query,
             [weak, generation](const Json& selected)
             {
                 if (weak && weak->m_sourceGeneration == generation)
@@ -552,9 +600,30 @@ private:
             source["feature_subdivisions"] = source.value("feature_subdivisions", 1);
             CompareValues(*m_comparison, current, source);
         }
+        const auto numeric = m_comparison->GetItemCount();
+        const auto configuration = m_selected.value("configuration", Json::object());
+        const auto valueText = [](const Json& value, bool exists)
+        {
+            return Display(!exists ? "항목 없음" : value.is_null() ? "미정" :
+                           value.is_string() ? value.get<std::string>() : value.dump());
+        };
+        for (const auto& item : configuration.value("items", Json::array()))
+        {
+            const auto label = item.at("name").get<std::string>() + " / " + item.at("label").get<std::string>();
+            const auto row = m_comparison->InsertItem(m_comparison->GetItemCount(), Display(label));
+            m_comparison->SetItem(row, 1, valueText(item.at("current"), item.at("current_exists")));
+            m_comparison->SetItem(row, 2, valueText(item.at("source"), item.at("source_exists")));
+        }
+        m_previousConfig->Enable(m_configurationOffset > 0);
+        m_nextConfig->Enable(configuration.value("next_offset", Json(nullptr)).is_number_integer());
         m_comparison->Thaw();
-        std::string note = valid ? "달라진 설정 " + std::to_string(m_comparison->GetItemCount()) + "개"
+        std::string note = valid ? "달라진 설정 " + std::to_string(numeric) + "개"
                                  : "현재 입력을 읽을 수 없습니다. 선택한 조건은 불러올 수 있습니다.";
+        note += " / 급전·설치·정합 차이 " + std::to_string(configuration.value("total", 0)) + "개";
+        if (configuration.contains("unavailable"))
+        {
+            note += "\n" + configuration.at("unavailable").get<std::string>();
+        }
         const auto& own = m_catalog.at("design");
         const auto& prior = m_selected.at("design");
         const auto revision = m_selected.at("revision_id").get<std::string>();
@@ -614,6 +683,20 @@ private:
         m_full = new wxCheckBox(page, wxID_ANY, Display("전체 영역과 PML 경계"));
         m_full->SetName("solver.review.full");
         controls->Add(m_full, 0, wxALIGN_CENTER_VERTICAL);
+        m_pickRegion = new wxButton(page, wxID_ANY, Display("XY 영역에서 국부 격자 추가"));
+        m_pickRegion->SetName("solver.local.pick_region");
+        m_pickRegion->Disable();
+        controls->Add(m_pickRegion, 0, wxLEFT, gap);
+        m_pickRegion->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+        {
+            if (!m_result.empty() && m_local->Rules().size() < 16)
+            {
+                m_plane->SetSelection(0);
+                m_plot->SetView(0, m_full->GetValue());
+                m_plot->StartRegionPick([this](const Json& bounds) { m_local->AddFromBounds(bounds); });
+                SetStatus("XY 격자에서 영역의 두 모서리를 선택하세요. Z는 모델 높이 범위를 사용합니다.");
+            }
+        });
         controls->AddStretchSpacer();
         m_gridRepair = new wxButton(page, wxID_ANY, Display("관련 설정으로 이동"));
         m_gridRepair->SetName("solver.review.quality_edit");
@@ -630,6 +713,24 @@ private:
         m_axis->SetSelection(0);
         controls->Add(m_axis);
         page->GetSizer()->Add(controls, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
+
+        m_intervals = new wxChoice(page, wxID_ANY);
+        m_intervals->SetName("solver.review.intervals");
+        m_intervals->Hide();
+        page->GetSizer()->Add(m_intervals, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
+        m_intervals->Bind(wxEVT_CHOICE, [this](wxCommandEvent&)
+        {
+            const auto selection = m_intervals->GetSelection();
+            if (selection <= 0)
+            {
+                return;
+            }
+            const auto& row = m_result.at("mesh").at("interval_report").at("intervals").at(selection - 1);
+            const int axis = row.at("axis").get<std::string>().at(0) - 'x';
+            LocateBand(axis, row.at("bounds_mm").get<std::array<double, 2>>(),
+                       row.at("first_line").get<long>(), true);
+            SetGridRepair(row.at("setting_path").get<std::string>());
+        });
 
         auto* drawing = new wxBoxSizer(wxHORIZONTAL);
         m_plot = new SolverMeshView(page);
@@ -842,6 +943,9 @@ private:
     void ClearResult()
     {
         m_plot->DisplayPlan(nullptr);
+        m_pickRegion->Disable();
+        m_intervals->Clear();
+        m_intervals->Hide();
         m_coordinates->DisplayAxis(nullptr);
         m_result = Json::object();
         m_model->DeleteAllItems();
@@ -859,12 +963,15 @@ private:
         m_save->Enable(false);
         m_repair.reset();
         m_jump->Hide();
+        m_issues = Json::array();
+        m_issueList->Clear();
+        m_issueList->Hide();
     }
 
     void Invalidate()
     {
         RefreshComparison();
-        if (!m_result.empty() || m_repair)
+        if (!m_result.empty() || m_repair || !m_issues.empty())
         {
             ClearResult();
             SetStatus("입력값이 바뀌었습니다. 현재 조건을 다시 검토하세요.");
@@ -977,7 +1084,7 @@ private:
         m_check->Enable(false);
         SetStatus("해석 계획과 실제 입력 격자선을 확인하고 있습니다.");
         const wxWeakRef<SolverReviewDialog> weak(this);
-        m_request("solver.preview", Json{{"settings", settings}},
+        m_request("solver.preview", Json{{"settings", settings}, {"include_all_diagnostics", true}},
             [weak](const Json& result)
             {
                 if (weak)
@@ -1008,17 +1115,51 @@ private:
     {
         EnableInputs();
         const auto data = error.value("data", Json::object());
-        Json details = Json::object();
-        for (const auto& diagnostic : data.value("diagnostics", Json::array()))
+        const auto diagnostics = data.value("diagnostics", Json::array());
+        if (!diagnostics.empty())
         {
-            const auto candidate = diagnostic.value("details", Json::object());
-            if (candidate.contains("field_path"))
-            {
-                details = candidate;
-                break;
-            }
+            ShowIssues(diagnostics, diagnostics.size());
+            return;
         }
-        auto problem = DiagnosticMessage(error);
+        SetStatus(DiagnosticMessage(error));
+    }
+
+    /** @brief 목록에서 고른 진단이 다음 속성 이동의 유일한 대상이 된다. */
+    void ShowIssues(const Json& diagnostics, std::size_t total)
+    {
+        m_issues = diagnostics;
+        m_issueTotal = total;
+        m_issueList->Clear();
+        std::size_t index = 0;
+        for (const auto& row : m_issues)
+        {
+            const auto path = row.value("details", Json::object()).value("field_path", std::string());
+            const auto label = row.value("message_ko", std::string());
+            m_issueList->Append(Display(std::to_string(++index) + " / " + label +
+                                        (path.empty() ? "" : " / " + path)));
+        }
+        m_issueList->SetSelection(0);
+        m_issueList->Show();
+        SelectIssue();
+    }
+
+    void SelectIssue()
+    {
+        const auto index = m_issueList->GetSelection();
+        if (index == wxNOT_FOUND || static_cast<std::size_t>(index) >= m_issues.size())
+        {
+            return;
+        }
+        const auto& diagnostic = m_issues.at(static_cast<std::size_t>(index));
+        const auto details = diagnostic.value("details", Json::object());
+        auto problem = "차단 문제 " + std::to_string(index + 1) + " / " + std::to_string(m_issueTotal) +
+                       "\n" + diagnostic.value("message_ko", std::string("해석 입력을 확인하세요."));
+        if (m_issues.size() < m_issueTotal)
+        {
+            problem += "\n앞 " + std::to_string(m_issues.size()) + "개를 표시합니다. 수정 후 다시 검토하세요.";
+        }
+        m_repair.reset();
+        m_jump->Hide();
         const auto field = details.value("field_path", std::string());
         const bool local = field.rfind("settings.local_mesh", 0) == 0;
         if (details.contains("grid_point_limit"))
@@ -1055,6 +1196,11 @@ private:
     void Accept(const Json& result)
     {
         EnableInputs();
+        if (result.value("revision_id", std::string()) == m_revision && result.contains("blocking_diagnostics"))
+        {
+            ShowIssues(result.at("blocking_diagnostics"), result.at("blocking_total").get<std::size_t>());
+            return;
+        }
         if (result.value("revision_id", std::string()) != m_revision ||
             !result.contains("mesh") || !result.contains("model"))
         {
@@ -1083,6 +1229,27 @@ private:
             Display("모델 최대 간격 %.8g mm  |  임계 구간 최소 분할 %d  |  %s"),
             settings.at("grid_mm").get<double>(), settings.value("feature_subdivisions", 1), grid));
         m_plot->DisplayPlan(&m_result);
+        m_pickRegion->Enable(m_local->Rules().size() < 16);
+        m_intervals->Clear();
+        if (mesh.contains("interval_report"))
+        {
+            const auto& report = mesh.at("interval_report");
+            const auto& intervals = report.at("intervals");
+            m_intervals->Append(wxString::Format(Display("간극과 최소 셀 위치 %llu/%llu | 자유공간 CFL 참고 %.4g ps"),
+                static_cast<unsigned long long>(intervals.size()), report.at("interval_total").get<unsigned long long>(),
+                report.at("vacuum_cartesian_cfl_seconds").get<double>() * 1e12));
+            for (const auto& row : intervals)
+            {
+                const auto kind = row.at("kind").get<std::string>();
+                const char* label = kind == "minimum_cell" ? "최소 셀" : kind == "feed_gap" ? "급전 간극" :
+                    kind == "surface_opening" ? "표면 개구" : kind == "via_bore" ? "비아 내경" : "국부 간극";
+                m_intervals->Append(wxString::Format(Display("%s %s / %.6g mm / 교차 %d셀, 완전 %d셀"),
+                    Display(label), Display(row.at("axis").get<std::string>()), row.at("width_mm").get<double>(),
+                    row.at("cells").get<int>(), row.at("full_cells").get<int>()));
+            }
+            m_intervals->SetSelection(0);
+            m_intervals->Show();
+        }
         m_local->DisplayReport(mesh.value("local_mesh_report", Json::object()));
         const bool hasQuality = mesh.contains("quality_reference");
         m_quality->DisplayMesh(hasQuality ? &mesh : nullptr, &settings);
@@ -1136,8 +1303,14 @@ private:
     Json m_sources = Json::array();
     Json m_selected = Json::object();
     std::size_t m_sourceGeneration = 0;
+    int m_configurationOffset = 0;
+    wxButton* m_previousConfig = nullptr;
+    wxButton* m_nextConfig = nullptr;
     std::string m_saveName;
     std::optional<Studio::SolverRepair> m_repair;
+    wxChoice* m_issueList = nullptr;
+    Json m_issues = Json::array();
+    std::size_t m_issueTotal = 0;
     wxChoice* m_source = nullptr;
     wxListCtrl* m_comparison = nullptr;
     wxStaticText* m_summary = nullptr;
@@ -1171,6 +1344,8 @@ private:
     std::size_t m_localPage = 0;
     SolverMeshQualityPanel* m_quality = nullptr;
     wxButton* m_gridRepair = nullptr;
+    wxButton* m_pickRegion = nullptr;
+    wxChoice* m_intervals = nullptr;
     std::string m_gridRepairPath;
 };
 }
@@ -1181,7 +1356,7 @@ std::optional<Studio::SolverReviewDecision> Studio::ShowSolverReview(wxWindow* p
 {
     SolverReviewDialog dialog(parent, revision, draft, catalog, resultId, std::move(request), std::move(propertyAvailable));
     const int outcome = dialog.ShowModal();
-    if (outcome == wxID_OK || outcome == wxID_SAVE || outcome == wxID_FORWARD)
+    if (outcome == wxID_OK || outcome == wxID_SAVE || outcome == wxID_FORWARD || outcome == wxID_APPLY)
     {
         return dialog.Decision(outcome);
     }

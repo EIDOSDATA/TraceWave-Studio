@@ -87,8 +87,22 @@ SolverMeshView::SolverMeshView(wxWindow* parent)
     SetBackgroundStyle(wxBG_STYLE_PAINT);
     SetMinSize(FromDIP(wxSize(260, 170)));
     Bind(wxEVT_PAINT, &SolverMeshView::Paint, this);
+    Bind(wxEVT_LEFT_DOWN, &SolverMeshView::Pick, this);
+    Bind(wxEVT_CHAR_HOOK, [this](wxKeyEvent& event)
+    {
+        if (event.GetKeyCode() == WXK_ESCAPE && m_region)
+        {
+            m_region = {};
+            m_corner.reset();
+            SetCursor(wxNullCursor);
+            Refresh(false);
+            return;
+        }
+        event.Skip();
+    });
     Bind(wxEVT_SIZE, [this](wxSizeEvent& event)
     {
+        m_scale = 0;
         Refresh(false);
         event.Skip();
     });
@@ -97,6 +111,10 @@ SolverMeshView::SolverMeshView(wxWindow* parent)
 void SolverMeshView::DisplayPlan(const Json* review)
 {
     m_review = review;
+    m_scale = 0;
+    m_region = {};
+    m_corner.reset();
+    SetCursor(wxNullCursor);
     m_highlight.clear();
     m_bandAxis = -1;
     m_comparison.reset();
@@ -107,7 +125,61 @@ void SolverMeshView::SetView(int plane, bool full)
 {
     m_plane = plane;
     m_full = full;
+    m_scale = 0;
+    if (plane != 0)
+    {
+        m_region = {};
+        m_corner.reset();
+        SetCursor(wxNullCursor);
+    }
     Refresh(false);
+}
+
+void SolverMeshView::StartRegionPick(std::function<void(const Json&)> selected)
+{
+    if (m_review && m_plane == 0)
+    {
+        m_region = std::move(selected);
+        m_corner.reset();
+        SetCursor(wxCursor(wxCURSOR_CROSS));
+        SetFocus();
+        Refresh(false);
+    }
+}
+
+void SolverMeshView::Pick(wxMouseEvent& event)
+{
+    if (!m_region || !m_review || m_scale <= 0 || m_plane != 0)
+    {
+        event.Skip();
+        return;
+    }
+    const auto point = event.GetPosition();
+    const std::array<double, 2> position{m_visible[0][0] + (point.x - m_leftBottom[0]) / m_scale,
+                                         m_visible[1][0] + (m_leftBottom[1] - point.y) / m_scale};
+    const auto model = m_review->at("mesh").at("model_bounds_mm").get<Bounds>();
+    if (position[0] < model[0][0] || position[0] > model[0][1] || position[1] < model[1][0] || position[1] > model[1][1])
+    {
+        return;
+    }
+    if (!m_corner)
+    {
+        m_corner = position;
+        Refresh(false);
+        return;
+    }
+    if (std::abs((*m_corner)[0] - position[0]) < 1e-7 || std::abs((*m_corner)[1] - position[1]) < 1e-7)
+    {
+        return;
+    }
+    const Json bounds = Json::array({Json::array({std::min((*m_corner)[0], position[0]), std::max((*m_corner)[0], position[0])}),
+                                     Json::array({std::min((*m_corner)[1], position[1]), std::max((*m_corner)[1], position[1])}),
+                                     model[2]});
+    auto callback = std::move(m_region);
+    m_corner.reset();
+    SetCursor(wxNullCursor);
+    Refresh(false);
+    callback(bounds);
 }
 
 void SolverMeshView::Highlight(const std::string& id)
@@ -170,6 +242,9 @@ void SolverMeshView::Paint(wxPaintEvent&)
     const double scale = std::min(availableWidth / (u[1] - u[0]), availableHeight / (v[1] - v[0]));
     const double left = (size.x - (u[1] - u[0]) * scale) / 2;
     const double bottom = (size.y + (v[1] - v[0]) * scale) / 2;
+    m_leftBottom = {left, bottom};
+    m_visible = {u, v};
+    m_scale = scale;
     const auto point = [&](double x, double y)
     {
         return wxPoint(static_cast<int>(std::lround(left + (x - u[0]) * scale)),
@@ -207,6 +282,13 @@ void SolverMeshView::Paint(wxPaintEvent&)
     };
     drawAxis(uLines, true, u);
     drawAxis(vLines, false, v);
+    if (m_corner)
+    {
+        dc.SetPen(wxPen(palette.accent, FromDIP(2)));
+        const auto marker = point((*m_corner)[0], (*m_corner)[1]);
+        dc.DrawLine(marker.x - FromDIP(6), marker.y, marker.x + FromDIP(6), marker.y);
+        dc.DrawLine(marker.x, marker.y - FromDIP(6), marker.x, marker.y + FromDIP(6));
+    }
     auto markPml = [&](int axis, bool horizontal, const Span& visible)
     {
         for (const auto& coordinate : mesh.at("axes").at(Axes[axis]).at("pml_inner_mm"))

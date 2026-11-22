@@ -6,8 +6,10 @@ from rfad.application.project_contract import _fields, _uuid
 from rfad.domain.errors import ProjectError
 from rfad.domain.object_names import display_names
 from rfad.domain.pcb_evidence_pool import POOL_SCHEMA
+from rfad.domain.pcb_features import records
 from rfad.domain.pcb_selection import EXTENSION_KEY
 from rfad.domain.pcb_selection_evidence import encoded
+from rfad.domain.precision_command import EXTENSION_KEY as PRECISION_KEY
 
 
 METHOD = "result.solver_evidence"
@@ -42,6 +44,9 @@ def _recorded_objects(document, case):
         ("port", "ports", [case["port"]]),
         ("terminal", "geometry", [item for item in case["shapes"] if item["id"] in
                                  (case["port"]["positive_geometry_id"], case["port"]["reference_geometry_id"])]),
+        ("geometry", "geometry", [row for row in case["shapes"] if row["id"] not in
+                                  (case["port"]["positive_geometry_id"], case["port"]["reference_geometry_id"])]),
+        ("geometry", "geometry", case.get("vias", [])),
         ("layer", "stackup", case["layers"]),
     ):
         names = display_names(document, collection)
@@ -103,7 +108,8 @@ def _catalog_sources(document, kind, original):
     selection = document["extensions"].get(EXTENSION_KEY)
     if selection is None:
         return {}, {}
-    collection = {"material": "materials", "port": "ports", "terminal": "geometry", "layer": "stackup"}[kind]
+    collection = {"material": "materials", "port": "ports", "terminal": "geometry",
+                  "geometry": "geometry", "layer": "stackup"}[kind]
     records = (selection, *selection.get("history", []))
     if selection["schema"] == POOL_SCHEMA:
         entries = selection["evidence_pool"]
@@ -122,6 +128,29 @@ def _catalog_sources(document, kind, original):
                 citations.setdefault(reference, []).append({"field": target["field"], "basis": decision["basis"],
                     "pointer": decision["source_pointer"], "reason": decision["reason"], "catalog": record["catalog"]})
     return {row["id"]: row for row in entries}, citations
+
+
+def _geometry_lineage(document, current, original):
+    """! @brief 제조 원문과 대응 ID를 확인하고 현재 개정에서 바뀐 필드를 표시한다."""
+    identity = original["id"]
+    imports = []
+    for row in records(document, "pcb.imports"):
+        bindings = [binding["source_object_id"] for binding in row["bindings"]
+                    if binding["collection"] == "geometry" and binding["id"] == identity]
+        if bindings:
+            imports.append({"id": row["id"], "format": row["format"], "format_version": row["format_version"],
+                            "source_objects": bindings, "source_files": row["source_files"], "report": row["report"]})
+    edits = []
+    for row in document["extensions"].get(PRECISION_KEY, {}).get("records", []):
+        if any(candidate["id"] == identity for candidate in [*row["before"], *row["after"]]):
+            edits.append({key: row[key] for key in ("id", "operation", "base_revision", "record_hash")})
+    recent = next((row for row in current["geometry"] if row["id"] == identity), None)
+    changed = [] if recent is None else sorted(key for key in original.keys() | recent.keys()
+                                               if key not in original or key not in recent or original[key] != recent[key])
+    return {"original_sha256": canonical_hash(original), "imports": imports, "precision_edits": edits,
+            "current_revision_id": current["revision_id"],
+            "current_state": "removed" if recent is None else "edited" if changed else "same",
+            "changed_fields": changed}
 
 
 def read(service, params):
@@ -173,5 +202,6 @@ def read(service, params):
         entry = sources[index]
         reference = entry["reference"]
         return {**reply, **entry, "record": catalog.get(reference), "citations": citations.get(reference, [])}
+    lineage = (_geometry_lineage(document, service._load(project), original) if kind in ("geometry", "terminal") else None)
     return {**reply, "kind": kind, "id": identity, "name": name, "original": original, "used": computed,
-            "parameters": parameters, "sources": sources}
+            "parameters": parameters, "sources": sources, **({"geometry_lineage": lineage} if lineage else {})}
