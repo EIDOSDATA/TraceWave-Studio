@@ -21,6 +21,7 @@ from rfad.application.solver import _snapshot, _runtime, _uuid
 from rfad.domain.project import validate_project
 from rfad.domain.pcb_selection import EXTENSION_KEY as PCB_SELECTION_EXTENSION
 from rfad.domain.template_instance import EXTENSION_KEY as TEMPLATE_ORIGIN_EXTENSION
+from rfad.domain.copper_islands import KEY as COPPER_ISLANDS_KEY
 from rfad.domain.precision_command import EXTENSION_KEY as PRECISION_ORIGIN_EXTENSION
 from rfad.domain.network_library import KEY as NETWORK_LIBRARY_EXTENSION
 from rfad.domain.design_checks import declared_diagnostics
@@ -101,7 +102,7 @@ def check_pcb_input(document, settings):
     validate_settings(settings)
     # @brief validate_project가 검증한 편집 출처/외부 복소 자료는 원문에 보존하며 EM 형상에 투영하지 않는다.
     supported_extensions = {PCB_SELECTION_EXTENSION, TEMPLATE_ORIGIN_EXTENSION, PHYSICAL_KEY,
-                            PRECISION_ORIGIN_EXTENSION, NETWORK_LIBRARY_EXTENSION, "rfad.sweep-selection", "rfad.measurement", SOLVER_CONDITIONS_KEY, SMART_DIMENSIONS_KEY, SKETCH_KEY, DRAWING_ANNOTATIONS_KEY}
+                            PRECISION_ORIGIN_EXTENSION, COPPER_ISLANDS_KEY, NETWORK_LIBRARY_EXTENSION, "rfad.sweep-selection", "rfad.measurement", SOLVER_CONDITIONS_KEY, SMART_DIMENSIONS_KEY, SKETCH_KEY, DRAWING_ANNOTATIONS_KEY}
     if document["extensions"].keys() - supported_extensions:
         fail("E_UNSUPPORTED", "의미를 해석하지 않은 확장이 있는 PCB는 실행할 수 없습니다.", "extensions")
     check_em(document)

@@ -161,6 +161,7 @@ void PrecisionDialog::BuildFields()
     m_parameter = nullptr;
     m_axis = nullptr;
     m_trimTarget = nullptr;
+    m_patternExclusions = nullptr;
     m_join = nullptr;
     m_unit = nullptr;
     m_dimensionNote = nullptr;
@@ -224,6 +225,19 @@ void PrecisionDialog::BuildFields()
             number("pivot_y_mm", "회전 중심 Y (mm)", initial("pivot_y_mm", "0"));
             number("step_deg", "회전 간격 (deg, 반시계 양수)", initial("step_deg", "90"));
         }
+        wxString disabled;
+        for (const auto& value : previous.value("excluded_instances", Json::array()))
+        {
+            if (!disabled.empty())
+            {
+                disabled += ", ";
+            }
+            disabled += wxString::Format("%d", value.get<int>());
+        }
+        m_patternExclusions = new wxTextCtrl(m_fields, wxID_ANY, disabled);
+        m_patternExclusions->SetName("precision.excluded_instances");
+        row("제외할 순번 (예: 2, 4 / 원본은 1)", m_patternExclusions);
+        m_patternExclusions->Bind(wxEVT_TEXT, [this](wxCommandEvent&) { ChangeInputs(); });
     }
     else if (id == "copper_pour")
     {
@@ -231,11 +245,20 @@ void PrecisionDialog::BuildFields()
         number("clearance_mm", "다른 넷과 금지 영역 간격 (mm)", previous.value("clearance_mm", Json(0.25)).dump());
         number("tolerance_mm", "곡선 다각형 근사 허용값 (mm)", previous.value("tolerance_mm", Json(0.01)).dump());
     }
+    else if (id == "curve_chamfer")
+    {
+        const auto& selection = m_context.at("selection");
+        if (selection.size() == 2)
+        {
+            number("first_setback_mm", selection[0].at("label").get<std::string>() + " 절삭 길이 (mm)", "1");
+            number("second_setback_mm", selection[1].at("label").get<std::string>() + " 절삭 길이 (mm)", "1");
+        }
+    }
     else if (id == "line_fillet" || id == "curved_fillet")
     {
         number("radius_mm", "필렛 반경 (mm)", "1");
     }
-    else if (id == "curve_trim" && operation.at("enabled") == true)
+    else if ((id == "curve_trim" || id == "extend_to_boundary") && operation.at("enabled") == true)
     {
         m_trimTarget = new wxChoice(m_fields, wxID_ANY);
         m_trimTarget->SetName("precision.trim_target");
@@ -244,14 +267,14 @@ void PrecisionDialog::BuildFields()
             m_trimTarget->Append(Display(item.at("label")));
         }
         m_trimTarget->SetSelection(0);
-        row("자를 도체", m_trimTarget);
+        row(id == "curve_trim" ? "자를 도체" : "연장할 도체", m_trimTarget);
         m_trimTarget->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { ChangeInputs(); });
         m_axis = new wxChoice(m_fields, wxID_ANY);
         m_axis->SetName("precision.trim_keep");
-        m_axis->Append(Display("시작점에서 마지막 교차점까지 남기기"));
-        m_axis->Append(Display("첫 교차점에서 끝점까지 남기기"));
+        m_axis->Append(Display(id == "curve_trim" ? "시작점에서 마지막 교차점까지 남기기" : "시작점에서 바깥으로 연장"));
+        m_axis->Append(Display(id == "curve_trim" ? "첫 교차점에서 끝점까지 남기기" : "끝점에서 바깥으로 연장"));
         m_axis->SetSelection(0);
-        row("남길 부분", m_axis);
+        row(id == "curve_trim" ? "남길 부분" : "연장 방향", m_axis);
         m_axis->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { ChangeInputs(); });
     }
     else if (id == "curve_split")
@@ -396,10 +419,26 @@ Json PrecisionDialog::Input() const
         }
         values[key] = value;
     }
+    if (m_patternExclusions && !m_patternExclusions->GetValue().Strip(wxString::both).empty())
+    {
+        Json skipped = Json::array();
+        for (auto number : wxSplit(m_patternExclusions->GetValue(), ','))
+        {
+            long value = 0;
+            if (!number.Strip(wxString::both).ToLong(&value) || value < 2 || value > 16)
+            {
+                m_patternExclusions->SetFocus();
+                throw std::runtime_error("제외할 순번을 2~반복 수 범위의 정수로 입력하세요.");
+            }
+            skipped.push_back(value);
+        }
+        values["excluded_instances"] = skipped;
+    }
     if (m_trimTarget)
     {
         values["target_id"] = m_context.at("selection").at(m_trimTarget->GetSelection()).at("id");
-        values["keep"] = m_axis->GetSelection() == 0 ? "start" : "end";
+        const auto key = m_context.at("operations").at(index).at("id") == "curve_trim" ? "keep" : "endpoint";
+        values[key] = m_axis->GetSelection() == 0 ? "start" : "end";
     }
     else if (m_axis)
     {

@@ -434,6 +434,8 @@ def canvas_command(document: dict, operation: str, values: dict) -> dict:
     optional = set()
     if operation in ("create_line", "create_arc") and isinstance(values, dict) and "relations" in values:
         optional.add("relations")
+    if operation == "create_route" and isinstance(values, dict) and "transitions" in values:
+        optional.add("transitions")
     if type(values) is not dict or set(values) != OPERATIONS[operation] | optional:
         _fail("작업에 필요한 필드와 허용한 필드를 확인하십시오.", "values")
     identity = _uuid(values["id"], "values.id")

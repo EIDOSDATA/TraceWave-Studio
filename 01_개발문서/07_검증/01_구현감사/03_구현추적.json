@@ -7599,11 +7599,13 @@
         "detach_pattern",
         "copper_pour",
         "restore_copper_outline",
+        "curve_chamfer",
         "line_fillet",
         "curved_fillet",
         "curve_trim",
         "curve_split",
         "curve_extend",
+        "extend_to_boundary",
         "arc_offset",
         "dimension_set",
         "bind_dimension",
@@ -7956,6 +7958,10 @@
     },
     "canvas.page": {
       "extension_profile": "rfad.edit-view-pages/0.1",
+      "status": "implemented"
+    },
+    "canvas.route.review": {
+      "extension_profile": "rfad.canvas/0.1",
       "status": "implemented"
     },
     "catalog.get": {
@@ -15012,8 +15018,8 @@
     },
     {
       "path": "Code/src/rfad/application/canvas.py",
-      "text_sha256": "eb456a5d1b0f998d9a04366a808e463d49ae8934040e16d69fbfc0743a7ad299",
-      "utf8_bytes": 34449
+      "text_sha256": "d3886faf1866df63a8a1615c5a493fd3e13f6cf22506290f210fb75a76440a85",
+      "utf8_bytes": 34578
     },
     {
       "path": "Code/src/rfad/application/catalog_api.py",
@@ -15207,8 +15213,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "16b3491f0ea5d6801d986e0a965f26d9ab7e88e65dce52df88e1e33f1d6e4f48",
-      "utf8_bytes": 9927
+      "text_sha256": "95078b738593fba84a7fad552a10a60f6fb817a68a8efe8b234fb4e7805ec684",
+      "utf8_bytes": 10012
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
@@ -15222,13 +15228,13 @@
     },
     {
       "path": "Code/src/rfad/application/precision_candidates.py",
-      "text_sha256": "d1e3886e97e1bb73c03df726c1fc835b3f14d8097654e11c9eff15e4f26266be",
-      "utf8_bytes": 24938
+      "text_sha256": "c5050b5a67eaad76fb9696d9400622fedef82b4e09274b2798c8a811a380e91c",
+      "utf8_bytes": 30364
     },
     {
       "path": "Code/src/rfad/application/precision_service.py",
-      "text_sha256": "9fd2a769d8fe6eb3e946635cde0b43db5799d05b8473f38d18942ec40eb25cfc",
-      "utf8_bytes": 14336
+      "text_sha256": "abf23e8b73932f779747bdb3655502d83a82068663c5a578f45adb325a13b845",
+      "utf8_bytes": 14865
     },
     {
       "path": "Code/src/rfad/application/project_archive.py",
@@ -15367,8 +15373,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "d421774d773f180708b80b8a3063ef87bbef3edcd43fb2822151ce197e7d0555",
-      "utf8_bytes": 40329
+      "text_sha256": "c8e2b95e3d77ac02cef75233f3fb407864f98732edc6bd780792f9f4efd84960",
+      "utf8_bytes": 40544
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -15622,8 +15628,8 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "43d6258d532002dfc665e6355f30397a89bc7f541c5ebf4eb1a15149178795a6",
-      "utf8_bytes": 26212
+      "text_sha256": "2518dd7a9e26e8af5f1510b286f8cc67ae7914b36c8782d5195eb057e7501570",
+      "utf8_bytes": 27375
     },
     {
       "path": "Code/src/rfad/domain/radiation_polarization.py",
@@ -16142,8 +16148,8 @@
     },
     {
       "path": "Code/tests/test_precision_service.py",
-      "text_sha256": "b948be919a418d0fbe6a8181da44ef2bfbca2c1c270324c5f1e654255ce90fa1",
-      "utf8_bytes": 49237
+      "text_sha256": "1d6ac8f74fc30394c3088794cf67528f9f4ca3823315f7910f3054b3b4767115",
+      "utf8_bytes": 55055
     },
     {
       "path": "Code/tests/test_printed_seeds.py",
@@ -16422,8 +16428,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas.cpp",
-      "text_sha256": "15f86dfe3d61778cca9143f3b8ac515d4de0971a73b1a9e9a20b7c02987b8b9a",
-      "utf8_bytes": 36288
+      "text_sha256": "af89a4e32fac340e68ed0c9f433bba28958b80a53bb6b5fb754d9240b6f8ec8e",
+      "utf8_bytes": 40139
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_dimensions.cpp",
@@ -16607,8 +16613,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/precision_dialog.cpp",
-      "text_sha256": "a4a63efab96664e44e88428c42bf2ae56376c3203e7a1601d5eff08ba5f36bfe",
-      "utf8_bytes": 22230
+      "text_sha256": "612e877b4b285e2213bb1742972c0630613ae3e704841b3cfa64c9d3db846d9b",
+      "utf8_bytes": 24243
     },
     {
       "path": "Code/ui/wxwidgets/project_setup_dialog.cpp",

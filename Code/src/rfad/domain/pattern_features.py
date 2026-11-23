@@ -18,6 +18,12 @@ def generate(document, rows, operation, values, origin_id, names=None):
     if not count.is_integer() or not 2 <= count <= MAX_SELECTION // len(rows):
         fail("반복 수는 원본을 포함한 정수이며, 결과 객체는 전체 16개 이하여야 합니다.", "count", "E_RESOURCE")
     count = int(count)
+    omitted = values.get("excluded_instances", [])
+    if (type(omitted) is not list or len(omitted) >= count or
+            any(type(index) is not int or not 2 <= index <= count for index in omitted) or
+            len(set(omitted)) != len(omitted)):
+        fail("제외 순번에는 원본을 제외한 2~반복 수 사이의 정수를 한 번씩 지정하세요.", "excluded_instances", "E_SCHEMA")
+    included = [index for index in range(count) if index + 1 not in omitted]
     linear = operation == "linear_pattern"
     if linear:
         x, y = (number(values[key], key) for key in ("dx_mm", "dy_mm"))
@@ -27,13 +33,14 @@ def generate(document, rows, operation, values, origin_id, names=None):
         step = number(values["step_deg"], "step_deg")
         if not 0 < abs(step) < 360:
             fail("원형 반복 간격의 절댓값은 0보다 크고 360도보다 작아야 합니다.", "step_deg", "E_SCHEMA")
-        angles = sorted((step * index) % 360 for index in range(count))
+        angles = sorted((step * index) % 360 for index in included)
         if any(b - a <= 1e-10 for a, b in zip(angles, angles[1:] + [angles[0] + 360])):
             fail("반복한 회전 위치가 겹칩니다. 개수나 간격을 조정하십시오.", "step_deg", "E_CONFLICT")
     output = list(rows)
     used_names = [row["name"] for row in document["geometry"] if "name" in row]
+    used_names.extend(name for name in (names or {}).values() if name)
     by_source = {row["id"]: {canonical_hash(row)} for row in rows}
-    for index in range(1, count):
+    for index in included[1:]:
         copied_ids = {row["id"]: str(uuid5(UUID(origin_id), f"pattern:{index}:{row['id']}")) for row in rows}
         transform_values = ({"dx_mm": x * index, "dy_mm": y * index} if linear else
                             {"pivot_x_mm": values["pivot_x_mm"], "pivot_y_mm": values["pivot_y_mm"], "angle_deg": step * index})
@@ -107,6 +114,13 @@ def regenerate(document, feature, values, rows):
     root = feature["root"]
     seeds = root["selection_ids"]
     names = {key: row.get("name") for key, row in current.items() if key not in seeds}
+    records = {row["id"]: row for row in document["extensions"][EXTENSION_KEY]["records"]}
+    ancestor = feature["head"]
+    while ancestor is not None:
+        for row in [*ancestor["after"], *ancestor["before"]]:
+            if row["id"] not in seeds and "name" in row:
+                names.setdefault(row["id"], row["name"])
+        ancestor = records.get(ancestor["engine"].get("pattern_parent"))
     output = generate(document, [current[key] for key in seeds], feature["kind"], values, root["id"], names)
     by_id = {row["id"]: row for row in output}
     changed = {key for key in current if key not in seeds and by_id.get(key) != current[key]}
@@ -130,6 +144,8 @@ def editing(document, rows, operation, values):
             if any(a["id"] not in seeds and a != b for a, b in zip(expected, old)):
                 fail("과거 독립 복사본이 따로 편집되었습니다. 원본 출처를 보존합니다.", "selection_ids", "E_CONFLICT")
         output = regenerate(document, feature, values, expected)
+        if feature["linked"] and output == expected and feature["head"]["values"] == values:
+            fail("반복 설정과 배치가 현재 값과 같습니다.", "values", "E_CONFLICT")
     return expected, output, {"name": "rfad.precision", "version": "0.1", "available": True, "reason": "",
                               "linked_pattern": operation != "detach_pattern", "pattern_parent": feature["head"]["id"]}
 

@@ -195,6 +195,61 @@ class PrecisionServiceTests(unittest.TestCase):
         self.service = ProjectService(self.workspace, auto_run=False)
         self.assertEqual(self.document(), final)
 
+    def test_extend_to_first_boundary_intersection_for_line_and_arc(self):
+        """! @brief 두 교점 중 가까운 경계, 반대 방향 실패, 고정 끝점과 취소를 확인한다."""
+        def add(kind, values):
+            """! @brief 독립 기하 검증에 쓸 경계와 원본 도체를 만든다."""
+            identity = str(uuid4())
+            self.canvas(kind, {"id": identity, "layer_id": self.layer, "width_mm": .3, **values})
+            return identity
+
+        line = add("create_line", {"start": [3, 10], "end": [5, 10]})
+        circle = add("create_arc", {"center": [10, 10], "radius_mm": 2, "start_angle_deg": 0, "sweep_angle_deg": 360})
+        first = self.document()["geometry"]
+        self.apply([line, circle], "extend_to_boundary", {"target_id": line, "endpoint": "end"})
+        self.assertAlmostEqual(Quantity(**self.shape(line)["end"][0]).as_unit("mm"), 8)
+        self.assertAlmostEqual(Quantity(**self.shape(line)["start"][0]).as_unit("mm"), 3)
+        blocked, _ = self.preview([line, circle], "extend_to_boundary", {"target_id": line, "endpoint": "start"})
+        self.assertFalse(blocked["can_apply"])
+        self.history("undo")
+        self.assertEqual(self.document()["geometry"], first)
+        collinear = add("create_line", {"start": [9, 10], "end": [13, 10]})
+        self.apply([line, collinear], "extend_to_boundary", {"target_id": line, "endpoint": "end"})
+        self.assertAlmostEqual(Quantity(**self.shape(line)["end"][0]).as_unit("mm"), 9)
+        arc = add("create_arc", {"center": [10, 10], "radius_mm": 4, "start_angle_deg": 0, "sweep_angle_deg": -45})
+        wall = add("create_line", {"start": [10, 4], "end": [10, 16]})
+        self.apply([arc, wall], "extend_to_boundary", {"target_id": arc, "endpoint": "end"})
+        self.assertAlmostEqual(Quantity(**self.shape(arc)["sweep_angle"]).as_unit("deg"), -90)
+        self.assertEqual(Quantity(**self.shape(arc)["radius"]).as_unit("mm"), 4)
+        self.apply([arc, wall], "extend_to_boundary", {"target_id": arc, "endpoint": "start"})
+        self.assertAlmostEqual(Quantity(**self.shape(arc)["start_angle"]).as_unit("deg"), 90)
+        self.assertAlmostEqual(Quantity(**self.shape(arc)["sweep_angle"]).as_unit("deg"), -180)
+
+    def test_pattern_instance_exclusion_keeps_original_slots(self):
+        """! @brief 지정 순번을 제외해도 다른 순번의 UUID와 원본 연결을 유지한다."""
+        seed = self.line()
+        settings = {"count": 4, "dx_mm": 2, "dy_mm": 0}
+        ids = self.apply([seed], "linear_pattern", settings)[0]["selection_ids"]
+        renamed = self.shape(ids[1])
+        renamed["name"] = "별도 조정한 둘째 사본"
+        self.command("geometry.set", {"geometry": renamed})
+        reduced = self.apply([ids[1]], "edit_linear_pattern", {**settings, "excluded_instances": [2, 4]})[0]
+        self.assertEqual(reduced["selection_ids"], [seed, ids[2]])
+        self.canvas("translate", {"id": seed, "dx_mm": 1, "dy_mm": 0})
+        self.assertAlmostEqual(Quantity(**self.shape(ids[2])["start"][0]).as_unit("mm"), 6)
+        restored = self.apply([ids[2]], "edit_linear_pattern", settings)[0]
+        self.assertEqual(restored["selection_ids"], ids)
+        self.assertEqual(self.shape(ids[1])["name"], renamed["name"])
+        self.history("undo")
+        self.assertEqual({row["id"] for row in self.document()["geometry"]}, {seed, ids[2]})
+        self.history("redo")
+        self.assertEqual({row["id"] for row in self.document()["geometry"]}, set(ids))
+        invalid, _ = self.preview([ids[2]], "edit_linear_pattern", {**settings, "excluded_instances": [1]})
+        self.assertFalse(invalid["can_apply"])
+        circle = {"count": 5, "step_deg": 90, "pivot_x_mm": 5, "pivot_y_mm": 5, "excluded_instances": [5]}
+        result = self.apply([seed], "circular_pattern", circle)[0]
+        self.assertEqual(len(result["selection_ids"]), 4)
+
     def test_edit_pattern_count_pitch_and_source_keep_copy_ids(self):
         """! @brief 직선 및 원형 반복에서 수량/피치, 원본 이동, 해제, 취소/재열기를 검사한다."""
         for kind in ("linear_pattern", "circular_pattern"):
@@ -377,6 +432,34 @@ class PrecisionServiceTests(unittest.TestCase):
                 self.assertEqual(edited["port"], original["port"])
                 self.assertEqual(len(edited["shapes"]), len(original["shapes"]) + 1)
                 self.assertEqual(after["nets"], source["nets"])
+
+    def test_chamfer_cuts_independent_arc_lengths_and_connects_original_ids(self):
+        """! @brief 선과 원호의 개별 절삭 길이, 선분 양 끝, 원본과 역명령을 확인한다."""
+        arc, line = str(uuid4()), str(uuid4())
+        self.canvas("create_arc", {"id": arc, "layer_id": self.layer, "width_mm": 0.4, "center": [10, 10],
+                                   "radius_mm": 4, "start_angle_deg": 0, "sweep_angle_deg": -90})
+        self.canvas("create_line", {"id": line, "layer_id": self.layer, "width_mm": 0.4,
+                                    "start": [10, 6], "end": [10, 1]})
+        originals = [self.shape(arc), self.shape(line)]
+        values = {"first_setback_mm": math.pi, "second_setback_mm": 2}
+        blocked, _ = self.preview([arc, line], "curve_chamfer", {**values, "second_setback_mm": 5})
+        self.assertFalse(blocked["can_apply"])
+        result, _ = self.apply([arc, line], "curve_chamfer", values)
+        self.assertEqual(result["selection_ids"][:2], [arc, line])
+        bridge = self.shape(result["selection_ids"][2])
+        self.assertEqual(bridge["kind"], "line_path")
+        self.assertEqual(bridge["width"], originals[0]["width"])
+        self.assertEqual(bridge["net_id"], originals[0]["net_id"])
+        self.assertEqual(self.shape(arc)["radius"], originals[0]["radius"])
+        self.assertAlmostEqual(Quantity(**self.shape(arc)["sweep_angle"]).as_unit("deg"), -45)
+        for key, expected in (("start", (10 + math.sqrt(8), 10 - math.sqrt(8))), ("end", (10, 4))):
+            for item, value in zip(bridge[key], expected):
+                self.assertAlmostEqual(Quantity(**item).as_unit("mm"), value)
+        final = self.document()["geometry"]
+        self.history("undo")
+        self.assertEqual([self.shape(arc), self.shape(line)], originals)
+        self.history("redo")
+        self.assertEqual(self.document()["geometry"], final)
 
     def test_line_fillet_has_exact_radius_and_keeps_both_line_ids(self):
         """! @brief 90도 모서리의 접점과 원호 중심을 확인하고 초과 반경을 차단한다."""

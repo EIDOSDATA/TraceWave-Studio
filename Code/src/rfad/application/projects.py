@@ -321,7 +321,7 @@ class ProjectService:
                 raise ProjectError("E_UNSUPPORTED", "해석 조건은 solver.conditions.save로 저장하십시오.")
             if data["type"] in ("measurement.registry.replace", "measurement.workspace.replace"):
                 raise ProjectError("E_UNSUPPORTED", "측정 원본 편집은 검토된 측정 API를 사용하십시오.")
-            if data["type"] in ("pcb.features.replace", "pcb.features.replay"):
+            if data["type"] in ("pcb.features.replace", "pcb.features.replay", "pcb.copper-pour.replay"):
                 raise ProjectError("E_UNSUPPORTED", "PCB 원본 편집은 pcb.features.preview/apply를 사용하십시오.")
             if data["type"] == "sweep.selection.apply":
                 raise ProjectError("E_UNSUPPORTED", "후보 채택은 sweep.selection.preview/apply를 사용하십시오.")

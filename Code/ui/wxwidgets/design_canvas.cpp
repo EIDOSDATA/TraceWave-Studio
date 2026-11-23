@@ -60,6 +60,20 @@ DesignCanvas::DesignCanvas(wxWindow* parent)
     : wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS | wxBORDER_NONE),
       m_colours(StudioAppearance::CanvasColours::Read())
 {
+    m_routeTimer.SetOwner(this);
+    Bind(wxEVT_TIMER, [this](wxTimerEvent&)
+    {
+        if (!onRouteReview || m_routePending || m_tool != "route" || m_points.empty())
+        {
+            return;
+        }
+        auto values = RouteDraft(true);
+        if (values.at("points").size() >= 2)
+        {
+            m_routePending = m_routeVersion;
+            onRouteReview(values, m_routePending);
+        }
+    }, m_routeTimer.GetId());
     SetBackgroundStyle(wxBG_STYLE_PAINT);
     SetMinSize(FromDIP(wxSize(260, 220)));
     Bind(wxEVT_PAINT, &DesignCanvas::OnPaint, this);
@@ -234,7 +248,86 @@ void DesignCanvas::SetTool(const std::string& tool)
 
 void DesignCanvas::SetRouteClearance(double gap)
 {
-    m_routeClearance = gap;
+    if (m_routeClearance != gap)
+    {
+        m_routeClearance = gap;
+        QueueRouteReview();
+    }
+}
+
+void DesignCanvas::QueueRouteReview()
+{
+    if (m_tool == "route" && !m_points.empty())
+    {
+        ++m_routeVersion;
+        m_routeConflict = false;
+        m_routeTimer.StartOnce(180);
+    }
+}
+
+void DesignCanvas::PresentRouteReview(unsigned long version, bool valid, const std::string& message)
+{
+    if (m_routePending != version)
+    {
+        return;
+    }
+    m_routePending = 0;
+    if (m_tool != "route" || m_points.empty() || !m_editingEnabled)
+    {
+        return;
+    }
+    if (version != m_routeVersion)
+    {
+        m_routeTimer.StartOnce(180);
+        return;
+    }
+    m_routeConflict = !valid;
+    Status(message + " / V 층 전환, Enter 적용, Backspace 되돌리기");
+    Refresh(false);
+}
+
+DesignCanvas::Json DesignCanvas::RouteDraft(bool includeCursor) const
+{
+    Json points = Json::array();
+    for (const auto& point : m_points)
+    {
+        points.push_back(Coordinates(GeometryPoint(point)));
+    }
+    if (includeCursor && !m_points.empty() && m_points.size() < 33 && Distance(m_points.back(), m_cursor) > MinimumLength)
+    {
+        points.push_back(Coordinates(GeometryPoint(m_cursor)));
+    }
+    Json values{{"source_id", m_routeSource}, {"layer_id", m_drawingLayer}, {"width_mm", m_strokeWidth},
+                {"clearance_mm", m_routeClearance}, {"points", points}};
+    if (!m_routeTransitions.empty())
+    {
+        values["transitions"] = m_routeTransitions;
+    }
+    return values;
+}
+
+void DesignCanvas::SetRouteTransition(const Json& settings)
+{
+    if (m_tool != "route" || m_points.size() < 2)
+    {
+        return;
+    }
+    const auto index = m_points.size() - 1;
+    if (!m_routeTransitions.empty() && m_routeTransitions.back().at("index") == index)
+    {
+        m_routeTransitions.erase(m_routeTransitions.end() - 1);
+    }
+    if (m_routeTransitions.size() >= 8)
+    {
+        Status("한 배선에서 층 전환은 8개까지 가능합니다.");
+        return;
+    }
+    auto row = settings;
+    row["index"] = index;
+    m_routeTransitions.push_back(row);
+    QueueRouteReview();
+    SetFocus();
+    Refresh(false);
 }
 
 void DesignCanvas::SetDrawingLayer(const std::string& identity)
@@ -252,7 +345,11 @@ void DesignCanvas::SetStrokeWidth(double widthMm)
     {
         throw std::runtime_error("선 폭은 유한한 양수여야 합니다.");
     }
-    m_strokeWidth = widthMm;
+    if (m_strokeWidth != widthMm)
+    {
+        m_strokeWidth = widthMm;
+        QueueRouteReview();
+    }
     if (!m_points.empty())
     {
         Refresh(false);
@@ -350,6 +447,11 @@ void DesignCanvas::ReleaseOwnedCapture()
 void DesignCanvas::CancelGesture()
 {
     const bool changed = HasGesture() || m_snap.has_value();
+    ++m_routeVersion;
+    m_routePending = 0;
+    m_routeTimer.Stop();
+    m_routeTransitions.clear();
+    m_routeConflict = false;
     m_points.clear();
     m_startSnap.reset();
     m_endpoint.reset();
@@ -644,7 +746,16 @@ void DesignCanvas::DrawPreview(wxDC& dc, CanvasRenderer& renderer) const
                 line.start = GeometryPoint(a);
                 line.end = GeometryPoint(b);
                 line.width = m_strokeWidth;
-                renderer.DrawShape(line, {0.0, 0.0}, wxColour(64, 148, 209), false);
+                renderer.DrawShape(line, {0.0, 0.0}, m_routeConflict ? wxColour(186, 56, 50) : wxColour(64, 148, 209), false);
+            }
+        }
+        for (const auto& via : m_routeTransitions)
+        {
+            const auto index = via.at("index").get<std::size_t>();
+            if (index < m_points.size())
+            {
+                dc.DrawCircle(WorldToScreen(m_points[index]), std::max(FromDIP(3),
+                              static_cast<int>(via.at("pad_diameter_mm").get<double>() * m_pixelsPerMm / 2)));
             }
         }
         return;
@@ -792,6 +903,7 @@ void DesignCanvas::CommitDrawing(bool clockwise)
     {
         if (m_points.empty())
         {
+            m_routeTransitions.clear();
             m_routeSource = HitTest(WorldToScreen(m_cursor), true);
             if (m_routeSource.empty())
             {
@@ -805,7 +917,8 @@ void DesignCanvas::CommitDrawing(bool clockwise)
             return;
         }
         m_points.push_back(m_cursor);
-        Status("다음 경유점을 클릭하거나 Enter로 배선을 적용하세요. Backspace는 마지막 점을 취소합니다.");
+        QueueRouteReview();
+        Status("다음 경유점을 클릭하세요. V 층 전환, Enter 적용, Backspace 되돌리기");
         Refresh(false);
         return;
     }
@@ -951,7 +1064,12 @@ void DesignCanvas::OnMotion(wxMouseEvent& event)
 {
     const wxPoint point = event.GetPosition();
     const bool hadSnap = m_snap.has_value();
+    const auto previous = m_cursor;
     UpdateCursor(point);
+    if (Distance(previous, m_cursor) > MinimumLength)
+    {
+        QueueRouteReview();
+    }
     m_clockwise = event.ShiftDown();
     if (m_gesture.Panning())
     {
@@ -1050,22 +1168,36 @@ void DesignCanvas::OnKeyDown(wxKeyEvent& event)
         }
         return;
     }
+    if (m_tool == "route" && m_editingEnabled && m_points.size() >= 2 && event.GetKeyCode() == 'V' && onRouteLayer)
+    {
+        auto count = m_routeTransitions.size();
+        if (count > 0 && m_routeTransitions.back().at("index") == m_points.size() - 1)
+        {
+            --count;
+        }
+        onRouteLayer(count == 0 ? m_drawingLayer : m_routeTransitions[count - 1].at("layer_id").get<std::string>());
+        return;
+    }
     if (m_tool == "route" && !m_points.empty() && event.GetKeyCode() == WXK_BACK)
     {
-        m_points.pop_back();
+        if (!m_routeTransitions.empty() && m_routeTransitions.back().at("index") == m_points.size() - 1)
+        {
+            m_routeTransitions.erase(m_routeTransitions.end() - 1);
+        }
+        else
+        {
+            m_points.pop_back();
+        }
+        QueueRouteReview();
         Refresh(false);
         return;
     }
     if (m_tool == "route" && m_editingEnabled && m_points.size() >= 2 &&
         (event.GetKeyCode() == WXK_RETURN || event.GetKeyCode() == WXK_NUMPAD_ENTER))
     {
-        Json points = Json::array();
-        for (const auto& point : m_points)
-        {
-            points.push_back(Coordinates(GeometryPoint(point)));
-        }
-        Emit({{"type", "create_route"}, {"source_id", m_routeSource}, {"layer_id", m_drawingLayer},
-              {"width_mm", m_strokeWidth}, {"clearance_mm", m_routeClearance}, {"points", points}});
+        auto values = RouteDraft(false);
+        values["type"] = "create_route";
+        Emit(values);
         return;
     }
     if (event.GetKeyCode() == WXK_DELETE && m_editingEnabled && m_tool == "select" && !m_selection.empty())

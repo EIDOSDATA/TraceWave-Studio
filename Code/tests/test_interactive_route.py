@@ -124,3 +124,131 @@ class InteractiveRouteTests(unittest.TestCase):
                 apply_pour(copper_pour.RESTORE, {})
                 self.assertEqual(geometry(current(), plane["id"]), plane)
                 self.assertFalse(copper_pour.active(current()))
+
+
+    @unittest.skipUnless(runtime()[1]["available"], "고정 Shapely/GEOS 엔진 필요")
+    def test_split_merge_owns_each_island_and_undo_restores_exactly(self):
+        """! @brief 장애물 이동에 따른 분할과 병합, 이름 보존, 소유권 위조 거절과 자식 선택 복원을 검사한다."""
+        from rfad.domain import copper_islands
+        from rfad.domain.project import validate_project
+
+        doc, _ = sketch_fixture("ifa")
+        seed = net_and_path(doc, [20, 0], [20, 51])
+        plane = next(item for item in doc["geometry"] if item["kind"] == "planar_region")
+        key = plane["id"]
+        with TemporaryDirectory() as directory:
+            with ProjectService(Path(directory), auto_run=False) as service:
+                source, _ = register_fixture(service, doc)
+                project = source["project_id"]
+
+                def current():
+                    """! @brief 시험 서비스가 가리키는 개정을 읽는다."""
+                    return service._load(service.journal.read()["projects"][project])
+
+                def apply_pour(selection, operation, values):
+                    """! @brief 섬 또는 원본 선택으로 실제 변경 명령을 적용한다."""
+                    data = {"expected_revision": current()["revision_id"], "selection_ids": [selection],
+                            "operation": operation, "values": values}
+                    preview, _ = precision_service.preview(current(), data)
+                    self.assertTrue(preview["can_apply"], preview["notices"])
+                    return service.mutate("precision.apply", request(service, project, {**data, "command_id": str(uuid4()),
+                        "review_hash": preview["review_hash"], "reason": "다중 섬 검증"}))
+
+                def move(dx, dy):
+                    """! @brief 전기적으로 다른 넷에 속한 장애물을 이동한다."""
+                    return service.mutate("canvas.apply", request(service, project, {"operation": "translate",
+                        "command_id": str(uuid4()), "expected_revision": current()["revision_id"],
+                        "values": {"id": seed["id"], "dx_mm": dx, "dy_mm": dy}}))
+
+                collision = deepcopy(source)
+                foreign = {**deepcopy(seed), "id": copper_islands.slots(key)[1], "name": "다른 소유의 선"}
+                collision["geometry"] = sorted([*collision["geometry"], foreign], key=lambda item: item["id"])
+                blocked, payload = precision_service.preview(collision, {"expected_revision": source["revision_id"],
+                    "selection_ids": [key], "operation": copper_pour.FILL,
+                    "values": {"clearance_mm": .25, "tolerance_mm": .01}})
+                self.assertIsNone(payload)
+                self.assertIn("다른 도체", blocked["notices"][0]["message"])
+                apply_pour(key, copper_pour.FILL, {"clearance_mm": .25, "tolerance_mm": .01})
+                from rfad.application.pcb_solver import check_pcb_input
+                from test_pcb_solver import SETTINGS
+
+                check_pcb_input(current(), SETTINGS)
+                split = current()
+                ids = copper_islands.members(split, key)
+                self.assertEqual(len(ids), 2)
+                self.assertEqual(ids[0], key)
+                corrupt = deepcopy(split)
+                corrupt["extensions"][copper_islands.KEY]["owners"][key][1] = seed["id"]
+                with self.assertRaisesRegex(ProjectError, "소유권"):
+                    validate_project(corrupt)
+                move(1, 0)
+                shifted = current()
+                self.assertEqual(copper_islands.members(shifted, key), ids)
+                before_merge = {r["id"]: r for r in shifted["geometry"]}
+                self.assertEqual(before_merge[ids[1]]["name"], next(r["name"] for r in split["geometry"] if r["id"] == ids[1]))
+                move(0, 5)
+                merged = current()
+                self.assertEqual(copper_islands.members(merged, key), [key])
+                self.assertNotIn(ids[1], {r["id"] for r in merged["geometry"]})
+                for action, expected in (("undo", shifted), ("redo", merged), ("undo", shifted)):
+                    service.mutate("project." + action, request(service, project, {"command_id": str(uuid4()),
+                        "expected_revision": current()["revision_id"]}))
+                    self.assertEqual(current()["geometry"], expected["geometry"])
+                    self.assertEqual(current()["extensions"], expected["extensions"])
+                saved = service.mutate("project.save", request(service, project, {"expected_revision": current()["revision_id"]}))
+                service.run_next()
+                self.assertEqual(status(service, saved["job_id"])["state"], "completed")
+            with ProjectService(Path(directory), auto_run=False) as service:
+                self.assertEqual(copper_islands.members(current(), key), ids)
+                apply_pour(ids[1], copper_pour.RESTORE, {})
+                self.assertEqual(next(r for r in current()["geometry"] if r["id"] == key), plane)
+                self.assertNotIn(ids[1], {r["id"] for r in current()["geometry"]})
+                self.assertEqual(current()["ports"], source["ports"])
+
+
+    def test_route_switches_layers_with_checked_pads_and_via(self):
+        """! @brief IFA 상하층 배선과 두 랜드, 도금홀의 거절/검토, 저장과 이력을 검증한다."""
+        from rfad.application.interactive_route import review
+        doc, _ = sketch_fixture("ifa")
+        seed = next(row for row in doc["geometry"] if row["role"] == "radiator")
+        bottom = next(row for row in doc["stackup"] if row["role"] == "conductor" and row["id"] != seed["layer_id"])
+        with TemporaryDirectory() as directory:
+            with ProjectService(Path(directory), auto_run=False) as service:
+                source, _ = register_fixture(service, doc)
+                project = source["project_id"]
+                values = {"id": str(uuid4()), "source_id": seed["id"], "layer_id": seed["layer_id"],
+                          "points": [[31, 57], [32, 57], [33, 58]], "width_mm": .25, "clearance_mm": .2,
+                          "transitions": [{"index": 1, "layer_id": bottom["id"], "pad_diameter_mm": .8,
+                            "finished_hole_diameter_mm": .3, "plating_thickness_mm": .025, "tool_hole_diameter_mm": .35}]}
+                params = {"contract_version": "rfad.api/2.0", "context": {"project_id": project},
+                          "input": {"expected_revision": source["revision_id"], "values": values}}
+                state = service.journal.read()
+                self.assertTrue(review(service, params)["valid"])
+                bad = deepcopy(params)
+                bad["input"]["values"]["transitions"][0]["pad_diameter_mm"] = .31
+                self.assertFalse(review(service, bad)["valid"])
+                self.assertEqual(service.journal.read(), state)
+                changed = service.mutate("canvas.apply", request(service, project, {"expected_revision": source["revision_id"],
+                    "command_id": str(uuid4()), "operation": "create_route", "values": values}))
+                def current():
+                    """! @brief 저장 전후 현재 개정을 비교한다."""
+                    return service._load(service.journal.read()["projects"][project])
+                after = current()
+                created = [row for row in after["geometry"] if row["id"] in changed["changed_ids"]]
+                self.assertEqual(len(created), 5)
+                via, = [row for row in created if row["kind"] == "via"]
+                pads = [row for row in created if row["kind"] == "pad"]
+                lines = [row for row in created if row["kind"] == "line_path"]
+                self.assertEqual({r["id"] for r in pads}, set(via["pad_ids"]))
+                self.assertEqual({r["layer_id"] for r in lines}, {seed["layer_id"], bottom["id"]})
+                self.assertEqual((via["layer_id"], via["end_layer_id"]), (bottom["id"], seed["layer_id"]))
+                self.assertEqual({r["net_id"] for r in created}, {seed["net_id"]})
+                self.assertEqual(after["ports"], source["ports"])
+                for method, expected in (("project.undo", source), ("project.redo", after)):
+                    service.mutate(method, request(service, project, {"command_id": str(uuid4()), "expected_revision": current()["revision_id"]}))
+                    self.assertEqual(current()["geometry"], expected["geometry"])
+                save = service.mutate("project.save", request(service, project, {"expected_revision": current()["revision_id"]}))
+                service.run_next()
+                self.assertEqual(status(service, save["job_id"])["state"], "completed")
+            with ProjectService(Path(directory), auto_run=False) as service:
+                self.assertEqual(current()["geometry"], after["geometry"])

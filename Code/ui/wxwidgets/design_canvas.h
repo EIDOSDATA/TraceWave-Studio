@@ -36,6 +36,10 @@ public:
     void SetDrawingLayer(const std::string& identity);
     void SetStrokeWidth(double widthMm);
     void SetRouteClearance(double gap);
+    void SetRouteTransition(const Json& settings);
+    void PresentRouteReview(unsigned long version, bool valid, const std::string& message);
+    std::function<void(const std::string&)> onRouteLayer;
+    std::function<void(const Json&, unsigned long)> onRouteReview;
     void SetEditingEnabled(bool enabled);
     void SetLayerVisible(const std::string& identity, bool visible);
     bool IsLayerVisible(const std::string& identity) const;
@@ -91,6 +95,8 @@ private:
     void DrawPrecision(wxDC& dc, const Shape* selected) const;
     void DrawDimensions(wxDC& dc) const;
     bool Selectable(const Shape& shape) const;
+    Json RouteDraft(bool includeCursor) const;
+    void QueueRouteReview();
     void UpdateCursor(const wxPoint& pixel);
     std::optional<CanvasPrecision::Endpoint> HitEndpoint(const Shape& shape, const wxPoint& pixel) const;
     const Shape* SelectedPath() const;
@@ -137,6 +143,10 @@ private:
     std::vector<wxPoint2DDouble> m_points;
     std::string m_routeSource;
     double m_routeClearance = 0.0;
+    Json m_routeTransitions = Json::array();
+    unsigned long m_routeVersion = 0, m_routePending = 0;
+    bool m_routeConflict = false;
+    wxTimer m_routeTimer;
     std::string m_pendingId;
     wxPoint2DDouble m_pendingOffset{0.0, 0.0};
     wxRect m_displayMarkerBounds;

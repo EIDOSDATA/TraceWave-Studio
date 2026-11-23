@@ -283,6 +283,10 @@ def validate_project(document: dict) -> None:
     validate_template_origins(document)
     validate_setup(document)
     validate_precision_origins(document)
+    if "rfad.precision-origin" in document["extensions"] or "rfad.copper-islands" in document["extensions"]:
+        from rfad.application.copper_pour import active as active_pours
+        from rfad.domain.copper_islands import validate as validate_islands
+        validate_islands(document, active_pours(document))
     validate_project_library(document)
     validate_project_registry(document)
     solver_conditions.validate(document)
@@ -312,7 +316,14 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
     if type(command_type) is not str:
         _fail("E_SCHEMA", "명령 type은 문자열이어야 합니다.", "command.type")
     payload = command["payload"]
+    from rfad.domain import copper_islands
     replay = None
+    pour_replay = []
+    if command_type == copper_islands.REPLAY:
+        _fields(payload, {"command", "islands"}, "copper.replay")
+        _fields(payload["command"], {"type", "payload"}, "copper.replay.command")
+        pour_replay = payload["islands"]
+        command_type, payload = payload["command"]["type"], payload["command"]["payload"]
     if command_type == PCB_REPLAY_COMMAND:
         _fields(payload, {"command", "metadata"}, "pcb.replay")
         _fields(payload["command"], {"type", "payload"}, "pcb.replay.command")
@@ -420,7 +431,13 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
     from rfad.domain.pattern_features import propagate
     derived_changes = evaluate_parameters(result["parameters"], update=True)
     derived_changes.extend(propagate(document, result))
-    derived_changes.extend(copper_pour.propagate(document, result))
+    pour_inverse = []
+    restored_owners = {row["owner"] for row in pour_replay}
+    derived_changes.extend(copper_pour.propagate(document, result, capture=pour_inverse, restoring=restored_owners))
+    if pour_replay:
+        restored, reversed_patches = copper_islands.restore(document, result, pour_replay)
+        derived_changes.extend(restored)
+        pour_inverse.extend(reversed_patches)
     if replay is not None:
         inverse_metadata = apply_metadata_replay(result, replay)
     else:
@@ -430,6 +447,8 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
     if inverse_metadata:
         inverse = {"type": PCB_REPLAY_COMMAND, "payload": {"command": inverse, "metadata": inverse_metadata}}
         changed_ids = [*changed_ids, *(row["id"] for row in inverse_metadata)]
+    if pour_inverse:
+        inverse = {"type": copper_islands.REPLAY, "payload": {"command": inverse, "islands": pour_inverse}}
     changed_ids = list(dict.fromkeys([*changed_ids, *derived_changes]))
     result["parent_revision_ids"] = [document["revision_id"]]
     result["revision_id"] = str(uuid4())

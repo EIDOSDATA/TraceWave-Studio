@@ -30,6 +30,56 @@ void StudioFrame::BindCanvas()
                            event.Skip();
                        }
                    });
+    m_canvas->onRouteReview = [this](const Json& route, unsigned long version)
+    {
+        if (m_busy || m_project.empty())
+        {
+            m_canvas->PresentRouteReview(version, false, "현재 개정을 불러온 뒤 경로를 검토하세요.");
+            return;
+        }
+        auto values = route;
+        values["id"] = Uuid();
+        Send("canvas.route.review", {{"expected_revision", m_revision}, {"values", values}}, false, Context(),
+             [this, version](const Json& result)
+             {
+                 m_canvas->PresentRouteReview(version, result.at("valid").get<bool>(), result.at("message").get<std::string>());
+             },
+             [this, version](const Json& error)
+             {
+                 m_canvas->PresentRouteReview(version, false, error.value("message", std::string("배선 검토에 실패했습니다.")));
+             });
+    };
+    m_canvas->onRouteLayer = [this](const std::string& current)
+    {
+        wxArrayString labels;
+        std::vector<std::string> ids;
+        for (std::size_t i = 0; i < m_layerIds.size(); ++i)
+        {
+            if (m_layerIds[i] != current)
+            {
+                labels.Add(m_layerChoice->GetString(i));
+                ids.push_back(m_layerIds[i]);
+            }
+        }
+        if (ids.empty())
+        {
+            m_canvasHint->SetLabel(Display("층을 전환하려면 다른 도체층이 필요합니다."));
+            return;
+        }
+        wxSingleChoiceDialog choose(this, Display("마지막 경유점에서 이어갈 도체층"), Display("배선 층 전환"), labels);
+        if (choose.ShowModal() != wxID_OK)
+        {
+            return;
+        }
+        Json values = Json::object();
+        if (AskNumbers("전환 비아 치수 / mm", {{"pad_diameter_mm", "원형 랜드 지름", 0.8},
+                       {"finished_hole_diameter_mm", "완성 홀 지름", 0.3}, {"plating_thickness_mm", "도금 두께", 0.025},
+                       {"tool_hole_diameter_mm", "공구 지름", 0.35}}, values))
+        {
+            values["layer_id"] = ids.at(choose.GetSelection());
+            m_canvas->SetRouteTransition(values);
+        }
+    };
     m_canvas->onStatus = [this](const std::string& message)
     {
         m_canvasHint->SetLabel(Display(message));

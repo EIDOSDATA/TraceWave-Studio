@@ -66,7 +66,8 @@ def validate_input(context, data, method=MUTATION):
     if method != "precision.get":
         if type(data["operation"]) is not str or data["operation"] not in OPERATIONS:
             fail("지원하지 않는 정밀 편집 작업입니다.", "operation", "E_UNSUPPORTED")
-        _fields(data["values"], OPERATIONS[data["operation"]][1])
+        optional = {"excluded_instances"} if data["operation"] in (patterns.PATTERNS | set(patterns.REGENERATE)) else set()
+        _fields(data["values"], OPERATIONS[data["operation"]][1], optional)
     if method == MUTATION:
         _uuid(data["command_id"])
         _hash(data["review_hash"])
@@ -100,7 +101,7 @@ def get(document, identities):
         if operation in patterns.REGENERATE and not reason:
             item["values"] = patterns.match(document, rows, operation)["head"]["values"]
         if operation == copper_pour.FILL and not reason:
-            current = copper_pour.active(document).get(rows[0]["id"])
+            current = copper_pour.active(document).get(copper_pour.islands.owner_of(document, rows[0]["id"]))
             if current:
                 item["values"] = current["values"]
         operations.append(item)
@@ -132,14 +133,16 @@ def preview(document, data):
         origin_id = str(uuid5(UUID(document["project_id"]), "precision:" + seed))
         operation = data["operation"]
         if operation in (copper_pour.FILL, copper_pour.RESTORE):
-            output, engine = copper_pour.edited(document, rows, operation, data["values"])
+            rows, output, engine = copper_pour.edited(document, rows, operation, data["values"])
         elif operation in patterns.REGENERATE or operation == "detach_pattern":
             rows, output, engine = patterns.editing(document, rows, operation, data["values"])
         else:
             output, engine = replacements(document, rows, operation, data["values"], origin_id)
             if operation in patterns.PATTERNS:
                 engine["linked_pattern"] = True
-        if output == rows and operation not in ("detach_pattern", copper_pour.FILL, copper_pour.RESTORE):
+        if (output == rows and operation not in ("detach_pattern", copper_pour.FILL, copper_pour.RESTORE)
+                and operation not in patterns.REGENERATE
+                and not (operation in patterns.PATTERNS and data["values"].get("excluded_instances"))):
             fail("현재 원본과 같은 결과입니다. 변경할 값을 입력하십시오.", "values", "E_CONFLICT")
         dependencies = parameter_copies(document, [*rows, *output])
         digest = canonical_hash({"profile": PROFILE, "base_content_hash": base_hash, "expected_revision": data["expected_revision"],
@@ -168,7 +171,9 @@ def preview(document, data):
         changes += [{"id": row["id"], "label": item_label(candidate, row), "action": "modify" if row["id"] in source_ids else "create"} for row in output if row != source.get(row["id"])]
         if propagated:
             generated = {row["id"]: row for row in candidate["geometry"] if row["id"] in propagated}
-            changes.extend({"id": key, "label": item_label(candidate, generated[key]), "action": "modify"} for key in propagated)
+            changes.extend({"id": key, "label": item_label(candidate, generated[key]) if key in generated else key,
+                            "action": ("remove" if key not in generated else "modify" if key in {r["id"] for r in document["geometry"]} else "create")}
+                           for key in propagated)
         notices = [{"severity": "info", "code": "I_PRECISION_ONLY", "message": "명시 기하 편집 후보입니다. 연결/목표 제약/제조 규칙은 적용 후 현재 개정에서 다시 검사하십시오."}]
         if data["operation"] in PLANAR_OPERATIONS:
             notices.append({"severity": "info", "code": "I_PLANAR_REPLACEMENT", "message": "선택 영역을 새 다각형 UUID로 교체합니다. 원본/결과/출처 사본을 보존하며 자동 복구나 단순화는 수행하지 않습니다."})

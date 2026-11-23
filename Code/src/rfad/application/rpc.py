@@ -215,7 +215,7 @@ def capabilities(service=None, catalog=None) -> dict:
                                       "physics_validated": False, "measurement_validated": False}
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.editor/0.1"} for name in ("editor.get", "editor.apply", "project.undo", "project.redo")})
         result["editor_profile"] = {"profile": "rfad.editor/0.1", "source": "draft_revision", "history_limit": 128, "history_persistent": True, "full_document_returned": False, "max_dto_bytes": 61440}
-        result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.canvas/0.1"} for name in ("canvas.get", "canvas.apply")})
+        result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.canvas/0.1"} for name in ("canvas.get", "canvas.apply", "canvas.route.review")})
         result["canvas_profile"] = {"profile": "rfad.canvas/0.1", "source": "draft_revision", "unit": "mm", "angle_unit": "deg", "operations": ["create_board", "create_circular_board", "create_layer", "create_dielectric_layer", "create_line", "create_route", "create_arc", "create_polygon", "create_pad", "create_via", "translate", "move_endpoint", "remove"], "full_document_returned": False, "max_dto_bytes": 61440}
         result["edit_view_transport"] = {"profile": edit_view_contract.PROFILE, "max_dto_bytes": MAX_SELECTION_RESULT_BYTES}
         result["edit_view_pages"] = {"profile": edit_view_pages.PROFILE, "max_dto_bytes": edit_view_pages.MAX_PAGE_BYTES,
@@ -362,7 +362,7 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | smart_dimension_service.READS | sketch_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | large_results.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, project_evidence.METHOD, solver_preview.METHOD, solver_conditions_service.READ, solver_evidence.METHOD, project_activity.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | smart_dimension_service.READS | sketch_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | large_results.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, project_evidence.METHOD, solver_preview.METHOD, solver_conditions_service.READ, solver_evidence.METHOD, project_activity.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "canvas.route.review", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS | archive_receiver.READS:
             return None
         try:
@@ -431,6 +431,9 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
                 result = service.status(params)
             elif method == "editor.get":
                 result = service.editor_state(params)
+            elif method == "canvas.route.review":
+                from rfad.application.interactive_route import review
+                result = review(service, params)
             elif method == "canvas.get":
                 result = service.canvas_state(params)
             elif method in ("editor.page", "canvas.page"):

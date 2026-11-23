@@ -7,7 +7,7 @@ from uuid import UUID, uuid5
 from rfad.adapters.planar_backend import operate, runtime
 from rfad.application.canonical import canonical_hash
 from rfad.application import copper_pour
-from rfad.domain.curve_boolean import _intersections, _piece, TOLERANCE_MM
+from rfad.domain.curve_boolean import _intersections, _parameter, _piece, _point as curve_point, TOLERANCE_MM
 from rfad.domain.design import _uuid
 from rfad.domain.errors import ProjectError
 from rfad.domain.object_names import allocate_name, object_label
@@ -29,11 +29,13 @@ OPERATIONS = {
     "detach_pattern": ("반복 연결 해제", set()),
     copper_pour.FILL: ("구리면 자동 채움", {"clearance_mm", "tolerance_mm"}),
     copper_pour.RESTORE: ("구리면 원래 경계 복원", set()),
+    "curve_chamfer": ("선과 원호 사이 모따기", {"first_setback_mm", "second_setback_mm"}),
     "line_fillet": ("두 직선 사이 필렛", {"radius_mm"}),
     "curved_fillet": ("원호에 접하는 필렛", {"radius_mm"}),
     "curve_trim": ("교차점에서 선·원호 자르기", {"target_id", "keep"}),
     "curve_split": ("선·원호 중심선 분할", {"percent"}),
     "curve_extend": ("선·원호 한쪽 끝 연장", {"endpoint", "distance_mm"}),
+    "extend_to_boundary": ("선택 경계까지 연장", {"target_id", "endpoint"}),
     "arc_offset": ("원호 중심선 오프셋", {"distance_mm"}),
     "dimension_set": ("치수 변경", {"dimension_key", "value", "unit"}),
     "bind_dimension": ("매개변수 연결", {"dimension_key", "parameter_id"}),
@@ -89,7 +91,7 @@ def operation_reason(document, rows, operation):
         return ""
     if operation in ("dimension_set", "bind_dimension", "offset", "arc_offset") and len(rows) != 1:
         return "이 작업에는 객체 한 개를 선택하십시오."
-    if operation in {"line_fillet", "curved_fillet"}:
+    if operation in {"line_fillet", "curved_fillet", "curve_chamfer"}:
         kinds = {row["kind"] for row in rows}
         if len(rows) != 2 or not kinds <= {"line_path", "arc_path"}:
             return "공통 끝점을 가진 선·원호 도체 두 개를 선택하십시오."
@@ -99,11 +101,11 @@ def operation_reason(document, rows, operation):
             return "하나 이상의 열린 원호를 선택하십시오."
         fields = ("frame_id", "layer_id", "net_id", "material_ref", "role", "include_in_em", "include_in_export")
         if any(rows[0][key] != rows[1][key] for key in fields):
-            return "같은 좌표계, 층, 넷, 재료, 역할, 선폭 및 포함 상태인 도체만 필렛으로 연결할 수 있습니다."
+            return "같은 좌표계, 층, 넷, 재료, 역할, 선폭 및 포함 상태인 도체만 연결할 수 있습니다."
         return _referenced(document, [row["id"] for row in rows])
-    if operation == "curve_trim":
+    if operation in ("curve_trim", "extend_to_boundary"):
         if len(rows) != 2 or any(row["kind"] not in {"line_path", "arc_path"} for row in rows):
-            return "자르는 도체와 경계 도체를 선 또는 원호로 두 개 선택하십시오."
+            return "편집할 도체와 경계 도체를 선 또는 원호로 두 개 선택하십시오."
         if rows[0]["frame_id"] != rows[1]["frame_id"] or rows[0]["layer_id"] != rows[1]["layer_id"]:
             return "같은 좌표계와 층의 도체 두 개를 선택하십시오."
         return ""
@@ -276,6 +278,50 @@ def _resize_path(document, original, curve, start, end):
     return result
 
 
+def _extend_to_boundary(document, rows, values):
+    """! @brief 선택 끝의 진행 방향에서 실제 유한 경계와 처음 만나는 해석형 교점을 구한다."""
+    target = _uuid(values["target_id"], "target_id")
+    side = values["endpoint"]
+    if target not in {row["id"] for row in rows} or side not in ("start", "end"):
+        fail("연장할 도체와 시작 또는 끝을 선택하세요.", "target_id", "E_SCHEMA")
+    reason = _referenced(document, [target])
+    if reason:
+        fail(reason, "target_id", "E_CONFLICT")
+    original = next(row for row in rows if row["id"] == target)
+    curve = _centerline(document, original)
+    boundary = _centerline(document, next(row for row in rows if row["id"] != target))
+    span = _path_span(curve)
+    base, direction = (0, -1) if side == "start" else (1, 1)
+    if curve["kind"] == "line":
+        if boundary["kind"] == "line":
+            reach = max(math.dist(curve[side], boundary[key]) for key in ("start", "end"))
+        else:
+            reach = math.dist(curve[side], boundary["center"]) + boundary["radius"]
+        fraction = (reach + 1) / span
+    else:
+        fraction = 360 / abs(curve["sweep_deg"]) - 1
+        if fraction * span <= TOLERANCE_MM:
+            fail("한 바퀴 미만의 열린 원호를 선택하세요.", "target_id", "E_GEOMETRY")
+    limit = base + direction * fraction
+    extension = _piece(curve, base, limit)
+    try:
+        crossings = _intersections(extension, boundary)
+    except ProjectError as error:
+        if error.code != "E_UNSUPPORTED":
+            raise
+        if _parameter(boundary, curve_point(extension, 0)) is not None:
+            fail("선택한 끝이 이미 동일한 중심선 경계에 닿아 있습니다.", "endpoint", "E_CONFLICT")
+        crossings = [(value, t) for t in (0, 1) if (value := _parameter(extension, curve_point(boundary, t))) is not None]
+    valid = [distance for distance, _ in crossings if distance * fraction * span > TOLERANCE_MM]
+    if not valid:
+        fail("선택한 끝의 진행 방향에서 경계를 만날 수 없습니다.", "endpoint", "E_GEOMETRY")
+    value = base + direction * min(valid) * fraction
+    if curve["kind"] == "arc" and abs(curve["sweep_deg"]) * (1 + abs(value - base)) >= 360 - 1e-9:
+        fail("교점까지 연장하면 원호가 닫힙니다.", "endpoint", "E_GEOMETRY")
+    changed = _resize_path(document, original, curve, value if side == "start" else 0, value if side == "end" else 1)
+    return [changed if row["id"] == target else row for row in rows]
+
+
 def _split_path(document, source, values, origin_id):
     """! @brief 같은 선 또는 원호 위에서 두 조각을 만들고 시작 쪽에 원본 ID를 남긴다."""
     curve = _centerline(document, source)
@@ -306,6 +352,44 @@ def _extend_path(document, source, values):
         fail("연장 이후에도 원호의 각도가 한 바퀴 미만이어야 합니다.", "distance_mm")
     start, stop = (-fraction, 1) if end == "start" else (0, 1 + fraction)
     return [_resize_path(document, source, curve, start, stop)]
+
+
+def _chamfer(document, rows, values, origin_id):
+    """! @brief 열린 두 중심선의 공통 끝점에서 각각의 호 길이만큼 줄이고 직선으로 잇는다."""
+    edges = [_centerline(document, row) for row in rows]
+    if any(edge["kind"] == "arc" and abs(edge["sweep_deg"]) >= 360 - 1e-9 for edge in edges):
+        fail("끝점이 구분되는 열린 원호를 선택하십시오.", "selection_ids")
+    widths = [scalar(document, row["width"], field="geometry.width") for row in rows]
+    if abs(widths[0] - widths[1]) > TOLERANCE_MM:
+        fail("같은 폭의 도체를 선택하십시오.", "selection_ids")
+    corners = [(a, b) for a in (0, 1) for b in (0, 1)
+               if math.dist(curve_point(edges[0], a), curve_point(edges[1], b)) <= TOLERANCE_MM]
+    if len(corners) != 1:
+        fail("두 도체가 만나는 공통 끝점 한 개가 필요합니다.", "selection_ids")
+    changed = []
+    contacts = []
+    for row, edge, endpoint, key in zip(rows, edges, corners[0], ("first_setback_mm", "second_setback_mm")):
+        distance = number(values[key], key)
+        span = _path_span(edge)
+        if not TOLERANCE_MM < distance < span - TOLERANCE_MM:
+            fail("각 절삭 길이는 0보다 크고 해당 중심선 길이보다 작아야 합니다.", key)
+        parameter = distance / span if endpoint == 0 else 1 - distance / span
+        contacts.append(curve_point(edge, parameter))
+        interval = (parameter, 1) if endpoint == 0 else (0, parameter)
+        changed.append(_resize_path(document, row, edge, *interval))
+    bridge = {"kind": "line", "start": contacts[0], "end": contacts[1]}
+    length = _path_span(bridge)
+    for index, row in enumerate(changed):
+        for parameter, _ in _intersections(bridge, _centerline(document, row)):
+            if abs(parameter - index) * length > TOLERANCE_MM:
+                fail("모따기 선분이 남길 도체와 다시 교차합니다.", "selection_ids")
+    join = {key: deepcopy(value) for key, value in rows[0].items()
+            if key not in {"center", "radius", "start_angle", "sweep_angle"}}
+    join.update(id=str(uuid5(UUID(origin_id), "chamfer")), kind="line_path")
+    join["name"] = allocate_name(document, join)
+    for key, contact in zip(("start", "end"), contacts):
+        join[key] = [Quantity.from_value(value, "mm").to_dict() for value in contact]
+    return [*changed, join]
 
 
 def _fillet_radius(document, rows, values):
@@ -403,10 +487,14 @@ def replacements(document, rows, operation, values, origin_id):
         return [bind_dimension(document, rows[0], values["dimension_key"], values["parameter_id"])], engine
     if operation in PATTERNS:
         return patterns.generate(document, rows, operation, values, origin_id), engine
+    if operation == "curve_chamfer":
+        return _chamfer(document, rows, values, origin_id), engine
     if operation == "line_fillet":
         return _fillet(document, rows, values, origin_id), engine
     if operation == "curved_fillet":
         return _curve_fillet(document, rows, values, origin_id), engine
+    if operation == "extend_to_boundary":
+        return _extend_to_boundary(document, rows, values), engine
     if operation == "curve_trim":
         return _trim(document, rows, values), engine
     if operation == "curve_split":

@@ -234,13 +234,27 @@ void StudioSmokeDriver::CanvasSmokeNext()
         back.m_keyCode = WXK_BACK;
         m_frame.m_canvas->GetEventHandler()->ProcessEvent(back);
         CanvasClick(9, 9);
+        const auto chooseLayer = m_frame.m_canvas->onRouteLayer;
+        const auto selectedLayer = Uuid();
+        m_frame.m_canvas->onRouteLayer = [this, selectedLayer](const std::string& current)
+        {
+            CanvasAssert(current == m_frame.m_activeLayer, "Via tool lost the active layer.");
+            m_frame.m_canvas->SetRouteTransition({{"layer_id", selectedLayer}, {"pad_diameter_mm", 0.8},
+                {"finished_hole_diameter_mm", 0.3}, {"plating_thickness_mm", 0.025}, {"tool_hole_diameter_mm", 0.35}});
+        };
+        wxKeyEvent via(wxEVT_KEY_DOWN);
+        via.m_keyCode = 'V';
+        m_frame.m_canvas->GetEventHandler()->ProcessEvent(via);
+        m_frame.m_canvas->onRouteLayer = chooseLayer;
         CanvasClick(11, 9);
         wxKeyEvent enter(wxEVT_KEY_DOWN);
         enter.m_keyCode = WXK_RETURN;
         m_frame.m_canvas->GetEventHandler()->ProcessEvent(enter);
         m_frame.m_canvas->onAction = originalAction;
         CanvasAssert(captured.value("type", "") == "create_route" && captured.at("source_id") == m_canvasLine &&
-                         captured.at("points").size() == 3 && captured.at("clearance_mm") == 0.25,
+                         captured.at("points").size() == 3 && captured.at("clearance_mm") == 0.25 &&
+                         captured.at("transitions").at(0).at("layer_id") == selectedLayer &&
+                         captured.at("transitions").at(0).at("index") == 1,
                      "Route pointer, Backspace and Enter did not submit the polyline.");
         m_canvasChecks.push_back("click_route_backspace_enter");
         m_frame.m_canvas->SetTool("arc");
