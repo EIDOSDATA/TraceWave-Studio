@@ -121,6 +121,14 @@ def audit_native_mesh(csx, case, lines):
     port = case["port"]
     start, stop = node_at(port["start_mm"]), node_at(port["stop_mm"])
     for endpoint, identity in ((start, port["reference_geometry_id"]), (stop, port["positive_geometry_id"])):
+        if identity is None and "symmetry" in case:
+            report = case["symmetry"]
+            face_axis, side = divmod(report["face"], 2)
+            face_node = len(axes[face_axis]) - 1 if side else 0
+            if (endpoint[face_axis] != face_node or case["boundary_conditions"][report["face"]] != "PEC"
+                    or abs(axes[face_axis][face_node] - report["position_mm"]) > 1e-8):
+                reject("절반 급전의 기준 단자가 실제 PEC 경계 노드에 닿지 않았습니다.")
+            continue
         if endpoint not in memberships[identity]:
             reject("포트 단자가 실제 native Yee 도체 edge에 연결되지 않았습니다.", identity)
     axis = "xyz".index(port["axis"])
@@ -172,6 +180,7 @@ def audit_native_mesh(csx, case, lines):
     return {"schema": "rfad.pcb-native-connectivity/0.1", "method": "CSXCAD material priority at Yee electric edge centers",
             "operator_coefficients_checked": False, "yee_connectivity_checked": True, "components": components,
             "entities": [{"entity_id": identity, "conductor_edge_count": edge_counts[identity], "component_count": 1} for identity in sorted(entities)],
+            **({"mirror_terminal_face": case["symmetry"]["face"]} if "symmetry" in case else {}),
             "port_gap_edge_count": gap_edges, "port_terminals_connected": True, "polygon_holes": hole_checks,
             **({"grounded_environment": grounding} if grounding else {}),
             "physics_validated": False}

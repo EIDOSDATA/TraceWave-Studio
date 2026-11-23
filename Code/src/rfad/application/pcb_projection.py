@@ -379,6 +379,9 @@ def project_pcb(document, settings, *, multiport=False):
         fail("E_MATERIAL_UNKNOWN", "대역별 물성의 대상 재료가 이 해석에 포함되지 않았습니다.", "settings.material_bands")
     if settings["grid_mm"] > reference["model_wavelength_mm"] / reference["min_wavelength_cells"]:
         fail("E_GEOMETRY", "최소 모델 파장당 10개 격자 초기 기준을 충족하지 못했습니다.", "settings.grid_mm")
+    from rfad.application import pcb_symmetry
+
+    pcb_symmetry.project(case)
     lines, local_mesh = build_grid(case)
     if local_mesh is not None:
         case["local_mesh_report"] = local_mesh

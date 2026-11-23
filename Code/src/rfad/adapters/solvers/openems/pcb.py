@@ -22,6 +22,7 @@ from .pcb_mesh import audit_native_mesh
 from .pcb_surface import add_surfaces
 from .pcb_void import add_voids
 from .pcb_ports import spectra
+from rfad.application.pcb_symmetry import native_case
 from rfad.application.pcb_radiation import raw_names
 from rfad.domain.errors import ProjectError
 
@@ -111,9 +112,10 @@ def prepare(stage, plan, runtime):
     for axis in "xyz":
         grid.AddLine(axis, lines[axis])
     board = case["board"]
-    mappings, via_mappings, mask_mappings, void_mappings = add_geometry(csx, case)
-    connectivity = audit_native_mesh(csx, case, lines)
-    port = case["port"]
+    projected = native_case(case)
+    mappings, via_mappings, mask_mappings, void_mappings = add_geometry(csx, projected)
+    connectivity = audit_native_mesh(csx, projected, lines)
+    port = projected["port"]
     solver.AddLumpedPort(1, port["resistance_ohm"], port["start_mm"], port["stop_mm"], port["axis"], excite=1, priority=10)
     if "radiation_recording" in case:
         from .pcb_radiation import create_box
@@ -258,6 +260,10 @@ def normalize_probes(raw, plan):
     else:
         frequencies = np.linspace(frequency["start"], frequency["stop"], frequency["count"])
     voltage, current = spectra(raw, frequencies)
+    if "symmetry" in plan["case"]:
+        report = plan["case"]["symmetry"]
+        voltage *= report["full_voltage_factor"]
+        current *= report["full_current_factor"]
     incident = 0.5 * (voltage + plan["case"]["port"]["resistance_ohm"] * current)
     require(np.max(np.abs(incident)) > 1e-18 and np.all(np.abs(incident) > np.max(np.abs(incident)) * 1e-4)
             and np.all(np.abs(current) > 1e-24), "포트 여기 또는 전류가 너무 작아 정규화할 수 없습니다.")

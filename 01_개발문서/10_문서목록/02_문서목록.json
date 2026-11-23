@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 258,
+    "current_07_검증": 259,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28747,8 +28747,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 645350,
-      "working_tree_sha256": "75f6356b5387d67370ca00e5b688870844fad3bb625038d4be1db1d570221f9e"
+      "bytes": 645351,
+      "working_tree_sha256": "ad6859da729433b18ad11399d9c884cae7ece8b7bb46a549018f690efe8c7e65"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32201,6 +32201,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/382_단일급전_대칭축소와_전체해석_대조.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 3817,
+      "working_tree_sha256": "84e88928f649d7ca3c61a69eef638a6223905285c6bb5ed4fd170ac4f52a21d2",
+      "text_lines": 27,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/38_스튜디오_재열기와_유휴성능_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -32896,8 +32905,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 37387,
-      "working_tree_sha256": "76433d336616c744b5d17551b8afa4fd3eb52e8fe0a15981c45ca109658971e0",
+      "bytes": 37548,
+      "working_tree_sha256": "d28dc623a6fc9bca0ef4a8f62259937d3c7d1d8af5a10b01f047c1cd48829818",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

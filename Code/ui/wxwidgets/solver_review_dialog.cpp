@@ -114,7 +114,7 @@ std::string FieldFor(const std::string& path)
         {"settings.frequency_hz", "stop_hz"}, {"settings.frequency_hz.start", "start_hz"},
         {"settings.frequency_hz.stop", "stop_hz"}, {"settings.frequency_hz.count", "count"},
         {"settings.frequency_hz.points", "sample_points_hz"}, {"settings.field_probe", "field_probe"},
-        {"settings.boundary_conditions", "boundary_conditions"}, {"settings.mesh_policy", "mesh_policy"}, {"settings.mesh_policy.air_cell_mm", "air_cell_mm"},
+        {"settings.symmetry_plane", "symmetry_position_mm"}, {"settings.boundary_conditions", "boundary_conditions"}, {"settings.mesh_policy", "mesh_policy"}, {"settings.mesh_policy.air_cell_mm", "air_cell_mm"},
         {"settings.mesh_policy.growth_ratio", "growth_ratio"}, {"settings.radiation", "frequency_hz"},
         {"settings.radiation.frequency_hz", "frequency_hz"}, {"mesh", "grid_mm"}, {"settings", "grid_mm"}};
     const auto item = aliases.find(path);
@@ -132,7 +132,7 @@ void CompareValues(wxListCtrl& table, const Json& current, const Json& source, c
     static const std::map<std::string, std::string> labels{
         {"frequency_hz.start", "시작 주파수 (Hz)"}, {"frequency_hz.stop", "끝 주파수 (Hz)"},
         {"frequency_hz.count", "주파수 표본 수"}, {"frequency_hz.points", "직접 주파수 표본"}, {"grid_mm", "모델 최대 격자 간격 (mm)"},
-        {"boundary_conditions", "면별 경계 조건"}, {"air_padding_mm", "외부 공기 여유 (mm)"}, {"curve_tolerance_mm", "곡선 근사 허용오차 (mm)"},
+        {"symmetry_plane", "급전 대칭면"}, {"boundary_conditions", "면별 경계 조건"}, {"air_padding_mm", "외부 공기 여유 (mm)"}, {"curve_tolerance_mm", "곡선 근사 허용오차 (mm)"},
         {"feature_subdivisions", "임계 구간 최소 분할"}, {"mesh_policy.kind", "외부 공기 격자 방식"},
         {"mesh_policy.air_cell_mm", "바깥 공기 격자 간격 (mm)"}, {"mesh_policy.growth_ratio", "공기 격자 성장률"},
         {"max_timesteps", "최대 시간 단계"}, {"end_criterion", "종료 에너지 비율"},
@@ -468,7 +468,22 @@ private:
             m_boundary[i] = choice;
             rows->Add(choice, 1, wxEXPAND);
         }
+        rows->Add(new wxStaticText(boundaries->GetStaticBox(), wxID_ANY, Display("급전 대칭면")), 0, wxALIGN_CENTER_VERTICAL);
+        m_symmetry = new wxChoice(boundaries->GetStaticBox(), wxID_ANY);
+        m_symmetry->SetName("solver.symmetry_plane");
+        for (const auto* mode : {"전체 영역", "X축 수직 PEC", "Y축 수직 PEC"})
+        {
+            m_symmetry->Append(Display(mode));
+        }
+        m_symmetry->SetSelection(0);
+        rows->Add(m_symmetry, 1, wxEXPAND);
         boundaries->Add(rows, 0, wxEXPAND | wxALL, FromDIP(8));
+        Field(*boundaries, "symmetry_position_mm", "대칭면 좌표 (mm)");
+        m_symmetry->Bind(wxEVT_CHOICE, [this](wxCommandEvent&)
+        {
+            SetOptionalControls();
+            Invalidate();
+        });
         m_input->SetSizer(columns);
         page->GetSizer()->Add(m_input, 1, wxEXPAND);
     }
@@ -883,6 +898,10 @@ private:
     static std::string Exclusion(const Json& row)
     {
         const auto reason = row.at("reason").get<std::string>();
+        if (reason == "symmetry_image")
+        {
+            return "PEC 대칭으로 대응하는 도체 / " + row.at("represented_by").get<std::string>();
+        }
         return reason == "unsupported_in_profile" ? "현재 해석 범위 밖" : "해석 포함 설정이 꺼져 있음";
     }
 
@@ -1028,6 +1047,7 @@ private:
     void SetOptionalControls()
     {
         UpdateFrequencyControls();
+        m_fields.at("symmetry_position_mm")->Enable(m_symmetry->GetSelection() != 0);
         for (const auto* field : {"air_cell_mm", "growth_ratio"})
         {
             m_fields.at(field)->Enable(m_graded->GetValue());
@@ -1088,6 +1108,9 @@ private:
         {
             m_boundary[i]->SetStringSelection(i < modes.size() ? Display(modes[i].get<std::string>()) : "PML_8");
         }
+        const auto symmetry = settings.value("symmetry_plane", Json::object());
+        m_symmetry->SetSelection(symmetry.empty() ? 0 : (symmetry.value("axis", std::string("x")) == "x" ? 1 : 2));
+        m_fields.at("symmetry_position_mm")->ChangeValue(Display(symmetry.value("position_mm", Json(0)).dump()));
         m_graded->SetValue(!mesh.empty());
         m_nf->SetValue(!radiation.empty());
         m_local->LoadRules(settings.value("local_mesh", Json::array()));
@@ -1308,6 +1331,15 @@ private:
             settings["field_probe"] = {{"frequency_hz", coordinates[0]}, {"x_mm", {coordinates[1], coordinates[2]}},
                                        {"y_mm", {coordinates[3], coordinates[4]}}, {"z_mm", coordinates[5]}};
         }
+        if (m_symmetry->GetSelection() == 0)
+        {
+            settings.erase("symmetry_plane");
+        }
+        else
+        {
+            settings["symmetry_plane"] = {{"axis", m_symmetry->GetSelection() == 1 ? "x" : "y"}, {"wall", "PEC"},
+                                          {"position_mm", values.at("symmetry_position_mm")}};
+        }
         Json modes = Json::array();
         for (const auto* choice : m_boundary)
         {
@@ -1483,6 +1515,13 @@ private:
         m_meshSettings->SetLabel(wxString::Format(
             Display("모델 최대 간격 %.8g mm  |  임계 구간 최소 분할 %d  |  %s"),
             settings.at("grid_mm").get<double>(), settings.value("feature_subdivisions", 1), grid));
+        if (mesh.contains("symmetry"))
+        {
+            const auto& mirror = mesh.at("symmetry");
+            m_meshSettings->SetLabel(m_meshSettings->GetLabel() + wxString::Format(
+                Display("  |  PEC %s=%.8g mm, 좌표가 큰 쪽 절반"), Display(mirror.at("axis").get<std::string>()),
+                mirror.at("position_mm").get<double>()));
+        }
         m_plot->DisplayPlan(&m_result);
         m_pickRegion->Enable(m_local->Rules().size() < 16);
         m_intervals->Clear();
@@ -1643,6 +1682,7 @@ private:
     wxScrolledWindow* m_input = nullptr;
     StudioNotebook* m_book = nullptr;
     std::array<wxChoice*, 6> m_boundary{};
+    wxChoice* m_symmetry = nullptr;
     wxCheckBox* m_graded = nullptr;
     wxStaticText* m_status = nullptr;
     wxButton* m_check = nullptr;

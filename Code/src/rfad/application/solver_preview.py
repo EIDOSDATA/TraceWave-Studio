@@ -43,7 +43,9 @@ def model_review(document, plan):
     from rfad.domain.pcb_features import records
     from rfad.domain.physical_setup import candidates
 
-    case = plan["case"]
+    from rfad.application.pcb_symmetry import native_case
+
+    case = native_case(plan["case"])
     board = case["board"]
     layers = {row["id"]: row["name"] for row in document["stackup"]}
     geometry_names = display_names(document)
@@ -110,6 +112,10 @@ def model_review(document, plan):
     add(source["id"], source["name"], "port", "LumpedPort 1",
         [{"kind": "segment", "start_mm": port["start_mm"], "stop_mm": port["stop_mm"]}])
     excluded = [plan["model_report"]["omissions"], plan.get("physical_setup_omissions", [])]
+    if "symmetry" in case:
+        represented = set(case["symmetry"]["retained_geometry_ids"])
+        excluded.append([{"id": identity, "kind": "conductor", "reason": "symmetry_image", "represented_by": partner}
+                         for identity, partner in case["symmetry"]["mirror_pairs"].items() if identity not in represented])
     return {"included": included, "excluded": [{**row, "name": names.get(row["id"], row["id"])}
                                                for group in excluded for row in group]}
 
@@ -215,7 +221,11 @@ def read(service, params):
         return {"revision_id": expected, "blocking_diagnostics": rows[:128], "blocking_total": len(rows)}
     case = plan["case"]
     lines = mesh_lines(case)
-    bounds = scene_extents(case)
+    bounds = [list(pair) for pair in scene_extents(case)]
+    if "symmetry" in case:
+        report = case["symmetry"]
+        index, side = divmod(report["face"], 2)
+        bounds[index][side] = report["position_mm"]
     axes = {}
     for index, (axis, interval) in enumerate(zip("xyz", bounds)):
         values = lines[axis]
@@ -225,6 +235,8 @@ def read(service, params):
                       "min_cell_mm": min(steps), "max_cell_mm": max(steps),
                       "boundary_modes": modes, "pml_cells": counts}
     model = model_review(document, plan)
+    from rfad.application.pcb_symmetry import native_case
+
     return {"revision_id": expected, "estimated": plan["resource_estimate"],
             "execution_estimate": estimate(plan, lines),
             "omissions": plan.get("physical_setup_omissions", {}),
@@ -232,7 +244,8 @@ def read(service, params):
             **({"field_recording": case["field_recording"]} if "field_recording" in case else {}),
             "mesh": {"lines_mm": lines, "model_bounds_mm": bounds, "axes": axes,
                      "quality_reference": wavelength_reference(case),
-                     "interval_report": mesh_intervals(case, lines),
+                     "interval_report": mesh_intervals(native_case(case), lines),
+                     **({"symmetry": case["symmetry"]} if "symmetry" in case else {}),
                      "planar_clearances": planar_clearances(model["included"], lines, case["settings"]["grid_mm"]),
                      **({"local_mesh_report": case["local_mesh_report"]} if "local_mesh_report" in case else {}),
                      "case_sha256": canonical_hash(case), "lines_sha256": canonical_hash(lines)},

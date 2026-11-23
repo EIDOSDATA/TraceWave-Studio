@@ -40,9 +40,12 @@ PROFILE = "rfad.openems.pcb-single-port/0.1"
 def validate_settings(settings):
     """! @brief 공개 설정을 명시적이고 유한한 범위로 한정한다."""
     keys = {"frequency_hz", "grid_mm", "air_padding_mm", "curve_tolerance_mm", "max_timesteps", "end_criterion"}
-    if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance", "feature_subdivisions", "compute_profile", "local_mesh", "boundary_conditions", "field_probe", "via_junctions", "material_bands"}:
+    if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance", "feature_subdivisions", "compute_profile", "local_mesh", "boundary_conditions", "field_probe", "via_junctions", "material_bands", "symmetry_plane"}:
         fail("E_SCHEMA", "PCB 해석 설정의 필수 필드가 다릅니다.", "settings")
+    from rfad.application import pcb_symmetry
+
     conditions(settings)
+    pcb_symmetry.validate(settings)
     pcb_junctions.validate(settings)
     if "material_bands" in settings:
         pcb_material_bands.validate(settings["material_bands"])

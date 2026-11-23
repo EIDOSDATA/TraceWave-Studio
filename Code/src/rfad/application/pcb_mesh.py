@@ -271,6 +271,10 @@ def build_grid(case):
             points = graded_axis(points, [lower, upper], padding, graded["air_cell_mm"], graded["growth_ratio"])
         if len(points) < 19 or sum(v < inner_lower for v in points) < 9 or sum(v > inner_upper for v in points) < 9:
             fail("E_GEOMETRY", "PML 8 cells와 모델 사이의 공기 격자가 부족합니다.", "mesh")
+        if "symmetry" in case:
+            from rfad.application.pcb_symmetry import reduce_axis
+
+            points = reduce_axis(case, name, points)
         total *= len(points)
         if total > maximum:
             _grid_limit(total, maximum, local=local)

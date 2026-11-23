@@ -76,8 +76,13 @@ def validate_preparation(plan, preparation):
         fail("E_HASH", "준비 산출물의 면별 흡수층 수가 계획과 다릅니다.")
     consumption = preparation["consumption_report"]
     counts = [len(lines[axis]) for axis in "xyz"]
+    from rfad.application.pcb_symmetry import native_case
+
+    projected = native_case(plan["case"])
+    if consumption.get("native_connectivity", {}).get("mirror_terminal_face") != projected.get("symmetry", {}).get("face"):
+        fail("E_HASH", "절반 급전의 PEC 단자 면이 계획과 다릅니다.")
     mappings = []
-    for shape in plan["case"]["shapes"]:
+    for shape in projected["shapes"]:
         polygons = shape_polygons(shape, plan["case"]["settings"]["curve_tolerance_mm"])
         mappings.append({"source_entity_id": shape["id"], "native_property": "conductor_" + shape["id"],
                          "polygon_count": len(polygons), "polygon_point_count": sum(len(poly) for poly in polygons),
@@ -108,12 +113,12 @@ def validate_preparation(plan, preparation):
                    or type(row.get("contact_nodes")) is not int or row["contact_nodes"] < 1
                    for row, expected in zip(observed_grounding, expected_grounding))):
         fail("E_HASH", "설치 금속의 native 접지 기록이 계획과 다릅니다.")
-    expected_entities = sorted(item["id"] for item in plan["case"]["shapes"] + plan["case"].get("vias", []))
+    expected_entities = sorted(item["id"] for item in projected["shapes"] + projected.get("vias", []))
     records = connectivity.get("entities", [])
     if (connectivity.get("schema") != "rfad.pcb-native-connectivity/0.1" or connectivity.get("yee_connectivity_checked") is not True
             or connectivity.get("operator_coefficients_checked") is not False or connectivity.get("physics_validated") is not False
             or connectivity.get("port_terminals_connected") is not True or type(connectivity.get("port_gap_edge_count")) is not int
-            or connectivity["port_gap_edge_count"] < 2 or connectivity.get("components") != sorted(plan["case"]["connectivity"]["components"])
+            or connectivity["port_gap_edge_count"] < 2 or connectivity.get("components") != sorted(projected["connectivity"]["components"])
             or type(records) is not list or [record.get("entity_id") for record in records] != expected_entities
             or any(type(record.get("conductor_edge_count")) is not int or record["conductor_edge_count"] <= 0 or record.get("component_count") != 1 for record in records)):
         fail("E_HASH", "PCB native 격자 연결/급전 보고가 계획한 도체와 다릅니다.")
