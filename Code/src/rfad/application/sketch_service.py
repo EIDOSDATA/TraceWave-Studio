@@ -6,6 +6,7 @@ from uuid import UUID, uuid5
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.project_contract import _fields, _uuid
 from rfad.application.sketch_analysis import POINTS, analyze, label
+from rfad.application.sketch_solve import dimensions, solve
 from rfad.domain import sketch_constraints as sketch
 from rfad.domain.errors import ProjectError
 from rfad.domain.object_names import display_names, validate_name
@@ -24,10 +25,12 @@ def validate_input(context, data, method=MUTATION):
     required = {"expected_revision"}
     operation = data.get("operation") if isinstance(data, dict) else None
     if method != GET:
-        if operation not in ("complete", "remove"):
+        if operation not in ("complete", "remove", "solve"):
             sketch.fail("스케치 구속 작업을 선택하세요.", "operation", "E_SCHEMA")
         required |= {"operation"}
         required |= {"name", "selection_ids", "datum", "axis", "requested"} if operation == "complete" else {"id"}
+        if operation == "solve":
+            required.add("edits")
     if method == MUTATION:
         required |= {"command_id", "review_hash"}
     _fields(data, required)
@@ -43,8 +46,20 @@ def validate_input(context, data, method=MUTATION):
                 _hash(digest, "requested")
             if len(requested) != len(set(requested)):
                 sketch.fail("같은 제안을 한 번만 선택하세요.", "requested", "E_CONFLICT")
-    elif operation == "remove":
+    elif operation in ("remove", "solve"):
         _uuid(data["id"])
+        if operation == "solve":
+            edits = data["edits"]
+            if type(edits) is not list or not 1 <= len(edits) <= sketch.MAX_RELATIONS:
+                sketch.fail("변경할 구동 치수를 선택하세요.", "edits", "E_SCHEMA")
+            seen = set()
+            for edit in edits:
+                _fields(edit, {"index", "value"})
+                index = edit["index"]
+                if type(index) is not int or index < 0 or index in seen:
+                    sketch.fail("구동 치수 행 번호와 중복 선택을 확인하세요.", "edits", "E_SCHEMA")
+                seen.add(index)
+                sketch.number(edit["value"], "edits")
     if method == MUTATION:
         _uuid(data["command_id"])
         _hash(data["review_hash"], "review_hash")
@@ -81,6 +96,7 @@ def get(document):
             continue
         shapes.append({"id": identity, "name": names[identity], "points": points})
     groups = [{**row, "labels": [label(document, model, item) for item in row["constraints"]],
+               "dimensions": list(dimensions(document, model, row)),
                "preserved": [label(document, model, item) for item in row["protected"]]}
               for row in sketch.groups(document)]
     return {"profile": sketch.PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
@@ -94,7 +110,7 @@ def preview(document, data):
     existing = {row["id"]: row for row in sketch.groups(document)}
     summary = {"variables": None, "before": None, "after": None, "proposals": [], "existing": [], "conflicts": []}
     try:
-        replacement = None
+        replacement, geometry = None, None
         if data["operation"] == "remove":
             identity = data["id"]
             if identity not in existing:
@@ -104,6 +120,13 @@ def preview(document, data):
             summary["after"] = analyze(document, setup, [], skip_group=identity)[0]["before"]
             summary["proposals"] = []
             summary["conflicts"] = []
+        elif data["operation"] == "solve":
+            identity = data["id"]
+            if identity not in existing:
+                sketch.fail("편집할 구속을 찾을 수 없습니다.", "id", "E_CONFLICT")
+            summary, replacement, geometry = solve(document, existing[identity], data["edits"])
+            if summary["conflicts"]:
+                sketch.fail("함께 만족할 수 없는 치수나 보존 관계를 확인하세요.", "edits", "E_CONFLICT")
         else:
             setup = {key: deepcopy(data[key]) for key in ("name", "selection_ids", "datum", "axis")}
             summary, constraints, protected = analyze(document, setup, data["requested"])
@@ -115,6 +138,8 @@ def preview(document, data):
                 "sketch:" + canonical_hash({"setup": setup, "constraints": constraints})))
             replacement = {"id": identity, **setup, "constraints": constraints, "protected": protected}
         payload = {"id": identity, "expected": existing.get(identity), "replacement": replacement}
+        if geometry is not None:
+            payload["geometry"] = geometry
         staged = deepcopy(document)
         staged["schema_version"] = SCHEMA_VERSION
         sketch.apply(staged, payload)

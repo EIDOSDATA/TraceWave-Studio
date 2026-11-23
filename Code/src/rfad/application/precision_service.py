@@ -11,6 +11,7 @@ from rfad.application.precision_candidates import (OPERATIONS, PLANAR_OPERATIONS
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain.design import _text
 from rfad.domain.errors import ProjectError
+from rfad.domain import pattern_features as patterns
 from rfad.domain.object_names import display_names, name_dto
 from rfad.domain.precision_command import (COMMANDS, EXTENSION_KEY, MAX_ORIGIN_BYTES, MAX_RECORDS,
                                           apply_precision_command, record_hash)
@@ -92,7 +93,10 @@ def get(document, identities):
     operations = []
     for operation, (label, _) in OPERATIONS.items():
         reason = operation_reason(document, rows, operation)
-        operations.append({"id": operation, "label": label, "enabled": not reason, "reason": reason})
+        item = {"id": operation, "label": label, "enabled": not reason, "reason": reason}
+        if operation in patterns.REGENERATE and not reason:
+            item["values"] = patterns.match(document, rows, operation)["head"]["values"]
+        operations.append(item)
     labels = display_names(document)
     return bounded({"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
                     "selection": [{"id": row["id"], **name_dto(document, row, labels=labels), "kind": row["kind"]} for row in rows],
@@ -119,15 +123,21 @@ def preview(document, data):
         base_hash = canonical_hash(document)
         seed = canonical_hash({"base_content_hash": base_hash, "operation": data["operation"], "values": data["values"], "selection_ids": data["selection_ids"]})
         origin_id = str(uuid5(UUID(document["project_id"]), "precision:" + seed))
-        output, engine = replacements(document, rows, data["operation"], data["values"], origin_id)
-        if output == rows:
+        operation = data["operation"]
+        if operation in patterns.REGENERATE or operation == "detach_pattern":
+            rows, output, engine = patterns.editing(document, rows, operation, data["values"])
+        else:
+            output, engine = replacements(document, rows, operation, data["values"], origin_id)
+            if operation in patterns.PATTERNS:
+                engine["linked_pattern"] = True
+        if output == rows and operation != "detach_pattern":
             fail("현재 원본과 같은 결과입니다. 변경할 값을 입력하십시오.", "values", "E_CONFLICT")
         dependencies = parameter_copies(document, [*rows, *output])
         digest = canonical_hash({"profile": PROFILE, "base_content_hash": base_hash, "expected_revision": data["expected_revision"],
                                  "selection_ids": data["selection_ids"], "operation": data["operation"], "values": data["values"],
                                  "engine": engine, "before": rows, "after": output, "parameters": dependencies})
         record = {"id": origin_id, "base_revision": document["revision_id"], "base_content_hash": base_hash,
-                  "operation": data["operation"], "values": deepcopy(data["values"]), "selection_ids": deepcopy(data["selection_ids"]),
+                  "operation": data["operation"], "values": deepcopy(data["values"]), "selection_ids": [row["id"] for row in rows],
                   "before": deepcopy(rows), "after": deepcopy(output), "parameters": dependencies,
                   "engine": deepcopy(engine), "review_hash": digest, "reason": data.get("reason", "")}
         record["record_hash"] = record_hash(record)
@@ -136,6 +146,7 @@ def preview(document, data):
         candidate = deepcopy(document)
         candidate["schema_version"] = SCHEMA_VERSION
         apply_precision_command(candidate, payload)
+        propagated = patterns.propagate(document, candidate)
         validate_project(candidate)
         size = len(canonical_bytes(candidate))
         if size > MAX_DOCUMENT_BYTES:
@@ -145,6 +156,9 @@ def preview(document, data):
         output_ids = {row["id"] for row in output}
         changes = [{"id": row["id"], "label": item_label(document, row), "action": "remove"} for row in rows if row["id"] not in output_ids]
         changes += [{"id": row["id"], "label": item_label(candidate, row), "action": "modify" if row["id"] in source_ids else "create"} for row in output if row != source.get(row["id"])]
+        if propagated:
+            generated = {row["id"]: row for row in candidate["geometry"] if row["id"] in propagated}
+            changes.extend({"id": key, "label": item_label(candidate, generated[key]), "action": "modify"} for key in propagated)
         notices = [{"severity": "info", "code": "I_PRECISION_ONLY", "message": "명시 기하 편집 후보입니다. 연결/목표 제약/제조 규칙은 적용 후 현재 개정에서 다시 검사하십시오."}]
         if data["operation"] in PLANAR_OPERATIONS:
             notices.append({"severity": "info", "code": "I_PLANAR_REPLACEMENT", "message": "선택 영역을 새 다각형 UUID로 교체합니다. 원본/결과/출처 사본을 보존하며 자동 복구나 단순화는 수행하지 않습니다."})

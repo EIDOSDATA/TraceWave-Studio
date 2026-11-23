@@ -4,6 +4,8 @@
 #include "studio_support.h"
 #include "studio_theme.h"
 #include <algorithm>
+#include <cmath>
+#include <wx/scrolwin.h>
 #include <wx/checklst.h>
 #include <wx/wx.h>
 
@@ -108,12 +110,14 @@ SketchConstraintDialog::SketchConstraintDialog(wxWindow* parent, const Json& con
     m_preview->SetName("sketch.preview");
     m_automatic = new wxButton(this, wxID_ANY, Display("독립 제안 다시 선택"));
     m_automatic->SetName("sketch.auto");
+    m_solve = new wxButton(this, wxID_ANY, Display("구동 치수 편집"));
+    m_solve->SetName("sketch.solve");
     m_remove = new wxButton(this, wxID_ANY, Display("삭제 검토"));
     m_remove->SetName("sketch.remove");
     m_apply = new wxButton(this, wxID_ANY, Display("적용"));
     m_apply->SetName("sketch.apply");
     auto* close = new wxButton(this, wxID_CANCEL, Display("닫기"));
-    for (auto* button : {m_preview, m_automatic, m_remove, m_apply, close})
+    for (auto* button : {m_preview, m_automatic, m_solve, m_remove, m_apply, close})
     {
         StudioTheme::Button(*button, button == m_apply);
         actions->Add(button, 0, wxLEFT, FromDIP(8));
@@ -166,6 +170,10 @@ SketchConstraintDialog::SketchConstraintDialog(wxWindow* parent, const Json& con
     m_automatic->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
     {
         Preview(true);
+    });
+    m_solve->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        EditDimensions();
     });
     m_remove->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
     {
@@ -329,6 +337,79 @@ void SketchConstraintDialog::Preview(bool automatic, bool remove)
         input["axis"] = m_axis->GetSelection() == 0 ? "x" : "y";
         input["requested"] = automatic || m_rows.empty() ? Json(nullptr) : Requested();
     }
+    SubmitPreview(input);
+}
+
+void SketchConstraintDialog::EditDimensions()
+{
+    const auto& group = m_context.at("groups").at(m_groupIndex - 1);
+    const auto& dimensions = group.at("dimensions");
+    wxDialog editor(this, wxID_ANY, Display("구동 치수 편집"), wxDefaultPosition, wxDefaultSize,
+                    wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+    editor.SetName("sketch.dimensions");
+    StudioTheme::ApplyTypography(editor);
+    auto* layout = new wxBoxSizer(wxVERTICAL);
+    auto* scroll = new wxScrolledWindow(&editor);
+    scroll->SetScrollRate(FromDIP(8), FromDIP(8));
+    auto* fields = new wxFlexGridSizer(2, FromDIP(8), FromDIP(10));
+    fields->AddGrowableCol(0, 1);
+    std::vector<wxTextCtrl*> inputs;
+    for (const auto& row : dimensions)
+    {
+        auto* caption = new wxStaticText(scroll, wxID_ANY, Display(row.at("label").get<std::string>()));
+        caption->Wrap(FromDIP(360));
+        fields->Add(caption, 1, wxEXPAND);
+        auto* field = new wxTextCtrl(scroll, wxID_ANY, wxString::Format("%.15g", row.at("value").get<double>()));
+        field->SetName("sketch.dimension." + wxString::Format("%d", row.at("index").get<int>()));
+        fields->Add(field, 0, wxEXPAND);
+        inputs.push_back(field);
+    }
+    scroll->SetSizer(fields);
+    const auto content = fields->GetMinSize();
+    scroll->SetMinSize(wxSize(std::min(FromDIP(630), std::max(FromDIP(440), content.x + FromDIP(24))),
+                              std::min(FromDIP(380), content.y + FromDIP(8))));
+    layout->Add(scroll, 1, wxEXPAND | wxALL, FromDIP(12));
+    auto* buttons = editor.CreateStdDialogButtonSizer(wxOK | wxCANCEL);
+    editor.FindWindow(wxID_OK)->SetLabel(Display("풀이 검토"));
+    layout->Add(buttons, 0, wxALIGN_RIGHT | wxALL, FromDIP(8));
+    editor.SetSizerAndFit(layout);
+    Json edits = Json::array();
+    while (editor.ShowModal() == wxID_OK)
+    {
+        edits.clear();
+        bool valid = true;
+        for (std::size_t index = 0; index < inputs.size(); ++index)
+        {
+            auto* field = inputs.at(index);
+            if (!field->IsModified())
+            {
+                continue;
+            }
+            double value = 0.0;
+            if (!field->GetValue().ToDouble(&value) || !std::isfinite(value))
+            {
+                wxMessageBox(Display("구동 치수에 유한한 숫자를 입력하세요."), editor.GetTitle(),
+                             wxOK | wxICON_WARNING, &editor);
+                field->SetFocus();
+                valid = false;
+                break;
+            }
+            edits.push_back({{"index", dimensions.at(index).at("index")}, {"value", value}});
+        }
+        if (valid)
+        {
+            if (!edits.empty())
+            {
+                SubmitPreview({{"expected_revision", m_revision}, {"operation", "solve"},
+                               {"id", group.at("id")}, {"edits", edits}});
+            }
+            return;
+        }
+    }
+}
+
+void SketchConstraintDialog::SubmitPreview(const Json& input)
+{
     m_review = nullptr;
     Request("precision.sketch.preview", input, false, [this, input](const Json& result)
     {
@@ -362,7 +443,21 @@ void SketchConstraintDialog::Present(const Json& result)
     {
         text += row.get<std::string>() + "\n";
     }
-    text += "\n이미 성립하는 치수와 관계\n";
+    if (result.contains("geometry_changes"))
+    {
+        text += "\n반복 " + result.at("iterations").dump() + "회 / 최대 잔차 " +
+                result.at("max_residual").dump() + " (mm 또는 rad)\n";
+        for (const auto& change : result.at("geometry_changes"))
+        {
+            text += change.at("name").get<std::string>() + " / " + change.at("field").get<std::string>() + "  " +
+                    change.at("before").dump() + " -> " + change.at("after").dump() + " " +
+                    change.at("unit").get<std::string>() + "\n";
+        }
+    }
+    if (!result.at("existing").empty())
+    {
+        text += "\n이미 성립하는 치수와 관계\n";
+    }
     for (const auto& row : result.at("existing"))
     {
         text += row.get<std::string>() + "\n";
@@ -400,6 +495,8 @@ void SketchConstraintDialog::UpdateActions()
     m_group->Enable(!m_mutating);
     m_preview->Enable(request);
     m_automatic->Enable(request && !m_rows.empty());
+    m_solve->Enable(editable && !m_pending && m_groupIndex > 0 &&
+                    !m_context.at("groups").at(m_groupIndex - 1).value("dimensions", Json::array()).empty());
     m_remove->Enable(editable && !m_pending && m_groupIndex > 0);
     m_apply->Enable(editable && !m_pending && m_review.is_object());
 }

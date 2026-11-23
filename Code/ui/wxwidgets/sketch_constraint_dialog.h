@@ -24,6 +24,8 @@ private:
     Json SelectedShapes() const;
     Json Requested() const;
     void Preview(bool automatic = false, bool remove = false);
+    void EditDimensions();
+    void SubmitPreview(const Json& input);
     void Apply();
     void Present(const Json& result);
 
@@ -32,7 +34,7 @@ private:
     wxCheckListBox *m_shapes = nullptr, *m_proposals = nullptr;
     wxTextCtrl *m_name = nullptr, *m_report = nullptr;
     wxStaticText* m_freedom = nullptr;
-    wxButton *m_preview = nullptr, *m_automatic = nullptr, *m_remove = nullptr, *m_apply = nullptr;
+    wxButton *m_preview = nullptr, *m_automatic = nullptr, *m_remove = nullptr, *m_solve = nullptr, *m_apply = nullptr;
     DesignCanvas* m_canvas = nullptr;
     int m_groupIndex = 0;
     bool m_dirty = false;

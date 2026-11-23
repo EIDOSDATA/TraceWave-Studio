@@ -10,6 +10,7 @@ from rfad.domain.curve_boolean import _intersections, _piece, TOLERANCE_MM
 from rfad.domain.design import _uuid
 from rfad.domain.errors import ProjectError
 from rfad.domain.object_names import allocate_name, object_label
+from rfad.domain import pattern_features as patterns
 from rfad.domain.precision_fillet import curved_fillet
 from rfad.domain.precision_dimensions import bind_dimension, dimensions, set_dimension
 from rfad.domain.precision_transform import MAX_SELECTION, fail, number, point, point_fields, replace_literal, scalar, transform
@@ -22,6 +23,9 @@ OPERATIONS = {
     "mirror": ("미러", {"axis", "offset_mm"}),
     "linear_pattern": ("직선 반복 복사", {"count", "dx_mm", "dy_mm"}),
     "circular_pattern": ("원형 반복 복사", {"count", "pivot_x_mm", "pivot_y_mm", "step_deg"}),
+    "edit_linear_pattern": ("직선 반복 설정 편집", {"count", "dx_mm", "dy_mm"}),
+    "edit_circular_pattern": ("원형 반복 설정 편집", {"count", "pivot_x_mm", "pivot_y_mm", "step_deg"}),
+    "detach_pattern": ("반복 연결 해제", set()),
     "line_fillet": ("두 직선 사이 필렛", {"radius_mm"}),
     "curved_fillet": ("원호에 접하는 필렛", {"radius_mm"}),
     "curve_trim": ("교차점에서 선·원호 자르기", {"target_id", "keep"}),
@@ -36,7 +40,7 @@ OPERATIONS = {
     "offset": ("영역 오프셋", {"distance_mm", "join", "mitre_limit"}),
 }
 PLANAR_OPERATIONS = {"union", "difference", "intersection", "offset"}
-PATTERNS = {"linear_pattern", "circular_pattern"}
+PATTERNS = patterns.PATTERNS
 
 
 def selected(document, identities):
@@ -72,6 +76,12 @@ def operation_reason(document, rows, operation):
     """! @brief 비활성 사유를 서비스와 GUI가 같은 선택 기준으로 표시한다."""
     if not rows:
         return "도체 객체를 선택하십시오."
+    if operation in patterns.REGENERATE or operation == "detach_pattern":
+        try:
+            patterns.match(document, rows, operation)
+        except ProjectError as error:
+            return error.message
+        return ""
     if operation in ("dimension_set", "bind_dimension", "offset", "arc_offset") and len(rows) != 1:
         return "이 작업에는 객체 한 개를 선택하십시오."
     if operation in {"line_fillet", "curved_fillet"}:
@@ -198,46 +208,6 @@ def _planar_objects(document, rows, operation, values, origin_id):
         output["name"] = allocate_name(document, output, reserved=[item["name"] for item in result])
         result.append(output)
     return result, engine
-
-
-def _pattern_objects(document, rows, operation, values, origin_id):
-    """! @brief 원본을 유지하면서 각 배치의 복사 ID와 비아 패드 대응을 함께 만든다."""
-    count = number(values["count"], "count")
-    if not count.is_integer() or not 2 <= count <= MAX_SELECTION // len(rows):
-        fail("반복 수는 원본을 포함한 정수이며, 결과 객체는 전체 16개 이하여야 합니다.", "count", "E_RESOURCE")
-    count = int(count)
-    linear = operation == "linear_pattern"
-    if linear:
-        x, y = (number(values[key], key) for key in ("dx_mm", "dy_mm"))
-        if x == y == 0:
-            fail("반복 피치를 지정하십시오.", "dx_mm", "E_CONFLICT")
-    else:
-        step = number(values["step_deg"], "step_deg")
-        if not 0 < abs(step) < 360:
-            fail("원형 반복 간격의 절댓값은 0보다 크고 360도보다 작아야 합니다.", "step_deg", "E_SCHEMA")
-        angles = sorted((step * index) % 360 for index in range(count))
-        if any(b - a <= 1e-10 for a, b in zip(angles, angles[1:] + [angles[0] + 360])):
-            fail("반복한 회전 위치가 겹칩니다. 개수나 간격을 조정하십시오.", "step_deg", "E_CONFLICT")
-    output = list(rows)
-    used_names = [row["name"] for row in document["geometry"] if "name" in row]
-    by_source = {row["id"]: {canonical_hash(row)} for row in rows}
-    for index in range(1, count):
-        copied_ids = {row["id"]: str(uuid5(UUID(origin_id), f"pattern:{index}:{row['id']}")) for row in rows}
-        transform_values = ({"dx_mm": x * index, "dy_mm": y * index} if linear else
-                            {"pivot_x_mm": values["pivot_x_mm"], "pivot_y_mm": values["pivot_y_mm"], "angle_deg": step * index})
-        for row in rows:
-            copied = transform(document, row, "translate" if linear else "rotate", transform_values)
-            digest = canonical_hash(copied)
-            if digest in by_source[row["id"]]:
-                fail("반복해도 기존과 같은 위치와 형상이 있습니다.", "selection_ids", "E_CONFLICT")
-            by_source[row["id"]].add(digest)
-            copied["id"] = copied_ids[row["id"]]
-            if "pad_ids" in copied:
-                copied["pad_ids"] = [copied_ids[key] for key in copied["pad_ids"]]
-            copied["name"] = allocate_name(document, copied, reserved=used_names)
-            used_names.append(copied["name"])
-            output.append(copied)
-    return output
 
 
 def _centerline(document, row):
@@ -427,7 +397,7 @@ def replacements(document, rows, operation, values, origin_id):
         _uuid(values["parameter_id"], "parameter_id")
         return [bind_dimension(document, rows[0], values["dimension_key"], values["parameter_id"])], engine
     if operation in PATTERNS:
-        return _pattern_objects(document, rows, operation, values, origin_id), engine
+        return patterns.generate(document, rows, operation, values, origin_id), engine
     if operation == "line_fillet":
         return _fillet(document, rows, values, origin_id), engine
     if operation == "curved_fillet":

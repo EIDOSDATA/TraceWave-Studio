@@ -363,7 +363,7 @@ def validate_setup(data):
 
 def apply(document, payload):
     """! @brief 관계 원본을 한 개정에 보존하고 취소에 쓸 정확한 역명령을 반환한다."""
-    _fields(payload, {"id", "expected", "replacement"}, "command.payload")
+    _fields(payload, {"id", "expected", "replacement"} | ({"geometry"} if "geometry" in payload else set()), "command.payload")
     identity = _uuid(payload["id"], "command.id")
     existing = groups(document)
     old = next((row for row in existing if row["id"] == identity), None)
@@ -372,6 +372,26 @@ def apply(document, payload):
         fail("검토한 스케치 구속과 현재 원본이 다릅니다.", "id", "E_CONFLICT")
     if replacement is not None and (type(replacement) is not dict or replacement.get("id") != identity):
         fail("스케치 구속 ID가 원본과 다릅니다.", "id", "E_HASH")
+    changed = [identity]
+    flags = ["revision", "sketch_constraints"]
+    inverse = {"id": identity, "expected": deepcopy(replacement), "replacement": deepcopy(old)}
+    if "geometry" in payload:
+        rows = payload["geometry"]
+        if old is None or replacement is None or type(rows) is not list or len(rows) > MAX_SELECTION:
+            fail("연립 구속으로 편집할 저장 형상을 확인하세요.", "geometry", "E_SCHEMA")
+        originals = {row["id"]: row for row in document["geometry"]}
+        inverse["geometry"] = []
+        for edit in rows:
+            _fields(edit, {"before", "after"}, "command.geometry")
+            before, after = edit["before"], edit["after"]
+            target = before["id"]
+            if (target in changed or target not in old["selection_ids"] or target not in replacement["selection_ids"]
+                    or originals.get(target) != before or after["id"] != target or after["kind"] != before["kind"]):
+                fail("검토한 구속 형상과 현재 개정이 다릅니다.", "geometry", "E_CONFLICT")
+            ids, affected, _ = apply_design_command(document, "geometry.set", {"geometry": after})
+            changed.extend(ids)
+            flags.extend(affected)
+            inverse["geometry"].append({"before": deepcopy(after), "after": deepcopy(before)})
     remaining = [row for row in existing if row["id"] != identity]
     if replacement is not None:
         remaining.append(deepcopy(replacement))
@@ -379,8 +399,7 @@ def apply(document, payload):
         document["extensions"][KEY] = {"schema": PROFILE, "groups": sorted(remaining, key=lambda item: item["id"])}
     else:
         document["extensions"].pop(KEY, None)
-    return [identity], ["revision", "sketch_constraints"], {"type": COMMAND, "payload": {
-        "id": identity, "expected": deepcopy(replacement), "replacement": deepcopy(old)}}
+    return changed, list(dict.fromkeys(flags)), {"type": COMMAND, "payload": inverse}
 
 
 

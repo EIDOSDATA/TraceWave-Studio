@@ -305,6 +305,74 @@ class SketchConstraintTests(unittest.TestCase):
                     actual = build_pcb_plan(reopened, snapshot_for(reopened), runtime_identity(), settings)
                     self.assertEqual(actual["case"], expected["case"])
 
+    def test_simultaneous_driving_dimensions_keep_feeds_and_reopen(self):
+        """! @brief 원호와 IFA에서 두 치수를 동시에 풀고 이력과 해석 준비까지 검증한다."""
+        for kind in ("arc", "ifa"):
+            with self.subTest(kind=kind), TemporaryDirectory() as folder:
+                with ProjectService(Path(folder), auto_run=False) as service:
+                    document, setup = sketch_fixture(kind)
+                    shapes = sorted(document["geometry"], key=lambda row: (row["kind"] != "line_path", row["name"]))
+                    setup["selection_ids"] = [row["id"] for row in shapes if row["id"] in setup["selection_ids"]]
+                    source, _ = register_fixture(service, document)
+                    project = source["project_id"]
+
+                    def current():
+                        """! @brief 검토와 적용에서 같은 실제 개정을 읽는다."""
+                        return service._load(service.journal.read()["projects"][project])
+
+                    def submit(data):
+                        """! @brief GUI와 같은 검토 해시를 발급받아 명령을 적용한다."""
+                        revision = current()["revision_id"]
+                        result = api.read(service, api.PREVIEW, {"contract_version": "rfad.api/2.0",
+                            "context": {"project_id": project}, "input": {**data, "expected_revision": revision}})
+                        self.assertTrue(result["can_apply"], result)
+                        service.mutate(api.MUTATION, request(service, project, {**data, "expected_revision": revision,
+                            "command_id": str(uuid4()), "review_hash": result["review_hash"]}))
+                        return result
+
+                    submit(setup)
+                    original = current()
+                    group, = api.get(original)["groups"]
+                    dims = [row for row in group["dimensions"] if group["constraints"][row["index"]]["kind"] == "length"
+                            and "급전선" not in row["label"]]
+                    self.assertEqual(len(dims), 2)
+                    changes = [{"index": row["index"], "value": row["value"] + .25} for row in dims]
+                    operation = {"operation": "solve", "id": group["id"], "edits": changes}
+                    locked = deepcopy(original)
+                    sketch.groups(locked)[0]["protected"].append(deepcopy(group["constraints"][dims[0]["index"]]))
+                    blocked, payload = api.preview(locked, operation)
+                    self.assertFalse(blocked["can_apply"])
+                    self.assertIsNone(payload)
+                    self.assertGreaterEqual(len(blocked["conflicts"]), 2)
+                    reviewed = submit(operation)
+                    self.assertEqual((reviewed["before"], reviewed["after"]), (0, 0))
+                    self.assertLess(reviewed["max_residual"], sketch.TOLERANCE)
+                    self.assertGreaterEqual(len({row["id"] for row in reviewed["geometry_changes"]}), 2)
+                    solved = current()
+                    self.assertEqual(solved["ports"], original["ports"])
+                    self.assertEqual(solved["connections"], original["connections"])
+                    group, = sketch.groups(solved)
+                    model = sketch.Model(solved)
+                    for row in group["constraints"] + group["protected"]:
+                        self.assertLessEqual(max(map(abs, model.residual(row))), sketch.TOLERANCE)
+                    for edit in changes:
+                        self.assertEqual(group["constraints"][edit["index"]]["value"], edit["value"])
+                    for method, expected in (("project.undo", original), ("project.redo", solved)):
+                        service.mutate(method, request(service, project, {"command_id": str(uuid4()),
+                            "expected_revision": current()["revision_id"]}))
+                        self.assertEqual(current()["geometry"], expected["geometry"])
+                        self.assertEqual(current()["extensions"], expected["extensions"])
+                    saved = service.mutate("project.save", request(service, project, {"expected_revision": current()["revision_id"]}))
+                    service.run_next()
+                    self.assertEqual(status(service, saved["job_id"])["state"], "completed")
+                with ProjectService(Path(folder), auto_run=False) as reopened:
+                    recovered = reopened._load(reopened.journal.read()["projects"][project])
+                    self.assertEqual(recovered["geometry"], solved["geometry"])
+                    self.assertEqual(recovered["extensions"], solved["extensions"])
+                    plan = build_pcb_plan(recovered, snapshot_for(recovered), runtime_identity(),
+                                          SETTINGS if kind == "arc" else IFA_SETTINGS)
+                    self.assertIn("case", plan)
+
     def test_short_line_stays_non_degenerate_during_rank_evaluation(self):
         """! @brief 차분 간격을 작은 선보다 작게 설정해 기존 분기의 자유도를 유지한다."""
         document, setup = sketch_fixture("arc")

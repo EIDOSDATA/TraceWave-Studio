@@ -194,6 +194,58 @@ class PrecisionServiceTests(unittest.TestCase):
         self.service = ProjectService(self.workspace, auto_run=False)
         self.assertEqual(self.document(), final)
 
+    def test_edit_pattern_count_pitch_and_source_keep_copy_ids(self):
+        """! @brief 직선 및 원형 반복에서 수량/피치, 원본 이동, 해제, 취소/재열기를 검사한다."""
+        for kind in ("linear_pattern", "circular_pattern"):
+            with self.subTest(kind=kind):
+                seed = self.line()
+                settings = ({"count": 3, "dx_mm": 3, "dy_mm": 0} if kind == "linear_pattern" else
+                            {"count": 3, "pivot_x_mm": 5, "pivot_y_mm": 5, "step_deg": 75})
+                edited = {**settings, "count": 4, **({"dx_mm": 4} if kind == "linear_pattern" else {"step_deg": 60})}
+                roots = self.apply([seed], kind, settings)[0]["selection_ids"]
+                query = self.get([roots[1]])
+                operation = "edit_" + kind
+                self.assertEqual(next(row for row in query["operations"] if row["id"] == operation)["values"], settings)
+                known = {key: self.shape(key)["name"] for key in roots[1:]}
+                ids = self.apply([roots[1]], operation, edited)[0]["selection_ids"]
+                self.assertEqual(ids[:3], roots)
+                self.assertEqual({key: self.shape(key)["name"] for key in roots[1:]}, known)
+                old = self.document()
+                with self.assertRaisesRegex(ProjectError, "반복 원본"):
+                    self.canvas("translate", {"id": ids[1], "dx_mm": 1, "dy_mm": 1})
+                self.assertEqual(self.document(), old)
+                output = self.canvas("translate", {"id": seed, "dx_mm": 2, "dy_mm": 0})
+                self.assertEqual(set(output["changed_ids"]), set(ids))
+                after = self.document()
+                expected = ((7, 2) if kind == "linear_pattern" else
+                            (5 - 2 * .5 + 3 * math.sin(math.pi / 3), 5 - 2 * math.sin(math.pi / 3) - 3 * .5))
+                for quantity, coordinate in zip(self.shape(ids[1])["start"], expected):
+                    self.assertAlmostEqual(Quantity(**quantity).as_unit("mm"), coordinate)
+                self.history("undo")
+                self.assertEqual(self.document()["geometry"], old["geometry"])
+                self.history("redo")
+                self.assertEqual(self.document()["geometry"], after["geometry"])
+                reduced = self.apply([ids[1]], operation, {**edited, "count": 2})[0]["selection_ids"]
+                self.assertEqual(reduced, roots[:2])
+                self.assertFalse({*ids[2:]} & {row["id"] for row in self.document()["geometry"]})
+                restored = self.apply([ids[1]], operation, edited)[0]["selection_ids"]
+                self.assertEqual(restored, ids)
+                self.apply([ids[1]], "detach_pattern", {})
+                detached = self.shape(ids[1])
+                self.canvas("translate", {"id": seed, "dx_mm": 1, "dy_mm": 0})
+                self.assertEqual(self.shape(ids[1]), detached)
+                endpoint = self.document()
+                self.history("undo")
+                self.history("redo")
+                self.assertEqual(self.document()["geometry"], endpoint["geometry"])
+        task = self.service.mutate("project.save", self.request({"expected_revision": self.revision}))
+        self.service.run_next()
+        self.assertEqual(self.service.journal.read()["jobs"][task["job_id"]]["state"], "completed")
+        self.service.close()
+        self.service = ProjectService(self.workspace, auto_run=False)
+        self.assertEqual(self.document()["geometry"], endpoint["geometry"])
+        self.assertEqual(self.document()["extensions"], endpoint["extensions"])
+
     def test_ifa_branch_and_complete_pth_pattern_preserve_connections(self):
         """! @brief IFA 급전과 PTH의 패드 ID가 복사 뒤에도 올바른 원본을 참조하는지 검사한다."""
         from test_cad_worker_process import register_fixture

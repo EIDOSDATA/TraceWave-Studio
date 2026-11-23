@@ -204,19 +204,25 @@ void PrecisionDialog::BuildFields()
         m_axis->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { ChangeInputs(); });
         number("offset_mm", "축 위치 (mm)", "0");
     }
-    else if (id == "linear_pattern" || id == "circular_pattern")
+    else if (id == "linear_pattern" || id == "circular_pattern" ||
+             id == "edit_linear_pattern" || id == "edit_circular_pattern")
     {
-        number("count", "반복 수 (원본 포함)", "3");
-        if (id == "linear_pattern")
+        const Json previous = operation.value("values", Json::object());
+        const auto initial = [&previous](const std::string& key, const std::string& fallback)
         {
-            number("dx_mm", "X 피치 (mm)", "2");
-            number("dy_mm", "Y 피치 (mm)", "0");
+            return previous.contains(key) ? previous.at(key).dump() : fallback;
+        };
+        number("count", "반복 수 (원본 포함)", initial("count", "3"));
+        if (id == "linear_pattern" || id == "edit_linear_pattern")
+        {
+            number("dx_mm", "X 피치 (mm)", initial("dx_mm", "2"));
+            number("dy_mm", "Y 피치 (mm)", initial("dy_mm", "0"));
         }
         else
         {
-            number("pivot_x_mm", "회전 중심 X (mm)", "0");
-            number("pivot_y_mm", "회전 중심 Y (mm)", "0");
-            number("step_deg", "회전 간격 (deg, 반시계 양수)", "90");
+            number("pivot_x_mm", "회전 중심 X (mm)", initial("pivot_x_mm", "0"));
+            number("pivot_y_mm", "회전 중심 Y (mm)", initial("pivot_y_mm", "0"));
+            number("step_deg", "회전 간격 (deg, 반시계 양수)", initial("step_deg", "90"));
         }
     }
     else if (id == "line_fillet" || id == "curved_fillet")
