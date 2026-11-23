@@ -11,6 +11,10 @@ def main(argv: list[str] | None = None) -> int:
     @return 명령 실행 종료 코드.
     """
     arguments = sys.argv[1:] if argv is None else argv
+    if arguments[:1] == ["floquet"]:
+        from rfad.cli.floquet import main as floquet_main
+
+        return floquet_main(arguments[1:])
     if arguments[:1] == ["field-study"]:
         from rfad.cli.field_study import main as field_study_main
 
@@ -32,7 +36,7 @@ def main(argv: list[str] | None = None) -> int:
 
         return altium_drill_main(arguments[1:])
     parser = argparse.ArgumentParser(prog="rfad")
-    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy", "pcb-multiport", "sweep-refine", "field-study"))
+    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy", "pcb-multiport", "sweep-refine", "field-study", "floquet"))
     args, remainder = parser.parse_known_args(arguments)
     if args.command == "doctor":
         from rfad.cli.doctor import main as doctor_main

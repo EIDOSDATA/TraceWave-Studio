@@ -1,0 +1,11 @@
+{
+    "period_mm": 38,
+    "thickness_mm": 4,
+    "epsilon_left": 1,
+    "epsilon_right": 1,
+    "stripes": [{"fraction": 0.35, "epsilon_r": 4}, {"fraction": 0.65, "epsilon_r": 1}],
+    "frequencies_hz": [9000000000, 10000000000, 11000000000],
+    "incidence_deg": 17,
+    "polarization": "TE",
+    "orders": 12
+}
