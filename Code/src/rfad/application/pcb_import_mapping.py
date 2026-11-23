@@ -559,12 +559,62 @@ class _ImportCandidate:
             self.append("geometry", row)
 
     def manufacturing_profile(self, data):
-        """! @brief 제조 데이터 외곽을 현재 보드와 확인하고 내부 절삭만 적용한다."""
+        """! @brief 외곽을 대조한 뒤 명시한 층과 넷에만 제조 원본의 배선을 연결한다."""
+        from rfad.application.pcb_exchange_projection import point, scalar
+
         profile = data["editable_profile"]
-        if self.mapping["placement"] is not None or self.layers or self.nets:
-            fail("이 프로파일은 기준 외곽과 절삭을 지원합니다. 배치·층·넷의 대응을 해제하십시오.",
-                 "mapping", "E_UNSUPPORTED")
+        if self.mapping["placement"] is not None:
+            fail("제조 원본 배선에는 보드의 원래 좌표계를 사용하십시오.", "mapping.placement", "E_UNSUPPORTED")
         self.board([{"kind": "rect", "outer_mm": loop} for loop in [profile["outer_mm"], *profile["cutouts_mm"]]])
+        if not self.layers and not self.nets:
+            return
+        traces = data.get("editable_traces", [])
+        if (set(self.layers) != {item["layer"] for item in traces}
+                or set(self.nets) != {item["net"] for item in traces}
+                or len(set(self.layers.values())) != len(self.layers)):
+            fail("지원 배선의 모든 원문 층과 넷을 대응하고 서로 다른 층에는 별도 대상을 지정하십시오.", "mapping", "E_CONFLICT")
+
+        def samples(row):
+            """! @brief 방향에 관계없이 동일 원호의 중간점을 포함해 기존 형상과 대조한다."""
+            if row["kind"] == "line_path":
+                return [point(self.document, row[key]) for key in ("start", "end")]
+            origin = point(self.document, row["center"])
+            radius = scalar(self.document, row["radius"])
+            start, sweep = [scalar(self.document, row[key], "angle") for key in ("start_angle", "sweep_angle")]
+            if None in [*origin, radius, start, sweep]:
+                return []
+            return [[origin[0] + radius * math.cos(math.radians(start + sweep * fraction)),
+                     origin[1] + radius * math.sin(math.radians(start + sweep * fraction))] for fraction in (0, .5, 1)]
+
+        for item in traces:
+            self.source = item["source_id"]
+            row = self.geometry(item["kind"], self.layer(item["layer"]), self.net(item["net"]))
+            row["width"] = self.quantity(item["width_mm"])
+            if item["kind"] == "line_path":
+                row.update(start=self.point(item["start_mm"]), end=self.point(item["end_mm"]))
+            else:
+                row.update(center=self.point(item["center_mm"]), radius=self.quantity(item["radius_mm"]),
+                           start_angle=self.quantity(item["start_angle_deg"], "deg"),
+                           sweep_angle=self.quantity(item["sweep_angle_deg"], "deg"))
+            source_points = samples(row)
+            matches = []
+            for other in self.document["geometry"]:
+                if any(row[key] != other.get(key) for key in ("kind", "layer_id", "frame_id")):
+                    continue
+                width = scalar(self.document, other["width"])
+                if width is None or abs(width - item["width_mm"]) > 2e-6:
+                    continue
+                points = samples(other)
+                if len(points) == len(source_points) and all(None not in p for p in points) and any(
+                        all(math.dist(a, b) <= 3e-6 for a, b in zip(source_points, seq)) for seq in (points, points[::-1])):
+                    matches.append(other)
+            if len(matches) > 1 or (matches and matches[0]["net_id"] != row["net_id"]):
+                fail("겹치는 기존 배선의 넷이나 객체가 유일하지 않습니다.", "mapping.nets", "E_CONFLICT")
+            if matches:
+                self.record["bindings"].append({"source_object_id": self.source, "collection": "geometry",
+                                                "id": matches[0]["id"]})
+            else:
+                self.append("geometry", row)
 
     def build(self):
         """! @brief 모든 파일을 하나의 원자 후보에 모으고 UUID 순서/원문 제약을 검증한다."""
@@ -682,6 +732,10 @@ def import_sources(parsed):
             for region in data["regions"]:
                 add_layer(region["layer"], side=region["side"])
             add_net("", None)
+        elif data["schema"] in {"rfad.ipc2581-read/0.1", "rfad.odbpp-read/0.1"}:
+            for item in data.get("editable_traces", []):
+                add_layer(item["layer"])
+                add_net(item["net"], item["net"] or None)
         elif data["schema"] == "rfad.gerber-read/0.1":
             function = data["file_attributes"].get(".FileFunction", [])
             if function and function[0] == "Copper":

@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 248,
+    "current_07_검증": 250,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28748,7 +28748,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 644925,
-      "working_tree_sha256": "8885e5dd3c2f7da0351aea09e9f2a3a930bc7c92bc52284182792acda0b0b324"
+      "working_tree_sha256": "a4988722d78d04ac96291684b7dede4c75ee6540fe31bb79a34a9246d5e7778d"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32102,6 +32102,24 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/372_부품간_평면과_동축_메이트.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 4142,
+      "working_tree_sha256": "674da8c5ee429270ed5cf4a9ce18cce68e1278dcb38abeff14108ab0521a5ee1",
+      "text_lines": 33,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/373_제조자료_배선과_넷_왕복검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 3082,
+      "working_tree_sha256": "c13e0d713cb9e67a64e9447e6e352699835a8b172013695a69a2c18f06066fb9",
+      "text_lines": 20,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/37_스튜디오_재열기와_유휴성능_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
@@ -32770,8 +32788,8 @@
       "path": "01_개발문서/09_개발계획/11_캐드와_기계도면_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 25316,
-      "working_tree_sha256": "72919e0ef7a01dfc5e3333fbf1b3f016f25c32c042f268c32c714d4cc0a105ae",
+      "bytes": 25493,
+      "working_tree_sha256": "7a59ecf4a5131b3c7c2b6fbbec801da779ee714118302f14db40fdd2868158d0",
       "text_lines": 78,
       "text_status": "utf8_read"
     },
@@ -32779,8 +32797,8 @@
       "path": "01_개발문서/09_개발계획/12_전자설계와_제조교환_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 25285,
-      "working_tree_sha256": "400139b0789a3679f659b3c019945ad32d3ec33eca6fb724594da84bbd56ef10",
+      "bytes": 25595,
+      "working_tree_sha256": "b1632fc7b3e73778d8b8a855d81fecb89ec9b19535c4c7cc663b6d0f9f6e247c",
       "text_lines": 84,
       "text_status": "utf8_read"
     },
@@ -32806,8 +32824,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 35384,
-      "working_tree_sha256": "3559ed33f14f4a1504457af994fed62d3f74f0b6ed8c60f1840686f0989392c3",
+      "bytes": 35892,
+      "working_tree_sha256": "c0515c83a70c2836dae2b09fb3210fdffe97d35e4a341a8c631b96c746477bdb",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

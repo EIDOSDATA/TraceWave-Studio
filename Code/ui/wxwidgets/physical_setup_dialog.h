@@ -49,4 +49,5 @@ private:
     wxButton* m_apply = nullptr;
     wxButton* m_remove = nullptr;
     wxButton* m_browse = nullptr;
+    wxButton* m_storedStep = nullptr;
 };

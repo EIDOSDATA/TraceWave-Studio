@@ -3,6 +3,7 @@
 import hashlib
 from io import BytesIO
 import math
+import re
 from pathlib import PurePosixPath
 from zipfile import BadZipFile, ZipFile
 
@@ -75,6 +76,111 @@ def _matches_step(matrix, step):
     return len(names) == 1 and names[0].casefold() == step.casefold()
 
 
+def _trace_nets(eda):
+    """! @brief SNT TRC와 FID C가 명시적으로 연결한 층/도형 번호와 넷만 사용한다."""
+    names, current, routed = [], None, False
+    result = {}
+    for line in eda.splitlines():
+        fields = line.split(";", 1)[0].split()
+        if not fields:
+            continue
+        if fields[0] == "LYR":
+            if names:
+                return {}
+            names = [value.casefold() for value in fields[1:]]
+            if len(set(names)) != len(names):
+                return {}
+        elif fields[0] == "NET":
+            current = fields[1] if len(fields) == 2 else None
+            routed = False
+        elif fields[0] == "SNT":
+            routed = fields == ["SNT", "TRC"]
+        elif fields[0] == "PKG":
+            break
+        elif routed and current is not None and len(fields) == 4 and fields[:2] == ["FID", "C"]:
+            if not all(token.isdecimal() and len(token) <= 8 for token in fields[2:]):
+                return {}
+            layer, number = map(int, fields[2:])
+            if layer >= len(names):
+                return {}
+            key = (names[layer], number)
+            if key in result:
+                return {}
+            result[key] = "" if current == "$NONE$" else current
+    return result
+
+
+def _layer_traces(text, layer, nets):
+    """! @brief 양극성 도체층에서 둥근 표준 심벌과 직접 연결된 배선만 좌표로 변환한다."""
+    from rfad.adapters.exchange.manufacturing_copper import trace
+
+    symbols, feature_number, unit = {}, 0, None
+    result = []
+    for line in text.splitlines():
+        row = line.split(";", 1)[0].split()
+        if not row or row[0].startswith(("#", "@", "&")):
+            continue
+        opcode = row[0]
+        if opcode.startswith("UNITS="):
+            if unit is not None or opcode[6:] not in FACTORS:
+                return []
+            unit = FACTORS[opcode[6:]]
+        elif opcode.startswith("$"):
+            if len(row) == 2 and re.fullmatch(r"r[0-9]+(?:[.][0-9]+)?", row[1]) and unit is not None:
+                symbols[opcode[1:]] = float(row[1][1:]) * unit / 1000
+        elif opcode in {"L", "A", "P", "S", "T", "B"}:
+            number = feature_number
+            feature_number += 1
+            polarity = {"L": 6, "A": 8, "P": 4, "S": 1, "T": 5, "B": 5}[opcode]
+            if len(row) <= polarity or row[polarity] != "P":
+                return []
+            if opcode not in {"L", "A"} or (layer, number) not in nets or unit is None:
+                continue
+            if len(row) != (8 if opcode == "L" else 11) or row[polarity + 1] != "0":
+                continue
+            width = symbols.get(row[polarity - 1])
+            if width is None:
+                continue
+            try:
+                start, end = [[float(v) * unit for v in fields] for fields in (row[1:3], row[3:5])]
+                center = [float(v) * unit for v in row[5:7]] if opcode == "A" else None
+            except ValueError:
+                continue
+            item = trace(layer, nets[layer, number], f"copper:{layer}:{number}", width, start, end,
+                         center, {"Y": True, "N": False}.get(row[-1]) if center is not None else None)
+            if item is not None:
+                result.append(item)
+                if len(result) > 128:
+                    return []
+        elif opcode not in {"F", "OB", "OS", "OC", "OE", "SE"}:
+            return []
+    return result
+
+
+def _editable_traces(archive, names, prefix, step, matrix):
+    """! @brief 단일 보드의 명시적 신호층과 EDA 배선 참조가 있는 멤버만 개별로 읽는다."""
+    base = prefix + "steps/" + step + "/"
+    if base + "eda/data" not in names:
+        return []
+    nets = _trace_nets(_text(archive, base + "eda/data"))
+    if not nets:
+        return []
+    results = []
+    for block in re.findall(r"(?:^|\n)LAYER\s*\{([^{}]*)\}", matrix):
+        attrs = dict(line.strip().split("=", 1) for line in block.splitlines() if "=" in line)
+        if attrs.get("CONTEXT") != "BOARD" or attrs.get("TYPE") != "SIGNAL" or attrs.get("POLARITY") != "POSITIVE":
+            continue
+        name = attrs.get("NAME", "").casefold()
+        if not name or "/" in name:
+            continue
+        path = base + "layers/" + name + "/features"
+        if path in names:
+            results.extend(_layer_traces(_text(archive, path), name, nets))
+            if len(results) > 128:
+                return []
+    return results
+
+
 def read(raw):
     """! @brief 제조 ZIP의 경계 및 합법 경로와 단일 보드 적용 여부를 검토한다."""
     try:
@@ -106,18 +212,23 @@ def read(raw):
                 major, minor = (info.get(key, "").strip() for key in ("ODB_VERSION_MAJOR", "ODB_VERSION_MINOR"))
                 if all(value.isascii() and value.isdigit() and len(value) <= 8 for value in (major, minor)):
                     version = f"{major}.{minor}"
-            editable = None
+            editable, traces = None, []
             if len(steps) == 1 and _matches_step(levels, steps[0]):
                 content = _text(archive, board_paths[0])
                 header_path = f"{prefix}steps/{steps[0]}/stephdr"
                 header = _text(archive, header_path) if header_path in names else ""
                 if not any(line.lstrip().startswith("STEP-REPEAT") for line in header.splitlines()):
                     editable = _profile(content, steps[0])
+                    if editable:
+                        traces = _editable_traces(archive, names, prefix, steps[0], data)
     except (BadZipFile, UnicodeError, RuntimeError, NotImplementedError) as error:
         raise ProjectError("E_SCHEMA", "ODB++ ZIP 또는 제조 텍스트를 읽을 수 없습니다.") from error
     loss = {"code": "odbpp_profile_only" if editable else "odbpp_review_only", "raw_preserved": True,
             "message": ("같은 보드 외곽을 확인한 뒤 직선 내부 절삭을 반영합니다. 층·넷·홀·부품은 원문에 보존합니다."
                         if editable else "지원하는 단일 보드 직선 프로파일이 없어 원문을 읽기만 합니다.")}
-    return {"schema": "rfad.odbpp-read/0.1", "version": version, "source_sha256": hashlib.sha256(raw).hexdigest(),
+    if traces:
+        loss = {"code": "odbpp_partial_copper", "raw_preserved": True,
+                "message": f"외곽과 절삭을 대조합니다. 층과 넷을 지정하면 EDA 배선 참조가 있는 직선 및 원호 {len(traces)}개를 반영합니다. 나머지 제조 정보는 원문에 보존합니다."}
+    return {"editable_traces": traces, "schema": "rfad.odbpp-read/0.1", "version": version, "source_sha256": hashlib.sha256(raw).hexdigest(),
             "steps": steps, "steps_with_eda": with_eda, "layer_count": layers, "feature_files": features,
             "editable_profile": editable, "losses": [loss]}

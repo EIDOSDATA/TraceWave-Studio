@@ -303,6 +303,12 @@ void PcbImportDialog::RenderMapping(const Json& response)
     }
     m_loading = true;
     m_mappingRows->GetSizer()->Clear(true);
+    if (sources.value("manufacturing_profile_available", false) && !sources.value("layers", Json::array()).empty())
+    {
+        m_mappingRows->GetSizer()->Add(new wxStaticText(m_mappingRows, wxID_ANY,
+            Display("외곽만 적용하려면 아래 대응을 모두 비워 두십시오. 배선을 반영하려면 모든 층과 넷을 선택하십시오.")),
+            0, wxEXPAND | wxBOTTOM, FromDIP(6));
+    }
     m_layerRows.clear();
     m_netRows.clear();
     for (const auto& kind : {std::string("layers"), std::string("nets")})

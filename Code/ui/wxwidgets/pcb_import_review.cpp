@@ -1,4 +1,5 @@
 /** @file @brief 손실 승인과 명시 대응을 검토 해시에 묶고 영수증만으로 복구한다. */
+#include <algorithm>
 #include "pcb_import_dialog.h"
 #include "pcb_feature_model.h"
 #include "output_model.h"
@@ -23,8 +24,19 @@ Json PcbImportDialog::Input() const
                  {"layers", Json::array()},
                  {"nets", Json::array()},
                  {"placement", nullptr}};
+    const std::string format = m_uploadState.value("format", "");
+    const auto noTargets = [](const auto& rows)
+    {
+        return std::none_of(rows.begin(), rows.end(), [](const auto& row) { return row.choice->GetSelection() > 0; });
+    };
+    const bool outlineOnly = (format == "ipc2581_revc" || format == "odbpp_zip") &&
+                             noTargets(m_layerRows) && noTargets(m_netRows);
     for (const auto& kind : {std::string("layers"), std::string("nets")})
     {
+        if (outlineOnly)
+        {
+            break;
+        }
         for (const auto& row : kind == "layers" ? m_layerRows : m_netRows)
         {
             const int index = row.choice->GetSelection();

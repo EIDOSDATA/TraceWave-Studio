@@ -142,7 +142,7 @@ def verify_assemblies(bodies, assemblies, tolerance):
         name = body["name"]
         _require(name in assemblies, "STEP 재입력에서 설치물의 조립 계층을 찾을 수 없습니다.")
         nodes, leaves = assemblies[name]
-        _require(signature(nodes) == signature(source["assembly_instances"]),
+        _require(signature(nodes) == signature(source.get("effective_assembly_instances", source["assembly_instances"])),
                  "STEP 재입력에서 조립 경로나 반복 말단 정의가 달라졌습니다.")
         for item in source["placed_instances"]:
             actual = external_metrics(leaves[tuple(item["path"])])["bbox_mm"]

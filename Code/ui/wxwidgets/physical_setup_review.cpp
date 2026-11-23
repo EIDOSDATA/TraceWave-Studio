@@ -224,7 +224,16 @@ void PhysicalSetupDialog::RenderReview()
         {
             text += "\nSTEP 말단은 경로 뒤에 조립 X Y Z 이동(mm)을 입력합니다. 예시 1.1.2 2 0 0"
                     "\n기판 좌표에 원점을 맞추려면 = X Y Z를 입력합니다. 예시 1.1.2 = 7 34 13"
-                    "\n두 방식 모두 마지막에 X Y Z 회전(deg)을 추가할 수 있습니다.";
+                    "\n두 방식 모두 마지막에 X Y Z 회전(deg)을 추가할 수 있습니다."
+                    "\n평면 일치 예시 1.1.2 plane 2 = 1.1.1 1 opposed"
+                    "\n동축 예시 1.1.2 axis 1 = 1.1.1 1 same"
+                    "\nsame은 같은 방향, opposed는 반대 방향입니다. 미리보기에서 원본 면 번호를 확인하십시오.";
+            text += "\n말단 교체에는 경로, 교체할 STEP의 객체 ID, 원래면=새면을 입력합니다."
+                    "\n예시 1.1.2 <객체 ID> 3=5. 메이트 없는 말단은 면 대응을 비워 둘 수 있습니다.";
+            for (const auto& part : m_context.value("replacement_sources", Json::array()))
+            {
+                text += "\n  " + part.at("name").get<std::string>() + " " + part.at("id").get<std::string>();
+            }
         }
     }
     if (m_context.at("section") == "surface")
@@ -264,6 +273,17 @@ void PhysicalSetupDialog::RenderReview()
                         " " + item.at("name").get<std::string>() + "  " + position.dump();
             }
         }
+        text += "\n\n메이트 기준면 / 원본 좌표 (mm)";
+        for (const auto& leaf : m_stepReview.value("mate_faces", Json::array()))
+        {
+            text += "\n말단 경로 " + leaf.at("path").dump();
+            for (const auto& face : leaf.at("faces"))
+            {
+                const bool plane = face.at("kind") == "plane";
+                text += "\n  " + face.at("index").dump() + (plane ? " 평면 " : " 원통축 ") +
+                        face.at("point_mm").dump() + (plane ? "  법선 " : "  축 방향 ") + face.at("direction").dump();
+            }
+        }
     }
     else if (!m_context.at("step").is_null())
     {
@@ -285,7 +305,7 @@ Json PhysicalSetupDialog::Changes() const
         const std::string key = row.at("key");
         if ((key == "case_thickness" && Value("kind") != "dielectric_case") ||
             (key == "supply_thickness" && Value("kind") != "bondply") ||
-            (key == "instance_offsets" && Value("kind") != "step"))
+            ((key == "instance_offsets" || key == "instance_replacements") && Value("kind") != "step"))
         {
             continue;
         }
@@ -305,7 +325,7 @@ std::string PhysicalSetupDialog::Value(const std::string& key) const
 
 bool PhysicalSetupDialog::HasDraft() const
 {
-    return !m_refreshing && (!Changes().empty() || !m_stepReview.is_null());
+    return !m_refreshing && (!Changes().empty() || (!m_stepReview.is_null() && !m_stepReview.at("preview_token").is_null()));
 }
 
 void PhysicalSetupDialog::UpdateActions()
@@ -320,15 +340,21 @@ void PhysicalSetupDialog::UpdateActions()
     {
         wall->second->Enable(ready && Value("kind") == "dielectric_case");
     }
-    if (const auto offsets = m_inputs.find("instance_offsets"); offsets != m_inputs.end())
+    for (const auto* field : {"instance_offsets", "instance_replacements"})
     {
-        offsets->second->Enable(ready && Value("kind") == "step");
+        if (const auto input = m_inputs.find(field); input != m_inputs.end())
+        {
+            input->second->Enable(ready && Value("kind") == "step");
+        }
     }
     if (const auto supply = m_inputs.find("supply_thickness"); supply != m_inputs.end())
     {
         supply->second->Enable(ready && Value("kind") == "bondply");
     }
     m_reason->Enable(ready);
+    m_storedStep->Enable(ready && section == "part" && m_context.at("cad_configured") == true &&
+                         !m_context.at("step").is_null() &&
+                         (m_stepReview.is_null() || m_stepReview.at("preview_token").is_null()));
     m_browse->Enable(ready && section == "part" && m_context.at("cad_configured") == true);
     const bool reason = !m_reason->GetValue().Trim().Trim(false).empty();
     m_apply->Enable(ready && reason && HasDraft());

@@ -215,6 +215,26 @@ class CadNativeTests(unittest.TestCase):
             moved = load(service, doc)
             self.assertEqual(setup(moved)["parts"][0]["instance_offsets"], mate)
             self.assertEqual(setup(moved)["parts"][0]["step"], source)
+            review = service.physical_setup.read("physical.step.preview", {
+                "contract_version": "rfad.api/2.0", "context": {"project_id": doc["project_id"]},
+                "input": {"expected_revision": moved["revision_id"], "record_id": prior["id"]}})
+            self.assertIsNone(review["preview_token"])
+            self.assertEqual(review["sha256"], source["sha256"])
+            first, second = [leaf["faces"] for leaf in review["mate_faces"]]
+            fixed = next(face["index"] for face in first if face["direction"][0] > .99)
+            following = next(face["index"] for face in second if face["direction"][0] < -.99)
+            for bad in (f"1.1.2 axis {following} = 1.1.1 {fixed} opposed",
+                        f"1.1.2 plane {following} = 1.1.9 {fixed} same"):
+                with self.assertRaises(ProjectError):
+                    service.mutate(METHOD, parameters(service, moved, "part", {"instance_offsets": bad},
+                                                       identity=prior["id"]))
+                self.assertEqual(load(service, doc), moved)
+            text = f"1.1.2 plane {following} = 1.1.1 {fixed} opposed"
+            mate = [{"path": [1, 1, 2], "mate": {"kind": "plane", "face": following, "target_path": [1, 1, 1],
+                                                "target_face": fixed, "sense": "opposed"}}]
+            service.mutate(METHOD, parameters(service, moved, "part", {"instance_offsets": text}, identity=prior["id"]))
+            moved = load(service, doc)
+            self.assertEqual(setup(moved)["parts"][0]["instance_offsets"], mate)
             saved = service.mutate("project.save", request(service, doc["project_id"], {
                 "expected_revision": moved["revision_id"]}))
             service.run_next()

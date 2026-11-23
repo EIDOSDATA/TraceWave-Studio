@@ -69,6 +69,59 @@ def _editable_profile(step, factor):
     return {"step": step.get("name"), "outer_mm": loops[0], "cutouts_mm": loops[1:]}
 
 
+def _editable_traces(step, layers, factor):
+    """! @brief 양극성 신호층의 직접 명시한 둥근 직선 및 원호만 좌표 변환 없이 가져온다."""
+    from rfad.adapters.exchange.manufacturing_copper import trace
+
+    names = Counter(row.get("name") for row in layers)
+    selected = {row.get("name") for row in layers if names[row.get("name")] == 1
+                and row.get("layerFunction") == "CONDUCTOR" and row.get("polarity") == "POSITIVE"}
+    features = step.findall(NS + "LayerFeature")
+    excluded = {feature.get("layerRef") for feature in features
+                if any(node.get("polarity", "POSITIVE") != "POSITIVE" for node in feature.iter())}
+    items = []
+    for layer_index, feature in enumerate(features):
+        layer = feature.get("layerRef")
+        if layer not in selected or layer in excluded or set(feature.attrib) != {"layerRef"}:
+            continue
+        for set_index, group in enumerate(feature.findall(NS + "Set")):
+            if set(group.attrib) - {"net", "polarity"} or group.find(NS + "Xform") is not None:
+                continue
+            for group_index, collection in enumerate(group.findall(NS + "Features")):
+                if collection.attrib or [node.tag for node in collection] != [NS + "UserSpecial"]:
+                    continue
+                special = collection[0]
+                if special.attrib:
+                    continue
+                for index, item in enumerate(special):
+                    if item.tag not in {NS + "Line", NS + "Arc"} or len(item) != 1 or item[0].tag != NS + "LineDesc":
+                        continue
+                    allowed = {"startX", "startY", "endX", "endY"}
+                    if item.tag == NS + "Arc":
+                        allowed.update({"centerX", "centerY", "clockwise"})
+                    if set(item.attrib) != allowed:
+                        continue
+                    desc = item[0]
+                    if desc.get("lineEnd") != "ROUND" or set(desc.attrib) != {"lineEnd", "lineWidth"}:
+                        continue
+                    def coord(key):
+                        """! @brief 수치가 없으면 지원하지 않는 원문으로 남긴다."""
+                        value = _measure(item, key, factor)
+                        return None if value is None else value["converted"]
+                    start, end = ([coord(prefix + axis) for axis in "XY"] for prefix in ("start", "end"))
+                    center = [coord("center" + axis) for axis in "XY"] if item.tag == NS + "Arc" else None
+                    clockwise = {"true": True, "false": False, "1": True, "0": False}.get(item.get("clockwise"))
+                    width = _measure(desc, "lineWidth", factor)
+                    if width and None not in [*start, *end, *(center or [])]:
+                        source = f"copper:{layer_index}:{set_index}:{group_index}:{index}"
+                        result = trace(layer, group.get("net", ""), source, width["converted"], start, end, center, clockwise)
+                        if result is not None:
+                            items.append(result)
+                            if len(items) > 128:
+                                return []
+    return items
+
+
 def _step(node, factor):
     """! @brief 각 보드 정의의 넷, 부품, 홀과 윤곽의 명시 범위를 집계한다."""
     features = node.findall(NS + "LayerFeature")
@@ -134,7 +187,11 @@ def read(raw):
              "message": "단일 보드의 직선 외곽을 대조하고 내부 절삭만 추가합니다. 적층·넷·홀·실장 등은 원문에 보존합니다."}
             if editable else {"code": "ipc2581_review_only", "raw_preserved": True,
                               "message": "현재 지원하는 단일 보드의 닫힌 직선 프로파일이 없어 원문을 읽기만 합니다."})
-    return {"schema": "rfad.ipc2581-read/0.1", "version": "C", "units": units,
+    traces = _editable_traces(steps[0], layers, factor) if editable else []
+    if traces:
+        loss = {"code": "ipc2581_partial_copper", "raw_preserved": True,
+                "message": f"외곽과 절삭을 대조합니다. 층과 넷을 지정하면 둥근 직선 및 원호 동박 {len(traces)}개를 반영합니다. 나머지 제조 정보는 원문에 보존합니다."}
+    return {"editable_traces": traces, "schema": "rfad.ipc2581-read/0.1", "version": "C", "units": units,
             "source_sha256": hashlib.sha256(raw).hexdigest(),
             "writer": None if history is None else history.get("software"),
             "sections": sorted({element.tag[len(NS):] for element in root if element.tag.startswith(NS)}),

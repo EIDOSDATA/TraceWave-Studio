@@ -66,6 +66,8 @@ PhysicalSetupDialog::PhysicalSetupDialog(wxWindow* parent, const Json& context, 
     m_browse = new wxButton(this, wxID_ANY, Display("STEP 읽기 미리보기..."));
     select->Add(m_section, 0, wxRIGHT, pad);
     select->Add(m_record, 1, wxRIGHT, pad);
+    m_storedStep = new wxButton(this, wxID_ANY, Display("저장된 STEP 면 보기"));
+    select->Add(m_storedStep, 0, wxRIGHT, pad);
     select->Add(m_browse);
     layout->Add(select, 0, wxEXPAND | wxALL, pad);
 
@@ -118,6 +120,16 @@ PhysicalSetupDialog::PhysicalSetupDialog(wxWindow* parent, const Json& context, 
     m_apply->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { Apply(false); });
     m_remove->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { Apply(true); });
     m_browse->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { BrowseStep(); });
+    m_storedStep->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        Request("physical.step.preview", {{"expected_revision", m_revision}, {"record_id", m_context.at("record_id")}},
+                false, [this](const Json& result)
+                {
+                    m_stepReview = result;
+                    RenderReview();
+                    SetStatus("저장된 원본 STEP의 조립 경로와 메이트 면을 표시했습니다.");
+                });
+    });
     Render(context);
 }
 

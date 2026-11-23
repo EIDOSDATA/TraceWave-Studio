@@ -131,10 +131,12 @@ def external_metrics(shape):
 
 def inspect_step(item):
     """! @brief 가져오기 미리보기에는 실제 B-rep 확인 범위와 미정 물성을 반환한다."""
-    shape, source_unit, scale, instances, _ = _read_external(item)
+    shape, source_unit, scale, instances, leaves = _read_external(item)
+    datums = leaves if instances else {(1,): shape.wrapped}
     return {"sha256": item["sha256"], "unit": "mm", "source_length_unit": source_unit, "source_to_mm": scale,
             "shape": "assembly" if instances else "single_solid", "faces": len(shape.Faces()),
             "assembly_instances": instances,
+            "mate_faces": [{"path": list(path), "faces": _face_catalog(leaf)} for path, leaf in datums.items()],
             "material_id": None, **external_metrics(shape)}
 
 
@@ -182,25 +184,111 @@ def _instance_translation(row, placement, origin):
     return tuple(target - base for target, base in zip(target_local, origin))
 
 
-def _shift_instances(cq, leaves, instances, row, tolerance):
-    """! @brief 원본 말단 원점을 중심으로 조립 고정 X Y Z축 회전과 이동을 적용한다."""
-    offsets = row["instance_offsets"]
-    validate_instance_offsets(offsets)
+def _face_datum(face, kind):
+    """! @brief 원본 평면의 외향 법선 또는 원통면의 해석축과 해당 기준점을 읽는다."""
+    from OCP.BRepAdaptor import BRepAdaptor_Surface
+    from OCP.gp import gp_Dir, gp_Pnt
+
+    if kind == "plane":
+        _require(face.geomType() == "PLANE", "메이트 원본 면이 평면이 아닙니다.")
+        return gp_Pnt(*face.Center().toTuple()), gp_Dir(*face.normalAt().toTuple())
+    _require(face.geomType() == "CYLINDER", "축 메이트에 원통면을 지정하십시오.")
+    axis = BRepAdaptor_Surface(face.wrapped).Cylinder().Axis()
+    return axis.Location(), axis.Direction()
+
+
+def _face_catalog(leaf):
+    """! @brief 미리보기에서 선택할 수 있는 원본 B-rep 평면 및 원통면 번호를 반환한다."""
+    import cadquery as cq
+
+    result = []
+    for index, face in enumerate(cq.Shape.cast(leaf).Faces(), 1):
+        kind = {"PLANE": "plane", "CYLINDER": "axis"}.get(face.geomType())
+        if kind is not None:
+            point, direction = _face_datum(face, kind)
+            result.append({"index": index, "kind": kind, "point_mm": list(point.Coord()),
+                           "direction": list(direction.Coord())})
+    return result
+
+
+def _mate_delta(source, reference, mate, reference_delta):
+    """! @brief 원본 말단을 최단 회전한 뒤 평면 거리 또는 두 축의 수직 거리를 제거한다."""
+    from OCP.gp import gp_Quaternion, gp_Trsf, gp_Vec
+
+    def datum(solid, index):
+        """! @brief 경로와 원본 고체에서 확인한 면을 읽는다."""
+        faces = solid.Faces()
+        _require(1 <= index <= len(faces), "원본 메이트 면 번호가 없습니다.")
+        return _face_datum(faces[index - 1], mate["kind"])
+
+    pivot, normal = datum(source, mate["face"])
+    target, direction = datum(reference, mate["target_face"])
+    target.Transform(reference_delta)
+    direction.Transform(reference_delta)
+    if mate["sense"] == "opposed":
+        direction.Reverse()
+    correction = gp_Trsf()
+    correction.SetRotation(gp_Quaternion(gp_Vec(normal), gp_Vec(direction)))
+    separation = gp_Vec(pivot, target)
+    along = gp_Vec(direction).Multiplied(separation.Dot(gp_Vec(direction)))
+    adjustment = along if mate["kind"] == "plane" else separation.Subtracted(along)
+    # @brief 회전 중심인 면 기준점을 유지하고 제약에서 결정한 이동만 더한다.
+    correction.SetTranslationPart(gp_Vec(pivot.Transformed(correction), pivot).Added(adjustment))
+    return correction
+
+
+def _local_deltas(row, instances, shapes):
+    """! @brief 메이트 상대 말단의 최종 이동을 먼저 구하고 각 경로의 강체 변환을 한 번 계산한다."""
+    from OCP.gp import gp_Ax1, gp_Dir, gp_Pnt, gp_Trsf, gp_Vec
+
+    offsets = row.get("instance_offsets", [])
+    if offsets:
+        validate_instance_offsets(offsets)
     placements = {tuple(item["path"]): item for item in offsets}
+    _require(placements.keys() <= shapes.keys(), "STEP 원본의 말단 부품 경로를 확인하십시오.",
+             field="part." + row["id"] + ".instance_offsets")
+    origins = {tuple(item["path"]): tuple(axis[3] for axis in item["transform_mm"]) for item in instances}
+    deltas = {}
+
+    def solve(path):
+        """! @brief 저장 시 순환 검사를 마친 상대 경로에서 조립 좌표의 변환을 구성한다."""
+        if path in deltas:
+            return deltas[path]
+        edit = placements.get(path)
+        delta = gp_Trsf()
+        if edit is not None:
+            if "mate" in edit:
+                mate = dict(edit["mate"])
+                other = tuple(mate["target_path"])
+                for key, member in (("face", path), ("target_face", other)):
+                    for replacement in row.get("instance_replacements", []):
+                        if tuple(replacement["path"]) == member:
+                            links = dict(replacement["faces"])
+                            _require(mate[key] in links, "교체 부품의 메이트 면을 지정하십시오.")
+                            mate[key] = links[mate[key]]
+                _require(other in shapes, "상대 STEP 말단 경로가 없습니다.")
+                delta = _mate_delta(shapes[path], shapes[other], mate, solve(other))
+            else:
+                origin = origins[path]
+                for axis, angle in enumerate(edit.get("rotation_deg", [])):
+                    if angle:
+                        turn = gp_Trsf()
+                        vector = gp_Dir(*(float(index == axis) for index in range(3)))
+                        turn.SetRotation(gp_Ax1(gp_Pnt(*origin), vector), math.radians(math.remainder(angle, 360)))
+                        delta.PreMultiply(turn)
+                delta.SetTranslationPart(gp_Vec(delta.TranslationPart()).Added(gp_Vec(*_instance_translation(row, edit, origin))))
+        deltas[path] = delta
+        return delta
+
+    for path in shapes:
+        solve(path)
+    return deltas
+
+
+def _check_instance_clashes(row, shapes, tolerance):
+    """! @brief 편집된 말단에서 체적이 겹치는 부품 경로를 보고한다."""
+    placements = {tuple(item["path"]) for key in ("instance_offsets", "instance_replacements") for item in row.get(key, [])}
     field = "part." + row["id"] + ".instance_offsets"
-    _require(placements.keys() <= leaves.keys(), "STEP 원본의 말단 부품 경로를 확인하십시오.", field=field)
-    origins = {tuple(row["path"]): tuple(axis[3] for axis in row["transform_mm"])
-               for row in instances if not row["assembly"]}
-    shapes = {path: cq.Shape.cast(value) for path, value in leaves.items()}
-    for path, placement in placements.items():
-        shape = shapes[path]
-        origin = origins[path]
-        for axis, angle in enumerate(placement.get("rotation_deg", [])):
-            angle = math.remainder(angle, 360)
-            if angle:
-                end = tuple(value + (index == axis) for index, value in enumerate(origin))
-                shape = shape.rotate(origin, end, angle)
-        shapes[path] = shape.translate(_instance_translation(row, placement, origin))
     for (first, a), (second, b) in combinations(shapes.items(), 2):
         if first in placements or second in placements:
             bounds_a, bounds_b = a.BoundingBox(), b.BoundingBox()
@@ -213,10 +301,9 @@ def _shift_instances(cq, leaves, instances, row, tolerance):
                 raise ProjectError("E_GEOMETRY", "배치한 STEP 말단 부품끼리 체적이 겹칩니다.",
                                    details={"field_path": field, "paths": [list(first), list(second)],
                                             "overlap_mm3": overlap})
-    return shapes
 
 
-def _assembly_export(row, instances, leaves):
+def _assembly_export(row, instances, leaves, deltas):
     """! @brief 원본 고체 정의와 개별 부품의 최종 위치를 STEP writer에 전달한다."""
     from OCP.gp import gp_Ax1, gp_Dir, gp_Pnt, gp_Trsf, gp_Vec
     from OCP.TopLoc import TopLoc_Location
@@ -235,7 +322,6 @@ def _assembly_export(row, instances, leaves):
         return turn
 
     root = translation(row["translation_mm"]).Multiplied(rotation((0, 0, 0), 2, row["yaw_deg"]))
-    offsets = {tuple(item["path"]): item for item in row.get("instance_offsets", [])}
     definitions, placed = {}, {}
     for instance in instances:
         path = tuple(instance["path"])
@@ -244,16 +330,37 @@ def _assembly_export(row, instances, leaves):
         original.SetValues(*(value for axis in matrix for value in axis))
         if path in leaves:
             definitions.setdefault(instance["definition"], leaves[path].Moved(TopLoc_Location(original.Inverted())))
-        location = original
-        if path in offsets:
-            row_offset = offsets[path]
-            origin = tuple(axis[3] for axis in matrix)
-            for axis, angle in enumerate(row_offset.get("rotation_deg", [])):
-                if angle:
-                    location = rotation(origin, axis, angle).Multiplied(location)
-            location = translation(_instance_translation(row, row_offset, origin)).Multiplied(location)
+        location = deltas[path].Multiplied(original) if path in deltas else original
         placed[path] = TopLoc_Location(root.Multiplied(location))
     return {"definitions": definitions, "locations": placed, "instances": instances}
+
+
+def _replacement_leaves(row, instances, leaves, storage):
+    """! @brief 원본 말단의 로컬 원점에 독립 STEP 단일 고체를 놓고 교체 정의만 따로 공유한다."""
+    from OCP.gp import gp_Trsf
+    from OCP.TopLoc import TopLoc_Location
+
+    changes = {tuple(item["path"]): item for item in row.get("instance_replacements", [])}
+    if not changes:
+        return instances, leaves
+    _require(changes.keys() <= leaves.keys(), "교체할 STEP 원본 말단 경로가 없습니다.")
+    new_nodes, new_leaves, originals = [], dict(leaves), {}
+    for node in instances:
+        path = tuple(node["path"])
+        if path in changes:
+            item = changes[path]
+            donor = storage.get(item["source_part_id"])
+            _require(donor and donor["sha256"] == item["source_sha256"], "교체 원본의 식별자와 해시를 확인하십시오.")
+            if donor["sha256"] not in originals:
+                shape, _, _, nested, _ = _read_external(donor)
+                _require(not nested, "말단 교체 원본에는 조립 대신 단일 고체가 필요합니다.")
+                originals[donor["sha256"]] = shape.wrapped
+            original = gp_Trsf()
+            original.SetValues(*(value for axis in node["transform_mm"] for value in axis))
+            new_leaves[path] = originals[donor["sha256"]].Moved(TopLoc_Location(original))
+            node = {**node, "definition": "replacement:" + donor["sha256"]}
+        new_nodes.append(node)
+    return new_nodes, new_leaves
 
 
 def part_bodies(cq, projection):
@@ -282,11 +389,21 @@ def part_bodies(cq, projection):
             shape, source_unit, scale, instances, leaves = _read_external(source)
             source_step = {"source_step": {"sha256": source["sha256"], "source_length_unit": source_unit,
                                           "source_to_mm": scale, "assembly_instances": instances}}
+            if row.get("instance_replacements"):
+                instances, leaves = _replacement_leaves(row, instances, leaves, storage)
+                source_step["source_step"].update(effective_assembly_instances=instances,
+                                                  instance_replacements=row["instance_replacements"])
             if instances:
-                assembly_export["_step_assembly"] = _assembly_export(row, instances, leaves)
-            if row.get("instance_offsets"):
-                placed_leaves = _shift_instances(cq, leaves, instances, row, projection["tolerance_mm"])
-                shape = cq.Compound.makeCompound(list(placed_leaves.values()))
+                from OCP.TopLoc import TopLoc_Location
+
+                originals = {path: cq.Shape.cast(leaf) for path, leaf in leaves.items()}
+                deltas = _local_deltas(row, instances, originals)
+                assembly_export["_step_assembly"] = _assembly_export(row, instances, leaves, deltas)
+                if row.get("instance_offsets") or row.get("instance_replacements"):
+                    placed_leaves = {path: cq.Shape.cast(leaf.Moved(TopLoc_Location(deltas[path])))
+                                     for path, leaf in leaves.items()}
+                    _check_instance_clashes(row, placed_leaves, projection["tolerance_mm"])
+                    shape = cq.Compound.makeCompound(list(placed_leaves.values()))
         def place(solid):
             """! @brief 조립 원점 회전 후 기판 좌표로 이동한다."""
             return solid.rotate((0, 0, 0), (0, 0, 1), row["yaw_deg"]).translate(tuple(row["translation_mm"]))

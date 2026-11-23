@@ -36,13 +36,34 @@ FIELDS = {
     "x": "X", "y": "Y", "z": "Z",
     "width": "폭", "height": "길이", "depth": "높이", "yaw": "Z축 회전",
     "case_thickness": "벽과 덮개 두께 (케이스용)",
-    "instance_offsets": "STEP 말단 배치와 기판 원점 맞춤",
+    "instance_replacements": "말단 교체 / 원본과 새 면 대응",
+    "instance_offsets": "STEP 말단 배치와 원점, 평면, 축 맞춤",
     "openings": "개구 (mm, 줄마다 X Y 폭 길이)", "active_scenario_id": "활성 시나리오",
 }
 
 
+def _part_path(text):
+    """! @brief 점으로 구분한 원본 조립 경로를 읽는다."""
+    tokens = text.split(".")
+    if not all(token.isascii() and token.isdecimal() and len(token) <= 2 for token in tokens):
+        fail("원본 경로는 점으로 구분한 번호입니다. 예시 1.1.2", "instance_offsets")
+    return [int(token) for token in tokens]
+
+
+def _placement_text(item):
+    """! @brief 면과 축 메이트, 위치 배치를 저장된 값에서 편집 구문으로 복원한다."""
+    path = ".".join(map(str, item["path"]))
+    if "mate" in item:
+        mate = item["mate"]
+        target = ".".join(map(str, mate["target_path"]))
+        return f"{path} {mate['kind']} {mate['face']} = {target} {mate['target_face']} {mate['sense']}"
+    values = [*item.get("target_origin_mm", item.get("translation_mm")), *item.get("rotation_deg", [])]
+    separator = " = " if "target_origin_mm" in item else " "
+    return path + separator + " ".join(format(value, ".17g") for value in values)
+
+
 def _instance_offsets(text):
-    """! @brief 경로별 상대 이동 또는 기판 좌표 원점 맞춤과 선택 각도를 읽는다."""
+    """! @brief 경로별 상대 이동, 기판 원점 또는 두 부품의 면과 축 맞춤을 읽는다."""
     from rfad.domain.physical_setup import validate_instance_offsets
 
     result = []
@@ -50,16 +71,21 @@ def _instance_offsets(text):
         columns = line.split()
         if not columns:
             continue
+        if len(columns) >= 2 and columns[1] in ("plane", "axis"):
+            if (len(columns) != 7 or columns[3] != "="
+                    or not all(token.isascii() and token.isdecimal() and len(token) <= 3
+                               for token in (columns[2], columns[5]))):
+                fail("메이트는 경로 plane/axis 면번호 = 상대경로 상대면번호 same/opposed 순서입니다.", "instance_offsets")
+            result.append({"path": _part_path(columns[0]), "mate": {"kind": columns[1], "face": int(columns[2]),
+                           "target_path": _part_path(columns[4]), "target_face": int(columns[5]), "sense": columns[6]}})
+            continue
         point_mate = len(columns) > 1 and columns[1] == "="
         values = columns[2:] if point_mate else columns[1:]
         if len(values) not in (3, 6):
             fail("경로 뒤에 X Y Z 이동 또는 = X Y Z 기판 목표점(mm)을 입력하십시오. 마지막에 회전 세 축(deg)을 추가할 수 있습니다.",
                  "instance_offsets")
-        tokens = columns[0].split(".")
-        if not all(token.isascii() and token.isdecimal() and len(token) <= 2 for token in tokens):
-            fail("원본 경로는 점으로 구분한 번호입니다. 예시 1.1.2", "instance_offsets")
         position_key = "target_origin_mm" if point_mate else "translation_mm"
-        row = {"path": [int(token) for token in tokens],
+        row = {"path": _part_path(columns[0]),
                position_key: [number(value, "instance_offsets") for value in values[:3]]}
         if len(values) == 6:
             row["rotation_deg"] = [number(value, "instance_offsets") for value in values[3:]]
@@ -68,6 +94,35 @@ def _instance_offsets(text):
     if result:
         validate_instance_offsets(result)
     return result
+
+
+def _replacement_text(item):
+    """! @brief 원본 경로와 독립 STEP 객체 ID 및 면 재대응을 편집 문자열로 돌린다."""
+    parts = [".".join(map(str, item["path"])), item["source_part_id"]]
+    return " ".join([*parts, *(f"{original}={new}" for original, new in item["faces"])])
+
+
+def _replacements(text, model):
+    """! @brief 저장된 STEP의 SHA를 고정하고 원래 면에서 새 면으로 가는 명시 대응을 읽는다."""
+    from rfad.domain.physical_setup import validate_replacements
+
+    available = {part["id"]: part["step"] for part in model["parts"] if part["kind"] == "step"}
+    rows = []
+    for line in text.splitlines():
+        tokens = line.split()
+        if not tokens:
+            continue
+        if len(tokens) < 2 or tokens[1] not in available:
+            fail("대상 말단 경로와 저장된 교체 STEP 객체 ID를 입력하십시오.", "instance_replacements")
+        pairs = [token.split("=") for token in tokens[2:]]
+        if any(len(pair) != 2 or any(not n.isascii() or not n.isdecimal() or len(n) > 3 for n in pair) for pair in pairs):
+            fail("면 대응은 원래면=새면 형식으로 지정하십시오.", "instance_replacements")
+        rows.append({"path": _part_path(tokens[0]), "source_part_id": tokens[1],
+                     "source_sha256": available[tokens[1]]["sha256"], "faces": [[int(a), int(b)] for a, b in pairs]})
+    rows.sort(key=lambda row: row["path"])
+    if rows:
+        validate_replacements(rows)
+    return rows
 
 
 def _missing(key):
@@ -134,7 +189,7 @@ def _descriptors(document, model, section, row):
     keys = {"surface": ("name", "kind", "side", "coverage", "offset", "thickness", "supply_thickness", "x", "y", "width", "height", "openings",
                         "material_id", "visible", "include_in_em", "include_in_export"),
             "part": ("name", "scenario_id", "kind", "x", "y", "z", "yaw", "width", "height", "depth", "case_thickness",
-                     "instance_offsets", "material_id", "visible", "include_in_em", "include_in_export"),
+                     "instance_offsets", "instance_replacements", "material_id", "visible", "include_in_em", "include_in_export"),
             "stack": ("nominal", "scope"), "scenario": ("name",), "activation": ("active_scenario_id",)}[section]
     for key in keys:
         entry = {"key": key, "label": FIELDS[key]}
@@ -145,11 +200,9 @@ def _descriptors(document, model, section, row):
         elif key == "openings":
             entry.update(kind="lines", value="\n".join(" ".join(_value(document, rect[item], item, "mm") or "-" for item in ("x","y","width","height"))
                                                        for rect in row[key]))
-        elif key == "instance_offsets":
-            entry.update(kind="lines", value="\n".join(
-                ".".join(map(str, item["path"])) + (" = " if "target_origin_mm" in item else " ") + " ".join(
-                    format(value, ".17g") for value in [*item.get("target_origin_mm", item.get("translation_mm")), *item.get("rotation_deg", [])])
-                for item in row.get(key, [])))
+        elif key in ("instance_offsets", "instance_replacements"):
+            format_item = _placement_text if key == "instance_offsets" else _replacement_text
+            entry.update(kind="lines", value="\n".join(format_item(item) for item in row.get(key, [])))
         elif key == "name":
             entry.update(kind="text", value=row[key])
         else:
@@ -206,8 +259,8 @@ def _parse_changes(document, model, section, row, changes, reason):
             result[key] = value or None
         elif entry["kind"] == "quantity":
             result[key] = _quantity(entry["original"], key, value, reason)
-        elif key == "instance_offsets":
-            offsets = _instance_offsets(value)
+        elif key in ("instance_offsets", "instance_replacements"):
+            offsets = _instance_offsets(value) if key == "instance_offsets" else _replacements(value, model)
             if offsets:
                 result[key] = offsets
             else:
@@ -270,10 +323,19 @@ class PhysicalSetupService:
         _fields(context, {"project_id"})
         _uuid(context["project_id"])
         keys = {"expected_revision", "section", "record_id"} if method == "physical.setup.get" else {"expected_revision", "name", "chunks"}
+        if method == "physical.step.preview" and "record_id" in data:
+            keys = {"expected_revision", "record_id"}
         _fields(data, keys)
         _uuid(data["expected_revision"])
         document = self._document(self.service.journal.read(), context, data)
         if method == "physical.step.preview":
+            if "record_id" in data:
+                _uuid(data["record_id"])
+                record = _record(setup(document), "part", data["record_id"])
+                if record["kind"] != "step" or record["step"] is None:
+                    fail("저장된 STEP 원본이 없습니다.", "record_id")
+                source = record["step"]
+                return {"preview_token": None, "name": source["name"], **self._saved_inspection(document["project_id"], source)}
             return self._preview(document, data)
         _selection(data)
         model = setup(document)
@@ -285,11 +347,57 @@ class PhysicalSetupService:
                 "section": section, "record_id": identity, "exists": original is not None,
                 "records": {key: [{"id": item["id"], "name": item["name"]} for item in model[collection]]
                             for key, collection in COLLECTIONS.items()}, "fields": _descriptors(document, model, section, row),
+                "replacement_sources": [{"id": p["id"], "name": p["name"]} for p in model["parts"]
+                                        if p["kind"] == "step" and p["id"] != identity],
                 "source_refs": row.get("source_refs", []),
                 "step": None if previous_step is None else {key: previous_step[key] for key in ("name", "sha256")},
                 "cad_configured": self.service.cad.runtime is not None, "active_scenario_id": model["active_scenario_id"],
                 "stack_review": stack_review(document), "em_status": em_exclusions(document),
                 "condition_status": "project_conditions_unconfirmed"}
+
+    def _saved_inspection(self, project_id, source):
+        """! @brief 같은 프로젝트, 실행 환경, 원본 SHA의 읽기 결과가 있으면 재사용한다."""
+        with self.lock:
+            for entry in reversed(self.previews.values()):
+                if entry[0] == project_id and entry[2]["sha256"] == source["sha256"] and entry[4] is self.service.cad.runtime:
+                    return deepcopy(entry[3])
+        return self.service.cad.inspect_step(source)
+
+    def _check_instance_references(self, project_id, part, model, inspected):
+        """! @brief 원래 면과 교체 고체 면의 종류, 모든 메이트의 지정 면 번호를 적용 전에 대조한다."""
+        paths = {tuple(item["path"]) for item in inspected["assembly_instances"] if not item["assembly"]}
+        original = {(tuple(item["path"]), face["index"]): face["kind"]
+                    for item in inspected.get("mate_faces", []) for face in item["faces"]}
+        replaced, cache = {}, {}
+        sources = {item["id"]: item for item in model["parts"]}
+        for item in part.get("instance_replacements", []):
+            path = tuple(item["path"])
+            if path not in paths:
+                fail("교체할 대상 말단 경로가 없습니다.", "instance_replacements")
+            identity = item["source_part_id"]
+            if identity not in cache:
+                cache[identity] = self._saved_inspection(project_id, sources[identity]["step"])
+            donor = cache[identity]
+            if donor["shape"] != "single_solid":
+                fail("교체 원본에는 하나의 닫힌 STEP 고체를 지정하십시오.", "instance_replacements")
+            faces = {face["index"]: face["kind"] for leaf in donor["mate_faces"] for face in leaf["faces"]}
+            links = {}
+            for old, new in item["faces"]:
+                if (path, old) not in original or faces.get(new) != original[path, old]:
+                    fail("원본과 교체 부품에서 같은 종류의 평면 또는 원통 면을 대응하십시오.", "instance_replacements")
+                links[old] = new
+            replaced[path] = links
+        for offset in part.get("instance_offsets", []):
+            path = tuple(offset["path"])
+            if path not in paths:
+                fail("원본 STEP의 말단 부품 경로를 확인하십시오.", "instance_offsets", "E_CONFLICT")
+            if "mate" in offset:
+                mate = offset["mate"]
+                for source, face in ((path, mate["face"]), (tuple(mate["target_path"]), mate["target_face"])):
+                    if original.get((source, face)) != mate["kind"]:
+                        fail("지정한 경로와 면 번호의 원본 평면 또는 원통면을 확인하십시오.", "instance_offsets")
+                    if source in replaced and face not in replaced[source]:
+                        fail("메이트가 참조하는 원본 면을 교체할 면 번호에 대응하십시오.", "instance_replacements")
 
     def _preview(self, document, data):
         """! @brief 실제 worker로 읽은 바이트만 해당 개정에서 채택할 수 있다."""
@@ -307,7 +415,7 @@ class PhysicalSetupService:
             fail("CAD 미리보기 결과 hash가 다릅니다.", "step", "E_HASH")
         token = str(uuid4())
         with self.lock:
-            self.previews[token] = (document["project_id"], document["revision_id"], deepcopy(source), deepcopy(result))
+            self.previews[token] = (document["project_id"], document["revision_id"], deepcopy(source), deepcopy(result), self.service.cad.runtime)
             if len(self.previews) > 16:
                 self.previews.popitem(last=False)
         return {"preview_token": token, "name": source["name"], **result}
@@ -339,22 +447,21 @@ class PhysicalSetupService:
                 if record["kind"] == "step" and record["step"] is None:
                     fail("STEP 파일의 읽기 미리보기가 필요합니다.", "step_token")
                 if record["kind"] != "step":
-                    if "instance_offsets" in data["changes"] and record.get("instance_offsets"):
-                        fail("말단 배치는 외부 STEP 조립에만 적용할 수 있습니다.", "instance_offsets")
-                    record.pop("instance_offsets", None)
+                    for key in ("instance_offsets", "instance_replacements"):
+                        if key in data["changes"] and record.get(key):
+                            fail("말단 배치와 교체는 외부 STEP 조립에만 적용할 수 있습니다.", key)
+                        record.pop(key, None)
                     record["step"] = None
-                offsets = record.get("instance_offsets", [])
-                original_offsets = (original or {}).get("instance_offsets", [])
-                previous_source = (original or {}).get("step")
-                if (offsets and original_offsets and previous_source and record["step"]["sha256"] != previous_source["sha256"]
-                        and "instance_offsets" not in data["changes"]):
-                    fail("원본 STEP이 바뀌었습니다. 말단 이동값을 지우거나 새 경로와 이동을 입력하십시오.",
-                         "instance_offsets", "E_CONFLICT")
-                if offsets and (offsets != original_offsets or data["step_token"] is not None):
-                    inspected = preview[3] if data["step_token"] is not None else self.service.cad.inspect_step(record["step"])
-                    paths = {tuple(row["path"]) for row in inspected.get("assembly_instances", []) if not row["assembly"]}
-                    if any(tuple(offset["path"]) not in paths for offset in offsets):
-                        fail("원본 STEP에서 확인된 말단 부품 경로를 입력하십시오.", "instance_offsets", "E_CONFLICT")
+                placements = ("instance_offsets", "instance_replacements")
+                changed = any(record.get(key) != (original or {}).get(key) for key in placements)
+                if any(record.get(key) for key in placements) and (changed or data["step_token"] is not None):
+                    previous_source = (original or {}).get("step")
+                    if previous_source and record["step"]["sha256"] != previous_source["sha256"] and any(
+                            record.get(key) and (original or {}).get(key) and key not in data["changes"] for key in placements):
+                        fail("STEP 원본이 바뀌었습니다. 말단 배치와 교체 참조를 지우거나 새로 입력하십시오.",
+                             "instance_offsets", "E_CONFLICT")
+                    inspected = preview[3] if data["step_token"] is not None else self._saved_inspection(document["project_id"], record["step"])
+                    self._check_instance_references(document["project_id"], record, model, inspected)
                 if record["kind"] == "dielectric_case":
                     record.setdefault("case_thickness", _missing("case_thickness"))
                 else:

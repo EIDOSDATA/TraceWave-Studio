@@ -34,8 +34,8 @@ def record_fields(section, record):
     fields = ROW_FIELDS[section]
     if section == "part" and isinstance(record, dict) and record.get("kind") == "dielectric_case":
         return fields | {"case_thickness"}
-    if section == "part" and isinstance(record, dict) and record.get("kind") == "step" and "instance_offsets" in record:
-        return fields | {"instance_offsets"}
+    if section == "part" and isinstance(record, dict) and record.get("kind") == "step":
+        return fields | (record.keys() & {"instance_offsets", "instance_replacements"})
     if section == "surface" and isinstance(record, dict) and record.get("kind") == "bondply" and "supply_thickness" in record:
         return fields | {"supply_thickness"}
     return fields
@@ -75,13 +75,34 @@ def step_bytes(source):
     return raw
 
 
+def _instance_path(path, field):
+    """! @brief 단일 STEP 원본 안의 말단 인스턴스 번호를 검사한다."""
+    if (type(path) is not list or not 2 <= len(path) <= 8 or path[0] != 1
+            or any(type(index) is not int or not 1 <= index <= 32 for index in path)):
+        _fail("E_SCHEMA", "STEP 원본의 말단 경로를 입력하십시오.", field)
+
+
 def validate_instance_offsets(rows):
     """! @brief 원본 STEP의 경로별 조립 이동 또는 기판 원점 맞춤과 회전을 검사한다."""
     field = "part.instance_offsets"
     if type(rows) is not list or not 1 <= len(rows) <= MAX_STEP_INSTANCE_OFFSETS:
         _fail("E_RESOURCE", "STEP 조립 말단 배치는 최대 16개입니다.", field)
     paths = []
+    dependencies = {}
     for row in rows:
+        if isinstance(row, dict) and "mate" in row:
+            _fields(row, {"path", "mate"}, field)
+            mate = row["mate"]
+            _fields(mate, {"kind", "face", "target_path", "target_face", "sense"}, field)
+            _instance_path(row["path"], field)
+            _instance_path(mate["target_path"], field)
+            if (mate["kind"] not in ("plane", "axis") or mate["sense"] not in ("same", "opposed")
+                    or any(type(mate[key]) is not int or not 1 <= mate[key] <= 256 for key in ("face", "target_face"))):
+                _fail("E_SCHEMA", "평면/원통축 메이트의 면 번호와 방향을 확인하십시오.", field)
+            path = tuple(row["path"])
+            paths.append(path)
+            dependencies[path] = tuple(mate["target_path"])
+            continue
         point_mate = isinstance(row, dict) and "target_origin_mm" in row
         position_key = "target_origin_mm" if point_mate else "translation_mm"
         keys = {"path", position_key}
@@ -89,9 +110,7 @@ def validate_instance_offsets(rows):
             keys.add("rotation_deg")
         _fields(row, keys, field)
         path, position = row["path"], row[position_key]
-        if (type(path) is not list or not 2 <= len(path) <= 8 or path[0] != 1
-                or any(type(index) is not int or not 1 <= index <= 32 for index in path)):
-            _fail("E_SCHEMA", "STEP 원본의 말단 경로를 입력하십시오.", field)
+        _instance_path(path, field)
         if (type(position) is not list or len(position) != 3
                 or any(type(value) not in (float, int) or not -1e6 <= value <= 1e6 or not math.isfinite(value)
                        for value in position)):
@@ -106,6 +125,36 @@ def validate_instance_offsets(rows):
         paths.append(tuple(path))
     if paths != sorted(set(paths)):
         _fail("E_CONFLICT", "같은 STEP 부품 경로를 중복 지정할 수 없습니다.", field)
+    for path in dependencies:
+        visited = set()
+        while path in dependencies:
+            if path in visited:
+                _fail("E_CONFLICT", "서로를 따라가는 순환 메이트를 해제하십시오.", field)
+            visited.add(path)
+            path = dependencies[path]
+
+
+def validate_replacements(rows):
+    """! @brief 보존 원본 STEP의 말단별 부품 교체와 면 번호 재대응을 검사한다."""
+    field = "part.instance_replacements"
+    if not isinstance(rows, list) or not 1 <= len(rows) <= MAX_STEP_INSTANCE_OFFSETS:
+        _fail("E_RESOURCE", "말단 부품 교체는 1~16개를 지정하십시오.", field)
+    paths = []
+    for item in rows:
+        _fields(item, {"path", "source_part_id", "source_sha256", "faces"}, field)
+        _instance_path(item["path"], field)
+        _uuid(item["source_part_id"], field)
+        if not isinstance(item["source_sha256"], str) or not re.fullmatch("[0-9a-f]{64}", item["source_sha256"]):
+            _fail("E_HASH", "교체 원본 STEP 해시가 필요합니다.", field)
+        faces = item["faces"]
+        if (not isinstance(faces, list) or len(faces) > 256
+                or any(not isinstance(pair, list) or len(pair) != 2
+                       or any(type(n) is not int or not 1 <= n <= 256 for n in pair) for pair in faces)
+                or len({pair[0] for pair in faces}) != len(faces)):
+            _fail("E_SCHEMA", "원래 면마다 하나의 새 면 번호를 지정하십시오.", field)
+        paths.append(tuple(item["path"]))
+    if sorted(set(paths)) != paths:
+        _fail("E_CONFLICT", "말단마다 교체 부품 하나를 지정하십시오.", field)
 
 
 def _rect(document, data, field):
@@ -177,10 +226,20 @@ def validate_setup(document):
                     source_total += len(step_bytes(row["step"]))
                     if "instance_offsets" in row:
                         validate_instance_offsets(row["instance_offsets"])
+                    if "instance_replacements" in row:
+                        validate_replacements(row["instance_replacements"])
                 elif row["kind"] not in PART_KINDS or row["step"] is not None:
                     _fail("E_SCHEMA", "지원하는 외부 물체 종류를 선택하십시오.", "part.kind")
         if [row["id"] for row in rows] != sorted(row["id"] for row in rows):
             _fail("E_SCHEMA", "설치/표면 객체 목록을 ID 순서로 저장하십시오.", section)
+    by_id = {part["id"]: part for part in model["parts"]}
+    for part in model["parts"]:
+        for item in part.get("instance_replacements", []):
+            donor = by_id.get(item["source_part_id"])
+            if (donor is None or donor["id"] == part["id"] or donor["kind"] != "step"
+                    or donor["step"]["sha256"] != item["source_sha256"]):
+                _fail("E_CONFLICT", "참조 중인 교체 원본을 지우거나 바꾸려면 먼저 말단 교체를 다시 지정하십시오.",
+                      "part.instance_replacements")
     if source_total > MAX_STEP_BYTES:
         _fail("E_RESOURCE", "프로젝트에 보존할 STEP 원본 합계는 최대 48 KiB입니다.", "parts")
     _reference(model["active_scenario_id"], scenarios, "active_scenario_id", optional=True)

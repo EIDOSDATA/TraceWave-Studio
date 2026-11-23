@@ -14839,13 +14839,13 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/physical.py",
-      "text_sha256": "fdba40dac2d434d719774d9de2f12ccbfe687809e9d2d8f69829cdf5607ded9c",
-      "utf8_bytes": 18742
+      "text_sha256": "397778d136c751d74f7ddeb9fba69609808c3b3ed7ecc4731ef357fb31a4b4ab",
+      "utf8_bytes": 24860
     },
     {
       "path": "Code/src/rfad/adapters/cad/step_io.py",
-      "text_sha256": "93d01b9b56524f64d1b6fdb88eeaaf0a60429e04e0a9e5753d41d378df3cbb0a",
-      "utf8_bytes": 11482
+      "text_sha256": "0673396869062b8b89196570ca9c61767f99a64b83f33fcc1e76d55f9a48768b",
+      "utf8_bytes": 11526
     },
     {
       "path": "Code/src/rfad/adapters/cad/verification.py",
@@ -15144,8 +15144,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_import_mapping.py",
-      "text_sha256": "7aa24c36c18d5425898437faab35e93ddcbb2cac20731aa229b5d03f5c4bcb62",
-      "utf8_bytes": 51408
+      "text_sha256": "eb711f3f467c940e28175fffcba81fabbf35b4af25743566349963ee468c4c40",
+      "utf8_bytes": 54798
     },
     {
       "path": "Code/src/rfad/application/pcb_import_service.py",
@@ -15204,13 +15204,13 @@
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
-      "text_sha256": "8e522d5428035dc38148fc45f3bc3a2c18bcbc8457968e4fa18ca890dadac640",
-      "utf8_bytes": 3583
+      "text_sha256": "c6ce153753b909b5a0517b6d8b92907e8aabdbf3f1b61535835700cd6a43bdcc",
+      "utf8_bytes": 3612
     },
     {
       "path": "Code/src/rfad/application/physical_setup_service.py",
-      "text_sha256": "ed80f161cd5eed6e9d3b405de1b393db6580a2ae5e069e7553be0ad9b84f2579",
-      "utf8_bytes": 22293
+      "text_sha256": "ef77d5e17cae0b2f7b7a1ecacaa65c2c7c494e9f9c6a84770603a787e2ea0b9c",
+      "utf8_bytes": 29042
     },
     {
       "path": "Code/src/rfad/application/precision_candidates.py",
@@ -15584,8 +15584,8 @@
     },
     {
       "path": "Code/src/rfad/domain/physical_setup.py",
-      "text_sha256": "ca73cc03956beca39e897dfab820e59a396cedd14bb6e203373cd33806d59f16",
-      "utf8_bytes": 17551
+      "text_sha256": "8eb15adf9da1c3da3befef475ae899c4ba4b8bc9d5c86b609e4a027f416ca8e2",
+      "utf8_bytes": 20911
     },
     {
       "path": "Code/src/rfad/domain/planar.py",
@@ -15749,8 +15749,8 @@
     },
     {
       "path": "Code/tests/test_cad_native.py",
-      "text_sha256": "36884e92c0fb302f19ebcc22213ed3ca4887bc641a1be101a5e94e35ef0965ea",
-      "utf8_bytes": 30451
+      "text_sha256": "95789c353e14ce8fc4bc2d735d49c72ce1ae7be8b17510b89d8d639decb53aee",
+      "utf8_bytes": 32061
     },
     {
       "path": "Code/tests/test_cad_pcb_features.py",
@@ -16579,8 +16579,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_review.cpp",
-      "text_sha256": "d7e25baaafd4d8bdad9e5858101d5307549680f40f4c651204ed1fa8d06eef55",
-      "utf8_bytes": 9471
+      "text_sha256": "c9fa61bd187718b90e34f3890f47c2b1acb132e92ba05ce02eda09d7e65e8041",
+      "utf8_bytes": 9963
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_transfer.cpp",
@@ -16589,13 +16589,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_dialog.cpp",
-      "text_sha256": "d451f2ae34f90210f09d36988b6dfd9e3270289484aaa5dc0ef4b0ee3c48975f",
-      "utf8_bytes": 10546
+      "text_sha256": "a72e9dce1c67109718b8590c20656f74ead3f339a14115271050d1f05d39af4f",
+      "utf8_bytes": 11156
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_review.cpp",
-      "text_sha256": "b9a750cd73dafd490abefdad31118cfa252a0995636e9d91489f44ba047aa0bd",
-      "utf8_bytes": 14085
+      "text_sha256": "386b73d392f0407a2c154d66863ebc6c04fcbadb1122dc9cf5aed4594693a58a",
+      "utf8_bytes": 15864
     },
     {
       "path": "Code/ui/wxwidgets/precision_dialog.cpp",
