@@ -21,6 +21,8 @@ FIELDS = {
     "result.export": {"source", "pin", "format"},
     "result.field.describe": {"source", "pin"},
     "result.field.page": {"source", "pin", "monitor_id", "frequency_index", "component", "plane", "roi", "stride"},
+    "result.field.refine": {"source", "pin", "monitor_id", "frequency_index", "component", "plane", "roi",
+                            "threshold_fraction", "max_rules", "memory_limit_mib"},
     "result.compare": {"left", "right", "right_port_order", "row", "column", "frequency_policy", "offset", "limit"},
     "result.conditions": {"left", "right", "offset", "limit"},
 }
@@ -129,6 +131,10 @@ def read(service, method, params):
 
         return exported(service, value, data["format"])
     arguments = {key: item for key, item in data.items() if key not in ("source", "pin")}
+    if method == "result.field.refine":
+        from rfad.application.result_field_refine import propose
+
+        return bounded(propose(service, value, arguments))
     if method in ("result.field.describe", "result.field.page"):
         from rfad.application import result_fields
 

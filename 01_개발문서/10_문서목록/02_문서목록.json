@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 251,
+    "current_07_검증": 252,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28747,8 +28747,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 644926,
-      "working_tree_sha256": "c62984daed47cacadacd72826150d5afe069dd0d34c4d4107507a565675292c1"
+      "bytes": 645052,
+      "working_tree_sha256": "8a0b563ad7da550b46cf1cecf272c03a9519449c7bd3c5ac4f4a5307778b3698"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32129,6 +32129,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/375_전계기반_적응격자_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 4592,
+      "working_tree_sha256": "51c5bafe88ab04eac34456a438599e30fe7e0794e9775f23cfd53429336e0eaf",
+      "text_lines": 40,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/37_스튜디오_재열기와_유휴성능_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
@@ -32815,8 +32824,8 @@
       "path": "01_개발문서/09_개발계획/13_전자기해석과_후처리_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 33642,
-      "working_tree_sha256": "cadda6c1e9b4c24f976f436c2d4cec9c7272e4979bc046c4ab0dab54cabc9862",
+      "bytes": 33872,
+      "working_tree_sha256": "1973e49c25605d1496130c9b0631258aba6b563a116ec2bcbca06147a62b9104",
       "text_lines": 96,
       "text_status": "utf8_read"
     },
@@ -32833,8 +32842,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 36101,
-      "working_tree_sha256": "3e1252b45341b1ca10f96e57e28d4dd18110142fb4bf20f8c89bcfe2559bf923",
+      "bytes": 36273,
+      "working_tree_sha256": "2be8c07d64de3dd534bed34250af936ee3681c9ee3a135ec4c4ce125cc2f9816",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

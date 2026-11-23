@@ -113,6 +113,39 @@ FieldResultView::FieldResultView(wxWindow* parent) : wxPanel(parent)
     m_notice = new wxStaticText(m_controls, wxID_ANY, wxEmptyString);
     StudioTheme::BindSecondary(*m_notice);
     fields->Add(m_notice, 0, wxEXPAND);
+    m_refineOptions = new wxPanel(m_controls);
+    auto* refineLayout = new wxBoxSizer(wxVERTICAL);
+    auto input = [this, refineLayout](const std::string& label, int minimum, int maximum, int initial)
+    {
+        auto* row = new wxBoxSizer(wxHORIZONTAL);
+        row->Add(Label(m_refineOptions, label), 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(4));
+        auto* control = new wxSpinCtrl(m_refineOptions, wxID_ANY);
+        control->SetRange(minimum, maximum);
+        control->SetValue(initial);
+        control->SetName(Display(label));
+        row->Add(control);
+        refineLayout->Add(row, 0, wxTOP | wxEXPAND, FromDIP(3));
+        return control;
+    };
+    m_changePercent = input("최소 복소 변화 (%)", 1, 200, 5);
+    m_ruleLimit = input("추가 격자 규칙 수", 1, 16, 2);
+    m_memoryLimit = input("예상 메모리 상한 (MiB)", 128, 16384, 2048);
+    m_refine = new wxButton(m_refineOptions, wxID_ANY, Display("이 전계로 다음 격자 검토"));
+    refineLayout->Add(m_refine, 0, wxTOP | wxEXPAND, FromDIP(6));
+    m_refineOptions->SetSizer(refineLayout);
+    fields->Add(m_refineOptions, 0, wxTOP | wxEXPAND, FromDIP(8));
+    m_refine->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        if (onRefine && m_slice.is_object())
+        {
+            auto options = m_slice.at("selection");
+            options.erase("stride");
+            options["threshold_fraction"] = m_changePercent->GetValue() / 100.0;
+            options["max_rules"] = m_ruleLimit->GetValue();
+            options["memory_limit_mib"] = m_memoryLimit->GetValue();
+            onRefine(options);
+        }
+    });
     auto* controlsLayout = new wxBoxSizer(wxVERTICAL);
     controlsLayout->Add(fields, 0, wxALL | wxEXPAND, FromDIP(12));
     m_controls->SetSizer(controlsLayout);
@@ -486,6 +519,7 @@ void FieldResultView::ClearSlice(const std::string& message)
     m_canvas->Clear(message);
     m_marker->Clear();
     m_point->Enable(false);
+    m_refine->Disable();
     SetStatus(message);
 }
 
@@ -530,4 +564,14 @@ void FieldResultView::SetBusy(bool busy)
         control->Enable(component && !busy);
     }
     m_load->Enable(component && !busy && m_frequency->GetSelection() >= 0);
+    const auto* monitor = Monitor();
+    const bool electric = monitor && (monitor->at("monitor_id") == "electric" || monitor->at("monitor_id") == "probe_electric");
+    const bool show = static_cast<bool>(onRefine) && electric;
+    if (m_refineOptions->IsShown() != show)
+    {
+        m_refineOptions->Show(show);
+        m_controls->Layout();
+        m_controls->FitInside();
+    }
+    m_refine->Enable(show && m_slice.is_object() && !busy);
 }

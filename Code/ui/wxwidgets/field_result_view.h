@@ -25,6 +25,7 @@ public:
     void SetError(const std::string& message);
     void SetBusy(bool busy);
     std::function<void(const Json&)> onSlice;
+    std::function<void(const Json&)> onRefine;
 
 private:
     friend class StudioSmokeDriver;
@@ -59,6 +60,11 @@ private:
     wxStaticText* m_notice = nullptr;
     wxTextCtrl* m_marker = nullptr;
     wxButton* m_load = nullptr;
+    wxPanel* m_refineOptions = nullptr;
+    wxButton* m_refine = nullptr;
+    wxSpinCtrl* m_changePercent = nullptr;
+    wxSpinCtrl* m_ruleLimit = nullptr;
+    wxSpinCtrl* m_memoryLimit = nullptr;
     Json m_description = nullptr;
     Json m_slice = nullptr;
     Json m_request = nullptr;

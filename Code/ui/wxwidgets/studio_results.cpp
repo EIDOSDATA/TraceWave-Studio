@@ -87,6 +87,16 @@ void StudioFrame::BuildResultInterface()
     {
         OpenSolverEvidence(artifact, this);
     };
+    m_results->onFieldRefinement = [this](const Json& proposal)
+    {
+        if (m_project != proposal.at("project_id").get<std::string>() ||
+            m_revision != proposal.at("revision_id").get<std::string>())
+        {
+            Log("전계가 계산된 설계 개정을 연 뒤 해당 격자를 적용하십시오.");
+            return;
+        }
+        ConfigureSolver({}, proposal.at("settings"));
+    };
     m_results->onFocusSource = [this]()
     {
         if (m_shell)

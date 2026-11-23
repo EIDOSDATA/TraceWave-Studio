@@ -231,9 +231,9 @@ private:
     /** @brief 해석 실행과 취소 메뉴를 연결한다. */
     void BindSolver();
     /** @brief 해석 조건은 사용자가 확인한 입력이며 보드 물성을 대신 생성하지 않는다. */
-    void ConfigureSolver(const std::string& resultId = {});
+    void ConfigureSolver(const std::string& resultId = {}, const Json& proposedSettings = nullptr);
     void OpenSolverReview(const std::string& project, const std::string& revision, const Json& catalog,
-                          const std::string& resultId);
+                          const std::string& resultId, Json proposedSettings = nullptr);
     /** @brief 봉인된 결과의 방사 조회 화면을 독립적으로 연다. */
     void OpenRadiation();
     void OpenSolverEvidence(const std::string& artifact, wxWindow* parent);

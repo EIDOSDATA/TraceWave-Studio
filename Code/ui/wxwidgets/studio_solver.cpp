@@ -88,7 +88,7 @@ void StudioFrame::BindSolver()
 }
 
 /** @brief 프로젝트의 저장 조건과 과거 결과 목록을 현재 검토에 연결한다. */
-void StudioFrame::ConfigureSolver(const std::string& resultId)
+void StudioFrame::ConfigureSolver(const std::string& resultId, const Json& proposedSettings)
 {
     if (m_busy || !m_connected || !m_solverConfigured || m_project.empty() || m_solverWorkflow.Active() || m_solverRestoring)
     {
@@ -104,9 +104,9 @@ void StudioFrame::ConfigureSolver(const std::string& resultId)
     m_busy = true;
     UpdateControls();
     Send("solver.conditions", Json{{"expected_revision", revision}}, false, Context(),
-        [this, project, revision, resultId](const Json& catalog)
+        [this, project, revision, resultId, proposedSettings](const Json& catalog)
         {
-            CallAfter([this, project, revision, resultId, catalog]()
+            CallAfter([this, project, revision, resultId, proposedSettings, catalog]()
             {
                 m_busy = false;
                 const bool current = m_connected && !m_closing && m_project == project && m_revision == revision;
@@ -117,7 +117,7 @@ void StudioFrame::ConfigureSolver(const std::string& resultId)
                 UpdateControls();
                 if (current)
                 {
-                    OpenSolverReview(project, revision, catalog, resultId);
+                    OpenSolverReview(project, revision, catalog, resultId, proposedSettings);
                 }
             });
         },
@@ -129,9 +129,10 @@ void StudioFrame::ConfigureSolver(const std::string& resultId)
 
 /** @brief 조건 저장은 프로젝트 개정에 반영하고 실행은 다시 검토한 입력으로 시작한다. */
 void StudioFrame::OpenSolverReview(const std::string& project, const std::string& revision, const Json& catalog,
-                                   const std::string& resultId)
+                                   const std::string& resultId, Json proposedSettings)
 {
-    const auto decision = Studio::ShowSolverReview(this, revision, m_solverDraft, catalog, resultId,
+    auto& reviewDraft = proposedSettings.is_object() ? proposedSettings : m_solverDraft;
+    const auto decision = Studio::ShowSolverReview(this, revision, reviewDraft, catalog, resultId,
         [this, project, revision](const char* method, const Json& input, auto accepted, auto rejected)
         {
             if (!m_connected || m_closing || m_project != project || m_revision != revision || HasDraft())
@@ -159,6 +160,10 @@ void StudioFrame::OpenSolverReview(const std::string& project, const std::string
     if (!decision || !m_connected || m_closing || m_project != project || m_revision != revision || HasDraft())
     {
         return;
+    }
+    if (proposedSettings.is_object())
+    {
+        m_solverDraft = std::move(proposedSettings);
     }
     if (decision->editInstallation)
     {

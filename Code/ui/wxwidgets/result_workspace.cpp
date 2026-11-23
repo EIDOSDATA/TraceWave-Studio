@@ -115,6 +115,36 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
     {
         FieldSlice(options);
     };
+    m_field->onRefine = [this](const Json& options)
+    {
+        auto input = options;
+        input.update(Pinned());
+        const auto generation = ++m_viewGeneration;
+        m_field->SetBusy(true);
+        Read("result.field.refine", input, [this, generation]()
+        {
+            return generation == m_viewGeneration;
+        }, [this](const Json& response)
+        {
+            m_field->SetBusy(false);
+            if (!ResultUi::Matches(response, m_description))
+            {
+                throw std::runtime_error("전계 격자 제안의 원본이 현재 결과와 다릅니다.");
+            }
+            if (response.at("status") == "refined" && onFieldRefinement)
+            {
+                onFieldRefinement(response);
+                return;
+            }
+            const auto status = response.at("status").get<std::string>();
+            m_field->SetError(status == "memory_limit" ? "제안한 격자의 예상 메모리가 상한을 초과합니다." :
+                status == "rule_limit" ? "기존 국부 격자 규칙 수가 상한에 도달했습니다." :
+                "이 단면과 변화 기준으로 추가 세분화할 구간이 없습니다.");
+        }, [this](const Json& error)
+        {
+            m_field->SetError("전계 격자 검토 실패: " + DiagnosticMessage(error));
+        });
+    };
     BindComparison(m_compare, 14);
     m_conditions->onConditionPage = [this](int offset)
     {

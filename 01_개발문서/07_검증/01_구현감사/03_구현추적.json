@@ -8281,6 +8281,10 @@
       "extension_profile": "rfad.result-workspace/0.1",
       "status": "implemented"
     },
+    "result.field.refine": {
+      "extension_profile": "rfad.result-workspace/0.1",
+      "status": "implemented"
+    },
     "result.large.curves": {
       "extension_profile": "rfad.large-result-library/0.1",
       "status": "implemented"
@@ -15319,8 +15323,8 @@
     },
     {
       "path": "Code/src/rfad/application/result_service.py",
-      "text_sha256": "d09efedb111d7b2c4e9030a99fcfd750a1f0ae7a67a4c4ead7683e426f0cb775",
-      "utf8_bytes": 8554
+      "text_sha256": "f981f16262f7842592b433c3f538e8dbb74b3a238db6b837d9fa6f15efaec126",
+      "utf8_bytes": 8910
     },
     {
       "path": "Code/src/rfad/application/result_smith.py",
@@ -16449,8 +16453,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/field_result_view.cpp",
-      "text_sha256": "f9e5d3e1c81002b784273a46a8d23d5e71c1235f6e58ad6754cd31a08122557f",
-      "utf8_bytes": 20387
+      "text_sha256": "fda5ca12d84bdedb35d23b0cb74d1de1497eea63619afc180ca3759bd306b1b9",
+      "utf8_bytes": 22484
     },
     {
       "path": "Code/ui/wxwidgets/frequency_assessment_display.cpp",
@@ -16654,8 +16658,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace.cpp",
-      "text_sha256": "e374236b2621f865d4867da2e99b040d7d82731f71ea6a9ae2250ce662dd3bf2",
-      "utf8_bytes": 21415
+      "text_sha256": "2ee7d981016aba6ba526144f11d85a87f8cd1bb37758131b86072e36a0097871",
+      "utf8_bytes": 22767
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace_compare.cpp",
