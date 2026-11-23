@@ -21,13 +21,16 @@ internal static class TraceWaveSetup
         {
             Directory.CreateDirectory(stage);
             string script = SaveResource(stage, "install.ps1");
+            SaveResource(stage, "uninstall.ps1");
             string bundle = SaveResource(stage, "studio.zip");
             string identity = SaveResource(stage, "bundle-sha256.txt");
+            string version = SaveResource(stage, "display-version.txt");
             string powershell = Path.Combine(Environment.SystemDirectory, @"WindowsPowerShell\v1.0\powershell.exe");
             var options = new List<string>
             {
                 "-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
-                "-File", script, "-Bundle", bundle, "-Identity", identity
+                "-File", script, "-Bundle", bundle, "-Identity", identity,
+                "-DisplayVersion", File.ReadAllText(version).Trim()
             };
             foreach (string argument in arguments)
             {
@@ -53,7 +56,7 @@ internal static class TraceWaveSetup
         }
         finally
         {
-            foreach (string name in new[] { "install.ps1", "studio.zip", "bundle-sha256.txt" })
+            foreach (string name in new[] { "install.ps1", "uninstall.ps1", "studio.zip", "bundle-sha256.txt", "display-version.txt" })
             {
                 try
                 {

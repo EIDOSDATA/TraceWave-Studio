@@ -3,6 +3,7 @@
 @brief 봉인한 Windows 앱과 고정 의존성을 사용자 단위로 설치한다.
 @param Bundle Setup.exe에서 꺼낸 후보 ZIP.
 @param Identity 후보 ZIP의 고정 SHA-256.
+@param DisplayVersion Windows에 등록할 배포 버전.
 @param InstallRoot 앱, 전용 런타임과 작업 영역의 설치 경로.
 @param WithoutSimulation Windows 기능만 준비한다.
 @param WithWsl 기존 WSL2 해석 환경을 재현할 때 선택한다.
@@ -14,6 +15,7 @@ param
 (
     [Parameter(Mandatory)][string]$Bundle,
     [Parameter(Mandatory)][string]$Identity,
+    [Parameter(Mandatory)][string]$DisplayVersion,
     [string]$InstallRoot = (Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'TraceWaveStudio'),
     [switch]$WithoutSimulation,
     [switch]$WithWsl,
@@ -162,6 +164,20 @@ function Register-StudioShortcut
     }
 }
 
+function Register-StudioRemoval
+{
+    <# @brief 현재 사용자에게 Windows 표준 제거 경로를 연결한다. #>
+    param([switch]$KeepExisting)
+    $script = Join-Path $root 'TraceWaveUninstall.ps1'
+    if ((Test-Path -LiteralPath $script) -and
+        ([IO.File]::GetAttributes($script) -band [IO.FileAttributes]::ReparsePoint))
+    {
+        throw "제거 스크립트 위치가 연결된 경로입니다. $script"
+    }
+    Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'uninstall.ps1') -Destination $script -Force
+    & $script -DisplayVersion $DisplayVersion -StudioExe $gui -KeepExisting:$KeepExisting
+}
+
 $windowsVersion = Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
 if ($WithoutSimulation -and $WithWsl)
 {
@@ -228,6 +244,7 @@ try
     $codeRoot = Join-Path $app 'Code'
     $bin = Join-Path $codeRoot 'build/windows-release/bin'
     $gui = Join-Path $bin 'tracewave_gui.exe'
+    Register-StudioRemoval -KeepExisting
 
     Write-Host '[1/3] Windows 런타임을 준비합니다.'
     $pythonRoot = Join-Path $root 'Python31210'
@@ -265,7 +282,6 @@ try
         Write-Host '[3/3] Windows openEMS 해석 환경을 준비합니다.'
         $builder = Join-Path $codeRoot 'tools/setup_openems_windows.py'
         Invoke-Checked $python @('-I', '-B', '-X', 'utf8', $builder, '--cache', $cache) 'Windows openEMS 설치 및 native 감사'
-        Register-StudioShortcut $false
         $status.simulation = 'ready'
         $status.solver_platform = 'windows'
     }
@@ -303,13 +319,14 @@ try
                 Invoke-Checked $python ($solver + @('--audit-only')) 'openEMS native 재감사'
             }
             $useWsl = $true
-            Register-StudioShortcut $true
             $status.simulation = 'ready'
             $status.solver_platform = 'wsl2'
         }
     }
     if ($result -eq 0)
     {
+        Register-StudioRemoval
+        Register-StudioShortcut $useWsl
         Write-Host 'TraceWave Studio 설치가 끝났습니다.'
         if (-not $NoLaunch)
         {
