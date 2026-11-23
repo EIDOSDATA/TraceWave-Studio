@@ -131,18 +131,24 @@ def check_pcb_input(document, settings, *, captured=None):
     return omissions
 
 
-def _payload(document, snapshot, runtime, settings):
+def _payload(document, snapshot, runtime, settings, *, multiport=False):
     """! @brief 보존한 사용자 설계에서 native 소비 조건을 결정적으로 만든다."""
     omissions = check_pcb_input(document, settings, captured=(snapshot, runtime))
-    return {"schema": "rfad.analysis-plan/0.1", "analysis_profile": PROFILE, "runtime_profile": runtime["runtime_profile"],
+    if multiport:
+        from rfad.application.pcb_multiport_job import PROFILE as profile, plan_projection
+        projection = plan_projection(document, settings)
+    else:
+        profile = PROFILE
+        projection = project_pcb(document, settings)
+    return {"schema": "rfad.analysis-plan/0.1", "analysis_profile": profile, "runtime_profile": runtime["runtime_profile"],
             "snapshot": deepcopy(snapshot), "source_semantics": deepcopy(document), "runtime_identity": deepcopy(runtime),
             **({"physical_setup_omissions": omissions} if omissions else {}),
-            **project_pcb(document, settings)}
+            **projection}
 
 
-def build_pcb_plan(document, snapshot, runtime_identity, settings):
+def build_pcb_plan(document, snapshot, runtime_identity, settings, *, multiport=False):
     """! @brief 원본 설계와 가정을 보존한 독립 불변 계획을 생성한다."""
-    result = _payload(document, snapshot, runtime_identity, settings)
+    result = _payload(document, snapshot, runtime_identity, settings, multiport=multiport)
     result["plan_id"] = str(uuid4())
     if len(canonical_bytes(result)) > 256 * 1024:
         fail("E_RESOURCE", "PCB 해석 계획이 256 KiB를 초과했습니다.", "analysis_plan")
@@ -151,10 +157,12 @@ def build_pcb_plan(document, snapshot, runtime_identity, settings):
 
 def validate_pcb_plan(plan):
     """! @brief worker가 소비할 계획을 원본에서 재계산하여 숨은 변경을 차단한다."""
-    if type(plan) is not dict or plan.get("analysis_profile") != PROFILE:
+    from rfad.application.pcb_multiport_job import PROFILE as multiport_profile
+    if type(plan) is not dict or plan.get("analysis_profile") not in (PROFILE, multiport_profile):
         fail("E_VERSION", "지원하지 않는 PCB 계획입니다.")
     _uuid(plan.get("plan_id"), "plan_id")
-    expected = _payload(plan["source_semantics"], plan["snapshot"], plan["runtime_identity"], plan["case"]["settings"])
+    expected = _payload(plan["source_semantics"], plan["snapshot"], plan["runtime_identity"], plan["case"]["settings"],
+                        multiport=plan["analysis_profile"] == multiport_profile)
     expected["plan_id"] = plan["plan_id"]
     if canonical_bytes(plan) != canonical_bytes(expected):
         fail("E_HASH", "PCB 해석 계획이 원본 또는 명시 설정과 다릅니다.")

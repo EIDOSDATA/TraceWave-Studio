@@ -142,7 +142,7 @@ class WslRuntime:
                  python="/home/tracewave/rfad-runtime/openems-venv/bin/python",
                  guest_root="/home/tracewave/rfad-runtime/worker-runs", *,
                  lease_seconds=10.0, poll_seconds=0.25, control_timeout_seconds=10.0,
-                 startup_timeout_seconds=60.0):
+                 startup_timeout_seconds=60.0, transfer_timeout_seconds=None):
         """! @brief 승인된 실행 구성과 supervisor 소스 바이트를 생성 시점에 고정한다."""
         if (type(distribution) is not str or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}", distribution)
                 or type(user) is not str or not re.fullmatch(r"[a-z_][a-z0-9_-]{0,31}", user)):
@@ -153,7 +153,9 @@ class WslRuntime:
                 raise ProjectError("E_SCHEMA", "WSL 런타임은 고정 Linux 절대 경로여야 합니다.")
         if str(guest_root).startswith("/mnt/"):
             raise ProjectError("E_SCHEMA", "WSL 실행 staging은 Linux 파일시스템에 있어야 합니다.")
-        for value in (lease_seconds, poll_seconds, control_timeout_seconds, startup_timeout_seconds):
+        if transfer_timeout_seconds is None:
+            transfer_timeout_seconds = startup_timeout_seconds
+        for value in (lease_seconds, poll_seconds, control_timeout_seconds, startup_timeout_seconds, transfer_timeout_seconds):
             if type(value) not in (int, float) or not math.isfinite(value) or value <= 0:
                 raise ProjectError("E_SCHEMA", "WSL 감독 시간은 유한 양수여야 합니다.")
         self.distribution = distribution
@@ -164,6 +166,7 @@ class WslRuntime:
         self.poll_seconds = float(poll_seconds)
         self.control_timeout_seconds = float(control_timeout_seconds)
         self.startup_timeout_seconds = float(startup_timeout_seconds)
+        self.transfer_timeout_seconds = float(transfer_timeout_seconds)
         self._source = Path(__file__).resolve().parents[3] / "tools" / "wsl_supervisor.py"
         self._supervisor = self._source.read_bytes()
         self._supervisor_sha256 = hashlib.sha256(self._supervisor).hexdigest()
@@ -222,7 +225,7 @@ class WslRuntime:
         argv = ["wsl.exe", "--distribution", self.distribution, "--user", self.user, "--exec", "/usr/bin/python3",
                 "-I", "-B", "-c", BOOTSTRAP, script, self._supervisor_sha256, command]
         try:
-            timeout = self.startup_timeout_seconds if command in {"start", "export"} else self.control_timeout_seconds
+            timeout = self.transfer_timeout_seconds if command in {"start", "export"} else self.control_timeout_seconds
             result = _run_control(argv, raw, timeout)
         except (OSError, subprocess.TimeoutExpired) as error:
             raise ProjectError("E_RESOURCE", "WSL 제어 연결의 응답을 확인하지 못했습니다.",
@@ -366,7 +369,7 @@ class WslRuntime:
                 status = {**status, "state": "failed", "termination_confirmed": False, "outcome_unknown": True}
             status["transport_error"] = str(error)[:2048]
         if status.get("termination_confirmed") and not status.get("outcome_unknown"):
-            if status["state"] in {"completed", "failed"}:
+            if status["state"] in {"completed", "failed"} and not status.get("not_started"):
                 try:
                     status = self._control("export", run_id, nonce)
                     for item in status["exported_files"]:

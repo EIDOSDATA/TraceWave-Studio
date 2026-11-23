@@ -20,14 +20,14 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 264,
+    "current_07_검증": 265,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
     "current_traceability": 4,
     "document_catalog": 4,
     "document_navigation": 6,
-    "documentation_asset": 239,
+    "documentation_asset": 241,
     "documentation_validation_record": 1,
     "historical_proposal": 2,
     "historical_verification": 41,
@@ -28747,8 +28747,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 645487,
-      "working_tree_sha256": "c1235497d8d7c593976dab0667475b22663e2117004e40003992026bc1e912b8"
+      "bytes": 645616,
+      "working_tree_sha256": "bff0abf04deccc1ba79bbf7b78ff6d87afba1e2871d98eb4c1906f0096cb0b4b"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -28844,6 +28844,20 @@
       "review_scope": "문서/시안 자산 보존",
       "bytes": 160961,
       "working_tree_sha256": "a58a2e0063c152f7c31bdd3aa81d36aa21b2a18672d3a418cc8dcec12e3b0d10"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/102_네개급전의_공통격자_검토.png",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 123786,
+      "working_tree_sha256": "46f81c0e183caa4303cea0e0d3465000b5601835e5fb453d6756df125e2b9953"
+    },
+    {
+      "path": "01_개발문서/07_검증/02_실행화면/103_네개급전의_복소결과_저장.png",
+      "category": "documentation_asset",
+      "review_scope": "문서/시안 자산 보존",
+      "bytes": 220309,
+      "working_tree_sha256": "6fa8a5f3bbac96439f2548fc3ef4463db14d836cdbe9d8387fd3241de8123bc9"
     },
     {
       "path": "01_개발문서/07_검증/02_실행화면/10_외부회로_구성과_출처.jpg",
@@ -32255,6 +32269,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/388_윈도우_다중급전_해석과_결과검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 6849,
+      "working_tree_sha256": "e69813c9d53815dda3cca2bdd5bf396c8ac2021827ec9a6c40e55edadc646ef6",
+      "text_lines": 52,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/38_스튜디오_재열기와_유휴성능_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -32950,8 +32973,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 38454,
-      "working_tree_sha256": "edda0e2f060c0829f8f4e4e4044dd2771bad4800811551cff584fa47e7ae7bb7",
+      "bytes": 38894,
+      "working_tree_sha256": "6e123a4b789cd2b19f6587edd79c1649d70a9b9d7434d30b728fe65bfcb75cfe",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

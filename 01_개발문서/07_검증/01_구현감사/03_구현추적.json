@@ -7794,6 +7794,7 @@
       "nf2ff_supported": true,
       "profile": "rfad.openems.rect-waveguide/0.1",
       "profile_scopes": {
+        "rfad.openems.pcb-multiport/0.1": "user_pcb_multiport_computed_unvalidated",
         "rfad.openems.pcb-single-port/0.1": "user_pcb_single_port_computed_unvalidated",
         "rfad.openems.rect-waveguide/0.1": "empty_reference_project_only",
         "rfad.openems.reference-benchmark/0.1": "empty_project_fixed_synthetic_reference_only"
@@ -7801,7 +7802,8 @@
       "profiles": [
         "rfad.openems.rect-waveguide/0.1",
         "rfad.openems.pcb-single-port/0.1",
-        "rfad.openems.reference-benchmark/0.1"
+        "rfad.openems.reference-benchmark/0.1",
+        "rfad.openems.pcb-multiport/0.1"
       ],
       "resume_supported": false,
       "runtime_configured": false,
@@ -15137,8 +15139,8 @@
     },
     {
       "path": "Code/src/rfad/application/network_solver_import.py",
-      "text_sha256": "b205a21a4c52fdb7515e419e77e6873c475845337f95e0df8aad2d95c8de4ba1",
-      "utf8_bytes": 5964
+      "text_sha256": "f0aa9f579750d6675b6da7a12aac0779efe4468d325c7abae2fb9e0046b1a997",
+      "utf8_bytes": 6868
     },
     {
       "path": "Code/src/rfad/application/package_publication.py",
@@ -15217,8 +15219,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
-      "text_sha256": "3ba936e3b92c1c45092b490c520b2cd69a37853ef6d9e254181664dcae077318",
-      "utf8_bytes": 10531
+      "text_sha256": "010d165882f914008b7aec37bd881c387889e1100856f856c59fa9a4c19127ae",
+      "utf8_bytes": 11012
     },
     {
       "path": "Code/src/rfad/application/physical_projection.py",
@@ -15377,8 +15379,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "825bf9d51e22782deff5a519808bd3bf0266f177c2fe02f19600213677aa767d",
-      "utf8_bytes": 40562
+      "text_sha256": "30daa3c95ca4c9f68e17d9f3ea01bdb270bcacf1e233859eb7358b9570c152e0",
+      "utf8_bytes": 40685
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -15387,13 +15389,13 @@
     },
     {
       "path": "Code/src/rfad/application/solver_artifacts.py",
-      "text_sha256": "b42f0cbf5c079c9c93fa0743d422662601e36adc5c39e142faea090a387e4864",
-      "utf8_bytes": 18523
+      "text_sha256": "de50e3122945768798becc8cd9acaf2db084027e1d504bd54d2bf89ce18e561a",
+      "utf8_bytes": 19127
     },
     {
       "path": "Code/src/rfad/application/solver_jobs.py",
-      "text_sha256": "d3e5681577ccc8e68432679a88fcc7199262abcd2ce22a0082f0ef65ca86b1e5",
-      "utf8_bytes": 31292
+      "text_sha256": "78b99b35b268c70e0680f8a2690c30c3690dedbab6919f7eb333885b9f341569",
+      "utf8_bytes": 32179
     },
     {
       "path": "Code/src/rfad/application/solver_queries.py",
@@ -15402,13 +15404,13 @@
     },
     {
       "path": "Code/src/rfad/application/solver_requests.py",
-      "text_sha256": "bc00b3e3a2e33ef248b3dfede93829ef5feb233f4b65bce68c9d8587340a02b5",
-      "utf8_bytes": 4347
+      "text_sha256": "037395e7ffd40e0a6dc47a857e2d98740bfa890b51e40bd98da9dbaf51262443",
+      "utf8_bytes": 4442
     },
     {
       "path": "Code/src/rfad/application/solver_runtime.py",
-      "text_sha256": "b15612b4098bae6b85968bbb76daf8691548e93147bfe2491a47a8ea18eb4686",
-      "utf8_bytes": 5764
+      "text_sha256": "b77114717b30a2a63338ac456d3cd45244194aa1986241a7c1f2290677d70c77",
+      "utf8_bytes": 5794
     },
     {
       "path": "Code/src/rfad/application/sweep_copy.py",
@@ -15442,8 +15444,8 @@
     },
     {
       "path": "Code/src/rfad/application/wsl_process.py",
-      "text_sha256": "b2004aba18efc9708ac4f27c59f94f3b2a70cfb8df9f93ac22d25db49c0c9115",
-      "utf8_bytes": 22354
+      "text_sha256": "b21d7004bc6e71f0cdced52796f54342bfceff79583fbd787752242b0045730a",
+      "utf8_bytes": 22626
     },
     {
       "path": "Code/src/rfad/catalog/build.py",

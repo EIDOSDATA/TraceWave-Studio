@@ -133,7 +133,8 @@ void StudioFrame::UpdateControls()
         {
             enabled = opened && m_solverConfigured && !m_solverWorkflow.Active() && !m_solverRestoring &&
                       !m_solverSamples.empty() &&
-                      m_solverSamples.at("metadata").value("profile", "") == "rfad.openems.pcb-single-port/0.1";
+                      (m_solverSamples.at("metadata").value("profile", "") == "rfad.openems.pcb-single-port/0.1" ||
+                       m_solverSamples.at("metadata").value("profile", "") == "rfad.openems.pcb-multiport/0.1");
         }
         else if (item.first == IdCancelSolver)
         {

@@ -38,13 +38,12 @@ def scattering(incident, outgoing):
     return matrix, float(condition.max())
 
 
-def run_column(raw, case, lines, driven, frequencies):
-    """! @brief 모든 실제 lumped 종단을 생성한 다음 한 포트를 여기해 전체 원시 파형을 읽는다."""
+def prepare_column(xml, case, lines, driven):
+    """! @brief 같은 격자에 모든 종단을 넣고 지정한 포트만 여기하는 native XML을 봉인한다."""
     import CSXCAD
     import numpy as np
     import openEMS
 
-    raw.mkdir()
     settings = case["settings"]
     csx = CSXCAD.ContinuousStructure()
     solver = openEMS.openEMS(NrTS=settings["max_timesteps"], EndCriteria=settings["end_criterion"])
@@ -63,7 +62,13 @@ def run_column(raw, case, lines, driven, frequencies):
                              port["axis"], excite=int(port["number"] == driven), priority=10)
     actual = {axis: [float(value) for value in grid.GetLines(axis)] for axis in "xyz"}
     require(lines == actual, "생성된 native 격자가 공통 설계 격자와 다릅니다.", "E_HASH")
-    solver.Write2XML(str(raw / "pcb.xml"))
+    solver.Write2XML(str(xml))
+    return contacts
+
+
+def solve_column(raw, case):
+    """! @brief 준비한 여기 XML을 그대로 실행하고 실제 종료 원인과 통계를 읽는다."""
+    settings = case["settings"]
     command = [str(EXECUTABLE), "pcb.xml", "--engine=multithreaded", f"--numThreads={case['num_threads']}",
                "--dump-statistics", "--exact-endcriteria"]
     started = time.monotonic()
@@ -71,6 +76,13 @@ def run_column(raw, case, lines, driven, frequencies):
         subprocess.run(command, cwd=raw, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT,
                        check=True, timeout=limits(settings)["max_wall_time_seconds"])
     statistics, termination = statistics_and_termination(raw, {"case": case})
+    return {"statistics": statistics, "termination": termination, "wall_seconds": time.monotonic() - started}
+
+
+def port_waves(raw, case, frequencies):
+    """! @brief 실제 전압과 전류에서 각 포트 자체의 실수 기준 저항으로 정규화한다."""
+    import numpy as np
+
     incident, outgoing = [], []
     for port in case["ports"]:
         resistance = port["resistance_ohm"]
@@ -78,9 +90,16 @@ def run_column(raw, case, lines, driven, frequencies):
         factor = 2 * np.sqrt(resistance)
         incident.append((u + resistance * i) / factor)
         outgoing.append((u - resistance * i) / factor)
-    return incident, outgoing, {
-        "excited_port": driven, "mesh_sha256": canonical_hash(actual), "statistics": statistics,
-        "termination": termination, "wall_seconds": time.monotonic() - started, "contacts": contacts,
+    return incident, outgoing
+
+
+def run_column(raw, case, lines, driven, frequencies):
+    """! @brief CLI 검증에서도 작업 서비스와 동일한 준비, 실행, 파형 판독을 사용한다."""
+    raw.mkdir()
+    contacts = prepare_column(raw / "pcb.xml", case, lines, driven)
+    execution = solve_column(raw, case)
+    return *port_waves(raw, case, frequencies), {
+        "excited_port": driven, "mesh_sha256": canonical_hash(lines), **execution, "contacts": contacts,
         "artifacts": {p.name: file_identity(p) for p in sorted(raw.iterdir()) if p.is_file()},
     }
 
@@ -110,26 +129,33 @@ def run(document, settings, destination):
     for port in case["ports"]:
         number = port["number"]
         columns.append(run_column(dest / f"excitation-{number}", case, lines, number, frequencies))
-    incident = np.stack([row[0] for row in columns], axis=-1).transpose(1, 0, 2)
-    outgoing = np.stack([row[1] for row in columns], axis=-1).transpose(1, 0, 2)
-    matrix, condition = scattering(incident, outgoing)
-    impedances = [[p["resistance_ohm"], 0.0] for p in case["ports"]]
     identity = {"project_id": document["project_id"], "revision_id": document["revision_id"],
                 "source_sha256": canonical_hash(document), "settings_sha256": canonical_hash(settings),
                 "mesh_sha256": canonical_hash(lines), "case_sha256": canonical_hash(case),
                 "executable": executable, "openems_version": openEMS.__version__,
                 "csxcad_version": CSXCAD.__version__}
-    data = make_dataset(parameter_kind="S", frequency_hz=frequencies.tolist(),
-                        port_ids=[p["id"] for p in case["ports"]], values_ri=np.stack((matrix.real, matrix.imag), axis=-1).tolist(),
-                        port_names=[p["name"] for p in document["ports"]], reference_planes=[p["reference_plane"] for p in case["ports"]],
-                        z0_ohm=[impedances for _ in frequencies], port_modes=["single_ended"] * len(impedances),
-                        current_orientation=["into_dut"] * len(impedances),
-                        wave_definition="power", phasor_convention="exp(+j*omega*t)", sample_origin=["computed"] * len(frequencies),
-                        provenance=identity, conditions={"max_incident_matrix_condition": condition, "physical_setup_omissions": omissions})
-    touchstone = dest / f"network.s{len(impedances)}p"
+    data = network_dataset(columns, case, document, frequencies, identity, omissions)
+    touchstone = dest / f"network.s{len(case['ports'])}p"
     touchstone.write_bytes(write_touchstone(data))
     write_json(dest / "network.json", data)
     write_json(dest / "result.json", {"schema": "rfad.openems.pcb-multiport/0.1", **identity,
                                      "runs": [row[2] for row in columns], "network": file_identity(dest / "network.json"),
                                      "touchstone": file_identity(touchstone), "measurement_validated": False})
     return dest / "result.json"
+
+
+def network_dataset(columns, case, document, frequencies, identity, omissions):
+    """! @brief 같은 순서의 모든 독립 여기에서 주파수별 복소 S 행렬과 출처를 생성한다."""
+    import numpy as np
+
+    incident = np.stack([row[0] for row in columns], axis=-1).transpose(1, 0, 2)
+    outgoing = np.stack([row[1] for row in columns], axis=-1).transpose(1, 0, 2)
+    matrix, condition = scattering(incident, outgoing)
+    impedances = [[p["resistance_ohm"], 0.0] for p in case["ports"]]
+    return make_dataset(parameter_kind="S", frequency_hz=frequencies.tolist(),
+                        port_ids=[p["id"] for p in case["ports"]], values_ri=np.stack((matrix.real, matrix.imag), axis=-1).tolist(),
+                        port_names=[p["name"] for p in document["ports"]], reference_planes=[p["reference_plane"] for p in case["ports"]],
+                        z0_ohm=[impedances for _ in frequencies], port_modes=["single_ended"] * len(impedances),
+                        current_orientation=["into_dut"] * len(impedances),
+                        wave_definition="power", phasor_convention="exp(+j*omega*t)", sample_origin=["computed"] * len(frequencies),
+                        provenance=identity, conditions={"max_incident_matrix_condition": condition, "physical_setup_omissions": omissions})

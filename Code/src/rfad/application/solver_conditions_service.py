@@ -5,6 +5,7 @@ from copy import deepcopy
 from rfad.application import solver_configuration, result_sources
 from rfad.application.canonical import canonical_hash
 from rfad.application.pcb_solver import PROFILE as PCB_PROFILE, validate_settings
+from rfad.application.pcb_multiport_job import PROFILE as MULTIPORT_PROFILE
 from rfad.application.solver_evidence import pcb_result_plan
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain import solver_conditions as domain
@@ -87,7 +88,7 @@ def read(service, params):
                 "name": row["metadata"].get("installation_name", "PCB 해석"),
                 "snapshot_time": row["snapshot"]["sealed_at"]}
                for row in state["solver_results"].values()
-               if row["project_id"] == project_id and row["metadata"]["profile"] == PCB_PROFILE]
+               if row["project_id"] == project_id and row["metadata"]["profile"] in (PCB_PROFILE, MULTIPORT_PROFILE)]
     results.sort(key=lambda row: (row["snapshot_time"], row["id"]), reverse=True)
     names = display_names(document)
     targets = [{"kind": "port", "id": row["id"], "name": row["name"]} for row in document["ports"]]

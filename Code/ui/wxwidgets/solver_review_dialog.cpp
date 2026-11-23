@@ -346,7 +346,7 @@ public:
         {
             return {Json(), "", std::nullopt, true};
         }
-        return {m_result.at("settings"), m_saveName, std::nullopt};
+        return {m_result.at("settings"), m_saveName, std::nullopt, false, m_result.contains("multiport")};
     }
 
 private:
@@ -1706,6 +1706,20 @@ private:
             cost + "\n\n" + Display(radiation + "\n" + loss + "\n") + fieldSummary + Display("\n\n격자 SHA-256 " +
                     mesh.at("lines_sha256").get<std::string>() + "\n해석 입력 SHA-256 " +
                     mesh.at("case_sha256").get<std::string>() + "\n검토한 프로젝트 개정 " + m_revision));
+        if (m_result.contains("multiport"))
+        {
+            const auto& ports = m_result.at("multiport");
+            wxString listing = wxString::Format(Display("\n\n전체 S 행렬 / %llu개 포트 독립 여기\n"),
+                static_cast<unsigned long long>(ports.size()));
+            for (const auto& port : ports)
+            {
+                listing += wxString::Format(Display("P%d  %s / %.8g ohm / %s\n"), port.at("number").get<int>(),
+                    Display(port.at("name").get<std::string>()), port.at("resistance_ohm").get<double>(),
+                    Display(port.at("reference_plane").get<std::string>()));
+            }
+            m_output->AppendText(listing);
+            m_run->SetLabel(Display("전체 S 행렬 실행"));
+        }
         m_book->SetSelection(1);
         m_meshSummary->GetParent()->Layout();
         SetStatus("격자와 포함 형상 확인을 완료했습니다. 종료 / 기록 출력에서 예상 실행 비용을 확인할 수 있습니다.");

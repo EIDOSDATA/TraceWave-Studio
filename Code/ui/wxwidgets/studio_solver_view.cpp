@@ -131,13 +131,20 @@ void StudioFrame::OpenSolverEvidence(const std::string& artifact, wxWindow* pare
 void StudioFrame::UpdateSolverView()
 {
     m_solverCost->Enable(m_solverSamples.contains("execution_cost") || !m_solverLastAttempt.empty());
-    m_solverEvidence->Enable(m_solverSamples.value("metadata", Json::object()).value("profile", "") ==
-                             "rfad.openems.pcb-single-port/0.1");
+    const auto profile = m_solverSamples.value("metadata", Json::object()).value("profile", "");
+    m_solverEvidence->Enable(profile == "rfad.openems.pcb-single-port/0.1" || profile == "rfad.openems.pcb-multiport/0.1");
     if (m_solverSamples.empty())
     {
         return;
     }
     const bool stale = m_solverSamples.at("snapshot").at("revision_id") != m_revision;
+    if (profile == "rfad.openems.pcb-multiport/0.1")
+    {
+        const auto label = Display(stale ? "이전 설계의 전체 S 행렬 / 네트워크에서 조회" : "현재 설계의 전체 S 행렬 / 네트워크에서 조회");
+        m_solverViewState->SetLabel(label);
+        m_solverViewState->SetToolTip(label);
+        return;
+    }
     const auto label = Display((stale ? "이전 설계 결과 (" : "현재 설계 결과 (") +
                                std::to_string(m_solverChart->SampleCount()) + "개 주파수) · IFA·방사 정확도 검증 전");
     if (m_solverViewState->GetLabel() != label)

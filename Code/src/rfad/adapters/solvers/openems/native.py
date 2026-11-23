@@ -66,9 +66,9 @@ def descriptor(stage: Path, path: Path, role: str) -> dict:
     return {'path': path.relative_to(stage).as_posix(), 'role': role, 'media_type': media_type, **identity}
 
 
-def input_index(stage: Path, records: list[dict]) -> dict[str, Path]:
+def input_index(stage: Path, records: list[dict], *, max_files=64) -> dict[str, Path]:
     """! @brief 입력의 상대 경로, 중복 역할, 링크와 해시를 검증한다."""
-    require(type(records) is list and len(records) <= 64, '입력 파일 목록이 올바르지 않습니다.', 'E_INVALID_ARGUMENT')
+    require(type(records) is list and len(records) <= max_files, '입력 파일 목록이 올바르지 않습니다.', 'E_INVALID_ARGUMENT')
     result = {}
     for record in records:
         relative = PurePosixPath(record['path'])
@@ -375,7 +375,13 @@ def execute(request: dict, stage: Path) -> dict:
 
     require(request.get('schema') == 'rfad.openems-worker/0.1' and request.get('phase') in ('prepare', 'analysis', 'postprocess_only'), 'worker 요청 버전 또는 단계가 올바르지 않습니다.', 'E_INVALID_ARGUMENT')
     pcb_profile = request['analysis_plan'].get('analysis_profile') == PCB_PROFILE
-    if pcb_profile:
+    from rfad.application.pcb_multiport_job import PROFILE as MULTIPORT_PROFILE
+    multiport = request["analysis_plan"].get("analysis_profile") == MULTIPORT_PROFILE
+    if multiport:
+        from . import pcb_multiport_worker
+        validate_pcb_plan(request["analysis_plan"])
+        prepare_phase, solve_phase, postprocess_phase = pcb_multiport_worker.prepare, pcb_multiport_worker.solve, pcb_multiport_worker.postprocess
+    elif pcb_profile:
         from . import pcb
 
         validate_pcb_plan(request['analysis_plan'])
@@ -389,7 +395,7 @@ def execute(request: dict, stage: Path) -> dict:
         validate_reference_plan(request['analysis_plan'])
         prepare_phase, solve_phase, postprocess_phase = prepare, solve, postprocess
     require(request['analysis_plan']['runtime_identity'] == request['runtime'], '요청 runtime이 AnalysisPlan에서 고정한 runtime과 다릅니다.', 'E_HASH')
-    inputs = input_index(stage, request.get('input_files', []))
+    inputs = input_index(stage, request.get('input_files', []), max_files=72 if multiport else 64)
     runtime = verify_runtime(stage, request['runtime'])
     output = stage / 'output'
     output.mkdir(exist_ok=True)

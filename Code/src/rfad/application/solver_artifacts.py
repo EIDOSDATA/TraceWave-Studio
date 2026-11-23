@@ -6,7 +6,7 @@ from pathlib import PurePosixPath
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.pcb_results import frequency_axis_matches
-from rfad.application.solver_requests import PCB_PROFILE, REFERENCE_PROFILE, require_fields
+from rfad.application.solver_requests import PCB_PROFILE, MULTIPORT_PROFILE, REFERENCE_PROFILE, require_fields
 from rfad.application.solver import PROFILE as WAVEGUIDE_PROFILE
 from rfad.domain.errors import ProjectError
 
@@ -82,6 +82,10 @@ def check_prepared_outputs(journal, captured, preparation, files):
     """! @brief 준비 완료 선언 전에 소비 내역과 필수 native 파일의 연결을 검사한다."""
     roles = {f["role"]: f for f in files}
     required = {"native_input", "mesh_statistics", "consumption_report", "normalization", "runtime_provenance", "preparation_artifact"}
+    multiport = captured["analysis_plan"]["analysis_profile"] == MULTIPORT_PROFILE
+    if multiport:
+        from rfad.application.pcb_multiport_job import xml_role
+        required.update(xml_role(p["number"]) for p in captured["analysis_plan"]["case"]["ports"])
     radiation = "radiation_recording" in captured["analysis_plan"]["case"]
     if radiation:
         required.add("radiation_recording")
@@ -101,6 +105,10 @@ def check_prepared_outputs(journal, captured, preparation, files):
             or observed.get("source_bundle") != captured["runtime"].get("source_bundle")
             or observed.get("qt_found") is not False):
         raise ProjectError("E_HASH", "실제 준비 런타임이 고정한 식별과 다릅니다.")
+    if multiport:
+        from rfad.application.pcb_multiport_job import check_preparation
+        check_preparation(plan, preparation)
+        return
     if plan["analysis_profile"] == PCB_PROFILE:
         from rfad.application.pcb_solver import validate_preparation
 
@@ -141,6 +149,10 @@ def check_solver_result(journal, job, result, files):
 
     captured = job["solver"]
     profile = captured["analysis_plan"]["analysis_profile"]
+    if profile == MULTIPORT_PROFILE:
+        from rfad.application.pcb_multiport_job import check_result
+        check_result(journal, job, result, files)
+        return
     pcb, reference = profile == PCB_PROFILE, profile == REFERENCE_PROFILE
     roles = {f["role"]: f for f in files}
     if pcb:

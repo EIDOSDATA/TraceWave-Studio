@@ -21,7 +21,7 @@ class SolverRuntime:
         if transport is None:
             from rfad.application.wsl_process import WslRuntime
 
-            transport = WslRuntime()
+            transport = WslRuntime(transfer_timeout_seconds=240.0)
         self.transport = transport
         audit_data = json.loads((audit or CODE_ROOT / ".local/wsl/native-audit.json").read_bytes())
         manifest_data = json.loads((manifest or CODE_ROOT / "runtime_profiles/python-openems-linux-x64.json").read_bytes())

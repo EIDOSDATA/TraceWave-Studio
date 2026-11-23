@@ -10,7 +10,7 @@ from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.job_state import TERMINAL
 from rfad.application.pcb_execution import stopped, valid_energy_observation
 from rfad.application.solver import PROFILE, build_analysis_plan, make_prepared_plan, validate_reference_plan
-from rfad.application.solver_requests import PCB_PROFILE, REFERENCE_PROFILE, SOLVER_METHODS, validate_solver_input
+from rfad.application.solver_requests import PCB_PROFILE, MULTIPORT_PROFILE, REFERENCE_PROFILE, SOLVER_METHODS, validate_solver_input
 from rfad.application.solver_runtime import SolverRuntime, stage_solver_job
 from rfad.application.solver_capture import compact_capture, hydrate_job
 from rfad.application.solver_artifacts import read_solver_result, seal_solver_outputs, check_prepared_outputs, check_solver_result, worker_error
@@ -81,10 +81,11 @@ class SolverCoordinator:
             if snapshot is None or snapshot["project_id"] != project_id or snapshot["content_hash"] != data["snapshot"]["content_hash"]:
                 raise ProjectError("E_HASH", "등록된 불변 스냅샷이 필요합니다.")
             document = self.service._load({"current": snapshot["artifact"]})
-            if data["analysis_profile"] == PCB_PROFILE:
+            if data["analysis_profile"] in (PCB_PROFILE, MULTIPORT_PROFILE):
                 from rfad.application.pcb_solver import build_pcb_plan
 
-                captured["plan"] = build_pcb_plan(document, snapshot, self.runtime.identity, data["settings"])
+                captured["plan"] = build_pcb_plan(document, snapshot, self.runtime.identity, data["settings"],
+                                                  multiport=data["analysis_profile"] == MULTIPORT_PROFILE)
             elif data["analysis_profile"] == REFERENCE_PROFILE:
                 from rfad.application.rf_reference_contract import build_plan
 
@@ -114,7 +115,7 @@ class SolverCoordinator:
                 captured["raw_files"] = deepcopy(raw["raw_files"])
             kind = "em_analysis"
         plan = captured.get("analysis_plan", captured.get("plan"))
-        if plan["analysis_profile"] == PCB_PROFILE:
+        if plan["analysis_profile"] in (PCB_PROFILE, MULTIPORT_PROFILE):
             from rfad.application.pcb_solver import validate_pcb_plan
 
             validate_pcb_plan(plan)
@@ -327,9 +328,13 @@ class SolverCoordinator:
                              "metadata": {"schema": "rfad.openems-result-view/0.1", "profile": captured["analysis_plan"]["analysis_profile"], "assessment": result.get("assessment", {}),
                                           "normalization": result.get("normalization", {}), "sample_count": len(result.get("samples", [])),
                                           "physics_scope": {PCB_PROFILE: "user_pcb_single_port_computed_unvalidated",
+                                                            MULTIPORT_PROFILE: "user_pcb_multiport_computed_unvalidated",
                                                             REFERENCE_PROFILE: "synthetic_reference_benchmark_only",
                                                             PROFILE: "rectangular_waveguide_reference_only"}[captured["analysis_plan"]["analysis_profile"]],
-                                          "physics_validation_state": "not_validated" if captured["analysis_plan"]["analysis_profile"] == PCB_PROFILE else "reference_case_only"}}
+                                          "physics_validation_state": "not_validated" if captured["analysis_plan"]["analysis_profile"] in (PCB_PROFILE, MULTIPORT_PROFILE) else "reference_case_only"}}
+            if captured["analysis_plan"]["analysis_profile"] == MULTIPORT_PROFILE:
+                result_record["metadata"]["sample_count"] = len(result["network"]["frequency_hz"])
+                result_record["metadata"]["port_count"] = len(result["network"]["port_ids"])
             if not result_record["raw_files"] and job["input"]["task_plan"]["execution_mode"] == "postprocess_only":
                 result_record["raw_files"] = captured["raw_files"]
             operation = {"artifact_id": result_id, "normalized_result": normalized["artifact"], "assessment": result.get("assessment", {}),
@@ -405,8 +410,11 @@ class SolverCoordinator:
                 terminal = "interrupted"
             else:
                 terminal = "failed"
-            reasons = {"timeout": "해석 실행 시간 한도에 도달했습니다.", "output_limit": "해석 출력 용량 상한에 도달했습니다."}
+            reasons = {"timeout": "해석 실행 시간 한도에 도달했습니다.", "output_limit": "해석 출력 용량 상한에 도달했습니다.",
+                       "startup_owner_lost": "WSL 준비 프로세스가 입력 인계를 마치기 전에 종료되어 해석을 시작하지 못했습니다."}
             reason = process.get("state")
+            if process.get("not_started") and process.get("reason") == "startup_owner_lost":
+                reason = "startup_owner_lost"
             diagnostic = error or ProjectError("E_RESOURCE" if reason in reasons else "E_SOLVER",
                                                reasons.get(reason, "해석 작업을 완료하지 못했습니다."))
             cost = stopped(job, terminal, process, diagnostic)

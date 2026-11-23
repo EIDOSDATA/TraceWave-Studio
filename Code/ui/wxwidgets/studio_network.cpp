@@ -420,7 +420,12 @@ void StudioFrame::ShowNetworkTool(NetworkAction action, const Json& context, con
         }
         else if (action == NetworkAction::Solver)
         {
-            dialog = std::make_unique<NetworkSolverDialog>(this, context, ObjectToolGateway());
+            auto source = context;
+            if (m_solverResult.is_object() && m_solverResult.contains("artifact_id"))
+            {
+                source["preferred_artifact"] = m_solverResult.at("artifact_id");
+            }
+            dialog = std::make_unique<NetworkSolverDialog>(this, source, ObjectToolGateway());
         }
         else if (action == NetworkAction::Diagnostics)
         {

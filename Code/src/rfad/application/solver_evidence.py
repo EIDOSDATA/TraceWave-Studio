@@ -1,6 +1,7 @@
 """! @brief 완료된 PCB 해석에서 봉인 개정, 조건, 입력과 출처를 읽는다."""
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
+from rfad.application.pcb_multiport_job import PROFILE as MULTIPORT_PROFILE
 from rfad.application.pcb_solver import PROFILE as PCB_PROFILE, validate_settings
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain.errors import ProjectError
@@ -20,7 +21,7 @@ EDIT_PAGE_BYTES = 8 * 1024 * 1024
 def pcb_result_plan(service, state, project_id, result_id):
     """! @brief 결과의 소유 범위와 원래 계획 및 개정의 해시를 대조한다."""
     result = state["solver_results"].get(result_id)
-    if result is None or result["project_id"] != project_id or result["metadata"]["profile"] != PCB_PROFILE:
+    if result is None or result["project_id"] != project_id or result["metadata"]["profile"] not in (PCB_PROFILE, MULTIPORT_PROFILE):
         raise ProjectError("E_MISSING_ARTIFACT", "이 프로젝트의 사용자 PCB 해석 결과를 찾지 못했습니다.")
     plan_id = result["analysis_plan_id"]
     row = state["analysis_plans"].get(plan_id)
@@ -29,7 +30,7 @@ def pcb_result_plan(service, state, project_id, result_id):
     reference = row["reference"]
     _, plan = service.solver._record(state, "analysis_plans", reference, "plan_id", project_id)
     snapshot, document = plan["snapshot"], plan["source_semantics"]
-    if (plan["plan_id"] != plan_id or plan["analysis_profile"] != PCB_PROFILE
+    if (plan["plan_id"] != plan_id or plan["analysis_profile"] != result["metadata"]["profile"]
             or snapshot != result["snapshot"] or snapshot["project_id"] != project_id
             or any(document[key] != snapshot[key] for key in ("project_id", "revision_id", "schema_version"))
             or canonical_hash(document) != snapshot["content_hash"]):
@@ -41,13 +42,13 @@ def pcb_result_plan(service, state, project_id, result_id):
 def _recorded_objects(document, case):
     """! @brief 실제 계획에 포함한 재료, 급전, 양단과 적층을 원본 ID로 연결한다."""
     groups = {}
+    ports = case.get("ports", [case["port"]])
+    terminals = {p[k] for p in ports for k in ("positive_geometry_id", "reference_geometry_id")}
     for kind, collection, items in (
         ("material", "materials", case["materials"]),
-        ("port", "ports", [case["port"]]),
-        ("terminal", "geometry", [item for item in case["shapes"] if item["id"] in
-                                 (case["port"]["positive_geometry_id"], case["port"]["reference_geometry_id"])]),
-        ("geometry", "geometry", [row for row in case["shapes"] if row["id"] not in
-                                  (case["port"]["positive_geometry_id"], case["port"]["reference_geometry_id"])]),
+        ("port", "ports", ports),
+        ("terminal", "geometry", [item for item in case["shapes"] if item["id"] in terminals]),
+        ("geometry", "geometry", [row for row in case["shapes"] if row["id"] not in terminals]),
         ("geometry", "geometry", case.get("vias", [])),
         ("layer", "stackup", case["layers"]),
     ):
@@ -262,6 +263,8 @@ def read(service, params):
                 "current_revision_id": current["revision_id"], "snapshot": snapshot, "plan": reference,
                 "settings": case["settings"], "objects": [{"kind": kind, "id": identity, "name": item[0]}
                                                            for (kind, identity), item in objects.items()],
+                **({"port_terminals": [{key: p[key] for key in ("id", "number", "positive_geometry_id", "reference_geometry_id")}
+                                       for p in case["ports"]]} if "ports" in case else {}),
                 "terminals": {key: case["port"][key] for key in ("positive_geometry_id", "reference_geometry_id")}}
     kind, identity = data["kind"], _uuid(data["id"])
     if not isinstance(kind, str) or (kind, identity) not in objects:

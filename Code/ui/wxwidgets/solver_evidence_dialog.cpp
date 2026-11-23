@@ -293,8 +293,22 @@ private:
             auto label = Kind(kind);
             if (kind == "terminal")
             {
-                label = object.at("id") == data.at("terminals").at("positive_geometry_id")
-                    ? "신호 단자 도체" : "기준 단자 도체";
+                if (data.contains("port_terminals"))
+                {
+                    label = "단자 도체";
+                    for (const auto& port : data.at("port_terminals"))
+                    {
+                        if (object.at("id") == port.at("positive_geometry_id") || object.at("id") == port.at("reference_geometry_id"))
+                        {
+                            label += " / P" + port.at("number").dump() +
+                                (object.at("id") == port.at("positive_geometry_id") ? " 신호" : " 기준");
+                        }
+                    }
+                }
+                else
+                {
+                    label = object.at("id") == data.at("terminals").at("positive_geometry_id") ? "신호 단자 도체" : "기준 단자 도체";
+                }
             }
             const auto index = m_objectChoice->Append(Display(label + " / " + object.at("name").get<std::string>()));
             if (kind == "port")

@@ -107,10 +107,9 @@ def model_review(document, plan):
         add(key, geometry_names[key], "via", "via_" + key,
             [_circle(row["center_mm"], row["outer_radius_mm"], z_range),
              {**_circle(row["center_mm"], row["inner_radius_mm"], z_range), "opening": True}])
-    port = case["port"]
-    source = document["ports"][0]
-    add(source["id"], source["name"], "port", "LumpedPort 1",
-        [{"kind": "segment", "start_mm": port["start_mm"], "stop_mm": port["stop_mm"]}])
+    for number, (port, source) in enumerate(zip(case.get("ports", [case["port"]]), document["ports"]), 1):
+        add(source["id"], source["name"], "port", f"LumpedPort {number}",
+            [{"kind": "segment", "start_mm": port["start_mm"], "stop_mm": port["stop_mm"]}])
     excluded = [plan["model_report"]["omissions"], plan.get("physical_setup_omissions", [])]
     if "symmetry" in case:
         represented = set(case["symmetry"]["retained_geometry_ids"])
@@ -144,10 +143,10 @@ def mesh_intervals(case, lines):
         index = min(range(len(values) - 1), key=lambda i: values[i + 1] - values[i])
         interval("minimum_cell", axis, values[index:index + 2], "settings.grid_mm")
         minimums.append(values[index + 1] - values[index])
-    port = case["port"]
-    axis = port["axis"]
-    index = axes.index(axis)
-    interval("feed_gap", axis, [port["start_mm"][index], port["stop_mm"][index]], settings)
+    for port in case.get("ports", [case["port"]]):
+        axis = port["axis"]
+        index = axes.index(axis)
+        interval("feed_gap", axis, [port["start_mm"][index], port["stop_mm"][index]], settings)
     for surface in case.get("surface_layers", []):
         for opening in surface["openings_mm"]:
             for axis, endpoints in zip(axes, opening):
@@ -213,7 +212,7 @@ def read(service, params):
         raise ProjectError("E_UNSUPPORTED", "openEMS 실행 환경의 연결을 확인하세요.")
     snapshot = service.operations.prepare_snapshot(state, project, document, raw, {})
     try:
-        plan = build_pcb_plan(document, snapshot, runtime.identity, data["settings"])
+        plan = build_pcb_plan(document, snapshot, runtime.identity, data["settings"], multiport=len(document["ports"]) > 1)
     except ProjectError as error:
         if not include_all:
             raise
@@ -240,7 +239,10 @@ def read(service, params):
     model = model_review(document, plan)
     from rfad.application.pcb_symmetry import native_case
 
-    return {"revision_id": expected, "estimated": plan["resource_estimate"],
+    ports = [{"number": port["number"], "name": source["name"], "id": port["id"],
+              "reference_plane": port["reference_plane"], "resistance_ohm": port["resistance_ohm"]}
+             for port, source in zip(case.get("ports", []), document["ports"])]
+    return {**({"multiport": ports} if ports else {}), "revision_id": expected, "estimated": plan["resource_estimate"],
             "execution_estimate": estimate(plan, lines),
             "omissions": plan.get("physical_setup_omissions", {}),
             "outputs": plan.get("outputs", []), "settings": case["settings"],

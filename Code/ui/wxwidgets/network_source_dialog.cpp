@@ -22,15 +22,20 @@ NetworkSolverDialog::NetworkSolverDialog(wxWindow* parent, const Json& context, 
     layout->Add(help, 0, wxEXPAND | wxALL, FromDIP(12));
     m_result = new wxChoice(this, wxID_ANY);
     int index = 0;
+    int selected = 0;
     for (const auto& entry : context.at("solver_results"))
     {
+        if (entry.at("artifact_id") == context.value("preferred_artifact", ""))
+        {
+            selected = index;
+        }
         ++index;
         m_result->Append(Display("계산 결과 " + std::to_string(index) + " / 표본 " + entry.at("sample_count").dump() +
                                  " / " + entry.value("profile", "")));
     }
     if (m_result->GetCount() != 0)
     {
-        m_result->SetSelection(0);
+        m_result->SetSelection(selected);
     }
     layout->Add(m_result, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(12));
     layout->Add(new wxStaticText(this, wxID_ANY, Display("등록할 결과 이름")), 0, wxLEFT | wxRIGHT, FromDIP(12));

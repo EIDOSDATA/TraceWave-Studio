@@ -199,5 +199,13 @@ int main()
         {
             flow.Complete(Json{{"artifact_id", "result"}});
         });
+    flow.Begin("revision-C", settings, true);
+    const auto multi = flow.Complete(Json{{"snapshot_id", "s4"}, {"content_hash", "h4"}});
+    Check(multi->input.at("analysis_profile") == "rfad.openems.pcb-multiport/0.1");
+    flow.Complete(Json{{"analysis_plan", {{"plan_id", "p4"}, {"content_hash", "h4"}}},
+                       {"resource_estimate", {{"max_wall_time_seconds", 1200}}}});
+    const auto submitted = flow.Complete(Json{{"prepared_plan", {{"prepared_plan_id", "q4"}, {"content_hash", "h4"}}}});
+    Check(submitted->input.at("budget").at("timeout_seconds") == 1200);
+    Check(!flow.Complete(Json{{"artifact_id", "full-matrix"}}));
     return 0;
 }

@@ -1,4 +1,4 @@
-/** @file @brief GUI와 분리한 단일 포트 해석의 명시적 단계 상태 머신이다. */
+/** @file @brief GUI와 분리한 PCB 포트 해석의 명시적 단계 상태 머신이다. */
 #pragma once
 #include "async_state.h"
 
@@ -26,7 +26,7 @@ public:
         Stopped
     };
     /** @brief 시작 당시의 해석 설정을 복사해 이후 화면 입력 변경과 분리한다. */
-    ServiceCommand Begin(const std::string& revision, const Json& settings);
+    ServiceCommand Begin(const std::string& revision, const Json& settings, bool multiport = false);
     /** @brief 현재 단계의 완료 자료만 다음 명령으로 변환한다. */
     std::optional<ServiceCommand> Complete(const Json& result);
     /** @brief 실제 작업 종료와 별개로 다음 단계 전이를 막는다. */
@@ -46,6 +46,8 @@ private:
     Phase m_phase = Phase::Idle;
     bool m_cancelRequested = false;
     bool m_cancelDeliveryPending = false;
+    bool m_multiport = false;
+    int m_analysisBudget = 300;
     Json m_settings = Json::object();
 };
 }

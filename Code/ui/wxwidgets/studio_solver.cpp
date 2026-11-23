@@ -1,5 +1,6 @@
 /** @file @brief 주 창의 solver 책임을 구현한다. */
 #include "studio_internal.h"
+#include "network_panel.h"
 #include "radiation_dialog.h"
 #include "solver_review_dialog.h"
 
@@ -187,6 +188,7 @@ void StudioFrame::OpenSolverReview(const std::string& project, const std::string
     }
     if (decision->saveName.empty())
     {
+        m_solverMultiport = decision->multiport;
         m_solverSettings = decision->settings;
         StartSolver();
         return;
@@ -255,7 +257,7 @@ void StudioFrame::StartSolver()
         return;
     }
     m_canvas->CancelGesture();
-    const auto command = m_solverWorkflow.Begin(m_revision, m_solverSettings);
+    const auto command = m_solverWorkflow.Begin(m_revision, m_solverSettings, m_solverMultiport);
     m_views->SetSelection(2);
     SubmitSolverPhase(command);
 }
@@ -448,6 +450,29 @@ void StudioFrame::AcceptSolver(const Json& result, bool show)
 {
     const std::string project = m_project;
     const std::string artifact = result.at("artifact_id");
+    if (result.value("profile", "") == "rfad.openems.pcb-multiport/0.1")
+    {
+        m_solverRestoring = false;
+        m_solverResult = result;
+        m_solverSamples = Json{{"artifact_id", artifact}, {"snapshot", result.at("snapshot")},
+                               {"metadata", {{"profile", result.at("profile")}}}};
+        m_solverChart->Clear();
+        SolverStatus("completed", "전체 S 행렬이 저장되었습니다. 네트워크에서 포트별 복소 표본을 확인하세요.");
+        UpdateSolverView();
+        UpdateControls();
+        if (show)
+        {
+            CallAfter([this, project]()
+            {
+                if (!m_closing && m_connected && m_project == project)
+                {
+                    m_views->SetSelection(6);
+                    OpenNetworkAction(NetworkAction::Solver);
+                }
+            });
+        }
+        return;
+    }
     m_solverRestoring = true;
     UpdateControls();
     Send(

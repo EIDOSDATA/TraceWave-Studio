@@ -251,10 +251,11 @@ def capabilities(service=None, catalog=None) -> dict:
                       "angle_steps_deg": [5, 10, 15, 30], "physics_validated": False, "absolute_power_supported": False},
             "max_file_bytes": 67108864, "max_package_bytes": 134217728}
         result["solver_profile"]["profiles"] = ["rfad.openems.rect-waveguide/0.1", "rfad.openems.pcb-single-port/0.1",
-                                                  "rfad.openems.reference-benchmark/0.1"]
+                                                  "rfad.openems.reference-benchmark/0.1", "rfad.openems.pcb-multiport/0.1"]
         result["solver_profile"]["profile_scopes"] = {
             "rfad.openems.rect-waveguide/0.1": "empty_reference_project_only",
             "rfad.openems.pcb-single-port/0.1": "user_pcb_single_port_computed_unvalidated",
+            "rfad.openems.pcb-multiport/0.1": "user_pcb_multiport_computed_unvalidated",
             "rfad.openems.reference-benchmark/0.1": "empty_project_fixed_synthetic_reference_only",
         }
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.solver-view/0.1"} for name in ("solver.latest", "solver.samples")})

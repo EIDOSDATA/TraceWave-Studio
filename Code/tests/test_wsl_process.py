@@ -91,6 +91,27 @@ class WslProcessTests(unittest.TestCase):
         self.assertEqual(commands, ["start", "status", "export"])
         self.assertTrue(result["termination_confirmed"])
 
+    def test_slow_file_transfer_uses_an_independent_deadline(self):
+        """! @brief 고정 입력의 복사 예산을 늘려도 WSL 준비 및 상태 조회 기한은 유지한다."""
+        runtime = WslRuntime(transfer_timeout_seconds=240.0)
+        self.assertEqual(runtime.startup_timeout_seconds, 60.0)
+        response = subprocess.CompletedProcess([], 0, json.dumps(self.status()).encode(), b"")
+        with patch("rfad.application.wsl_process._run_control", return_value=response) as launcher:
+            for command in ("start", "export", "status"):
+                runtime._invoke(command, {"run_id": self.run_id, "nonce": self.nonce}, bootstrap=command == "start")
+                self.assertEqual(launcher.call_args.args[2], 10.0 if command == "status" else 240.0)
+        with self.assertRaises(ProjectError):
+            WslRuntime(transfer_timeout_seconds=float("inf"))
+
+    def test_confirmed_unstarted_job_has_no_output_to_export(self):
+        """! @brief 인계 전 종료한 작업에서 없는 출력 폴더를 복사하지 않고 최초 사유를 보존한다."""
+        failed = self.status("failed", not_started=True, reason="startup_owner_lost")
+        with tempfile.TemporaryDirectory() as directory, patch.object(self.runtime, "_invoke", return_value=failed) as invoke:
+            result = self.runtime.execute(self.stage(directory), run_id=self.run_id, nonce=self.nonce, cancel=threading.Event())
+        self.assertEqual(invoke.call_count, 1)
+        self.assertEqual(result["reason"], "startup_owner_lost")
+        self.assertNotIn("export_error", result)
+
     def test_unconfirmed_guest_is_not_exported(self):
         """! @brief launcher 종료나 terminal 이름만으로 출력 공개나 자원 해제를 허용하지 않는다."""
         with tempfile.TemporaryDirectory() as directory, patch.object(self.runtime, "_invoke", return_value=self.status("failed", False)) as invoke:

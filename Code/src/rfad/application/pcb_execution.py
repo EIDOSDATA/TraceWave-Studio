@@ -30,6 +30,10 @@ def estimate(plan, lines):
         raw_bytes += case["loss_recording"]["estimated_field_bytes"] + 3 * 16 * 1024
     if "field_recording" in case:
         raw_bytes += 64 * 1024 + case["field_recording"]["point_count"] * 24
+    if "ports" in case and case.get("source") == "user_project":
+        count = len(case["ports"])
+        work *= count
+        raw_bytes *= count * count
     return {"schema": SCHEMA, "time_basis": "reference_throughput_at_max_timesteps",
             "wall_seconds_low": work / rates[1], "wall_seconds_high": work / rates[0],
             "memory_bytes": resource["estimated_memory_bytes"], "raw_output_bytes": raw_bytes,

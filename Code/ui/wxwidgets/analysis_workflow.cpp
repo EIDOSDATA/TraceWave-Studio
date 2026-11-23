@@ -4,13 +4,15 @@
 
 namespace Studio
 {
-ServiceCommand AnalysisWorkflow::Begin(const std::string& revision, const Json& settings)
+ServiceCommand AnalysisWorkflow::Begin(const std::string& revision, const Json& settings, bool multiport)
 {
     if (Active() || revision.empty())
     {
         throw std::logic_error("Analysis is active or revision is missing.");
     }
     m_settings = settings;
+    m_multiport = multiport;
+    m_analysisBudget = 300;
     m_phase = Phase::Snapshot;
     m_cancelRequested = false;
     m_cancelDeliveryPending = false;
@@ -30,7 +32,7 @@ std::optional<ServiceCommand> AnalysisWorkflow::Complete(const Json& result)
     case Phase::Snapshot:
         next = {"solver.plan", Json{{"snapshot", Json{{"snapshot_id", result.at("snapshot_id")},
                                                       {"content_hash", result.at("content_hash")}}},
-                                    {"analysis_profile", "rfad.openems.pcb-single-port/0.1"},
+                                    {"analysis_profile", m_multiport ? "rfad.openems.pcb-multiport/0.1" : "rfad.openems.pcb-single-port/0.1"},
                                     {"runtime_profile", "openems-wsl-reference/0.1"},
                                     {"settings", m_settings}}};
         phase = Phase::Plan;
@@ -38,6 +40,10 @@ std::optional<ServiceCommand> AnalysisWorkflow::Complete(const Json& result)
     case Phase::Plan:
     {
         const auto& plan = result.at("analysis_plan");
+        if (m_multiport)
+        {
+            m_analysisBudget = result.at("resource_estimate").at("max_wall_time_seconds").get<int>();
+        }
         next = {"solver.prepare", Json{{"analysis_plan", Json{{"plan_id", plan.at("plan_id")},
                                                               {"content_hash", plan.at("content_hash")}}},
                                        {"budget", Json{{"timeout_seconds", 300}}}}};
@@ -52,7 +58,7 @@ std::optional<ServiceCommand> AnalysisWorkflow::Complete(const Json& result)
                                         {"prepared_plan", Json{{"prepared_plan_id", prepared.at("prepared_plan_id")},
                                                                {"content_hash", prepared.at("content_hash")}}},
                                         {"execution_mode", "solve_and_postprocess"}}},
-                     {"budget", Json{{"timeout_seconds", 300}}}}};
+                     {"budget", Json{{"timeout_seconds", m_analysisBudget}}}}};
         phase = Phase::Analysis;
         break;
     }

@@ -23,6 +23,20 @@ def solver_dataset(service, state, document, identity):
 
 def project_solver_dataset(document, identity, record, original):
     """! @brief 같은 봉인 바이트를 읽은 호출자가 해당 결과를 검증하고 복소 자료로 투영한다."""
+    from rfad.application.pcb_multiport_job import PROFILE as multiport_profile
+    if original.get("schema") == multiport_profile:
+        from rfad.domain.network_data import validate_dataset
+        data = deepcopy(original["network"])
+        validate_dataset(data)
+        snapshot = record["snapshot"]
+        if (original["snapshot"] != snapshot or data["provenance"]["snapshot"] != snapshot
+                or snapshot["project_id"] != document["project_id"]
+                or data["provenance"]["source_sha256"] != snapshot["content_hash"]
+                or record["metadata"]["profile"] != multiport_profile):
+            fail("다중 포트 결과의 설계 개정 또는 출처가 다릅니다.", "artifact_id", "E_HASH")
+        data["provenance"]["normalized_source"] = deepcopy(record["normalized"])
+        data["source_refs"].append("solver artifact: " + identity)
+        return data
     reference = original.get("schema") == "rfad.openems-reference-result/0.1"
     if original.get("schema") != "rfad.openems-pcb-result/0.1" and not reference:
         fail("이 투영 profile은 보존된 단일 포트 PCB와 고정 RF 참조 결과를 지원합니다.", "artifact_id", "E_UNSUPPORTED")

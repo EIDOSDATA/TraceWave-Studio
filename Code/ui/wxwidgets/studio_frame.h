@@ -391,6 +391,7 @@ private:
     std::string m_solverState = "idle";
     Json m_solverDraft = Json::object();
     bool m_solverRepairPending = false;
+    bool m_solverMultiport = false;
     Json m_solverSettings = Json::object();
     Json m_solverResult = Json::object();
     Json m_solverSamples = Json::object();
