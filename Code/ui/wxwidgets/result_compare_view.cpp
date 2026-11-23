@@ -54,6 +54,10 @@ ResultCompareView::ResultCompareView(wxWindow* parent, bool measurementMode)
         });
     }
     layout->Add(tools, 0, wxEXPAND);
+    m_requirements = new wxStaticText(this, wxID_ANY, wxEmptyString);
+    m_requirements->SetName("result.compare.requirements");
+    StudioTheme::BindSecondary(*m_requirements);
+    layout->Add(m_requirements, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
     m_sources =
         new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 150)), wxLC_REPORT | wxLC_SINGLE_SEL);
     m_sources->SetMinSize(FromDIP(wxSize(-1, 150)));
@@ -501,7 +505,7 @@ void ResultCompareView::SetComparison(std::size_t index, const Json& response)
     {
         return;
     }
-    m_status->SetLabel(Display(
+    SetNotice(
         "수학: " +
         ResultUi::State(response.value("math_comparability", Json::object()).value("status", Json(nullptr))) +
         " / 물리: " +
@@ -509,7 +513,7 @@ void ResultCompareView::SetComparison(std::size_t index, const Json& response)
         " / 차이가 설계 개선이나 합격을 뜻하지 않습니다.\n차이 표본 " +
         std::to_string(response.value("offset", 0) + (response.value("points", Json::array()).empty() ? 0 : 1)) + "~" +
         std::to_string(response.value("offset", 0) + response.value("points", Json::array()).size()) + " / " +
-        std::to_string(response.value("total", 0))));
+        std::to_string(response.value("total", 0)));
     m_differences->DeleteAllItems();
     const auto points = response.value("points", Json::array());
     const auto scale = StudioFrequency::ForDescriptor(m_descriptions.front().at("descriptor"));
@@ -621,8 +625,80 @@ void ResultCompareView::Actions()
     const bool valid = selected >= 0 && static_cast<std::size_t>(selected) < m_pages.size();
     m_add->Enable(m_available && m_descriptions.size() < 8);
     m_remove->Enable(m_available && valid);
-    m_map->Enable(m_available && selected > 0);
-    m_compare->Enable(m_available && selected > 0 && m_orders[static_cast<std::size_t>(selected)].is_array());
+    std::string requirement = "원본 두 개를 추가하고 기준 아래의 비교 행을 선택하세요.";
+    bool canMap = false;
+    bool mapped = false;
+    if (selected > 0 && valid)
+    {
+        const auto index = static_cast<std::size_t>(selected);
+        const auto& left = m_descriptions.front().at("descriptor");
+        const auto& right = m_descriptions[index].at("descriptor");
+        const auto ports = left.value("port_ids", Json::array()).size();
+        canMap = ports != 0 && ports == right.value("port_ids", Json::array()).size();
+        mapped = canMap && m_orders[index].is_array();
+        if (!canMap)
+        {
+            requirement = "포트 수가 다릅니다. 포트 수가 같은 원본을 선택하면 차이를 확인할 수 있습니다.";
+        }
+        else
+        {
+            const auto boundary = [](const Json& item, const char* key)
+            {
+                const auto value = item.value(key, Json(nullptr));
+                return value.is_number() ? value.get<double>() : 0.0;
+            };
+            const auto minimum = [&boundary](const Json& item)
+            {
+                return boundary(item, "frequency_min_hz");
+            };
+            const auto maximum = [&boundary](const Json& item)
+            {
+                return boundary(item, "frequency_max_hz");
+            };
+            const bool disjoint = maximum(left) > 0 && maximum(right) > 0 &&
+                (maximum(left) < minimum(right) || maximum(right) < minimum(left));
+            const auto points = m_comparisons[index].is_object()
+                ? m_comparisons[index].value("points", Json::array()) : Json::array();
+            const auto matching = std::count_if(points.begin(), points.end(), [](const Json& point)
+            {
+                return point.value("right_index", Json(nullptr)).is_number();
+            });
+            const auto leftPlanes = left.value("reference_planes", Json::array());
+            const auto rightPlanes = right.value("reference_planes", Json::array());
+            const auto incomplete = [ports](const Json& planes)
+            {
+                return planes.size() != ports || std::any_of(planes.begin(), planes.end(), [](const Json& item)
+                {
+                    return !item.is_string() || item == "unknown" || item == "";
+                });
+            };
+            std::string planes = "대응 후 확인";
+            if (incomplete(leftPlanes) || incomplete(rightPlanes))
+            {
+                planes = "미정 기록 있음";
+            }
+            else if (mapped)
+            {
+                planes = "일치";
+                for (std::size_t port = 0; port < ports; ++port)
+                {
+                    if (leftPlanes.at(port) != rightPlanes.at(m_orders[index].at(port).get<std::size_t>()))
+                    {
+                        planes = "다름";
+                        break;
+                    }
+                }
+            }
+            requirement = std::string("포트 ") + (mapped ? "대응 완료" : "포트 대응 버튼에서 지정") +
+                " / 기준면 " + planes + " / 주파수 " +
+                (disjoint ? "공통 범위 없음" : points.empty() ? "같은 실제 표본만 비교" :
+                    std::to_string(matching) + "/" + std::to_string(points.size()) + "개 일치 (현재 차이 페이지)");
+        }
+    }
+    m_requirements->SetLabel(Display(requirement));
+    m_requirements->Wrap(std::max(FromDIP(240), GetClientSize().x - FromDIP(28)));
+    m_map->Enable(m_available && canMap);
+    m_compare->Enable(m_available && mapped);
     m_previous->Enable(m_available && valid && m_pages[static_cast<std::size_t>(selected)].is_object() &&
                        m_pages[static_cast<std::size_t>(selected)].value("offset", 0) > 0);
     m_next->Enable(m_available && valid && m_pages[static_cast<std::size_t>(selected)].is_object() &&

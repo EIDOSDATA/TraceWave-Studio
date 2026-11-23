@@ -77,6 +77,7 @@ void AddPath(wxPanel& page, const char* label, const wxString& value)
     auto* edit = new wxTextCtrl(&page, wxID_ANY, value.empty() ? Display("미연결") : value,
                                 wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
     edit->SetName(Display(label));
+    edit->SetToolTip(Display("전체 경로는 Ctrl+A, Ctrl+C로 복사합니다."));
     page.GetSizer()->Add(edit, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, page.FromDIP(StudioTheme::InputGap));
 }
 
@@ -198,7 +199,9 @@ void StudioFrame::ShowEnvironment()
     auto& components = *AddPage(*pages, "구성 요소");
     AddLine(components, "프로젝트 서비스", Display(m_connected ? "연결됨" : "연결 확인 필요"));
     AddLine(components, "CAD / STEP", Display(m_cadConfigured ? "실행 환경 연결됨" : "내보내려면 CAD 실행 환경 연결 필요"));
-    AddLine(components, "openEMS 해석", Display(m_solverConfigured ? "실행 환경 연결됨" : "새 해석을 실행하려면 openEMS 연결 필요"));
+    AddLine(components, "openEMS 해석", Display(m_solverConfigured
+        ? (m_options.openEmsWsl ? "WSL2 openEMS 연결됨" : "Windows 기본 openEMS 연결됨")
+        : "새 해석을 실행하려면 openEMS 연결이 필요합니다."));
     AddLine(components, "편집과 결과 조회", Display("프로젝트 서비스가 연결되면 편집, 저장 및 기존 결과 조회가 가능합니다."));
 
     auto& paths = *AddPage(*pages, "경로 / 연결");
@@ -209,10 +212,19 @@ void StudioFrame::ShowEnvironment()
     AddLine(paths, "연결 변경", Display("개발판에서는 실행 도우미(Code/tools/launch_gui.ps1)의 옵션을 지정해 다시 시작합니다."));
 
     auto& diagnostics = *AddPage(*pages, "진단 기록");
-    auto* log = new wxTextCtrl(&diagnostics, wxID_ANY, m_log->GetValue(), wxDefaultPosition, wxDefaultSize,
+    const int pad = dialog.FromDIP(StudioTheme::PanelPadding);
+    auto* technical = new wxCheckBox(&diagnostics, wxID_ANY, Display("전체 기술 기록"));
+    diagnostics.GetSizer()->Add(technical, 0, wxALL, pad);
+    auto* log = new wxTextCtrl(&diagnostics, wxID_ANY, m_logSummary->GetValue(), wxDefaultPosition, wxDefaultSize,
                                wxTE_MULTILINE | wxTE_READONLY);
-    log->SetName(Display("현재 세션 로그"));
-    diagnostics.GetSizer()->Add(log, 1, wxEXPAND | wxALL, dialog.FromDIP(StudioTheme::PanelPadding));
+    log->SetName(Display("현재 세션 진단 기록"));
+    diagnostics.GetSizer()->Add(log, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
+    technical->Bind(wxEVT_CHECKBOX, [this, log](wxCommandEvent& event)
+    {
+        log->ChangeValue(event.IsChecked() ? m_log->GetValue() : m_logSummary->GetValue());
+        log->ShowPosition(log->GetLastPosition());
+    });
+    log->ShowPosition(log->GetLastPosition());
 
     Footer(dialog);
     Place(dialog, *this, wxSize(780, 610), wxSize(600, 510));

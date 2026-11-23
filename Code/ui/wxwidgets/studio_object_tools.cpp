@@ -82,13 +82,22 @@ void StudioFrame::ShowObjectTool(std::unique_ptr<ProjectSetupDialog> dialog, con
             const auto source = m_views->GetSelection() == 16 && imported.is_string()
                 ? Json{{"kind", "network"}, {"dataset_id", imported}, {"revision_id", m_revision}, {"snapshot_id", nullptr}}
                 : Json(nullptr);
+            const auto measurement = operation == "record" || operation == "import_record"
+                ? result.value("record_ref", Json(nullptr)) : Json(nullptr);
             RefreshEditor(target,
-                          [this, source]()
+                          [this, source, measurement]()
                           {
                               Ready("편집을 적용했습니다. 저장으로 현재 개정을 확정할 수 있습니다.");
-                              if (source.is_object() && m_views->GetSelection() == 16)
+                              if (m_views->GetSelection() == 16)
                               {
-                                  m_results->OpenRecent(source);
+                                  if (source.is_object())
+                                  {
+                                      m_results->OpenRecent(source);
+                                  }
+                                  if (measurement.is_object())
+                                  {
+                                      m_results->PreferMeasurement(measurement);
+                                  }
                               }
                           });
         }

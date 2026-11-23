@@ -105,6 +105,13 @@ void ResultWorkspace::SetMeasurementAvailable(bool available)
     }
 }
 
+/** @brief 편집 직후 저장된 시료를 정확한 ID, 해시, 개정으로 한 번 선택한다. */
+void ResultWorkspace::PreferMeasurement(const Json& reference)
+{
+    m_preferredMeasurement = reference;
+    LoadMeasurements();
+}
+
 void ResultWorkspace::LoadMeasurements()
 {
     if (!m_measurement || !m_available || !m_measurementAvailable)
@@ -112,12 +119,13 @@ void ResultWorkspace::LoadMeasurements()
         return;
     }
     const auto project = m_project, revision = m_revision;
+    const auto request = ++m_measurementRequest;
     m_measurement->SetStatus("현재 개정의 시료 / 교정 기록을 읽고 있습니다.");
     Read(
         "measurement.context", {{"revision_id", nullptr}, {"offset", 0}, {"limit", 32}},
-        [this, project, revision]()
+        [this, project, revision, request]()
         {
-            return m_project == project && m_revision == revision;
+            return m_project == project && m_revision == revision && m_measurementRequest == request;
         },
         [this, project, revision](const Json& response)
         {
@@ -125,7 +133,8 @@ void ResultWorkspace::LoadMeasurements()
             {
                 throw std::runtime_error("측정 기록 목록의 프로젝트 또는 개정이 다릅니다.");
             }
-            m_measurement->SetRecords(response);
+            m_measurement->SetRecords(response, m_preferredMeasurement);
+            m_preferredMeasurement = nullptr;
         },
         [this](const Json& error)
         {

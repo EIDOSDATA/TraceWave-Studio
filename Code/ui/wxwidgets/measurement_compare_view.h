@@ -15,7 +15,7 @@ class MeasurementCompareView final : public wxPanel
 public:
     explicit MeasurementCompareView(wxWindow* parent);
     ResultCompareView* Comparison() const;
-    void SetRecords(const Json& context);
+    void SetRecords(const Json& context, const Json& preferred);
     void SetAvailable(bool available);
     void SetSelectionAvailable(bool selected);
     void SetStatus(const std::string& message);

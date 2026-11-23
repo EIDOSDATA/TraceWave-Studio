@@ -482,6 +482,7 @@ private:
     wxTextCtrl* m_description = nullptr;
     wxStaticText* m_metadataDiagnostic = nullptr;
     wxTextCtrl* m_log = nullptr;
+    wxTextCtrl* m_logSummary = nullptr;
     wxButton* m_apply = nullptr;
     wxButton* m_solverRepairBack = nullptr;
     wxStaticText* m_revisionLabel = nullptr;

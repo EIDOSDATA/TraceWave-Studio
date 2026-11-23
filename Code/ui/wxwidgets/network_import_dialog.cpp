@@ -227,7 +227,14 @@ void NetworkImportDialog::UpdateActions()
     const bool available = Editable() && !m_pending && !MeasurementUncertain() && !m_measurementForm->Pending();
     m_tabs->Enable(available);
     m_browse->Enable(available);
-    m_csv->Enable(available && Format() == "csv");
+    const bool csv = Format() == "csv";
+    m_csv->Enable(available && csv);
+    if (m_csv->Show(csv))
+    {
+        auto* mapping = static_cast<wxScrolledWindow*>(m_csv->GetParent());
+        mapping->Layout();
+        mapping->FitInside();
+    }
     const std::size_t count = m_sourceDescriptor.is_null() ? 0 : m_sourceDescriptor.at("port_ids").size();
     m_conditions->Enable(available && count > 0);
     for (std::size_t index = 0; index < m_ports.size(); ++index)

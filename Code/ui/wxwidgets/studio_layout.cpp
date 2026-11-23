@@ -488,9 +488,40 @@ void StudioFrame::BuildInterface()
     problemSizer->Add(m_problems, 1, wxEXPAND);
     problemPanel->SetSizer(problemSizer);
     m_bottom->AddPage(problemPanel, Display("문제"));
-    m_log = new wxTextCtrl(m_bottom, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+    auto* logPanel = new wxPanel(m_bottom);
+    StudioTheme::BindSurface(*logPanel);
+    auto* logLayout = new wxBoxSizer(wxVERTICAL);
+    auto* technicalLog = new wxCheckBox(logPanel, wxID_ANY, Display("전체 기술 기록"));
+    technicalLog->SetName("studio.log.technical");
+    logLayout->Add(technicalLog, 0, wxALL, FromDIP(StudioTheme::InputGap));
+    m_logSummary = new wxTextCtrl(logPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+                                  wxTE_MULTILINE | wxTE_READONLY);
+    m_logSummary->SetName("studio.log.summary");
+    m_log = new wxTextCtrl(logPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
                            wxTE_MULTILINE | wxTE_READONLY);
-    m_bottom->AddPage(m_log, Display("로그"));
+    m_log->SetName("studio.log.full");
+    logLayout->Add(m_logSummary, 1, wxEXPAND);
+    logLayout->Add(m_log, 1, wxEXPAND);
+    m_log->Hide();
+    logPanel->SetSizer(logLayout);
+    technicalLog->Bind(wxEVT_CHECKBOX, [this, logPanel](wxCommandEvent& event)
+    {
+        m_logSummary->Show(!event.IsChecked());
+        m_log->Show(event.IsChecked());
+        logPanel->Layout();
+        auto* visibleLog = event.IsChecked() ? m_log : m_logSummary;
+        visibleLog->ShowPosition(visibleLog->GetLastPosition());
+    });
+    const int logPage = static_cast<int>(m_bottom->GetPageCount());
+    m_bottom->AddPage(logPanel, Display("로그"));
+    m_bottom->onSelectionChanged = [this, technicalLog, logPage](int selection)
+    {
+        if (selection == logPage)
+        {
+            auto* visibleLog = technicalLog->GetValue() ? m_log : m_logSummary;
+            visibleLog->ShowPosition(visibleLog->GetLastPosition());
+        }
+    };
     auto* cadPanel = new wxPanel(m_bottom);
     StudioTheme::BindSurface(*cadPanel);
     auto* cadSizer = new wxBoxSizer(wxVERTICAL);

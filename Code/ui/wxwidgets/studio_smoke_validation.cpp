@@ -143,10 +143,12 @@ void StudioSmokeDriver::ValidationSafetyChecks()
     changed["pin"]["dataset_sha256"] = std::string(64, 'd');
     const auto beforeMismatch = calls.size();
     mismatch(changed);
-    CanvasAssert(results->m_description.is_null() && results->m_browser->SelectedSource().is_null() &&
-                     calls.size() == beforeMismatch &&
-                     results->m_browser->m_status->GetLabel().Contains(Display("봉인 해시")),
-                 "보고서와 다른 pin을 받아 목록 또는 결과로 채택했습니다.");
+    CanvasAssert(results->m_description.is_null(), "봉인 해시가 다른 결과 상세를 채택했습니다.");
+    CanvasAssert(results->m_browser->SelectedSource().is_null(), "봉인 해시가 다른 원본을 선택했습니다.");
+    CanvasAssert(calls.size() == beforeMismatch, "봉인 해시가 다른 원본의 목록을 요청했습니다.");
+    CanvasAssert(results->m_browser->m_statusText.Contains(Display("봉인 해시")) &&
+                     !results->m_browser->m_status->GetLabel().IsEmpty(),
+                 "봉인 해시 불일치 안내를 표시하지 않았습니다.");
     results->OpenPinned(source, pin);
     const auto describedAgain = calls.back().success;
     describedAgain(description);

@@ -286,7 +286,9 @@ void ResultSourceBrowser::SetCatalog(const Json& response, const Json& selected)
     std::string message = scope + " " + std::to_string(total) + "건.";
     if (selected.is_object() && !listedSelection)
     {
-        message += " 표시 중인 원본은 이 목록 페이지에 없습니다.";
+        message += m_items->GetItemCount() >= total
+            ? " 표시 중인 원본은 이 자료 범위에 없습니다."
+            : " 표시 중인 원본은 이 페이지에 없습니다. 다른 페이지 또는 자료 범위를 확인하세요.";
     }
     else if (total > 0 && !listedSelection)
     {

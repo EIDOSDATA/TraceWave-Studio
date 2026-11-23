@@ -63,6 +63,7 @@ private:
     wxChoice* m_column = nullptr;
     wxChoice* m_metric = nullptr;
     wxStaticText* m_status = nullptr;
+    wxStaticText* m_requirements = nullptr;
     wxButton* m_add = nullptr;
     wxButton* m_remove = nullptr;
     wxButton* m_map = nullptr;

@@ -155,9 +155,11 @@ Json MeasurementCompareView::RecordRef() const
                : Json(nullptr);
 }
 
-void MeasurementCompareView::SetRecords(const Json& context)
+/** @brief 방금 저장한 정확한 원본 참조가 있으면 기존 선택보다 우선한다. */
+void MeasurementCompareView::SetRecords(const Json& context, const Json& preferred)
 {
     const auto previous = RecordRef();
+    int preferredRow = wxNOT_FOUND;
     m_records = context.value("items", Json::array());
     m_record->Clear();
     int selected = wxNOT_FOUND;
@@ -165,13 +167,17 @@ void MeasurementCompareView::SetRecords(const Json& context)
     {
         const auto& record = m_records.at(index);
         m_record->Append(Display(record.value("name", std::string("이름 미기록"))));
+        if (preferred.is_object() && record.value("record_ref", Json(nullptr)) == preferred)
+        {
+            preferredRow = static_cast<int>(index);
+        }
         if (previous.is_object() &&
             record.value("record_ref", Json(nullptr)) == previous.value("record_ref", Json(nullptr)))
         {
             selected = static_cast<int>(index);
         }
     }
-    m_record->SetSelection(selected);
+    m_record->SetSelection(preferredRow == wxNOT_FOUND ? selected : preferredRow);
     const int previousHistory = m_history->GetSelection();
     const auto previousRef = previousHistory >= 0 && static_cast<std::size_t>(previousHistory) < m_histories.size()
                                  ? m_histories.at(previousHistory)
@@ -193,9 +199,22 @@ void MeasurementCompareView::SetRecords(const Json& context)
             }
         }
     }
-    SetStatus(m_records.empty()
-                  ? "측정 기록이 없습니다. 비교할 자료가 있을 때 가져오거나 원본에 기록을 추가하세요."
-                  : "시료 / 교정 기록을 명시 선택하세요. 과거 기록은 자동으로 최신 내용으로 바뀌지 않습니다.");
+    if (preferredRow != wxNOT_FOUND)
+    {
+        SetStatus("방금 저장한 시료 / 교정 기록이 선택되었습니다. 비교에 추가하거나 기록을 확인하세요.");
+    }
+    else if (m_records.empty())
+    {
+        SetStatus("측정 기록이 없습니다. 비교할 자료가 있을 때 가져오거나 원본에 기록을 추가하세요.");
+    }
+    else if (selected == wxNOT_FOUND)
+    {
+        SetStatus("시료 / 교정 기록을 선택한 뒤 비교에 추가하세요.");
+    }
+    else
+    {
+        SetStatus("선택한 시료 / 교정 기록의 당시 출처가 유지됩니다.");
+    }
     Actions();
 }
 

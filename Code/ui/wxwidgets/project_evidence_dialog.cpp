@@ -4,6 +4,7 @@
 #include "studio_support.h"
 #include "studio_theme.h"
 
+#include <map>
 #include <wx/display.h>
 #include <wx/listctrl.h>
 #include <wx/wx.h>
@@ -39,6 +40,37 @@ void Rows(wxListCtrl& table, const Json& rows)
     table.Thaw();
 }
 
+/** @brief 이력 목록의 원시 명령을 변경 작업의 이름으로 읽는다. */
+std::string HistoryAction(const std::string& key, const std::string& operation)
+{
+    static const std::map<std::string, std::string> operations = {
+        {"import", "네트워크 자료 가져오기"}, {"solver", "해석 자료 등록"}, {"transform", "네트워크 변환"},
+        {"evaluate", "성능 기준 평가"}, {"circuit_apply", "정합 회로 적용"},
+        {"record", "시료 / 교정 기록 저장"}, {"import_record", "측정 자료와 시료 가져오기"},
+        {"align", "측정 원본 정렬"}, {"compare", "측정 비교 저장"}
+    };
+    if (key == "network.library.replace" || key == "measurement.workspace.replace")
+    {
+        const auto found = operations.find(operation);
+        if (found != operations.end())
+        {
+            return found->second;
+        }
+    }
+    static const std::map<std::string, std::string> names = {
+        {"target.set", "목표 구성"}, {"target.remove", "목표 삭제"}, {"target.constraints.set", "목표 조건 편집"},
+        {"object.create", "설계 항목 추가"}, {"object.update", "설계 항목 변경"}, {"object.delete", "설계 항목 삭제"},
+        {"geometry.set", "형상 변경"}, {"geometry.remove", "형상 삭제"}, {"layer.set", "층 변경"},
+        {"layer.remove", "층 삭제"}, {"port.set", "급전 변경"}, {"port.remove", "급전 삭제"},
+        {"material.set", "재료 변경"}, {"material.remove", "재료 삭제"}, {"parameter.set", "설계 변수 설정"},
+        {"metadata.set", "프로젝트 속성 변경"}, {"metadata.describe", "프로젝트 설명 변경"},
+        {"board.set", "기판 변경"}, {"stackup.set", "적층 변경"}, {"template.apply", "후보 형상 채택"},
+        {"network.library.replace", "네트워크 자료 변경"}, {"measurement.workspace.replace", "측정 자료 변경"}
+    };
+    const auto found = names.find(key);
+    return found == names.end() ? "프로젝트 변경" : found->second;
+}
+
 wxPanel* Page(StudioNotebook& pages, const char* label)
 {
     auto* page = new wxPanel(&pages);
@@ -70,7 +102,8 @@ int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page
     StudioTheme::Title(*title);
     root->Add(title, 0, wxLEFT | wxTOP, pad);
     auto* revision = new wxStaticText(&dialog, wxID_ANY,
-        Display("현재 개정 " + evidence.at("revision_id").get<std::string>()));
+        Display("현재 개정 " + evidence.at("revision_id").get<std::string>().substr(0, 8)));
+    revision->SetToolTip(Display(evidence.at("revision_id").get<std::string>()));
     StudioTheme::BindSecondary(*revision);
     root->Add(revision, 0, wxEXPAND | wxALL, pad);
     auto* choice = new wxChoice(&dialog, wxID_ANY);
@@ -105,18 +138,37 @@ int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page
                         evidence.at("history_total").get<int>(), evidence.at("redo_count").get<int>()));
     StudioTheme::BindSecondary(*historyNote);
     changes->GetSizer()->Add(historyNote, 0, wxALL, pad);
-    auto* history = Table(*changes, {{"변경 전 개정", 240}, {"변경 후 개정", 240}, {"명령", 165}, {"대상", 140}});
-    Rows(*history, evidence.at("history"));
+    auto* history = Table(*changes, {{"작업", 175}, {"대상", 136}, {"접수 시각", 190}, {"사유", 208}, {"적용 개정", 100}});
+    const auto historyContext = evidence.value("history_context", Json::array());
+    const auto& historyRows = evidence.at("history");
+    auto briefHistory = Json::array();
+    for (std::size_t index = 0; index < historyRows.size(); ++index)
+    {
+        const auto& row = historyRows.at(index);
+        const auto context = index < historyContext.size() ? historyContext.at(index) : Json::object();
+        const auto name = context.value("name", std::string());
+        const auto reason = context.value("reason", std::string());
+        const auto timestamp = context.value("timestamp", std::string());
+        briefHistory.push_back({HistoryAction(row.at(2).get<std::string>(), context.value("operation", std::string())),
+            name.empty() ? "기록 상세" : name, timestamp.empty() ? "미기록" : timestamp,
+            reason.empty() ? "미기록" : reason, row.at(1).get<std::string>().substr(0, 8)});
+    }
+    Rows(*history, briefHistory);
     changes->GetSizer()->Add(history, 2, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
     auto* changeDetail = ReadOnly(*changes, "선택 변경의 개정 / 명령 / 대상",
                                   Display("변경 행을 선택하면 전체 개정 ID와 명령을 읽을 수 있습니다."));
     changes->GetSizer()->Add(changeDetail, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
     history->Bind(wxEVT_LIST_ITEM_SELECTED, [&](wxListEvent& event)
     {
-        const auto& row = evidence.at("history").at(static_cast<std::size_t>(event.GetIndex()));
-        changeDetail->ChangeValue(Display("변경 전  " + row.at(0).get<std::string>() + "\n변경 후  " +
-            row.at(1).get<std::string>() + "\n명령  " + row.at(2).get<std::string>() + "\n대상  " +
-            row.at(3).get<std::string>()));
+        const auto index = static_cast<std::size_t>(event.GetIndex());
+        const auto& row = historyRows.at(index);
+        const auto& brief = briefHistory.at(index);
+        changeDetail->ChangeValue(Display(brief.at(0).get<std::string>() + " / " + brief.at(1).get<std::string>() +
+            "\n접수 시각  " + brief.at(2).get<std::string>() + "\n사유  " + brief.at(3).get<std::string>() +
+            "\n변경 전  " + row.at(0).get<std::string>() + "\n변경 후  " +
+            row.at(1).get<std::string>() + "\n명령  " + row.at(2).get<std::string>() + "\n대상 ID  " +
+            (index < historyContext.size() ? historyContext.at(index).value("target_id", std::string())
+                                            : row.at(3).get<std::string>())));
     });
 
     auto* recovery = Page(*tabs, "저장본 / 복구 후보");

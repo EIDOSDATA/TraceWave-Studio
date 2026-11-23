@@ -351,6 +351,8 @@ void ResultWorkspace::Update(const std::string& project, const std::string& epoc
 }
 void ResultWorkspace::Reset()
 {
+    m_preferredMeasurement = nullptr;
+    ++m_measurementRequest;
     ++m_serial;
     ++m_catalogGeneration;
     ++m_selectionGeneration;
@@ -537,7 +539,7 @@ void ResultWorkspace::Select(const Json& source, const Json& expectedPin)
             if (m_measurement != nullptr && m_page == 16)
             {
                 m_measurement->SetSelectionAvailable(true);
-                if (source.value("kind", "") == "network")
+                if (source.value("kind", "") == "network" && !m_measurement->RecordRef().is_object())
                 {
                     m_measurement->SetStatus("자료를 선택했습니다. 시료 / 교정 기록을 추가하거나 비교에 넣으세요.");
                 }

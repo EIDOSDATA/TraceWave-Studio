@@ -1,6 +1,7 @@
 """! @brief 현재와 보존 개정의 출처, 가정과 변경을 읽기 전용으로 투영한다."""
 
 import json
+from datetime import datetime, timezone
 from itertools import islice
 
 from rfad.application.canonical import canonical_bytes
@@ -222,6 +223,19 @@ def read(service, params):
             raise ProjectError("E_SCHEMA", "현재 개정에서 목표를 찾지 못했습니다.")
         adopted = [_target(target)]
     history = []
+    history_context = []
+    names = {**display_names(document), **display_names(document, "ports"), **display_names(document, "targets")}
+    receipts = {}
+    for receipt in state.get("receipts", {}).values():
+        if receipt.get("scope", {}).get("project_id") != document["project_id"]:
+            continue
+        response = receipt.get("response", {})
+        revision_key = response.get("new_revision")
+        accepted = receipt.get("accepted_at")
+        if revision_key and type(accepted) in (float, int):
+            previous = receipts.get(revision_key)
+            if previous is None or accepted < previous["accepted_at"]:
+                receipts[revision_key] = receipt
     undo = project["history"]["undo"]
     for key in reversed(undo if target_id else undo[-24:]):
         record = state["commands"].get(key)
@@ -238,6 +252,19 @@ def read(service, params):
                 continue
             history.append([record["old_revision"], record["new_revision"], cmd.get("type", "기록 없음"),
                             _display(objects.get(identity, {}).get("name") or identity)])
+            if len(history_context) < 24:
+                entry = next((payload[key] for key in ("target", "geometry", "layer", "port", "material", "board")
+                              if isinstance(payload.get(key), dict)), {})
+                receipt = receipts.get(record["new_revision"], {})
+                response = receipt.get("response", {})
+                accepted = receipt.get("accepted_at")
+                timestamp = (datetime.fromtimestamp(accepted, timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+                             if accepted is not None else "")
+                object_id = identity or entry.get("id") or response.get("record_id") or ""
+                reason = record.get("target_editor", {}).get("reason", "")
+                history_context.append({"name": entry.get("name") or names.get(object_id, ""), "target_id": object_id,
+                                        "operation": response.get("operation") or "", "timestamp": timestamp,
+                                        "reason": reason if isinstance(reason, str) else ""})
     recovery = [["개정", saved["revision_id"], revision],
                 ["프로젝트 이름", saved["metadata"]["name"], document["metadata"]["name"]]]
     collections = {"geometry": "형상", "stackup": "적층", "ports": "급전", "targets": "목표"}
@@ -254,6 +281,6 @@ def read(service, params):
             break
         details.append(row)
     return {"project_id": document["project_id"], "revision_id": revision, "records": adopted, "history": history[:24],
-            "recovery_details": {"rows": details, "has_more": has_more},
+            "history_context": history_context, "recovery_details": {"rows": details, "has_more": has_more},
             "history_total": len(history) if target_id else len(undo), "redo_count": len(project["history"]["redo"]), "recovery": recovery,
             "saved_revision": saved["revision_id"]}

@@ -30,6 +30,7 @@ public:
     void SetValidationAvailable(bool available);
     void BuildMeasurementPage(StudioNotebook* views);
     void SetMeasurementAvailable(bool available);
+    void PreferMeasurement(const Json& reference);
     wxWindow* NavigationView() const;
     wxWindow* ConditionsView() const;
     std::function<void()> onFocusSource;
@@ -106,6 +107,8 @@ private:
     FieldResultView* m_field = nullptr;
     ResultCompareView* m_compare = nullptr;
     MeasurementCompareView* m_measurement = nullptr;
+    Json m_preferredMeasurement = nullptr;
+    std::uint64_t m_measurementRequest = 0;
     bool m_measurementAvailable = false;
     bool m_measurementsRefreshNeeded = true;
 };

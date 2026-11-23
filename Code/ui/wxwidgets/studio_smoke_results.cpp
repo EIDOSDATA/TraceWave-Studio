@@ -365,6 +365,9 @@ void StudioSmokeDriver::ResultsSmokeTick()
     else if (m_setupStage == 9 && idle() && workspace.m_compare->m_pages.size() == 2 &&
              workspace.m_compare->m_pages.at(1).is_object())
     {
+        CanvasAssert(workspace.m_compare->m_requirements->GetLabel().Contains(Display("버튼에서 지정")) &&
+                         !workspace.m_compare->m_compare->IsEnabled(),
+                     "포트 미대응 상태에서 차이 버튼의 조건과 위치를 안내하지 않았습니다.");
         ResultPortHook mapping;
         SetupSmoke::Click(workspace.m_compare->m_map);
         CanvasAssert(mapping.count == 1 && workspace.m_compare->PortOrder(1) == Json::array({0}),
@@ -373,6 +376,8 @@ void StudioSmokeDriver::ResultsSmokeTick()
     }
     else if (m_setupStage == 10 && idle() && workspace.m_compare->m_comparisons.at(1).is_object())
     {
+        CanvasAssert(workspace.m_compare->m_requirements->GetLabel().Contains(Display("3/4개 일치")),
+                     "같은 실제 주파수 개수를 표시하지 않았습니다.");
         const auto& comparison = workspace.m_compare->m_comparisons.at(1);
         CanvasAssert(comparison.at("difference_definition") == "right_minus_left" &&
                          comparison.at("points").at(0).at("difference_ri").at(0) == .2 &&

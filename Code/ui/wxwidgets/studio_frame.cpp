@@ -6,6 +6,8 @@
 #include "result_workspace.h"
 #include "rf_validation_controller.h"
 #include "output_controller.h"
+#include <wx/datetime.h>
+#include <wx/filename.h>
 #include <wx/iconbndl.h>
 
 StudioFrame::StudioFrame(Options options)
@@ -58,15 +60,33 @@ StudioFrame::~StudioFrame()
     delete m_manager;
 }
 
+/** @brief 사건의 첫 문장과 시간, 상세 기술 기록을 동일한 순서로 남긴다. */
 void StudioFrame::Log(const std::string& text)
 {
     wxWindow* focused = wxWindow::FindFocus();
-    m_log->AppendText(Display(text) + "\n");
-    if (m_log->GetLastPosition() > 20000)
+    const auto raw = Display(text);
+    auto headline = raw.BeforeFirst('\n').Trim();
+    const auto pathLabel = Display("해석 결과 파일: ");
+    if (headline.StartsWith(pathLabel))
     {
-        m_log->Remove(0, m_log->GetLastPosition() - 16000);
+        headline = pathLabel + wxFileName(headline.Mid(pathLabel.length())).GetFullName();
     }
-    if (focused != nullptr && focused != m_log && focused->IsEnabled() && focused->IsShownOnScreen())
+    if (headline.length() > 150)
+    {
+        headline = headline.Left(147) + "...";
+    }
+    const auto stamp = wxDateTime::Now().FormatISOTime() + "  ";
+    m_logSummary->AppendText(stamp + headline + "\n");
+    m_log->AppendText(stamp + raw + "\n");
+    for (auto* control : {m_logSummary, m_log})
+    {
+        if (control->GetLastPosition() > 20000)
+        {
+            control->Remove(0, control->GetLastPosition() - 16000);
+        }
+    }
+    if (focused != nullptr && focused != m_log && focused != m_logSummary &&
+        focused->IsEnabled() && focused->IsShownOnScreen())
     {
         focused->SetFocus();
     }
