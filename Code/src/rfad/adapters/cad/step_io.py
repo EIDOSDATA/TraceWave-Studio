@@ -6,40 +6,61 @@ from rfad.adapters.cad.geometry import _require
 from rfad.adapters.cad.bodies import _metrics
 
 
+def _assembly_parts(data):
+    """! @brief 원본 정의, 자식의 편집 결과 및 상대 위치가 같은 하위조립끼리만 공유한다."""
+    from OCP.TopLoc import TopLoc_Location
+
+    rows = {tuple(row["path"]): row for row in data["instances"]}
+    children = {path: [] for path in rows}
+    local, keys = {}, {}
+    for path in rows:
+        if path == (1,):
+            continue
+        parent = path[:-1]
+        children[parent].append(path)
+        base = TopLoc_Location() if parent == (1,) else data["locations"][parent]
+        local[path] = base.Inverted().Multiplied(data["locations"][path])
+    for path, row in reversed(list(rows.items())):
+        members = []
+        for child in children[path]:
+            transform = local[child].Transformation()
+            coordinates = tuple(round(transform.Value(i, j), 10) for i in range(1, 4) for j in range(1, 5))
+            members.append((keys[child], rows[child]["name"], coordinates))
+        keys[path] = (row["assembly"], row["definition"], tuple(members))
+    return rows, children, local, keys
+
+
 def _write_assembly(tool, body):
-    """! @brief 설치 부품의 조립 경로와 공유 말단 정의를 실제 XCAF 조립으로 작성한다."""
+    """! @brief 배치별 자식 편집은 구분하고 동일 조립 및 말단 정의는 한 번만 작성한다."""
     from OCP.TCollection import TCollection_ExtendedString
     from OCP.TDataStd import TDataStd_Name
-    from OCP.TopLoc import TopLoc_Location
+    from OCP.TDF import TDF_Label
 
     def name(label, text):
         """! @brief 제품 정의와 인스턴스 이름을 각각 보존한다."""
         TDataStd_Name.Set_s(label, TCollection_ExtendedString(text))
 
     data = body["_step_assembly"]
-    locations = data["locations"]
-    root = tool.NewShape()
-    name(root, body["name"])
-    parents, definitions = {(1,): root}, {}
-    for row in data["instances"][1:]:
-        path = tuple(row["path"])
-        instance_name = row["name"] or ".".join(map(str, path))
-        if row["assembly"]:
-            definition = tool.NewShape()
-            name(definition, instance_name)
-            parents[path] = definition
-        else:
-            key = row["definition"]
-            if key not in definitions:
-                definitions[key] = tool.AddShape(data["definitions"][key], False)
-                name(definitions[key], instance_name)
-            definition = definitions[key]
-        container = path[:-1]
-        parent_location = TopLoc_Location() if container == (1,) else locations[container]
-        local = parent_location.Inverted().Multiplied(locations[path])
-        component = tool.AddComponent(parents[container], definition, local)
-        _require(not component.IsNull(), "STEP 조립 인스턴스를 구성하지 못했습니다.")
-        name(component, instance_name)
+    rows, children, local, keys = _assembly_parts(data)
+    definitions = {}
+    def emit(path):
+        """! @brief 동일한 원본의 같은 조립 상태를 참조하고 다른 편집 상태에 새 정의를 부여한다."""
+        key, row = keys[path], rows[path]
+        if key in definitions:
+            return definitions[key]
+        title = row.get("definition_name") or row["name"] or ".".join(map(str, path))
+        definition = tool.NewShape() if row["assembly"] else tool.AddShape(data["definitions"][row["definition"]], False)
+        name(definition, body["name"] if path == (1,) else title)
+        product = TDF_Label()
+        if not row["assembly"] and tool.GetReferredShape_s(definition, product):
+            name(product, title)
+        definitions[key] = definition
+        for child in children[path]:
+            component = tool.AddComponent(definition, emit(child), local[child])
+            _require(not component.IsNull(), "STEP 조립 인스턴스를 구성하지 못했습니다.")
+            name(component, rows[child]["name"] or ".".join(map(str, child)))
+        return definition
+    emit((1,))
 
 
 def _write_step(bodies: list[dict], path: Path, tolerance: float) -> None:
@@ -127,12 +148,15 @@ def verify_assemblies(bodies, assemblies, tolerance):
     """! @brief 보존 계층, 반복 말단과 개별 경계를 STEP 재입력 바이트에서 검사한다."""
     from rfad.adapters.cad.physical import external_metrics
 
-    def signature(instances):
-        """! @brief 원본마다 달라질 수 있는 커널 ID 대신 첫 말단의 경로로 반복 정의를 식별한다."""
-        definitions = {}
-        return [(tuple(row["path"]), row["assembly"],
-                 None if row["assembly"] else definitions.setdefault(row["definition"], tuple(row["path"])))
-                for row in instances]
+    def signature(instances, keys=None):
+        """! @brief 재입력한 모든 조립 및 말단 정의의 공유 관계를 최초 발생의 경로로 비교한다."""
+        first = {}
+        result = []
+        for row in instances:
+            path = tuple(row["path"])
+            key = row["definition"] if keys is None else keys[path]
+            result.append((path, row["assembly"], first.setdefault(key, path)))
+        return result
 
     verified = []
     for body in bodies:
@@ -142,14 +166,20 @@ def verify_assemblies(bodies, assemblies, tolerance):
         name = body["name"]
         _require(name in assemblies, "STEP 재입력에서 설치물의 조립 계층을 찾을 수 없습니다.")
         nodes, leaves = assemblies[name]
-        _require(signature(nodes) == signature(source.get("effective_assembly_instances", source["assembly_instances"])),
-                 "STEP 재입력에서 조립 경로나 반복 말단 정의가 달라졌습니다.")
+        _, _, _, keys = _assembly_parts(body["_step_assembly"])
+        original = source.get("effective_assembly_instances", source["assembly_instances"])
+        _require(signature(nodes) == signature(original, keys),
+                 "STEP 재입력에서 조립 경로나 조립 및 말단 정의의 공유 관계가 달라졌습니다.")
         for item in source["placed_instances"]:
             actual = external_metrics(leaves[tuple(item["path"])])["bbox_mm"]
             _require(max(abs(a - b) for a, b in zip(actual, item["bbox_mm"])) <= tolerance,
                      "STEP 재입력에서 조립 말단의 위치가 달라졌습니다.")
         verified.append({"name": name, "instances": len(nodes), "leaves": len(leaves),
                          "shared_leaf_definitions": len({row["definition"] for row in nodes if not row["assembly"]})})
+        original_groups = [row["definition"] for row in original if row["assembly"] and len(row["path"]) > 1]
+        if len(original_groups) > len(set(original_groups)):
+            actual_groups = [row["definition"] for row in nodes if row["assembly"] and len(row["path"]) > 1]
+            verified[-1].update(subassembly_occurrences=len(actual_groups), subassembly_definitions=len(set(actual_groups)))
     return verified
 
 

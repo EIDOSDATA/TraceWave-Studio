@@ -54,12 +54,15 @@ def _assembly_instances(tool, root):
         name = TDataStd_Name()
         named = label.FindAttribute(TDataStd_Name.GetID_s(), name)
         title = " ".join(name.Get().ToExtString().split())[:120] if named else ""
+        original_name = TDataStd_Name()
+        definition_name = (" ".join(original_name.Get().ToExtString().split())[:120]
+                           if definition.FindAttribute(TDataStd_Name.GetID_s(), original_name) else "")
         transform = location.Transformation()
         assembled = tool.IsAssembly_s(definition)
         source_shape = tool.GetShape_s(definition)
         _require(assembled or source_shape.ShapeType() == TopAbs_SOLID,
                  "조립의 각 말단 부품은 하나의 닫힌 B-rep 고체여야 합니다.", code="E_UNSUPPORTED")
-        result.append({"path": path, "name": title, "definition": entry.ToCString(), "assembly": assembled,
+        result.append({"path": path, "name": title, "definition_name": definition_name, "definition": entry.ToCString(), "assembly": assembled,
                        "transform_mm": [[transform.Value(i, j) for j in range(1, 5)] for i in range(1, 4)]})
         if assembled:
             components = TDF_LabelSequence()
@@ -73,13 +76,50 @@ def _assembly_instances(tool, root):
     return result, leaves
 
 
+def _source_units(core):
+    """! @brief STEP의 각 형상 표현이 실제 참조하는 길이 단위와 인치 환산 근거를 확인한다."""
+    from OCP.StepBasic import (StepBasic_ConversionBasedUnitAndLengthUnit, StepBasic_SiUnitAndLengthUnit,
+                               StepBasic_SiUnitName, StepBasic_SiPrefix)
+    from OCP.StepShape import StepShape_ShapeRepresentation
+
+    def si_scale(unit):
+        """! @brief 길이 문맥과 인치 변환의 기준 SI 단위를 mm로 환산한다."""
+        if not isinstance(unit, StepBasic_SiUnitAndLengthUnit) or unit.Name() != StepBasic_SiUnitName.StepBasic_sunMetre:
+            return None
+        if not unit.HasPrefix():
+            return 1000.0
+        return {StepBasic_SiPrefix.StepBasic_spMilli: 1.0, StepBasic_SiPrefix.StepBasic_spCenti: 10.0}.get(unit.Prefix())
+
+    model, names = core.StepModel(), set()
+    for index in range(1, model.NbEntities() + 1):
+        entity = model.Value(index)
+        if not isinstance(entity, StepShape_ShapeRepresentation):
+            continue
+        context = entity.ContextOfItems()
+        _require(hasattr(context, "NbUnits"), "STEP 형상 표현에 길이 단위 문맥이 없습니다.", code="E_UNIT")
+        lengths = [unit for i in range(1, context.NbUnits() + 1) if hasattr(unit := context.UnitsValue(i), "LengthUnit")]
+        _require(len(lengths) == 1, "STEP 형상 표현마다 하나의 길이 단위를 명시하십시오.", code="E_UNIT")
+        unit = lengths[0]
+        if si_scale(unit) == 1:
+            names.add("mm")
+        elif isinstance(unit, StepBasic_ConversionBasedUnitAndLengthUnit) and unit.Name().ToCString().casefold() == "inch":
+            factor = unit.ConversionFactor()
+            base = si_scale(factor.UnitComponent().Value()) if factor is not None else None
+            _require(base is not None and math.isclose(base * factor.ValueComponent(), 25.4, rel_tol=1e-10),
+                     "STEP 인치 길이의 환산값이 25.4 mm와 다릅니다.", code="E_UNIT")
+            names.add("inch")
+        else:
+            _require(False, "STEP 형상 표현의 지원 길이 단위는 mm 또는 inch입니다.", code="E_UNIT")
+    _require(bool(names), "STEP 형상 표현에서 길이 단위를 찾지 못했습니다.", code="E_UNIT")
+    return ("mixed", None) if len(names) > 1 else next(pair for pair in _LENGTH_UNITS.values() if pair[0] in names)
+
+
 def _read_external(source):
     """! @brief STEP의 명시 길이 단위를 확인하고 mm 형상으로 한 번 옮긴다."""
     import cadquery as cq
     from OCP.IFSelect import IFSelect_RetDone
     from OCP.STEPCAFControl import STEPCAFControl_Reader
     from OCP.TCollection import TCollection_ExtendedString
-    from OCP.TColStd import TColStd_SequenceOfAsciiString
     from OCP.TDF import TDF_LabelSequence
     from OCP.TDocStd import TDocStd_Document
     from OCP.XCAFDoc import XCAFDoc_DocumentTool
@@ -91,12 +131,7 @@ def _read_external(source):
         reader.SetNameMode(True)
         _require(reader.ReadFile(str(path)) == IFSelect_RetDone, "STEP 구문을 읽지 못했습니다.")
         core = reader.ChangeReader()
-        length, angle, solid_angle = (TColStd_SequenceOfAsciiString() for _ in range(3))
-        core.FileUnits(length, angle, solid_angle)
-        units = [length.Value(index).ToCString().lower() for index in range(1, length.Length() + 1)]
-        _require(len(units) == 1 and units[0] in _LENGTH_UNITS,
-                 "외부 STEP에는 한 가지 길이 단위(mm 또는 inch)가 명시되어야 합니다.", code="E_UNIT")
-        source_unit, scale = _LENGTH_UNITS[units[0]]
+        source_unit, scale = _source_units(core)
         core.SetSystemLengthUnit(1.0)
         _require(core.NbRootsForTransfer() == 1, "STEP에는 독립 루트가 하나여야 합니다.", code="E_UNSUPPORTED")
         document = TDocStd_Document(TCollection_ExtendedString("XmlXCAF"))
@@ -134,6 +169,7 @@ def inspect_step(item):
     shape, source_unit, scale, instances, leaves = _read_external(item)
     datums = leaves if instances else {(1,): shape.wrapped}
     return {"sha256": item["sha256"], "unit": "mm", "source_length_unit": source_unit, "source_to_mm": scale,
+            **({"source_units_to_mm": dict(_LENGTH_UNITS.values())} if source_unit == "mixed" else {}),
             "shape": "assembly" if instances else "single_solid", "faces": len(shape.Faces()),
             "assembly_instances": instances,
             "mate_faces": [{"path": list(path), "faces": _face_catalog(leaf)} for path, leaf in datums.items()],
@@ -329,7 +365,11 @@ def _assembly_export(row, instances, leaves, deltas):
         original = gp_Trsf()
         original.SetValues(*(value for axis in matrix for value in axis))
         if path in leaves:
-            definitions.setdefault(instance["definition"], leaves[path].Moved(TopLoc_Location(original.Inverted())))
+            local_shape = leaves[path].Moved(TopLoc_Location(original.Inverted()))
+            location = local_shape.Location().Transformation()
+            if all(abs(location.Value(i, j) - float(i == j)) <= 1e-12 for i in range(1, 4) for j in range(1, 5)):
+                local_shape = local_shape.Located(TopLoc_Location())
+            definitions.setdefault(instance["definition"], local_shape)
         location = deltas[path].Multiplied(original) if path in deltas else original
         placed[path] = TopLoc_Location(root.Multiplied(location))
     return {"definitions": definitions, "locations": placed, "instances": instances}
@@ -388,7 +428,8 @@ def part_bodies(cq, projection):
             source = storage[row["id"]]
             shape, source_unit, scale, instances, leaves = _read_external(source)
             source_step = {"source_step": {"sha256": source["sha256"], "source_length_unit": source_unit,
-                                          "source_to_mm": scale, "assembly_instances": instances}}
+                                          "source_to_mm": scale, "assembly_instances": instances,
+                                          **({"source_units_to_mm": dict(_LENGTH_UNITS.values())} if source_unit == "mixed" else {})}}
             if row.get("instance_replacements"):
                 instances, leaves = _replacement_leaves(row, instances, leaves, storage)
                 source_step["source_step"].update(effective_assembly_instances=instances,

@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 262,
+    "current_07_검증": 263,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28748,7 +28748,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 645487,
-      "working_tree_sha256": "d38c655525abd20acd09aa10a257c0173e697baa96eeb2a6b3ecd4c9d0ede1b3"
+      "working_tree_sha256": "7bf011a9a49637a20aed3e55224d42d153454d350b36fb4720aef2a33ef9a345"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32213,8 +32213,8 @@
       "path": "01_개발문서/07_검증/383_출력화면의_제조교환_후보검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 2256,
-      "working_tree_sha256": "e3dce7987c619def7626eca780da9dae27ad63ffd799189714eccf96cc363b63",
+      "bytes": 2303,
+      "working_tree_sha256": "e517bf4725baabe52e01251e467571330cdaad1717023cbc95e15b0adc4cc87b",
       "text_lines": 21,
       "text_status": "utf8_read"
     },
@@ -32234,6 +32234,15 @@
       "bytes": 2397,
       "working_tree_sha256": "ebf5a6bbce9ab186c8f2afb1d1371bb5db0487a2f7ec55ca5aa6fd41f73126df",
       "text_lines": 20,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/386_혼합단위와_반복조립_교환검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 3280,
+      "working_tree_sha256": "012eae424f4ce0feb0636bf47bb594eb676d0c2536a122e8c0e7346df2c2dedd",
+      "text_lines": 27,
       "text_status": "utf8_read"
     },
     {
@@ -32932,8 +32941,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 38111,
-      "working_tree_sha256": "cbe781a9cbdcc932456714007c7e0fe2c87202a813d124f85902178d0361b267",
+      "bytes": 38190,
+      "working_tree_sha256": "388dffd0ae63a22499878ee0b203a43ed6c77e6e7bc8f53f775a0320fd2581ba",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

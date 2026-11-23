@@ -247,10 +247,12 @@ void PhysicalSetupDialog::RenderReview()
         const auto unit = m_stepReview.value("source_length_unit", std::string("mm"));
         const auto solid = m_stepReview.at("solid_count").get<int>();
         const bool assembly = m_stepReview.at("shape") == "assembly";
+        const auto units = unit == "mixed" ? std::string("혼합 / 각 부품의 원문 문맥별 환산 (mm, inch = 25.4 mm)")
+                                           : unit + " / 변환 배율 " + m_stepReview.value("source_to_mm", Json(1.0)).dump();
         text += "\n\nSTEP 미리보기 " + m_stepReview.at("name").get<std::string>() +
                 (assembly ? "\n조립 STEP / 닫힌 고체 " + std::to_string(solid) + "개" : "\n닫힌 단일 고체") +
                 " / 면 " + std::to_string(m_stepReview.at("faces").get<int>()) +
-                "개\n원본 단위 " + unit + " / 변환 배율 " + m_stepReview.value("source_to_mm", Json(1.0)).dump() +
+                "개\n원본 단위 " + units +
                 "\n변환한 범위 " + box.dump() + " mm\nSHA-256 " +
                 m_stepReview.at("sha256").get<std::string>() + "\n재료 미정";
         if (assembly)

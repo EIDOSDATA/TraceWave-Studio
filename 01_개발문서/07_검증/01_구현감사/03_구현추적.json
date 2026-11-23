@@ -14857,13 +14857,13 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/physical.py",
-      "text_sha256": "397778d136c751d74f7ddeb9fba69609808c3b3ed7ecc4731ef357fb31a4b4ab",
-      "utf8_bytes": 24860
+      "text_sha256": "c3d4337174865655131f7595972c76305c2a83e96f8b5124843c76c30a71635a",
+      "utf8_bytes": 27568
     },
     {
       "path": "Code/src/rfad/adapters/cad/step_io.py",
-      "text_sha256": "0673396869062b8b89196570ca9c61767f99a64b83f33fcc1e76d55f9a48768b",
-      "utf8_bytes": 11526
+      "text_sha256": "a0a13784293108ebba855a9751403ba149afedc0c1849deb3a0a49c092800b36",
+      "utf8_bytes": 13222
     },
     {
       "path": "Code/src/rfad/adapters/cad/verification.py",
@@ -16612,8 +16612,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_review.cpp",
-      "text_sha256": "386b73d392f0407a2c154d66863ebc6c04fcbadb1122dc9cf5aed4594693a58a",
-      "utf8_bytes": 15864
+      "text_sha256": "117cfb140d8f2e6ae54f63bea3c6b8e24d905889f40ef7f45e5d9de3069b48a2",
+      "utf8_bytes": 16044
     },
     {
       "path": "Code/ui/wxwidgets/precision_dialog.cpp",
