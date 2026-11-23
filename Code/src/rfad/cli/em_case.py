@@ -15,6 +15,9 @@ def main(argv=None, *, mode="floquet"):
     if mode == "waveguide-modes":
         from rfad.domain.waveguide_modes import solve
         description = "직사각형 도파관 폭 불연속의 TE 모드 결합"
+    elif mode == "waveguide-section":
+        from rfad.domain.waveguide_section import solve
+        description = "공통 삼각 단면을 가진 PEC 도파관의 TE/TM 모드 결합"
     elif mode == "pcb-floquet":
         from rfad.domain.pcb_floquet import solve
         description = "동박 적층 단위셀의 X/Y Floquet 회절과 흡수"
@@ -30,7 +33,8 @@ def main(argv=None, *, mode="floquet"):
     try:
         settings_path = getattr(args, "settings", None)
         if settings_path is None:
-            result = solve(_read_json(args.input))
+            limit = 4 * 1024 * 1024 if mode == "waveguide-section" else 64 * 1024
+            result = solve(_read_json(args.input, limit))
         else:
             from rfad.application.pcb_periodic import project_case
             from rfad.cli.pcb_multiport import read_input
@@ -44,10 +48,10 @@ def main(argv=None, *, mode="floquet"):
         return 1
     return 0
 
-def _read_json(path):
+def _read_json(path, limit=64 * 1024):
     """! @brief 작은 독립 해석 입력의 원문 JSON을 읽는다."""
     with path.open("rb") as stream:
-        raw = stream.read(64 * 1024 + 1)
-    if len(raw) > 64 * 1024:
-        raise ValueError("해석 입력은 64 KiB까지 지원합니다.")
+        raw = stream.read(limit + 1)
+    if len(raw) > limit:
+        raise ValueError(f"해석 입력은 {limit // 1024} KiB까지 지원합니다.")
     return json.loads(raw)

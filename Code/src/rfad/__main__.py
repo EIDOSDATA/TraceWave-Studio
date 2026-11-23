@@ -11,7 +11,7 @@ def main(argv: list[str] | None = None) -> int:
     @return 명령 실행 종료 코드.
     """
     arguments = sys.argv[1:] if argv is None else argv
-    if arguments and arguments[0] in ("floquet", "pcb-floquet", "waveguide-modes"):
+    if arguments and arguments[0] in ("floquet", "pcb-floquet", "waveguide-modes", "waveguide-section"):
         from rfad.cli.em_case import main as em_case_main
 
         return em_case_main(arguments[1:], mode=arguments[0])
@@ -40,7 +40,7 @@ def main(argv: list[str] | None = None) -> int:
 
         return altium_drill_main(arguments[1:])
     parser = argparse.ArgumentParser(prog="rfad")
-    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy", "pcb-multiport", "sweep-refine", "field-study", "floquet", "pcb-floquet", "waveguide-modes", "manufacturing-panel"))
+    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy", "pcb-multiport", "sweep-refine", "field-study", "floquet", "pcb-floquet", "waveguide-modes", "waveguide-section", "manufacturing-panel"))
     args, remainder = parser.parse_known_args(arguments)
     if args.command == "doctor":
         from rfad.cli.doctor import main as doctor_main
