@@ -54,7 +54,13 @@ def worker_error(package):
 def seal_solver_outputs(journal, job, stage, package):
     """! @brief 닫힌 파일을 크기와 해시로 검증하고 불변 저장소로 봉인한다."""
     files = package.get("files")
-    if type(files) is not list or not 1 <= len(files) <= 64:
+    plan = job["solver"]["analysis_plan"]
+    limit = 64
+    if plan["analysis_profile"] == MULTIPORT_PROFILE:
+        from rfad.application.pcb_multiport_job import artifact_count
+
+        limit = max(limit, artifact_count(len(plan["case"]["ports"])))
+    if type(files) is not list or not 1 <= len(files) <= limit:
         raise ProjectError("E_HASH", "해석 결과 파일 목록이 유효하지 않습니다.")
     sealed, seen, roles, total = [], set(), set(), 0
     for item in files:

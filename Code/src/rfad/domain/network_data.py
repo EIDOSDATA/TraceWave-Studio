@@ -12,7 +12,7 @@ from rfad.domain.resource_limits import MAX_NETWORK_PORTS
 SCHEMA = "rfad.network-data/0.1"
 MAX_PORTS = MAX_NETWORK_PORTS
 MAX_SAMPLES = 1001
-MAX_DATA_BYTES = 1024 * 1024
+MAX_DATA_BYTES = 4 * 1024 * 1024
 UNITS = {"S": "1", "Z": "ohm", "Y": "S"}
 STATUSES = {"valid", "missing", "singular", "ill_conditioned", "unsupported", "outside_validity", "nonfinite"}
 ORIGINS = {"computed", "measured", "imported", "derived", "interpolated", "unknown"}
@@ -168,8 +168,9 @@ def validate_dataset(data):
         _json(data[key], key)
         if len(canonical_bytes(data[key])) > 64 * 1024:
             fail("출처/조건 사본 64 KiB 상한을 초과했습니다.", key, "E_RESOURCE")
-    if len(canonical_bytes(data)) > MAX_DATA_BYTES:
-        fail("네트워크 자료 1 MiB 상한을 초과했습니다.", "network", "E_RESOURCE")
+    byte_limit = 1024 * 1024 if len(identities) <= 4 else MAX_DATA_BYTES
+    if len(canonical_bytes(data)) > byte_limit:
+        fail(f"네트워크 자료 {byte_limit // (1024 ** 2)} MiB 상한을 초과했습니다.", "network", "E_RESOURCE")
     return data
 
 

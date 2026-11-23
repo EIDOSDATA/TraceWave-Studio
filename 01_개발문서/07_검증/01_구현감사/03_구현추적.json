@@ -7465,7 +7465,7 @@
       },
       "import_bytes": 524288,
       "physical_validation": false,
-      "ports": 4,
+      "ports": 8,
       "preview_required": true,
       "profile": "rfad.network-workspace/0.1",
       "samples": 1001
@@ -15409,13 +15409,13 @@
     },
     {
       "path": "Code/src/rfad/application/solver_artifacts.py",
-      "text_sha256": "de50e3122945768798becc8cd9acaf2db084027e1d504bd54d2bf89ce18e561a",
-      "utf8_bytes": 19127
+      "text_sha256": "df93d7150b89cbd610a74e013ce1b8bc937d8f2db3a1514239529ceed92f5c88",
+      "utf8_bytes": 19383
     },
     {
       "path": "Code/src/rfad/application/solver_jobs.py",
-      "text_sha256": "78b99b35b268c70e0680f8a2690c30c3690dedbab6919f7eb333885b9f341569",
-      "utf8_bytes": 32179
+      "text_sha256": "5ac080c4d7808b75500d5365014500e4837b4d64c1a67158f60ccc5c38b769c0",
+      "utf8_bytes": 32620
     },
     {
       "path": "Code/src/rfad/application/solver_queries.py",
@@ -15589,8 +15589,8 @@
     },
     {
       "path": "Code/src/rfad/domain/network_data.py",
-      "text_sha256": "b90bafb6a7db35850c8b4bbd012bedb3d8e87dfe1b2b55a58172577fb186caa4",
-      "utf8_bytes": 10479
+      "text_sha256": "e3f85df5b40d0e50b87ff473e51d158f43e88af6a7754359a5414a9b815f119e",
+      "utf8_bytes": 10579
     },
     {
       "path": "Code/src/rfad/domain/network_library.py",

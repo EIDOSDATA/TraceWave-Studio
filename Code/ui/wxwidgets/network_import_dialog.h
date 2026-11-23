@@ -110,8 +110,9 @@ private:
     wxSpinCtrl* m_frequencyColumn = nullptr;
     wxTextCtrl* m_ignored = nullptr;
     wxGrid* m_pairs = nullptr;
-    std::array<wxTextCtrl*, 4> m_z0{};
-    std::array<PortInputs, 4> m_ports{};
+    static constexpr std::size_t MaxPorts = 8;
+    std::array<wxTextCtrl*, MaxPorts> m_z0{};
+    std::array<PortInputs, MaxPorts> m_ports{};
     wxButton* m_browse = nullptr;
     wxButton* m_preview = nullptr;
     wxButton* m_apply = nullptr;

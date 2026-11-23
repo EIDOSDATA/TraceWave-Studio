@@ -198,8 +198,15 @@ class SolverCoordinator:
                 return True
             stage, request = stage_solver_job(self.service.journal, self.runtime, job)
             process = {"state": "failed", "termination_confirmed": False, "outcome_unknown": True, "not_started": False}
+            transport_options = {}
+            plan = job["solver"]["analysis_plan"]
+            if plan["analysis_profile"] == MULTIPORT_PROFILE and len(plan["case"]["ports"]) > 4:
+                from rfad.application.pcb_multiport_job import artifact_count
+
+                transport_options["max_files"] = max(128, artifact_count(len(plan["case"]["ports"])) + 1)
             process = self.runtime.transport.execute(stage, run_id=job["run_id"], nonce=job["solver"]["nonce"], cancel=self.cancel,
-                                                     timeout_seconds=job["input"]["budget"]["timeout_seconds"], on_state=lambda value: self._progress(job, value))
+                                                     timeout_seconds=job["input"]["budget"]["timeout_seconds"],
+                                                     on_state=lambda value: self._progress(job, value), **transport_options)
             if process.get("state") == "failed" and process.get("termination_confirmed") and (stage / "output/result.json").is_file():
                 raise worker_error(read_solver_result(stage, request))
             if process.get("state") != "completed" or not process.get("termination_confirmed") or process.get("outcome_unknown", False):

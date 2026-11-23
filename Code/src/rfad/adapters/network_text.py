@@ -11,7 +11,7 @@ from rfad.domain.network_data import MAX_PORTS, MAX_SAMPLES, SCHEMA, UNITS, vali
 MAX_FILE_BYTES = 4 * 1024 * 1024
 MAX_LINE_CHARS = 4096
 MAX_LINES = 100000
-MAX_COLUMNS = 64
+MAX_COLUMNS = max(64, 1 + 2 * MAX_PORTS ** 2)
 NUMBER = re.compile(r"[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?\Z")
 FREQUENCY_UNITS = {"hz": 1.0, "khz": 1e3, "mhz": 1e6, "ghz": 1e9}
 

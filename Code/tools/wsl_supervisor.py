@@ -293,7 +293,8 @@ def _copy_and_start(payload, path, manifest):
                     if current.is_dir():
                         current.chmod(0o500)
                 directory.chmod(0o500)
-        request = read_json(path / "request.json")
+        # @brief 큰 다중 급전 계획은 worker와 동일한 4 MiB 요청 상한을 사용한다.
+        request = read_json(path / "request.json", 4 * 1024 * 1024)
         if request.get("run_id") != payload["run_id"] or request.get("nonce") != payload["nonce"]:
             raise ValueError("worker request ownership mismatch")
         (path / "output").mkdir(mode=0o700)

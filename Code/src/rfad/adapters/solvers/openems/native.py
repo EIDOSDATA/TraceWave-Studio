@@ -395,7 +395,13 @@ def execute(request: dict, stage: Path) -> dict:
         validate_reference_plan(request['analysis_plan'])
         prepare_phase, solve_phase, postprocess_phase = prepare, solve, postprocess
     require(request['analysis_plan']['runtime_identity'] == request['runtime'], '요청 runtime이 AnalysisPlan에서 고정한 runtime과 다릅니다.', 'E_HASH')
-    inputs = input_index(stage, request.get('input_files', []), max_files=72 if multiport else 64)
+    max_inputs = 64
+    if multiport:
+        from rfad.application.pcb_multiport_job import artifact_count
+
+        count = len(request["analysis_plan"]["case"]["ports"])
+        max_inputs = max(72, artifact_count(count) + count + 5)
+    inputs = input_index(stage, request.get('input_files', []), max_files=max_inputs)
     runtime = verify_runtime(stage, request['runtime'])
     output = stage / 'output'
     output.mkdir(exist_ok=True)

@@ -56,7 +56,8 @@ class WorkspaceMultiportTests(unittest.TestCase):
         parent = Path(directory) if directory else Path(tempfile.mkdtemp(prefix="rfad-multiport-"))
         parent.mkdir(exist_ok=True, parents=True)
         workspace = parent / ("workspace-" + uuid4().hex)
-        source, conditions = fixture(4)
+        count = int(os.environ.get("RFAD_WORKSPACE_PORT_COUNT", "4"))
+        source, conditions = fixture(count)
         audit = os.environ.get("RFAD_OPENEMS_AUDIT")
         runtime = SolverRuntime(transport=WslRuntime(startup_timeout_seconds=240), audit=Path(audit) if audit else None)
         with ProjectService(workspace, solver_runtime=runtime, auto_run=False) as service:
@@ -77,7 +78,7 @@ class WorkspaceMultiportTests(unittest.TestCase):
 
             plan = stage("solver.plan", {"analysis_profile": PROFILE, "runtime_profile": RUNTIME_PROFILE,
                          "snapshot": {k:snapshot[k] for k in ("snapshot_id", "content_hash")}, "settings": conditions})
-            budget = {"timeout_seconds": 1200}
+            budget = {"timeout_seconds": min(1800, 300 * count)}
             analysis = plan["analysis_plan"]
             prep = stage("solver.prepare", {"analysis_plan": {k:analysis[k] for k in ("plan_id", "content_hash")}, "budget": budget})
             prepared = prep["prepared_plan"]
@@ -86,22 +87,22 @@ class WorkspaceMultiportTests(unittest.TestCase):
             result = stage("job.submit", {"task_plan": task, "budget": budget})
             original = json.loads(service.journal.read_artifact(result["normalized_result"]))
             self.assertEqual(original["snapshot"]["content_hash"], canonical_hash(source))
-            self.assertEqual(len(original["raw_manifest"]["runs"]), 4)
+            self.assertEqual(len(original["raw_manifest"]["runs"]), count)
             task.update(execution_mode="postprocess_only", raw_result_id=result["artifact_id"])
             restored = stage("job.submit", {"task_plan": task, "budget": budget})
             self.assertEqual(json.loads(service.journal.read_artifact(restored["normalized_result"]))["network"], original["network"])
             args = {"expected_revision": revision, "operation": "solver",
-                    "parameters": {"name": "원형 기판 4포트", "artifact_id": result["artifact_id"]}}
+                    "parameters": {"name": f"원형 기판 {count}포트", "artifact_id": result["artifact_id"]}}
             review = call(service, "network.preview", args, context)
             self.assertTrue(review["can_apply"], review["issues"])
             registered = call(service, "network.apply", {**args, "command_id":str(uuid4()), "review_hash":review["review_hash"]}, context, mutation=True)
             query = {"expected_revision": registered["new_revision"], "dataset_id": registered["record_id"],
-                     "row": 3, "column": 2, "offset": 0, "limit": 31}
+                     "row": count - 1, "column": count - 2, "offset": 0, "limit": 31}
         with ProjectService(workspace, auto_run=False) as reopened:
             read = call(reopened, "network.get", query, context)
             self.assertEqual(read["descriptor"]["source_snapshot"], snapshot)
             self.assertEqual(len(read["page"]["samples"]), 31)
             for row, matrix in zip(read["page"]["samples"], original["network"]["values_ri"]):
-                self.assertEqual([row["real"], row["imag"]], matrix[3][2])
+                self.assertEqual([row["real"], row["imag"]], matrix[count - 1][count - 2])
             print(json.dumps({"workspace": str(workspace), "artifact":result["artifact_id"], "reprocessed":restored["artifact_id"],
-                              "snapshot": snapshot["content_hash"], "dataset": registered["record_id"], "S43":original["network"]["values_ri"][0][3][2]}))
+                              "snapshot": snapshot["content_hash"], "dataset": registered["record_id"], f"S{count}{count-1}":original["network"]["values_ri"][0][count-1][count-2]}))

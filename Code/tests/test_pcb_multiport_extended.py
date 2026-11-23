@@ -21,7 +21,7 @@ def fixture(count):
     parent = UUID(doc["revision_id"])
     doc["revision_id"] = str(uuid5(parent, f"{count}-port-coupled-board"))
     doc["parent_revision_ids"] = [str(parent)]
-    doc["board"]["outline"]["radius"]["value_si"] = 0.013
+    doc["board"]["outline"]["radius"]["value_si"] = 0.013 if count <= 4 else (3 * count + 1) * 1e-3
     template = doc["ports"][1]
     for index in range(3, count + 1):
         delta = (index - 2) * -0.003
@@ -47,7 +47,7 @@ class ExtendedPorts(unittest.TestCase):
     """! @brief 서로 다른 종단, 비대칭 입력 행렬 및 주파수별 실제 응답 순서를 확인한다."""
 
     def test_design_projects_every_feed_and_v1_row_order(self):
-        for n in (3, 4):
+        for n in (3, 4, 5, 8):
             doc, settings = fixture(n)
             check_pcb_input(doc, settings)
             case = project_pcb(doc, settings, multiport=True)["case"]
@@ -73,7 +73,7 @@ class ExtendedPorts(unittest.TestCase):
         from rfad.domain.errors import ProjectError
         from test_network_domain import circuit
 
-        for n in (3, 4):
+        for n in (3, 4, 5, 8):
             doc, _ = fixture(n)
             matrix = [[[(r+1)/(c+2), (r-c)*0.01] for c in range(n)] for r in range(n)]
             data = make_dataset(parameter_kind="S", frequency_hz=[1e9], port_ids=[p["id"] for p in doc["ports"]],
@@ -104,7 +104,7 @@ class ExtendedPorts(unittest.TestCase):
         from rfad.application.canonical import canonical_hash
 
         with TemporaryDirectory() as tmp:
-            for n in (3, 4):
+            for n in map(int, os.environ.get("RFAD_NATIVE_PORT_COUNTS", "3,4").split(",")):
                 doc, settings = fixture(n)
                 root = Path(os.environ.get("RFAD_EXTENDED_RESULTS", tmp)) / f"board-{n}"
                 summary = json.loads(run(doc, settings, root).read_bytes())

@@ -29,6 +29,11 @@ def raw_names(count):
             *(f"port_{kind}_{number}" for number in range(1, count + 1) for kind in ("ut", "it"))]
 
 
+def artifact_count(port_count):
+    """! @brief 모든 여기의 원문과 원문 목록, 정규 결과 및 Touchstone을 센다."""
+    return port_count * len(raw_names(port_count)) + 3
+
+
 def plan_projection(document, settings):
     """! @brief 개별 방사 필드 요청과 다중 포트 정규화의 지원 범위를 명시한다."""
     from rfad.application.pcb_projection import project_pcb

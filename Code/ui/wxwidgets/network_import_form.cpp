@@ -136,7 +136,7 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
     field("첫 행", m_header);
     m_frequencyColumn = new wxSpinCtrl(m_csv, wxID_ANY);
     m_frequencyColumn->SetName("network.import.frequency_column");
-    m_frequencyColumn->SetRange(0, 63);
+    m_frequencyColumn->SetRange(0, 2 * MaxPorts * MaxPorts);
     field("주파수 열", m_frequencyColumn);
     m_frequencyUnit = Choices(m_csv, {"Hz", "kHz", "MHz", "GHz"}, "network.import.frequency_unit");
     m_frequencyUnit->SetToolTip(Display("CSV 원문의 숫자를 해석하는 단위입니다. 검토 결과의 표시 단위와 구분합니다."));
@@ -146,7 +146,7 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
     m_representation = Choices(m_csv, {"RI / 실수, 허수", "MA / 크기, 각도 (deg)", "DB / dB, 각도 (deg)"},
                                "network.import.representation");
     field("복소수 표현", m_representation);
-    m_portCount = Choices(m_csv, {"1", "2", "3", "4"}, "network.import.port_count");
+    m_portCount = Choices(m_csv, {"1", "2", "3", "4", "5", "6", "7", "8"}, "network.import.port_count");
     field("포트 수", m_portCount);
     m_ignored = new wxTextCtrl(m_csv, wxID_ANY);
     m_ignored->SetName("network.import.ignored_columns");
@@ -353,7 +353,7 @@ void NetworkImportDialog::RebuildPairs()
         m_pairs->SetCellValue(row, 0, wxString::Format("%d", row * 2 + 1));
         m_pairs->SetCellValue(row, 1, wxString::Format("%d", row * 2 + 2));
     }
-    m_pairs->SetMinSize(wxSize(-1, FromDIP(46 + rows * 28)));
+    m_pairs->SetMinSize(wxSize(-1, FromDIP(46 + std::min(rows, 12) * 28)));
     m_pairs->GetParent()->Layout();
     m_pairs->GetParent()->GetParent()->Layout();
     m_pairs->GetParent()->GetParent()->FitInside();
