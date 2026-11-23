@@ -376,7 +376,7 @@ void StudioSmokeDriver::PcbSmokeDialog(PcbSelectionDialog& dialog)
         CanvasAssert(dialog.m_layers->GetNumberRows() == 3, "PCB 층 입력 표의 행 수가 다릅니다.");
         dialog.m_notebook->SetSelection(1);
         EditPcbCell(dialog.m_layers, 0, 4, "새 층");
-        EditPcbCell(dialog.m_layers, 2, 4, m_pcbExistingLabel);
+        EditPcbCell(dialog.m_layers, 2, 4, "새 층");
         for (int row = 0; row < 3; ++row)
         {
             EditPcbCell(dialog.m_layers, row, 2, row == 1 ? "1.524" : "0.035");
@@ -388,6 +388,20 @@ void StudioSmokeDriver::PcbSmokeDialog(PcbSelectionDialog& dialog)
         }
         PcbSmokeMaterial(dialog);
         CanvasAssert(!dialog.m_applyButton->IsEnabled(), "검토 전 적용 버튼이 활성화되었습니다.");
+        m_pcbStage = 42;
+        ClickPcbButton(dialog.m_previewButton);
+    }
+    else if (m_pcbStage == 42 && !requestPending)
+    {
+        CanvasAssert(dialog.m_notebook->GetSelection() == 4 && !dialog.m_model.CanApply() &&
+                         dialog.m_reviewLayers->IsEnabled(),
+                     "기존 패턴 층의 연결이 빠졌는데 검토에서 대응 표로 이동할 수 없습니다.");
+        ClickPcbButton(dialog.m_reviewLayers);
+        CanvasAssert(dialog.m_notebook->GetSelection() == 1 && dialog.m_layers->GetGridCursorCol() == 4,
+                     "기존 층 연결 열을 표시하거나 포커스를 옮기지 않았습니다.");
+        EditPcbCell(dialog.m_layers, 2, 4, m_pcbExistingLabel);
+        CanvasAssert(!dialog.m_reviewLayers->IsEnabled(), "입력을 고쳤는데 이전 차단 안내 버튼이 활성입니다.");
+        m_pcbChecks.push_back("blocked_review_opens_layer_mapping");
         m_pcbChecks.push_back("layer_grid_input_and_explicit_mapping");
         m_pcbStage = 17;
         ClickPcbButton(dialog.m_previewButton);

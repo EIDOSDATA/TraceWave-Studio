@@ -98,6 +98,7 @@ class GuiPcbSelectionTests(unittest.TestCase):
     def assert_common_checks(self, result: dict) -> None:
         """! @brief 조회/변경 분리, 기존 설계 보존과 원자 이력을 공통으로 요구한다."""
         self.assertTrue({"circular_outline_and_pattern_fixture", "layer_grid_input_and_explicit_mapping",
+                         "blocked_review_opens_layer_mapping",
                          "preview_is_read_only", "preview_invalidated_on_input_change",
                          "single_apply_preserves_outline_and_pattern", "single_step_undo_redo",
                          "saved_selection_dialog_reopened", "material_layer_assignment_preview",

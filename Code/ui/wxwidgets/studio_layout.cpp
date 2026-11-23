@@ -369,7 +369,33 @@ void StudioFrame::BuildInterface()
     m_drawingRelations->SetName("canvas.drawing_relations");
     m_drawingRelations->SetToolTip(Display("켜고 관계 후보를 클릭하면 수평, 수직, 일치, 중점 또는 원호 끝점 접선을 형상과 함께 저장합니다."));
     drawingTools->Add(m_drawingRelations, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::InputGap));
+    auto* drawingOptions = new wxButton(center, wxID_ANY, Display("정밀 도구 접기"));
+    drawingOptions->SetName("canvas.tools.toggle");
+    StudioTheme::Button(*drawingOptions);
+    context->Add(drawingOptions, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::Space));
+    auto* bottomToggle = new wxButton(center, wxID_ANY, Display("하단 패널"));
+    bottomToggle->SetName("canvas.bottom.toggle");
+    bottomToggle->SetToolTip(Display("문제, 작업, 로그와 CAD 출력 패널을 표시하거나 접습니다."));
+    StudioTheme::Button(*bottomToggle);
+    context->Add(bottomToggle, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::Space));
+    const auto firstPrecision = context->GetItemCount();
     BuildPrecisionTools(center, context);
+    drawingOptions->Bind(wxEVT_BUTTON, [center, context, drawingOptions, firstPrecision](wxCommandEvent&)
+    {
+        const bool expand = !context->GetItem(firstPrecision)->IsShown();
+        for (std::size_t index = firstPrecision; index < context->GetItemCount(); ++index)
+        {
+            context->Show(index, expand);
+        }
+        drawingOptions->SetLabel(Display(expand ? "정밀 도구 접기" : "정밀 도구 펼치기"));
+        center->Layout();
+    });
+    bottomToggle->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        auto visible = m_shell->PanelVisibility();
+        visible[3] = !visible[3];
+        m_shell->SetPanelVisibility(visible);
+    });
     centerSizer->Add(context, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::Space));
     m_canvas = new DesignCanvas(center);
     m_canvas->SetStrokeWidth(m_width->GetValue());
