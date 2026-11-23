@@ -55,6 +55,10 @@ def create(service, state, context, data):
 
 def control(service, state, method, context, data):
     """! @brief 실패 작업 교체는 명시적 재개에서만 허용하고 이전 시도를 보존한다."""
+    if method == "study.create_field":
+        from rfad.application.field_study import create as create_field
+
+        return create_field(service, state, context, data)
     if method == "study.create":
         return create(service, state, context, data)
     study = owned(service, state, context, data["study_id"])

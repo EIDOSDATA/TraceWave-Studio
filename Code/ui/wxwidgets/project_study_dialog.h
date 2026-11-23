@@ -25,6 +25,8 @@ public:
     ProjectStudyDialog(wxWindow* parent, const Json& context, StudyGateway gateway, std::function<void()> closed);
     /** @brief 실제 GUI 시험도 제품과 같은 입력/동작/조회 경계를 사용한다. */
     void SetSpecification(const Json& specification);
+    /** @brief 결과 단면에서 만든 연구를 기존 창에서도 같은 식별자로 선택한다. */
+    void SelectStudy(const std::string& identity);
     void CreateStudy();
     void Command(const std::string& action);
     const Json& CurrentView() const

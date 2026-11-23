@@ -97,6 +97,31 @@ void StudioFrame::BuildResultInterface()
         }
         ConfigureSolver({}, proposal.at("settings"));
     };
+    m_results->onFieldStudy = [this](const Json& options)
+    {
+        if (!m_connected || m_closing || m_busy || m_project.empty())
+        {
+            return;
+        }
+        const auto project = m_project, epoch = m_epoch;
+        auto input = options;
+        input["expected_revision"] = m_revision;
+        Send("study.create_field", input, true, Context(), [this, project, epoch](const Json& created)
+        {
+            if (!m_closing && m_project == project && m_epoch == epoch)
+            {
+                const std::string identity = created.at("study_id");
+                Send("study.start", {{"study_id", identity}}, true, Context(),
+                     [this, project, epoch, identity](const Json&)
+                     {
+                         if (!m_closing && m_project == project && m_epoch == epoch)
+                         {
+                             OpenProjectStudy(identity);
+                         }
+                     });
+            }
+        });
+    };
     m_results->onFocusSource = [this]()
     {
         if (m_shell)

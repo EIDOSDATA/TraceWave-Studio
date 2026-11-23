@@ -12,7 +12,7 @@ from rfad.application.pcb_loss_convergence import initial_profile as loss_profil
 from rfad.domain.errors import ProjectError
 
 
-MUTATIONS = {"study.create", "study.start", "study.cancel", "study.resume"}
+MUTATIONS = {"study.create", "study.create_field", "study.start", "study.cancel", "study.resume"}
 READS = {"study.context", "study.list", "study.get", "study.sample_comparison"}
 ACTIVE = {"running", "cancel_requested", "resuming"}
 MAX_STUDIES = 32
@@ -70,7 +70,11 @@ def validate_input(method, context, data):
     """! @brief 연구 명령은 소유 프로젝트와 정규 식별자로만 접근한다."""
     require_fields(context, {"project_id"})
     require_uuid(context["project_id"])
-    if method == "study.create":
+    if method == "study.create_field":
+        from rfad.application.field_study import validate
+
+        validate(data)
+    elif method == "study.create":
         require_fields(data, {"expected_revision", "specification"})
         require_uuid(data["expected_revision"])
         validate_specification(data["specification"])

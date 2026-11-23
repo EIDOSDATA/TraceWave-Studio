@@ -221,7 +221,12 @@ Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bo
 
 std::string Studio::StudyStatus(const std::string& state)
 {
-    const std::map<std::string, std::string> labels{{"ready", "실행 전"},
+    static const std::map<std::string, std::string> labels{{"round_limit", "지정 반복 횟수 소진"},
+                                                    {"rule_limit", "국부 규칙 상한 도달"},
+                                                    {"solver_resource_limit", "기록 또는 격자 상한 도달"},
+                                                    {"no_eligible_change", "선택 영역에 세분화 대상 없음"},
+                                                    {"unchanged_mesh", "국부 격자 증가 없음"},
+                                                    {"ready", "실행 전"},
                                                     {"running", "실행 중"},
                                                     {"resuming", "재개 확인 중"},
                                                     {"cancel_requested", "종료 확인 중"},
@@ -283,9 +288,27 @@ std::string Studio::StudySummary(const Json& view)
         output
             << "현재 해석 환경이 미연결이거나 원래 worker와 다릅니다. 결과 조회만 가능하며 실행/재개는 차단합니다.\n";
     }
+    if (view.contains("specification") && view.at("specification").contains("field_adaptive"))
+    {
+        const auto& config = view.at("specification").at("field_adaptive");
+        const auto& region = config.at("physical_region");
+        output << "기록 전계 E" << region.at("component").get<std::string>() << " / " << Format(region.at("frequency_hz"))
+               << " Hz / " << region.at("normal_axis").get<std::string>() << " = " << Format(region.at("plane_mm"))
+               << " mm / 복소 S11 허용차 " << Format(config.at("limits").at("max_s11_complex_delta")) << '\n';
+    }
     for (const auto& row : view.at("cases"))
     {
         output << "\n격자 " << Format(row.at("grid_mm")) << " mm / " << StudyStatus(row.at("phase")) << '\n';
+        if (row.contains("refinement"))
+        {
+            output << "직전 기록 전계에서 추가한 국부 규칙 " << row.at("refinement").at("rules_added") << "개\n";
+        }
+        if (row.contains("sample_evidence"))
+        {
+            const auto& pair = row.at("sample_evidence");
+            output << "공통 주파수 " << pair.at("sample_count") << "개 / 최대 복소 S11 변화 " << Format(pair.at("max_s11_complex_delta"))
+                   << " (" << Format(pair.at("worst_frequency_hz")) << " Hz)\n";
+        }
         if (row.contains("estimated_memory_bytes"))
         {
             output << "예상 메모리 " << Format(row.at("estimated_memory_bytes").get<double>() / (1024 * 1024))
@@ -321,7 +344,9 @@ std::string Studio::StudySummary(const Json& view)
     if (!view.at("assessment").is_null())
     {
         const auto& value = view.at("assessment");
-        output << "\n포트 격자 안정성: " << StudyStatus(value.at("port_stability"))
+        const bool fieldStudy = value.value("schema", std::string()) == "rfad.field-study-assessment/0.1";
+        output << (fieldStudy ? "\n선택 급전의 공통 주파수 복소 S11 변화: " : "\n포트 격자 안정성: ")
+               << StudyStatus(value.at("port_stability"))
                << "\n방사 격자 안정성: " << StudyStatus(value.at("radiation_mesh_stability"))
                << "\n기준 전력 수지: " << StudyStatus(value.at("reference_energy_closure")) << '\n';
         if (value.contains("adaptive_mesh_decision"))

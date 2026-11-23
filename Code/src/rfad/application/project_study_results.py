@@ -44,6 +44,10 @@ def port_samples(service, study, index):
     pair = cases[index-1:index+1]
     if any(case["phase"] != "done" for case in pair):
         raise ProjectError("E_CONFLICT", "두 격자 모두 계산이 끝나야 주파수 표본을 비교할 수 있습니다.")
+    if "field_adaptive" in study["specification"]:
+        from rfad.application.field_study import load_pair
+
+        return load_pair(service, study, index)
     first, second = [read_case(service, study, case)[0] for case in pair]
     profile = study["specification"]["port_profile"]
     comparison = compare_samples(first, second, profile, frequency_rows=True)
@@ -101,8 +105,14 @@ def view(service, state, study):
         row = {"index": index, "grid_mm": case["settings"]["grid_mm"], "phase": case["phase"],
                "attempt_count": len(case["attempts"]), "result_id": case.get("result_id"), "power_balance": None,
                "estimated_memory_bytes": case["resource_estimate"]["estimated_memory_bytes"]}
+        for key in ("refinement", "sample_evidence", "field_decision"):
+            if key in case:
+                row[key] = deepcopy(case[key])
         if "result_id" in case:
-            _, _, power = read_case(service, study, case)
+            normalized, _, power = read_case(service, study, case)
+            points = normalized.get("mesh_statistics", {}).get("native_grid_points")
+            if type(points) is int and points > 0:
+                row["native_grid_points"] = points
             if power is not None:
                 row["power_balance"] = {key: deepcopy(power[key]) for key in ("full_energy_closure", "max_relative_residual", "power_unit")}
                 row["power_balance"]["frequencies"] = [{key: deepcopy(value) for key, value in item.items() if key not in {"sheet_components", "via_components", "dielectric_components"}}

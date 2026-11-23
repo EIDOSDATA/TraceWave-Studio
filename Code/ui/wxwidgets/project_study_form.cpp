@@ -118,7 +118,7 @@ void ProjectStudyDialog::Build()
     m_cases =
         new wxListCtrl(results, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 140)), wxLC_REPORT | wxLC_SINGLE_SEL);
     int column = 0;
-    for (const auto* title : {"사례", "격자 (mm)", "단계", "시도 수", "완료 결과"})
+    for (const auto* title : {"사례", "기준 격자 (mm)", "단계", "시도 수", "완료 결과", "실제 격자점"})
     {
         m_cases->InsertColumn(column++, Display(title), wxLIST_FORMAT_LEFT, FromDIP(130));
     }

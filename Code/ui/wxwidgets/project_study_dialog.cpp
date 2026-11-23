@@ -48,7 +48,14 @@ ProjectStudyDialog::ProjectStudyDialog(wxWindow* parent, const Json& context, St
          {
              if (!m_pending && !m_selected.empty())
              {
-                 ReadSelected();
+                 if (m_view.empty())
+                 {
+                     ReloadStudies();
+                 }
+                 else if (m_view.value("state", std::string()) != "completed")
+                 {
+                     ReadSelected();
+                 }
              }
          });
     m_timer.Start(1000);
@@ -169,10 +176,25 @@ void ProjectStudyDialog::ReadSelected(bool loadFields)
              m_view = result;
              if (loadFields)
              {
-                 SetSpecification(result.at("specification"));
+                 const auto& specification = result.at("specification");
+                 SetSpecification(specification.contains("field_adaptive") ? m_context.at("initial_specification") : specification);
+                 if (specification.contains("field_adaptive"))
+                 {
+                     m_pages->SetSelection(3);
+                 }
              }
              Render(result);
          });
+}
+
+void ProjectStudyDialog::SelectStudy(const std::string& identity)
+{
+    if (!identity.empty())
+    {
+        m_selected = identity;
+        m_view = Json::object();
+        ReloadStudies();
+    }
 }
 
 void ProjectStudyDialog::CreateStudy()
@@ -229,6 +251,7 @@ void ProjectStudyDialog::Render(const Json& view)
         m_cases->SetItem(index, 2, Display(Studio::StudyStatus(row.at("phase"))));
         m_cases->SetItem(index, 3, row.at("attempt_count").dump());
         m_cases->SetItem(index, 4, row.at("result_id").is_null() ? Display("계산 전") : Display("봉인 결과 있음"));
+        m_cases->SetItem(index, 5, row.contains("native_grid_points") ? Display(row.at("native_grid_points").dump()) : Display("미기록"));
     }
     const wxString text = Display(Studio::StudySummary(view));
     if (m_details->GetValue() != text)
@@ -249,7 +272,7 @@ void ProjectStudyDialog::UpdateControls()
     bool matches = false;
     try
     {
-        matches = !m_view.empty() && Draft() == m_view.at("specification");
+        matches = !m_view.empty() && (m_view.at("specification").contains("field_adaptive") || Draft() == m_view.at("specification"));
     }
     catch (const std::exception&)
     {
@@ -274,7 +297,8 @@ void ProjectStudyDialog::ShowPortSamples()
     {
         if (cases.at(i - 1).at("phase") == "done" && cases.at(i).at("phase") == "done")
         {
-            names.Add(Display(cases.at(i - 1).at("grid_mm").dump() + " mm / " + cases.at(i).at("grid_mm").dump() + " mm"));
+            names.Add(Display("수준 " + std::to_string(i) + " / 수준 " + std::to_string(i + 1) + " (" +
+                              cases.at(i - 1).at("grid_mm").dump() + " mm / " + cases.at(i).at("grid_mm").dump() + " mm)"));
             indices.push_back(i);
         }
     }

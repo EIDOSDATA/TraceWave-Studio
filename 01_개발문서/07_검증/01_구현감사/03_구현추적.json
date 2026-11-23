@@ -8433,6 +8433,10 @@
       "extension_profile": "rfad.project-study/0.1",
       "status": "implemented"
     },
+    "study.create_field": {
+      "extension_profile": "rfad.project-study/0.1",
+      "status": "implemented"
+    },
     "study.get": {
       "extension_profile": "rfad.project-study/0.1",
       "status": "implemented"
@@ -15290,23 +15294,23 @@
     },
     {
       "path": "Code/src/rfad/application/project_studies.py",
-      "text_sha256": "7faa2c4547ed18fd7f5808e1491f05191058fb1613898f72163fa0fd96ff2e33",
-      "utf8_bytes": 11428
+      "text_sha256": "b7cbfe95c665fb854694da30904f868c0102ed5be66c8309cb3e18983f217d56",
+      "utf8_bytes": 11807
     },
     {
       "path": "Code/src/rfad/application/project_study_commands.py",
-      "text_sha256": "80dec8272bfcfe1b8ec1db16aa4bd6910242ae398a8490dd199684a477c857f5",
-      "utf8_bytes": 6805
+      "text_sha256": "310a4331a97855602722462a43adf37f2c494dfed982518654d98c8cde659de5",
+      "utf8_bytes": 6976
     },
     {
       "path": "Code/src/rfad/application/project_study_contract.py",
-      "text_sha256": "bb8ac862a6e5f8f658968bfb14ce311da6f8fa302b8a9791ba87f0a209224f0b",
-      "utf8_bytes": 7071
+      "text_sha256": "b9ccdfabb59897cac8ce8cf4d873c4066a74dda7f6fc84f7491e6699b9eff90a",
+      "utf8_bytes": 7216
     },
     {
       "path": "Code/src/rfad/application/project_study_results.py",
-      "text_sha256": "20004e2dd845a7cd079c6e03e9412267ec16dc184f85ae311dac191c372c607d",
-      "utf8_bytes": 8993
+      "text_sha256": "1ed69c02d42a808fa4503274102861d22d694d64f5adde6f7edc03a31865f61e",
+      "utf8_bytes": 9495
     },
     {
       "path": "Code/src/rfad/application/radiation.py",
@@ -16485,8 +16489,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/field_result_view.cpp",
-      "text_sha256": "38b9039b842fffbe7816b2d4ba9f042844cde4bea16761415dbef270c1010dbc",
-      "utf8_bytes": 28172
+      "text_sha256": "ea4d82b6a7df2267ec86297154338b07617e29db65f8285a84315717ddac708d",
+      "utf8_bytes": 28899
     },
     {
       "path": "Code/ui/wxwidgets/frequency_assessment_display.cpp",
@@ -16690,8 +16694,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace.cpp",
-      "text_sha256": "7e7320e4787fae445e97fad168e8c8b35de7d710e80ab1fb1cc59fc105d64b1e",
-      "utf8_bytes": 23568
+      "text_sha256": "fae496e7cdaa2172c937dcc8d024ff6be0705dd780a1f8bacc8d0f7d86e3917e",
+      "utf8_bytes": 24287
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace_compare.cpp",

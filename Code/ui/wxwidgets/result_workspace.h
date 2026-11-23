@@ -35,6 +35,7 @@ public:
     std::function<void()> onOpenValidation;
     std::function<void(const std::string&)> onSolverEvidence;
     std::function<void(const Json&)> onFieldRefinement;
+    std::function<void(const Json&)> onFieldStudy;
     std::function<void(const Json&)> onExportResult;
     std::function<void(const std::string&, const Json&, const Json&)> onMeasurementTool;
 

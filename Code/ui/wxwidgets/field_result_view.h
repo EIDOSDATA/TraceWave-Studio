@@ -72,6 +72,7 @@ private:
     wxButton* m_load = nullptr;
     wxPanel* m_refineOptions = nullptr;
     wxButton* m_refine = nullptr;
+    wxButton* m_study = nullptr;
     wxSpinCtrl* m_changePercent = nullptr;
     wxSpinCtrl* m_ruleLimit = nullptr;
     wxSpinCtrl* m_memoryLimit = nullptr;

@@ -2,10 +2,11 @@
 #include "studio_internal.h"
 #include "project_study_dialog.h"
 
-void StudioFrame::OpenProjectStudy()
+void StudioFrame::OpenProjectStudy(const std::string& identity)
 {
     if (m_studyDialog != nullptr)
     {
+        m_studyDialog->SelectStudy(identity);
         m_studyDialog->Raise();
         return;
     }
@@ -13,13 +14,13 @@ void StudioFrame::OpenProjectStudy()
     {
         return;
     }
-    if (HasDraft())
+    if (identity.empty() && HasDraft())
     {
-        ApplyCurrent([this]() { OpenProjectStudy(); });
+        ApplyCurrent([this, identity]() { OpenProjectStudy(identity); });
         return;
     }
     const std::string project = m_project;
-    Send("study.context", Json::object(), false, Context(), [this, project](const Json& context)
+    Send("study.context", Json::object(), false, Context(), [this, project, identity](const Json& context)
     {
         if (m_closing || project != m_project || m_studyDialog != nullptr)
         {
@@ -43,6 +44,7 @@ void StudioFrame::OpenProjectStudy()
                     UpdateControls();
                 }
             });
+        m_studyDialog->SelectStudy(identity);
         m_studyDialog->Show();
         UpdateControls();
     });

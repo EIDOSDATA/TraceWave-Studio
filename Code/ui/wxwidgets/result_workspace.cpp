@@ -141,6 +141,21 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
     {
         auto input = options;
         input.update(Pinned());
+        if (input.contains("max_rounds") && onFieldStudy)
+        {
+            Json selection, limits;
+            for (const auto* key : {"monitor_id", "component", "frequency_index", "plane", "roi"})
+            {
+                selection[key] = input.at(key);
+            }
+            for (const auto* key : {"threshold_fraction", "max_rules", "memory_limit_mib", "max_rounds", "max_s11_complex_delta"})
+            {
+                limits[key] = input.at(key);
+            }
+            onFieldStudy({{"source", input.at("source")}, {"pin", input.at("pin")}, {"selection", selection},
+                          {"limits", limits}, {"name", "전계 기반 국부 격자 연구"}});
+            return;
+        }
         const auto generation = ++m_viewGeneration;
         m_field->SetBusy(true);
         Read("result.field.refine", input, [this, generation]()

@@ -107,6 +107,10 @@ class StudyCoordinator:
 
     def _assess(self, study):
         """! @brief 완료한 격자만 비교하고 다음 수준, 수렴 또는 예산 중단을 결정한다."""
+        if "field_adaptive" in study["specification"]:
+            from rfad.application.field_study import advance
+
+            return advance(self.service, study)
         pending = [case for case in study["cases"] if case["phase"] != "done"]
         completed = len(study["cases"]) - len(pending)
         adaptive = study["specification"].get("adaptive_mesh")
@@ -204,6 +208,10 @@ class StudyCoordinator:
             method = "job.submit"
             data = {"task_plan": {"kind": "em_analysis", "execution_mode": "solve_and_postprocess",
                                   "prepared_plan": {key: case["prepared_plan"][key] for key in ("prepared_plan_id", "content_hash")}}, "budget": {"timeout_seconds": 300}}
+        if "field_adaptive" in study["specification"]:
+            from rfad.application.pcb_compute import limits
+
+            data["budget"]["timeout_seconds"] = limits(case["settings"])["max_wall_time_seconds"]
         task = self.service.solver.admit(state, method, {"project_id": study["project_id"]}, data)
         case["attempts"].append({"phase": case["phase"], "job_id": task["job_id"]})
         study.update(current_job_id=task["job_id"], message="격자 연구의 " + case["phase"] + " 단계를 실행 중입니다.")

@@ -159,7 +159,7 @@ private:
     void ShowSweepSelection(const Json& context);
     void PollSweep(Clock::time_point now);
     /** @brief 현재 프로젝트의 원본을 보존하는 연구 설정/진행 창을 연다. */
-    void OpenProjectStudy();
+    void OpenProjectStudy(const std::string& identity = {});
     /** @brief 목표 또는 명시 기하 카드의 비동기 설정 화면을 연다. */
     void OpenDesignSetup(DesignSetup kind, const Json& selection = nullptr);
     /** @brief 조회 이벤트가 반환된 뒤 모달 화면과 개정 갱신을 연결한다. */
