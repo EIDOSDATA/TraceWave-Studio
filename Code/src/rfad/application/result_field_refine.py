@@ -8,10 +8,33 @@ from rfad.application import result_fields
 from rfad.application.canonical import canonical_hash
 from rfad.application.pcb_environment import scene_extents
 from rfad.application.pcb_geometry import fail
-from rfad.application.pcb_local_mesh import MAX_RULES
+from rfad.application.pcb_local_mesh import MAX_RULES, MIN_CELL_MM
 from rfad.application.pcb_mesh import mesh_lines
 from rfad.application.pcb_projection import project_pcb
 from rfad.application.pcb_solver import check_pcb_input
+
+
+def _roundoff(*values):
+    """! @brief 실제 좌표 피연산자의 표현 간격만 사용하고 모델의 좌표 허용차를 넘기지 않는다."""
+    return min(1e-9, 4 * max(map(math.ulp, values)))
+
+
+def _same_coordinate(left, right):
+    """! @brief 모델 좌표 허용차를 상한으로 하고 두 값 표현의 네 ULP 이내만 같은 경계로 본다."""
+    return abs(left - right) <= _roundoff(left, right)
+
+
+def _inside(position, bounds):
+    """! @brief 기하 경계 자체와 실제 외부 표본을 원본 좌표에서 구별한다."""
+    lo, hi = bounds
+    return (position >= lo or _same_coordinate(position, lo)) and (position <= hi or _same_coordinate(position, hi))
+
+
+def _index_coordinate(nodes, value):
+    """! @brief 인덱스 탐색에서만 부동소수점 반올림 거리의 가장 가까운 실제 격자선을 사용한다."""
+    right = bisect_left(nodes, value)
+    nearest = min(nodes[max(0, right - 1):right + 1], key=lambda node: abs(node - value))
+    return nearest if _same_coordinate(nearest, value) else value
 
 
 def cells(values, axes, coordinates, normal, position, lines, bounds, threshold):
@@ -21,6 +44,8 @@ def cells(values, axes, coordinates, normal, position, lines, bounds, threshold)
         fail("E_GEOMETRY", "전계 원문에 비유한 표본이 있습니다.", "roi")
     if peak == 0:
         return []
+    upper_cell = {axis: bisect_left(lines[axis], _index_coordinate(lines[axis], hi)) - 1
+                  for axis, (_, hi) in zip("xyz", bounds)}
     chosen = {}
     for v, row in enumerate(values):
         for u, value in enumerate(row):
@@ -34,20 +59,24 @@ def cells(values, axes, coordinates, normal, position, lines, bounds, threshold)
                 point = {normal: position, axes[0]: coordinates[0][u], axes[1]: coordinates[1][v]}
                 left = point[axis]
                 right = coordinates[dim][(u, v)[dim] + 1]
-                if any(not lo - 1e-9 <= point[name] <= hi + 1e-9
-                       for name, (lo, hi) in zip("xyz", bounds)):
+                if (any(not _inside(point[name], interval) for name, interval in zip("xyz", bounds))
+                        or not _inside(right, bounds["xyz".index(axis)])):
                     continue
                 # @brief staggered 전기장 중심 두 개 사이에 걸치는 실제 원 격자 셀을 모두 후보로 삼는다.
-                for i in range(max(0, bisect_right(lines[axis], left) - 1),
-                               min(len(lines[axis]) - 1, bisect_left(lines[axis], right))):
+                nodes = lines[axis]
+                first = max(0, bisect_right(nodes, _index_coordinate(nodes, left)) - 1)
+                stop = min(len(nodes) - 1, bisect_left(nodes, _index_coordinate(nodes, right)))
+                for i in range(first, stop):
                     box = []
                     for name, (lo, hi) in zip("xyz", bounds):
                         nodes = lines[name]
-                        index = i if name == axis else min(bisect_right(nodes, point[name]) - 1, bisect_left(nodes, hi) - 1)
+                        index = i if name == axis else min(
+                            bisect_right(nodes, _index_coordinate(nodes, point[name])) - 1, upper_cell[name])
                         if not 0 <= index < len(nodes) - 1:
                             break
                         box.append([max(lo, nodes[index]), min(hi, nodes[index + 1])])
-                    if len(box) != 3 or any(high - low < 0.0001 for low, high in box):
+                    if len(box) != 3 or any(high <= low or MIN_CELL_MM - (high - low) > _roundoff(low, high, MIN_CELL_MM)
+                                            for low, high in box):
                         continue
                     width = lines[axis][i + 1] - lines[axis][i]
                     target = round(width / 2, 12)

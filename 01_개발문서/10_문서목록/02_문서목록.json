@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 277,
+    "current_07_검증": 278,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -32416,6 +32416,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/401_전계_격자후보의_보드경계_부동소수점_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 5842,
+      "working_tree_sha256": "a6bf9f3f41148912481b4404a661f0d0499ea03fca5352a00aee088250275f3f",
+      "text_lines": 40,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/40_엠시피와_키캐드_교환_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -33095,8 +33104,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 41561,
-      "working_tree_sha256": "4caa1dab5e9e50cf38623e4237ac054abb34a3a9219b9e43c266f3d2fa0f5dd7",
+      "bytes": 41813,
+      "working_tree_sha256": "7713442c1381bc44c8a4acdf9605d36fc3fb00d9f510366ef21279697defd945",
       "text_lines": 191,
       "text_status": "utf8_read"
     },
