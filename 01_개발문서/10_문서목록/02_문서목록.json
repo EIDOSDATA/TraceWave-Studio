@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 265,
+    "current_07_검증": 266,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28747,8 +28747,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 645616,
-      "working_tree_sha256": "bff0abf04deccc1ba79bbf7b78ff6d87afba1e2871d98eb4c1906f0096cb0b4b"
+      "bytes": 645743,
+      "working_tree_sha256": "bc39452d7cb304364dcd6baa29cb422e98a988ccd23aeac5b0bda684feba2a14"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32278,6 +32278,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/389_격자쌍의_주파수별_포트변화_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 1911,
+      "working_tree_sha256": "f757d74092ffa673a8f20d544384f080f6d5b5cdf41b5dcfc1bf4652f9bbebbf",
+      "text_lines": 18,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/38_스튜디오_재열기와_유휴성능_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -32973,8 +32982,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 38894,
-      "working_tree_sha256": "6e123a4b789cd2b19f6587edd79c1649d70a9b9d7434d30b728fe65bfcb75cfe",
+      "bytes": 39070,
+      "working_tree_sha256": "19b50089dfc6a0e8d581189dacf2e820d7d6e3b13919bd68f64aa933f4591cc0",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

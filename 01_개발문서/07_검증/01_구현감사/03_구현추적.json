@@ -8437,6 +8437,10 @@
       "extension_profile": "rfad.project-study/0.1",
       "status": "implemented"
     },
+    "study.sample_comparison": {
+      "extension_profile": "rfad.project-study/0.1",
+      "status": "implemented"
+    },
     "study.start": {
       "extension_profile": "rfad.project-study/0.1",
       "status": "implemented"
@@ -15034,8 +15038,8 @@
     },
     {
       "path": "Code/src/rfad/application/convergence.py",
-      "text_sha256": "c1062845db05c349823f614171fe5362a1b331c1d62962acc0de563ffe128906",
-      "utf8_bytes": 21688
+      "text_sha256": "4cac99fda2d9c998102550785b6920ea9044e858edb9742afcec7b08c655ef31",
+      "utf8_bytes": 22040
     },
     {
       "path": "Code/src/rfad/application/design_rule_service.py",
@@ -15279,18 +15283,18 @@
     },
     {
       "path": "Code/src/rfad/application/project_study_commands.py",
-      "text_sha256": "654dc052a2742909c619013a6c5012077176dfb83185341f049e555e8cdbb74f",
-      "utf8_bytes": 6683
+      "text_sha256": "80dec8272bfcfe1b8ec1db16aa4bd6910242ae398a8490dd199684a477c857f5",
+      "utf8_bytes": 6805
     },
     {
       "path": "Code/src/rfad/application/project_study_contract.py",
-      "text_sha256": "52958fc147a814f951a3d0d7253306fd2eb95ee344233a76fbe9163fd58828fa",
-      "utf8_bytes": 6724
+      "text_sha256": "bb8ac862a6e5f8f658968bfb14ce311da6f8fa302b8a9791ba87f0a209224f0b",
+      "utf8_bytes": 7071
     },
     {
       "path": "Code/src/rfad/application/project_study_results.py",
-      "text_sha256": "7c6b23720f20487c2ad80126af14e0114f1a831b8e29031e210e33679078f388",
-      "utf8_bytes": 7876
+      "text_sha256": "20004e2dd845a7cd079c6e03e9412267ec16dc184f85ae311dac191c372c607d",
+      "utf8_bytes": 8993
     },
     {
       "path": "Code/src/rfad/application/radiation.py",
@@ -15804,8 +15808,8 @@
     },
     {
       "path": "Code/tests/test_convergence.py",
-      "text_sha256": "bdb76095e1aee05bcecf5640dc439f6b6166515eb630b926db7bd2a5ebcdfdd2",
-      "utf8_bytes": 17728
+      "text_sha256": "5903cfbb1038254207bf057d1577c73decc0efebce99cf2ffa76605226ada59c",
+      "utf8_bytes": 18743
     },
     {
       "path": "Code/tests/test_copper_design.py",

@@ -13,7 +13,7 @@ from rfad.domain.errors import ProjectError
 
 
 MUTATIONS = {"study.create", "study.start", "study.cancel", "study.resume"}
-READS = {"study.context", "study.list", "study.get"}
+READS = {"study.context", "study.list", "study.get", "study.sample_comparison"}
 ACTIVE = {"running", "cancel_requested", "resuming"}
 MAX_STUDIES = 32
 
@@ -74,6 +74,11 @@ def validate_input(method, context, data):
         require_fields(data, {"expected_revision", "specification"})
         require_uuid(data["expected_revision"])
         validate_specification(data["specification"])
+    elif method == "study.sample_comparison":
+        require_fields(data, {"study_id", "right_case"})
+        require_uuid(data["study_id"])
+        if type(data["right_case"]) is not int or data["right_case"] < 1:
+            raise ProjectError("E_SCHEMA", "두 번째 이후의 격자 수준을 선택하십시오.")
     elif method in {"study.context", "study.list"}:
         require_fields(data, set())
     else:

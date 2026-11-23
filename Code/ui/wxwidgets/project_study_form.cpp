@@ -123,6 +123,12 @@ void ProjectStudyDialog::Build()
         m_cases->InsertColumn(column++, Display(title), wxLIST_FORMAT_LEFT, FromDIP(130));
     }
     resultLayout->Add(m_cases, 0, wxEXPAND | wxBOTTOM, 8);
+    m_samples = new wxButton(results, wxID_ANY, Display("두 격자의 주파수별 포트 변화"));
+    m_samples->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        ShowPortSamples();
+    });
+    resultLayout->Add(m_samples, 0, wxBOTTOM, FromDIP(6));
     m_details = new wxTextCtrl(results, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
                                wxTE_MULTILINE | wxTE_READONLY);
     resultLayout->Add(m_details, 1, wxEXPAND);

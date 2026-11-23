@@ -135,7 +135,7 @@ def _resonance(data):
             "bracket_hz": [frequencies[index - 1], frequencies[index + 1]], "s11_magnitude": minimum}
 
 
-def compare_samples(left_result, right_result, profile):
+def compare_samples(left_result, right_result, profile, *, frequency_rows=False):
     """! @brief 같은 원본/규약/주파수의 복소 결과를 비교하되 의도한 설정 차이는 허용한다."""
     selected = _profile(profile)
     left, right = _result(left_result), _result(right_result)
@@ -165,9 +165,15 @@ def compare_samples(left_result, right_result, profile):
             resonance["reason"] = "frequency_resolution_cannot_bound_resonance_shift"
         status = "established" if s_passed and resonance["status"] == "passed" else (
             "failed" if not s_passed or resonance["status"] == "failed" else "not_established")
-    return {"status": status, "acceptance_profile": selected, "sample_count": len(s_delta), "metrics": metrics,
+    report = {"status": status, "acceptance_profile": selected, "sample_count": len(s_delta), "metrics": metrics,
             "complex_s11_passed": s_passed, "resonance": resonance, "physics_validated": False,
             "source_assessments": [deepcopy(left_result["assessment"]), deepcopy(right_result["assessment"])]}
+    if frequency_rows:
+        report["frequency_rows"] = [
+            {"frequency_hz": frequency, "complex_s11_delta": ds, "impedance_delta_ohm": dz,
+             "within_threshold": ds <= selected["max_s11_complex_delta"]}
+            for frequency, ds, dz in zip(left["frequencies"], s_delta, z_delta)]
+    return report
 
 
 def _slice(lines, low, high):

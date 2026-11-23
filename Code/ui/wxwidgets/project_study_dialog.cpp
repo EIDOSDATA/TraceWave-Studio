@@ -4,6 +4,7 @@
 #include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
+#include <wx/choicdlg.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/stattext.h>
@@ -11,6 +12,7 @@
 #include <wx/weakref.h>
 #include <wx/sizer.h>
 #include <algorithm>
+#include <vector>
 
 void ProjectStudyDialog::ServiceDisconnected(const std::string& message)
 {
@@ -255,7 +257,69 @@ void ProjectStudyDialog::UpdateControls()
     m_create->Enable(!m_disconnected && !m_pending && m_context.value("runtime_configured", false));
     m_refresh->Enable(!m_disconnected && !m_pending);
     m_choice->Enable(!m_pending);
+    m_samples->Enable(!m_disconnected && !m_pending && m_view.contains("cases") && m_view.at("cases").size() >= 2 &&
+                      m_view.at("cases").at(0).at("phase") == "done" && m_view.at("cases").at(1).at("phase") == "done");
     m_start->Enable(!m_disconnected && matches && Studio::StudyActionAllowed(m_view, "start", m_pending));
     m_resume->Enable(!m_disconnected && matches && Studio::StudyActionAllowed(m_view, "resume", m_pending));
     m_cancel->Enable(!m_disconnected && Studio::StudyActionAllowed(m_view, "cancel", m_pending));
+}
+
+/** @brief 동일 개정에서 완료한 두 격자의 개별 주파수 표본을 보간 없이 표시한다. */
+void ProjectStudyDialog::ShowPortSamples()
+{
+    const auto& cases = m_view.at("cases");
+    wxArrayString names;
+    std::vector<std::size_t> indices;
+    for (std::size_t i = 1; i < cases.size(); ++i)
+    {
+        if (cases.at(i - 1).at("phase") == "done" && cases.at(i).at("phase") == "done")
+        {
+            names.Add(Display(cases.at(i - 1).at("grid_mm").dump() + " mm / " + cases.at(i).at("grid_mm").dump() + " mm"));
+            indices.push_back(i);
+        }
+    }
+    if (names.empty())
+    {
+        return;
+    }
+    wxSingleChoiceDialog choice(this, Display("비교할 인접 격자 수준"), Display("주파수별 포트 변화"), names);
+    choice.SetSelection(static_cast<int>(indices.size() - 1));
+    m_timer.Stop();
+    const int selected = choice.ShowModal();
+    m_timer.Start(1000);
+    if (selected != wxID_OK)
+    {
+        return;
+    }
+    Call("study.sample_comparison", {{"study_id", m_selected}, {"right_case", indices.at(choice.GetSelection())}}, false,
+         [this](const Json& result)
+         {
+             wxDialog dialog(this, wxID_ANY, Display("주파수별 포트 변화"), wxDefaultPosition,
+                             FromDIP(wxSize(710, 480)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+             auto* layout = new wxBoxSizer(wxVERTICAL);
+             auto* label = new wxStaticText(&dialog, wxID_ANY, Display("복소 S11 변화 허용값 " +
+                 result.at("max_s11_complex_delta").dump() + " / 선택한 두 격자에서 직접 계산한 주파수 표본"));
+             layout->Add(label, 0, wxALL, FromDIP(8));
+             auto* samples = new wxListCtrl(&dialog, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
+             int column = 0;
+             for (const char* title : {"주파수 (GHz)", "복소 S11 변화량", "임피던스 변화 (옴)", "표본 기준"})
+             {
+                 samples->InsertColumn(column++, Display(title), wxLIST_FORMAT_LEFT, FromDIP(155));
+             }
+             for (const auto& row : result.at("rows"))
+             {
+                 const long item = samples->InsertItem(samples->GetItemCount(),
+                     wxString::Format("%.12g", row.at("frequency_hz").get<double>() / 1e9));
+                 samples->SetItem(item, 1, wxString::Format("%.8g", row.at("complex_s11_delta").get<double>()));
+                 samples->SetItem(item, 2, wxString::Format("%.8g", row.at("impedance_delta_ohm").get<double>()));
+                 samples->SetItem(item, 3, Display(row.at("within_threshold").get<bool>() ? "이내" : "초과"));
+             }
+             layout->Add(samples, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
+             layout->Add(dialog.CreateSeparatedButtonSizer(wxOK), 0, wxEXPAND | wxALL, FromDIP(8));
+             dialog.SetSizer(layout);
+             dialog.CentreOnParent();
+             m_timer.Stop();
+             dialog.ShowModal();
+             m_timer.Start(1000);
+         });
 }

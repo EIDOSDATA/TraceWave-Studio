@@ -79,6 +79,21 @@ class ConvergenceComparisonTests(unittest.TestCase):
         self.assertGreater(report["metrics"]["max_s11_complex_delta"], 0.02)
         self.assertAlmostEqual(report["metrics"]["max_s11_db_delta"], 0)
 
+    def test_frequency_rows_preserve_original_nonuniform_samples_and_limit(self):
+        """! @brief 위상 변화가 있는 한 표본만 기준을 넘고 원본에서 공진 위치를 추정하지 않는다."""
+        frequencies = [2.45e9, 2.49e9, 2.5e9, 2.51e9, 2.60e9]
+        first = fixture_result(frequencies=frequencies)
+        second = deepcopy(first)
+        second["samples"][2]["s11"][1] += 0.03
+        second["samples"][3]["s11"][1] += PROFILE["max_s11_complex_delta"]
+        report = compare_samples(first, second, PROFILE, frequency_rows=True)
+        rows = report["frequency_rows"]
+        self.assertEqual([row["frequency_hz"] for row in rows], frequencies)
+        self.assertEqual([row["within_threshold"] for row in rows], [True, True, False, True, True])
+        self.assertAlmostEqual(rows[2]["complex_s11_delta"], 0.03)
+        self.assertTrue(all(row["impedance_delta_ohm"] == 0.0 for row in rows))
+        self.assertNotIn("frequency_rows", compare_samples(first, second, PROFILE))
+
     def test_zero_reflection_keeps_undefined_db_auxiliary(self):
         result = fixture_result(magnitudes=[0.8, 0.5, 0, 0.5, 0.8])
         report = compare_samples(result, result, PROFILE)

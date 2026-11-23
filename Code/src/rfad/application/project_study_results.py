@@ -36,6 +36,24 @@ def read_case(service, study, case):
     return normalized, radiation, power
 
 
+def port_samples(service, study, index):
+    """! @brief 선택한 두 완료 격자의 봉인 결과를 동일 주파수에서만 비교한다."""
+    cases = study["cases"]
+    if index < 1 or index >= len(cases):
+        raise ProjectError("E_SCHEMA", "선택한 인접 격자 쌍이 없습니다.")
+    pair = cases[index-1:index+1]
+    if any(case["phase"] != "done" for case in pair):
+        raise ProjectError("E_CONFLICT", "두 격자 모두 계산이 끝나야 주파수 표본을 비교할 수 있습니다.")
+    first, second = [read_case(service, study, case)[0] for case in pair]
+    profile = study["specification"]["port_profile"]
+    comparison = compare_samples(first, second, profile, frequency_rows=True)
+    return {"study_id": study["study_id"], "source_revision": study["snapshot"]["revision_id"],
+            "result_ids": [case["result_id"] for case in pair],
+            "grid_mm": [case["settings"]["grid_mm"] for case in pair],
+            "max_s11_complex_delta": profile["max_s11_complex_delta"],
+            "rows": comparison["frequency_rows"], "pair_status": comparison["status"]}
+
+
 def assessment(service, study):
     """! @brief 마지막 인접 격자 쌍만 판정하며 전체 세 축 수렴/실측 합격을 선언하지 않는다."""
     completed = [case for case in study["cases"] if case["phase"] == "done"]

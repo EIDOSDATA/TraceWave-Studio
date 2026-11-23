@@ -49,6 +49,7 @@ private:
     void ReloadStudies();
     void ReadSelected(bool loadFields = false);
     void Render(const Json& view);
+    void ShowPortSamples();
     void UpdateControls();
     Json Draft(bool newStudy = false) const;
 
@@ -77,5 +78,6 @@ private:
     wxButton* m_resume = nullptr;
     wxButton* m_cancel = nullptr;
     wxButton* m_refresh = nullptr;
+    wxButton* m_samples = nullptr;
     wxTimer m_timer;
 };

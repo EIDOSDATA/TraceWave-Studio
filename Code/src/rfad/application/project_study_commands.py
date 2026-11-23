@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.project_study_contract import ACTIVE, MAX_STUDIES, build_cases, initial_specification
-from rfad.application.project_study_results import view
+from rfad.application.project_study_results import port_samples, view
 from rfad.domain.errors import ProjectError
 
 
@@ -98,4 +98,6 @@ def query(service, method, context, data):
     definition = json.loads(service.journal.read_artifact(study["definition"]))
     if any(definition[key] != study[key] for key in ("study_id", "snapshot", "specification", "runtime_identity")):
         raise ProjectError("E_HASH", "연구 정의의 불변 내용이 변경되었습니다.")
+    if method == "study.sample_comparison":
+        return port_samples(service, study, data["right_case"])
     return view(service, state, study)
