@@ -8,6 +8,7 @@
 #include "setup_smoke_support.h"
 #include "studio_notebook.h"
 #include <wx/checkbox.h>
+#include <wx/choicdlg.h>
 #include <wx/checklst.h>
 #include <wx/listctrl.h>
 #include <wx/textctrl.h>
@@ -85,6 +86,11 @@ void StudioSmokeDriver::PcbExchangeSmokeTick()
                                  "pcb-exchange-smoke-fixture.json",
                              std::ios::binary);
         stream >> m_pcbExchangeFixture;
+    }
+    if (m_pcbExchangeFixture.contains("manufacturing_export"))
+    {
+        ManufacturingExportSmokeTick();
+        return;
     }
     if (m_pcbExchangeFixture.contains("vendor_format"))
     {
@@ -429,5 +435,77 @@ void StudioSmokeDriver::VendorPatternSmokeTick()
                      "재열기 후 편집한 제조사 동박이 다릅니다.");
         m_setupChecks.push_back("vendor_saved_and_reopened");
         FinishSmoke(true, "");
+    }
+}
+
+/** @brief 선택한 게시 기록의 출력을 실제 버튼과 파일 대화상자에 연결한다. */
+void StudioSmokeDriver::ManufacturingExportSmokeTick()
+{
+    if (m_frame.m_busy || !m_frame.m_output || m_frame.m_cadRestoring || m_frame.m_solverRestoring)
+    {
+        return;
+    }
+    const auto spec = m_pcbExchangeFixture.at("manufacturing_export");
+    const auto job = spec.at("job_id").get<std::string>();
+    auto& controller = *m_frame.m_output;
+    auto* view = controller.m_view;
+    if (m_setupStage == 1)
+    {
+        m_frame.m_views->SetSelection(5);
+        controller.Context(0, true);
+        m_setupStage = 2;
+    }
+    else if (m_setupStage == 2 && controller.m_reads == 0 && view->m_context.is_object())
+    {
+        view->SelectKind(2);
+        controller.Record(job);
+        m_setupStage = 3;
+    }
+    else if (m_setupStage == 3 && view->Record().is_object() && view->Record().value("job_id", "") == job)
+    {
+        controller.Actions();
+        CanvasAssert(view->m_pcb->m_manufacturing->IsEnabled(), "KiCad 보드 게시 기록에서 제조 내보내기가 잠겼습니다.");
+        class Choices final : public wxModalDialogHook
+        {
+        public:
+            explicit Choices(const Json& input) : m_input(input)
+            {
+                Register();
+            }
+            ~Choices() override
+            {
+                Unregister();
+            }
+            int Enter(wxDialog* window) override
+            {
+                if (auto* format = dynamic_cast<wxSingleChoiceDialog*>(window))
+                {
+                    format->SetSelection(0);
+                    return wxID_OK;
+                }
+                if (auto* file = dynamic_cast<wxFileDialog*>(window))
+                {
+                    const auto key = (file->GetWindowStyle() & wxFD_OPEN) ? "cli" : "output";
+                    file->SetPath(Display(m_input.at(key).get<std::string>()));
+                    return wxID_OK;
+                }
+                return wxID_NONE;
+            }
+        private:
+            Json m_input;
+        } choices(spec);
+        m_setupStage = 4;
+        SetupSmoke::Click(view->m_pcb->m_manufacturing);
+    }
+    else if (m_setupStage == 4)
+    {
+        const auto text = view->StatusLabel()->GetLabel();
+        CanvasAssert(!text.Contains(Display("실패")) && !text.Contains(Display("지정하십시오")) &&
+                     !text.Contains(Display("실행할 수 없습니다")), Utf8(text));
+        if (text.StartsWith(Display("제조 교환 후보 ZIP을 저장했습니다.")))
+        {
+            m_setupChecks.push_back("manufacturing_export_from_published_board");
+            FinishSmoke(true, "");
+        }
     }
 }

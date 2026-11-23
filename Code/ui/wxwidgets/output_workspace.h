@@ -51,7 +51,7 @@ public:
     std::function<void(const std::string&)> onSelectJob;
     std::function<void(int)> onSnapshotPage, onCatalogPage;
     std::function<void()> onChanged;
-    std::function<void()> onImport;
+    std::function<void()> onImport, onManufacturing;
     std::function<void(const Json&)> onSaveDrawingAnnotations;
 
 private:

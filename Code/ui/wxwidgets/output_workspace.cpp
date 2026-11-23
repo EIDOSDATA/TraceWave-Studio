@@ -111,6 +111,13 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
             onSaveDrawingAnnotations(recipe);
         }
     };
+    m_pcb->onManufacturing = [this]()
+    {
+        if (onManufacturing)
+        {
+            onManufacturing();
+        }
+    };
     m_pcb->onImport = [this]()
     {
         if (onImport)
@@ -613,4 +620,7 @@ void OutputWorkspace::SetAvailable(bool available, bool busy, bool reviewed, boo
     m_step->SetAvailable(ready && context && snapshot, false,
                          reviewed && Kind() == 1 && m_context.value("cad_runtime_configured", false), canVerify);
     m_pcb->SetAvailable(ready && context, reviewed && Kind() == 2, snapshot);
+    const auto result = m_record.is_object() ? m_record.value("result", Json(nullptr)) : Json(nullptr);
+    m_pcb->SetManufacturingAvailable(ready && result.is_object() && m_record.value("state", "") == "completed" &&
+        m_record.value("format", "") == "kicad_pcb" && result.value("profile", "") == "rfad.exchange.kicad-board/0.1" && !OutputUi::ManifestPath(m_record).empty());
 }

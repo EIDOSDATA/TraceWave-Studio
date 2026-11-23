@@ -1,5 +1,6 @@
 /** @file @brief 내부 식별자를 기본 안내에서 빼고 출력 상태의 의미를 표시한다. */
 #include "output_model.h"
+#include <filesystem>
 #include <cmath>
 #include <iomanip>
 #include <map>
@@ -256,4 +257,33 @@ std::string OutputUi::Conditions(const Json& record)
         result += "\n\n제외 / 의미 손실\n" + omissions;
     }
     return result;
+}
+
+std::string OutputUi::ManifestPath(const Json& record)
+{
+    if (!record.is_object() || !record.value("result", Json(nullptr)).is_object())
+    {
+        return {};
+    }
+    for (const auto& artifact : record.at("result").value("artifacts", Json::array()))
+    {
+        if (artifact.value("role", "") == "manifest")
+        {
+            const auto uri = artifact.value("uri", "");
+            const auto relative = std::filesystem::u8path(uri);
+            if (uri.empty() || relative.is_absolute() || relative.has_root_name() || relative.filename() != "manifest.json")
+            {
+                return {};
+            }
+            for (const auto& part : relative)
+            {
+                if (part == ".." || part == ".")
+                {
+                    return {};
+                }
+            }
+            return uri;
+        }
+    }
+    return {};
 }

@@ -84,6 +84,7 @@ private:
     void FeaturesSmokeTick();
     void PcbExchangeSmokeTick();
     void VendorPatternSmokeTick();
+    void ManufacturingExportSmokeTick();
     void PcbExchangeSafetyChecks();
     Json m_pcbExchangeFixture = Json::object(), m_pcbExchangeBefore = nullptr, m_pcbExchangeResult = nullptr;
     std::string m_pcbExchangeRevision, m_pcbExchangeUploadId, m_pcbExchangeBuildId;

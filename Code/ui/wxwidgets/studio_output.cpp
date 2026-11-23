@@ -24,6 +24,10 @@ void StudioFrame::BuildOutputInterface()
     m_output->View()->ConditionsView()->Hide();
     m_views->AddPage(m_output->View(), Display("출력"));
     m_outputSummary = m_output->View()->StatusLabel();
+    m_output->View()->onManufacturing = [this]()
+    {
+        ExportManufacturing();
+    };
     m_output->View()->onImport = [this]()
     {
         OpenPcbImport();

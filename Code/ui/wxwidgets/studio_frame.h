@@ -106,6 +106,7 @@ private:
     void PrepareExtendedWorkspaces(std::size_t page);
     /** @brief 고정 입력의 도면/STEP 생성과 새 읽기 검수를 출력 페이지에 연결한다. */
     void BuildOutputInterface();
+    void ExportManufacturing();
     void PrepareOutputRecovery();
     void UpdateOutputViews();
     void OpenOutputStep();

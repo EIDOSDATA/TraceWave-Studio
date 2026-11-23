@@ -47,8 +47,11 @@ PcbCamOutputView::PcbCamOutputView(wxWindow* parent)
     m_footprint->SetMinSize(FromDIP(wxSize(170, -1)));
     m_preview = new wxButton(this, wxID_ANY, Display("포함 범위 검토"));
     m_build = new wxButton(this, wxID_ANY, Display("검토한 패키지 생성"));
+    m_manufacturing = new wxButton(this, wxID_ANY, Display("IPC-2581C / ODB++ 내보내기"));
+    m_manufacturing->SetToolTip(Display("선택한 KiCad 보드 출력 기록에서 원본과 제조 파일을 담은 ZIP을 만듭니다."));
+    m_manufacturing->Disable();
     m_import = new wxButton(this, wxID_ANY, Display("PCB 파일 가져오기"));
-    for (auto* control : std::vector<wxWindow*>{m_format, m_footprint, m_preview, m_build, m_import})
+    for (auto* control : std::vector<wxWindow*>{m_format, m_footprint, m_preview, m_build, m_manufacturing, m_import})
     {
         actions->Add(control, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(4));
     }
@@ -122,6 +125,13 @@ PcbCamOutputView::PcbCamOutputView(wxWindow* parent)
                           onBuild();
                       }
                   });
+    m_manufacturing->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        if (onManufacturing)
+        {
+            onManufacturing();
+        }
+    });
     m_import->Bind(wxEVT_BUTTON,
                    [this](wxCommandEvent&)
                    {
@@ -244,6 +254,11 @@ void PcbCamOutputView::SetAvailable(bool ready, bool reviewed, bool snapshot)
     m_build->Enable(ready && snapshot && profile && footprint && reviewed && m_context.is_object() &&
                     m_context.value("runtime_configured", false));
     m_import->Enable(ready && m_importAvailable && static_cast<bool>(onImport));
+}
+
+void PcbCamOutputView::SetManufacturingAvailable(bool available)
+{
+    m_manufacturing->Enable(available && static_cast<bool>(onManufacturing));
 }
 
 void PcbCamOutputView::SetImportAvailable(bool available)

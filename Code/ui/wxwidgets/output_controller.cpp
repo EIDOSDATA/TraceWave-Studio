@@ -455,34 +455,15 @@ void OutputController::Verify()
 
 void OutputController::OpenFolder()
 {
-    const auto& record = m_view->Record();
-    if (!record.is_object() || !record.value("result", Json(nullptr)).is_object())
+    const auto manifest = OutputUi::ManifestPath(m_view->Record());
+    if (manifest.empty())
     {
         return;
     }
-    for (const auto& artifact : record.at("result").value("artifacts", Json::array()))
+    const auto directory = std::filesystem::path(Display(m_workspace).ToStdWstring()) /
+                           std::filesystem::u8path(manifest).parent_path();
+    if (!wxLaunchDefaultApplication(wxString(directory.native())))
     {
-        if (artifact.value("role", "") != "manifest")
-        {
-            continue;
-        }
-        const auto relative = std::filesystem::u8path(artifact.at("uri").get<std::string>());
-        if (relative.is_absolute() || relative.has_root_name())
-        {
-            throw std::runtime_error("출력 경로는 작업 영역 상대 경로여야 합니다.");
-        }
-        for (const auto& part : relative)
-        {
-            if (part == "..")
-            {
-                throw std::runtime_error("출력 경로가 작업 영역을 벗어났습니다.");
-            }
-        }
-        const auto directory = std::filesystem::path(Display(m_workspace).ToStdWstring()) / relative.parent_path();
-        if (!wxLaunchDefaultApplication(wxString(directory.native())))
-        {
-            Status("failed", "완료 출력 폴더를 열지 못했습니다.");
-        }
-        return;
+        Status("failed", "완료 출력 폴더를 열지 못했습니다.");
     }
 }

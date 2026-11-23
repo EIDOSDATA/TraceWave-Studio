@@ -180,6 +180,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/output_pending_store.cpp
     ui/wxwidgets/output_controller.cpp
     ui/wxwidgets/output_controller_jobs.cpp
+    ui/wxwidgets/studio_manufacturing_export.cpp
     ui/wxwidgets/studio_output.cpp
     ui/wxwidgets/studio_smoke_output.cpp
     ui/wxwidgets/studio_smoke_features.cpp

@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 259,
+    "current_07_검증": 260,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28748,7 +28748,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 645351,
-      "working_tree_sha256": "9a7c479804c1830b10b5950d548a1049743239b0bfb04d7b7befb0d51d716df1"
+      "working_tree_sha256": "f0d0465466c3472caa8e85e661a7608c2ca73b38dee3becbb1d0f761c41e373c"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32210,6 +32210,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/383_출력화면의_제조교환_후보검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2256,
+      "working_tree_sha256": "e3dce7987c619def7626eca780da9dae27ad63ffd799189714eccf96cc363b63",
+      "text_lines": 21,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/38_스튜디오_재열기와_유휴성능_실행기록.json",
       "category": "documentation_asset",
       "review_scope": "문서/시안 자산 보존",
@@ -32905,8 +32914,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 37548,
-      "working_tree_sha256": "d28dc623a6fc9bca0ef4a8f62259937d3c7d1d8af5a10b01f047c1cd48829818",
+      "bytes": 37697,
+      "working_tree_sha256": "87959a70c7966eb512bd4f5bc66baf8d2d752adeab28d4c72f3948885b700709",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

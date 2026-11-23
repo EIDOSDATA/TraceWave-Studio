@@ -48,4 +48,6 @@ Json RecordForDisplay(const Json& record);
 bool MatchesPreview(const Json& result, const Json& input);
 /** @brief 원문 미정과 파일 형식의 검수 상태를 서로 독립적으로 요약한다. */
 std::string Conditions(const Json& record);
+/** @brief 선택 기록에서 실제 게시한 manifest의 작업 영역 상대 경로만 찾는다. */
+std::string ManifestPath(const Json& record);
 }

@@ -20,9 +20,10 @@ public:
     void Clear(const std::string& message);
     void SetAvailable(bool ready, bool reviewed, bool snapshot);
     void SetImportAvailable(bool available);
+    void SetManufacturingAvailable(bool available);
     Json Input() const;
     Json DisplaySelection() const;
-    std::function<void()> onChanged, onPreview, onBuild, onImport;
+    std::function<void()> onChanged, onPreview, onBuild, onImport, onManufacturing;
 
 private:
     friend class StudioSmokeDriver;
@@ -49,4 +50,5 @@ private:
     wxButton* m_preview = nullptr;
     wxButton* m_build = nullptr;
     wxButton* m_import = nullptr;
+    wxButton* m_manufacturing = nullptr;
 };
