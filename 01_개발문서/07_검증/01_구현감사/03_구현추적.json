@@ -14919,13 +14919,13 @@
     },
     {
       "path": "Code/src/rfad/adapters/exchange/kicad_reader.py",
-      "text_sha256": "96e292daef15b6ff872607fb8e036cd8968ddb93f4f47f304f998f8aa7ba4395",
-      "utf8_bytes": 15385
+      "text_sha256": "a390e7331a2f8cbf5ffa2fcbf35766273a26c21b2815d758211142bc09ae1649",
+      "utf8_bytes": 16526
     },
     {
       "path": "Code/src/rfad/adapters/exchange/kicad_writer.py",
-      "text_sha256": "13ac673463aa3c5edf2fd778efef04b161bbedacdc23068580d0ae1eb7ebe8ff",
-      "utf8_bytes": 24361
+      "text_sha256": "f97421ccfa5601e5bbcc597e8dc17e634d12a30fd50205857196bea500d953fb",
+      "utf8_bytes": 26068
     },
     {
       "path": "Code/src/rfad/adapters/exchange/pcb.py",
@@ -14939,8 +14939,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/exchange/pcb_verification.py",
-      "text_sha256": "8a9f94845c0ad306d4f9a76f8e400fbbaf0a96bb360cd2feaa9105e05df23629",
-      "utf8_bytes": 31126
+      "text_sha256": "969e646b1e3a0a9bf110378a4282b57298efd52b5c0afd56cf57830a658fe796",
+      "utf8_bytes": 31630
     },
     {
       "path": "Code/src/rfad/adapters/exchange/vendor_pattern.py",
@@ -15084,8 +15084,8 @@
     },
     {
       "path": "Code/src/rfad/application/exchange_contract.py",
-      "text_sha256": "7fd25f93c9a96bfdd60b5048c44594337211874adef776e7e536cf24aec0753b",
-      "utf8_bytes": 22753
+      "text_sha256": "c81df58147d050cc50bde28cb1a16cce2c9503d962ac9b90c36984ed6c6b5c43",
+      "utf8_bytes": 22863
     },
     {
       "path": "Code/src/rfad/application/exchange_jobs.py",
@@ -15184,8 +15184,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_import_mapping.py",
-      "text_sha256": "2837060a8c8329ef2cf8b38be5062e8f136f09ba3a2af1a58ba9e592082e6f00",
-      "utf8_bytes": 58372
+      "text_sha256": "b7b94381049e570739050af3d91412753e79fe4f9cc5757a680105a536222696",
+      "utf8_bytes": 58716
     },
     {
       "path": "Code/src/rfad/application/pcb_import_service.py",
@@ -15549,8 +15549,8 @@
     },
     {
       "path": "Code/src/rfad/domain/drawing_layout.py",
-      "text_sha256": "a7607bece29572370fcbd8c4226a2fa5b2abc08e7e17019c386a60e1cb3e9dd7",
-      "utf8_bytes": 53608
+      "text_sha256": "fd2028899616728dba4dd31d2fd6eac58d308cce14d22aa1e69bd93e363b0b7c",
+      "utf8_bytes": 55731
     },
     {
       "path": "Code/src/rfad/domain/expressions.py",

@@ -145,7 +145,8 @@ def _step(node, factor):
             "slots": sum(1 for child in node.iter(NS + "SlotCavity")), "layer_features": len(features),
             "profile": None if profile is None else {
                 "outer": len(profile.findall(NS + "Polygon")), "cutouts": len(profile.findall(NS + "Cutout"))},
-            "step_repeats": len(repeats), "net_examples": [row.get("name") for row in nets[:SAMPLE_LIMIT]],
+            "step_repeats": len(repeats),
+            "repeat_source_examples": [dict(row.attrib) for row in repeats[:SAMPLE_LIMIT]], "net_examples": [row.get("name") for row in nets[:SAMPLE_LIMIT]],
             "component_examples": placements, "hole_examples": [
                 {**_attrs(row, "name", "platingStatus"), "drill_layer_ref": layer,
                  "diameter_mm": _measure(row, "diameter", factor), "x_mm": _measure(row, "x", factor),
@@ -198,7 +199,7 @@ def read(raw):
     from rfad.adapters.exchange import manufacturing_placements
     components = manufacturing_placements.ipc(root, steps[0], layers, factor, pads, bores) if editable else []
     if pads or bores or stack or components:
-        loss = {**loss, "message": loss["message"] + f" 선택 가능한 원형 패드 {len(pads)}개, 원형 홀 {len(bores)}개, 적층 {len(stack)}개, 실장 위치 {len(components)}개."}
+        loss = {**loss, "message": loss["message"] + f" 선택 가능한 원형 및 사각 패드 {len(pads)}개, 원형 홀 {len(bores)}개, 적층 {len(stack)}개, 실장 위치 {len(components)}개."}
     if regions or omitted:
         reasons = sorted({row["reason"] for row in omitted})
         summary = f" 적용 가능한 채움 동박 {len(regions)}개, 제외 {len(omitted)}건."

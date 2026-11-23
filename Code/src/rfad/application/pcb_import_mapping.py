@@ -285,12 +285,16 @@ class _ImportCandidate:
                     mapped = ordered
                 pads = []
                 if pad_type != "np_thru_hole":
-                    pad_shape = "circle" if is_via else item["pad_shape"]
-                    if pad_shape not in ("circle", "rect"):
-                        fail("현재 패드 모델은 수입 타원/사용자 형상을 손실 없이 표현하지 못합니다.", self.source, "E_UNSUPPORTED")
+                    overrides = item.get("padstack_layers", {})
+                    if set(overrides) - set(layer_names):
+                        fail("패드스택이 현재 도체층 밖을 참조합니다.", self.source, "E_SCHEMA")
                     for index2, layer in enumerate(mapped):
+                        shape = item if is_via else overrides.get(layer_names[index2], item)
+                        pad_shape = "circle" if is_via else shape["pad_shape"]
+                        if pad_shape not in ("circle", "rect"):
+                            fail("현재 패드 모델은 수입 타원/사용자 형상을 손실 없이 표현하지 못합니다.", self.source, "E_UNSUPPORTED")
                         row = self.geometry("pad", layer, net)
-                        size = [item["size_mm"]] * 2 if is_via else item["size_mm"]
+                        size = [shape["size_mm"]] * 2 if is_via else shape["size_mm"]
                         row.update(pad_shape="circle" if pad_shape == "circle" else "rectangle", center=self.point(item["center_mm"]), size=self.point(size), rotation=self.quantity(0 if is_via else item["rotation_deg"], "deg"))
                         pads.append(self.append("geometry", row, str(index2), owner)["id"])
                     if not pads:

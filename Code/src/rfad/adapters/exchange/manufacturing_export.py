@@ -2,13 +2,14 @@
 
 import argparse
 import json
+import math
 import os
 from pathlib import Path, PurePosixPath
 import subprocess
 from tempfile import TemporaryDirectory
 from zipfile import BadZipFile, ZIP_DEFLATED, ZipFile
 
-from rfad.adapters.exchange import pcb
+from rfad.adapters.exchange import kicad_reader, pcb
 from rfad.adapters.exchange.ipc2581_reader import read as read_ipc2581
 from rfad.adapters.exchange.odb_reader import read as read_odb
 from rfad.application.canonical import canonical_bytes, canonical_hash
@@ -60,6 +61,31 @@ def _run(exe, arguments, stage):
     return process.stdout.strip()
 
 
+def verify_padstacks(source, summary, format_name):
+    """! @brief 원문 custom padstack의 층별 형상, 회전 및 도금 홀이 최종 제조 파일에 있는지 검사한다."""
+    copper = [row["name"] for row in source["layers"] if row["name"].endswith(".Cu")]
+    for pad in source["shapes"]:
+        if "padstack_layers" not in pad:
+            continue
+        center = pad["center_mm"]
+        holes = [row for row in summary["editable_holes"]
+                 if row["plating"] == "plated" and math.dist(row["center_mm"], center) <= 2e-6
+                 and abs(row["diameter_mm"] - pad["drill"]["size_mm"][0]) <= 2e-6]
+        if len(holes) != 1:
+            raise ValueError(f"{format_name}: 층별 관통 패드의 완성 홀이 누락됐습니다.")
+        bound = [row for row in summary["editable_pads"] if row["source_id"] in holes[0]["pads"]]
+        for layer in copper:
+            expected = pad["padstack_layers"].get(layer, pad)
+            matching = [row for row in bound if row["layer"].casefold() == layer.casefold()]
+            actual = matching[0] if len(matching) == 1 else {}
+            kind = actual.get("pad_shape", "circle")
+            size = actual.get("size_mm", [actual.get("diameter_mm")] * 2)
+            if ("source_id" not in actual or kind != ("rectangle" if expected["pad_shape"] == "rect" else "circle")
+                    or None in size or math.dist(size, expected["size_mm"]) > 2e-6
+                    or kind == "rectangle" and abs(math.remainder(actual["rotation_deg"]-pad["rotation_deg"], 180)) > 1e-6):
+                raise ValueError(f"{format_name}: 층별 관통 패드의 {layer} 도형이 원문과 다릅니다.")
+
+
 def export_package(source, destination, executable, formats, *, manifest_sha256=None):
     """! @brief 원본을 재작성하지 않고 두 출력과 추적 기록을 한 ZIP으로 원자 게시한다."""
     if not formats or set(formats) - set(FORMATS) or len(formats) != len(set(formats)):
@@ -81,6 +107,7 @@ def export_package(source, destination, executable, formats, *, manifest_sha256=
             raise ValueError("KiCad 버전 문자열을 확인할 수 없습니다.")
         for name in SOURCE[:2]:
             (stage / name).write_bytes(source_files[name])
+        board = kicad_reader.read(source_files["board.kicad_pcb"])
         outputs = {}
         for mode in formats:
             name, options = (("board.xml", ["--version", "C"]) if mode == "ipc2581"
@@ -96,6 +123,7 @@ def export_package(source, destination, executable, formats, *, manifest_sha256=
                 raise ValueError("IPC-2581C 파일에 mm 단위의 보드 외곽이 필요합니다.")
             if mode == "odb" and summary["steps"] != summary["steps_with_eda"]:
                 raise ValueError("ODB++ 보드 프로파일에 대응하는 EDA 자료가 누락됐습니다.")
+            verify_padstacks(board, summary, mode)
             outputs[name] = {"bytes": len(raw), "sha256": pcb._hash(raw), "inspection": summary,
                              "arguments": arguments}
         report = {"schema": "rfad.manufacturing-exchange-candidate/0.1",

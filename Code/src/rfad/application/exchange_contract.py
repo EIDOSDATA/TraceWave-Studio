@@ -311,7 +311,10 @@ def pcb_preview(value, view_layer_id=None):
         paths.append(path(drawing_layout.mechanical_loops(footprint["placement_envelope"]), footprint["id"]))
     is_copper = selected in conductors
     if is_copper:
-        rings = drawing_layout.explicit_through_pads(projection)[0] if value["format"] == "kicad_pcb" else {}
+        rings = set()
+        if value["format"] == "kicad_pcb":
+            rings.update(drawing_layout.explicit_through_pads(projection)[0])
+            rings.update(drawing_layout.layered_through_pads(projection)[0])
         for shape in projection["shapes"]:
             if shape["kind"] != "via" and shape["layer_id"] == selected["id"]:
                 paths.append(path(drawing_layout.kicad_copper_loops(projection, shape, rings), shape["id"], shape["net_id"], drawing_layout.COPPER))

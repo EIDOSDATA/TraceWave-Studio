@@ -24,20 +24,25 @@ def contacts(candidate, data):
     for item in data.get("editable_pads", []):
         candidate.source = item["source_id"]
         layer, net = candidate.layer(item["layer"]), candidate.net(item["net"])
+        shape = item.get("pad_shape", "circle")
+        sizes = item["size_mm"] if "size_mm" in item else [item["diameter_mm"]] * 2
+        angle = item.get("rotation_deg", 0)
         matches = [row for row in document["geometry"] if row["kind"] == "pad" and row["layer_id"] == layer
                    and row["frame_id"] == candidate.mapping["frame_id"]
                    and _same_center(document, row["center"], item["center_mm"])]
         if matches:
             row = matches[0]
             dims = point(document, row["size"])
-            if (len(matches) != 1 or row["pad_shape"] != "circle" or row["net_id"] != net or None in dims
-                    or any(abs(v - item["diameter_mm"]) > 2e-6 for v in dims)):
+            rotation = scalar(document, row["rotation"], "angle") if shape == "rectangle" else 0
+            if (len(matches) != 1 or row["pad_shape"] != shape or row["net_id"] != net or None in dims
+                    or any(abs(v - expected) > 2e-6 for v, expected in zip(dims, sizes))
+                    or rotation is None or abs(math.remainder(rotation - angle, 180)) > 1e-6):
                 fail("같은 위치의 기존 패드와 형상 또는 넷이 다릅니다.", "mapping.nets", "E_CONFLICT")
             _bind(candidate, "geometry", row["id"])
         else:
             row = candidate.geometry("pad", layer, net)
-            row.update(pad_shape="circle", center=candidate.point(item["center_mm"]),
-                       size=candidate.point([item["diameter_mm"]] * 2), rotation=candidate.quantity(0, "deg"))
+            row.update(pad_shape=shape, center=candidate.point(item["center_mm"]),
+                       size=candidate.point(sizes), rotation=candidate.quantity(angle, "deg"))
             row = candidate.append("geometry", row)
         pad_ids[candidate.source] = row["id"]
     conductor = sorted((row for row in document["stackup"] if row["role"] == "conductor"), key=lambda row: row["order"])

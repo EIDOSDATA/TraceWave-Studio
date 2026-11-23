@@ -100,6 +100,23 @@ def _read_pad(node, nets, placement, owner):
     at, size = one(node, "at"), one(node, "size")
     angle = (number(at[3]) if len(at) > 3 else 0)
     result.update(kind="pad", pad_type=kind, pad_shape=shape, number=str(node[1]), center_mm=_point(node, "at", placement), size_mm=[number(size[1]),number(size[2])], rotation_deg=angle, layers=[str(item) for item in one(node,"layers")[1:]], footprint_id=owner, drill=None)
+    stack = one(node, "padstack", False)
+    if stack is not None:
+        mode = one(stack, "mode")
+        if kind != "thru_hole" or mode != ["mode", "custom"]:
+            raise ProjectError("E_UNSUPPORTED", "원형 관통 드릴의 층별 custom padstack을 선택하세요.")
+        by_layer = {}
+        for row in stack[1:]:
+            if row[0] == "mode":
+                continue
+            if row[0] != "layer" or len(row) != 4 or row[1] in by_layer or not row[1].endswith(".Cu"):
+                raise ProjectError("E_UNSUPPORTED", "패드스택의 층 또는 추가 형상 규칙을 확인하세요.")
+            shape_row, size_row = one(row, "shape"), one(row, "size")
+            if (len(shape_row) != 2 or len(size_row) != 3 or shape_row[1] not in ("circle", "rect")
+                    or any(number(value) <= 0 for value in size_row[1:])):
+                raise ProjectError("E_UNSUPPORTED", "층별 랜드는 양의 원형 및 사각형만 지원합니다.")
+            by_layer[row[1]] = {"pad_shape": shape_row[1], "size_mm": list(map(number, size_row[1:]))}
+        result["padstack_layers"] = by_layer
     drill = one(node, "drill", False)
     if drill is not None:
         oval = drill[1] == "oval"
@@ -181,7 +198,7 @@ def read(raw):
                 item.update(kind="via",center_mm=_point(node,"at"),size_mm=_scalar(node,"size"),finished_hole_diameter_mm=_scalar(node,"drill"),layers=[str(value) for value in one(node,"layers")[1:]],tool_diameter_mm=None)
                 result["shapes"].append(item)
             elif kind == "pad":
-                _unconsumed(node,{"at","size","layers","net","drill","uuid","tstamp","solder_mask_margin","solder_paste_margin","solder_paste_margin_ratio"},result)
+                _unconsumed(node,{"at","size","layers","net","drill","uuid","tstamp","solder_mask_margin","solder_paste_margin","solder_paste_margin_ratio","padstack"},result)
                 result["shapes"].append(_read_pad(node,nets,placement,owner))
             elif kind == "zone":
                 _unconsumed(node,{"polygon","filled_polygon","layer","net","uuid","tstamp","name","hatch","connect_pads","min_thickness","fill","keepout"},result)

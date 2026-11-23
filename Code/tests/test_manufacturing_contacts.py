@@ -48,6 +48,9 @@ class ManufacturingContactsTests(unittest.TestCase):
     def check_data(self, data, net):
         """! @brief 시험 위치/지름/바깥 구리층과 실제 서브넷만 대조한다."""
         pads = {(p["layer"].casefold(), tuple(p["center_mm"])): p for p in data["editable_pads"]}
+        original = pads.pop(("f.cu", (9, 53)))
+        self.assertEqual(original["pad_shape"], "rectangle")
+        self.assertEqual(original["rotation_deg"], 0)
         self.assertEqual(set(pads), {("f.cu", (17,18)), ("b.cu", (17,18)), ("f.cu", (27,24))})
         for (_, xy), pad in pads.items():
             self.assertAlmostEqual(pad["diameter_mm"], 1.8 if xy == (17,18) else 1.4)

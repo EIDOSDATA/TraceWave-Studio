@@ -24,19 +24,23 @@ def ipc(root, step, layers, stackups, scale):
     from rfad.adapters.exchange.ipc2581_reader import NS, UNITS_MM
 
     pads, holes, stack = [], [], []
-    circles, seen = {}, set()
+    primitives, seen = {}, set()
     for table in root.iter(NS + "DictionaryStandard"):
         unit = UNITS_MM.get(table.get("units"))
         for entry in table.findall(NS + "EntryStandard"):
             key = entry.get("id")
             if key in seen:
-                circles.pop(key, None)
+                primitives.pop(key, None)
                 continue
             seen.add(key)
             if unit and len(entry) == 1 and entry[0].tag == NS + "Circle" and not len(entry[0]):
                 value = number(entry[0].get("diameter"), unit)
                 if value and value > 0:
-                    circles[key] = value
+                    primitives[key] = {"diameter_mm": value}
+            if unit and len(entry) == 1 and entry[0].tag == NS + "RectCenter" and not len(entry[0]):
+                sizes = [number(entry[0].get(key), unit) for key in ("width", "height")]
+                if all(value and value > 0 for value in sizes):
+                    primitives[key] = {"pad_shape": "rectangle", "size_mm": sizes}
     by_layer = {layer.get("name"): layer for layer in layers if layer.get("polarity") == "POSITIVE"}
     if len({layer.get("name") for layer in layers}) != len(layers):
         return [], [], []
@@ -85,10 +89,15 @@ def ipc(root, step, layers, stackups, scale):
                     if len(locations) != 1 or len(definitions) != 1:
                         continue
                     at = point(locations[0].get("x"), locations[0].get("y"), scale)
-                    size = circles.get(definitions[0].get("id"))
-                    if at and size:
+                    shape = primitives.get(definitions[0].get("id"))
+                    angle = number(transforms[0].get("rotation", "0")) if transforms else 0
+                    mirror = transforms[0].get("mirror", "false") if transforms else "false"
+                    if shape and "size_mm" in shape and mirror not in ("false", "0"):
+                        continue
+                    if at and shape and angle is not None:
+                        geometry = {**shape, "rotation_deg": math.remainder(angle, 360)} if "size_mm" in shape else shape
                         pads.append({"source_id": identity, "layer": name, "net": net, "center_mm": at,
-                                     "diameter_mm": size, "group": item.get("padstackDefRef")})
+                                     **geometry, "group": item.get("padstackDefRef")})
                 elif item.tag == NS + "Hole" and layer.get("layerFunction") == "DRILL":
                     spans = layer.findall(NS + "Span")
                     if len(spans) != 1 or len(conductor) < 2:
@@ -144,7 +153,7 @@ def _pin_groups(lines):
     return terminals
 
 
-def _odb_rounds(text):
+def _odb_pads(text):
     """! @brief 상쇄 특징 없는 레이어에서 순번 보존 원형 플래시와 원형 심벌 치수를 읽는다."""
     from rfad.adapters.exchange.odb_reader import FACTORS
 
@@ -166,7 +175,11 @@ def _odb_rounds(text):
             if len(row) == 2 and re.fullmatch(r"r[0-9]+(?:[.][0-9]+)?", row[1]):
                 size = number(row[1][1:], scale / 1000)
                 if size and size > 0:
-                    symbols[op[1:]] = size
+                    symbols[op[1:]] = {"diameter_mm": size}
+            elif len(row) == 2 and re.fullmatch(r"rect[0-9]+(?:[.][0-9]+)?x[0-9]+(?:[.][0-9]+)?", row[1]):
+                sizes = [number(value, scale / 1000) for value in row[1][4:].split("x")]
+                if all(value and value > 0 for value in sizes):
+                    symbols[op[1:]] = {"pad_shape": "rectangle", "size_mm": sizes}
         elif op in {"L", "A", "P", "S", "T", "B"}:
             index += 1
             polarity = {"L": 6, "A": 8, "P": 4, "S": 1, "T": 5, "B": 5}[op]
@@ -174,8 +187,22 @@ def _odb_rounds(text):
                 return []
             if op == "P" and len(row) in (7, 8) and row[3] in symbols and scale is not None:
                 at = point(row[1], row[2], scale)
+                shape = symbols[row[3]]
+                if "size_mm" in shape:
+                    code = row[6]
+                    angle = None
+                    if code in ("8", "9") and len(row) == 8:
+                        angle = number(row[7])
+                    elif len(row) == 7 and code in "01234567" and len(code) == 1:
+                        angle = (int(code) % 4) * 90
+                    if angle is not None and code in ("0", "1", "2", "3", "8"):
+                        # @brief ODB 회전 뒤 X축 반사는 중심 사각형의 회전 부호를 다시 바꾼다.
+                        angle = -angle
+                    if angle is None:
+                        continue
+                    shape = {**shape, "rotation_deg": math.remainder(angle, 360)}
                 if at:
-                    found.append((index, at, symbols[row[3]]))
+                    found.append((index, at, shape))
         elif op not in {"F", "OB", "OS", "OC", "OE", "SE"}:
             return []
     return found
@@ -234,13 +261,14 @@ def odb(archive, names, prefix, step, matrix, info):
                 state = {"VIA": "plated", "PLATED": "plated", "NON_PLATED": "unplated"}.get(attr.get("TYPE"))
                 if diameter and diameter > 0 and state:
                     tools.append((diameter, state))
-        for index, at, diameter in _odb_rounds(_text(archive, path + "features")):
+        for index, at, shape in _odb_pads(_text(archive, path + "features")):
             relation = pins.get(("C" if kind == "SIGNAL" else "H", name, index))
             identity = f"contact:{name}:{index}"
             if kind == "SIGNAL" and relation:
                 pads.append({"source_id": identity, "center_mm": at, "net": relation[0], "group": relation[1],
-                             "diameter_mm": diameter, "layer": name})
-            elif kind == "DRILL":
+                             **shape, "layer": name})
+            elif kind == "DRILL" and "diameter_mm" in shape:
+                diameter = shape["diameter_mm"]
                 matches = {state for size, state in tools if abs(size - diameter) <= 1e-6}
                 if len(matches) == 1:
                     state, = matches

@@ -154,7 +154,7 @@ def _graphic(shape, identity, layer, local=None, prefix="gr"):
     return result
 
 
-def _footprint(record, projection, layers, nets, standalone=False):
+def _footprint(record, projection, layers, nets, standalone=False, *, padstacks=None):
     """! @brief 세계좌표 원본에서 수신 상대좌표를 한 번만 계산한다."""
     placement=record["placement"]
     origin,angle=placement["origin_mm"],math.radians(placement["rotation_deg"])
@@ -176,8 +176,11 @@ def _footprint(record, projection, layers, nets, standalone=False):
     holes={item["id"]:item for item in projection["mechanical"]["holes"]}
     apertures={item["id"]:item for item in projection.get("apertures",[])}
     keepouts={item["id"]:item for item in projection.get("keepouts",[])}
+    stack_ids = {pad["id"] for stack in (padstacks or {}).values() for pad in stack["pads"]}
     for member in record["members"]:
         identity=member["id"]
+        if member["collection"] == "geometry" and identity in stack_ids:
+            continue
         if member["collection"]=="geometry":
             shape=shapes.get(identity)
             if shape is None or shape["kind"]!="pad":
@@ -190,7 +193,9 @@ def _footprint(record, projection, layers, nets, standalone=False):
             if standalone:
                 hole["plating"]["net_id"]=None
                 hole["shape"]["rotation_deg"]=hole["shape"].get("rotation_deg",0)-placement["rotation_deg"]
-            result.append(_hole(hole,nets,next((pin["number"] for pin in record.get("pins",[]) if pin.get("hole_id")==identity),"")))
+            number = next((pin["number"] for pin in record.get("pins",[]) if pin.get("hole_id")==identity), "")
+            stack = (padstacks or {}).get(identity)
+            result.append(_stacked_hole(hole, stack, layers, nets, number) if stack else _hole(hole, nets, number))
         elif member["collection"]=="apertures":
             aperture=apertures[identity]
             result.extend(_graphic(aperture["shape"],identity,_artwork_name(projection,aperture["artwork_layer_id"]),local,"fp"))
@@ -246,6 +251,24 @@ def _hole(hole, nets, number="", pad_diameter=None):
     return "(pad "+q(number)+" " + ("thru_hole" if plating["state"] == "plated" else "np_thru_hole") + " " + ("oval" if shape["kind"] == "capsule" else "circle") + " (at " + _xy(shape["center_mm"]) + " " + n(shape.get("rotation_deg", 0)) + ") (size " + n(size[0]) + " " + n(size[1]) + ") " + drill + ' (layers "*.Cu") ' + _net(plating["net_id"], nets, True) + " (uuid " + q(hole["id"]) + "))"
 
 
+def _stacked_hole(hole, stack, layers, nets, number=""):
+    """! @brief KiCad custom padstack에서 상층 기본형과 나머지 층의 실제 도형을 내보낸다."""
+    def geometry(pad):
+        """! @brief 정사각형 치수도 원문 도형 이름과 함께 보존한다."""
+        return ("circle" if pad["pad_shape"] == "circle" else "rect"), " ".join(map(n, pad["size_mm"]))
+    first, *rest = stack["pads"]
+    shape, size = geometry(first)
+    overrides = []
+    for pad in rest:
+        kind, dims = geometry(pad)
+        overrides.append("(layer " + q(layers[pad["layer_id"]]) + " (shape " + kind + ") (size " + dims + "))")
+    drill = n(hole["shape"]["diameter_mm"])
+    net = _net(hole["plating"]["net_id"], nets, True)
+    return ("(pad " + q(number) + " thru_hole " + shape + " (at " + _xy(hole["shape"]["center_mm"]) +
+            " " + n(stack["angle"]) + ") (size " + size + ") (drill " + drill + ') (layers "*.Cu") ' + net +
+            " (uuid " + q(hole["id"]) + ") (padstack (mode custom) " + " ".join(overrides) + "))")
+
+
 def _wrapper(identity, contents, name="TraceWave standalone geometry"):
     """! @brief 독립 패드의 기술 컨테이너를 실제 소자 출처와 혼동하지 않게 이름 붙인다."""
     return "(footprint " + q(name) + ' (layer "F.Cu") (at 0 0) (uuid ' + q(identity) + ') (attr board_only exclude_from_pos_files exclude_from_bom) (property "TraceWaveContainer" "true" (at 0 0) (layer "F.Fab") (hide yes) (effects (font (size 1 1) (thickness 0.15)))) ' + " ".join(contents) + ")"
@@ -283,8 +306,11 @@ def write_board(projection):
         result.extend(_edge(cutout["shape"], cutout["id"]))
     footprints=projection.get("footprints",[])
     owned={(member["collection"],member["id"]) for footprint in footprints for member in footprint["members"]}
-    from rfad.domain.drawing_layout import explicit_through_pads, kicad_copper_loops
+    from rfad.domain.drawing_layout import explicit_through_pads, kicad_copper_loops, layered_through_pads
     rings, bundled = explicit_through_pads(projection)
+    custom, custom_ids = layered_through_pads(projection)
+    bundled.update(custom_ids)
+    ring_ids = rings.keys() | custom.keys()
     shapes = projection["shapes"]
     for shape in shapes:
         if ("geometry",shape["id"]) in owned or shape["id"] in bundled:
@@ -304,7 +330,7 @@ def write_board(projection):
         elif kind == "planar_region":
             from rfad.adapters.exchange.pcb_geometry import filled_cache
             zone_net="(net "+q("" if shape["net_id"] is None else nets[shape["net_id"]][1])+")"
-            result.append(_zone(shape, layer, zone_net, cache=filled_cache(kicad_copper_loops(projection, shape, rings))))
+            result.append(_zone(shape, layer, zone_net, cache=filled_cache(kicad_copper_loops(projection, shape, ring_ids))))
         elif kind == "pad":
             result.append(_wrapper(_id(shape["id"], "container"), [_pad(shape, layer, _net(shape["net_id"], nets, True))]))
         elif kind == "via":
@@ -315,9 +341,11 @@ def write_board(projection):
             raise ProjectError("E_UNSUPPORTED", "지원하지 않는 KiCad 구리 객체입니다: " + kind)
     for hole in projection["mechanical"]["holes"]:
         if ("holes",hole["id"]) not in owned:
-            result.append(_wrapper(_id(hole["id"], "container"), [_hole(hole, nets, pad_diameter=rings.get(hole["id"]))], "TraceWave mechanical bore"))
+            stack = custom.get(hole["id"])
+            bore = _stacked_hole(hole, stack, layers, nets) if stack else _hole(hole, nets, pad_diameter=rings.get(hole["id"]))
+            result.append(_wrapper(_id(hole["id"], "container"), [bore], "TraceWave mechanical bore"))
     for footprint in footprints:
-        result.append(_footprint(footprint,projection,layers,nets))
+        result.append(_footprint(footprint, projection, layers, nets, padstacks=custom))
     for aperture in projection.get("apertures",[]):
         if ("apertures",aperture["id"]) not in owned:
             result.extend(_graphic(aperture["shape"],aperture["id"],_artwork_name(projection,aperture["artwork_layer_id"])))

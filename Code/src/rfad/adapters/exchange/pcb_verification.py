@@ -184,10 +184,14 @@ def kicad(raw,projection,format_name,options):
         identity=shape["id"]
         if identity in through_pads:
             pad = items[through_pads[identity]]
-            require(shape["kind"] == "pad" and shape["pad_shape"] == "circle" and pad["pad_type"] == "thru_hole"
-                    and pad["pad_shape"] == "circle" and pad["layers"] == ["*.Cu"]
+            actual_layer = pad.get("padstack_layers", {}).get(layers[shape["layer_id"]], pad)
+            kind = "circle" if shape["pad_shape"] == "circle" else "rect"
+            require(shape["kind"] == "pad" and pad["pad_type"] == "thru_hole"
+                    and actual_layer["pad_shape"] == kind and pad["layers"] == ["*.Cu"]
                     and pad["net_name"] == nets.get(shape["net_id"]) and _close(pad["center_mm"], shape["center_mm"])
-                    and _close(pad["size_mm"], shape["size_mm"]), "관통 홀의 실제 구리 패드가 원본과 다릅니다.")
+                    and _close(actual_layer["size_mm"], shape["size_mm"])
+                    and (kind == "circle" or abs(math.remainder(pad["rotation_deg"] - shape["rotation_deg"], 180)) < 1e-6),
+                    "관통 홀의 실제 층별 구리 패드가 원본과 다릅니다.")
             continue
         if shape["kind"]=="arc_path" and abs(shape["sweep_angle_deg"])>=359.999999:
             ids=[str(uuid5(UUID(identity),str(index))) for index in (0,1)]
@@ -250,7 +254,9 @@ def kicad(raw,projection,format_name,options):
         if tied:
             require(len(tied) == len(copper) and {r["layer_id"] for r in tied} == {r["id"] for r in copper},
                     "관통 패드와 원문 도체층의 수 또는 위치가 다릅니다.")
-            size = tied[0]["size_mm"]
+            size = next(row["size_mm"] for row in tied if row["layer_id"] == copper[0]["id"])
+            if "padstack_layers" in item:
+                rotation = next((row["rotation_deg"] for row in tied if row["pad_shape"] == "rectangle"), 0)
         else:
             require(thickness is not None, "원본 패드 또는 도금 두께에 구리 외경의 근거가 없습니다.")
             size = [length + 2 * thickness, width + 2 * thickness]

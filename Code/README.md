@@ -82,3 +82,5 @@ ctest --preset windows-release
 일차원 유전체 격자의 주기 경계와 TE/TM 회절은 `python -m rfad floquet fixtures/floquet_dielectric_grating.json`으로 계산한다. [입력과 검증](../01_개발문서/07_검증/403_유전체_격자의_주기_플로케_경계_검증.md)
 
 직사각 도파관의 TE 다중모드 반사 및 전달은 `python -m rfad waveguide-modes fixtures/waveguide_te_step.json`으로 계산한다. [입력과 검증](../01_개발문서/07_검증/404_직사각_도파관_폭단차의_다중모드_검증.md)
+
+단일 보드 ODB++ 외곽과 원문을 재사용한 반복 패널은 `python -m rfad manufacturing-panel --help`에서 옵션을 확인한다. [패드스택과 패널 검증](../01_개발문서/07_검증/407_층별_패드스택과_오디비_반복패널_검증.md)

@@ -294,6 +294,42 @@ def explicit_through_pads(projection):
     return by_hole, bundled
 
 
+def layered_through_pads(projection):
+    """! @brief 같은 홀과 소유자를 공유하는 실제 층별 원형 및 사각 랜드를 연결한다."""
+    owners = {(entry["collection"], entry["id"]): footprint["id"] for footprint in projection.get("footprints", [])
+              for entry in footprint["members"]}
+    by_id = {shape["id"]: shape for shape in projection["shapes"]}
+    copper = [layer["id"] for layer in sorted(projection["layers"], key=lambda layer: -layer["z_min_mm"])
+              if layer["role"] == "conductor"]
+    rings, used = {}, set()
+    for hole in projection["mechanical"]["holes"]:
+        shape, metal = hole["shape"], hole["plating"]
+        ids = metal["pad_ids"]
+        if shape["kind"] != "circle" or metal["state"] != "plated" or not ids or len(ids) != len(copper):
+            continue
+        owner = owners.get(("holes", hole["id"]))
+        pads = [by_id.get(identity) for identity in ids if owners.get(("geometry", identity)) == owner]
+        if len(pads) != len(ids) or any(pad is None or pad["kind"] != "pad" for pad in pads):
+            continue
+        layers = {pad["layer_id"]: pad for pad in pads}
+        if set(layers) != set(copper) or not all(
+                pad["pad_shape"] in ("rectangle", "circle") and pad["net_id"] == metal["net_id"]
+                and min(pad["size_mm"]) > shape["diameter_mm"] and math.dist(pad["center_mm"], shape["center_mm"]) < 1e-9
+                for pad in pads):
+            continue
+        angles = [pad["rotation_deg"] for pad in pads if pad["pad_shape"] == "rectangle"]
+        if not angles and all(pad["size_mm"] == pads[0]["size_mm"] for pad in pads):
+            continue
+        angle = angles[0] if angles else 0
+        if any(abs(math.remainder(value-angle, 180)) > 1e-8 for value in angles):
+            continue
+        if used.intersection(ids):
+            raise ProjectError("E_CONNECTIVITY", "둘 이상의 층별 관통 홀이 같은 구리 패드를 참조합니다.")
+        used.update(ids)
+        rings[hole["id"]] = {"angle": angle, "pads": [layers[layer] for layer in copper]}
+    return rings, used
+
+
 def kicad_copper_loops(projection, shape, through_hole_ids):
     """! @brief 관통 패드로 따로 그린 구리는 KiCad 구리면 캐시에서 완성 홀 개구만 절삭한다."""
     if not through_hole_ids:

@@ -15,6 +15,10 @@ def main(argv: list[str] | None = None) -> int:
         from rfad.cli.em_case import main as em_case_main
 
         return em_case_main(arguments[1:], mode=arguments[0])
+    if arguments[:1] == ["manufacturing-panel"]:
+        from rfad.cli.manufacturing_panel import main as panel_main
+
+        return panel_main(arguments[1:])
     if arguments[:1] == ["field-study"]:
         from rfad.cli.field_study import main as field_study_main
 
@@ -36,7 +40,7 @@ def main(argv: list[str] | None = None) -> int:
 
         return altium_drill_main(arguments[1:])
     parser = argparse.ArgumentParser(prog="rfad")
-    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy", "pcb-multiport", "sweep-refine", "field-study", "floquet", "waveguide-modes"))
+    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy", "pcb-multiport", "sweep-refine", "field-study", "floquet", "waveguide-modes", "manufacturing-panel"))
     args, remainder = parser.parse_known_args(arguments)
     if args.command == "doctor":
         from rfad.cli.doctor import main as doctor_main

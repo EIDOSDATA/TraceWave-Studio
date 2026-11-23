@@ -218,6 +218,9 @@ def read(raw):
             editable, traces = None, []
             regions, omitted = [], []
             pads, bores, stack, components = [], [], [], []
+            from rfad.adapters.exchange.odb_panel import inspect
+
+            panels, panel_losses = inspect(archive, names, prefix, steps)
             if len(steps) == 1 and _matches_step(levels, steps[0]):
                 content = _text(archive, board_paths[0])
                 header_path = f"{prefix}steps/{steps[0]}/stephdr"
@@ -242,13 +245,20 @@ def read(raw):
         loss = {"code": "odbpp_partial_copper", "raw_preserved": True,
                 "message": f"외곽과 절삭을 대조합니다. 층과 넷을 지정하면 EDA 배선 참조가 있는 직선 및 원호 {len(traces)}개를 반영합니다. 나머지 제조 정보는 원문에 보존합니다."}
     if pads or bores or stack or components:
-        loss = {**loss, "message": loss["message"] + f" 선택 가능한 원형 패드 {len(pads)}개, 원형 홀 {len(bores)}개, 적층 {len(stack)}개, 실장 위치 {len(components)}개."}
+        loss = {**loss, "message": loss["message"] + f" 선택 가능한 원형 및 사각 패드 {len(pads)}개, 원형 홀 {len(bores)}개, 적층 {len(stack)}개, 실장 위치 {len(components)}개."}
     if regions or omitted:
         reasons = sorted({row["reason"] for row in omitted})
         summary = f" 적용 가능한 채움 동박 {len(regions)}개, 제외 {len(omitted)}건."
         loss = {**loss, "message": loss["message"] + summary + (" " + " ".join(reasons) if reasons else "")}
+    if panels:
+        arrays = [row for panel in panels for row in panel["repeats"]]
+        instances = sum(math.prod(row["count"]) for row in arrays)
+        loss = {**loss, "message": f"원본 보드 step을 참조하는 패널 {len(panels)}개, 반복 배치 {len(arrays)}개와 보드 {instances}개를 확인했습니다."}
+    if panel_losses:
+        loss = {**loss, "message": loss["message"] + f" 지원하지 않는 패널 구성 {len(panel_losses)}건은 원문에 보존합니다."}
     return {"editable_regions": regions, "region_exclusions": omitted[:128], "region_exclusion_count": len(omitted),
             "editable_components": components, "editable_pads": pads, "editable_holes": bores, "editable_stack": stack,
             "editable_traces": traces, "schema": "rfad.odbpp-read/0.1", "version": version, "source_sha256": hashlib.sha256(raw).hexdigest(),
             "steps": steps, "steps_with_eda": with_eda, "layer_count": layers, "feature_files": features,
+            "panels": panels, "panel_exclusions": panel_losses,
             "editable_profile": editable, "losses": [loss]}
