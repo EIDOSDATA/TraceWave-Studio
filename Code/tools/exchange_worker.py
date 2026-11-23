@@ -33,6 +33,7 @@ def main():
     from rfad.application.source_bundle import source_hash
     from rfad.application.canonical import canonical_bytes
     from rfad.domain.errors import ProjectError
+    from rfad.runtime_platform import machine_name
 
     result = {"schema": "rfad.exchange-worker-result/0.1", "run_id": request["run_id"],
               "nonce": request["nonce"], "input_sha256": request["input_sha256"]}
@@ -49,7 +50,7 @@ def main():
         runtime = json.loads(runtime_raw)
         python = runtime["python"]
         if (platform.python_implementation() != python["implementation"] or sys.platform != python["platform"]
-                or platform.machine().upper() != python["architecture"].upper()
+                or machine_name(process=True).upper() != python["architecture"].upper()
                 or ".".join(str(v) for v in sys.version_info[:2]) != python["version_series"]):
             raise ProjectError("E_VERSION", "출력 Python/OS/CPU가 고정 설치와 다릅니다.")
         installed = {re.sub(r"[-_.]+", "-", item.metadata["Name"]).lower(): item.version for item in importlib.metadata.distributions()}

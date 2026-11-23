@@ -37,6 +37,7 @@ def main() -> int:
     from rfad.application.canonical import canonical_bytes
     from rfad.application.cad_runtime import CadRuntime, file_hash
     from rfad.domain.errors import ProjectError
+    from rfad.runtime_platform import machine_name
 
     result = {"schema": "rfad.cad-worker-result/0.1", "run_id": request["run_id"],
               "nonce": request["nonce"], "input_sha256": request["input_sha256"]}
@@ -52,7 +53,7 @@ def main() -> int:
         expected_python = runtime["python"]
         if (platform.python_implementation() != expected_python["implementation"]
                 or ".".join(str(part) for part in sys.version_info[:2]) != expected_python["version_series"]
-                or sys.platform != expected_python["platform"] or platform.machine().upper() != expected_python["architecture"].upper()):
+                or sys.platform != expected_python["platform"] or machine_name(process=True).upper() != expected_python["architecture"].upper()):
             raise ProjectError("E_VERSION", "CAD worker의 Python/운영체제/CPU가 고정 명세와 다릅니다.")
         installed = {re.sub(r"[-_.]+", "-", distribution.metadata["Name"]).lower(): distribution.version for distribution in importlib.metadata.distributions()}
         if any(re.match(r"^(pyqt|pyside|shiboken|qt|cq-editor)", name) for name in installed):

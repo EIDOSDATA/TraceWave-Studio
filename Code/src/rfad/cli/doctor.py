@@ -22,6 +22,8 @@ import subprocess
 import sys
 from typing import Any, Sequence
 
+from rfad.runtime_platform import machine_name, os_version, system_name
+
 
 DEFAULT_TIMEOUT_SECONDS = 5.0
 REPORT_OUTPUT_LIMIT = 16_384
@@ -197,6 +199,7 @@ def build_report(timeout: float = DEFAULT_TIMEOUT_SECONDS) -> dict[str, Any]:
     if not math.isfinite(timeout) or timeout <= 0:
         raise ValueError("질의 제한 시간은 유한한 양수여야 합니다.")
     tools = {name: probe_tool(name, arguments, timeout) for name, arguments in TOOL_QUERIES.items()}
+    release, version = os_version()
     return {
         "report_schema": "rfad.doctor/0.1",
         "scope": "actual_environment",
@@ -210,10 +213,10 @@ def build_report(timeout: float = DEFAULT_TIMEOUT_SECONDS) -> dict[str, Any]:
             "executable": binary_identity(sys.executable),
         },
         "os": {
-            "system": platform.system(),
-            "release": platform.release(),
-            "version": platform.version(),
-            "machine": platform.machine(),
+            "system": system_name(),
+            "release": release,
+            "version": version,
+            "machine": machine_name(),
             "platform": sys.platform,
         },
         "tools": tools,

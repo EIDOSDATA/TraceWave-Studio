@@ -28748,7 +28748,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 645351,
-      "working_tree_sha256": "ad6859da729433b18ad11399d9c884cae7ece8b7bb46a549018f690efe8c7e65"
+      "working_tree_sha256": "9a7c479804c1830b10b5950d548a1049743239b0bfb04d7b7befb0d51d716df1"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32716,9 +32716,9 @@
       "path": "01_개발문서/08_운영환경/01_파이썬_개발환경.md",
       "category": "current_08_운영환경",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 10148,
-      "working_tree_sha256": "97a1f2deab7894136e699ff9b0a3668a67ca4a7d5277a1399e1557f34fa973c5",
-      "text_lines": 82,
+      "bytes": 11154,
+      "working_tree_sha256": "7d7295b17d5fc733806e4fefae69e0751cf8c1963f8d72552df806ca074e84a6",
+      "text_lines": 88,
       "text_status": "utf8_read"
     },
     {

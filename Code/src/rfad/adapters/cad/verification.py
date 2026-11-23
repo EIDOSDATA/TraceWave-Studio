@@ -1,6 +1,7 @@
 """! @brief 별도 worker가 기존 STEP의 닫힌 바이트를 다시 읽어 기하를 검수한다."""
 
 from copy import deepcopy
+from rfad.runtime_platform import platform_label
 import json
 from pathlib import Path
 
@@ -59,7 +60,7 @@ def verify_package(projection: dict, source_dir: Path, output_dir: Path) -> dict
     import OCP
 
     runtime = {"cadquery": importlib.metadata.version("cadquery"), "cadquery_ocp": importlib.metadata.version("cadquery-ocp"),
-               "ocp": OCP.__version__, "python": platform.python_version(), "platform": platform.platform()}
+               "ocp": OCP.__version__, "python": platform.python_version(), "platform": platform_label()}
     report = {"schema": "rfad.step-verification/0.1", "status": "generated_unverified", "run_id": projection["run_id"],
               "input": deepcopy(projection), "original_writer_runtime": sidecar.get("runtime"), "reader_runtime": runtime,
               "verification": verification, "physics_verified": False, "manufacturing_verified": False}

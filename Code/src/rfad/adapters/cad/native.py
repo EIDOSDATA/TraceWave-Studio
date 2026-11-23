@@ -13,6 +13,7 @@ import platform
 import re
 
 from rfad.application.canonical import canonical_bytes
+from rfad.runtime_platform import platform_label
 from rfad.adapters.cad.geometry import _require
 from rfad.adapters.cad.bodies import _make_bodies, _metrics, _check_pairs, _check_via_contacts
 from rfad.adapters.cad.step_io import _write_step, _read_step_shapes, _compare, read_step, verify_assemblies
@@ -85,7 +86,7 @@ def build_package(projection: dict, output_dir: Path) -> dict:
     _write_display_mesh(bodies, projection, paths["mesh.json"])
     runtime = {"cadquery": importlib.metadata.version("cadquery"),
                "cadquery_ocp": importlib.metadata.version("cadquery-ocp"),
-               "ocp": OCP.__version__, "python": platform.python_version(), "platform": platform.platform()}
+               "ocp": OCP.__version__, "python": platform.python_version(), "platform": platform_label()}
     files = [_file(paths["model.step"], "step", "model/step"),
              _file(paths["model.brep"], "brep", "application/vnd.opencascade.brep"),
              _file(paths["mesh.json"], "display_mesh", "application/json")]

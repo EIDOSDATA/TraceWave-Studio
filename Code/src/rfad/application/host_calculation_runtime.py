@@ -11,6 +11,7 @@ import threading
 from uuid import uuid4
 
 from rfad import _source_loading
+from rfad.runtime_platform import machine_name, system_name
 from rfad.adapters.network_backend import installation_metadata
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.native_process import run_native
@@ -46,7 +47,7 @@ def capture():
 def python_identity():
     """! @brief 실행 파일과 실제 ABI를 세션에 고정한다."""
     return {"implementation": sys.implementation.name, "version": platform.python_version(),
-            "system": platform.system(), "machine": platform.machine(), "pointer_bits": struct.calcsize("P") * 8,
+            "system": system_name(), "machine": machine_name(), "pointer_bits": struct.calcsize("P") * 8,
             "byteorder": sys.byteorder, "sha256": hashlib.sha256(Path(sys.executable).read_bytes()).hexdigest()}
 
 

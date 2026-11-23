@@ -14848,8 +14848,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/native.py",
-      "text_sha256": "5495fe39f39af934a90ae5826040187e9018ccb9c7da9d78e669b8de0b7a6104",
-      "utf8_bytes": 7651
+      "text_sha256": "9203e217f5d6b29fc3fbbe98f851e1a51a104f6a1c3dd38bba268d0d0d4923a4",
+      "utf8_bytes": 7697
     },
     {
       "path": "Code/src/rfad/adapters/cad/physical.py",
@@ -14863,8 +14863,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/cad/verification.py",
-      "text_sha256": "00e56dfb34f3c202ad57df66fa4cd76843881fedc6baf22a8d9c68948e17061a",
-      "utf8_bytes": 5545
+      "text_sha256": "daa75836078774328ea41954a1f201a81c0766d732f0ebc91c2024c00c8df006",
+      "utf8_bytes": 5591
     },
     {
       "path": "Code/src/rfad/adapters/exchange/cam_reader.py",
@@ -15478,8 +15478,8 @@
     },
     {
       "path": "Code/src/rfad/cli/doctor.py",
-      "text_sha256": "80be1ab1fc4d387178f6b70cc4a1241b21c793d33648660c443ce9a3946139fb",
-      "utf8_bytes": 11085
+      "text_sha256": "55c10aeef1ab5e095fec6226badce4495219ac86f1e98f97da4b3f7c40b83256",
+      "utf8_bytes": 11164
     },
     {
       "path": "Code/src/rfad/domain/boundary_distance.py",
