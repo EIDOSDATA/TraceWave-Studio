@@ -80,6 +80,10 @@ def export_mode(case, side, name, frequency, pitch, destination):
     scalar[table["node_indices"]] = entry["scalar_nodal_values_per_mm"]
     lower = geometry[table["node_indices"]].min(axis=0)
     upper = geometry[table["node_indices"]].max(axis=0)
+    triples = geometry[elements]
+    dx, dy = np.moveaxis(triples[:, 1:] - triples[:, :1], -1, 0)
+    area = float(np.sum(abs(dx[:, 0] * dy[:, 1] - dx[:, 1] * dy[:, 0]))) / 2
+    rectangular = math.isclose(area, math.prod(upper - lower), rel_tol=1e-10)
     counts = [math.ceil(value / pitch) + 1 for value in upper - lower]
     if min(counts) < 3 or math.prod(counts) > 262144:
         fail("각 축 3점 이상, 총 262144점 이내의 모드 격자를 선택하십시오.", "pitch_mm", "E_RESOURCE")
@@ -100,7 +104,8 @@ def export_mode(case, side, name, frequency, pitch, destination):
         data = {
             "schema": "rfad.openems.waveguide-mode-files/0.1", "input_sha256": result["input_sha256"],
             "section": side, "mode": name, "polarization": entry["polarization"],
-            "coordinates": "global_xy_mm", "port_inward_direction": result["port_inward_directions"][side],
+            "coordinates": "global_xy_mm", "section_geometry": "rectangle" if rectangular else "polygon",
+            "port_inward_direction": result["port_inward_directions"][side],
             "reference_plane_z_mm": result["reference_planes_z_mm"][side],
             "field_convention": "unit L2 tangential E shape; forward H shape is +Z cross E",
             "frequency_hz": frequency, "epsilon_r": case["epsilon_r"], "cutoff_hz": entry["cutoff_hz"],

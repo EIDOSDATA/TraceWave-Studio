@@ -226,6 +226,30 @@ class WaveguideSectionTests(unittest.TestCase):
                 export_mode(case, "wide", "TE1", 10.5e9, 0.5, destination)
             self.assertEqual((destination / "mode.json").read_bytes(), original)
 
+    def test_pcb_mode_source_checks_port_geometry_and_hash(self):
+        """! @brief PCB 포트 파일이 같은 단면과 원문 해시를 요구하는지 확인한다."""
+        import h5py
+        import numpy as np
+        from tempfile import TemporaryDirectory
+
+        from rfad.cli.pcb_waveguide import _field_files
+        from rfad.cli.waveguide_mode_files import export_mode
+
+        case = rectangular_step([20, 10], [20, 10], [0, 0], 0.65, 10.5e9, 12)
+        with TemporaryDirectory() as directory:
+            destination = Path(directory) / "mode"
+            export_mode(case, "wide", "TE1", 10.5e9, 0.75, destination)
+            mode, _, cutoff, impedance = _field_files(np, h5py, destination, [20, 10], [10e9, 11e9])
+            self.assertEqual(mode["section_geometry"], "rectangle")
+            self.assertGreater(cutoff, 150)
+            self.assertGreater(impedance[0], impedance[1])
+            with self.assertRaises(ProjectError):
+                _field_files(np, h5py, destination, [21, 10], [10e9, 11e9])
+            with (destination / "electric.h5").open("ab") as stream:
+                stream.write(b"changed")
+            with self.assertRaisesRegex(ProjectError, "해시"):
+                _field_files(np, h5py, destination, [20, 10], [10e9, 11e9])
+
     def test_rejects_repeated_and_nonconforming_mesh(self):
         """! @brief 중복 요소와 두 부분으로 나뉜 개구를 진단한다."""
         original = triangle_guide(20, 12)

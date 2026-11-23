@@ -14,6 +14,7 @@ from rfad.domain.design import (
     validate_design,
 )
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_NETWORK_PORTS
 from rfad.domain.project import apply_command, new_project, validate_project
 from rfad.domain.units import Quantity
 
@@ -283,15 +284,16 @@ class DesignTests(unittest.TestCase):
         port["polarity"] = True
         self.assert_rejected("port.set", {"port": port}, "E_PORT")
 
-    def test_two_ports_and_excluded_conductors(self) -> None:
-        """! @brief 네 급전을 저장하고 다섯 번째 포트와 해석 제외 도체를 진단한다."""
+    def test_port_limit_and_excluded_conductors(self) -> None:
+        """! @brief 지원 상한까지 급전을 저장하고 초과 포트와 해석 제외 도체를 진단한다."""
         port = deepcopy(self.document["ports"][0])
         port.update({"id": identity(10), "name": "P2"})
         apply_design_command(self.document, "port.set", {"port": port})
         self.assertEqual(len(self.document["ports"]), 2)
-        for ordinal in (3, 4):
+        for ordinal in range(3, MAX_NETWORK_PORTS + 1):
             apply_design_command(self.document, "port.set", {"port": {**port, "id": identity(40 + ordinal), "name": f"P{ordinal}"}})
-        self.assert_rejected("port.set", {"port": {**port, "id": identity(45), "name": "P5"}}, "E_UNSUPPORTED")
+        ordinal = MAX_NETWORK_PORTS + 1
+        self.assert_rejected("port.set", {"port": {**port, "id": identity(40 + ordinal), "name": f"P{ordinal}"}}, "E_UNSUPPORTED")
         geometry = deepcopy(self.document["geometry"][0])
         geometry["include_in_em"] = False
         apply_design_command(self.document, "geometry.set", {"geometry": geometry})

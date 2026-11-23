@@ -15,6 +15,10 @@ def main(argv: list[str] | None = None) -> int:
         from rfad.cli.em_case import main as em_case_main
 
         return em_case_main(arguments[1:], mode=arguments[0])
+    if arguments[:1] == ["pcb-waveguide"]:
+        from rfad.cli.pcb_waveguide import main as pcb_waveguide_main
+
+        return pcb_waveguide_main(arguments[1:])
     if arguments[:1] == ["waveguide-mode-files"]:
         from rfad.cli.waveguide_mode_files import main as mode_files_main
 
@@ -44,7 +48,7 @@ def main(argv: list[str] | None = None) -> int:
 
         return altium_drill_main(arguments[1:])
     parser = argparse.ArgumentParser(prog="rfad")
-    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy", "pcb-multiport", "sweep-refine", "field-study", "floquet", "pcb-floquet", "waveguide-modes", "waveguide-section", "waveguide-mode-files", "manufacturing-panel"))
+    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy", "pcb-multiport", "pcb-waveguide", "sweep-refine", "field-study", "floquet", "pcb-floquet", "waveguide-modes", "waveguide-section", "waveguide-mode-files", "manufacturing-panel"))
     args, remainder = parser.parse_known_args(arguments)
     if args.command == "doctor":
         from rfad.cli.doctor import main as doctor_main
