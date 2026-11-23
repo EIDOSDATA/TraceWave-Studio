@@ -185,6 +185,14 @@ void NetworkTransformDialog::BuildInterface()
     m_gateStop = new wxTextCtrl(options, wxID_ANY);
     m_gateStop->SetName("network.transform.gate.stop");
     Field(options, m_timeGateFields, "유지할 시간 끝 (ns)", m_gateStop);
+    m_gateTaper = new wxTextCtrl(options, wxID_ANY);
+    m_gateTaper->SetName("network.transform.gate.taper");
+    m_gateTaper->SetHint(Display("0 = 직사각형, 1 = Hann"));
+    Field(options, m_timeGateFields, "양끝 테이퍼 비율 (0~1)", m_gateTaper);
+    m_gateVelocity = new wxTextCtrl(options, wxID_ANY);
+    m_gateVelocity->SetName("network.transform.gate.velocity");
+    m_gateVelocity->SetHint(Display("거리 환산에 사용할 때 입력"));
+    Field(options, m_timeGateFields, "군속도 / 광속 (선택)", m_gateVelocity);
     auto* gateHelp = new wxStaticText(
         options, wxID_ANY, Display("균일 주파수 표본의 복소 대역에서 입력한 지연 구간을 남깁니다.\n"
                                   "시간 간격과 주기는 원본 주파수 간격과 표본 수로 결정됩니다."));
@@ -279,7 +287,7 @@ void NetworkTransformDialog::BuildInterface()
                      {
                          SelectDataset();
                      });
-    for (auto* input : {m_name, m_reference, m_lines, m_modalTable, m_gateStart, m_gateStop})
+    for (auto* input : {m_name, m_reference, m_lines, m_modalTable, m_gateStart, m_gateStop, m_gateTaper, m_gateVelocity})
     {
         input->Bind(wxEVT_TEXT,
                     [this](wxCommandEvent&)
@@ -411,6 +419,14 @@ Json NetworkTransformDialog::Input() const
     {
         options = {{"operation", "time_gate"}, {"start_ns", Utf8(m_gateStart->GetValue())},
                    {"stop_ns", Utf8(m_gateStop->GetValue())}};
+        if (!m_gateTaper->GetValue().Strip(wxString::both).empty())
+        {
+            options["taper_fraction"] = Utf8(m_gateTaper->GetValue());
+        }
+        if (!m_gateVelocity->GetValue().Strip(wxString::both).empty())
+        {
+            options["velocity_factor"] = Utf8(m_gateVelocity->GetValue());
+        }
     }
     return {
         {"expected_revision", m_revision},
@@ -512,6 +528,19 @@ void NetworkTransformDialog::RenderResult(const Json& result)
             "개 지연 표본 | 지연 간격 " + Value(gate.at("time_step_ns")) + " ns | 주기 " +
             Value(gate.at("period_ns")) + " ns\n남긴 지연 " + Value(interval.at(0)) +
             "~" + Value(interval.at(1)) + " ns\n";
+        if (gate.contains("nonzero_bins"))
+        {
+            diagnostics += "테이퍼 적용 뒤 신호를 유지한 표본 " + Value(gate.at("nonzero_bins")) + "개\n";
+        }
+        for (const auto* key : {"reflection_distance_mm", "transmission_path_mm"})
+        {
+            if (gate.contains(key))
+            {
+                const auto& range = gate.at(key);
+                const std::string label = std::string(key) == "reflection_distance_mm" ? "반사 왕복에서 구한 거리 " : "전송 경로 길이 ";
+                diagnostics += label + Value(range.at(0)) + "~" + Value(range.at(1)) + " mm\n";
+            }
+        }
     }
     for (const auto& item : result.at("diagnostics"))
     {
@@ -624,6 +653,8 @@ void NetworkTransformDialog::UpdateActions()
     const bool chosen = m_leftFixture->GetSelection() != wxNOT_FOUND && m_rightFixture->GetSelection() != wxNOT_FOUND;
     m_gateStart->Enable(enabled && gate);
     m_gateStop->Enable(enabled && gate);
+    m_gateTaper->Enable(enabled && gate);
+    m_gateVelocity->Enable(enabled && gate);
     const bool interval = !m_gateStart->GetValue().Trim().Trim(false).empty() &&
                           !m_gateStop->GetValue().Trim().Trim(false).empty();
     m_preview->Enable(enabled && !m_selection.is_null() && (!fixtures || chosen) && (!gate || interval));

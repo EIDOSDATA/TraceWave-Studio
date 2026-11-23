@@ -52,6 +52,8 @@ private:
     wxSizer* m_timeGateFields = nullptr;
     wxTextCtrl* m_gateStart = nullptr;
     wxTextCtrl* m_gateStop = nullptr;
+    wxTextCtrl* m_gateTaper = nullptr;
+    wxTextCtrl* m_gateVelocity = nullptr;
     wxTextCtrl* m_name = nullptr;
     wxTextCtrl* m_source = nullptr;
     wxTextCtrl* m_resultConditions = nullptr;

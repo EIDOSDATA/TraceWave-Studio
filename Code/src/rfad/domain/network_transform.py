@@ -277,7 +277,8 @@ def _deembed_fixtures(data, options):
 
 def _time_gate(data, options):
     """! @brief 균일 복소 대역의 IFFT 지연 표본을 선택해서 같은 주파수로 돌아간다."""
-    if set(options) != {"operation", "start_ns", "stop_ns"} or data["parameter_kind"] != "S":
+    required = {"operation", "start_ns", "stop_ns"}
+    if not required <= set(options) <= required | {"taper_fraction", "velocity_factor"} or data["parameter_kind"] != "S":
         fail("시간 게이트에는 S 자료와 시작·끝 지연 시간이 필요합니다.", "options", "E_UNSUPPORTED")
     require_basis(data)
     if data["phasor_convention"] == "unknown":
@@ -287,6 +288,15 @@ def _time_gate(data, options):
     if count < 4:
         fail("시간 게이트에는 균일한 주파수 표본 4개 이상이 필요합니다.", "frequency_hz", "E_CONFLICT")
     start, stop = [finite(options[key], "options." + key) for key in ("start_ns", "stop_ns")]
+    taper = finite(options.get("taper_fraction", 0), "options.taper_fraction")
+    if not 0 <= taper <= 1:
+        fail("양끝 코사인 테이퍼가 차지하는 전체 비율을 0~1로 입력하세요.", "options.taper_fraction", "E_CONFLICT")
+    velocity = None
+    if "velocity_factor" in options:
+        velocity = finite(options["velocity_factor"], "options.velocity_factor")
+        if not 0 < velocity <= 1:
+            fail("거리 환산에 사용할 일정 군속도와 광속의 비는 0보다 크고 1 이하여야 합니다.",
+                 "options.velocity_factor", "E_CONFLICT")
     step = (frequencies[-1] - frequencies[0]) / (count - 1)
     tolerance = max(4 * math.ulp(frequencies[-1]), step * 1e-10)
     if tolerance >= step / 100 or any(abs(right - left - step) > tolerance for left, right in zip(frequencies, frequencies[1:])):
@@ -312,11 +322,21 @@ def _time_gate(data, options):
     if not retained:
         fail(f"선택한 구간에 지연 표본이 없습니다. 표본 간격은 {period_ns / count:.6g} ns입니다.",
              "options.start_ns", "E_CONFLICT")
+    weights = selected.astype(float)
+    if taper > 0:
+        # @brief 가장자리에서 중앙까지의 상대 거리로 연속 Tukey 창을 실제 지연 표본에 평가한다.
+        width = stop - start
+        distance = np.minimum(offsets[selected] - start, stop - offsets[selected])
+        with np.errstate(over="ignore"):
+            phase = np.minimum(1.0, (distance / width) * 2 / taper)
+        weights[selected] = np.sin(phase * (np.pi / 2)) ** 2
+        if not np.any(weights):
+            fail("테이퍼가 모든 지연 표본을 제거합니다. 게이트를 넓히세요.", "options.taper_fraction", "E_CONFLICT")
     positive = data["phasor_convention"] == "exp(+j*omega*t)"
     with np.errstate(over="ignore", invalid="ignore"):
         response = np.fft.ifft(matrix, axis=0) if positive else np.fft.fft(matrix, axis=0) / count
         shifted = np.fft.fftshift(response, axes=0)
-        cropped = np.fft.ifftshift(np.where(selected[:, None, None], shifted, 0), axes=0)
+        cropped = np.fft.ifftshift(shifted * weights[:, None, None], axes=0)
         result = np.fft.fft(cropped, axis=0) if positive else np.fft.ifft(cropped, axis=0) * count
     if not np.isfinite(response).all() or not np.isfinite(result).all():
         fail("시간 게이트 결과가 유한한 복소 범위를 넘습니다.", "values_ri", "E_RESOURCE")
@@ -324,6 +344,16 @@ def _time_gate(data, options):
     selected_range = (float(offsets[selected][0]), float(offsets[selected][-1]))
     details = {"method": "complex_bandpass_rectangular_gate", "retained_bins": retained, "total_bins": count,
                "time_step_ns": period_ns / count, "period_ns": period_ns, "selected_bin_range_ns": list(selected_range)}
+    if taper:
+        details.update(method="complex_bandpass_tukey_gate", taper_fraction=taper,
+                       nonzero_bins=int(np.count_nonzero(weights)))
+    if velocity is not None:
+        one_way = [value * (299.792458 * velocity) for value in selected_range]
+        if not all(map(math.isfinite, one_way)):
+            fail("지연에서 환산한 거리가 유한 범위를 넘습니다.", "options.velocity_factor", "E_RESOURCE")
+        details["reflection_distance_mm"] = [value / 2 for value in one_way]
+        if len(data["port_ids"]) > 1:
+            details["transmission_path_mm"] = one_way
     evidence = {**options, **details, "frequency_spacing_hz": step, "source_band_start_hz": frequencies[0]}
     return {"dataset": derived(data, values, data["valid_mask"], data["sample_status"], evidence, engine),
             "diagnostics": [{"frequency_hz": f, "status": "valid", **details} for f in frequencies],

@@ -137,7 +137,9 @@ def transform_input(data, options):
         if tables:
             fail("기준면을 이동할 MODE 포트에 해당하지 않는 분산표가 있습니다.", "options.mode_table")
         return {"operation": "shift_plane", "lines": rows}
-    if type(options) is dict and set(options) == {"operation", "start_ns", "stop_ns"} and options["operation"] == "time_gate":
+    if (type(options) is dict and options.get("operation") == "time_gate"
+            and {"operation", "start_ns", "stop_ns"} <= set(options) <=
+            {"operation", "start_ns", "stop_ns", "taper_fraction", "velocity_factor"}):
         return {**options, **{key: number(value, field="options." + key) if type(value) is str else value
                               for key, value in options.items() if key != "operation"}}
     if type(options) is dict and set(options) == {"operation", "reference"} and options["operation"] == "renormalize":
