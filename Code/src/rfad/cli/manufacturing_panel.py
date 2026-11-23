@@ -1,4 +1,4 @@
-"""! @brief ODB++ 원본에서 반복 패널을 만들거나 기존 배치, 원문 해시와 제외 사유를 확인한다."""
+"""! @brief ODB++ 또는 IPC-2581C 원본에서 반복 패널을 만들거나 기존 배치, 원문 해시와 제외 사유를 확인한다."""
 
 import argparse
 import os
@@ -20,6 +20,7 @@ def main(argv=None):
     parser.add_argument("--count", nargs=2, type=int, metavar=("NX", "NY"))
     parser.add_argument("--pitch-mm", nargs=2, type=float, metavar=("DX", "DY"))
     parser.add_argument("--margin-mm", type=float)
+    parser.add_argument("--angle-deg", type=int, choices=(0, 90, 180, 270), default=0, help="IPC-2581C 반복 보드 회전")
     args = parser.parse_args(argv)
     flags = (args.output, args.count, args.pitch_mm, args.margin_mm)
     if any(value is not None for value in flags) and any(value is None for value in flags):
@@ -28,19 +29,29 @@ def main(argv=None):
         with args.source.open("rb") as source:
             raw = source.read(MAX_EXPANDED + 1)
         if len(raw) > MAX_EXPANDED:
-            raise ProjectError("E_RESOURCE", "ODB++ 파일이 64 MiB를 넘습니다.")
+            raise ProjectError("E_RESOURCE", "제조 원문 파일이 64 MiB를 넘습니다.")
+        from rfad.adapters.exchange import ipc_panel
+
+        is_ipc = raw.removeprefix(b"\xef\xbb\xbf").lstrip().startswith(b"<")
+        if args.angle_deg and (not is_ipc or args.output is None):
+            raise ProjectError("E_UNSUPPORTED", "회전 옵션은 IPC-2581C 작성에 적용합니다.")
         if args.output is not None:
-            raw = build(raw, args.count, args.pitch_mm, args.margin_mm)
+            if is_ipc:
+                raw = ipc_panel.build(raw, args.count, args.pitch_mm, args.margin_mm, args.angle_deg)
+            else:
+                raw = build(raw, args.count, args.pitch_mm, args.margin_mm)
             with TemporaryDirectory(prefix=".tracewave-panel-", dir=args.output.parent) as folder:
-                staged = Path(folder) / "panel.zip"
+                staged = Path(folder) / ("panel.xml" if is_ipc else "panel.zip")
                 staged.write_bytes(raw)
                 if os.name == "nt":
                     staged.rename(args.output)
                 else:
                     os.link(staged, args.output)
-        info = read(raw)
-        sys.stdout.buffer.write(canonical_bytes({key: info[key] for key in
-                                ("source_sha256", "steps", "panels", "panel_exclusions")}) + b"\n")
+        info = ipc_panel.read(raw) if is_ipc else read(raw)
+        fields = ("source_sha256", "steps", "panels", "panel_exclusions")
+        if is_ipc:
+            fields += ("units", "manufacturing_declarations")
+        sys.stdout.buffer.write(canonical_bytes({key: info[key] for key in fields}) + b"\n")
     except (OSError, ProjectError, ValueError) as error:
         print(f"{getattr(error, 'code', 'E_SCHEMA')}: {error}", file=sys.stderr)
         return 1

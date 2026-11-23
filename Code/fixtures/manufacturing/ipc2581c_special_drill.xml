@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<IPC-2581 xmlns="http://webstds.ipc.org/2581" revision="C">
+    <Content roleRef="writer">
+        <FunctionMode mode="FABRICATION"/>
+        <StepRef name="BOARD1"/>
+    </Content>
+    <LogisticHeader>
+        <Role id="writer" roleFunction="DESIGNER"/>
+        <Enterprise id="vendor" name="Synthetic fixture" code="TEST"/>
+        <Person name="Fixture author" enterpriseRef="vendor" roleRef="writer"/>
+    </LogisticHeader>
+    <HistoryRecord number="1" origination="2026-11-23T00:00:00Z" lastChange="2026-11-23T00:00:00Z" software="TraceWave Studio fixture">
+        <FileRevision fileRevisionId="1" comment="Explicit IPC-2581C fabrication declarations">
+            <SoftwarePackage name="TraceWave Studio" revision="0.1" vendor="TEST"><Certification certificationStatus="SELFTEST"/></SoftwarePackage>
+        </FileRevision>
+    </HistoryRecord>
+    <Ecad name="SPECIAL">
+        <CadHeader units="INCH">
+            <Spec name="BD_TOP">
+                <Backdrill type="START_LAYER"><Property text="L1"/></Backdrill>
+                <Backdrill type="MUST_NOT_CUT_LAYER"><Property text="L3"/></Backdrill>
+                <Backdrill type="MAX_STUB_LENGTH"><Property value="0.008" unit="INCH"/></Backdrill>
+            </Spec>
+        </CadHeader>
+        <CadData>
+            <Layer name="L1" layerFunction="CONDUCTOR" side="TOP" polarity="POSITIVE"/>
+            <Layer name="L2" layerFunction="CONDUCTOR" side="INTERNAL" polarity="POSITIVE"/>
+            <Layer name="L3" layerFunction="CONDUCTOR" side="BOTTOM" polarity="POSITIVE"/>
+            <Layer name="BLIND" layerFunction="DRILL" side="TOP" polarity="POSITIVE"><Span fromLayer="L1" toLayer="L2"/></Layer>
+            <Layer name="BACK" layerFunction="DRILL" side="TOP" polarity="POSITIVE">
+                <SpecRef id="BD_TOP"/>
+                <Span fromLayer="L1" toLayer="L2"/>
+            </Layer>
+            <Step name="BOARD1" type="BOARD">
+                <PadStackDef name="VIA_L1_L2">
+                    <PadstackHoleDef name="VIA_DRILL" diameter="0.014" platingStatus="VIA"
+                                     plusTol="0.001" minusTol="0.001" x="0" y="0"/>
+                    <PadstackPadDef layerRef="L1" padUse="REGULAR"><Location x="0" y="0"/><Circle diameter="0.031"/></PadstackPadDef>
+                    <PadstackPadDef layerRef="L2" padUse="REGULAR"><Location x="0" y="0"/><RectCenter width="0.028" height="0.025"/></PadstackPadDef>
+                    <PadstackPadDef layerRef="L3" padUse="ANTIPAD">
+                        <Xform rotation="30"/>
+                        <Location x="0" y="0"/>
+                        <RectCenter width="0.042" height="0.037"/>
+                    </PadstackPadDef>
+                </PadStackDef>
+                <Datum x="0.2" y="0.3"/>
+                <Profile>
+                    <Polygon><PolyBegin x="0.1" y="0.2"/><PolyStepSegment x="1.6" y="0.2"/>
+                        <PolyStepSegment x="1.6" y="1.2"/><PolyStepSegment x="0.1" y="1.2"/>
+                        <PolyStepSegment x="0.1" y="0.2"/></Polygon>
+                </Profile>
+                <LayerFeature layerRef="BLIND">
+                    <Set><Hole name="VIA1" diameter="0.014" platingStatus="VIA"
+                               plusTol="0.001" minusTol="0.001" x="0.8" y="0.7"/></Set>
+                </LayerFeature>
+                <LayerFeature layerRef="BACK">
+                    <Set><SlotCavity name="BACK1" platingStatus="NONPLATED" plusTol="0.001" minusTol="0.001">
+                        <Location x="0.8" y="0.7"/>
+                        <Circle diameter="0.025"/>
+                        <MaterialCut depth="0.045" plusTol="0.002" minusTol="0.002" startCutLayer="L1"/>
+                    </SlotCavity></Set>
+                </LayerFeature>
+            </Step>
+        </CadData>
+    </Ecad>
+</IPC-2581>
