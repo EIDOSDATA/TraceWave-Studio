@@ -127,7 +127,7 @@ class TemplateCandidateCoordinator:
             existing = document["extensions"].get(EXTENSION_KEY, {"instances": []})["instances"]
             if len(existing) >= MAX_INSTANCES or any(item["id"] == data["instance_id"] for item in existing):
                 raise ProjectError("E_CONFLICT", "인스턴스가 이미 존재하거나 템플릿 8개 상한에 도달했습니다.")
-            inputs, estimate = normalize_candidate(card, data["explicit_inputs"], data["mode"], data.get("seed"))
+            inputs, estimate = normalize_candidate(card, data["explicit_inputs"], data["mode"], data.get("seed"), targets=targets)
             additions = generate_geometry(document, data["instance_id"], data["binding"], card, inputs, named=True)
             generate_port(document, additions, data["instance_id"], data["binding"], card, data["port"], named=True)
             if additions["ports"] and object_id(data["instance_id"], "port") in all_ids(document):

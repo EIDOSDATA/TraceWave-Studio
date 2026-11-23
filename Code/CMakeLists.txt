@@ -214,6 +214,8 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/sweep_selection_recovery.cpp
     ui/wxwidgets/studio_sweep_selection.cpp
     ui/wxwidgets/studio_sweep.cpp
+    ui/wxwidgets/sweep_refinement_dialog.cpp
+    ui/wxwidgets/sweep_samples_dialog.cpp
     ui/wxwidgets/studio_sweep_dialogs.cpp
     ui/wxwidgets/studio_smoke_sweep.cpp
     ui/wxwidgets/studio_smoke_selection.cpp

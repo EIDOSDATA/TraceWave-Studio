@@ -242,6 +242,34 @@ class TemplateDomainTests(unittest.TestCase):
         bad["port"] = port_recipe(document, IFA, z=-0.035)
         self.assertFalse(preview(document, bad)[0]["can_apply"])
 
+    def test_target_dimension_rebuilds_arc_and_ifa_with_fixed_feed_geometry(self):
+        """! @brief 목표 주파수, 원호 전개각 및 접지 상단으로 계산한 치수를 재열기한다."""
+        for kind, key in ((ARC, "radius"), (IFA, "radiator_length")):
+            with self.subTest(kind=kind):
+                document = base_document(kind)
+                center = 9 if kind == ARC else 2.5
+                target = target_input(start=center - .1, end=center + .1)
+                target["band"]["reference"] = quantity(center, "GHz")
+                document = apply_command(document, {"command_id": str(uuid4()), "type": "target.set",
+                    "payload": {"target": target}}, document["revision_id"])[0]
+                data = specification(document, kind)
+                data["explicit_inputs"][key] = {"source": "target_quarter_wave"}
+                missing, _ = preview(document, data)
+                self.assertFalse(missing["can_apply"])
+                data["target_refs"] = [{key: document["targets"][0][key] for key in ("id", "revision_id")}]
+                review, payload = preview(document, data)
+                self.assertTrue(review["can_apply"], review)
+                record = payload["replacement"]
+                result = record["inputs"][key]
+                path = 299792458 / (center * 1e9) / 4
+                expected = path / (math.pi / 2) if kind == ARC else path - .007
+                self.assertAlmostEqual(result["value_si"], expected, places=12)
+                self.assertEqual(result["status"], "estimated")
+                self.assertIn(document["targets"][0]["revision_id"], result["source_refs"][0])
+                updated = apply_payload(document, payload)[0]
+                validate_project(json.loads(canonical_bytes(updated)))
+                self.assertEqual(record["target_snapshots"], document["targets"])
+
     def test_targets_bindings_ids_and_card_hash_are_exact(self):
         """! @brief 선택한 목표 버전이나 카드/바인딩이 다르면 새 기하를 만들지 않는다."""
         document = base_document()

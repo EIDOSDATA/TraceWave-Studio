@@ -49,14 +49,59 @@ def goal_layout_note(document, target):
             "material_assigned": False, "physical_validation": False}
 
 
-def normalize_candidate(card, requested, mode="explicit_geometry", seed=None):
+def goal_inputs(card, requested, targets):
+    """! @brief 선택한 목표에서 기하 길이 하나만 계산하고 나머지 급전 및 접지 입력을 보존한다."""
+    key = {ARC: "radius", IFA: "radiator_length"}.get(card["template_id"])
+    if key is None or type(requested) is not dict or requested.get(key) != {"source": "target_quarter_wave"}:
+        return normalize_inputs(card, requested)
+    if type(targets) is not list or len(targets) != 1:
+        _fail("E_SCHEMA", "치수를 계산할 설계 목표 한 개를 선택하십시오.", "target_refs")
+    target, = targets
+    band = target["band"]
+    frequency = band["reference"]["value_si"]
+    if frequency is None:
+        frequency = band["start"]["value_si"] + (band["end"]["value_si"] - band["start"]["value_si"]) / 2
+    if not math.isfinite(frequency) or frequency <= 0:
+        _fail("E_UNIT", "목표 대역의 양수 주파수가 필요합니다.", "target_refs")
+    path = (C0_M_PER_S / 4) / frequency
+
+    def value(name, dimension="length"):
+        """! @brief 사용자 좌표와 각도를 SI로 읽고 미정인 치수를 진단한다."""
+        field = "explicit_inputs." + name
+        item = normalize_quantity_input(requested.get(name), dimension, field)["value_si"]
+        if item is None:
+            _fail("E_UNIT", "목표 치수 계산에 사용할 좌표 또는 각도를 입력하십시오.", field)
+        return item
+
+    if key == "radius":
+        sweep = abs(value("sweep_angle", "angle"))
+        if not 0 < sweep < math.tau:
+            _fail("E_GEOMETRY", "0도와 360도 사이의 원호 전개각이 필요합니다.", "explicit_inputs.sweep_angle")
+        length = path / sweep
+        basis = "급전 접속점부터 원호 개방단까지의 중심선 길이"
+    else:
+        ground_edge = value("ground_bottom") + value("ground_height")
+        vertical = value("radiator_y") - ground_edge
+        if vertical <= 0:
+            _fail("E_GEOMETRY", "방사 가지는 접지 상단보다 높아야 합니다.", "explicit_inputs.radiator_y")
+        length = path - vertical + value("short_x") - value("radiator_start_x")
+        basis = "접지 상단부터 단락 가지를 거쳐 방사 가지의 우측 개방단까지의 중심선 길이"
+    if not math.isfinite(length) or length <= 0:
+        _fail("E_GEOMETRY", "고정한 경로로는 목표의 양수 방사 치수를 만들 수 없습니다.", "explicit_inputs." + key)
+    estimated = Quantity(length, "length", "mm", "estimated", [
+        f"설계 목표 {target['id']} / 개정 {target['revision_id']}",
+        f"자유공간 1/4 파장 / {frequency:.17g} Hz / {basis}"]).to_dict()
+    return normalize_inputs(card, {**requested, key: estimated})
+
+
+def normalize_candidate(card, requested, mode="explicit_geometry", seed=None, *, targets=None):
     """! @brief 명시 치수는 그대로 유지하고 별도 초기식 요청만 추정 길이로 변환한다."""
     if mode not in card.get("modes", ["explicit_geometry"]):
         _fail("E_UNSUPPORTED", "이 카드는 요청한 초기 후보 방식을 지원하지 않습니다.", "mode")
     if mode == "explicit_geometry":
         if seed is not None:
             _fail("E_SCHEMA", "명시 기하 요청에는 초기식 입력을 함께 보낼 수 없습니다.", "seed")
-        return normalize_inputs(card, requested), None
+        return goal_inputs(card, requested, targets), None
     if card["template_id"] != MONOPOLE:
         _fail("E_UNSUPPORTED", "이 topology의 초기 RF 합성은 지원하지 않습니다.", "mode")
     _fields(seed, {"recipe_id", "frequency", "assumption"}, "seed")

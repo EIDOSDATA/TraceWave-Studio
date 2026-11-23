@@ -7,6 +7,7 @@ class DesignCanvas;
 class EditorPanel;
 class wxButton;
 class wxChoice;
+class wxCheckBox;
 class wxTextCtrl;
 class wxPanel;
 class wxSizer;
@@ -58,6 +59,7 @@ private:
     wxChoice* m_binding = nullptr;
     wxChoice* m_target = nullptr;
     wxButton* m_goalLayoutNote = nullptr;
+    wxCheckBox* m_goalSize = nullptr;
     EditorPanel* m_inputs = nullptr;
     DesignCanvas* m_canvas = nullptr;
     wxTextCtrl* m_notes = nullptr;

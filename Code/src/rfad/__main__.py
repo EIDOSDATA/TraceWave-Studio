@@ -11,6 +11,10 @@ def main(argv: list[str] | None = None) -> int:
     @return 명령 실행 종료 코드.
     """
     arguments = sys.argv[1:] if argv is None else argv
+    if arguments[:1] == ["sweep-refine"]:
+        from rfad.cli.sweep_refine import main as refine_main
+
+        return refine_main(arguments[1:])
     if arguments[:1] == ["pcb-multiport"]:
         from rfad.cli.pcb_multiport import main as multiport_main
 
@@ -24,7 +28,7 @@ def main(argv: list[str] | None = None) -> int:
 
         return altium_drill_main(arguments[1:])
     parser = argparse.ArgumentParser(prog="rfad")
-    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy", "pcb-multiport"))
+    parser.add_argument("command", choices=("doctor", "serve", "catalog", "archive", "altium-drill-copy", "pcb-multiport", "sweep-refine"))
     args, remainder = parser.parse_known_args(arguments)
     if args.command == "doctor":
         from rfad.cli.doctor import main as doctor_main

@@ -5,10 +5,9 @@ from copy import deepcopy
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.domain.design import _fail, _fields, _uuid
 from rfad.domain.template_geometry import object_id, parameter_roles
-from rfad.domain.template_inputs import normalize_inputs
 from rfad.templates.cards import validate_card_snapshot
 from rfad.domain.template_provenance import generation_report
-from rfad.domain.template_seeds import normalize_candidate
+from rfad.domain.template_seeds import goal_inputs, normalize_candidate
 from rfad.domain.object_names import NAMED_SCHEMA, PROFILE as NAME_PROFILE
 
 
@@ -49,18 +48,6 @@ def validate_record(record: object) -> None:
     for key, identity in record["binding"].items():
         if key != "material_id" or identity is not None:
             _uuid(identity, "template_origin.binding." + key)
-    if new_reference:
-        estimate = record["initial_estimate"]
-        if estimate is not None and (type(estimate) is not dict or "request" not in estimate):
-            _fail("E_SCHEMA", "초기 추정 사본의 요청이 없습니다.", "template_origin.initial_estimate")
-        inputs, expected = normalize_candidate(record["card"], record["requested_inputs"], record["mode"],
-                                               None if estimate is None else estimate["request"])
-        if estimate != expected:
-            _fail("E_HASH", "초기 추정 사본과 원문/입력의 계산 결과가 다릅니다.", "template_origin.initial_estimate")
-    else:
-        inputs = normalize_inputs(record["card"], record["requested_inputs"])
-    if inputs != record["inputs"]:
-        _fail("E_HASH", "템플릿 표시 원문과 저장 Quantity가 다릅니다.", "template_origin.inputs")
     if type(record["target_snapshots"]) is not list or len(record["target_snapshots"]) > 32:
         _fail("E_SCHEMA", "과거 템플릿 입력/목표 사본 형식이 다릅니다.", "template_origin.inputs")
     target_ids = set()
@@ -119,6 +106,18 @@ def _validate_original_design(record: dict) -> None:
     for target in record["target_snapshots"]:
         if targets.get(target["id"]) != target:
             _fail("E_HASH", "템플릿 목표 사본이 적용 당시 core 원본과 다릅니다.", "template_origin.target_snapshots")
+    if record["card"]["schema"] == "rfad.template-card/0.3":
+        estimate = record["initial_estimate"]
+        if estimate is not None and (type(estimate) is not dict or "request" not in estimate):
+            _fail("E_SCHEMA", "초기 추정 사본의 요청이 없습니다.", "template_origin.initial_estimate")
+        inputs, expected = normalize_candidate(record["card"], record["requested_inputs"], record["mode"],
+                                               None if estimate is None else estimate["request"])
+        if estimate != expected:
+            _fail("E_HASH", "초기 추정 사본과 원문/입력의 계산 결과가 다릅니다.", "template_origin.initial_estimate")
+    else:
+        inputs = goal_inputs(record["card"], record["requested_inputs"], record["target_snapshots"])
+    if inputs != record["inputs"]:
+        _fail("E_HASH", "템플릿 표시 원문과 저장 Quantity가 다릅니다.", "template_origin.inputs")
     probe = deepcopy(source)
     named = record.get("naming_profile") == NAME_PROFILE
     if named:

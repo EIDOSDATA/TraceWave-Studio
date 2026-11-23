@@ -6,6 +6,7 @@
 #include "studio_theme.h"
 #include <wx/button.h>
 #include <wx/choice.h>
+#include <wx/checkbox.h>
 #include <wx/msgdlg.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
@@ -46,6 +47,13 @@ void TemplateDialog::BuildInterface()
     targetRow->Add(m_goalLayoutNote, 0, wxEXPAND | wxLEFT, FromDIP(StudioTheme::InputGap));
     selectors->Add(targetRow, 1, wxEXPAND);
     layout->Add(selectors, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
+    m_goalSize = new wxCheckBox(this, wxID_ANY, Display("목표 주파수로 원호 반경 또는 IFA 방사 길이 계산"));
+    m_goalSize->SetName("template.target_dimension");
+    layout->Add(m_goalSize, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
+    m_goalSize->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
+    {
+        Changed();
+    });
     auto* content = new wxBoxSizer(wxHORIZONTAL);
     auto* inputs = new wxBoxSizer(wxVERTICAL);
     m_inputs = new EditorPanel(this);

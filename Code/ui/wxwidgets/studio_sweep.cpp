@@ -2,6 +2,8 @@
 #include "studio_internal.h"
 #include "sweep_panel.h"
 #include "sweep_model.h"
+#include "sweep_samples_dialog.h"
+#include "sweep_refinement_dialog.h"
 #include "studio_theme.h"
 #include "studio_shell.h"
 #include "file_delivery.h"
@@ -16,7 +18,7 @@
 namespace
 {
 /** @brief 저장한 목표의 가중치와 별도 공차 모서리 검토를 설정한다. */
-std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, const Json& axes, const Json& labels)
+std::optional<Json> RankingOptions(wxWindow* parent, const wxString& workspace, const Json& targets, const Json& axes, const Json& labels)
 {
     if (targets.size() < 2 && axes.empty())
     {
@@ -57,8 +59,16 @@ std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, const 
     std::vector<wxTextCtrl*> distributions;
     wxTextCtrl* jointWeights = nullptr;
     wxTextCtrl* jointSource = nullptr;
+    Json samples = nullptr;
     if (!axes.empty())
     {
+        auto* sampleButton = new wxButton(&dialog, wxID_ANY, Display("공정 표본 CSV 비교"));
+        sampleButton->Bind(wxEVT_BUTTON, [&, sampleButton](wxCommandEvent&)
+        {
+            SelectSweepSamples(&dialog, workspace, axes, labels, samples);
+            sampleButton->SetLabel(samples.is_null() ? Display("공정 표본 CSV 비교") : Display("공정 표본 선택됨"));
+        });
+        layout->Add(sampleButton, 0, wxLEFT | wxRIGHT, gap);
         tolerance = new wxCheckBox(&dialog, wxID_ANY, Display("최소·공칭·최대 입력의 공차 모서리 비교"));
         tolerance->SetName("sweep.ranking.tolerance");
         tolerance->SetToolTip(Display("저장한 카테시안 연구에서 공칭점과 각 축 최소/최대의 조합을 비교합니다."));
@@ -204,6 +214,11 @@ std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, const 
                 joint = {{"source_label", Utf8(source)}, {"weights", std::move(rows)}};
             }
         }
+        if (!samples.is_null() && (!joint.is_null() || explicitDistribution))
+        {
+            status->SetLabel(Display("공정 표본과 비교하려면 가정한 가중치 입력을 비워 주세요."));
+            return;
+        }
         dialog.EndModal(wxID_OK);
     }, wxID_OK);
     dialog.SetSizerAndFit(layout);
@@ -228,6 +243,11 @@ std::optional<Json> RankingOptions(wxWindow* parent, const Json& targets, const 
     if (!joint.is_null())
     {
         options["joint_probabilities"] = std::move(joint);
+    }
+    if (!samples.is_null())
+    {
+        options["process_samples"] = std::move(samples);
+        options["tolerance"] = true;
     }
     return options;
 }
@@ -456,7 +476,7 @@ void StudioFrame::SweepCommand(const std::string& action)
     Json rankRequest = {{"study_id", id}};
     if (action == "rank")
     {
-        const auto options = RankingOptions(this, selected.value("ranking_targets", Json::array()),
+        const auto options = RankingOptions(this, m_options.workspace, selected.value("ranking_targets", Json::array()),
                                             selected.value("ranking_tolerance_axes", Json::array()),
                                             selected.value("variable_labels", Json::object()));
         if (!options || m_closing || m_project != project || m_sweepPanel->StudyId() != id || m_sweepPending)
@@ -516,6 +536,10 @@ void StudioFrame::SweepCommand(const std::string& action)
                              Display(next.at("text")), Display(next.at("unit")),
                              next.at("basis_ordinal").get<int>() + 1, next.at("neighbor_ordinal").get<int>() + 1));
                      }
+                     if (canSuggest)
+                     {
+                         labels.Add(Display("목표 기반 반복 탐색"));
+                     }
                      for (const auto& row : rows)
                      {
                          auto label = wxString::Format(Display("%d그룹 / 후보 %d"),
@@ -574,6 +598,24 @@ void StudioFrame::SweepCommand(const std::string& action)
                          if (missing)
                          {
                              explanation += Display(" | 누락으로 최악값 미확정");
+                         }
+                         if (tolerance.contains("process_samples"))
+                         {
+                             const auto& sample = tolerance.at("process_samples");
+                             const auto& model = sample.at("model_counts");
+                             const auto& observed = sample.at("observed_counts");
+                             explanation += wxString::Format(Display("\n공정 표본 %d개 / %s / 계산점 밖 %d개"),
+                                 sample.at("sample_count").get<int>(), Display(sample.at("source").get<std::string>()),
+                                 sample.at("outside_sampled_grid").get<int>());
+                             explanation += wxString::Format(Display("\n모델 통과 %d, 실패 %d, 미확인 %d / 실제 검사 통과 %d, 실패 %d, 미확인 %d"),
+                                 model.at("pass").get<int>(), model.at("fail").get<int>(), model.at("unknown").get<int>(),
+                                 observed.at("pass").get<int>(), observed.at("fail").get<int>(), observed.at("unknown").get<int>());
+                             const auto& interval = sample.at("observed_wilson_95");
+                             if (interval.is_array())
+                             {
+                                 explanation += wxString::Format(Display("\n실제 검사 통과율 95%% Wilson 구간 %.2f~%.2f%%"),
+                                     interval[0].get<double>() * 100, interval[1].get<double>() * 100);
+                             }
                          }
                          if (tolerance.contains("discrete_probability"))
                          {
@@ -660,9 +702,18 @@ void StudioFrame::SweepCommand(const std::string& action)
                          {
                              ReviewNextSweepCandidate(next);
                          }
+                         else if (canSuggest && selection == 1)
+                         {
+                             ShowObjectTool(std::make_unique<SweepRefinementDialog>(
+                                 this, Json{{"project_id", project}, {"revision_id", m_revision}}, id, ObjectToolGateway()), nullptr);
+                             if (!m_closing && project == m_project)
+                             {
+                                 RefreshSweeps(id);
+                             }
+                         }
                          else if (selection >= 0)
                          {
-                             OpenSweepResult(rows.at(selection - static_cast<int>(canSuggest)).at("ordinal").get<int>());
+                             OpenSweepResult(rows.at(selection - (canSuggest ? 2 : 0)).at("ordinal").get<int>());
                          }
                      }
                  });

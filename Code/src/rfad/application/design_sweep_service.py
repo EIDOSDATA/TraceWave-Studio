@@ -22,7 +22,7 @@ from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 from rfad.domain.units import Quantity
 
 
-READS = {"sweep.context", "sweep.preview", "sweep.list", "sweep.get", "sweep.page", "sweep.result", "sweep.quantity", "sweep.export", "sweep.rank", "sweep.recipe", "sweep.replay_preview"}
+READS = {"sweep.context", "sweep.preview", "sweep.list", "sweep.get", "sweep.page", "sweep.result", "sweep.quantity", "sweep.export", "sweep.rank", "sweep.refine_preview", "sweep.recipe", "sweep.replay_preview"}
 MUTATIONS = {"sweep.create", "sweep.start", "sweep.cancel", "sweep.resume"}
 MAX_STUDIES = 32
 FIELDS = {
@@ -32,6 +32,7 @@ FIELDS = {
     "sweep.get": {"study_id"}, "sweep.rank": {"study_id"}, "sweep.recipe": {"study_id"},
     "sweep.replay_preview": {"study_id"}, "sweep.start": {"study_id"},
     "sweep.cancel": {"study_id"}, "sweep.resume": {"study_id"}, "sweep.export": {"study_id"},
+    "sweep.refine_preview": {"study_id", "rounds", "until_target", "resume"},
     "sweep.page": {"study_id", "offset", "limit"},
     "sweep.result": {"study_id", "index", "offset", "limit", "row", "column"},
     "sweep.quantity": {"expected_revision", "quantity", "display_unit"},
@@ -42,7 +43,7 @@ def validate_input(method, context, data):
     """! @brief 공개 요청을 닫힌 계약과 프로젝트 소유권으로 제한한다."""
     _fields(context, {"project_id"})
     _uuid(context["project_id"])
-    _fields(data, FIELDS[method], {"weights", "tolerance", "probabilities", "joint_probabilities", "suggest_next"} if method == "sweep.rank" else set())
+    _fields(data, FIELDS[method], {"weights", "tolerance", "probabilities", "joint_probabilities", "process_samples", "suggest_next"} if method == "sweep.rank" else set())
     if "weights" in data and (type(data["weights"]) is not dict or not 1 <= len(data["weights"]) <= 32):
         fail("순위에는 연구 목표의 명시 가중치를 입력하십시오.")
     if "probabilities" in data and type(data["probabilities"]) is not list:
@@ -51,6 +52,10 @@ def validate_input(method, context, data):
         joint = _fields(data["joint_probabilities"], {"source_label", "weights"})
         if "probabilities" in data or type(joint["weights"]) is not list:
             fail("독립 축 가중치 또는 후보 조합 가중치 한 종류만 입력하십시오.")
+    if "process_samples" in data and (not data.get("tolerance") or "probabilities" in data or "joint_probabilities" in data):
+        fail("공정 표본은 공차 검토에서 다른 가중치 없이 입력하십시오.")
+    if method == "sweep.refine_preview" and (type(data["until_target"]) is not bool or type(data["resume"]) is not bool):
+        fail("목표 도달 종료와 중단 연구 재개 여부를 지정하십시오.")
     if "tolerance" in data and type(data["tolerance"]) is not bool:
         fail("공차 모서리 비교 사용 여부는 참 또는 거짓으로 입력하십시오.")
     if "suggest_next" in data and type(data["suggest_next"]) is not bool:
@@ -376,7 +381,7 @@ def view(service, state, study):
         "ranking_targets": [{"id": row["id"], "name": row["name"]} for row in source["targets"]
                             if row["id"] in definition["specification"]["target_ids"]],
         "ranking_tolerance_available": bool(tolerance_axes(definition["specification"])),
-        "ranking_tolerance_axes": [{"id": axis["id"], "kind": axis["kind"]}
+        "ranking_tolerance_axes": [{"id": axis["id"], "kind": axis["kind"], "unit": axis["values"][0]["display_unit"]}
                                    for axis in tolerance_axes(definition["specification"])],
         "allowed_actions": allowed, "stop_reason": reason or study.get("stop_reason"),
         "convergence_status": "not_established", "physical_validation": "not_established"})
@@ -485,6 +490,10 @@ def read(service, method, params):
     if method == "sweep.quantity":
         from rfad.application.network_service import read as network_read
         return network_read(service, "network.quantity", params)
+    if method == "sweep.refine_preview":
+        from rfad.application.sweep_refinement import refine
+        return bounded(refine(service, context_data["project_id"], data["study_id"], data["rounds"],
+                              until_target=data["until_target"], resume=data["resume"], preview_only=True))
     state = service.journal.read()
     project = service._project(state, context_data)
     if method in ("sweep.context", "sweep.preview"):
@@ -511,7 +520,8 @@ def read(service, method, params):
         from rfad.application import sweep_ranking
         report = sweep_ranking.read(service, study, definition, source, project,
                                     data.get("weights"), data.get("tolerance", False), data.get("probabilities"),
-                                    data.get("suggest_next", False), joint_probabilities=data.get("joint_probabilities"))
+                                    data.get("suggest_next", False), joint_probabilities=data.get("joint_probabilities"),
+                                    process_samples=data.get("process_samples"))
         return bounded(report)
     labels = _labels(source, None if definition["network"] is None else definition["network"]["circuit"])
     if method == "sweep.page":

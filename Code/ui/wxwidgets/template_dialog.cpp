@@ -5,6 +5,7 @@
 #include "studio_support.h"
 #include <wx/button.h>
 #include <wx/choice.h>
+#include <wx/checkbox.h>
 #include <wx/panel.h>
 #include <wx/textctrl.h>
 #include <stdexcept>
@@ -183,6 +184,13 @@ Json TemplateDialog::Specification() const
     for (const auto& field : m_card.at("input_fields"))
     {
         const std::string key = field.at("key");
+        if (m_target->GetSelection() > 0 && m_goalSize->GetValue() &&
+            ((m_card.at("template_id") == "builtin.explicit_arc" && key == "radius") ||
+             (m_card.at("template_id") == "builtin.explicit_planar_ifa" && key == "radiator_length")))
+        {
+            quantities[key] = Json{{"source", "target_quarter_wave"}};
+            continue;
+        }
         if (m_activeMode == 1 && key == "length")
         {
             quantities[key] = Json{{"source", "initial_estimate"}};
@@ -332,6 +340,9 @@ void TemplateDialog::UpdateActions()
     const int target = m_target->GetSelection() - 1;
     m_goalLayoutNote->Enable(editable && target >= 0 &&
                              m_context.at("targets").at(target).value("layout_note", Json()).is_object());
+    const bool goalCard = m_card.is_object() && (m_card.at("template_id") == "builtin.explicit_arc" ||
+                                                 m_card.at("template_id") == "builtin.explicit_planar_ifa");
+    m_goalSize->Enable(editable && target >= 0 && goalCard);
     m_inputs->Enable(editable);
     m_previewButton->Enable(editable && !m_pending && !m_card.is_null());
     m_applyButton->Enable(editable && !m_pending && !m_preview.is_null() && m_preview.value("can_apply", false));

@@ -212,6 +212,31 @@ class DesignSweepRunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(ProjectError, "공차 모서리"):
             self.fixture.read("sweep.rank", study_id=identity, tolerance=True)
 
+        from rfad.cli.sweep_refine import refine
+
+        def advance(_):
+            """! @brief 서비스 조정기의 실제 회로 계산을 한 단계 실행한다."""
+            self.service.studies.run_next()
+
+        before_preview = self.service.journal.read()
+        inspect = {"study_id": identity, "rounds": 2, "until_target": False, "resume": False}
+        next_action = self.fixture.read("sweep.refine_preview", **inspect)
+        self.assertEqual(next_action["stop_reason"], "create")
+        self.assertEqual(next_action["input"]["expected_revision"], self.fixture.document()["revision_id"])
+        self.assertEqual(self.service.journal.read(), before_preview)
+        stopped = refine(self.service, self.fixture.project, identity, 2, wait=advance, until_target=True)
+        self.assertEqual((stopped["stop_reason"], stopped["iterations"]), ("sample_targets_met", []))
+        search = refine(self.service, self.fixture.project, identity, 2, wait=advance)
+        self.assertEqual(search["stop_reason"], "round_limit")
+        first, second = search["iterations"]
+        self.assertEqual(second["parent_id"], first["study_id"])
+        self.assertEqual(first["midpoint"], "30")
+        self.assertNotEqual(second["midpoint"], first["midpoint"])
+        before_replay = self.service.journal.read()
+        self.assertEqual(refine(self.service, self.fixture.project, identity, 2, wait=advance), search)
+        self.assertEqual(self.fixture.read("sweep.refine_preview", **inspect), search)
+        self.assertEqual(self.service.journal.read(), before_replay)
+
         values[:] = [{**values[1], "text": str(value)} for value in (10, 20, 50)]
         tolerance_id = self.fixture.create()
         unavailable = self.fixture.read("sweep.rank", study_id=tolerance_id, tolerance=True)["tolerance_analysis"]
@@ -309,6 +334,26 @@ class DesignSweepRunnerTests(unittest.TestCase):
 
         joint = {"source_label": "가정한 두 저항 동시 변화",
                  "weights": [{"ordinal": 8, "weight": 3}, {"ordinal": 0, "weight": 2}]}
+        measured = {"source": "회로 검증용 합성 로트", "independent_random_sample": True,
+                    "text": f"sample_id,{second}:kohm,{first}:ohm,observed\n"
+                            "A,0.012,10,pass\nB,0.012,10,fail\nC,0.060,40,fail\nD,0.031,20,pass\n"}
+        sample_rank = self.fixture.read("sweep.rank", study_id=identity, tolerance=True, process_samples=measured)
+        samples = sample_rank["tolerance_analysis"]["process_samples"]
+        self.assertEqual(samples["model_counts"], {"pass": 2, "fail": 1, "unknown": 1})
+        self.assertEqual(samples["observed_counts"], {"pass": 2, "fail": 2, "unknown": 0})
+        self.assertEqual(samples["model_pass_fraction_bounds"], [.5, .75])
+        self.assertEqual(samples["model_vs_observed"], {"pass_pass": 1, "pass_fail": 1, "fail_pass": 0, "fail_fail": 1})
+        self.assertEqual(samples["outside_sampled_grid"], 1)
+        self.assertAlmostEqual(samples["observed_wilson_95"][0], .150038989, places=7)
+        self.assertAlmostEqual(samples["observed_wilson_95"][1], .849961011, places=7)
+        for invalid in (measured["text"].replace("B,", "A,"), measured["text"].replace(":ohm", ":mm"),
+                        measured["text"].replace("0.060", "NaN"), measured["text"].replace("obs", "other")):
+            with self.assertRaises(ProjectError):
+                self.fixture.read("sweep.rank", study_id=identity, tolerance=True,
+                                  process_samples={**measured, "text": invalid})
+        unspecified = {**measured, "text": measured["text"].replace("D,0.031,20,pass", "D,0.031,20,")}
+        result = self.fixture.read("sweep.rank", study_id=identity, tolerance=True, process_samples=unspecified)
+        self.assertIsNone(result["tolerance_analysis"]["process_samples"]["observed_wilson_95"])
         explicit = self.fixture.read("sweep.rank", study_id=identity, tolerance=True, joint_probabilities=joint)
         joint_report = explicit["tolerance_analysis"]["discrete_probability"]
         self.assertEqual(joint_report["source_label"], joint["source_label"])

@@ -5,6 +5,7 @@ from fractions import Fraction
 from itertools import combinations, product
 import math
 
+from rfad.application.process_samples import compare_samples, read_samples
 from rfad.application.canonical import canonical_hash, canonical_hash_from_bytes
 from rfad.application.design_sweep_store import fail, load_candidate, read_json
 from rfad.domain.network_data import finite
@@ -301,7 +302,7 @@ def _next_candidate(study, definition, source, rows):
 
 
 def read(service, study, definition, source, project, weights=None, tolerance=False, probabilities=None, suggest_next=False,
-         *, joint_probabilities=None):
+         *, joint_probabilities=None, process_samples=None):
     """! @brief 현재 설계나 결과를 바꾸지 않고 연구에 소속된 봉인 평가만 사용한다."""
     specification = definition["specification"]
     ids = specification["target_ids"]
@@ -315,6 +316,7 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
     probability_axes = _probability_axes(axes, probabilities)
     total = study["counts"]["total"]
     joint = _joint_distribution(axes, joint_probabilities, total)
+    samples = read_samples(process_samples, axes) if process_samples is not None else None
     probability_outcomes = {}
     targets = {row["id"]: row["name"] for row in source["targets"]}
     root = project["path"] + "/sweeps/" + study["study_id"] + "/results/"
@@ -356,7 +358,7 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
         if ordinal in sample_cases:
             traces[ordinal] = {identity: _s11_trace(indexed[identity], ordinal == nominal) for identity in ids}
         scores = [target_score(indexed[identity]) for identity in ids]
-        if probability_axes is not None or joint is not None:
+        if probability_axes is not None or joint is not None or samples is not None:
             failed = any(point["status"] == "fail" for item in indexed.values() for criterion in item["criteria"]
                          for point in criterion["points"])
             if failed or all(score == 1 for score in scores):
@@ -398,6 +400,8 @@ def read(service, study, definition, source, project, weights=None, tolerance=Fa
             detail, distribution = joint
             report["tolerance_analysis"]["discrete_probability"] = {
                 **detail, **_probability_totals(distribution.items(), probability_outcomes)}
+    if samples is not None:
+        report["tolerance_analysis"]["process_samples"] = compare_samples(samples, probability_outcomes)
     if suggest_next:
         report["next_candidate"] = _next_candidate(study, definition, source, rows)
     return {**report, "ranking_sha256": canonical_hash(report)}
