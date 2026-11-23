@@ -72,6 +72,7 @@ GUI의 파일 저장과 별도 CLI writer를 동시에 같은 workspace에 사�
 | `python -m rfad pcb-floquet fixtures/pcb_floquet_patch.json` | XY 주기 동박 적층의 비스듬한 입사, TE/TM 회절과 재료별 체적 흡수. [408 검증과 저장 PCB 진입점](../01_개발문서/07_검증/408_동박_피시비의_이중주기_플로케_검증.md) |
 | `python -m rfad waveguide-modes fixtures/waveguide_te_step.json` | 같은 높이의 직사각 도파관 폭 단차에서 TE(m,0) 모드 변환. [404 검증](../01_개발문서/07_검증/404_직사각_도파관_폭단차의_다중모드_검증.md) |
 | `python -m rfad waveguide-section 단면.json` | 공통 삼각 단면의 TE/TM 고유모드와 두 도파관 단차의 복소 산란. [409 검증과 예제 생성](../01_개발문서/07_검증/409_일반_도파관_단면의_티이_티엠_결합_검증.md) |
+| `python -m rfad waveguide-mode-files 단면.json --help` | 단면 모드를 openEMS 공간 분포 여기 및 프로브의 HDF5 두 파일로 출력. [410 검증](../01_개발문서/07_검증/410_아홉_급전과_분포_모드_원문_검증.md) |
 | `python -m rfad manufacturing-panel --help` | 단일 보드의 ODB++ 반복 배열 생성 옵션. [407 패드스택과 패널](../01_개발문서/07_검증/407_층별_패드스택과_오디비_반복패널_검증.md) |
 
 ## 시험과 기록

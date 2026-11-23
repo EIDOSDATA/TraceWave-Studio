@@ -8,6 +8,7 @@ from rfad.application.pcb_selection_layers import decision, length
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain.design import preflight_design, resolve_scalar
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_NETWORK_PORTS
 
 
 def issue(code, message, *, blocker=False, **context):
@@ -17,8 +18,8 @@ def issue(code, message, *, blocker=False, **context):
 
 def update_ports(document, entries):
     """! @brief 사용자가 명시한 급전 상자만 바꾸고 포트 의미와 ID는 보존한다."""
-    if type(entries) is not list or len(entries) > 8:
-        raise ProjectError("E_SCHEMA", "포트 좌표 변경은 최대 8개 목록이어야 합니다.")
+    if type(entries) is not list or len(entries) > MAX_NETWORK_PORTS:
+        raise ProjectError("E_SCHEMA", f"포트 좌표 변경은 최대 {MAX_NETWORK_PORTS}개 목록이어야 합니다.")
     ports = deepcopy(document["ports"])
     indexed = {item["id"]: item for item in ports}
     seen, decisions = set(), []

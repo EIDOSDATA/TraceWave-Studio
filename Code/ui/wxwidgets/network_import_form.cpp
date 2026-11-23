@@ -15,6 +15,7 @@
 #include <wx/tokenzr.h>
 #include <cmath>
 #include <stdexcept>
+#include <string>
 
 namespace
 {
@@ -45,12 +46,12 @@ double Number(wxTextCtrl& input)
 }
 
 /** @brief 열 번호는 0부터 시작하는 유한 정수만 허용한다. */
-long Column(const wxString& text)
+long Column(const wxString& text, long maximum)
 {
     long value = 0;
-    if (!text.ToLong(&value) || value < 0 || value > 63)
+    if (!text.ToLong(&value) || value < 0 || value > maximum)
     {
-        throw std::runtime_error("열 번호는 0부터 63까지의 정수로 입력하세요.");
+        throw std::runtime_error("열 번호는 0부터 " + std::to_string(maximum) + "까지의 정수로 입력하세요.");
     }
     return value;
 }
@@ -146,7 +147,13 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
     m_representation = Choices(m_csv, {"RI / 실수, 허수", "MA / 크기, 각도 (deg)", "DB / dB, 각도 (deg)"},
                                "network.import.representation");
     field("복소수 표현", m_representation);
-    m_portCount = Choices(m_csv, {"1", "2", "3", "4", "5", "6", "7", "8"}, "network.import.port_count");
+    m_portCount = new wxChoice(m_csv, wxID_ANY);
+    m_portCount->SetName("network.import.port_count");
+    for (std::size_t count = 1; count <= MaxPorts; ++count)
+    {
+        m_portCount->Append(wxString::Format("%u", static_cast<unsigned>(count)));
+    }
+    m_portCount->SetSelection(0);
     field("포트 수", m_portCount);
     m_ignored = new wxTextCtrl(m_csv, wxID_ANY);
     m_ignored->SetName("network.import.ignored_columns");
@@ -374,13 +381,14 @@ Json NetworkImportDialog::Mapping() const
     const std::array<const char*, 3> kinds = {"S", "Z", "Y"};
     const std::array<const char*, 3> units = {"1", "ohm", "S"};
     const int count = m_portCount->GetSelection() + 1;
+    const auto maximumColumn = static_cast<long>(2 * MaxPorts * MaxPorts);
     Json pairs = Json::array();
     for (int row = 0; row < count * count; ++row)
     {
         pairs.push_back({{"row", row / count},
                          {"column", row % count},
-                         {"first_column", Column(m_pairs->GetCellValue(row, 0))},
-                         {"second_column", Column(m_pairs->GetCellValue(row, 1))}});
+                         {"first_column", Column(m_pairs->GetCellValue(row, 0), maximumColumn)},
+                         {"second_column", Column(m_pairs->GetCellValue(row, 1), maximumColumn)}});
     }
     Json ignored = Json::array();
     wxStringTokenizer tokens(m_ignored->GetValue(), ",", wxTOKEN_RET_EMPTY_ALL);
@@ -388,7 +396,7 @@ Json NetworkImportDialog::Mapping() const
     {
         while (tokens.HasMoreTokens())
         {
-            ignored.push_back(Column(tokens.GetNextToken().Strip()));
+            ignored.push_back(Column(tokens.GetNextToken().Strip(), maximumColumn));
         }
     }
     Json z0 = nullptr;

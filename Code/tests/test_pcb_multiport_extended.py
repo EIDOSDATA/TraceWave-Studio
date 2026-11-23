@@ -47,7 +47,7 @@ class ExtendedPorts(unittest.TestCase):
     """! @brief 서로 다른 종단, 비대칭 입력 행렬 및 주파수별 실제 응답 순서를 확인한다."""
 
     def test_design_projects_every_feed_and_v1_row_order(self):
-        for n in (3, 4, 5, 8):
+        for n in (3, 4, 5, 8, 9, 12):
             doc, settings = fixture(n)
             check_pcb_input(doc, settings)
             case = project_pcb(doc, settings, multiport=True)["case"]
@@ -73,9 +73,9 @@ class ExtendedPorts(unittest.TestCase):
         from rfad.domain.errors import ProjectError
         from test_network_domain import circuit
 
-        for n in (3, 4, 5, 8):
+        for n in (3, 4, 5, 8, 9, 12):
             doc, _ = fixture(n)
-            matrix = [[[(r+1)/(c+2), (r-c)*0.01] for c in range(n)] for r in range(n)]
+            matrix = [[[(r+1)/(c+2.2718281828), (r-c)*0.01031415926] for c in range(n)] for r in range(n)]
             data = make_dataset(parameter_kind="S", frequency_hz=[1e9], port_ids=[p["id"] for p in doc["ports"]],
                                 values_ri=[matrix], z0_ohm=[[[50, 0] for _ in range(n)]],
                                 port_modes=["single_ended"]*n, current_orientation=["into_dut"]*n,

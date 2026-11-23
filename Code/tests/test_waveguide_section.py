@@ -198,6 +198,34 @@ class WaveguideSectionTests(unittest.TestCase):
         self.assertLess(sample["energy_residual_max"], 2e-10)
         self.assertLess(sample["reciprocity_residual_max"], 2e-10)
 
+    def test_mode_files_match_independent_te10_profile(self):
+        """! @brief 내보낸 전계와 자계 모드가 독립 TE10 분포와 부호 규약을 따르는지 검사한다."""
+        import h5py
+        import numpy as np
+        from tempfile import TemporaryDirectory
+
+        from rfad.cli.waveguide_mode_files import export_mode
+
+        case = rectangular_step([20, 10], [20, 10], [0, 0], 0.45, 10.5e9, 14)
+        with TemporaryDirectory() as directory:
+            destination = Path(directory) / "모드"
+            metadata = export_mode(case, "wide", "TE1", 10.5e9, 0.5, destination)
+            self.assertAlmostEqual(metadata["cutoff_hz"] / (C_MM / 40), 1, places=3)
+            self.assertEqual(metadata["port_inward_direction"], [0, 0, 1])
+            with h5py.File(destination / "electric.h5") as e, h5py.File(destination / "magnetic.h5") as h:
+                self.assertEqual(e.attrs["Version"], 1.0)
+                analytic = np.sin(np.pi * e["x"][...] / 20) / 10
+                expected = np.broadcast_to(analytic[:, None], e["Vy"].shape)
+                direction = np.sign(np.sum(expected * e["Vy"][...]))
+                self.assertLess(np.max(abs(e["Vy"][...] - direction * expected)), 0.004)
+                self.assertLess(np.max(abs(e["Vx"][...])), 0.001)
+                np.testing.assert_array_equal(h["Vx"][...], -e["Vy"][...])
+                np.testing.assert_array_equal(h["Vy"][...], e["Vx"][...])
+            original = (destination / "mode.json").read_bytes()
+            with self.assertRaises(ProjectError):
+                export_mode(case, "wide", "TE1", 10.5e9, 0.5, destination)
+            self.assertEqual((destination / "mode.json").read_bytes(), original)
+
     def test_rejects_repeated_and_nonconforming_mesh(self):
         """! @brief 중복 요소와 두 부분으로 나뉜 개구를 진단한다."""
         original = triangle_guide(20, 12)
