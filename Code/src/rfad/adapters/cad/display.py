@@ -8,7 +8,7 @@ from rfad.adapters.cad.geometry import _require
 from rfad.application.display_mesh import (
     ANGULAR_DEFLECTION_RAD, LARGE_SCHEMA, LINEAR_DEFLECTION_MM, MAPPING_KEYS,
     MAX_LARGE_MESH_BYTES, MAX_LARGE_TRIANGLES, MAX_LARGE_VERTICES,
-    MAX_MESH_BYTES, MAX_TRIANGLES, MAX_VERTICES, SCHEMA as MESH_SCHEMA, validate_display_mesh,
+    MAX_MESH_BYTES, MAX_TRIANGLES, MAX_VERTICES, SCHEMA as MESH_SCHEMA, triangle_has_area, validate_display_mesh,
 )
 
 
@@ -46,9 +46,13 @@ def _write_display_mesh(bodies: list[dict], projection: dict, path: Path) -> Non
                 point = poly.Node(index).Transformed(transform)
                 vertices.append([point.X(), point.Y(), point.Z()])
             reverse = face.wrapped.Orientation() == TopAbs_REVERSED
+            original_count = len(triangles)
             for index in range(1, poly.NbTriangles() + 1):
                 a, b, c = poly.Triangle(index).Get()
-                triangles.append([offset + a - 1, offset + (c if reverse else b) - 1, offset + (b if reverse else c) - 1])
+                corners = [offset + a - 1, offset + (c if reverse else b) - 1, offset + (b if reverse else c) - 1]
+                if triangle_has_area(*(vertices[node] for node in corners)):
+                    triangles.append(corners)
+            _require(len(triangles) > original_count, "CAD 곡면에 면적이 있는 표시 삼각형이 없습니다.")
         item.update(vertices=vertices, triangles=triangles)
         mesh["bodies"].append(item)
     large = vertex_count > MAX_VERTICES or triangle_count > MAX_TRIANGLES

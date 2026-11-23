@@ -26,6 +26,13 @@ def _require(condition: bool, message: str) -> None:
         raise ProjectError("E_HASH", message, details={"field_path": "display_mesh"})
 
 
+def triangle_has_area(a, b, c):
+    """! @brief 표시 좌표에서 면적이 정확히 0인 극점·이음매 삼각형을 식별한다."""
+    u = [b[i] - a[i] for i in range(3)]
+    v = [c[i] - a[i] for i in range(3)]
+    return (u[1] * v[2] != u[2] * v[1] or u[2] * v[0] != u[0] * v[2] or u[0] * v[1] != u[1] * v[0])
+
+
 def _identity(value: object) -> bool:
     """! @brief 객체 식별자가 정규 UUID인지 외부 참조 없이 확인한다."""
     try:
@@ -91,6 +98,4 @@ def validate_display_mesh(mesh: dict, *, snapshot: dict, run_id: str, body_map: 
                      0 <= index < len(vertices) for index in triangle) and len(set(triangle)) == 3,
                      "표시 mesh 삼각형 색인이 유효하지 않습니다.")
             a, b, c = (vertices[index] for index in triangle)
-            u, v = ([b[index] - a[index] for index in range(3)], [c[index] - a[index] for index in range(3)])
-            cross = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]]
-            _require(any(value != 0.0 for value in cross), "표시 mesh에 면적이 없는 삼각형이 있습니다.")
+            _require(triangle_has_area(a, b, c), "표시 mesh에 면적이 없는 삼각형이 있습니다.")

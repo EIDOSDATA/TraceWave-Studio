@@ -814,7 +814,24 @@ private:
             const auto index = static_cast<std::size_t>(selection - 1);
             if (index >= intervals.size())
             {
-                LocateClearance(mesh.at("planar_clearances").at("clearances").at(index - intervals.size()));
+                const auto& physical = mesh.at("planar_clearances").at("clearances");
+                const auto offset = index - intervals.size();
+                if (offset < physical.size())
+                {
+                    LocateClearance(physical.at(offset));
+                }
+                else
+                {
+                    const auto& cad = mesh.at("cad_clearances");
+                    if (offset == physical.size())
+                    {
+                        m_plot->Highlight({});
+                        SetGridRepair({});
+                        SetStatus(cad.at("message").get<std::string>());
+                        return;
+                    }
+                    LocateMechanicalClearance(cad.at("rows").at(offset - physical.size() - 1));
+                }
                 return;
             }
             const auto& row = intervals.at(index);
@@ -922,6 +939,59 @@ private:
         UpdateAxis();
         m_plot->HighlightBand(axis, bounds, applied, cross);
         m_coordinates->LocateCell(firstLine);
+    }
+
+    /** @brief 봉인한 기계 간극에서 격자 안에 들어온 구간만 강조한다. */
+    void LocateMechanicalClearance(const Json& row)
+    {
+        const auto state = row.at("grid_state").get<std::string>();
+        const auto names = row.at("object_names").get<std::array<std::string, 2>>();
+        std::string label = "CAD 기계 간극 / EM 미포함 / " + names[0] + " - " + names[1];
+        if (row.contains("witness_points_mm"))
+        {
+            const auto witness = row.at("witness_points_mm").get<std::array<std::array<double, 3>, 2>>();
+            label += Utf8(wxString::Format(Display(" / %.6g mm / (%.6g, %.6g, %.6g) ~ (%.6g, %.6g, %.6g) mm"),
+                row.at("distance_mm").get<double>(), witness[0][0], witness[0][1], witness[0][2],
+                witness[1][0], witness[1][1], witness[1][2]));
+        }
+        const auto locate = row.find("clipped_points_mm");
+        if (locate == row.end())
+        {
+            m_plot->Highlight({});
+            SetGridRepair({});
+            SetStatus(label + (state == "outside" ? " / 증거점 선분 전체가 격자 밖에 있습니다." : " / 거리 증거점이 없습니다."));
+            return;
+        }
+        const auto pts = locate->get<std::array<std::array<double, 3>, 2>>();
+        const bool layered = std::abs(pts[1][2] - pts[0][2]) > 1e-12;
+        const int horizontal = std::abs(pts[0][0] - pts[1][0]) >= std::abs(pts[0][1] - pts[1][1]) ? 0 : 1;
+        const int first = layered ? horizontal : 0;
+        const int second = layered ? 2 : 1;
+        SolverMeshClearance drawing{layered ? horizontal + 1 : 0,
+            {{{pts[0][first], pts[0][second]}, {pts[1][first], pts[1][second]}}}, {}};
+        for (const auto& item : row.at("cells_xyz"))
+        {
+            const auto cell = item.get<std::array<std::size_t, 3>>();
+            const std::array<std::size_t, 2> pair{cell[first], cell[second]};
+            if (drawing.cells.empty() || drawing.cells.back() != pair)
+            {
+                drawing.cells.push_back(pair);
+            }
+        }
+        m_book->SetSelection(1);
+        m_plane->SetSelection(drawing.plane);
+        m_full->SetValue(true);
+        m_axis->SetSelection(first);
+        UpdatePlot();
+        UpdateAxis();
+        if (!drawing.cells.empty())
+        {
+            m_coordinates->LocateCell(static_cast<long>(drawing.cells.front()[0]));
+        }
+        m_plot->HighlightClearance(std::move(drawing));
+        SetGridRepair({});
+        SetStatus(label + (state == "partial" ? " / 격자 안쪽 구간만 표시" :
+                           state == "boundary_point" ? " / 격자 경계에 닿는 점" : " / 격자 안"));
     }
 
     /** @brief 간극이 동일 높이인지 층간인지에 따라 실제 격자 투영을 선택한다. */
@@ -1588,6 +1658,24 @@ private:
                             Display(label), row.at("distance_mm").get<double>(), row.at("z_mm").get<double>(),
                             static_cast<unsigned long long>(row.at("cells_xy").size())));
                     }
+                }
+            }
+            if (mesh.contains("cad_clearances"))
+            {
+                const auto& review = mesh.at("cad_clearances");
+                m_intervals->Append(Display(review.at("message").get<std::string>()));
+                for (const auto& row : review.at("rows"))
+                {
+                    const auto state = row.at("grid_state").get<std::string>();
+                    const auto name = Display(row.at("object_names")[0].get<std::string>());
+                    const auto detail = state == "outside" ? Display("격자 밖") : state == "unavailable" ? Display("증거점 없음") :
+                        state == "boundary_point" ? Display("격자 경계점") :
+                        row.at("relation") == "touching" ? Display("접촉점") :
+                        wxString::Format(Display("%s %llu셀"), Display(state == "partial" ? "일부 통과" : "격자 안"),
+                                         static_cast<unsigned long long>(row.at("cells_xyz").size()));
+                    const auto distance = row.at("distance_mm").is_number() ?
+                        wxString::Format("%.6g mm", row.at("distance_mm").get<double>()) : Display("미정");
+                    m_intervals->Append(wxString::Format(Display("CAD 기계 간극 / EM 미포함 / %s / %s / %s"), name, distance, detail));
                 }
             }
             m_intervals->SetSelection(0);

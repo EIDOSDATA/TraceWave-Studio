@@ -234,6 +234,9 @@ def read(service, params):
         axes[axis] = {"pml_inner_mm": pml, "air_before_pml_mm": [interval[0] - pml[0], pml[1] - interval[1]],
                       "min_cell_mm": min(steps), "max_cell_mm": max(steps),
                       "boundary_modes": modes, "pml_cells": counts}
+    from rfad.application.cad_clearance_review import review as cad_clearance_review
+
+    mechanical = cad_clearance_review(service, state, document, lines)
     model = model_review(document, plan)
     from rfad.application.pcb_symmetry import native_case
 
@@ -246,6 +249,7 @@ def read(service, params):
                      "quality_reference": wavelength_reference(case),
                      "interval_report": mesh_intervals(native_case(case), lines),
                      **({"symmetry": case["symmetry"]} if "symmetry" in case else {}),
+                     **({"cad_clearances": mechanical} if mechanical is not None else {}),
                      "planar_clearances": planar_clearances(model["included"], lines, case["settings"]["grid_mm"]),
                      **({"local_mesh_report": case["local_mesh_report"]} if "local_mesh_report" in case else {}),
                      "case_sha256": canonical_hash(case), "lines_sha256": canonical_hash(lines)},
