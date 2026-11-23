@@ -68,6 +68,14 @@ ProjectSetupDialog::ProjectSetupDialog(wxWindow* parent, const std::string& titl
         wxEVT_BUTTON,
         [this](wxCommandEvent&)
         {
+            if (m_uncertain && onRecover)
+            {
+                if (!m_pending)
+                {
+                    onRecover();
+                }
+                return;
+            }
             CloseDialog();
         },
         wxID_CANCEL);
@@ -84,9 +92,9 @@ bool ProjectSetupDialog::NeedsReload() const
 }
 
 void ProjectSetupDialog::Request(const std::string& method, const Json& input, bool mutation,
-                                 std::function<void(const Json&)> completed)
+                                 std::function<void(const Json&)> completed, bool recovery)
 {
-    if (!Editable())
+    if (!Editable() && !(recovery && m_uncertain && !mutation && !m_closed))
     {
         return;
     }
@@ -223,17 +231,18 @@ void ProjectSetupDialog::ServiceDisconnected(const std::string& message)
     {
         return;
     }
-    const bool uncertain = m_mutating;
+    m_uncertain = m_uncertain || m_mutating;
     ++m_generation;
     m_mutating = false;
     m_pending = false;
     m_disconnected = true;
     if (auto* close = dynamic_cast<wxButton*>(FindWindow(wxID_CANCEL)))
     {
-        close->SetLabel(Display(uncertain ? "닫고 개정 확인" : "닫기"));
+        close->SetLabel(Display(m_uncertain && onRecover ? "적용 확인" : "닫기"));
     }
-    SetStatus((uncertain ? "적용 여부 미확정 / 닫은 뒤 서비스에 저장된 개정을 확인합니다. 자동 재적용은 없습니다.\n"
-                         : "서비스 상태가 바뀌었습니다. 닫은 뒤 다시 열어 확인하세요.\n") +
-              message);
+    const std::string guidance = m_uncertain && onRecover
+        ? "적용 여부 미확정. '적용 확인'을 누르면 다시 연결해 이 변경의 기록을 읽습니다.\n"
+        : "현재 개정을 확인하려면 입력 내용을 확인하고 화면 또는 프로그램을 다시 여세요.\n";
+    SetStatus(guidance + message);
     UpdateActions();
 }

@@ -14,6 +14,7 @@ void StudioFrame::Failure(const std::string& message, bool disconnected)
     m_jobFailed = {};
     if (disconnected)
     {
+        m_setupAfterConnect = {};
         if (m_setupDialog != nullptr)
         {
             m_setupDialog->ServiceDisconnected(message);

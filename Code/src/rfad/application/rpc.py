@@ -204,7 +204,7 @@ def capabilities(service=None, catalog=None) -> dict:
         result["design_rules_profile"] = {"profile": design_rule_service.PROFILE, "source": "draft_revision",
                                           "report": "rfad.design-checks/0.1", "manufacturing_verified": False}
         result["methods"].update({name: {"status": "implemented", "extension_profile": target_editor.PROFILE}
-                                  for name in ("target.editor.get", "target.editor.apply")})
+                                  for name in ("target.editor.get", "target.editor.apply", target_editor.RECEIPT_METHOD)})
         result["target_editor_profile"] = {"profile": target_editor.PROFILE, "source": "draft_revision",
                                            "partial_edits": True, "preserves_sources": True, "evaluation_supported": False}
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.template-candidate/0.2"}
@@ -368,7 +368,7 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | smart_dimension_service.READS | sketch_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | large_results.READS | rf_validation_records.READS | sweep_selection.READS | {solver_checkpoint_source.METHOD, handoff_evidence.METHOD, project_evidence.METHOD, solver_preview.METHOD, solver_conditions_service.READ, solver_evidence.METHOD, project_activity.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "canvas.route.review", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | smart_dimension_service.READS | sketch_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | large_results.READS | rf_validation_records.READS | sweep_selection.READS | {solver_checkpoint_source.METHOD, handoff_evidence.METHOD, project_evidence.METHOD, solver_preview.METHOD, solver_conditions_service.READ, solver_evidence.METHOD, project_activity.METHOD, target_editor.RECEIPT_METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "canvas.route.review", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS | archive_receiver.READS:
             return None
         try:
@@ -425,6 +425,8 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
                 result = solver_preview.read(service, params)
             elif method == "target.editor.get":
                 result = target_editor.read(service, params)
+            elif method == target_editor.RECEIPT_METHOD:
+                result = target_editor.read_receipt(service, params)
             elif method in TEMPLATE_READS:
                 result = service.templates.query(method, params)
             elif method in STUDY_READS:

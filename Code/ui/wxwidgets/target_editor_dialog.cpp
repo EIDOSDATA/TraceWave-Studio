@@ -53,7 +53,7 @@ void TargetEditorDialog::RenderContext(const Json& context)
     UpdateActions();
 }
 
-void TargetEditorDialog::Load(const Json& targetId, const Json& presetId)
+void TargetEditorDialog::Load(const Json& targetId, const Json& presetId, const std::string& confirmation)
 {
     Json input{{"expected_revision", m_revision}, {"target_id", targetId}};
     if (!presetId.is_null())
@@ -61,7 +61,7 @@ void TargetEditorDialog::Load(const Json& targetId, const Json& presetId)
         input["preset_id"] = presetId;
     }
     Request("target.editor.get", input, false,
-            [this, targetId, presetId](const Json& result)
+            [this, targetId, presetId, confirmation](const Json& result)
             {
                 const Json& selection = result.at("selection");
                 if (selection.at("id") != targetId || selection.value("preset_id", Json(nullptr)) != presetId)
@@ -69,7 +69,53 @@ void TargetEditorDialog::Load(const Json& targetId, const Json& presetId)
                     throw std::runtime_error("목표 선택 응답이 요청과 일치하지 않습니다.");
                 }
                 RenderContext(result);
+                if (!confirmation.empty())
+                {
+                    SetStatus(confirmation);
+                }
             });
+}
+
+/** @brief 실제 명령 기록만 확인하고 미반영 초안은 편집 가능한 상태로 되돌린다. */
+void TargetEditorDialog::ReadRecovery()
+{
+    if (m_commandId.empty())
+    {
+        SetStatus("확인할 명령이 없습니다. 입력 내용을 확인한 뒤 프로젝트를 다시 여세요.");
+        return;
+    }
+    Request("target.editor.receipt", {{"command_id", m_commandId}}, false,
+            [this](const Json& receipt)
+            {
+                if (receipt.at("command_id") != m_commandId || receipt.at("project_id") != m_projectId)
+                {
+                    throw std::runtime_error("다른 변경의 기록을 받았습니다.");
+                }
+                const bool applied = receipt.at("applied").get<bool>();
+                const auto current = receipt.at("current_revision").get<std::string>();
+                if (current != (applied ? receipt.at("new_revision").get<std::string>() : m_revision))
+                {
+                    m_needsReload = true;
+                    m_uncertain = false;
+                    m_cancel->SetLabel(Display("닫기"));
+                    SetStatus(applied ? "적용 기록을 확인했습니다. 이후 개정이 있습니다. 화면을 다시 열어 현재 값을 확인하세요."
+                                      : "이 변경은 적용되지 않았습니다. 이후 개정이 있으므로 입력을 확인하고 프로젝트를 다시 여세요.");
+                    return;
+                }
+                m_disconnected = false;
+                m_uncertain = false;
+                m_cancel->SetLabel(Display("닫기"));
+                if (!applied)
+                {
+                    SetStatus("이번 변경은 적용되지 않았습니다. 입력을 보존했습니다. 확인 후 적용할 수 있습니다.");
+                    return;
+                }
+                AcceptMutation(receipt);
+                m_reloadingContext = true;
+                Load(receipt.at("operation") == "remove" ? Json(nullptr) : receipt.at("target_id"), nullptr,
+                     "변경이 적용된 개정을 확인했습니다. 변경 사유: " + receipt.at("reason").get<std::string>());
+            },
+            true);
 }
 
 bool TargetEditorDialog::HasDraft() const
@@ -106,6 +152,7 @@ void TargetEditorDialog::Apply(bool remove)
                          {"target_id", m_targetId},
                          {"values", remove ? Json::object() : m_fields->Changes()},
                          {"reason", Utf8(m_reason->GetValue())}};
+        m_commandId = input.at("command_id").get<std::string>();
         if (!m_presetId.is_null())
         {
             input["preset_id"] = m_presetId;

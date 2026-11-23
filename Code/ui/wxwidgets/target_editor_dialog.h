@@ -13,12 +13,13 @@ class TargetEditorDialog final : public ProjectSetupDialog
 {
 public:
     TargetEditorDialog(wxWindow* parent, const Json& context, DialogGateway gateway);
+    void ReadRecovery();
 
 private:
     friend class StudioSmokeDriver;
     void BuildInterface();
     void RenderContext(const Json& context);
-    void Load(const Json& targetId, const Json& presetId = nullptr);
+    void Load(const Json& targetId, const Json& presetId = nullptr, const std::string& confirmation = "");
     void ChoosePreset();
     void Apply(bool remove);
     void UpdateActions() override;
@@ -29,6 +30,7 @@ private:
     Json m_context;
     Json m_targetId = nullptr;
     Json m_presetId = nullptr;
+    std::string m_commandId;
     bool m_loading = false;
     bool m_reloadingContext = false;
     wxListBox* m_targets = nullptr;

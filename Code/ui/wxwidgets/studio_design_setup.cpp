@@ -4,6 +4,8 @@
 #include "template_dialog.h"
 #include "design_rules_dialog.h"
 #include "physical_setup_dialog.h"
+#include "output_controller.h"
+#include <wx/weakref.h>
 
 void StudioFrame::OpenDesignSetup(DesignSetup kind, const Json& selection)
 {
@@ -116,7 +118,42 @@ void StudioFrame::ShowDesignSetup(const Json& context, DesignSetup kind)
         }
         else
         {
-            dialog = std::make_unique<TargetEditorDialog>(this, context, gateway);
+            auto target = std::make_unique<TargetEditorDialog>(this, context, gateway);
+            const wxWeakRef<TargetEditorDialog> weak(target.get());
+            target->onRecover = [this, weak]()
+            {
+                if (!weak || m_closing || m_restarting || m_setupDialog != weak.get())
+                {
+                    return;
+                }
+                if (m_connected)
+                {
+                    weak->ReadRecovery();
+                    return;
+                }
+                if (m_solverWorkflow.Active() || m_solverRestoring || m_cadPreparing || !m_cadTask.Empty() ||
+                    (m_output && m_output->Active()))
+                {
+                    weak->ServiceDisconnected("진행 중인 작업도 끊겼습니다. 프로그램을 다시 실행해 보존 상태를 확인하세요.");
+                    return;
+                }
+                m_setupAfterConnect = [this, weak]()
+                {
+                    if (weak && m_setupDialog == weak.get())
+                    {
+                        weak->ReadRecovery();
+                    }
+                    else
+                    {
+                        OpenProject("open", m_path);
+                    }
+                };
+                m_transportFailed = false;
+                m_restarting = true;
+                SetStatusText(Display("저장된 개정을 읽기 위해 다시 연결하는 중"), 0);
+                BeginShutdown();
+            };
+            dialog = std::move(target);
         }
         m_setupDialog = dialog.get();
         UpdateControls();

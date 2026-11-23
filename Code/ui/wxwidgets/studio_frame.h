@@ -322,6 +322,7 @@ private:
     void BeginShutdown();
     /** @brief 종료 thread가 pipe를 모두 회수한 뒤 창을 파괴하거나 smoke 연결을 재개한다. */
     void OnShutdown(wxThreadEvent&);
+    std::function<void()> m_setupAfterConnect;
 
     Studio::RequestDispatcher m_requests;
     Studio::JobTracker m_foregroundTask;

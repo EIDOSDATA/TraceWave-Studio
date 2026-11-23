@@ -14,6 +14,7 @@ from rfad.domain.targets import MAX_SAMPLES, MAX_TARGETS, target_input_status
 
 
 PROFILE = "rfad.target-editor/0.1"
+RECEIPT_METHOD = "target.editor.receipt"
 MAX_DTO_BYTES = 60 * 1024
 
 
@@ -72,6 +73,26 @@ def read(service, params):
     if len(canonical_bytes(result)) > MAX_DTO_BYTES:
         fail("목표 편집 표시가 60 KiB 상한을 초과했습니다. 원본은 보존되며 출처/표본을 생략하지 않습니다.", "target_id", "E_RESOURCE")
     return result
+
+
+def read_receipt(service, params):
+    """! @brief 재적용 없이 명령 식별자로 확정 적용과 미반영을 구분한다."""
+    _fields(params, {"contract_version", "context", "input"})
+    if params["contract_version"] != "rfad.api/2.0":
+        fail("지원하지 않는 API 버전입니다.", "contract_version", "E_VERSION")
+    data = _fields(params["input"], {"command_id"})
+    command_id = _uuid(data["command_id"])
+    state = service.journal.read()
+    project = service._project(state, params["context"])
+    document = service._load(project)
+    revision = document["revision_id"]
+    service._check_history_head(project, revision)
+    record = state["commands"].get(command_id)
+    receipt = {"project_id": document["project_id"], "current_revision": revision,
+               "command_id": command_id, "applied": False}
+    if record and record["project_id"] == document["project_id"] and "target_editor" in record:
+        receipt.update(applied=True, new_revision=record["new_revision"], **record["target_editor"])
+    return receipt
 
 
 def validate_input(context, data):

@@ -143,6 +143,12 @@ void StudioFrame::Connect()
                  m_startupProbe->ServiceReady();
              }
              m_smoke->OnConnected();
+             if (m_setupAfterConnect)
+             {
+                 auto resume = std::exchange(m_setupAfterConnect, {});
+                 resume();
+                 return;
+             }
              if (!m_options.smoke && (!m_path.empty() || !m_options.openProject.empty()))
              {
                  OpenProject("open", m_path.empty() ? Utf8(m_options.openProject) : m_path);

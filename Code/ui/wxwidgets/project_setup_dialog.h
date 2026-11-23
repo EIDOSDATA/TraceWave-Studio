@@ -17,13 +17,14 @@ public:
     /** @brief 미확정 변경 또는 개정 충돌 후 원본 재조회 필요 여부이다. */
     bool NeedsReload() const;
     void ServiceDisconnected(const std::string& message);
+    std::function<void()> onRecover;
 
 protected:
     friend class StudioSmokeDriver;
 
     /** @brief 새로운 요청은 이전 조회 응답을 무효화하며 자동 재전송하지 않는다. */
     void Request(const std::string& method, const Json& input, bool mutation,
-                 std::function<void(const Json&)> completed);
+                 std::function<void(const Json&)> completed, bool recovery = false);
     /** @brief 폼 변경/닫기로 이전 읽기 응답의 적용을 막는다. */
     void InvalidateRead();
     /** @brief 권위 응답의 개정을 보관하며 변경 이력은 서비스가 소유한다. */
@@ -48,6 +49,7 @@ protected:
     bool m_disconnected = false;
     bool m_closed = false;
     bool m_needsReload = false;
+    bool m_uncertain = false;
 
 private:
     DialogGateway m_gateway;

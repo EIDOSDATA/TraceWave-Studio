@@ -131,6 +131,26 @@ class TargetEditorTests(unittest.TestCase):
         self.move_history("project.redo")
         self.assertEqual([row["id"] for row in self.document()["targets"]], [second["target_id"]])
 
+    def test_read_only_receipt_distinguishes_missing_and_committed_after_restart(self):
+        """! @brief 성공 응답을 재전송하지 않고 같은 명령의 권위 개정과 사유를 읽는다."""
+        applied, original = self.edit(reason="응답 누락 뒤 확인할 사유")
+        self.service.close()
+        self.service = ProjectService(self.workspace, auto_run=False)
+        state = self.service.journal.read()
+        params = {"contract_version": "rfad.api/2.0", "context": {"project_id": self.project_id},
+                  "input": {"command_id": original["input"]["command_id"]}}
+        found = self.rpc(target_editor.RECEIPT_METHOD, params)
+        self.assertTrue(found["applied"])
+        self.assertEqual(found["current_revision"], applied["new_revision"])
+        self.assertEqual(found["new_revision"], applied["new_revision"])
+        self.assertEqual(found["target_id"], applied["target_id"])
+        self.assertEqual(found["reason"], original["input"]["reason"])
+        params["input"]["command_id"] = str(uuid4())
+        missing = self.rpc(target_editor.RECEIPT_METHOD, params)
+        self.assertFalse(missing["applied"])
+        self.assertNotIn("new_revision", missing)
+        self.assertEqual(self.service.journal.read(), state)
+
     def test_sourced_presets_keep_scope_samples_and_missing_values_after_reopen(self):
         """! @brief 발행 판과 범위를 신규 목표의 SI 수량 및 개별 표본과 함께 보존한다."""
         expected = {
