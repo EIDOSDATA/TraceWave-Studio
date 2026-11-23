@@ -163,6 +163,7 @@ void PcbSelectionDialog::ShowFailure(const Json& error)
     }
     m_sectionLayers = Json::array();
     m_section->Refresh();
+    m_reviewLayers->Disable();
     if (message != headline)
     {
         m_review->ChangeValue(Display(message));
@@ -185,6 +186,7 @@ void PcbSelectionDialog::Changed()
         return;
     }
     m_model.Invalidate();
+    m_reviewLayers->Disable();
     m_sectionLayers = Json::array();
     m_section->Refresh();
     SetStatus("입력이 바뀌었습니다. 변경 미리보기를 다시 확인하세요.");

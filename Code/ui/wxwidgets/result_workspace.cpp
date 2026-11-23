@@ -719,6 +719,7 @@ void ResultWorkspace::RadiationPage(const Json& options, std::uint64_t generatio
 void ResultWorkspace::FieldDescribe()
 {
     const auto generation = ++m_viewGeneration;
+    m_field->onConfigure = onConfigureField;
     m_field->SetBusy(true);
     Read(
         "result.field.describe", Pinned(),

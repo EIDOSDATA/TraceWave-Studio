@@ -89,7 +89,7 @@ void StudioFrame::BindSolver()
 }
 
 /** @brief 프로젝트의 저장 조건과 과거 결과 목록을 현재 검토에 연결한다. */
-void StudioFrame::ConfigureSolver(const std::string& resultId, const Json& proposedSettings)
+void StudioFrame::ConfigureSolver(const std::string& resultId, const Json& proposedSettings, bool focusField)
 {
     if (m_busy || !m_connected || !m_solverConfigured || m_project.empty() || m_solverWorkflow.Active() || m_solverRestoring)
     {
@@ -105,9 +105,9 @@ void StudioFrame::ConfigureSolver(const std::string& resultId, const Json& propo
     m_busy = true;
     UpdateControls();
     Send("solver.conditions", Json{{"expected_revision", revision}}, false, Context(),
-        [this, project, revision, resultId, proposedSettings](const Json& catalog)
+        [this, project, revision, resultId, proposedSettings, focusField](const Json& catalog)
         {
-            CallAfter([this, project, revision, resultId, proposedSettings, catalog]()
+            CallAfter([this, project, revision, resultId, proposedSettings, focusField, catalog]()
             {
                 m_busy = false;
                 const bool current = m_connected && !m_closing && m_project == project && m_revision == revision;
@@ -118,7 +118,7 @@ void StudioFrame::ConfigureSolver(const std::string& resultId, const Json& propo
                 UpdateControls();
                 if (current)
                 {
-                    OpenSolverReview(project, revision, catalog, resultId, proposedSettings);
+                    OpenSolverReview(project, revision, catalog, resultId, proposedSettings, focusField);
                 }
             });
         },
@@ -130,7 +130,7 @@ void StudioFrame::ConfigureSolver(const std::string& resultId, const Json& propo
 
 /** @brief 조건 저장은 프로젝트 개정에 반영하고 실행은 다시 검토한 입력으로 시작한다. */
 void StudioFrame::OpenSolverReview(const std::string& project, const std::string& revision, const Json& catalog,
-                                   const std::string& resultId, Json proposedSettings)
+                                   const std::string& resultId, Json proposedSettings, bool focusField)
 {
     auto& reviewDraft = proposedSettings.is_object() ? proposedSettings : m_solverDraft;
     const auto decision = Studio::ShowSolverReview(this, revision, reviewDraft, catalog, resultId,
@@ -161,7 +161,7 @@ void StudioFrame::OpenSolverReview(const std::string& project, const std::string
             return kind == "material" || kind == "port" ||
                 path == "stackup." + id + ".material_id" || path == "stackup." + id + ".thickness" ||
                 path == "geometry." + id + ".material_ref";
-        });
+        }, focusField);
     if (!decision || !m_connected || m_closing || m_project != project || m_revision != revision || HasDraft())
     {
         return;

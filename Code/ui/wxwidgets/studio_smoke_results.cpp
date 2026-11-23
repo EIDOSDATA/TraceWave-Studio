@@ -210,6 +210,8 @@ void StudioSmokeDriver::ResultsSmokeTick()
             CanvasAssert(rows > 1 && columns > 1 && field.m_canvas->m_colors.size() == rows * columns &&
                              field.m_point->IsEnabled() && field.m_marker->GetValue().Contains(Display("복소값")),
                          "필드 화면에 색 셀 또는 실제 표본 마커가 없습니다.");
+            CanvasAssert(field.m_position->GetLabel().Contains(Display("실제 격자")),
+                         "단면 좌표가 실제 격자 위치임을 표시하지 않았습니다.");
             field.m_canvas->Update();
             CanvasAssert(field.m_canvas->m_plot.width > 0 && field.m_canvas->m_plot.height > 0,
                          "필드 화면의 실제 그리기를 확인하지 못했습니다.");

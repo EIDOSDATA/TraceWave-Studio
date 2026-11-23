@@ -49,6 +49,10 @@ def _base(resolved):
     result = resolved.get("normalized") or {}
     plan = result.get("provenance", {}).get("analysis_plan", {})
     case = plan.get("case", {})
+    probe = case.get("settings", {}).get("field_probe")
+    if isinstance(probe, dict):
+        response["requested_region_mm"] = {axis: deepcopy(probe[axis + "_mm"]) for axis in "xyz"
+                                           if axis + "_mm" in probe}
     if "field_recording" in case and "port" in case:
         port = case["port"]
         response["drive_reference"] = {"analysis_plan_id": plan["plan_id"], "port_id": port["id"],

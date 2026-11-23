@@ -2,6 +2,8 @@
 #include "pcb_selection_dialog.h"
 #include "pcb_selection_view_support.h"
 #include <wx/dcbuffer.h>
+#include <wx/button.h>
+#include <wx/grid.h>
 #include <wx/notebook.h>
 #include <wx/panel.h>
 #include <wx/sizer.h>
@@ -26,7 +28,27 @@ wxPanel* PcbSelectionDialog::BuildReviewPage()
         Display("변경 미리보기를 실행하면 기존 참조, 미정 치수, 출처 용량과 적용 가능 여부를 확인할 수 있습니다."),
         wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
     m_review->SetName("pcb.review");
-    layout->Add(m_review, 1, wxEXPAND | wxALL, FromDIP(10));
+    auto* details = new wxBoxSizer(wxVERTICAL);
+    m_reviewLayers = new wxButton(panel, wxID_ANY, Display("기존 층 연결 열기"));
+    m_reviewLayers->Disable();
+    details->Add(m_reviewLayers, 0, wxBOTTOM, FromDIP(6));
+    details->Add(m_review, 1, wxEXPAND);
+    layout->Add(details, 1, wxEXPAND | wxALL, FromDIP(10));
+    m_reviewLayers->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        m_notebook->SetSelection(1);
+        for (int row = 0; row < m_layers->GetNumberRows(); ++row)
+        {
+            if (!m_layers->IsReadOnly(row, 4) && m_layers->GetCellValue(row, 4) == Display("새 층"))
+            {
+                m_layers->SetGridCursor(row, 4);
+                m_layers->MakeCellVisible(row, 4);
+                break;
+            }
+        }
+        m_layers->SetFocus();
+        SetStatus("새 층이 기존 패턴의 층을 대신해야 한다면 기존 층 연결 열에서 해당 층을 고르세요.");
+    });
     panel->SetSizer(layout);
     return panel;
 }
@@ -120,6 +142,9 @@ void PcbSelectionDialog::RenderPreview(const Json& result)
         }
     }
     m_review->ChangeValue(Display(review));
+    const auto removed = result.value("changes", Json::object()).value("stackup", Json::object())
+        .value("removed", Json::array());
+    m_reviewLayers->Enable(!result.value("can_apply", false) && !removed.empty() && m_layers->GetNumberRows() > 0);
     m_notebook->SetSelection(4);
     SetStatus(result.value("can_apply", false)
                   ? "변경 내용과 미정 항목을 확인한 뒤 적용하세요. 입력을 수정하면 다시 미리보기해야 합니다."

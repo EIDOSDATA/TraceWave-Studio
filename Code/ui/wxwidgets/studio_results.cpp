@@ -134,6 +134,16 @@ void StudioFrame::BuildResultInterface()
     {
         m_views->SetSelection(6);
     };
+    m_results->onConfigureField = [this]()
+    {
+        if (!m_solverConfigured)
+        {
+            wxMessageBox(Display("Windows 해석 환경을 연결한 뒤 기록 설정을 열 수 있습니다."),
+                         Display("필드 기록 설정"), wxOK | wxICON_INFORMATION, this);
+            return;
+        }
+        ConfigureSolver({}, nullptr, true);
+    };
     m_results->onExportResult = [this](const Json& result)
     {
         const auto project = m_project, epoch = m_epoch;

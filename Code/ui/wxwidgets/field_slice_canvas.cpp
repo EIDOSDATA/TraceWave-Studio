@@ -217,12 +217,22 @@ void FieldSliceCanvas::Paint(wxPaintEvent&)
     context->SetPen(wxPen(colours.border));
     context->SetBrush(*wxTRANSPARENT_BRUSH);
     context->DrawRectangle(m_plot.x, m_plot.y, m_plot.width, m_plot.height);
-    context->DrawText(Display(m_vLabel), FromDIP(8), FromDIP(5));
+    context->DrawText(Display(m_vLabel), m_plot.x, m_plot.y - FromDIP(24));
     context->DrawText(Display(m_uLabel), m_plot.x + m_plot.width * 0.5, m_plot.GetBottom() + FromDIP(30));
     context->DrawText(wxString::Format("%.6g", m_u.front()), m_plot.x, m_plot.GetBottom() + FromDIP(7));
     context->DrawText(wxString::Format("%.6g", m_u.back()), m_plot.GetRight() - FromDIP(40), m_plot.GetBottom() + FromDIP(7));
-    context->DrawText(wxString::Format("%.6g", m_v.front()), FromDIP(3), m_plot.GetBottom() - FromDIP(15));
-    context->DrawText(wxString::Format("%.6g", m_v.back()), FromDIP(3), m_plot.y);
+    const auto ordinate = [&](double value, int y)
+    {
+        const auto label = wxString::Format("%.6g", value);
+        double width = 0, height = 0;
+        context->GetTextExtent(label, &width, &height);
+        context->DrawText(label, std::max(0.0, m_plot.x - width - FromDIP(6)), y);
+    };
+    ordinate(m_v.front(), m_plot.GetBottom() - FromDIP(15));
+    if (m_v.size() > 1)
+    {
+        ordinate(m_v.back(), m_plot.y);
+    }
     const double legendX = m_plot.GetRight() + FromDIP(18);
     const double legendWidth = FromDIP(15);
     context->SetPen(*wxTRANSPARENT_PEN);

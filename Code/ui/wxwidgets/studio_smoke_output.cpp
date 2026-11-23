@@ -266,6 +266,10 @@ void StudioSmokeDriver::OutputSmokeTick()
                          value.at("verification").at("kernel_independent") == false &&
                          m_frame.m_revision == m_outputRevision,
                      "도면 생성이 제작/물리 검증으로 표시되거나 원본 개정을 변경했습니다.");
+        CanvasAssert(view->m_preview.is_object() && drawing->m_canvas->Pages() == view->m_preview.at("pages") &&
+                         !drawing->m_build->IsEnabled(),
+                     "생성한 PDF와 직전 검토 배치를 이어 보지 못했거나 검토 없이 다시 생성할 수 있습니다.");
+        m_setupChecks.push_back("output_generated_pdf_keeps_review_layout");
         m_outputBuilt = view->m_record;
         m_outputBuildId = view->m_record.at("job_id");
         CanvasAssert(view->m_record.at("omissions").size() == 1 &&

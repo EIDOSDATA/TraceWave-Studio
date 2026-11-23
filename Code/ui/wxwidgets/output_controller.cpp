@@ -370,13 +370,16 @@ void OutputController::Catalog(int offset, const std::string& preferred)
          });
 }
 
-void OutputController::Record(const std::string& job)
+void OutputController::Record(const std::string& job, bool keepReview)
 {
     const auto generation = ++m_recordGeneration;
     m_previewInput = nullptr;
-    m_view->ClearRecord("선택한 출력의 파일과 검수 기록을 조회합니다. 현재 미리보기와 별개입니다.");
+    if (!keepReview)
+    {
+        m_view->ClearRecord("선택한 보존 출력의 파일과 검수 기록을 조회합니다.");
+    }
     Read("export.get", {{"job_id", job}},
-         [this, generation, job](const Json& result)
+         [this, generation, job, keepReview](const Json& result)
          {
              if (generation != m_recordGeneration)
              {
@@ -392,7 +395,9 @@ void OutputController::Record(const std::string& job)
                  throw std::runtime_error("출력 결과의 고정 입력 소유권이 다릅니다.");
              }
              m_view->SetRecord(result, Display(m_workspace));
-             Status(result.value("state", ""), "선택한 보존 출력의 파일과 검수 기록을 읽었습니다.");
+             Status(result.value("state", ""), keepReview
+                 ? "생성 완료. 방금 검토한 배치와 생성 파일을 확인하세요. 파일 목록 / 검수에서 원문을 열 수 있습니다."
+                 : "선택한 보존 출력의 파일과 검수 기록을 읽었습니다.");
          });
 }
 

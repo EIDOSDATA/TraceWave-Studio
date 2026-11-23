@@ -33,5 +33,5 @@ struct SolverReviewDecision
 /** @brief 검토한 설정의 실행/저장 또는 문제 속성 이동 요청을 반환한다. */
 std::optional<SolverReviewDecision> ShowSolverReview(wxWindow* parent, const std::string& revision,
     nlohmann::json& draft, const nlohmann::json& catalog, const std::string& resultId, SolverReviewRequest request,
-    SolverPropertyAvailable propertyAvailable);
+    SolverPropertyAvailable propertyAvailable, bool focusField = false);
 }

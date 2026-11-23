@@ -4,6 +4,7 @@
 #include "pcb_selection_view_support.h"
 #include "pcb_suggestion_model.h"
 #include <algorithm>
+#include <array>
 #include <utility>
 #include <wx/button.h>
 #include <wx/choice.h>
@@ -120,6 +121,9 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
     m_manualFromCatalog->SetName("pcb.catalog.manual");
     actions->Add(m_connectCatalog, 0, wxRIGHT, FromDIP(8));
     actions->Add(m_manualFromCatalog);
+    m_catalogState = new wxStaticText(panel, wxID_ANY, Display("인덱스 연결 확인 전"));
+    m_catalogState->SetName("pcb.catalog.state");
+    actions->Add(m_catalogState, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, FromDIP(12));
     layout->Add(actions, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(10));
     m_connectCatalog->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ConnectCatalog(); });
     m_manualFromCatalog->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { UseManual(); });
@@ -186,6 +190,7 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
     {
         ResetCatalogRows();
         Changed();
+        SetStatus("검색 조건을 변경했습니다. 검색을 눌러 이 자료 종류의 결과를 확인하세요.");
     };
     m_entity->Bind(wxEVT_CHOICE, change);
     m_publisher->Bind(wxEVT_TEXT, change);
@@ -281,6 +286,8 @@ void PcbSelectionDialog::ConnectCatalog()
                 return;
             }
             weak->Changed();
+            weak->m_catalogState->SetLabel(Display("읽기 전용 인덱스 연결됨"));
+            weak->m_catalogState->GetParent()->Layout();
             weak->Search();
         },
         [weak](const Json& error)
@@ -347,6 +354,8 @@ void PcbSelectionDialog::Search()
                     return;
                 }
                 const auto total = result.at("total_count").get<long long>();
+                weak->m_catalogState->SetLabel(Display("읽기 전용 인덱스 연결됨"));
+                weak->m_catalogState->SetToolTip(Display(result.at("catalog_id").get<std::string>()));
                 constexpr long SearchableRows = 1000001;
                 weak->m_catalogRowCount = static_cast<long>(std::min<long long>(total, SearchableRows));
                 weak->m_catalogSearchInput = input;
@@ -355,9 +364,9 @@ void PcbSelectionDialog::Search()
                 weak->m_results->Begin(entity, weak->m_catalogRowCount, result.at("items"));
                 const std::string count = total > SearchableRows
                     ? std::to_string(SearchableRows) + " / " + std::to_string(total) + "건 (검색 범위를 좁히세요)"
-                    : std::to_string(total) + "건";
+                    : "검색 결과 " + std::to_string(total) + "건";
                 weak->m_pageLabel->SetLabel(Display(count));
-                weak->SetStatus(total == 0 ? "검색 조건과 일치하는 공개 자료가 없습니다."
+                weak->SetStatus(total == 0 ? "인덱스는 연결되어 있습니다. 이 자료 종류와 검색 조건의 결과는 0건입니다."
                                            : "검색 결과는 공개 자료 요약입니다. 상세에서 원문과 시험 조건을 확인하세요.");
                 weak->UpdateControls();
                 weak->m_pageLabel->GetParent()->Layout();
@@ -368,6 +377,11 @@ void PcbSelectionDialog::Search()
                     weak->m_model.Fail(token, error))
                 {
                     weak->m_pageLabel->SetLabel(Display("검색 실패"));
+                    if (weak->m_catalogState->GetLabel() == Display("인덱스 연결 확인 전"))
+                    {
+                        weak->m_catalogState->SetLabel(Display("인덱스 연결 확인 필요"));
+                        weak->m_catalogState->GetParent()->Layout();
+                    }
                     weak->SetStatus(DiagnosticMessage(error) +
                                     " 카탈로그 연결에서 인덱스를 선택하거나 층 직접 입력을 사용하세요.");
                     weak->UpdateControls();
@@ -526,24 +540,33 @@ void PcbSelectionDialog::SelectResult(long index)
                 return;
             }
             const auto& item = result.at("item");
-            std::string summary =
-                "공개 주체: " + PcbView::Text(item, "publisher") + "\n자료 ID: " + PcbView::Text(item, "id");
+            std::string summary = "공개 주체: " + PcbView::Text(item, "publisher");
             if (result.value("entity", std::string()) == "native_templates")
             {
                 summary += "\n공개 적층명: " + PcbCatalogTable::NativeLabel(item) + "\n공개 구성: " + PcbCatalogTable::NativeDimensions(item) +
                            "\n공칭값은 원문의 완성 두께 포함 범위와 공차를 별도로 확인해야 합니다.";
             }
-            for (const char* field :
-                 {"product", "template_key", "material_form", "value_type", "source_id", "source_path"})
+            for (const auto& [field, label] : std::array<std::pair<const char*, const char*>, 4>{
+                     {{"product", "제품"}, {"template_key", "적층 식별명"},
+                      {"material_form", "재료 형태"}, {"value_type", "공개 값의 종류"}}})
             {
                 if (item.contains(field))
                 {
-                    summary += "\n" + std::string(field) + ": " + PcbView::Text(item, field);
+                    summary += "\n" + std::string(label) + ": " + PcbView::Text(item, field);
                 }
             }
             if (result.contains("properties"))
             {
                 summary += PropertySummary(result.at("properties"));
+            }
+            summary += "\n\n출처 상세\n자료 ID: " + PcbView::Text(item, "id");
+            for (const auto& [field, label] : std::array<std::pair<const char*, const char*>, 2>{
+                     {{"source_id", "원본 식별자"}, {"source_path", "원본 경로"}}})
+            {
+                if (item.contains(field))
+                {
+                    summary += "\n" + std::string(label) + ": " + PcbView::Text(item, field);
+                }
             }
             if (item.contains("truncated_fields") && !item.at("truncated_fields").empty())
             {

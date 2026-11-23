@@ -56,6 +56,24 @@ std::string CopyState(const std::string& value)
     const auto found = labels.find(value);
     return found == labels.end() ? value : found->second;
 }
+
+/** @brief 과거 명령 문자열과 고정 참조는 보존하고 화면에서는 출력의 역할을 읽기 쉽게 표시한다. */
+std::string EvidenceName(const Json& row)
+{
+    const auto name = row.at("name").get<std::string>();
+    if (row.at("kind") != "output")
+    {
+        return name;
+    }
+    if (name == "geometry.build")
+    {
+        return "3D 표시 형상";
+    }
+    const auto format = row.value("detail", Json::object()).value("format", Json(nullptr));
+    const std::string title = format == "pdf" ? "PDF 도면" : format == "svg" ? "SVG 도면" :
+        (format == "step" ? "STEP 교환" : format == "gerber_job" ? "Gerber Job / 드릴" : "보존 출력");
+    return title + (name == "export.verify" ? " 검수" : " 생성");
+}
 }
 
 HandoffOutputView::HandoffOutputView(wxWindow* parent) : wxPanel(parent)
@@ -284,7 +302,7 @@ void HandoffOutputView::SetEvidence(const Json& value)
         for (const auto& row : m_page.at("items"))
         {
             const long index = m_list->InsertItem(m_list->GetItemCount(), Display(Kind(row.at("kind"))));
-            m_list->SetItem(index, 1, Display(row.at("name").get<std::string>()));
+            m_list->SetItem(index, 1, Display(EvidenceName(row)));
             const auto selected = Selection(row);
             const bool included = std::find(m_selected.begin(), m_selected.end(), selected) != m_selected.end();
             const bool file =
@@ -491,7 +509,7 @@ void HandoffOutputView::ShowDetails(bool files)
         {
             for (const auto& row : m_review.at("preview_records"))
             {
-                text += "\n" + Kind(row.at("kind")) + " / " + row.at("name").get<std::string>() + " / " +
+                text += "\n" + Kind(row.at("kind")) + " / " + EvidenceName(row) + " / " +
                         CopyState(row.at("copy_state")) + "\n";
             }
             if (m_review.at("evidence_count").get<std::size_t>() > m_review.at("preview_records").size())

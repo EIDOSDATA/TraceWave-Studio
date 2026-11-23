@@ -2043,9 +2043,19 @@ private:
 
 std::optional<Studio::SolverReviewDecision> Studio::ShowSolverReview(wxWindow* parent, const std::string& revision,
     Json& draft, const Json& catalog, const std::string& resultId, Studio::SolverReviewRequest request,
-    Studio::SolverPropertyAvailable propertyAvailable)
+    Studio::SolverPropertyAvailable propertyAvailable, bool focusField)
 {
     SolverReviewDialog dialog(parent, revision, draft, catalog, resultId, std::move(request), std::move(propertyAvailable));
+    if (focusField)
+    {
+        dialog.CallAfter([&dialog]()
+        {
+            if (auto* input = wxWindow::FindWindowByName("solver.field_probe", &dialog))
+            {
+                input->SetFocus();
+            }
+        });
+    }
     const int outcome = dialog.ShowModal();
     if (outcome == wxID_OK || outcome == wxID_SAVE || outcome == wxID_FORWARD || outcome == wxID_APPLY)
     {

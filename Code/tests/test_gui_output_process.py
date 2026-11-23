@@ -93,7 +93,8 @@ class GuiOutputTests(unittest.TestCase):
                 "output_late_context_disconnect_destroy_safe", "output_uncertain_stable_receipt_no_duplicate",
                 "output_snapshot_explicit_native", "output_actual_paper_and_bounded_pages",
                 "output_options_invalidate_review", "output_review_confirmation_cancel_and_accept",
-                "output_actual_build_generated_not_manufacturing", "output_fresh_verify_keeps_original",
+                "output_generated_pdf_keeps_review_layout", "output_actual_build_generated_not_manufacturing",
+                "output_fresh_verify_keeps_original",
                 "output_history_clears_current_paper", "output_running_cancel_reaps_worker_and_keeps_record",
                 "output_saved_restart_exact_record"})
             with ProjectService(workspace, auto_run=False) as service:

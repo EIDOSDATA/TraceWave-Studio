@@ -42,6 +42,15 @@ FieldResultView::FieldResultView(wxWindow* parent) : wxPanel(parent)
     auto* title = Label(this, "기록 필드 / 실제 단면");
     StudioTheme::Title(*title);
     titleRow->Add(title, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(12));
+    m_configure = new wxButton(this, wxID_ANY, Display("새 해석의 필드 기록 설정"));
+    m_configure->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        if (onConfigure)
+        {
+            onConfigure();
+        }
+    });
+    titleRow->Add(m_configure, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(6));
     m_load = new wxButton(this, wxID_ANY, Display("단면 조회"));
     StudioTheme::Button(*m_load, true);
     titleRow->Add(m_load, 0, wxALIGN_CENTER_VERTICAL);
@@ -344,6 +353,7 @@ void FieldResultView::SetDescription(const Json& description)
         if (m_monitor->GetCount() == 0)
         {
             ClearSlice("선택한 결과에는 표시할 내부 필드가 기록되지 않았습니다.");
+            m_canvas->Clear(onConfigure ? "새 해석의 필드 기록 설정에서 성분과 기록 영역을 지정하세요." : "");
             SetBusy(false);
             return;
         }
@@ -468,7 +478,19 @@ void FieldResultView::UpdatePosition()
     {
         const auto& coordinates = component->at("coordinates_mm").at(axis);
         const int index = m_planeIndex->GetValue();
-        m_position->SetLabel(Display(axis + " = " + ResultUi::Number(coordinates.at(index), 10) + " mm"));
+        std::string text = "실제 격자 " + axis + " = " + ResultUi::Number(coordinates.at(index), 8) + " mm";
+        const auto region = m_description.value("requested_region_mm", Json::object());
+        const auto requested = region.value(axis, Json(nullptr));
+        if (requested.is_number())
+        {
+            text += "\n기록 요청 " + axis + " = " + ResultUi::Number(requested, 8) + " mm";
+        }
+        else if (requested.is_array() && requested.size() == 2)
+        {
+            text += "\n기록 요청 " + axis + " " + ResultUi::Number(requested.at(0), 8) +
+                "~" + ResultUi::Number(requested.at(1), 8) + " mm";
+        }
+        m_position->SetLabel(Display(text));
     }
     catch (const Json::exception&)
     {
@@ -630,6 +652,14 @@ void FieldResultView::SetBusy(bool busy)
     m_busy = busy;
     const bool available = Monitor() != nullptr;
     const bool component = Component() != nullptr;
+    const bool configure = onConfigure && m_description.is_object() &&
+        m_description.value("status", "") == "unavailable" && !busy;
+    if (m_configure->IsShown() != configure || m_controls->IsShown() != available)
+    {
+        m_configure->Show(configure);
+        m_controls->Show(available);
+        Layout();
+    }
     for (auto* choice : {m_monitor, m_component, m_frequency, m_normal})
     {
         choice->Enable(available && !busy);

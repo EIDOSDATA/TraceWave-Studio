@@ -270,7 +270,7 @@ void OutputController::Complete(const Json& result)
     else
     {
         Catalog(0, job);
-        Record(job);
+        Record(job, method == "export.build" && m_view->Preview().is_object());
         if (onCadResult && result.value("profile", "") == "rfad.step.mechanical/0.1" && method == "export.build")
         {
             onCadResult(result);

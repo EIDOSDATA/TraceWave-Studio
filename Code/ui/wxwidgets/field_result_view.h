@@ -29,6 +29,7 @@ public:
     std::function<void(const Json&)> onFlux;
     std::function<void(const Json&)> onSlice;
     std::function<void(const Json&)> onRefine;
+    std::function<void()> onConfigure;
 
 private:
     friend class StudioSmokeDriver;
@@ -71,6 +72,7 @@ private:
     wxTextCtrl* m_fluxReport = nullptr;
     wxTextCtrl* m_marker = nullptr;
     wxButton* m_load = nullptr;
+    wxButton* m_configure = nullptr;
     wxPanel* m_refineOptions = nullptr;
     wxButton* m_refine = nullptr;
     wxButton* m_study = nullptr;

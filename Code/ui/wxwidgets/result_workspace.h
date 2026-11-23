@@ -33,6 +33,7 @@ public:
     wxWindow* NavigationView() const;
     wxWindow* ConditionsView() const;
     std::function<void()> onFocusSource;
+    std::function<void()> onConfigureField;
     std::function<void()> onOpenTools;
     std::function<void()> onOpenValidation;
     std::function<void(const std::string&)> onSolverEvidence;

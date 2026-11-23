@@ -11,6 +11,7 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/textdlg.h>
 #include <array>
 
 namespace
@@ -126,7 +127,7 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
     scope->GetSizer()->Add(issues, 0, wxEXPAND | wxALL, FromDIP(8));
     auto* filesPage = page("파일 목록");
     auto* files =
-        Table(filesPage, filesPage->GetSizer(), {{"파일", 240}, {"역할", 160}, {"바이트", 110}, {"SHA256", 520}});
+        Table(filesPage, filesPage->GetSizer(), {{"파일", 240}, {"역할", 170}, {"바이트", 100}, {"SHA256 앞 12자리", 148}});
     auto artifacts = record.value("artifacts", Json::array());
     if (artifacts.empty() && record.value("manifest", Json(nullptr)).is_object())
     {
@@ -145,10 +146,30 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
         {
             filename = filename.substr(slash + 1);
         }
-        Row(*files, {filename, OutputUi::Text(artifact.value("role", Json(nullptr))),
+        const auto role = OutputUi::Text(artifact.value("role", Json(nullptr)));
+        const auto hash = OutputUi::Text(artifact.value("sha256", Json(nullptr)), "생성 전");
+        const auto dot = filename.rfind('.');
+        const auto extension = dot == std::string::npos ? "" : filename.substr(dot);
+        const std::string meaning = extension == ".pdf" ? "PDF 도면" : extension == ".gbrjob" ? "Gerber Job 목록" :
+            extension == ".gbr" ? "Gerber 층/외곽" : extension == ".drl" ? "드릴 좌표" :
+            extension == ".step" ? "STEP 교환" : role == "manifest" ? "원본 파일 명세" : role;
+        Row(*files, {filename, meaning,
                      OutputUi::Text(artifact.value("bytes", Json(nullptr)), "생성 전"),
-                     OutputUi::Text(artifact.value("sha256", Json(nullptr)), "생성 전")});
+                     artifact.value("sha256", Json(nullptr)).is_string() ? hash.substr(0, 12) : hash});
     }
+    files->SetToolTip(Display("행을 두 번 클릭하거나 Enter를 눌러 전체 경로, 역할 및 SHA-256을 봅니다."));
+    files->Bind(wxEVT_LIST_ITEM_ACTIVATED, [this, artifacts](wxListEvent& event)
+    {
+        if (event.GetIndex() < 0 || static_cast<std::size_t>(event.GetIndex()) >= artifacts.size())
+        {
+            return;
+        }
+        const auto& artifact = artifacts.at(static_cast<std::size_t>(event.GetIndex()));
+        wxTextEntryDialog detail(this, Display("전체 식별 정보입니다. Ctrl+C로 복사할 수 있습니다."),
+                                 Display("출력 파일 상세"), Display(artifact.dump(2)), wxOK | wxTE_MULTILINE | wxTE_READONLY);
+        detail.SetSize(FromDIP(wxSize(650, 330)));
+        detail.ShowModal();
+    });
     auto* verifyPage = page("검수 항목");
     const auto rawReport = record.value("report", record.value("verification", Json::object()));
     const auto report = rawReport.is_object() ? rawReport.value("verification", rawReport) : rawReport;

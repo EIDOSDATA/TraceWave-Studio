@@ -270,6 +270,8 @@ void StudioSmokeDriver::PcbSmokeDialog(PcbSelectionDialog& dialog)
     else if (m_pcbStage == 9 && !requestPending)
     {
         CanvasAssert(dialog.m_results->GetItemCount() > 0, "실제 카탈로그 검색 결과가 없습니다.");
+        CanvasAssert(dialog.m_catalogState->GetLabel().Contains(Display("연결됨")),
+                     "카탈로그 검색 응답이 읽기 전용 연결 상태를 덮어썼습니다.");
         long selected = -1;
         for (long index = 0; index < std::min<long>(dialog.m_results->GetItemCount(), PcbCatalogTable::PageSize); ++index)
         {

@@ -37,7 +37,7 @@ private:
               std::function<void(const Json&)> failed = {});
     void Context(int offset = 0, bool resetOptions = false);
     void Catalog(int offset = 0, const std::string& preferred = "");
-    void Record(const std::string& job);
+    void Record(const std::string& job, bool keepReview = false);
     void Capture();
     void Preview();
     void Build();

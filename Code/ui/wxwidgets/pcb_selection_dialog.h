@@ -150,6 +150,7 @@ private:
     wxButton* m_useSource = nullptr;
     wxButton* m_manualButton = nullptr;
     wxStaticText* m_pageLabel = nullptr;
+    wxStaticText* m_catalogState = nullptr;
     wxTextCtrl* m_catalogRowEntry = nullptr;
     wxGrid* m_layers = nullptr;
     wxTextCtrl* m_layoutReason = nullptr;
@@ -166,6 +167,7 @@ private:
     wxTextCtrl* m_bandReason = nullptr;
     wxGrid* m_ports = nullptr;
     wxTextCtrl* m_review = nullptr;
+    wxButton* m_reviewLayers = nullptr;
     wxPanel* m_section = nullptr;
     wxStaticText* m_status = nullptr;
     wxButton* m_previewButton = nullptr;
