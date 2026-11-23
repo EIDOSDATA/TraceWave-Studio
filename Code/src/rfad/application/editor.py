@@ -102,8 +102,8 @@ def selected_object(document: dict, selection: dict) -> tuple[str, dict]:
                 "validity_hz": frequency_range, "source_refs": [], "assumptions": []}
         if document["board"] is None or len(document["geometry"]) < 2:
             _fail("포트를 생성하려면 기판과 서로 다른 도체 패턴 두 개가 필요합니다.", "ports", "E_PORT")
-        if document["ports"]:
-            _fail("현재 단일 포트만 지원합니다. 기존 포트 속성을 편집하십시오.", "ports", "E_PORT")
+        if len(document["ports"]) >= 2:
+            _fail("현재 사용할 수 있는 두 급전을 모두 지정했습니다. 기존 포트 속성을 편집하십시오.", "ports", "E_PORT")
         return kind, {"id": identity, "name": allocate_name(document, {}, "ports"), "kind": "lumped", "positive_geometry_id": "", "reference_geometry_id": "",
             "resistance": Quantity.missing("impedance", "ohm").to_dict(), "reference_plane": "집중 포트의 급전 영역",
             "polarity": 1, "direction": [1.0, 0.0, 0.0], "validity_hz": frequency_range,
@@ -336,7 +336,8 @@ def editor_selection(document: dict, saved_revision: str, history: dict, selecti
               "metadata": {key: document["metadata"][key] for key in ("name", "description")}, "history": history,
               "selection": {**selected, "fields": selected_fields}}
     if document["ports"]:
-        port = document["ports"][0]
+        port = next((row for row in document["ports"] if selected["id"] in
+                     (row["id"], row["positive_geometry_id"], row["reference_geometry_id"])), document["ports"][0])
         source_refs = set()
         for scalar in (port["resistance"], *port["validity_hz"].values()):
             if "parameter_id" in scalar:

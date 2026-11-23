@@ -3,12 +3,12 @@
 from .native import require
 
 
-def spectra(raw, frequencies):
+def spectra(raw, frequencies, number=1):
     """! @brief V*s와 A*s를 보존하고 임의 RMS 또는 정현파 전력으로 바꾸지 않는다."""
     import numpy as np
 
     result = []
-    for name in ("port_ut_1", "port_it_1"):
+    for name in (f"port_ut_{number}", f"port_it_{number}"):
         data = np.loadtxt(raw / name, comments=("#", "%"))
         require(data.ndim == 2 and data.shape[0] >= 3 and data.shape[1] >= 2 and np.all(np.isfinite(data)),
                 "포트 원시 데이터가 불완전합니다.", "E_MISSING_ARTIFACT")

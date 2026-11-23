@@ -140,11 +140,14 @@ def project_board(document):
     return board
 
 
-def project_port(document, shapes, frequency, settings):
+def project_port(document, shapes, frequency, settings, source=None):
     """! @brief 한 개의 명시적 급전 모델과 실제 도체 접점을 투영한다."""
-    if len(document["ports"]) != 1:
-        fail("E_PORT", "설계 메뉴에서 급전을 추가하고 양단 도체와 급전 영역을 지정하십시오.", "ports")
-    source = document["ports"][0]
+    if source is None:
+        if len(document["ports"]) > 1:
+            fail("E_PORT", "두 급전을 모두 해석하려면 pcb-multiport를 실행하십시오.", "ports")
+        if not document["ports"]:
+            fail("E_PORT", "설계 메뉴에서 급전을 추가하고 양단 도체와 급전 영역을 지정하십시오.", "ports")
+        source = document["ports"][0]
     field = "ports." + source["id"]
     shape_map = {item["id"]: item for item in shapes}
     for terminal in ("positive_geometry_id", "reference_geometry_id"):
@@ -187,7 +190,22 @@ def project_port(document, shapes, frequency, settings):
     return port
 
 
-def project_pcb(document, settings):
+def check_feed_intersection(first, second):
+    """! @brief 같은 도체의 단자 한 점만 공유할 수 있으며 두 lumped 구간은 분리한다."""
+    overlap = [min(max(first["start_mm"][i], first["stop_mm"][i]), max(second["start_mm"][i], second["stop_mm"][i]))
+               - max(min(first["start_mm"][i], first["stop_mm"][i]), min(second["start_mm"][i], second["stop_mm"][i]))
+               for i in range(3)]
+    if min(overlap) < -1e-9:
+        return
+    ends = (("start_mm", "reference_geometry_id"), ("stop_mm", "positive_geometry_id"))
+    if max(overlap) <= 1e-9 and any(first[left_id] == second[right_id]
+                                     and math.dist(first[left], second[right]) <= 1e-9
+                                     for left, left_id in ends for right, right_id in ends):
+        return
+    fail("E_PORT", "두 급전 간극이 겹치거나 공유 단자 밖에서 교차합니다.", "ports." + second["id"])
+
+
+def project_pcb(document, settings, *, multiport=False):
     """! @brief 계획 경계에서 검증한 문서와 설정을 native 소비 조건으로 변환한다."""
     board = project_board(document)
     if board["kind"] == "polygon" and "power_balance" in settings:
@@ -302,11 +320,23 @@ def project_pcb(document, settings):
         if polygon_points > MAX_POLYGON_POINTS:
             fail("E_RESOURCE", "전체 도체 polygon의 점 개수 상한을 초과했습니다.", field)
         shapes.append(item)
-    port = project_port(document, shapes, frequency, settings)
-    connectivity = validate_native_contacts(shapes, port, settings["curve_tolerance_mm"], polygons_by_id, vias)
+    if multiport:
+        if len(document["ports"]) != 2:
+            fail("E_PORT", "두 개의 연결된 lumped 급전이 필요합니다.", "ports")
+        ports = [project_port(document, shapes, frequency, settings, source) for source in document["ports"]]
+        for number, item in enumerate(ports, 1):
+            item["number"] = number
+        first, second = ports
+        check_feed_intersection(first, second)
+        validate_native_contacts(shapes, second, settings["curve_tolerance_mm"], polygons_by_id, vias, ports=ports)
+        port = first
+    else:
+        port = project_port(document, shapes, frequency, settings)
+    connectivity = validate_native_contacts(shapes, port, settings["curve_tolerance_mm"], polygons_by_id, vias,
+                                            ports=ports if multiport else None)
     excitation = {"kind": "gaussian", "center_hz": center_hz, "width_hz": center_hz / 2}
     case = {"source": "user_project", "board": board, "layers": layers, "shapes": shapes, "vias": vias, "connectivity": connectivity, "materials": list(materials.consumed.values()),
-            "port": port, "settings": deepcopy(settings), "frequency_hz": deepcopy(frequency), "excitation": excitation,
+            "port": port, **({"ports": ports} if multiport else {}), "settings": deepcopy(settings), "frequency_hz": deepcopy(frequency), "excitation": excitation,
             "native_length_unit": "mm", "delta_unit_m": 0.001, "coordinate_round_decimals_mm": 12, "boundary_conditions": conditions(settings), "num_threads": compute_limits(settings)["num_threads"],
             "stop_criteria": {"max_timesteps": settings["max_timesteps"], "energy_decay": settings["end_criterion"], "exact_end_criteria": True}}
     def volume(material_id, field):
@@ -337,11 +367,12 @@ def project_pcb(document, settings):
     lines, local_mesh = build_grid(case)
     if local_mesh is not None:
         case["local_mesh_report"] = local_mesh
-        axis = "xyz".index(port["axis"])
-        gap_width = abs(port["stop_mm"][axis] - port["start_mm"][axis])
-        if axis != 2 and gap_width < 2 * settings["grid_mm"] and not covers_feed(local_mesh, port):
-            fail("E_PORT", "급전 방향의 국부 규칙이 간극 전체에 적용되어야 하며 목표 폭은 간극 폭의 절반 이하여야 합니다.",
-                 LOCAL_MESH_FIELD)
+        for feed in case.get("ports", [port]):
+            axis = "xyz".index(feed["axis"])
+            gap_width = abs(feed["stop_mm"][axis] - feed["start_mm"][axis])
+            if axis != 2 and gap_width < 2 * settings["grid_mm"] and not covers_feed(local_mesh, feed):
+                fail("E_PORT", "급전 방향의 국부 규칙이 간극 전체에 적용되어야 하며 목표 폭은 간극 폭의 절반 이하여야 합니다.",
+                     LOCAL_MESH_FIELD)
     if "mesh_policy" in settings:
         case["mesh_policy_report"] = policy_report(case, lines)
     from rfad.application.pcb_radiation import recording

@@ -305,7 +305,10 @@ def project_canvas(document: dict) -> dict:
                 result["omissions"].append({"id": board["id"], "message": "원형 기판 외곽이 2D 좌표 범위 또는 표현 정밀도를 벗어났습니다."})
         result["board"] = visible
     if document["ports"]:
-        result["port_marker"] = _port_marker(document, document["ports"][0])
+        markers = [_port_marker(document, port) for port in document["ports"]]
+        result["port_marker"] = markers[0]
+        if len(markers) > 1:
+            result["port_markers"] = markers
     labels = display_names(document)
     translation_groups = sketch_constraints.translation_groups(document)
     by_id = {row["id"]: row for row in document["geometry"]} if translation_groups else {}

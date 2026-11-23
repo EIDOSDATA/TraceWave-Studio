@@ -77,7 +77,8 @@ public:
         std::array<std::string, 2> terminals;
         Point point;
     };
-    std::optional<PortMarker> portMarker;
+    std::vector<PortMarker> portMarkers;
+    bool HasPortMarker(const std::string& identity) const;
 
 private:
     std::map<std::string, std::size_t> m_indices;

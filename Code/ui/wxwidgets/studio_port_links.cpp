@@ -177,13 +177,21 @@ void StudioFrame::UpdatePortLinks()
     std::string status = problem < 0 ? problemReason : "";
     if (selectingPort)
     {
-        const auto marker = m_scene.value("port_marker", Json::object());
+        auto marker = m_scene.value("port_marker", Json::object());
+        for (const auto& candidate : m_scene.value("port_markers", Json::array()))
+        {
+            if (candidate.at("id") == port->at("id"))
+            {
+                marker = candidate;
+                break;
+            }
+        }
         std::string markerReason = marker.value("reason", std::string());
         if (markerReason.rfind("치수에 표시할 값이 없습니다", 0) == 0)
         {
             markerReason = "급전 시작/끝 좌표가 미정입니다.";
         }
-        if (markerReason.empty() && !m_canvas->PortMarkerVisible())
+        if (markerReason.empty() && !m_canvas->PortMarkerVisible(port->at("id").get<std::string>()))
         {
             markerReason = "표시할 수 있는 양쪽 도체가 필요합니다.";
         }

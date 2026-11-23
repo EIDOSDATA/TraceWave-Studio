@@ -224,8 +224,10 @@ def build_grid(case):
             critical[axis].extend(center + sign * r for sign in (-1, 1) for r in (inner, (inner + outer) / 2, outer))
             critical[axis].append(center)
         critical[2].extend((via["z_min_mm"], (via["z_min_mm"] + via["z_max_mm"]) / 2, via["z_max_mm"]))
-    for axis in range(3):
-        critical[axis].extend([case["port"]["start_mm"][axis], case["port"]["stop_mm"][axis], (case["port"]["start_mm"][axis] + case["port"]["stop_mm"][axis]) / 2])
+    for port in case.get("ports", [case["port"]]):
+        for axis in range(3):
+            lower, upper = port["start_mm"][axis], port["stop_mm"][axis]
+            critical[axis].extend([lower, upper, (lower + upper) / 2])
     for part in case.get("environment", {}).get("parts", []):
         for start, stop in part["boxes_mm"]:
             for axis in range(3):

@@ -45,7 +45,7 @@ def validate_rules(rules):
             fail("E_SCHEMA", "간극은 X/Y/Z 각각 시작 좌표가 끝 좌표보다 작은 mm 범위여야 합니다.", field + ".bounds_mm")
 
 
-def _target_bounds(rule, port, vias, surfaces, field):
+def _target_bounds(rule, ports, vias, surfaces, field):
     """! @brief 도체의 실제 소비 위치로부터 격자의 대상 범위를 구한다."""
     if rule["kind"] == "gap":
         return rule["bounds_mm"]
@@ -56,7 +56,8 @@ def _target_bounds(rule, port, vias, surfaces, field):
                 if key == rule["opening_sha256"]:
                     return [*box, surface["bounds_mm"][2]]
         fail("E_GEOMETRY", "개구의 위치 또는 입력이 바뀌었습니다. 현재 표면층 개구를 다시 선택하세요.", field + ".object_id")
-    if rule["kind"] == "port" and rule["object_id"] == port["id"]:
+    port = ports.get(rule["object_id"]) if rule["kind"] == "port" else None
+    if port is not None:
         return [sorted(pair) for pair in zip(port["start_mm"], port["stop_mm"])]
     via = vias.get(rule["object_id"]) if rule["kind"] == "via" else None
     if via is not None:
@@ -79,12 +80,13 @@ def _insert_anchor(anchors, coordinate):
 
 def compile_rules(case, anchors, model_bounds):
     """! @brief 축별 국부 규칙을 기존 모델 내부선에 고정하고 원래 범위와 적용 범위를 분리한다."""
+    ports = {port["id"]: port for port in case.get("ports", [case["port"]])}
     vias = {via["id"]: via for via in case.get("vias", [])}
     surfaces = {row["id"]: row for row in case.get("surface_layers", [])}
     rows = []
     for index, rule in enumerate(case["settings"]["local_mesh"]):
         field = f"{FIELD}[{index}]"
-        bounds = _target_bounds(rule, case["port"], vias, surfaces, field)
+        bounds = _target_bounds(rule, ports, vias, surfaces, field)
         if rule["kind"] == "gap" and any(a < low - 1e-9 or b > high + 1e-9
                                          for (a, b), (low, high) in zip(bounds, model_bounds)):
             fail("E_GEOMETRY", "간극 좌표는 해석 모델의 X/Y/Z 내부 범위에 있어야 합니다.", field + ".bounds_mm")

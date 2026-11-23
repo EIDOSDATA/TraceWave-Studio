@@ -26,29 +26,11 @@ from rfad.application.pcb_radiation import raw_names
 from rfad.domain.errors import ProjectError
 
 
-def prepare(stage, plan, runtime):
-    """! @brief 원/직사각 기판과 명시적 도체를 준비하되 FDTD는 실행하지 않는다."""
+def add_geometry(csx, case):
+    """! @brief 공통 사용자 PCB의 기판, 도체, 비아, 설치물과 가공부를 native 객체로 만든다."""
     import numpy as np
-    import CSXCAD
-    import openEMS
 
-    validate_pcb_plan(plan)
-    case = plan["case"]
     settings = case["settings"]
-    output = stage / "output/prepared"
-    output.mkdir()
-    csx = CSXCAD.ContinuousStructure()
-    solver = openEMS.openEMS(NrTS=settings["max_timesteps"], EndCriteria=settings["end_criterion"])
-    # @brief 독립 재료 분할은 pinned engine의 QuarterCell 평균을 명시적으로 사용한다.
-    solver.SetCellConstantMaterial(False)
-    solver.SetCSX(csx)
-    solver.SetGaussExcite(case["excitation"]["center_hz"], case["excitation"]["width_hz"])
-    solver.SetBoundaryCond(case["boundary_conditions"])
-    grid = csx.GetGrid()
-    grid.SetDeltaUnit(case["delta_unit_m"])
-    lines = mesh_lines(case)
-    for axis in "xyz":
-        grid.AddLine(axis, lines[axis])
     board = case["board"]
     for layer in case["layers"]:
         if layer["role"] != "dielectric":
@@ -97,6 +79,33 @@ def prepare(stage, plan, runtime):
                              "conductivity_s_per_m": via["conductivity_s_per_m"], "epsilon_r": via["epsilon_r"], "skin_depth_loss_validated": False,
                              "tool_hole_diameter_mm": via["tool_hole_diameter_mm"], "tool_hole_used_for_native_geometry": False,
                              "native_drill_basis": "finished_hole_diameter"})
+    return mappings, via_mappings, mask_mappings, void_mappings
+
+
+def prepare(stage, plan, runtime):
+    """! @brief 원/직사각 기판과 명시적 도체를 준비하되 FDTD는 실행하지 않는다."""
+    import CSXCAD
+    import openEMS
+
+    validate_pcb_plan(plan)
+    case = plan["case"]
+    settings = case["settings"]
+    output = stage / "output/prepared"
+    output.mkdir()
+    csx = CSXCAD.ContinuousStructure()
+    solver = openEMS.openEMS(NrTS=settings["max_timesteps"], EndCriteria=settings["end_criterion"])
+    # @brief 독립 재료 분할은 pinned engine의 QuarterCell 평균을 명시적으로 사용한다.
+    solver.SetCellConstantMaterial(False)
+    solver.SetCSX(csx)
+    solver.SetGaussExcite(case["excitation"]["center_hz"], case["excitation"]["width_hz"])
+    solver.SetBoundaryCond(case["boundary_conditions"])
+    grid = csx.GetGrid()
+    grid.SetDeltaUnit(case["delta_unit_m"])
+    lines = mesh_lines(case)
+    for axis in "xyz":
+        grid.AddLine(axis, lines[axis])
+    board = case["board"]
+    mappings, via_mappings, mask_mappings, void_mappings = add_geometry(csx, case)
     connectivity = audit_native_mesh(csx, case, lines)
     port = case["port"]
     solver.AddLumpedPort(1, port["resistance_ohm"], port["start_mm"], port["stop_mm"], port["axis"], excite=1, priority=10)

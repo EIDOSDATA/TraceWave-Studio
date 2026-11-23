@@ -44,6 +44,11 @@ class EditorCreateTests(unittest.TestCase):
         command = edit_command(document, selection, {"name": "P1", "positive_geometry_id": document["geometry"][0]["id"], "reference_geometry_id": document["geometry"][1]["id"]})
         apply_design_command(document, command["type"], command["payload"])
         self.assertIsNone(document["ports"][0]["excitation_box"]["start"][0]["value_si"])
+        selection = {"kind": "new_port", "id": str(uuid4())}
+        second = edit_command(document, selection, {"name": "P2",
+                              "positive_geometry_id": document["geometry"][0]["id"],
+                              "reference_geometry_id": document["geometry"][1]["id"]})
+        apply_design_command(document, second["type"], second["payload"])
         with self.assertRaises(ProjectError):
             fields_for(document, {"kind": "new_port", "id": str(uuid4())})
 

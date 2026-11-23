@@ -139,13 +139,16 @@ std::string DesignCanvas::ConductorDisplayReason(const std::string& identity) co
     return Visible(*shape) ? "" : "2D에서 도체층이 숨겨져 있습니다.";
 }
 
-bool DesignCanvas::PortMarkerVisible() const
+bool DesignCanvas::PortMarkerVisible(const std::string& identity) const
 {
-    return m_scene.portMarker && std::all_of(m_scene.portMarker->terminals.begin(),
-        m_scene.portMarker->terminals.end(), [this](const std::string& id)
+    return std::any_of(m_scene.portMarkers.begin(), m_scene.portMarkers.end(), [this, &identity](const auto& marker)
+    {
+        return (identity.empty() || identity == marker.id) &&
+            std::all_of(marker.terminals.begin(), marker.terminals.end(), [this](const std::string& id)
         {
             return ConductorDisplayReason(id).empty();
         });
+    });
 }
 
 void DesignCanvas::SetInspection(const std::vector<std::string>& identities, std::optional<wxPoint2DDouble> location)
@@ -169,7 +172,7 @@ void DesignCanvas::SetSelection(const std::string& identity)
                                    });
     const std::string selected =
         (shape != nullptr && Visible(*shape) && Renderable(*shape)) || owner ||
-        (m_scene.portMarker && identity == m_scene.portMarker->id) ? identity : std::string();
+        m_scene.HasPortMarker(identity) ? identity : std::string();
     if (m_selection != selected)
     {
         if (m_gesture.Reshaping())
@@ -188,7 +191,7 @@ DesignCanvas::Json DesignCanvas::SelectionInfo(const std::string& identity) cons
     {
         return nullptr;
     }
-    if (m_scene.portMarker && identity == m_scene.portMarker->id)
+    if (m_scene.HasPortMarker(identity))
     {
         return {{"kind", "port"}, {"id", identity}};
     }
@@ -401,18 +404,29 @@ bool DesignCanvas::Renderable(const Shape& shape, const Point& offset) const
 /** @brief 실제 선분과 원호 구간까지의 거리로 위에 그린 객체를 먼저 선택한다. */
 std::string DesignCanvas::HitTest(const wxPoint& point, bool conductorOnly) const
 {
-    if (!conductorOnly && PortMarkerVisible())
+    if (!conductorOnly)
     {
-        const auto center = WorldToScreen(Point(m_scene.portMarker->point.x, m_scene.portMarker->point.y));
-        if (std::hypot(point.x - center.x, point.y - center.y) <= FromDIP(6))
+        double nearest = FromDIP(6);
+        std::string result;
+        for (const auto& marker : m_scene.portMarkers)
         {
-            return m_scene.portMarker->id;
+            const auto center = WorldToScreen(Point(marker.point.x, marker.point.y));
+            const double distance = std::hypot(point.x - center.x, point.y - center.y);
+            if (distance <= nearest && PortMarkerVisible(marker.id))
+            {
+                nearest = distance;
+                result = marker.id;
+            }
+        }
+        if (!result.empty())
+        {
+            return result;
         }
     }
     const Point world = ScreenToWorld(point);
     for (auto shape = m_scene.shapes.rbegin(); shape != m_scene.shapes.rend(); ++shape)
     {
-        if (!Renderable(*shape) ||
+        if (!Renderable(*shape) || (conductorOnly && m_tool == "route" && shape->layer != m_drawingLayer) ||
             (conductorOnly ? shape->selectionKind != "geometry" || !Visible(*shape) : !Selectable(*shape)))
         {
             continue;
@@ -552,9 +566,12 @@ void DesignCanvas::PaintScene(wxDC& dc, const wxRect& damage)
             DrawDimensions(dc);
         }
     }
-    if (PortMarkerVisible())
+    for (const auto& marker : m_scene.portMarkers)
     {
-        const auto& marker = *m_scene.portMarker;
+        if (!PortMarkerVisible(marker.id))
+        {
+            continue;
+        }
         const auto center = WorldToScreen(Point(marker.point.x, marker.point.y));
         if (GetClientRect().Contains(center))
         {

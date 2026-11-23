@@ -335,13 +335,21 @@ Model Model::Parse(const nlohmann::json& scene)
             ++result.omissionCount;
         }
     }
-    const auto marker = scene.find("port_marker");
-    if (marker != scene.end() && !marker->at("point_mm").is_null())
+    auto markers = scene.value("port_markers", Json::array());
+    if (markers.empty() && scene.contains("port_marker"))
     {
+        markers.push_back(scene.at("port_marker"));
+    }
+    for (const auto& marker : markers)
+    {
+        if (marker.at("point_mm").is_null())
+        {
+            continue;
+        }
         try
         {
-            result.portMarker.emplace(Model::PortMarker{marker->at("id").get<std::string>(),
-                marker->at("terminal_ids").get<std::array<std::string, 2>>(), ReadPoint(marker->at("point_mm"))});
+            result.portMarkers.push_back({marker.at("id").get<std::string>(),
+                marker.at("terminal_ids").get<std::array<std::string, 2>>(), ReadPoint(marker.at("point_mm"))});
         }
         catch (const DisplayRangeError&)
         {
@@ -354,6 +362,15 @@ Model Model::Parse(const nlohmann::json& scene)
         result.m_indices.emplace(result.shapes[index].id, index);
     }
     return result;
+}
+
+/** @brief 현재 개정의 표시 가능한 급전 식별자를 확인한다. */
+bool Model::HasPortMarker(const std::string& identity) const
+{
+    return std::any_of(portMarkers.begin(), portMarkers.end(), [&identity](const auto& marker)
+    {
+        return marker.id == identity;
+    });
 }
 
 /** @brief 표시 순서를 유지하면서 식별자 검색은 인덱스로 수행한다. */

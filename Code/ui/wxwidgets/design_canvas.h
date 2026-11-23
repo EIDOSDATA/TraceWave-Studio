@@ -29,7 +29,7 @@ public:
     void SetSelection(const std::string& identity);
     /** @brief 도체의 현재 2D 표시 가능 여부를 숨김 상태와 구분한다. */
     std::string ConductorDisplayReason(const std::string& identity) const;
-    bool PortMarkerVisible() const;
+    bool PortMarkerVisible(const std::string& identity = {}) const;
     /** @brief 읽기 전용 검사 오버레이가 강조할 객체와 서비스 좌표를 설정한다. */
     void SetInspection(const std::vector<std::string>& identities, std::optional<wxPoint2DDouble> location);
     void SetTool(const std::string& tool);

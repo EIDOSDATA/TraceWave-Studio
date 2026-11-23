@@ -121,7 +121,7 @@ def _compatible(left, right):
     return left.get("net_id") is not None and all(left.get(key) == right.get(key) for key in ("net_id", "material_id", "thickness_m", "conductivity_s_per_m"))
 
 
-def validate_native_contacts(shapes, port, tolerance, polygons_by_id, vias=None):
+def validate_native_contacts(shapes, port, tolerance, polygons_by_id, vias=None, *, ports=None):
     """! @brief native polygon의 양단 접촉, 열린 급전 간극과 도체별 전기 의미를 검증한다.
 
     @param shapes 단위가 mm이고 실제 sheet 높이와 유효 재료를 갖는 계획 도체.
@@ -241,7 +241,9 @@ def validate_native_contacts(shapes, port, tolerance, polygons_by_id, vias=None)
         for identity in short_ids:
             component = next(set(group) for group in components if identity in group)
             roles = {all_shapes[member].get("role") for member in component}
-            if not {port["positive_geometry_id"], port["reference_geometry_id"]}.issubset(component) or not {"ground", "radiator"}.issubset(roles):
+            matching_feed = any({feed["positive_geometry_id"], feed["reference_geometry_id"]}.issubset(component)
+                                for feed in (ports if ports is not None else [port]))
+            if not matching_feed or not {"ground", "radiator"}.issubset(roles):
                 _fail("E_CONNECTIVITY", "명시적 short는 ground/radiator와 포트 양단의 같은 전기 연결 성분에 속해야 합니다.", "geometry." + identity)
     return {"schema": "rfad.pcb-connectivity/0.1", "components": components, "short_entity_ids": sorted(short_ids),
             "same_net_port_allowed": True, "native_polygon_contacts_checked": True, "yee_connectivity_checked": False}

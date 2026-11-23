@@ -1,4 +1,4 @@
-"""! @brief 기판, 적층, 도체 패턴/패드/비아와 단일 포트의 의미 모델을 검증한다.
+"""! @brief 기판, 적층, 도체 패턴/패드/비아와 급전의 의미 모델을 검증한다.
 
 @details CAD Boolean, 실제 도체 연결 판정과 해석기 기능 검증은
 별도 단계다. 미정 물성은 저장할 수 있으며 목적별 preflight에서 구분한다.
@@ -347,8 +347,8 @@ def validate_design(document: dict) -> None:
                 if not start_layer["order"] <= order <= end_layer["order"]:
                     _fail("E_GEOMETRY", "비아 패드가 연결 층 범위를 벗어났습니다.", field + ".pad_ids")
 
-    if len(document["ports"]) > 1:
-        _fail("E_UNSUPPORTED", "초기 profile은 단일 포트만 지원합니다.", "ports")
+    if len(document["ports"]) > 2:
+        _fail("E_UNSUPPORTED", "현재 설계는 최대 두 개의 lumped 급전을 지원합니다.", "ports")
     for port in document["ports"]:
         field = "ports." + port["id"]
         optional = {"excitation_box"} if "excitation_box" in port else set()

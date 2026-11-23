@@ -91,18 +91,14 @@ def validate_settings(settings):
     limits(settings)
 
 
-def _payload(document, snapshot, runtime, settings):
-    """! @brief 보존한 사용자 설계에서 native 소비 조건을 결정적으로 만든다."""
+def check_pcb_input(document, settings):
+    """! @brief 단일 및 다중 급전 해석에 동일한 원본 형상과 물성 검사를 적용한다."""
     validate_project(document)
     for row in document.get("pcb", {}).get("holes", []):
         if row["plating"]["state"] != "unplated":
             fail("E_UNSUPPORTED", "기계 홀은 명시 비도금 상태만 해석합니다. 도금이 필요한 경우 지원 PCB 비아를 사용하십시오.",
                  "pcb.holes." + row["id"] + ".plating.state")
-    _snapshot(snapshot)
-    _runtime(runtime)
     validate_settings(settings)
-    if snapshot["content_hash"] != canonical_hash(document) or any(snapshot[key] != document[key] for key in ("project_id", "revision_id", "schema_version")):
-        fail("E_HASH", "PCB 원본과 스냅샷 참조가 다릅니다.", "snapshot")
     # @brief validate_project가 검증한 편집 출처/외부 복소 자료는 원문에 보존하며 EM 형상에 투영하지 않는다.
     supported_extensions = {PCB_SELECTION_EXTENSION, TEMPLATE_ORIGIN_EXTENSION, PHYSICAL_KEY,
                             PRECISION_ORIGIN_EXTENSION, NETWORK_LIBRARY_EXTENSION, "rfad.sweep-selection", "rfad.measurement", SOLVER_CONDITIONS_KEY, SMART_DIMENSIONS_KEY, SKETCH_KEY, DRAWING_ANNOTATIONS_KEY}
@@ -117,6 +113,16 @@ def _payload(document, snapshot, runtime, settings):
     identity = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]]
     if any(frame["rotation"] != identity or frame["translation_si"] != [0.0, 0.0, 0.0] or frame["handedness"] != "right" for frame in document["frames"].values()):
         fail("E_UNSUPPORTED", "PCB 해석은 항등 오른손 좌표계만 지원합니다.", "frames")
+    return omissions
+
+
+def _payload(document, snapshot, runtime, settings):
+    """! @brief 보존한 사용자 설계에서 native 소비 조건을 결정적으로 만든다."""
+    _snapshot(snapshot)
+    _runtime(runtime)
+    omissions = check_pcb_input(document, settings)
+    if snapshot["content_hash"] != canonical_hash(document) or any(snapshot[key] != document[key] for key in ("project_id", "revision_id", "schema_version")):
+        fail("E_HASH", "PCB 원본과 스냅샷 참조가 다릅니다.", "snapshot")
     return {"schema": "rfad.analysis-plan/0.1", "analysis_profile": PROFILE, "runtime_profile": runtime["runtime_profile"],
             "snapshot": deepcopy(snapshot), "source_semantics": deepcopy(document), "runtime_identity": deepcopy(runtime),
             **({"physical_setup_omissions": omissions} if omissions else {}),
