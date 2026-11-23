@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 253,
+    "current_07_검증": 254,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -32147,6 +32147,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/377_해석중단과_체크포인트_재개검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 4072,
+      "working_tree_sha256": "54cb49a6830c66dc8d07d967ac34c858b8b5a58c1f0bfb6fe8f407394793980e",
+      "text_lines": 41,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/37_스튜디오_재열기와_유휴성능_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
@@ -32833,8 +32842,8 @@
       "path": "01_개발문서/09_개발계획/13_전자기해석과_후처리_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 33872,
-      "working_tree_sha256": "1973e49c25605d1496130c9b0631258aba6b563a116ec2bcbca06147a62b9104",
+      "bytes": 33910,
+      "working_tree_sha256": "3affc6957e9ceea5a457c884b1e5401eb6cf3052040f2b714272ffde73cb1ca6",
       "text_lines": 96,
       "text_status": "utf8_read"
     },
@@ -32842,8 +32851,8 @@
       "path": "01_개발문서/09_개발계획/14_매트랩과_안테나설계자동화_기능대조.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 17925,
-      "working_tree_sha256": "e7246748ee9c14899abe746107e4d9158945577c738220cb61b76f50524b5c2f",
+      "bytes": 17964,
+      "working_tree_sha256": "fec4722e00bd1311e2cfa2f5d95acb19768bd1d05dc0cc3fe23e4d12a07f6ccc",
       "text_lines": 51,
       "text_status": "utf8_read"
     },
@@ -32851,8 +32860,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 36620,
-      "working_tree_sha256": "34ec429f33c0f508131cc2449eb08c631d154609678d713a4e980e25974fdbe0",
+      "bytes": 36617,
+      "working_tree_sha256": "0516aa9af48f2325a9a9aa42c071ee4a89ec2905be6886382dd2047abcf0837b",
       "text_lines": 191,
       "text_status": "utf8_read"
     },
