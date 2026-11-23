@@ -1,6 +1,7 @@
 /** @file @brief 연구 화면의 서비스 요청과 수명/지연 응답을 관리한다. */
 #include "project_study_dialog.h"
 #include "studio_support.h"
+#include "frequency_display.h"
 #include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
@@ -91,13 +92,17 @@ void ProjectStudyDialog::Call(const std::string& method, const Json& input, bool
                 self->UpdateControls();
             }
         },
-        [self](const Json& error)
+        [self, method](const Json& error)
         {
             if (self && !self->m_closing)
             {
                 self->m_pending = false;
                 self->m_lastError = DiagnosticMessage(error);
                 self->m_status->SetLabel(Display(self->m_lastError));
+                if (method == "study.create")
+                {
+                    self->m_pages->SetSelection(0);
+                }
                 self->UpdateControls();
             }
         });
@@ -202,6 +207,17 @@ void ProjectStudyDialog::CreateStudy()
     try
     {
         const Json specification = Draft(true);
+        const auto band = m_context.value("port_band_hz", Json(nullptr));
+        const auto& frequency = specification.at("settings").at("frequency_hz");
+        if (band.is_object() && (frequency.at("start") < band.at("min") || frequency.at("stop") > band.at("max")))
+        {
+            m_pages->SetSelection(0);
+            m_lastError = "급전 유효 대역 " + StudioFrequency::Range(band.at("min"), band.at("max")) +
+                " 안에서 시작과 끝 주파수를 입력하세요.";
+            m_status->SetLabel(Display(m_lastError));
+            m_fields.at(frequency.at("start") < band.at("min") ? "start" : "stop")->SetFocus();
+            return;
+        }
         m_lastError.clear();
         Call("study.create", Json{{"expected_revision", m_context.at("revision_id")}, {"specification", specification}},
              true,
@@ -216,6 +232,7 @@ void ProjectStudyDialog::CreateStudy()
     {
         m_lastError = error.what();
         m_status->SetLabel(Display(m_lastError));
+        m_pages->SetSelection(0);
     }
 }
 

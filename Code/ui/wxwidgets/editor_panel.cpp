@@ -348,6 +348,41 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
             control->SetMinSize(FromDIP(wxSize(primary && leaf == "mode" ? 106 : paired ? 68 : 0, 32)));
         }
         WriteValue(field, descriptor.at("value"));
+        if (kind == "geometry" && editor == "text" && leaf == "value" &&
+            (key.rfind("start.", 0) == 0 || key.rfind("end.", 0) == 0))
+        {
+            auto* entry = static_cast<wxTextCtrl*>(control);
+            const auto original = entry->GetValue();
+            double coordinate = 0;
+            if (original.length() > 10 && original.ToCDouble(&coordinate) && std::isfinite(coordinate))
+            {
+                field.compactCoordinate = wxString::Format("%.8g", coordinate);
+                field.showingCompactCoordinate = true;
+                entry->ChangeValue(field.compactCoordinate);
+                entry->SetToolTip(Display("입력 칸에 초점을 두면 원래 좌표를 읽거나 복사할 수 있습니다.") + "\n" + original);
+                entry->Bind(wxEVT_SET_FOCUS, [this, key, entry, original](wxFocusEvent& event)
+                {
+                    const auto pointer = m_fields.find(key);
+                    if (pointer != m_fields.end() && pointer->second.control == entry &&
+                        pointer->second.showingCompactCoordinate)
+                    {
+                        pointer->second.showingCompactCoordinate = false;
+                        entry->ChangeValue(original);
+                    }
+                    event.Skip();
+                });
+                entry->Bind(wxEVT_KILL_FOCUS, [this, key, entry, original](wxFocusEvent& event)
+                {
+                    const auto pointer = m_fields.find(key);
+                    if (pointer != m_fields.end() && pointer->second.control == entry && entry->GetValue() == original)
+                    {
+                        pointer->second.showingCompactCoordinate = true;
+                        entry->ChangeValue(pointer->second.compactCoordinate);
+                    }
+                    event.Skip();
+                });
+            }
+        }
         control->SetName(Display(descriptor.at("label").get<std::string>()));
         if (descriptor.contains("help"))
         {
@@ -437,7 +472,7 @@ bool EditorPanel::IsDirty() const
 
 Json EditorPanel::ReadValue(const Field& field) const
 {
-    if (field.descriptor.value("readonly", false))
+    if (field.descriptor.value("readonly", false) || field.showingCompactCoordinate)
     {
         return field.descriptor.at("value");
     }
@@ -542,6 +577,7 @@ Json EditorPanel::ReadValue(const Field& field) const
 
 void EditorPanel::WriteValue(Field& field, const Json& value)
 {
+    field.showingCompactCoordinate = false;
     const std::string editor = field.descriptor.at("editor").get<std::string>();
     if (editor == "choice")
     {

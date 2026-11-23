@@ -6,6 +6,7 @@
 #include "studio_theme.h"
 #include "studio_support.h"
 #include <wx/button.h>
+#include <wx/clipbrd.h>
 #include <wx/choice.h>
 #include <wx/listctrl.h>
 #include <wx/stattext.h>
@@ -52,7 +53,7 @@ SmithView::SmithView(wxWindow* parent)
         new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(310, 310)), wxLC_REPORT | wxLC_HRULES);
     m_markerValues->SetName("result.smith.marker-values");
     StudioTheme::Table(*m_markerValues);
-    m_markerValues->AppendColumn(Display("항목"), wxLIST_FORMAT_LEFT, FromDIP(110));
+    m_markerValues->AppendColumn(Display("항목"), wxLIST_FORMAT_LEFT, FromDIP(132));
     m_markerValues->AppendColumn(Display("M1 실제 값"), wxLIST_FORMAT_LEFT, FromDIP(180));
     values->Add(m_markerValues, 1, wxEXPAND);
     auto* markers = new wxWrapSizer(wxHORIZONTAL);
@@ -60,6 +61,24 @@ SmithView::SmithView(wxWindow* parent)
     m_markerNext = new wxButton(this, wxID_ANY, Display("다음 표본"));
     markers->Add(m_markerPrevious, 0, wxALL, FromDIP(4));
     markers->Add(m_markerNext, 0, wxALL, FromDIP(4));
+    auto* copyMarker = new wxButton(this, wxID_ANY, Display("표본 원문 복사"));
+    copyMarker->SetToolTip(Display("선택한 표본의 주파수(Hz)와 복소값을 원래 자릿수로 복사합니다."));
+    markers->Add(copyMarker, 0, wxALL, FromDIP(4));
+    copyMarker->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        if (m_response.is_object())
+        {
+            for (const auto& point : m_response.at("points"))
+            {
+                if (point.at("index") == m_markerIndex && wxTheClipboard->Open())
+                {
+                    wxTheClipboard->SetData(new wxTextDataObject(Display(point.dump(2))));
+                    wxTheClipboard->Close();
+                    break;
+                }
+            }
+        }
+    });
     values->Add(markers, 0, wxEXPAND);
     auto* notice = new wxStaticText(this, wxID_ANY,
                                     Display("Z0 변경은 명시적 파생 변환입니다. 원본 자료와 과거 조건은 유지합니다."));
@@ -220,7 +239,7 @@ void SmithView::SelectMarker(int index)
     };
     const auto scale = StudioFrequency::ForDescriptor(m_description.at("descriptor"));
     row("마커 / 표본", "M1 / " + std::to_string(index + 1));
-    row("주파수", StudioFrequency::Value(point->value("frequency_hz", Json(nullptr)), scale) + " " + scale.unit);
+    row("주파수", StudioFrequency::Value(point->value("frequency_hz", Json(nullptr)), scale, 8) + " " + scale.unit);
     row("Gamma", ResultUi::Complex(point->value("gamma_ri", Json(nullptr))));
     row("기준 Z0", ResultUi::Complex(point->value("z0_ohm", Json(nullptr))) + " ohm");
     row("입력 임피던스", ResultUi::Complex(point->value("input_impedance_ohm_ri", Json(nullptr)),

@@ -17,6 +17,7 @@
 #include <array>
 #include <algorithm>
 #include <cmath>
+#include <wx/textdlg.h>
 namespace
 {
 const std::array<std::string, 8> Observables{"total", "e_theta",     "e_phi", "rhcp",
@@ -194,19 +195,42 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
     auto* numbersLayout = new wxBoxSizer(wxVERTICAL);
     m_convention = new wxStaticText(numbers, wxID_ANY, Display("원문 복소 성분과 명시된 편파 규약을 표시합니다."));
     numbersLayout->Add(m_convention, 0, wxEXPAND | wxALL, FromDIP(8));
-    m_samples = new wxListCtrl(numbers, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 230)), wxLC_REPORT);
-    m_samples->SetMinSize(FromDIP(wxSize(-1, 230)));
+    m_samples = new wxListCtrl(numbers, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 210)),
+                               wxLC_REPORT | wxLC_SINGLE_SEL);
+    m_samples->SetMinSize(FromDIP(wxSize(-1, 210)));
     StudioTheme::Table(*m_samples);
-    const std::array<std::string, 10> columns{"theta (deg)",  "phi (deg)",    "Etheta (V*s/m)",  "Ephi (V*s/m)",
-                                              "RHCP (V*s/m)", "LHCP (V*s/m)", "상대 위상 (deg)", "축비 (dB)",
-                                              "관측량 값",    "상태"};
-    const std::array<int, 10> columnWidths{72, 70, 182, 182, 182, 182, 112, 84, 125, 145};
+    const std::array<std::string, 10> columns{"theta (deg)", "phi (deg)", "축비 (dB)", "관측량 값", "상태",
+                                             "상대 위상 (deg)", "Etheta (V*s/m)", "Ephi (V*s/m)",
+                                             "RHCP (V*s/m)", "LHCP (V*s/m)"};
+    const std::array<int, 10> columnWidths{82, 72, 90, 112, 120, 110, 156, 156, 156, 156};
     for (std::size_t index = 0; index < columns.size(); ++index)
     {
-        m_samples->AppendColumn(Display(columns[index]), index > 0 && index < 9 ? wxLIST_FORMAT_RIGHT : wxLIST_FORMAT_LEFT,
+        m_samples->AppendColumn(Display(columns[index]), index != 0 && index != 4 ? wxLIST_FORMAT_RIGHT : wxLIST_FORMAT_LEFT,
                                 FromDIP(columnWidths[index]));
     }
     numbersLayout->Add(m_samples, 1, wxEXPAND | wxALL, FromDIP(8));
+    m_samples->SetToolTip(Display("행을 두 번 클릭하거나 Enter를 눌러 원래 자릿수의 복소 표본을 열 수 있습니다."));
+    m_samples->Bind(wxEVT_LIST_ITEM_ACTIVATED, [this](wxListEvent& event)
+    {
+        if (!m_data.is_object() || m_data.at("phi_deg").empty() || event.GetIndex() < 0 ||
+            event.GetIndex() >= m_samples->GetItemCount())
+        {
+            return;
+        }
+        const auto columns = m_data.at("phi_deg").size();
+        const auto index = static_cast<std::size_t>(m_sampleOffset + event.GetIndex());
+        const auto theta = index / columns;
+        const auto phi = index % columns;
+        const Json sample{{"theta_deg", m_data.at("theta_deg").at(theta)}, {"phi_deg", m_data.at("phi_deg").at(phi)},
+                          {"e_theta_v_s_per_m", m_data.at("e_theta").at(theta).at(phi)},
+                          {"e_phi_v_s_per_m", m_data.at("e_phi").at(theta).at(phi)},
+                          {"polarization", m_data.at("polarization").at(theta).at(phi)},
+                          {"projection", m_data.at("projection").at(theta).at(phi)}};
+        wxTextEntryDialog detail(this, Display("표의 요약값에 대응하는 원본 표시 표본입니다. Ctrl+C로 복사할 수 있습니다."),
+                                 Display("편파 / 방사 표본 상세"), Display(sample.dump(2)), wxOK | wxTE_MULTILINE | wxTE_READONLY);
+        detail.SetSize(FromDIP(wxSize(700, 560)));
+        detail.ShowModal();
+    });
     auto* paging = new wxBoxSizer(wxHORIZONTAL);
     m_previous = new wxButton(numbers, wxID_ANY, Display("이전 201표본"));
     m_next = new wxButton(numbers, wxID_ANY, Display("다음 201표본"));
@@ -368,26 +392,26 @@ void RadiationResultView::PresentSamples()
         const long row =
             m_samples->InsertItem(m_samples->GetItemCount(), Display(ResultUi::Number(m_data.at("theta_deg")[t])));
         m_samples->SetItem(row, 1, Display(ResultUi::Number(m_data.at("phi_deg")[p])));
-        m_samples->SetItem(row, 2, Display(ResultUi::Complex(m_data.at("e_theta")[t][p])));
-        m_samples->SetItem(row, 3, Display(ResultUi::Complex(m_data.at("e_phi")[t][p])));
-        m_samples->SetItem(row, 4, Display(ResultUi::Complex(polarization.at("rhcp_ri"))));
-        m_samples->SetItem(row, 5, Display(ResultUi::Complex(polarization.at("lhcp_ri"))));
-        m_samples->SetItem(row, 6,
+        m_samples->SetItem(row, 6, Display(ResultUi::Complex(m_data.at("e_theta")[t][p])));
+        m_samples->SetItem(row, 7, Display(ResultUi::Complex(m_data.at("e_phi")[t][p])));
+        m_samples->SetItem(row, 8, Display(ResultUi::Complex(polarization.at("rhcp_ri"))));
+        m_samples->SetItem(row, 9, Display(ResultUi::Complex(polarization.at("lhcp_ri"))));
+        m_samples->SetItem(row, 5,
                            Display(polarization.at("relative_phase_deg").is_null()
                                        ? ResultUi::State(polarization.value("relative_phase_state", Json("missing")))
                                        : ResultUi::Number(polarization.at("relative_phase_deg"))));
-        m_samples->SetItem(row, 7,
+        m_samples->SetItem(row, 2,
                            Display(polarization.at("axial_ratio_db").is_null()
                                        ? ResultUi::State(polarization.value("axial_ratio_state", Json("missing")))
                                        : ResultUi::Number(polarization.at("axial_ratio_db"))));
         const auto quantity = projection.value("quantity_db", projection.value("db", Json(nullptr)));
         const auto quantityState = projection.value("quantity_db_state", projection.value("db_state", Json("missing")));
         m_samples->SetItem(
-            row, 8,
+            row, 3,
             Display(quantityState == "negative_infinity"
                         ? "-inf (크기 0)"
                         : ResultUi::Number(quantity) + " " + (projection.contains("quantity_db") ? "dBi" : "dB")));
-        m_samples->SetItem(row, 9,
+        m_samples->SetItem(row, 4,
                            Display(ResultUi::State(polarization.value("axial_ratio_state", Json(nullptr))) +
                                    (projection.value("clipped", false) ? " / 표시 하한 적용" : "")));
     }

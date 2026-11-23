@@ -8,17 +8,39 @@ import sys
 from tempfile import TemporaryDirectory
 import unittest
 
+from rfad.application.project_study_commands import query
 from rfad.application.projects import ProjectService
 from rfad.domain.project import new_project
 from test_cad_worker_process import register_fixture
+from test_pcb_solver import fixture_document
 
 
 ROOT = Path(__file__).resolve().parents[1]
 GUI = os.environ.get("RFAD_GUI_EXE", "")
+WINDOWS_RUNTIME = os.environ.get("RFAD_TEST_WINDOWS_SOLVER") == "1"
+AUDIT = ".local/openems-windows/native-audit.json" if WINDOWS_RUNTIME else ".local/wsl/native-audit.json"
 
 
-@unittest.skipUnless(sys.platform == "win32" and GUI and (ROOT / ".local/wsl/native-audit.json").is_file(),
-                     "Windows GUI와 기존 WSL 감사 기록이 필요합니다.")
+class ProjectStudyContextTests(unittest.TestCase):
+    """! @brief 유효 포트에서 연구 초안을 얻고 원래 설계를 보존한다."""
+
+    def test_initial_band_matches_authoritative_port(self):
+        """! @brief 원형 PCB의 8~12 GHz 포트가 연구 초안과 근거에 표시된다."""
+        with TemporaryDirectory(prefix="TraceWave 연구 대역 ") as temporary:
+            with ProjectService(Path(temporary) / "workspace", auto_run=False) as service:
+                original, _ = register_fixture(service, fixture_document(circle=True, arc=True))
+                context = {"project_id": original["project_id"]}
+                result = query(service, "study.context", context, {})
+                grid = result["initial_specification"]["settings"]["frequency_hz"]
+                self.assertEqual((grid["start"], grid["stop"]), (8e9, 12e9))
+                self.assertEqual(result["port_band_hz"], {"min": 8e9, "max": 12e9})
+                self.assertFalse(result["material_defaults_supplied"])
+                state = service.journal.read()
+                self.assertEqual(service._load(state["projects"][original["project_id"]]), original)
+
+
+@unittest.skipUnless(sys.platform == "win32" and GUI and (ROOT / AUDIT).is_file(),
+                     "Windows GUI와 openEMS 감사 기록이 필요합니다.")
 class GuiProjectStudyTests(unittest.TestCase):
     """! @brief GUI는 source preflight를 우회하거나 기하/물성 기본값을 생성하지 않는다."""
 
@@ -31,8 +53,10 @@ class GuiProjectStudyTests(unittest.TestCase):
                 original, _ = register_fixture(service, new_project("미정 조건 연구"))
             report = root / "gui-study.json"
             args = [str(Path(GUI).resolve()), "--python", sys.executable, "--source", str(ROOT / "src"),
-                    "--workspace", str(workspace), "--open-project", "projects/CAD 한글 교환 검증", "--openems-wsl",
+                    "--workspace", str(workspace), "--open-project", "projects/CAD 한글 교환 검증",
                     "--study-smoke-test", "--study-expect-failure", "--smoke-report", str(report)]
+            if not WINDOWS_RUNTIME:
+                args.append("--openems-wsl")
             result = subprocess.run(args, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=150, check=False)
             self.assertTrue(report.exists(), result.stderr)
             smoke = json.loads(report.read_bytes())

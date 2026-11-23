@@ -6,6 +6,7 @@
 #include "solver_local_mesh_panel.h"
 #include "solver_mesh_quality_panel.h"
 #include "solver_cost_view.h"
+#include "frequency_display.h"
 #include "studio_notebook.h"
 #include "studio_support.h"
 #include "studio_theme.h"
@@ -131,7 +132,7 @@ std::string FieldFor(const std::string& path)
 void CompareValues(wxListCtrl& table, const Json& current, const Json& source, const std::string& path = {})
 {
     static const std::map<std::string, std::string> labels{
-        {"frequency_hz.start", "시작 주파수 (Hz)"}, {"frequency_hz.stop", "끝 주파수 (Hz)"},
+        {"frequency_hz.start", "시작 주파수"}, {"frequency_hz.stop", "끝 주파수"},
         {"frequency_hz.count", "주파수 표본 수"}, {"frequency_hz.points", "직접 주파수 표본"}, {"grid_mm", "모델 최대 격자 간격 (mm)"},
         {"symmetry_plane", "급전 대칭면"}, {"boundary_conditions", "면별 경계 조건"}, {"air_padding_mm", "외부 공기 여유 (mm)"}, {"curve_tolerance_mm", "곡선 근사 허용오차 (mm)"},
         {"feature_subdivisions", "임계 구간 최소 분할"}, {"mesh_policy.kind", "외부 공기 격자 방식"},
@@ -167,8 +168,12 @@ void CompareValues(wxListCtrl& table, const Json& current, const Json& source, c
         }
         return;
     }
-    const auto value = [](const Json& item)
+    const auto value = [&path](const Json& item)
     {
+        if (item.is_number() && (path == "frequency_hz.start" || path == "frequency_hz.stop"))
+        {
+            return Display(StudioFrequency::WithUnit(item));
+        }
         return Display(item.is_null() ? "사용 안 함" : item.is_string() ? item.get<std::string>() : item.dump());
     };
     const auto label = labels.find(path);

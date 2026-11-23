@@ -44,6 +44,8 @@ private:
         wxStaticText* label = nullptr;
         wxBoxSizer* inputs = nullptr;
         nlohmann::json coordinateValue = nlohmann::json::array();
+        wxString compactCoordinate = wxEmptyString;
+        bool showingCompactCoordinate = false;
         int group = 0;
     };
 

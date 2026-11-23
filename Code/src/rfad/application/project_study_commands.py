@@ -8,6 +8,7 @@ from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.project_study_contract import ACTIVE, MAX_STUDIES, build_cases, initial_specification
 from rfad.application.project_study_results import port_samples, view
 from rfad.domain.errors import ProjectError
+from rfad.domain.design import resolve_scalar
 
 
 def owned(service, state, context, identity):
@@ -91,9 +92,22 @@ def query(service, method, context, data):
     project = service._project(state, context)
     if method == "study.context":
         document = service._load(project)
+        specification = initial_specification()
+        band = None
+        if len(document["ports"]) == 1:
+            bounds = document["ports"][0]["validity_hz"]
+            try:
+                lower, upper = (resolve_scalar(document, bounds[key], "frequency").value_si for key in ("min", "max"))
+            except ProjectError:
+                lower, upper = None, None
+            if lower is not None and upper is not None:
+                start, stop = max(1e6, lower), min(50e9, upper, 2 * max(1e6, lower))
+                if start < stop:
+                    specification["settings"]["frequency_hz"].update(start=start, stop=stop)
+                    band = {"min": lower, "max": upper}
         return {"project_id": context["project_id"], "revision_id": document["revision_id"],
-                "runtime_configured": service.solver.runtime is not None,
-                "initial_specification": initial_specification(), "material_defaults_supplied": False}
+                "runtime_configured": service.solver.runtime is not None, "port_band_hz": band,
+                "initial_specification": specification, "material_defaults_supplied": False}
     if method == "study.list":
         return {"studies": [{key: row[key] for key in ("study_id", "name", "state", "created_at")}
                             for row in sorted(state.get("studies", {}).values(), key=lambda row: row["created_at"], reverse=True)

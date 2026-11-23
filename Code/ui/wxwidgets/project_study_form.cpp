@@ -1,6 +1,7 @@
 /** @file @brief 연구 조건과 결과 화면의 위젯 배치를 담당한다. */
 #include "project_study_dialog.h"
 #include "studio_support.h"
+#include "frequency_display.h"
 #include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
@@ -51,6 +52,12 @@ void ProjectStudyDialog::Build()
         const std::string name = title;
         if (name == "격자 / 해석 조건")
         {
+            const auto band = m_context.value("port_band_hz", Json(nullptr));
+            auto* range = new wxStaticText(page, wxID_ANY, Display(band.is_object()
+                ? "급전 유효 대역 " + StudioFrequency::Range(band.at("min"), band.at("max")) + " / 입력 칸은 Hz"
+                : "급전 유효 대역을 확인할 수 없습니다. 예시 대역을 설계 조건에 맞게 검토하세요."));
+            range->Wrap(FromDIP(630));
+            outer->Add(range, 0, wxLEFT | wxTOP | wxRIGHT, FromDIP(10));
             for (const auto& field : std::vector<std::pair<std::string, std::string>>{
                      {"name", "새 연구 이름"},
                      {"grids", "격자 수준 (mm, 쉼표 / 감소 순서, 최대 6개)"},
@@ -135,7 +142,7 @@ void ProjectStudyDialog::Build()
     results->SetSizer(resultLayout);
     m_pages->AddPage(results, Display("진행 / 전력 수지"));
     root->Add(m_pages, 1, wxEXPAND | wxALL, 10);
-    m_status = new wxStaticText(this, wxID_ANY, Display("조건을 검토한 뒤 새 연구 저장을 선택하십시오."));
+    m_status = new wxStaticText(this, wxID_ANY, Display("연구가 선택되지 않았습니다. 조건을 확인하고 새 연구를 저장하세요."));
     root->Add(m_status, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
     root->Add(new wxStaticText(this, wxID_ANY,
                                Display("수정한 조건은 새 연구로 저장합니다. 기존 연구의 조건은 고정되며 창을 닫아도 "
