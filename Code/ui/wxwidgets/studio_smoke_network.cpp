@@ -10,9 +10,23 @@
 #include "workspace_bar.h"
 #include "setup_smoke_support.h"
 #include <wx/grid.h>
+#include <wx/app.h>
 
 namespace
 {
+/** @brief 전체 네트워크 작업과 구분해 사용자가 요청한 모드 등록 및 기준면 이동 검수를 고른다. */
+bool NamedModeSmoke()
+{
+    for (int i = 1; i < wxTheApp->argc; ++i)
+    {
+        if (wxString(wxTheApp->argv[i]) == "--network-modal-smoke-test")
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 /** @brief 체크 상자의 값과 제품 변경 이벤트를 함께 전달한다. */
 void Check(wxCheckBox* control, bool value)
 {
@@ -45,7 +59,7 @@ void StudioSmokeDriver::OpenNetworkSmokeDialog(int kind)
                     {
                         try
                         {
-                            if (kind == 0 && m_setupStage == 2)
+                            if (kind == 0 && m_setupStage == 2 && !NamedModeSmoke())
                             {
                                 NetworkImportSafetyChecks(context);
                             }
@@ -128,6 +142,76 @@ void StudioSmokeDriver::NetworkSmokeTick()
     {
         return wxFileName(m_frame.m_options.workspace, Display(name)).GetFullPath();
     };
+    if (NamedModeSmoke())
+    {
+        if (m_setupStage == 1 && !m_frame.m_busy)
+        {
+            m_setupStage = 2;
+            OpenNetworkSmokeDialog(0);
+        }
+        else if (m_setupStage == 2 && importing)
+        {
+            CanvasAssert(importing->LoadFile(file("GUI 원문.s1p")), "모드 시험 원본을 읽지 못했습니다.");
+            importing->m_name->SetValue(Display("사용자 모드 원본"));
+            m_setupStage = 3;
+            SetupSmoke::Click(importing->m_preview);
+        }
+        else if (m_setupStage == 3 && importing)
+        {
+            CanvasAssert(importing->m_review.value("can_apply", false), "모드 원본 검토가 실패했습니다.");
+            SetupSmoke::Choose(importing->m_ports[0].mode, 4);
+            CanvasAssert(importing->m_ports[0].modeName->IsShown(), "모드 이름을 입력할 수 없습니다.");
+            importing->m_ports[0].modeName->SetValue("slot A");
+            SetupSmoke::Choose(importing->m_wave, 4);
+            SetupSmoke::Choose(importing->m_phasor, 2);
+            SetupSmoke::Choose(importing->m_ports[0].orientation, 2);
+            Check(importing->m_ports[0].planeChanged, true);
+            importing->m_ports[0].plane->SetValue(Display("시작면"));
+            m_setupStage = 4;
+            SetupSmoke::Click(importing->m_preview);
+        }
+        else if (m_setupStage == 4 && importing)
+        {
+            CanvasAssert(importing->m_review.value("can_apply", false) &&
+                importing->m_review.at("descriptor").at("port_modes").at(0) == "mode:slot A", "모드 등록이 실패했습니다.");
+            m_networkImportedId = importing->m_review.at("record_id");
+            m_setupStage = 5;
+            SetupSmoke::Click(importing->m_apply);
+        }
+        else if (m_setupStage == 5 && !m_frame.m_setupDialog && !m_frame.m_busy)
+        {
+            m_setupChecks.push_back("named_mode_import_applied");
+            m_setupStage = 6;
+            OpenNetworkSmokeDialog(3);
+        }
+        else if (m_setupStage == 6 && transform)
+        {
+            SetupSmoke::Choose(transform->m_mode, 2);
+            CanvasAssert(!transform->m_modalTable->IsShown(), "일반 선로에서 분산표가 열렸습니다.");
+            transform->m_name->SetValue(Display("사용자 모드 기준면"));
+            transform->m_lines->SetValue("1 | 0,0,0 > 3,4,0 > 3,4,0 | MODE(slot A) | - | B");
+            CanvasAssert(transform->m_modalTable->IsShown(), "현재 모드 표 입력이 열리지 않았습니다.");
+            transform->m_modalTable->SetValue("1 | traveling | + | Windows modal fixture\n"
+                "1 | 1e9 | 0.1 | 31 | 50\n1 | 1.5e9 | 0.2 | 45 | 50\n1 | 2e9 | 0.3 | 58 | 50");
+            m_setupStage = 7;
+            SetupSmoke::Click(transform->m_preview);
+        }
+        else if (m_setupStage == 7 && transform)
+        {
+            CanvasAssert(transform->m_review.value("can_apply", false) &&
+                transform->m_review.at("descriptor").at("reference_planes").at(0) == "B" &&
+                transform->m_review.at("diagnostics").at(1).at("modal_samples").at(0).at("beta_rad_per_m") == 45,
+                "분산표의 기준면 또는 중간 주파수 표본이 다릅니다.");
+            m_setupStage = 8;
+            SetupSmoke::Click(transform->m_apply);
+        }
+        else if (m_setupStage == 8 && !m_frame.m_setupDialog && !m_frame.m_busy)
+        {
+            m_setupChecks.push_back("named_mode_shift_applied");
+            FinishSmoke(true, "");
+        }
+        return;
+    }
     if (importing)
     {
         if (m_setupStage == 2)
@@ -168,6 +252,14 @@ void StudioSmokeDriver::NetworkSmokeTick()
             SetupSmoke::Choose(importing->m_wave, 4);
             SetupSmoke::Choose(importing->m_phasor, 2);
             SetupSmoke::Choose(importing->m_ports[0].project, 1);
+            SetupSmoke::Choose(importing->m_ports[0].mode, 4);
+            CanvasAssert(importing->m_ports[0].modeName->IsShown(), "선택한 사용자 모드 이름을 입력할 수 없습니다.");
+            importing->m_ports[0].modeName->SetValue("slot A");
+            CanvasAssert(importing->Declarations().at("port_modes").at(0) == "mode:slot A",
+                         "명시한 포트 모드가 등록 요청에 전달되지 않았습니다.");
+            SetupSmoke::Choose(importing->m_ports[0].mode, 0);
+            CanvasAssert(!importing->m_ports[0].modeName->IsShown(), "다른 모드에 사용자 이름 입력이 남았습니다.");
+            m_setupChecks.push_back("network_named_mode_declaration");
             SetupSmoke::Choose(importing->m_ports[0].orientation, 2);
             Check(importing->m_ports[0].planeChanged, true);
             importing->m_ports[0].plane->SetValue(Display("시험 기준면"));
@@ -313,6 +405,18 @@ void StudioSmokeDriver::NetworkSmokeTick()
     {
         if (m_setupStage == 24)
         {
+            SetupSmoke::Choose(transform->m_mode, 2);
+            CanvasAssert(!transform->m_modalTable->IsShown(), "일반 기준면 입력에 분산표가 열렸습니다.");
+            transform->m_lines->SetValue("1 | 5 | MODE(slot A) | - | plane B");
+            CanvasAssert(transform->m_modalTable->IsShown(), "선택한 단일 모드의 분산표를 입력할 수 없습니다.");
+            transform->m_modalTable->SetValue("1 | traveling | + | test mode table\n1 | 1e9 | 0.1 | 20 | 50");
+            CanvasAssert(transform->Input().at("parameters").at("options").contains("mode_table"),
+                         "명시한 분산표가 이동 검토에 전달되지 않았습니다.");
+            transform->m_lines->SetValue("1 | 5 | 2e8 | 0 | plane B");
+            CanvasAssert(!transform->m_modalTable->IsShown() &&
+                             !transform->Input().at("parameters").at("options").contains("mode_table"),
+                         "일반 선로로 돌아간 뒤 다른 모드 표가 전달되었습니다.");
+            m_setupChecks.push_back("network_tabulated_mode_controls");
             SetupSmoke::Choose(transform->m_mode, 3);
             CanvasAssert(transform->m_leftFixture->IsShown() && transform->m_rightFixture->IsShown() &&
                              !transform->m_preview->IsEnabled(),

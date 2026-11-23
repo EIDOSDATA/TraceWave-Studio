@@ -27,6 +27,7 @@ public:
         parser.AddSwitch("", "study-smoke-test", "Run project study GUI workflow and exit");
         parser.AddSwitch("", "study-expect-failure", "Expect study source preflight rejection");
         parser.AddSwitch("", "design-setup-smoke-test", "Run target/template GUI workflow and exit");
+        parser.AddSwitch("", "network-modal-smoke-test", "Run named mode import and modal plane shift through Windows controls");
         parser.AddSwitch("", "network-smoke-test", "Run network import, RLC, assessment and restart GUI workflow");
         parser.AddSwitch("", "sweep-smoke-test", "Run finite study create, cancel, resume and reopen GUI workflow");
         parser.AddSwitch("", "results-smoke-test", "Run pinned results, Smith and source comparison GUI workflow");
@@ -97,7 +98,7 @@ public:
         options.installationSmoke = parser.Found("installation-smoke-test");
         options.precisionPlanarSmoke = parser.Found("precision-planar-smoke-test");
         options.precisionEditorSmoke = parser.Found("precision-editor-smoke-test") || options.precisionPlanarSmoke;
-        options.networkSmoke = parser.Found("network-smoke-test");
+        options.networkSmoke = parser.Found("network-smoke-test") || parser.Found("network-modal-smoke-test");
         options.sweepSmoke = parser.Found("sweep-smoke-test");
         options.resultsSmoke = parser.Found("results-smoke-test");
         options.validationSmoke = parser.Found("validation-smoke-test");

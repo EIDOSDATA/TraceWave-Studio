@@ -44,6 +44,8 @@ private:
     wxTextCtrl* m_reference = nullptr;
     wxTextCtrl* m_lines = nullptr;
     wxSizer* m_lineFields = nullptr;
+    wxSizer* m_modalFields = nullptr;
+    wxTextCtrl* m_modalTable = nullptr;
     wxSizer* m_fixtureFields = nullptr;
     wxChoice* m_leftFixture = nullptr;
     wxChoice* m_rightFixture = nullptr;

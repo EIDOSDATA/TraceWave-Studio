@@ -185,6 +185,7 @@ void NetworkImportDialog::ResetConditions()
     {
         port.project->SetSelection(0);
         port.mode->SetSelection(0);
+        port.modeName->ChangeValue(wxEmptyString);
         port.orientation->SetSelection(0);
         port.planeChanged->SetValue(false);
         port.plane->ChangeValue(wxEmptyString);
@@ -231,7 +232,16 @@ void NetworkImportDialog::UpdateActions()
     m_conditions->Enable(available && count > 0);
     for (std::size_t index = 0; index < m_ports.size(); ++index)
     {
-        m_ports[index].panel->Enable(available && index < count);
+        auto& port = m_ports[index];
+        const bool named = index < count && port.mode->GetSelection() == 4;
+        if (port.modeName->IsShown() != named)
+        {
+            port.modeName->Show(named);
+            port.panel->Layout();
+            m_conditions->Layout();
+            m_conditions->GetParent()->Layout();
+        }
+        port.panel->Enable(available && index < count);
         m_ports[index].plane->Enable(available && index < count && m_ports[index].planeChanged->GetValue());
         m_z0[index]->Enable(available && Format() == "csv" && m_z0Known->GetValue() &&
                             index < static_cast<std::size_t>(m_portCount->GetSelection() + 1));

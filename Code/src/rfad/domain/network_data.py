@@ -86,6 +86,15 @@ def _json(value, field, depth=0):
         fail("출처/조건은 JSON 자료여야 합니다.", field)
 
 
+def is_named_mode(value):
+    """! @brief 사용자가 출처와 함께 대조할 수 있도록 모드 이름을 포트 자료 안에 명시한다."""
+    if type(value) is not str or not value.startswith("mode:"):
+        return False
+    name = value[5:]
+    return bool(name and len(name) <= 64 and name == name.strip()
+                and all(char.isprintable() and char not in "|()" for char in name))
+
+
 def validate_dataset(data):
     """! @brief 행렬 축, 파 정의, 포트와 유효 상태를 원문 무변경으로 검사한다."""
     if type(data) is not dict or set(data) != FIELDS or data["schema"] != SCHEMA:
@@ -115,8 +124,8 @@ def validate_dataset(data):
     for key in ("port_names", "reference_planes"):
         for value in data[key]:
             text(value, key, nullable=True, limit=256 if key == "port_names" else 4096)
-    if any(value not in ("single_ended", "rectangular_te10", "unknown") for value in data["port_modes"]):
-        fail("지원하는 포트 모드는 단일종단, 직사각 도파관 TE10 또는 미정입니다.", "port_modes", "E_UNSUPPORTED")
+    if any(value not in ("single_ended", "rectangular_te10", "unknown") and not is_named_mode(value) for value in data["port_modes"]):
+        fail("지원하는 포트 모드는 단일종단, 직사각 도파관 TE10, 이름 있는 단일 전파 모드 또는 미정입니다.", "port_modes", "E_UNSUPPORTED")
     if any(value not in ("into_dut", "unknown") for value in data["current_orientation"]):
         fail("전류 방향은 DUT 안쪽 또는 미정이어야 합니다.", "current_orientation")
     if (type(data["wave_definition"]) is not str or data["wave_definition"] not in WAVES

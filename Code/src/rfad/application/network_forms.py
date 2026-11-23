@@ -70,22 +70,57 @@ def _reference_segment(text):
             for key, vector in zip(("from_mm", "to_mm", "outward"), vectors)}
 
 
+def _mode_tables(value, ports):
+    """! @brief 포트별 출처 행과 동일 주파수 순서의 수치 표본을 폼에서 읽는다."""
+    field = "options.mode_table"
+    if type(value) is not str or len(value.encode("utf8")) > 512 * 1024:
+        fail("분산표는 최대 512 KiB의 텍스트여야 합니다.", field, "E_RESOURCE")
+    tables = {}
+    for line in value.splitlines():
+        if not line.strip():
+            continue
+        cols = [item.strip() for item in line.split("|")]
+        if len(cols) not in (4, 5) or cols[0] not in ports:
+            fail("분산표의 포트, 규약 및 출처 행 또는 주파수별 네 수치를 확인하십시오.", field)
+        port = cols[0]
+        if len(cols) == 4:
+            if port in tables or cols[2] not in ("+", "-") or not cols[3]:
+                fail("포트마다 출처 한 행과 시간 부호 + 또는 -가 필요합니다.", field)
+            tables[port] = {"wave_definition": cols[1], "phasor_convention": f"exp({cols[2]}j*omega*t)",
+                            "source": cols[3], "samples": []}
+        else:
+            if port not in tables:
+                fail("수치 표본 앞에 해당 포트의 파 정의, 부호와 출처 행을 입력하십시오.", field)
+            if len(tables[port]["samples"]) >= 1001:
+                fail("포트별 분산표는 최대 1001개 주파수입니다.", field, "E_RESOURCE")
+            tables[port]["samples"].append([number(item, field=field) for item in cols[1:]])
+    return tables
+
+
 def transform_input(data, options):
     """! @brief 표시용 정규화 및 기준면 문자열을 명시 수치와 포트 ID로 바꾼다."""
-    if type(options) is dict and set(options) == {"operation", "line_table"} and options["operation"] == "shift_plane":
+    if type(options) is dict and set(options) in ({"operation", "line_table"}, {"operation", "line_table", "mode_table"}) and options["operation"] == "shift_plane":
         table = options["line_table"]
         if type(table) is not str or len(table) > 2048:
             fail("이동할 포트의 선로 조건을 확인하십시오.", "options.line_table")
+        ports = {str(i) for i in range(1, len(data["port_ids"]) + 1)}
+        tables = _mode_tables(options.get("mode_table", ""), ports)
         rows = []
         for line in table.splitlines():
             if not line.strip():
                 continue
             fields = [item.strip() for item in line.split("|", 4)]
-            if len(fields) != 5 or fields[0] not in {str(i) for i in range(1, len(data["port_ids"]) + 1)}:
+            if len(fields) != 5 or fields[0] not in ports:
                 fail("포트 번호 | 거리 또는 좌표(mm) | 위상 속도(m/s) | 감쇠(dB/m) | 새 기준면 순으로 입력하십시오.", "options.line_table")
             index, length, velocity, attenuation, plane = fields
             position = {"segment": _reference_segment(length)} if ">" in length else {
                 "length_mm": number(length, field="options.line_table.length_mm")}
+            if velocity.startswith("MODE(") and velocity.endswith(")"):
+                if index not in tables or attenuation != "-":
+                    fail("MODE(이름)은 감쇠 열에 -를 쓰고 해당 포트의 분산 표를 입력하십시오.", "options.mode_table")
+                rows.append({"port_id": data["port_ids"][int(index) - 1], **position,
+                             "modal": {**tables.pop(index), "mode": "mode:" + velocity[5:-1]}, "reference_plane": plane})
+                continue
             if velocity.startswith("TE10(") and velocity.endswith(")"):
                 dims = velocity[5:-1].split(",")
                 if len(dims) != 3 or number(attenuation, field="options.line_table.attenuation_db_per_m") != 0:
@@ -99,6 +134,8 @@ def transform_input(data, options):
                          "phase_velocity_m_per_s": number(velocity, field="options.line_table.phase_velocity_m_per_s"),
                          "attenuation_db_per_m": number(attenuation, field="options.line_table.attenuation_db_per_m"),
                          "reference_plane": plane})
+        if tables:
+            fail("기준면을 이동할 MODE 포트에 해당하지 않는 분산표가 있습니다.", "options.mode_table")
         return {"operation": "shift_plane", "lines": rows}
     if type(options) is dict and set(options) == {"operation", "start_ns", "stop_ns"} and options["operation"] == "time_gate":
         return {**options, **{key: number(value, field="options." + key) if type(value) is str else value

@@ -42,6 +42,7 @@ private:
         wxPanel* panel = nullptr;
         wxChoice* project = nullptr;
         wxChoice* mode = nullptr;
+        wxTextCtrl* modeName = nullptr;
         wxChoice* orientation = nullptr;
         wxCheckBox* planeChanged = nullptr;
         wxTextCtrl* plane = nullptr;

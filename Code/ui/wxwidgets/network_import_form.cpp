@@ -229,7 +229,7 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
         rows->Add(port.project, 1, wxEXPAND);
         rows->Add(new wxStaticText(port.panel, wxID_ANY, Display("포트 모드")), 0, wxALIGN_CENTER_VERTICAL);
         port.mode =
-            Choices(port.panel, {"원문 유지", "미정 (unknown)", "단일 종단 (single_ended)", "직사각 도파관 (TE10)"}, "network.import.mode");
+            Choices(port.panel, {"원문 유지", "미정 (unknown)", "단일 종단 (single_ended)", "직사각 도파관 (TE10)", "사용자 단일 전파 모드"}, "network.import.mode");
         port.mode->SetName(wxString::Format("network.import.mode.%zu", index));
         rows->Add(port.mode, 1, wxEXPAND);
         rows->Add(new wxStaticText(port.panel, wxID_ANY, Display("전류 방향")), 0, wxALIGN_CENTER_VERTICAL);
@@ -246,6 +246,13 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
         port.plane->SetHint(Display("빈칸은 미정"));
         rows->Add(port.plane, 1, wxEXPAND);
         group->Add(rows, 0, wxEXPAND | wxALL, pad);
+        port.modeName = new wxTextCtrl(port.panel, wxID_ANY);
+        port.modeName->SetName(wxString::Format("network.import.mode_name.%zu", index));
+        port.modeName->SetHint(Display("분산표와 일치하는 모드 이름"));
+        port.modeName->SetMaxLength(64);
+        port.modeName->Hide();
+        group->Add(port.modeName, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
+        port.modeName->Bind(wxEVT_TEXT, [this](wxCommandEvent&) { ChangeInputs(); });
         port.panel->SetSizer(group);
         conditions->Add(port.panel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
         for (auto* choice : {port.project, port.mode, port.orientation})
@@ -437,7 +444,8 @@ Json NetworkImportDialog::Declarations() const
         changedPorts = changedPorts || project > 0;
         if (port.mode->GetSelection() > 0)
         {
-            modes[index] = modeNames.at(port.mode->GetSelection());
+            modes[index] = port.mode->GetSelection() == 4 ? "mode:" + Utf8(port.modeName->GetValue()) :
+                std::string(modeNames.at(port.mode->GetSelection()));
             changedModes = true;
         }
         if (port.orientation->GetSelection() > 0)

@@ -138,16 +138,31 @@ void NetworkTransformDialog::BuildInterface()
     m_lines = new wxTextCtrl(options, wxID_ANY, wxEmptyString, wxDefaultPosition,
                              FromDIP(wxSize(400, 72)), wxTE_MULTILINE);
     m_lines->SetName("network.transform.reference-lines");
-    Field(options, m_lineFields, "포트 | 거리 또는 좌표(mm) | 위상 속도(m/s) 또는 TE10 단면 | 감쇠(dB/m) | 새 기준면", m_lines);
+    Field(options, m_lineFields, "포트 | 거리 또는 좌표(mm) | 위상 속도(m/s), TE10 또는 MODE | 감쇠(dB/m) | 새 기준면", m_lines);
     auto* lineHelp = new wxStaticText(options, wxID_ANY, Display(
         "포트마다 한 줄을 입력합니다. 양수 길이는 추가, 음수 길이는 제거입니다.\n"
         "거리 예시 1 | -5 | 2e8 | 0 | 기판 패드\n"
         "무손실 도파관 예시 1 | -5 | TE10(20,10,1) | 0 | 내부 측정면 (내폭 mm, 내높이 mm, 상대유전율)\n"
+        "등록한 단일 모드 예시 1 | 5 | MODE(기본 모드) | - | 외부면\n"
         "좌표는 현재 점 > 새 점 > 바깥 방향을 XYZ로 입력합니다.\n"
         "좌표 예시 1 | 0,0,0 > 3,4,0 > 3,4,0 | 2e8 | 0 | 정합 선로 끝"));
     lineHelp->Wrap(FromDIP(400));
     StudioTheme::BindSecondary(*lineHelp);
     m_lineFields->Add(lineHelp, 0, wxEXPAND | wxBOTTOM, FromDIP(10));
+    m_modalFields = new wxBoxSizer(wxVERTICAL);
+    m_modalTable = new wxTextCtrl(options, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                                  FromDIP(wxSize(400, 108)), wxTE_MULTILINE);
+    m_modalTable->SetName("network.transform.modal-table");
+    m_modalTable->SetMaxLength(512 * 1024);
+    Field(options, m_modalFields, "분산표 / 포트 | 파 정의 | 시간 부호(+/-) | 출처", m_modalTable);
+    auto* modalHelp = new wxStaticText(options, wxID_ANY, Display(
+        "출처 예시 1 | power | + | 균일 단면 모드 해석 A\n"
+        "다음 행부터 포트 | Hz | 감쇠(Np/m) | 위상(rad/m) | 모드 임피던스(ohm)\n"
+        "예시 1 | 1e9 | 0.04 | 30.2 | 50"));
+    modalHelp->Wrap(FromDIP(400));
+    StudioTheme::BindSecondary(*modalHelp);
+    m_modalFields->Add(modalHelp, 0, wxEXPAND | wxBOTTOM, FromDIP(8));
+    m_lineFields->Add(m_modalFields, 0, wxEXPAND);
     fields->Add(m_lineFields, 0, wxEXPAND);
     m_fixtureFields = new wxBoxSizer(wxVERTICAL);
     m_leftFixture = new wxChoice(options, wxID_ANY);
@@ -264,7 +279,7 @@ void NetworkTransformDialog::BuildInterface()
                      {
                          SelectDataset();
                      });
-    for (auto* input : {m_name, m_reference, m_lines, m_gateStart, m_gateStop})
+    for (auto* input : {m_name, m_reference, m_lines, m_modalTable, m_gateStart, m_gateStop})
     {
         input->Bind(wxEVT_TEXT,
                     [this](wxCommandEvent&)
@@ -381,6 +396,10 @@ Json NetworkTransformDialog::Input() const
     else if (m_mode->GetSelection() == 2)
     {
         options = {{"operation", "shift_plane"}, {"line_table", Utf8(m_lines->GetValue())}};
+        if (m_lines->GetValue().Contains("MODE("))
+        {
+            options["mode_table"] = Utf8(m_modalTable->GetValue());
+        }
     }
     else if (m_mode->GetSelection() == 3)
     {
@@ -513,6 +532,15 @@ void NetworkTransformDialog::RenderResult(const Json& result)
             diagnostics += " / 조건수 " + Value(item.value("condition_number", Json(nullptr))) + " / 상대 잔차 " +
                            Value(item.value("relative_residual", Json(nullptr)));
         }
+        if (item.contains("modal_samples"))
+        {
+            for (const auto& sample : item.at("modal_samples"))
+            {
+                diagnostics += "\n  " + Value(sample.at("mode")) + " / " + Value(sample.at("alpha_np_per_m")) +
+                    " Np/m / " + Value(sample.at("beta_rad_per_m")) + " rad/m / " +
+                    Value(sample.at("mode_impedance_ohm")) + " ohm";
+            }
+        }
         if (item.contains("first_conversion"))
         {
             const auto& first = item.at("first_conversion");
@@ -577,9 +605,12 @@ void NetworkTransformDialog::UpdateActions()
     const bool shift = m_mode->GetSelection() == 2;
     const bool fixtures = m_mode->GetSelection() == 3;
     const bool gate = m_mode->GetSelection() == 4;
-    if (m_lines->IsShown() != shift || m_leftFixture->IsShown() != fixtures || m_gateStart->IsShown() != gate)
+    const bool modal = shift && m_lines->GetValue().Contains("MODE(");
+    if (m_lines->IsShown() != shift || m_leftFixture->IsShown() != fixtures || m_gateStart->IsShown() != gate ||
+        m_modalTable->IsShown() != modal)
     {
         m_lineFields->ShowItems(shift);
+        m_modalFields->ShowItems(modal);
         m_fixtureFields->ShowItems(fixtures);
         m_timeGateFields->ShowItems(gate);
         auto* options = static_cast<wxScrolledWindow*>(m_lines->GetParent());
@@ -587,6 +618,7 @@ void NetworkTransformDialog::UpdateActions()
         options->FitInside();
     }
     m_lines->Enable(enabled && shift);
+    m_modalTable->Enable(enabled && modal);
     m_leftFixture->Enable(enabled && fixtures);
     m_rightFixture->Enable(enabled && fixtures);
     const bool chosen = m_leftFixture->GetSelection() != wxNOT_FOUND && m_rightFixture->GetSelection() != wxNOT_FOUND;

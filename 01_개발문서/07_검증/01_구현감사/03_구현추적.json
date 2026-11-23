@@ -15577,8 +15577,8 @@
     },
     {
       "path": "Code/src/rfad/domain/network_data.py",
-      "text_sha256": "d232033da1aaaa1f80e860020f80ed89508875422458a8edb3a6b8d48ccee9e3",
-      "utf8_bytes": 10005
+      "text_sha256": "b90bafb6a7db35850c8b4bbd012bedb3d8e87dfe1b2b55a58172577fb186caa4",
+      "utf8_bytes": 10479
     },
     {
       "path": "Code/src/rfad/domain/network_library.py",
@@ -15587,8 +15587,8 @@
     },
     {
       "path": "Code/src/rfad/domain/network_transform.py",
-      "text_sha256": "0b953d9e47a0df5b1df6e13aa3b1ffc42444d7e5eea9a600cd4e54dffc5d8f35",
-      "utf8_bytes": 22707
+      "text_sha256": "d0cacb02615bf3c6ece16a8f282f13525e38dd6e575db4f96cace5acb6da0b7b",
+      "utf8_bytes": 24329
     },
     {
       "path": "Code/src/rfad/domain/object_names.py",
@@ -15912,8 +15912,8 @@
     },
     {
       "path": "Code/tests/test_gui_network_process.py",
-      "text_sha256": "c8b337140999a755b12afd3086fe4cab6e578af2c7803a70dfcef9249c6b58bd",
-      "utf8_bytes": 12682
+      "text_sha256": "170b9003df8d1f74ee956b33a8f369ffe1e6f341d6f43323e81df8d650842f31",
+      "utf8_bytes": 15452
     },
     {
       "path": "Code/tests/test_gui_output_process.py",
@@ -16537,8 +16537,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/network_import_dialog.cpp",
-      "text_sha256": "6f4820d721bdecbc40ec74a7ea1c5588c18b5a6ba824396c460ac4da1b483fd1",
-      "utf8_bytes": 10263
+      "text_sha256": "ca0c5ba564a0f4c9702ff7a1242eefe3d88cfc74cae5ae617f757af82c48acea",
+      "utf8_bytes": 10643
     },
     {
       "path": "Code/ui/wxwidgets/network_import_measurement.cpp",
@@ -16552,8 +16552,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/network_transform_dialog.cpp",
-      "text_sha256": "03027e22dd42fb90a36cc873ce39bd02f5debc5059233e954a5f915b7160d0b5",
-      "utf8_bytes": 28747
+      "text_sha256": "eb52d8a3e55fb6dbf4e857c37dd0d6fa749842ab1e045ba0750c928a1b46e88f",
+      "utf8_bytes": 30524
     },
     {
       "path": "Code/ui/wxwidgets/object_rename_dialog.cpp",

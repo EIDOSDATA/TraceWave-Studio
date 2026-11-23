@@ -6,13 +6,13 @@ import math
 
 from rfad.application.canonical import canonical_hash
 from rfad.adapters import network_backend
-from rfad.domain.network_data import UNITS, complex_value, fail, finite, text, validate_dataset
+from rfad.domain.network_data import UNITS, complex_value, fail, finite, is_named_mode, text, validate_dataset
 
 
 def require_basis(data, *, phasor=False, waveguide=False):
     """! @brief 모르는 파/포트/기준면 조건을 50 ohm 또는 동일 기준으로 치환하지 않는다."""
     modes = {"single_ended", "rectangular_te10"} if waveguide else {"single_ended"}
-    if data["wave_definition"] == "unknown" or any(value not in modes for value in data["port_modes"]):
+    if data["wave_definition"] == "unknown" or any(value not in modes and not (waveguide and is_named_mode(value)) for value in data["port_modes"]):
         fail("파 정의와 단일종단 포트 모드를 명시하십시오.", "wave_definition", "E_UNSUPPORTED")
     if any(value != "into_dut" for value in data["current_orientation"]):
         fail("DUT 안쪽을 향하는 전류 규약을 명시하십시오.", "current_orientation", "E_UNSUPPORTED")
@@ -122,14 +122,17 @@ def _shift_planes(data, options):
         fail("이동할 포트마다 하나의 정합 선로를 지정하십시오.", "options.lines")
     planes = list(data["reference_planes"])
     delays, log_gains = [0.0] * len(planes), [0.0] * len(planes)
-    guides = {}
+    guides, tables = {}, {}
     sign = -1.0 if data["phasor_convention"] == "exp(+j*omega*t)" else 1.0
     used = set()
     fields = {"port_id", "phase_velocity_m_per_s", "attenuation_db_per_m", "reference_plane"}
     coordinate_lengths = {}
     for line in lines:
         guide_line = isinstance(line, dict) and "waveguide" in line
+        modal_line = isinstance(line, dict) and "modal" in line
         expected = {"port_id", "reference_plane", "waveguide"} if guide_line else fields
+        if modal_line:
+            expected = {"port_id", "reference_plane", "modal"}
         if type(line) is not dict or set(line) not in (expected | {"length_mm"}, expected | {"segment"}):
             fail("포트, 길이, 전파 속도, 감쇠와 새 기준면을 입력하십시오.", "options.lines")
         identity = line["port_id"]
@@ -147,6 +150,15 @@ def _shift_planes(data, options):
         text(new_plane, "options.lines.reference_plane", limit=256)
         if not length or new_plane == planes[index]:
             fail("0이 아닌 이동 길이와 다른 기준면 이름이 필요합니다.", "options.lines", "E_UNIT")
+        if modal_line:
+            from rfad.domain.network_modal import factors as modal_factors
+
+            tables[index] = line["modal"]
+            guides[index] = modal_factors(line["modal"], data, index, length, sign)
+            planes[index] = new_plane
+            continue
+        if is_named_mode(data["port_modes"][index]):
+            fail("이름 있는 단일 전파 모드에는 해당 모드의 분산 표가 필요합니다.", "options.lines.modal", "E_CONFLICT")
         if guide_line:
             if data["port_modes"][index] != "rectangular_te10":
                 fail("포트 모드를 직사각 도파관 TE10으로 확인한 자료가 필요합니다.", "port_modes", "E_CONFLICT")
@@ -172,8 +184,8 @@ def _shift_planes(data, options):
                    for gain, delay in zip(log_gains, delays)]
         for port, rows in guides.items():
             factor, impedance = rows[index]
-            if not math.isclose(references[port], impedance, rel_tol=1e-5):
-                fail("주파수별 포트 기준 임피던스가 지정한 TE10 모드 임피던스와 다릅니다.",
+            if not math.isclose(references[port], impedance, rel_tol=1e-8 if port in tables else 1e-5):
+                fail("주파수별 포트 기준 임피던스가 지정한 정합 모드 임피던스와 다릅니다.",
                      "z0_ohm", "E_CONFLICT")
             factors[port] = factor
         matrix = []
@@ -192,8 +204,23 @@ def _shift_planes(data, options):
         count = sum(sum(row) for row in data["valid_mask"][index])
         diagnostics.append({"frequency_hz": frequency, "status": "valid" if count == len(planes)**2 else "missing",
                             "valid_channels": count, "operation": "shift_plane"})
+        if tables:
+            diagnostics[-1]["modal_samples"] = [{"port_id": port_ids[p], "mode": table["mode"],
+                "frequency_hz": table["samples"][index][0], "alpha_np_per_m": table["samples"][index][1],
+                "beta_rad_per_m": table["samples"][index][2],
+                "mode_impedance_ohm": table["samples"][index][3]} for p, table in tables.items()]
     engine = {"name": "rfad.matched-line-reference", "version": "0.1", "available": True}
     evidence = {**options, "source_reference_planes": data["reference_planes"], "matched_to_port_z0": True}
+    if tables:
+        evidence["lines"] = []
+        for line in lines:
+            if "modal" not in line:
+                evidence["lines"].append(deepcopy(line))
+                continue
+            table = line["modal"]
+            evidence["lines"].append({**line, "modal": {**{k: v for k, v in table.items() if k != "samples"},
+                "samples_sha256": canonical_hash(table["samples"]), "sample_count": len(table["samples"]),
+                "sample_source": "diagnostics.modal_samples"}})
     if coordinate_lengths:
         evidence["coordinate_lengths_mm"] = coordinate_lengths
     return {"dataset": derived(data, values, data["valid_mask"], data["sample_status"], evidence, engine, planes=planes),

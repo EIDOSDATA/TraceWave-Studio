@@ -37,6 +37,42 @@ def request(service, project, data, mutation=False):
 class GuiNetworkTests(unittest.TestCase):
     """! @brief native 대화상자에서 만든 불변 복소 자료와 과거 근거의 보존을 검사한다."""
 
+    def test_named_mode_import_and_tabulated_shift_via_windows_controls(self):
+        """! @brief 실제 모드 등록과 변환 창에서 저장한 자료의 전체 진단을 독립 서비스로 읽는다."""
+        with TemporaryDirectory(prefix="TraceWave 모드 GUI ") as temporary:
+            workspace = Path(temporary) / "작업 영역"
+            with ProjectService(workspace, auto_run=False) as service:
+                doc, _ = register_fixture(service, scenario())
+            raw = b"# Hz S RI R 50\n1e9 .1 .03\n1.5e9 .2 .02\n2e9 .15 .04\n"
+            (workspace / "GUI 원문.s1p").write_bytes(raw)
+            report_path = Path(temporary) / "mode.json"
+            startup = subprocess.STARTUPINFO()
+            startup.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startup.wShowWindow = 0
+            run = subprocess.run([str(Path(GUI).resolve()), "--python", sys.executable, "--source", str(ROOT / "src"),
+                "--workspace", str(workspace), "--open-project", "projects/CAD 한글 교환 검증",
+                "--network-modal-smoke-test", "--smoke-report", str(report_path)],
+                stdin=subprocess.DEVNULL, capture_output=True, startupinfo=startup, timeout=330, check=False)
+            self.assertTrue(report_path.is_file(), (run.returncode, run.stderr))
+            report = json.loads(report_path.read_bytes())
+            if output := os.environ.get("RFAD_GUI_TEST_ARTIFACT_DIR"):
+                destination = Path(output) / "network-mode.json"
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_bytes(report_path.read_bytes())
+            self.assertEqual(run.returncode, 0, report)
+            self.assertTrue(report["passed"], report)
+            self.assertEqual(report["setup_checks"], ["named_mode_import_applied", "named_mode_shift_applied"])
+            with ProjectService(workspace, auto_run=False) as service:
+                current = service._load(service.journal.read()["projects"][doc["project_id"]])
+                items = current["extensions"][KEY]["datasets"]
+                self.assertEqual(len(items), 2)
+                shifted = next(row for row in items if row["name"] == "사용자 모드 기준면")
+                network = json.loads(service.journal.read_artifact(shifted["dataset"]))
+                self.assertEqual(network["reference_planes"], ["B"])
+                self.assertEqual(network["port_modes"], ["mode:slot A"])
+                records = json.loads(service.journal.read_artifact(shifted["diagnostics"]))["samples"]
+                self.assertEqual([r["modal_samples"][0]["beta_rad_per_m"] for r in records], [31, 45, 58])
+
     def test_native_import_rlc_assessment_history_and_reopen(self):
         """! @brief 오류 복구/명시 열 대응/원자 이력과 실제 재시작 결과를 함께 대조한다."""
         with TemporaryDirectory(prefix="TraceWave 복소 GUI ") as temporary:
@@ -109,6 +145,7 @@ class GuiNetworkTests(unittest.TestCase):
                 "network_csv_explicit_mapping_preserves_unknown", "network_saved_service_restart_preserves_library",
                 "network_explicit_s_to_z_preserves_source", "network_z_load_plane_and_ideal_loss_display",
                 "network_fixture_roles_and_explicit_selection", "network_time_gate_delay_inputs",
+                "network_named_mode_declaration", "network_tabulated_mode_controls",
                 "network_export_pair_and_existing_workspace_protection",
                 "network_studio_results_marker_and_design_return",
                 "network_studio_assessment_source_points_and_design_return",
