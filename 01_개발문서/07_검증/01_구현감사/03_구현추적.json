@@ -7883,8 +7883,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_검증과_수용_기준.md",
-      "text_sha256": "f28b8bed7505cd84e2fae57b2b0a4cdec8911cd5f90826e1ecd5f9bc2c57a728",
-      "utf8_bytes": 92082
+      "text_sha256": "a9b6232e353b1d6074a502cb65783e94ad87d248e6a9f97084fdd710ce9891e8",
+      "utf8_bytes": 92310
     },
     {
       "path": "01_개발문서/07_검증/03_요구사항_추적표.md",
@@ -7893,8 +7893,8 @@
     },
     {
       "path": "01_개발문서/04_화면설계/02_화면_선정과_성능_설계.md",
-      "text_sha256": "8f73ab1ad8932b4a223af52d756b56df18c5e33f513b9b44d95fd822e7963869",
-      "utf8_bytes": 13498
+      "text_sha256": "42ac75bf92ec58038b10ab430ee10184236621d9b2d5004db3c59e75d1516b96",
+      "utf8_bytes": 13579
     }
   ],
   "extension_methods": {
@@ -14359,8 +14359,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/02_속성편집과_실행취소.md",
-      "text_sha256": "42c210bfa2b80be67f8c648722566ffb6d6b65295940effe80b73c51a78acaae",
-      "utf8_bytes": 11217
+      "text_sha256": "343b7781c40f4ca286e40adc737c386f105398577bf2bdeeff2b5dd14e5f789e",
+      "utf8_bytes": 11378
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/03_이차원표시와_직접편집.md",
@@ -14414,13 +14414,13 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
-      "text_sha256": "91425431a6ab17b180e979c8e12fe6033cac0c3a393833a1e9f55c8694f5df1c",
-      "utf8_bytes": 30005
+      "text_sha256": "91969ce5a7448bd0d3a1772cb279461dce22ba8c3d88c9d1accbaa23563b76c6",
+      "utf8_bytes": 30253
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
-      "text_sha256": "bc25794581e5fd152407eb60065b93ad94d3a57f1cb4fc697670e709bb5d21c8",
-      "utf8_bytes": 28865
+      "text_sha256": "d51d0b75ef09a0230e95b38a4c717ce821199b6b927e8a20fc707b787a87fc09",
+      "utf8_bytes": 29087
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
@@ -14444,8 +14444,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/03_복소결과_파일교환.md",
-      "text_sha256": "13c5a0819215e492c3d66a32ae360a24b799b9a3aad95bc7e369046f6208d460",
-      "utf8_bytes": 13393
+      "text_sha256": "f21cdf131bf900207ad33559d1ad8ca02180c046355c037d55171bbbc5f21496",
+      "utf8_bytes": 13555
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
@@ -14454,8 +14454,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
-      "text_sha256": "122355c88e91fa3c4d2ee38cec1e78b2a3b0df3baf9ecbb506c3aaf47e6f0778",
-      "utf8_bytes": 16377
+      "text_sha256": "d56ece2e1419b65eb3f0abb92ae3c285be07c24e719bb003d1f53751f91401de",
+      "utf8_bytes": 17115
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/06_고정설계_보고서와_인계.md",
@@ -14704,8 +14704,8 @@
     },
     {
       "path": "01_개발문서/07_검증/310_공개_검증후보_배포와_독립수신_인계.md",
-      "text_sha256": "c54d2c6c521c718be15e89d949cde04d02b871541ade395ee165461dab05900b",
-      "utf8_bytes": 2727
+      "text_sha256": "7a7023250ed4d1329568eb7a830ee397fccb25078beb43237eb51c109134e78f",
+      "utf8_bytes": 2891
     },
     {
       "path": "01_개발문서/07_검증/311_설치후보_격자와_외부경계_대역검증.md",
@@ -14744,8 +14744,8 @@
     },
     {
       "path": "01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md",
-      "text_sha256": "f692ecf8c527a35ed6bc80b4cd1312299f51b1614bfef8e5f0531a518598efdc",
-      "utf8_bytes": 8356
+      "text_sha256": "eb9f66d668cd3d6bc913aae5b9be1a234c350c6b955e8a999a3ee538974ddd9e",
+      "utf8_bytes": 8120
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
