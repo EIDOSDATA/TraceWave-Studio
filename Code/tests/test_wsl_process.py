@@ -393,32 +393,51 @@ class WslLiveTransportTests(unittest.TestCase):
     def test_killed_wsl_launcher_reconnects_and_cancels_guest(self):
         """! @brief Windows launcher를 강제 종료해도 실행 상태는 guest에서 독립 조회한다."""
         self.worker("child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(30)'])\ntime.sleep(30)\n")
+        self.runtime.prepare(threading.Event())
         payload = {**self.runtime.identity(), "host_stage": self.runtime._linux_path(self.stage),
                    "run_id": self.run_id, "nonce": self.nonce, "files": self.runtime._manifest(self.stage),
                    "timeout_seconds": 20, "limits": {"max_output_bytes": 65536, "max_file_bytes": 65536,
                                                       "max_directory_bytes": 131072, "max_files": 16}}
-        # @brief 시험 전용 launcher는 ACK 뒤 연결을 유지하여 실제 wsl.exe 강제 종료를 재현한다.
+        # @brief 실제 시작 응답을 내보낸 뒤 launcher를 유지하여 인계 후 wsl.exe 강제 종료를 재현한다.
         argv = ["wsl.exe", "--distribution", self.runtime.distribution, "--user", self.runtime.user,
-                "--exec", "/usr/bin/python3", "-I", "-B", "-c", BOOTSTRAP + ";__import__('time').sleep(60)",
+                "--exec", "/usr/bin/python3", "-I", "-B", "-c", BOOTSTRAP + ";sys.stdout.flush();__import__('time').sleep(60)",
                 self.runtime._linux_path(self.runtime._source), self.runtime.identity()["supervisor_sha256"], "start"]
-        launcher = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                                    creationflags=subprocess.CREATE_NO_WINDOW)
+        capture = tempfile.TemporaryDirectory()
+        self.addCleanup(capture.cleanup)
+        ack_path = Path(capture.name) / "start.json"
+        error_path = Path(capture.name) / "start.stderr"
+        with ack_path.open("wb") as ack_output, error_path.open("wb") as error_output:
+            launcher = subprocess.Popen(argv, stdin=subprocess.PIPE, stdout=ack_output, stderr=error_output,
+                                        creationflags=subprocess.CREATE_NO_WINDOW)
         try:
             launcher.stdin.write(base64.b64encode(json.dumps(payload).encode("utf-8")))
             launcher.stdin.close()
-            deadline = time.monotonic() + 10
+            deadline = time.monotonic() + self.runtime.transfer_timeout_seconds
             while time.monotonic() < deadline:
-                try:
-                    status = self.runtime.heartbeat(self.run_id, self.nonce)
-                    if status.get("worker_pid"):
-                        break
-                except ProjectError:
-                    pass
+                acknowledgement = ack_path.read_bytes()
+                if acknowledgement.endswith(b"\n"):
+                    break
+                if launcher.poll() is not None:
+                    self.fail("WSL 시작 응답 전 launcher 종료: " + error_path.read_text(errors="replace")[-2048:])
                 time.sleep(0.1)
             else:
-                self.fail("guest did not start")
+                self.fail("입력 전송 기한 안에 WSL 시작 응답을 받지 못했습니다.")
+            ack = json.loads(acknowledgement)
+            self.assertEqual((ack.get("protocol"), ack.get("run_id"), ack.get("nonce")),
+                             (PROTOCOL, self.run_id, self.nonce), ack)
+            self.assertIn(ack["state"], ("starting", "active"), ack)
+            deadline = time.monotonic() + self.runtime.startup_timeout_seconds
+            while time.monotonic() < deadline:
+                status = self.runtime.heartbeat(self.run_id, self.nonce)
+                self.assertIn(status["state"], ("starting", "active"), status)
+                if status.get("worker_pid"):
+                    break
+                time.sleep(0.1)
+            else:
+                self.fail("시작 응답 후 guest worker PID를 확인하지 못했습니다.")
+            self.assertIsNone(launcher.poll())
             launcher.kill()
-            launcher.wait(timeout=3)
+            self.assertNotEqual(launcher.wait(timeout=3), 0)
             recovered = self.runtime.inspect(self.run_id, self.nonce)
             self.assertEqual(recovered["worker_pid"], status["worker_pid"])
             self.assertFalse(recovered["termination_confirmed"])
