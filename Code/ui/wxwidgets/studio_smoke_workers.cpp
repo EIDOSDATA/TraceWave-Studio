@@ -298,6 +298,8 @@ void StudioSmokeDriver::SolverSmokeTick()
     {
         CanvasAssert(m_frame.m_solverResult.empty() && m_frame.m_solverChart->SampleCount() == 0,
                      "Invalid physics input produced a result.");
+        CanvasAssert(!m_frame.m_solverOpenResult->IsEnabled(),
+                     "실패한 실행에 열 수 있는 결과가 표시됐습니다.");
         m_solverChecks.push_back("invalid_physics_not_published");
         m_solverSmokeStage = 7;
         FinishSmoke(true, "");
@@ -357,6 +359,9 @@ void StudioSmokeDriver::SolverSmokeTick()
                          m_frame.m_editor.at("saved_revision") == m_frame.m_revision,
                      "Solver snapshot changed or concurrent save failed.");
         CanvasAssert(m_frame.m_solverChart->SampleCount() >= 3, "No solver samples displayed.");
+        CanvasAssert(m_frame.m_solverOpenResult->IsEnabled() &&
+                         m_frame.m_solverOpenResult->GetLabel() == Display("이 해석의 결과 열기"),
+                     "완료한 실행의 결과를 열 수 없습니다.");
         CanvasAssert(m_frame.m_solverViewState->GetLabel().Contains(Display("이전 설계 결과")) &&
                          m_frame.m_solverViewState->GetLabel().Contains(Display("정확도 검증 전")) &&
                          !m_frame.m_solverDetails->GetValue().Contains("running:") &&
@@ -370,6 +375,9 @@ void StudioSmokeDriver::SolverSmokeTick()
         m_frame.m_solverChart->SetMetric(2);
         m_solverSmokeStage = 4;
         m_frame.StartSolver();
+        CanvasAssert(!m_frame.m_solverOpenResult->IsEnabled() &&
+                         m_frame.m_solverViewState->GetLabel().StartsWith(Display("아래는 이전 실행의 결과")),
+                     "새 실행의 접수 중 이전 결과가 현재 실행으로 표시됐습니다.");
     }
     else if (m_solverSmokeStage == 4)
     {
@@ -404,6 +412,9 @@ void StudioSmokeDriver::SolverSmokeTick()
     {
         CanvasAssert(m_frame.m_solverResult.at("artifact_id") == m_solverFirstResult,
                      "Cancel removed prior solver result.");
+        CanvasAssert(m_frame.m_solverOpenResult->IsEnabled() &&
+                         m_frame.m_solverOpenResult->GetLabel() == Display("이전 해석 결과 열기"),
+                     "취소 뒤 이전 실행과 방금 실행의 결과가 구분되지 않습니다.");
         m_solverChecks.push_back("cancel_preserves_previous_result");
         m_solverSmokeStage = 6;
         m_frame.m_connected = false;
@@ -415,6 +426,8 @@ void StudioSmokeDriver::SolverSmokeTick()
     {
         CanvasAssert(m_serviceSessions == 2 && m_frame.m_solverResult.at("artifact_id") == m_solverFirstResult,
                      "Solver result was not restored.");
+        CanvasAssert(m_frame.m_solverOpenResult->GetLabel() == Display("이전 해석 결과 열기"),
+                     "다시 열린 과거 실행이 이번 실행으로 표시됐습니다.");
         m_solverChecks.push_back("restart_restores_result");
         m_solverSmokeStage = 7;
         FinishSmoke(true, "");

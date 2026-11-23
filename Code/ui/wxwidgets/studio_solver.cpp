@@ -484,7 +484,9 @@ void StudioFrame::AcceptSolver(const Json& result, bool show)
         m_solverSamples = Json{{"artifact_id", artifact}, {"snapshot", result.at("snapshot")},
                                {"metadata", {{"profile", result.at("profile")}}}};
         m_solverChart->Clear();
-        SolverStatus("completed", "전체 S 행렬이 저장되었습니다. 네트워크에서 포트별 복소 표본을 확인하세요.");
+        SolverStatus(show ? "completed" : "restored", show
+            ? "전체 S 행렬이 저장되었습니다. 네트워크에서 포트별 복소 표본을 확인하세요."
+            : "이전 해석의 전체 S 행렬을 열었습니다.");
         UpdateSolverView();
         UpdateControls();
         if (show)
@@ -513,17 +515,18 @@ void StudioFrame::AcceptSolver(const Json& result, bool show)
             }
             Send(
                 "solver.samples", Json{{"artifact_id", artifact}}, false, Context(),
-                [this, project, result, view, show](const Json& samples)
+                [this, project, artifact, result, view, show](const Json& samples)
                 {
                     m_solverRestoring = false;
-                    if (project != m_project || samples.at("snapshot").at("project_id") != m_project)
+                    if (project != m_project || samples.at("snapshot").at("project_id") != m_project ||
+                        samples.at("artifact_id") != artifact || view.at("artifact_id") != artifact)
                     {
-                        throw std::runtime_error("해석 표시 결과가 선택 프로젝트와 다릅니다.");
+                        throw std::runtime_error("해석 표시 결과가 요청한 프로젝트 또는 실행의 원본과 다릅니다.");
                     }
                     m_solverChart->SetResult(samples);
                     m_solverSamples = samples;
                     m_solverResult = result;
-                    SolverStatus("completed", "해석 결과를 열었습니다.");
+                    SolverStatus(show ? "completed" : "restored", show ? "이 해석의 결과를 열었습니다." : "이전 해석 결과를 열었습니다.");
                     for (const auto& file : view.at("files"))
                     {
                         Log("해석 결과 파일: " + file.at("uri").get<std::string>());

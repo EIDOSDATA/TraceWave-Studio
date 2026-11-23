@@ -49,6 +49,10 @@ void StudioFrame::BuildSolverInterface()
     tools->Add(m_solverOpenResult, 0, wxRIGHT, FromDIP(StudioTheme::InputGap));
     m_solverOpenResult->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
     {
+        if (!m_solverOpenResult->IsEnabled() || m_solverWorkflow.Active() || m_solverRestoring || !m_connected)
+        {
+            return;
+        }
         const auto artifact = m_solverResult.value("artifact_id", "");
         if (!artifact.empty())
         {
@@ -115,6 +119,7 @@ void StudioFrame::SolverStatus(const std::string& state, const std::string& mess
     const auto label = Display(message);
     const bool repeated = m_solverState == state && m_solverStatus->GetLabel() == label;
     m_solverState = state;
+    UpdateSolverView();
     if (repeated)
     {
         return;
@@ -133,7 +138,6 @@ void StudioFrame::SolverStatus(const std::string& state, const std::string& mess
     }
 }
 
-/** @brief 저장된 결과의 개정 차이와 아직 검증하지 않은 상태를 계속 표시한다. */
 /** @brief 조회 요청을 화면이 열렸을 때의 프로젝트와 세션에 고정한다. */
 void StudioFrame::OpenSolverEvidence(const std::string& artifact, wxWindow* parent)
 {
@@ -151,26 +155,39 @@ void StudioFrame::OpenSolverEvidence(const std::string& artifact, wxWindow* pare
         });
 }
 
+/** @brief 진행 중인 실행과 차트에 남은 이전 결과의 동작을 구분한다. */
 void StudioFrame::UpdateSolverView()
 {
     m_solverCost->Enable(m_solverSamples.contains("execution_cost") || !m_solverLastAttempt.empty());
     const auto profile = m_solverSamples.value("metadata", Json::object()).value("profile", "");
     m_solverEvidence->Enable(profile == "rfad.openems.pcb-single-port/0.1" || profile == "rfad.openems.pcb-multiport/0.1");
-    m_solverOpenResult->Enable(m_resultsSupported && m_solverResult.contains("artifact_id") &&
+    const bool awaitingResult = m_solverWorkflow.Active() || m_solverRestoring;
+    const bool thisRun = m_solverState == "completed" && !awaitingResult;
+    const auto action = Display(thisRun || awaitingResult || m_solverResult.empty()
+                                    ? "이 해석의 결과 열기" : "이전 해석 결과 열기");
+    if (m_solverOpenResult->GetLabel() != action)
+    {
+        m_solverOpenResult->SetLabel(action);
+        m_solverOpenResult->GetParent()->Layout();
+    }
+    m_solverOpenResult->Enable(m_connected && m_resultsSupported && !awaitingResult && m_solverResult.contains("artifact_id") &&
         (profile == "rfad.openems.pcb-single-port/0.1" || profile == "rfad.openems.reference-benchmark/0.1"));
     if (m_solverSamples.empty())
     {
+        m_solverViewState->SetLabel(Display(awaitingResult ? "이 해석의 결과를 기다리는 중입니다." : "표시할 해석 결과가 없습니다."));
         return;
     }
     const bool stale = m_solverSamples.at("snapshot").at("revision_id") != m_revision;
+    const std::string prefix = awaitingResult ? "아래는 이전 실행의 결과 / " : "";
     if (profile == "rfad.openems.pcb-multiport/0.1")
     {
-        const auto label = Display(stale ? "이전 설계의 전체 S 행렬 / 네트워크에서 조회" : "현재 설계의 전체 S 행렬 / 네트워크에서 조회");
+        const auto label = Display(prefix + (stale ? "이전 설계의 전체 S 행렬 / 네트워크에서 조회"
+                                                   : "현재 설계의 전체 S 행렬 / 네트워크에서 조회"));
         m_solverViewState->SetLabel(label);
         m_solverViewState->SetToolTip(label);
         return;
     }
-    const auto label = Display((stale ? "이전 설계 결과 (" : "현재 설계 결과 (") +
+    const auto label = Display(prefix + (stale ? "이전 설계 결과 (" : "현재 설계 결과 (") +
                                std::to_string(m_solverChart->SampleCount()) + "개 주파수) · IFA·방사 정확도 검증 전");
     if (m_solverViewState->GetLabel() != label)
     {
