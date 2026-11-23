@@ -64,6 +64,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(prog="rfad field-study")
     parser.add_argument("--workspace", required=True, type=Path)
     parser.add_argument("--project", required=True)
+    parser.add_argument("--openems-wsl", action="store_true", help="이전 WSL2 해석 환경을 명시적으로 선택")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--resume", metavar="STUDY_ID")
     group.add_argument("--artifact", metavar="SOLVER_RESULT_ID")
@@ -88,7 +89,9 @@ def main(argv=None):
     from rfad.application.solver_runtime import SolverRuntime
 
     try:
-        with ProjectService(args.workspace, solver_runtime=SolverRuntime()) as service:
+        runtime = (SolverRuntime() if args.openems_wsl or sys.platform != "win32"
+                   else SolverRuntime.installed_windows())
+        with ProjectService(args.workspace, solver_runtime=runtime) as service:
             report = run(service, args.project, args)
     except (OSError, ProjectError, ValueError) as error:
         print(error, file=sys.stderr)

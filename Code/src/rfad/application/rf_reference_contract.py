@@ -6,7 +6,7 @@ import math
 from uuid import UUID, uuid4, uuid5
 
 from rfad.application.canonical import canonical_bytes, canonical_hash
-from rfad.application.solver import PLAN_SCHEMA, RUNTIME_PROFILE, _json, _reference_source, _runtime, _uuid
+from rfad.application.solver import PLAN_SCHEMA, _json, _reference_source, _runtime, _uuid
 from rfad.domain.errors import ProjectError
 
 
@@ -113,7 +113,7 @@ def _payload(document, snapshot, runtime, settings):
     if points > MAX_GRID_POINTS:
         fail("고정 참조 격자가 150만 점 상한을 초과했습니다.", "E_RESOURCE")
     return {
-        "schema": PLAN_SCHEMA, "analysis_profile": PROFILE, "runtime_profile": RUNTIME_PROFILE,
+        "schema": PLAN_SCHEMA, "analysis_profile": PROFILE, "runtime_profile": runtime["runtime_profile"],
         "snapshot": deepcopy(snapshot), "source_semantics": deepcopy(document), "runtime_identity": deepcopy(runtime),
         "case": case, "normalization": normalization_contract(case),
         "model_report": {"scope": "explicit_reference_case", "reference_scope": deepcopy(REFERENCE_SCOPE),

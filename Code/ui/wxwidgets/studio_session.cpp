@@ -77,13 +77,16 @@ void StudioFrame::Connect()
                                       result.value("methods", Json::object()).contains("pcb.features.apply") &&
                                       result.value("methods", Json::object()).contains("pcb.features.receipt");
              m_cadConfigured = result.value("cad_profile", Json::object()).value("runtime_configured", false);
-             m_solverConfigured = result.value("solver_profile", Json::object()).value("runtime_configured", false);
+             const auto solver = result.value("solver_profile", Json::object());
+             m_solverConfigured = solver.value("runtime_configured", false);
              SolverStatus("idle", m_solverConfigured
-                                      ? "WSL openEMS 준비됨. 물성 및 급전 위치를 명시한 설계를 사용합니다."
+                                      ? (solver.value("execution", "") == "windows_native"
+                                             ? "Windows openEMS 준비됨. 물성 및 급전 위치를 명시한 설계를 사용합니다."
+                                             : "WSL openEMS 준비됨. 물성 및 급전 위치를 명시한 설계를 사용합니다.")
                                       : "해석 환경이 연결되지 않았습니다. 저장된 결과는 조회할 수 있습니다.");
              if (!m_solverConfigured)
              {
-                 Log("해석 환경 연결: launch_gui.ps1 -OpenEmsWsl");
+                 Log("Windows openEMS가 필요하면 TraceWave Studio Setup.exe의 기본 설치를 실행하세요.");
              }
              CadStatus(
                  "idle",

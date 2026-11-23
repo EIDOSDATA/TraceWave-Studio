@@ -4,7 +4,7 @@ import math
 from uuid import UUID
 
 from rfad.application.pcb_multiport_job import PROFILE as MULTIPORT_PROFILE
-from rfad.application.solver import PROFILE, RUNTIME_PROFILE
+from rfad.application.solver import PROFILE, RUNTIME_PROFILES
 from rfad.domain.errors import ProjectError
 
 PCB_PROFILE = "rfad.openems.pcb-single-port/0.1"
@@ -44,7 +44,8 @@ def validate_solver_input(method, context, data):
     if method == "solver.plan":
         require_fields(data, {"snapshot", "analysis_profile", "runtime_profile"}, {"grid_mm", "settings"})
         validate_reference(data["snapshot"], "snapshot_id")
-        if data["analysis_profile"] not in (PROFILE, PCB_PROFILE, MULTIPORT_PROFILE, REFERENCE_PROFILE) or data["runtime_profile"] != RUNTIME_PROFILE:
+        if (data["analysis_profile"] not in (PROFILE, PCB_PROFILE, MULTIPORT_PROFILE, REFERENCE_PROFILE)
+                or data["runtime_profile"] not in (*RUNTIME_PROFILES, "auto")):
             raise ProjectError("E_UNSUPPORTED", "지원하는 해석 profile을 지정하십시오.")
         if data["analysis_profile"] == PROFILE:
             if "settings" in data or type(data.get("grid_mm")) not in (int, float) or data["grid_mm"] not in (1.0, 0.75):

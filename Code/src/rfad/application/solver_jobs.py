@@ -66,7 +66,7 @@ class SolverCoordinator:
         """! @brief 불변 계획과 원시 입력 참조를 캡처하고 슬롯을 예약한다."""
         host_identity = self.service.calculation_identity()
         if self.runtime is None:
-            raise ProjectError("E_UNSUPPORTED", "서비스 실행 시 --openems-wsl 설정이 필요합니다.")
+            raise ProjectError("E_UNSUPPORTED", "감사가 끝난 openEMS 해석 환경이 필요합니다.")
         if self.error is not None or any(j.get("solver", {}).get("resource_reserved") for j in state["jobs"].values()):
             raise ProjectError("E_RESOURCE", "해석 슬롯이 사용 중이거나 이전 실행 종료 확인이 필요합니다.")
         if len(state["jobs"]) >= 512:
@@ -77,6 +77,8 @@ class SolverCoordinator:
         captured = {"nonce": nonce, "runtime": deepcopy(self.runtime.identity), "resource_reserved": True}
         prepared_reference, preparation_artifact = None, None
         if method == "solver.plan":
+            if data["runtime_profile"] not in ("auto", self.runtime.identity["runtime_profile"]):
+                raise ProjectError("E_VERSION", "선택한 해석 환경이 연결된 서비스와 다릅니다.")
             snapshot = state["snapshots"].get(data["snapshot"]["snapshot_id"])
             if snapshot is None or snapshot["project_id"] != project_id or snapshot["content_hash"] != data["snapshot"]["content_hash"]:
                 raise ProjectError("E_HASH", "등록된 불변 스냅샷이 필요합니다.")
@@ -430,14 +432,14 @@ class SolverCoordinator:
         self.service.journal.transaction(finish)
 
     def reconcile(self, job_id):
-        """! @brief 이전 실행을 재시작하지 않고 동일 nonce의 guest 종료만 확인한다."""
+        """! @brief 이전 실행을 재시작하지 않고 동일 nonce의 worker 종료만 확인한다."""
         job = self.service.journal.read()["jobs"].get(job_id)
         if self.runtime is None or job is None or not job.get("solver", {}).get("resource_reserved") or job["state"] != "interrupted":
             raise ProjectError("E_CONFLICT", "종료 확인이 필요한 이전 해석 실행이 아닙니다.")
         captured = job["solver"]
         transport = captured.get("runtime_transport") if "capture_profile" in captured else captured["runtime"]["transport"]
         if transport != self.runtime.identity["transport"]:
-            raise ProjectError("E_VERSION", "이전 실행의 WSL 소유 설정이 필요합니다.")
+            raise ProjectError("E_VERSION", "이전 실행의 해석 환경 소유 설정이 필요합니다.")
         status = self.runtime.transport.cancel(job["run_id"], job["solver"]["nonce"])
         deadline = time.monotonic() + 20
         while status.get("termination_confirmed") is not True and status.get("state") not in TERMINAL | {"timeout", "output_limit"} and time.monotonic() < deadline:

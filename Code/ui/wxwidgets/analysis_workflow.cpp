@@ -33,7 +33,7 @@ std::optional<ServiceCommand> AnalysisWorkflow::Complete(const Json& result)
         next = {"solver.plan", Json{{"snapshot", Json{{"snapshot_id", result.at("snapshot_id")},
                                                       {"content_hash", result.at("content_hash")}}},
                                     {"analysis_profile", m_multiport ? "rfad.openems.pcb-multiport/0.1" : "rfad.openems.pcb-single-port/0.1"},
-                                    {"runtime_profile", "openems-wsl-reference/0.1"},
+                                    {"runtime_profile", "auto"},
                                     {"settings", m_settings}}};
         phase = Phase::Plan;
         break;

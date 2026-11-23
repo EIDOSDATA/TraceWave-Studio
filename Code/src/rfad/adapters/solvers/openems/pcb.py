@@ -15,7 +15,7 @@ from rfad.application.pcb_solver import (
     shape_polygons, validate_pcb_plan, validate_preparation, validate_result,
 )
 from .native import (
-    EXECUTABLE, MAX_FILE_BYTES, _check_preparation, _mapped_files, _validate_mapped,
+    EXECUTABLE, MAX_FILE_BYTES, _check_preparation, _mapped_files, _validate_mapped, openems_loaded, write_native_xml,
     descriptor, file_identity, require, write_json,
 )
 from .pcb_mesh import audit_native_mesh
@@ -135,7 +135,7 @@ def prepare(stage, plan, runtime):
                                     file_type=1, frequency=field["frequency_hz"])
                 probe.AddBox(field["primitive_start_mm"], field["primitive_stop_mm"])
     xml = output / "pcb.xml"
-    solver.Write2XML(str(xml))
+    write_native_xml(solver, xml)
     observed = {axis: [float(value) for value in grid.GetLines(axis)] for axis in "xyz"}
     require(observed == lines, "native 준비 격자가 계획과 다릅니다.", "E_HASH")
     counts = [len(lines[axis]) for axis in "xyz"]
@@ -194,21 +194,31 @@ def solve(stage, request, inputs, runtime):
     shutil.copyfile(inputs["native_input"], raw / "pcb.xml")
     require(file_identity(inputs["native_input"]) == file_identity(raw / "pcb.xml"), "준비 XML 복사본의 해시가 다릅니다.", "E_HASH")
     threads = request["analysis_plan"]["case"]["num_threads"]
-    command = [str(EXECUTABLE), "pcb.xml", "--engine=multithreaded", "--numThreads=" + str(threads), "--dump-statistics", "--exact-endcriteria"]
+    command = [str(runtime.get("executable", EXECUTABLE)), "pcb.xml", "--engine=multithreaded", "--numThreads=" + str(threads), "--dump-statistics", "--exact-endcriteria"]
     plan = request["analysis_plan"]
     started, mapped = time.monotonic(), set()
     log = raw / "native.log"
     next_observation = started
     observed_step = 0
+    peak_bytes = 0
+    windows = os.name == "nt"
+    if windows:
+        from .windows import peak_rss
     with log.open("xb") as stream, log.open("rb") as readable:
         child = subprocess.Popen(command, cwd=raw, stdin=subprocess.DEVNULL, stdout=stream, stderr=subprocess.STDOUT)
         try:
             # @brief wait4는 다른 자식 프로세스와 섞이지 않는 이 openEMS PID의 최대 RSS를 반환한다.
             while True:
-                pid, status, usage = os.wait4(child.pid, os.WNOHANG)
-                if pid:
-                    child.returncode = os.waitstatus_to_exitcode(status)
-                    break
+                if windows:
+                    peak_bytes = max(peak_bytes, peak_rss(child))
+                    if child.poll() is not None:
+                        break
+                else:
+                    pid, status, usage = os.wait4(child.pid, os.WNOHANG)
+                    if pid:
+                        child.returncode = os.waitstatus_to_exitcode(status)
+                        peak_bytes = usage.ru_maxrss * 1024
+                        break
                 mapped.update(_mapped_files(child.pid))
                 length = log.stat().st_size
                 require(length <= MAX_FILE_BYTES, "native 로그 상한을 초과했습니다.", "E_RESOURCE")
@@ -227,13 +237,13 @@ def solve(stage, request, inputs, runtime):
                 child.kill()
                 child.wait()
     names = raw_names(plan)
-    cost = {"scope": NATIVE_SCOPE, "wall_seconds": time.monotonic() - started, "peak_rss_bytes": usage.ru_maxrss * 1024,
+    cost = {"scope": NATIVE_SCOPE, "wall_seconds": time.monotonic() - started, "peak_rss_bytes": peak_bytes,
             "raw_output_bytes": sum((raw / name).stat().st_size for name in names if (raw / name).is_file())}
     try:
         require(child.returncode == 0, "PCB native solver가 정상 종료하지 않았습니다.")
         require(file_identity(inputs["native_input"]) == file_identity(raw / "pcb.xml"), "실행 중 준비 XML이 변경되었습니다.", "E_HASH")
         actual = _validate_mapped(sorted(mapped), {f["path"]: {key: f[key] for key in ("bytes", "sha256")} for f in runtime["native_files"]})
-        require(any("libopenEMS" in f["path"] for f in actual), "실제 native 로딩을 확인하지 못했습니다.", "E_VERSION")
+        require(openems_loaded(actual), "실제 native 로딩을 확인하지 못했습니다.", "E_VERSION")
         stats, termination = statistics_and_termination(raw, plan)
         require("openEMS - fixed number of threads: " + str(threads) + "\n" in (raw / "native.log").read_text(encoding="utf-8"),
                 "native 스레드 요청의 로그 근거가 다릅니다.", "E_HASH")

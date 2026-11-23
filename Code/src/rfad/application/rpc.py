@@ -244,8 +244,11 @@ def capabilities(service=None, catalog=None) -> dict:
         result["project_profile"]["job_kinds"] = ["data_processing", "cad_build", "export"]
         result["features"][1]["status"] = "implemented"
         result["methods"].update({name: {"status": "implemented", "api_id": api_id, "extension_profile": "rfad.openems.rect-waveguide/0.1"} for name, api_id in (("solver.plan", "API-011"), ("solver.prepare", "API-012"), ("job.submit", "API-013"), ("result.open", "API-016"))})
-        result["solver_profile"] = {"profile": "rfad.openems.rect-waveguide/0.1", "runtime_configured": service.solver.runtime is not None,
-            "source": "immutable_snapshot", "native_slots": 1, "execution": "wsl2_guest_supervisor",
+        solver_runtime = service.solver.runtime
+        solver_profile = solver_runtime.identity["runtime_profile"] if solver_runtime is not None else None
+        result["solver_profile"] = {"profile": "rfad.openems.rect-waveguide/0.1", "runtime_configured": solver_runtime is not None,
+            "source": "immutable_snapshot", "native_slots": 1, "runtime_profile": solver_profile,
+            "execution": "windows_native" if solver_profile == "openems-windows-x64/0.1" else "wsl2_guest_supervisor",
             "execution_modes": ["solve_and_postprocess", "postprocess_only"], "resume_supported": False,
             "antenna_supported": True, "antenna_profile": "rfad.openems.pcb-single-port/0.1", "antenna_physics_validated": False,
             "board_outlines": ["rectangle", "circle"], "nf2ff_supported": True,

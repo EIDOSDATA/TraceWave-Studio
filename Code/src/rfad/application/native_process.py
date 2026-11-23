@@ -89,9 +89,9 @@ def _scan_output(directory: Path, cwd: Path, max_file_bytes: int, max_directory_
 
 
 class _WindowsJob:
-    """! @brief 이름 없는 Job Object로 시작한 worker와 후손만 회수한다."""
+    """! @brief 소유 Job Object에서 시작한 worker와 후손만 회수한다."""
 
-    def __init__(self):
+    def __init__(self, name=None, *, existing=False):
         """! @brief 마지막 핸들이 닫히면 트리를 종료하는 비상 회수 경계를 만든다."""
         from ctypes import wintypes
 
@@ -129,19 +129,30 @@ class _WindowsJob:
         self._kernel = ctypes.WinDLL("kernel32", use_last_error=True)
         signatures = {
             "CreateJobObjectW": ([ctypes.c_void_p, wintypes.LPCWSTR], wintypes.HANDLE),
+            "OpenJobObjectW": ([wintypes.DWORD, wintypes.BOOL, wintypes.LPCWSTR], wintypes.HANDLE),
             "SetInformationJobObject": ([wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD], wintypes.BOOL),
             "AssignProcessToJobObject": ([wintypes.HANDLE, wintypes.HANDLE], wintypes.BOOL),
             "QueryInformationJobObject": ([wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD, ctypes.c_void_p], wintypes.BOOL),
             "TerminateJobObject": ([wintypes.HANDLE, wintypes.UINT], wintypes.BOOL),
             "CloseHandle": ([wintypes.HANDLE], wintypes.BOOL),
         }
-        for name, (arguments, result) in signatures.items():
-            function = getattr(self._kernel, name)
+        for function_name, (arguments, result) in signatures.items():
+            function = getattr(self._kernel, function_name)
             function.argtypes = arguments
             function.restype = result
-        self._handle = self._kernel.CreateJobObjectW(None, None)
+        if existing:
+            self._handle = self._kernel.OpenJobObjectW(0x000C, False, name)
+            if not self._handle:
+                raise ctypes.WinError(ctypes.get_last_error())
+            return
+        ctypes.set_last_error(0)
+        self._handle = self._kernel.CreateJobObjectW(None, name)
+        status = ctypes.get_last_error()
         if not self._handle:
-            raise ctypes.WinError(ctypes.get_last_error())
+            raise ctypes.WinError(status)
+        if name is not None and status == 183:
+            self.close()
+            raise ctypes.WinError(status)
         limits = ExtendedLimits()
         limits.BasicLimitInformation.LimitFlags = 0x00002000
         if not self._kernel.SetInformationJobObject(self._handle, 9, ctypes.byref(limits), ctypes.sizeof(limits)):
@@ -253,6 +264,7 @@ def run_native(
     *, output_directory: Path | None = None, max_file_bytes: int = 64 * 1024 * 1024,
     max_directory_bytes: int = 128 * 1024 * 1024, max_files: int = 16,
     reap_remaining_descendants: Callable[[int], None] | None = None,
+    windows_job_name: str | None = None, on_poll: Callable[[], None] | None = None,
 ) -> dict:
     """! @brief stdin 접수 전에 소유권을 확정하고 native 실행의 유한 결과를 반환한다.
 
@@ -271,6 +283,8 @@ def run_native(
     @param max_directory_bytes 모든 출력 파일 크기의 합계 상한.
     @param max_files 출력 파일 수와 별도 디렉터리 수의 상한.
     @param reap_remaining_descendants 원래 실행 그룹 회수 뒤 출력 pipe를 닫기 전에 호출할 추가 소유권 회수 함수.
+    @param windows_job_name 재시작 후 커널 종료를 다시 확인할 수 있는 실행별 이름.
+    @param on_poll 파일 상한 확인 주기에 작고 제한된 실행 진행 정보를 읽는 callback.
     @return 종료 코드, bounded tail, 읽은 byte 수, pid와 종료 원인.
     @warning 파일 상한은 0.1초 간격 관측이며 OS 디스크 quota가 아니므로 사이에 초과할 수 있다.
     """
@@ -360,7 +374,7 @@ def run_native(
 
     try:
         if os.name == "nt":
-            job = _WindowsJob()
+            job = _WindowsJob(windows_job_name)
         process = subprocess.Popen(
             argv, cwd=cwd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             shell=False, bufsize=0, close_fds=True,
@@ -396,6 +410,8 @@ def run_native(
                 if inspect_files():
                     termination = "output_limit"
                     break
+                if on_poll is not None:
+                    on_poll()
                 next_file_scan = time.monotonic() + FILE_SCAN_SECONDS
             if time.monotonic() - started >= timeout_seconds:
                 termination = "timeout"

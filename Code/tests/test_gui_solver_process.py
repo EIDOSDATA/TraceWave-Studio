@@ -19,10 +19,13 @@ from test_pcb_surfaces import add_mask, rectangle
 
 ROOT = Path(__file__).resolve().parents[1]
 GUI = os.environ.get("RFAD_GUI_EXE", "")
-HAS_RUNTIME = (ROOT / ".local/wsl/native-audit.json").is_file()
+WINDOWS_RUNTIME = os.environ.get("RFAD_TEST_WINDOWS_SOLVER") == "1"
+AUDIT = ".local/openems-windows/native-audit.json" if WINDOWS_RUNTIME else ".local/wsl/native-audit.json"
+HAS_RUNTIME = (ROOT / AUDIT).is_file()
+RUN_NATIVE = WINDOWS_RUNTIME or os.environ.get("RFAD_TEST_WSL") == "1"
 
 
-@unittest.skipUnless(sys.platform == "win32" and GUI and HAS_RUNTIME, "Windows GUI와 고정 WSL 런타임 감사가 필요합니다.")
+@unittest.skipUnless(sys.platform == "win32" and GUI and HAS_RUNTIME, "Windows GUI와 고정 해석 환경 감사가 필요합니다.")
 class GuiSolverProcessTests(unittest.TestCase):
     """! @brief GUI의 표시/상태 검증과 실제 안테나의 물리 정확도 판정을 구분한다."""
 
@@ -35,7 +38,9 @@ class GuiSolverProcessTests(unittest.TestCase):
         smoke_switch = "--solver-active-cancel-smoke-test" if active_cancel else "--solver-smoke-test"
         args = [str(Path(GUI).resolve()), "--python", sys.executable, "--source", str(ROOT / "src"),
                 "--workspace", str(workspace), "--open-project", "projects/CAD 한글 교환 검증",
-                "--openems-wsl", smoke_switch, "--smoke-report", str(report)]
+                smoke_switch, "--smoke-report", str(report)]
+        if not WINDOWS_RUNTIME:
+            args.append("--openems-wsl")
         if invalid:
             args.append("--solver-expect-failure")
         if settings is not None:
@@ -70,7 +75,7 @@ class GuiSolverProcessTests(unittest.TestCase):
                 self.assertEqual(board["kind"], "circle")
                 self.assertAlmostEqual(board["radius"]["value_si"], 0.02)
 
-    @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
+    @unittest.skipUnless(RUN_NATIVE, "실제 계산 환경은 RFAD_TEST_WINDOWS_SOLVER 또는 RFAD_TEST_WSL로 선택합니다.")
     def test_circle_arc_native_results_save_cancel_and_restart(self):
         """! @brief 원형/원호 PCB의 실제 결과 표시와 편집 독립성을 확인하되 RF 정확도를 판정하지 않는다."""
         with TemporaryDirectory(prefix="TraceWave GUI PCB native ") as temporary:
@@ -94,7 +99,7 @@ class GuiSolverProcessTests(unittest.TestCase):
                 self.assertEqual(job["state"], cancel["terminal"]["state"])
                 self.assertEqual(len(job["events"]), cancel["terminal"]["events_cursor"])
 
-    @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
+    @unittest.skipUnless(RUN_NATIVE, "실제 계산 환경은 RFAD_TEST_WINDOWS_SOLVER 또는 RFAD_TEST_WSL로 선택합니다.")
     def test_active_analysis_cancel_acknowledgement_and_restore(self):
         """! @brief 스냅샷이 아니라 실행 중인 해석을 취소하고 영속 종료와 결과 재열기를 대조한다."""
         with TemporaryDirectory(prefix="TraceWave GUI PCB active cancel ") as temporary:
@@ -119,7 +124,7 @@ class GuiSolverProcessTests(unittest.TestCase):
                 self.assertIs(job["solver"]["guest_worker_attached"], True)
                 self.assertIsNot(job["solver"]["process_outcome"].get("not_started"), True)
 
-    @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
+    @unittest.skipUnless(RUN_NATIVE, "실제 계산 환경은 RFAD_TEST_WINDOWS_SOLVER 또는 RFAD_TEST_WSL로 선택합니다.")
     def test_radiation_pages_display_with_snapshot_and_restart(self):
         """! @brief 실제 NF2FF 결과를 wx 화면에서 페이지로 읽고 phi/지표를 전환한다."""
         settings = {**SETTINGS, "air_padding_mm": 8,
@@ -130,12 +135,12 @@ class GuiSolverProcessTests(unittest.TestCase):
             self.assertIn("restart_restores_result", result["solver_checks"])
             self.assertFalse(result["solver_result"]["radiation_summary"]["physics_validated"])
 
-    @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
+    @unittest.skipUnless(RUN_NATIVE, "실제 계산 환경은 RFAD_TEST_WINDOWS_SOLVER 또는 RFAD_TEST_WSL로 선택합니다.")
     def test_mechanical_voids_actual_execution_and_reopen(self):
         """! @brief 홀, 슬롯, 내부 절삭의 실제 재료 소비와 Windows 재열기를 확인한다."""
         self.verify_mechanical_board(drilled_board(), "box")
 
-    @unittest.skipUnless(os.environ.get("RFAD_TEST_WSL") == "1", "실제 WSL 계산은 RFAD_TEST_WSL=1로 명시합니다.")
+    @unittest.skipUnless(RUN_NATIVE, "실제 계산 환경은 RFAD_TEST_WINDOWS_SOLVER 또는 RFAD_TEST_WSL로 선택합니다.")
     def test_concave_board_masks_and_cutouts_actual_execution_and_reopen(self):
         """! @brief 오목 기판의 실제 외곽을 마스크와 관통부까지 적용한다."""
         document = polygon_board(drilled_board())

@@ -22,6 +22,8 @@ from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 
 PROFILE = "rfad.openems.rect-waveguide/0.1"
 RUNTIME_PROFILE = "openems-wsl-reference/0.1"
+WINDOWS_RUNTIME_PROFILE = "openems-windows-x64/0.1"
+RUNTIME_PROFILES = (RUNTIME_PROFILE, WINDOWS_RUNTIME_PROFILE)
 PLAN_SCHEMA = "rfad.analysis-plan/0.1"
 PREPARED_PLAN_SCHEMA = "rfad.prepared-plan/0.1"
 CASE_VERSION = "rfad.reference.rect-waveguide/0.1"
@@ -133,7 +135,7 @@ def _runtime(identity: object) -> None:
     if type(identity) is not dict or set(identity) not in (required, required | {"source_bundle"}):
         _fail("E_SCHEMA", "host에서 확인한 runtime 식별 정보가 필요합니다.", "runtime_identity")
     _json(identity, "runtime_identity", 64 * 1024)
-    if identity["runtime_profile"] != RUNTIME_PROFILE:
+    if identity["runtime_profile"] not in RUNTIME_PROFILES:
         _fail("E_VERSION", "해석 runtime profile이 일치하지 않습니다.", "runtime_identity.runtime_profile")
     _hash(identity["manifest_sha256"], "runtime_identity.manifest_sha256")
     files = identity["code_files"]
@@ -149,7 +151,7 @@ def _runtime(identity: object) -> None:
             _fail("E_SCHEMA", "runtime 소스는 중복 없는 Python 상대 경로여야 합니다.", field + ".path")
         seen.add(item["path"])
     if type(identity["transport"]) is not dict or not identity["transport"]:
-        _fail("E_SCHEMA", "WSL runtime 소유 설정이 필요합니다.", "runtime_identity.transport")
+        _fail("E_SCHEMA", "해석 runtime 소유 설정이 필요합니다.", "runtime_identity.transport")
     if "source_bundle" in identity:
         from rfad.application.source_bundle import SOLVER, BundleError, validate_descriptor
 
@@ -226,7 +228,7 @@ def _plan_payload(document: dict, snapshot_ref: dict, runtime_identity: dict, gr
     return {
         "schema": PLAN_SCHEMA,
         "analysis_profile": PROFILE,
-        "runtime_profile": RUNTIME_PROFILE,
+        "runtime_profile": runtime_identity["runtime_profile"],
         "snapshot": deepcopy(snapshot_ref),
         "source_semantics": deepcopy(document),
         "runtime_identity": deepcopy(runtime_identity),
@@ -328,7 +330,7 @@ def make_prepared_plan(analysis_plan_ref: dict, snapshot: dict, preparation_arti
         "analysis_plan": deepcopy(analysis_plan_ref),
         "snapshot": deepcopy(snapshot),
         "preparation_artifact": deepcopy(preparation_artifact_ref),
-        "runtime_profile": RUNTIME_PROFILE,
+        "runtime_profile": runtime_identity["runtime_profile"],
         "runtime_identity": deepcopy(runtime_identity),
         "validation_state": "prepared",
     }

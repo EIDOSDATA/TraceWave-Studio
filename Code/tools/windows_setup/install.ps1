@@ -5,6 +5,7 @@
 @param Identity 후보 ZIP의 고정 SHA-256.
 @param InstallRoot 앱, 전용 런타임과 작업 영역의 설치 경로.
 @param WithoutSimulation Windows 기능만 준비한다.
+@param WithWsl 기존 WSL2 해석 환경을 재현할 때 선택한다.
 @param NoShortcut 검증 시 시작 메뉴 등록을 생략한다.
 @param NoLaunch 검증 시 설치 후 앱 실행을 생략한다.
 #>
@@ -15,6 +16,7 @@ param
     [Parameter(Mandatory)][string]$Identity,
     [string]$InstallRoot = (Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'TraceWaveStudio'),
     [switch]$WithoutSimulation,
+    [switch]$WithWsl,
     [switch]$NoShortcut,
     [switch]$NoLaunch
 )
@@ -124,13 +126,13 @@ function Install-CompilerRuntime
 function Get-StudioArguments
 {
     <# @brief 같은 작업 영역과 검증된 worker를 바로 가기와 실행에 연결한다. #>
-    param([bool]$Simulation)
+    param([bool]$UseWsl)
     $arguments = @(
         '--python', $service, '--source', (Join-Path $codeRoot 'src'),
         '--workspace', $workspace, '--cad-python', (Join-Path $codeRoot '.venv-cad/Scripts/python.exe'),
         '--exchange-python', (Join-Path $codeRoot '.venv-exchange/Scripts/python.exe')
     )
-    if ($Simulation)
+    if ($UseWsl)
     {
         $arguments += '--openems-wsl'
     }
@@ -140,7 +142,7 @@ function Get-StudioArguments
 function Register-StudioShortcut
 {
     <# @brief 설치를 다시 실행해도 사용자 시작 메뉴의 같은 바로 가기에서 앱을 연다. #>
-    param([bool]$Simulation, [switch]$NewOnly)
+    param([bool]$UseWsl, [switch]$NewOnly)
     if (-not $NoShortcut)
     {
         $folder = [Environment]::GetFolderPath('Programs')
@@ -154,13 +156,17 @@ function Register-StudioShortcut
         $shortcut = $shell.CreateShortcut($link)
         $shortcut.TargetPath = $gui
         $shortcut.IconLocation = "$gui,0"
-        $shortcut.Arguments = Get-StudioArguments $Simulation
+        $shortcut.Arguments = Get-StudioArguments $UseWsl
         $shortcut.WorkingDirectory = $codeRoot
         $shortcut.Save()
     }
 }
 
 $windowsVersion = Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
+if ($WithoutSimulation -and $WithWsl)
+{
+    throw '해석 생략과 WSL2 선택을 함께 지정할 수 없습니다.'
+}
 if (-not [Environment]::Is64BitProcess -or [int]$windowsVersion.CurrentBuildNumber -lt 22000)
 {
     throw 'Windows 11 x64에서 Setup.exe를 실행하세요.'
@@ -170,7 +176,20 @@ $cache = Join-Path $root 'Cache'
 $versions = Join-Path $root 'Versions'
 $workspace = Join-Path $root 'Workspace'
 New-Item -ItemType Directory -Force -Path $root, $cache, $versions | Out-Null
-$lock = [IO.File]::Open((Join-Path $root 'Setup.lock'), 'OpenOrCreate', 'ReadWrite', 'None')
+try
+{
+    $lock = [IO.File]::Open((Join-Path $root 'Setup.lock'), 'OpenOrCreate', 'ReadWrite', 'None')
+}
+catch
+{
+    $cause = $_.Exception.GetBaseException()
+    if ($cause -is [IO.IOException] -and ($cause.HResult -band 65535) -in @(32, 33))
+    {
+        Write-Host 'TraceWave Studio 설치가 이미 진행 중입니다. 먼저 시작한 설치가 끝날 때까지 기다려 주세요.'
+        exit 2
+    }
+    throw
+}
 $log = Join-Path $root 'Setup.log'
 $status = [ordered]@{ revision = $null; windows_ready = $false; simulation = 'pending' }
 $result = 0
@@ -236,10 +255,19 @@ try
     Register-StudioShortcut $false -NewOnly
     $status.windows_ready = $true
 
-    $simulation = $false
+    $useWsl = $false
     if ($WithoutSimulation)
     {
         $status.simulation = 'deferred'
+    }
+    elseif (-not $WithWsl)
+    {
+        Write-Host '[3/3] Windows openEMS 해석 환경을 준비합니다.'
+        $builder = Join-Path $codeRoot 'tools/setup_openems_windows.py'
+        Invoke-Checked $python @('-I', '-B', '-X', 'utf8', $builder, '--cache', $cache) 'Windows openEMS 설치 및 native 감사'
+        Register-StudioShortcut $false
+        $status.simulation = 'ready'
+        $status.solver_platform = 'windows'
     }
     else
     {
@@ -274,9 +302,10 @@ try
             {
                 Invoke-Checked $python ($solver + @('--audit-only')) 'openEMS native 재감사'
             }
-            $simulation = $true
+            $useWsl = $true
             Register-StudioShortcut $true
             $status.simulation = 'ready'
+            $status.solver_platform = 'wsl2'
         }
     }
     if ($result -eq 0)
@@ -284,7 +313,7 @@ try
         Write-Host 'TraceWave Studio 설치가 끝났습니다.'
         if (-not $NoLaunch)
         {
-            Start-Process -FilePath $gui -ArgumentList (Get-StudioArguments $simulation) -WorkingDirectory $codeRoot
+            Start-Process -FilePath $gui -ArgumentList (Get-StudioArguments $useWsl) -WorkingDirectory $codeRoot
         }
     }
 }

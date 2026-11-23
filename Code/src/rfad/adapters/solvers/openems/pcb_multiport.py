@@ -12,7 +12,7 @@ from rfad.application.pcb_mesh import mesh_lines
 from rfad.application.pcb_projection import project_pcb
 from rfad.application.pcb_solver import check_pcb_input
 from rfad.domain.network_data import MAX_PORTS, make_dataset
-from .native import EXECUTABLE, file_identity, require, write_json
+from .native import EXECUTABLE, file_identity, require, write_json, write_native_xml
 from .pcb import add_geometry, statistics_and_termination
 from .pcb_mesh import audit_native_mesh
 from .pcb_ports import spectra
@@ -62,14 +62,14 @@ def prepare_column(xml, case, lines, driven):
                              port["axis"], excite=int(port["number"] == driven), priority=10)
     actual = {axis: [float(value) for value in grid.GetLines(axis)] for axis in "xyz"}
     require(lines == actual, "생성된 native 격자가 공통 설계 격자와 다릅니다.", "E_HASH")
-    solver.Write2XML(str(xml))
+    write_native_xml(solver, xml)
     return contacts
 
 
-def solve_column(raw, case):
+def solve_column(raw, case, executable=None):
     """! @brief 준비한 여기 XML을 그대로 실행하고 실제 종료 원인과 통계를 읽는다."""
     settings = case["settings"]
-    command = [str(EXECUTABLE), "pcb.xml", "--engine=multithreaded", f"--numThreads={case['num_threads']}",
+    command = [str(executable or EXECUTABLE), "pcb.xml", "--engine=multithreaded", f"--numThreads={case['num_threads']}",
                "--dump-statistics", "--exact-endcriteria"]
     started = time.monotonic()
     with (raw / "native.log").open("xb") as log:

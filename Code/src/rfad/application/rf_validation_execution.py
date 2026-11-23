@@ -2,7 +2,6 @@
 
 from rfad.application.rf_reference_contract import PROFILE as REFERENCE_PROFILE
 from rfad.application.rf_validation_records import PHASES, fail, load_json, phase_status
-from rfad.application.solver import RUNTIME_PROFILE
 from rfad.application.solver_requests import validate_solver_input
 
 
@@ -62,7 +61,7 @@ def advance(service, state, record, data):
     if phase == "plan":
         method = "solver.plan"
         request = {"snapshot": _reference(record["snapshot"], "snapshot_id"),
-                   "analysis_profile": REFERENCE_PROFILE, "runtime_profile": RUNTIME_PROFILE,
+                   "analysis_profile": REFERENCE_PROFILE, "runtime_profile": runtime.identity["runtime_profile"],
                    "settings": case["settings"]}
     elif phase == "prepare":
         method = "solver.prepare"

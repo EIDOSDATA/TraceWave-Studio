@@ -90,7 +90,14 @@ def main(argv: list[str] | None = None) -> int:
     try:
         runtime = None if options.cad_python is None else CadRuntime(options.cad_python)
         exchange_runtime = None if options.exchange_python is None else ExchangeRuntime(options.exchange_python)
-        solver_runtime = SolverRuntime() if options.openems_wsl else None
+        solver_runtime = None
+        if options.openems_wsl:
+            solver_runtime = SolverRuntime()
+        elif sys.platform == "win32":
+            try:
+                solver_runtime = SolverRuntime.installed_windows()
+            except (ProjectError, OSError, ValueError) as error:
+                print(f"Windows openEMS 초기화 실패: {error}", file=sys.stderr)
         with ProjectService(options.workspace, cad_runtime=runtime, exchange_runtime=exchange_runtime, solver_runtime=solver_runtime,
                             catalog_database=options.catalog) as service:
             initialized = True

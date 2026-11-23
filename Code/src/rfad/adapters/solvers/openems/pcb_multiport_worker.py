@@ -56,7 +56,7 @@ def solve(stage, request, inputs, runtime):
         raw.mkdir()
         xml = raw / "pcb.xml"
         shutil.copyfile(inputs[xml_role(number)], xml)
-        runs.append({"excited_port": number, **solve_column(raw, case)})
+        runs.append({"excited_port": number, **solve_column(raw, case, runtime.get("executable"))})
         require(file_identity(xml) == file_identity(inputs[xml_role(number)]), "실행한 여기 XML이 바뀌었습니다.", "E_HASH")
         for name in raw_names(len(case["ports"])):
             files.append(descriptor(stage, raw / name, f"raw/{number}/{name}"))

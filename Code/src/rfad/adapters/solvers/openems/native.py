@@ -28,6 +28,7 @@ EXECUTABLE = Path('/home/tracewave/rfad-runtime/openems/0.37.0/bin/openEMS')
 RAW_NAMES = ('port_ut_1', 'port_it_1', 'port_ut_2', 'port_it_2',
              'openEMS_stats.txt', 'openEMS_run_stats.txt', 'native.log', 'waveguide.xml')
 MAX_FILE_BYTES = 64 * 1024 * 1024
+_windows_dll_directory = None
 
 
 def require(condition: bool, message: str, code: str = 'E_SOLVER') -> None:
@@ -55,7 +56,14 @@ def write_json(path: Path, data: dict) -> None:
         stream.write(canonical_bytes(data))
         stream.flush()
         os.fsync(stream.fileno())
-    os.replace(temporary, path)
+    for attempt in range(6):
+        try:
+            os.replace(temporary, path)
+            return
+        except PermissionError:
+            if sys.platform != 'win32' or attempt == 5:
+                raise
+            time.sleep(0.01)
 
 
 def descriptor(stage: Path, path: Path, role: str) -> dict:
@@ -85,7 +93,11 @@ def input_index(stage: Path, records: list[dict], *, max_files=64) -> dict[str, 
 
 
 def _mapped_files(pid: int | str = 'self') -> list[Path]:
-    """! @brief Linux가 실제 매핑한 native 파일을 수집한다."""
+    """! @brief 운영체제가 실제 매핑한 native 파일을 수집한다."""
+    if sys.platform == 'win32':
+        from .windows import mapped_files
+
+        return mapped_files(pid)
     try:
         lines = Path(f'/proc/{pid}/maps').read_text(encoding='utf-8').splitlines()
     except FileNotFoundError:
@@ -100,7 +112,7 @@ def _mapped_files(pid: int | str = 'self') -> list[Path]:
 
 def verify_runtime(stage: Path, expected: dict) -> dict:
     """! @brief 고정 Python 패키지, 구현, native 감사 해시와 Qt 부재를 확인한다."""
-    require(sys.platform == 'linux' and sys.prefix != sys.base_prefix, '격리 Linux solver venv가 필요합니다.', 'E_VERSION')
+    require(sys.platform in ('linux', 'win32') and sys.prefix != sys.base_prefix, '격리 solver venv가 필요합니다.', 'E_VERSION')
     raw = (stage / 'runtime.json').read_bytes()
     require(len(raw) <= 1024 * 1024 and hashlib.sha256(raw).hexdigest() == expected.get('manifest_sha256'), '런타임 명세 봉인이 다릅니다.', 'E_HASH')
     runtime = json.loads(raw)
@@ -114,6 +126,11 @@ def verify_runtime(stage: Path, expected: dict) -> dict:
         actual = file_identity(stage.joinpath(*relative.parts))
         require(all(actual[key] == record[key] for key in actual), '실행 구현의 해시가 다릅니다.', 'E_HASH')
     manifest, audit = runtime['python_manifest'], runtime['native_audit']
+    windows = sys.platform == 'win32'
+    require(windows == (expected.get('runtime_profile') == 'openems-windows-x64/0.1'),
+            '실행 플랫폼과 봉인된 런타임이 다릅니다.', 'E_VERSION')
+    runtime_root = Path(sys.prefix).resolve().parent if windows else Path('/home/tracewave/rfad-runtime')
+    executable = runtime_root / 'native/openEMS/openEMS.exe' if windows else EXECUTABLE
     require(platform.python_version() == manifest['python']['validated_version'] and platform.machine().lower() == manifest['python']['architecture'].lower(), 'Python 또는 CPU 버전이 고정 명세와 다릅니다.', 'E_VERSION')
     installed = {re.sub(r'[-_.]+', '-', item.metadata['Name']).lower(): item.version for item in importlib.metadata.distributions()}
     require(not any(re.match(r'^(pyqt|pyside|shiboken|qt[0-9-])', name) for name in installed), 'Qt 패키지가 감지되었습니다.', 'E_VERSION')
@@ -124,17 +141,21 @@ def verify_runtime(stage: Path, expected: dict) -> dict:
     native_files = {}
     for record in audit['native_files']:
         path = Path(record['path']).resolve()
-        require(path.is_relative_to('/home/tracewave/rfad-runtime'), 'native 감사 경로가 고정 런타임 밖입니다.', 'E_VERSION')
+        require(path.is_relative_to(runtime_root), 'native 감사 경로가 고정 런타임 밖입니다.', 'E_VERSION')
         identity = file_identity(path)
         require(identity['sha256'] == record['sha256'], 'native 라이브러리 해시가 다릅니다: ' + str(path), 'E_HASH')
         native_files[str(path)] = identity
-    require(str(EXECUTABLE) in native_files and installed.get('openems') == '0.37.0' and installed.get('csxcad') == '0.7.0', '필수 openEMS/CSXCAD 런타임이 다릅니다.', 'E_VERSION')
+    require(str(executable) in native_files and installed.get('openems') == '0.37.0' and installed.get('csxcad') == '0.7.0', '필수 openEMS/CSXCAD 런타임이 다릅니다.', 'E_VERSION')
+    if windows:
+        global _windows_dll_directory
+
+        _windows_dll_directory = os.add_dll_directory(str(executable.parent))
     import CSXCAD
     import openEMS
 
     require(CSXCAD.__version__ == '0.7.0' and openEMS.__version__ == '0.37.0', '로드된 solver 모듈 버전이 다릅니다.', 'E_VERSION')
     loaded = _validate_mapped(_mapped_files(), native_files)
-    require(any('libopenEMS' in record['path'] for record in loaded), '실제 openEMS native 로딩이 확인되지 않았습니다.', 'E_VERSION')
+    require(openems_loaded(loaded), '실제 openEMS native 로딩이 확인되지 않았습니다.', 'E_VERSION')
     observation = {'schema': 'rfad.openems-runtime-observation/0.1', 'python': platform.python_version(),
             'python_executable': {'path': str(Path(sys.executable).resolve()), **file_identity(Path(sys.executable).resolve())},
             'packages': installed, 'manifest_sha256': expected['manifest_sha256'], 'code_files': code_files,
@@ -142,15 +163,38 @@ def verify_runtime(stage: Path, expected: dict) -> dict:
             'loaded_native_files': loaded, 'qt_found': False}
     if 'source_bundle' in expected:
         observation['source_bundle'] = expected['source_bundle']
+    if windows:
+        observation['executable'] = str(executable)
     return observation
+
+
+def openems_loaded(records):
+    """! @brief 모듈 이름에서 실제 openEMS 계산 라이브러리의 관측을 확인한다."""
+    return any(Path(record['path']).name.lower().startswith('libopenems')
+               or Path(record['path']).name.lower() == 'openems.dll' for record in records)
+
+
+def write_native_xml(solver, path):
+    """! @brief Windows native 내부의 좁은 문자 파일 이름에 한글 절대 경로를 전달하지 않는다."""
+    if sys.platform != 'win32':
+        solver.Write2XML(str(path))
+        return
+    original = Path.cwd()
+    try:
+        os.chdir(path.parent)
+        solver.Write2XML(path.name)
+    finally:
+        os.chdir(original)
 
 
 def _validate_mapped(paths: list[Path], native_files: dict) -> list[dict]:
     """! @brief 실제 로딩한 solver/VTK 파일을 감사한 경로와 해시로 대조한다."""
-    require(not any(re.search(r'libQt[0-9]', path.name) for path in paths), 'native Qt 라이브러리가 감지되었습니다.', 'E_VERSION')
+    require(not any(re.match(r'(?:lib)?qt[0-9]', path.name, re.IGNORECASE) for path in paths), 'native Qt 라이브러리가 감지되었습니다.', 'E_VERSION')
     loaded = []
     for path in paths:
-        if any(token in path.name.lower() for token in ('openems', 'csxcad', 'fparser', 'nf2ff', 'libvtk')):
+        name = path.name.lower()
+        tokens = ('openems', 'csxcad', 'fparser', 'nf2ff', 'vtk' if sys.platform == 'win32' else 'libvtk')
+        if name != 'openems.exe' and any(token in name for token in tokens):
             require(str(path) in native_files, '감사하지 않은 native 라이브러리를 로딩했습니다.', 'E_VERSION')
             identity = file_identity(path)
             require(identity == native_files[str(path)], '로드된 native 라이브러리 해시가 다릅니다.', 'E_HASH')
@@ -186,7 +230,7 @@ def prepare(stage: Path, plan: dict, runtime: dict) -> tuple[dict, list[dict]]:
     for port in case['ports']:
         solver.AddRectWaveGuidePort(port['number'], port['start_mm'], port['stop_mm'], 'z', 0.020, 0.010, 'TE10', excite=port['excite'])
     xml_path = output / 'waveguide.xml'
-    solver.Write2XML(str(xml_path))
+    write_native_xml(solver, xml_path)
     xml = ET.parse(xml_path)
     require(xml.getroot().tag == 'openEMS', 'native XML 루트가 올바르지 않습니다.')
     native_lines = {axis: [float(value) for value in grid.GetLines(axis)] for axis in ('x', 'y', 'z')}
@@ -246,7 +290,7 @@ def solve(stage: Path, request: dict, inputs: dict[str, Path], runtime: dict) ->
     raw.mkdir()
     shutil.copyfile(inputs['native_input'], raw / 'waveguide.xml')
     require(file_identity(raw / 'waveguide.xml') == file_identity(inputs['native_input']), '실행 XML 복사본이 다릅니다.', 'E_HASH')
-    command = [str(EXECUTABLE), 'waveguide.xml', '--engine=multithreaded', '--numThreads=2', '--dump-statistics', '--exact-endcriteria']
+    command = [str(runtime.get('executable', EXECUTABLE)), 'waveguide.xml', '--engine=multithreaded', '--numThreads=2', '--dump-statistics', '--exact-endcriteria']
     started = time.monotonic()
     mapped = set()
     with (raw / 'native.log').open('xb') as stream:
@@ -264,7 +308,7 @@ def solve(stage: Path, request: dict, inputs: dict[str, Path], runtime: dict) ->
     require(file_identity(raw / 'waveguide.xml') == file_identity(inputs['native_input']), 'native 실행 중 XML이 변경되었습니다.', 'E_HASH')
     native_files = {record['path']: {key: record[key] for key in ('bytes', 'sha256')} for record in runtime['native_files']}
     actual_loaded = _validate_mapped(sorted(mapped), native_files)
-    require(any('libopenEMS' in record['path'] for record in actual_loaded), 'CLI의 실제 native 로딩이 확인되지 않았습니다.', 'E_VERSION')
+    require(openems_loaded(actual_loaded), 'CLI의 실제 native 로딩이 확인되지 않았습니다.', 'E_VERSION')
     statistics = read_statistics(raw / 'openEMS_stats.txt')
     termination = check_termination((raw / 'native.log').read_text(encoding='utf-8'), statistics['iterations'])
     require(statistics['native_cells'] == preparation['mesh_statistics']['native_grid_points'], 'native 격자 통계가 준비한 격자와 다릅니다.', 'E_SOLVER')

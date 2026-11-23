@@ -16,7 +16,7 @@ from rfad.application.rf_reference_contract import (PROFILE, RESULT_SCHEMA, RADI
         raw_names, validate_plan, validate_preparation, validate_result, validate_radiation, radiation_summary)
 from rfad.application.pcb_results import read_statistics_values, check_termination
 from .native import (EXECUTABLE, MAX_FILE_BYTES, require, file_identity, write_json, descriptor,
-                     _check_preparation, _mapped_files, _validate_mapped)
+                     _check_preparation, _mapped_files, _validate_mapped, openems_loaded, write_native_xml)
 
 
 def prepare(stage, plan, runtime):
@@ -48,7 +48,7 @@ def prepare(stage, plan, runtime):
                         port["axis"], excite=port["excite"], priority=port["priority"])
     create_box(csx, case["radiation_recording"])
     xml = output / "reference.xml"
-    solver.Write2XML(str(xml))
+    write_native_xml(solver, xml)
     observed = {axis: [float(value) for value in grid.GetLines(axis)] for axis in "xyz"}
     require(observed == case["mesh"]["lines_mm"], "고정 참조의 실제 native 격자가 계획과 다릅니다.", "E_HASH")
     counts = [len(observed[axis]) for axis in "xyz"]
@@ -95,7 +95,7 @@ def solve(stage, request, inputs, runtime):
     shutil.copyfile(inputs["native_input"], raw / "reference.xml")
     require(file_identity(inputs["native_input"]) == file_identity(raw / "reference.xml"), "참조 XML 복사 봉인이 다릅니다.", "E_HASH")
     threads = plan["case"]["num_threads"]
-    command = [str(EXECUTABLE), "reference.xml", "--engine=multithreaded", "--numThreads=" + str(threads),
+    command = [str(runtime.get("executable", EXECUTABLE)), "reference.xml", "--engine=multithreaded", "--numThreads=" + str(threads),
                "--dump-statistics", "--exact-endcriteria"]
     started, mapped = time.monotonic(), set()
     with (raw / "native.log").open("xb") as stream:
@@ -113,7 +113,7 @@ def solve(stage, request, inputs, runtime):
     require(file_identity(inputs["native_input"]) == file_identity(raw / "reference.xml"), "실행 중 참조 XML이 변경되었습니다.", "E_HASH")
     actual = _validate_mapped(sorted(mapped), {item["path"]: {key: item[key] for key in ("bytes", "sha256")}
                                              for item in runtime["native_files"]})
-    require(any("libopenEMS" in item["path"] for item in actual), "참조 CLI의 실제 native 로딩을 확인하지 못했습니다.", "E_VERSION")
+    require(openems_loaded(actual), "참조 CLI의 실제 native 로딩을 확인하지 못했습니다.", "E_VERSION")
     statistics, termination = statistics_and_termination(raw, plan)
     require("openEMS - fixed number of threads: " + str(threads) + "\n" in (raw / "native.log").read_text(encoding="utf-8"),
             "참조 native 스레드 수의 실제 로그가 다릅니다.", "E_HASH")

@@ -8,8 +8,9 @@ import tempfile
 import threading
 import time
 import unittest
+from uuid import uuid4
 
-from rfad.application.native_process import run_native, TAIL_BYTES
+from rfad.application.native_process import _WindowsJob, run_native, TAIL_BYTES
 from rfad.domain.errors import ProjectError
 
 
@@ -191,6 +192,33 @@ class NativeProcessTests(unittest.TestCase):
                     driver.wait(timeout=5)
                 driver.stdout.close()
                 driver.stderr.close()
+
+    @unittest.skipUnless(sys.platform == "win32", "Windows 이름 지정 Job Object 시험")
+    def test_windows_named_jobs_can_run_and_be_cancelled_independently(self):
+        """! @brief 여러 서비스에서 작업 이름으로 해당 프로세스만 찾아 종료한다."""
+        names = ["Global\\TraceWaveStudio-test-" + str(uuid4()) for _ in range(2)]
+        jobs, processes = [], []
+        try:
+            for name in names:
+                jobs.append(_WindowsJob(name))
+                processes.append(subprocess.Popen([sys.executable, "-I", "-c", "import time; time.sleep(30)"]))
+                jobs[-1].assign(processes[-1])
+            observer = _WindowsJob(names[0], existing=True)
+            try:
+                self.assertTrue(observer.active())
+                observer.terminate()
+                self.assertEqual(processes[0].wait(timeout=5), 2)
+                self.assertFalse(observer.active())
+                self.assertTrue(jobs[1].active())
+            finally:
+                observer.close()
+        finally:
+            for job in jobs:
+                job.close()
+            for process in processes:
+                if process.poll() is None:
+                    process.kill()
+                process.wait(timeout=5)
 
     def test_stdin_backpressure_does_not_block_timeout(self):
         """! @brief stdin을 읽지 않는 비정상 worker도 별도 writer로 timeout 처리한다."""

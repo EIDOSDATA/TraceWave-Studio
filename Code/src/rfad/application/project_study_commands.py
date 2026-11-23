@@ -23,7 +23,7 @@ def create(service, state, context, data):
     """! @brief 현재 원본 바이트의 snapshot과 모든 계획을 원자 등록하며 설계를 수정하지 않는다."""
     runtime = service.solver.runtime
     if runtime is None:
-        raise ProjectError("E_UNSUPPORTED", "연구 생성에는 --openems-wsl 런타임이 필요합니다.")
+        raise ProjectError("E_UNSUPPORTED", "연구 생성에는 검증된 openEMS 해석 환경이 필요합니다.")
     if len(state["studies"]) >= MAX_STUDIES:
         raise ProjectError("E_RESOURCE", "연구 보존 상한 32개에 도달했습니다.")
     project = service._project(state, context)

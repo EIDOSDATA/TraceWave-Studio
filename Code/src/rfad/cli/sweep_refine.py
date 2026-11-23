@@ -27,7 +27,10 @@ def main(argv=None):
     from rfad.application.wsl_process import WslRuntime
 
     try:
-        runtime = SolverRuntime(transport=WslRuntime(startup_timeout_seconds=args.startup_seconds)) if args.openems_wsl else None
+        if args.openems_wsl:
+            runtime = SolverRuntime(transport=WslRuntime(startup_timeout_seconds=args.startup_seconds))
+        else:
+            runtime = SolverRuntime.installed_windows() if sys.platform == "win32" else None
         with ProjectService(args.workspace, solver_runtime=runtime) as service:
             report = refine(service, args.project, args.study, args.rounds, resume=args.resume, until_target=args.until_target)
     except (OSError, ProjectError, ValueError) as error:
