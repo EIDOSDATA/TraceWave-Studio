@@ -153,6 +153,7 @@ function Register-StudioShortcut
         $shell = New-Object -ComObject WScript.Shell
         $shortcut = $shell.CreateShortcut($link)
         $shortcut.TargetPath = $gui
+        $shortcut.IconLocation = "$gui,0"
         $shortcut.Arguments = Get-StudioArguments $Simulation
         $shortcut.WorkingDirectory = $codeRoot
         $shortcut.Save()

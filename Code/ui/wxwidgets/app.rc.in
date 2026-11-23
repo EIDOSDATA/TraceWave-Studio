@@ -1,4 +1,5 @@
-/** @brief wx 공용 리소스와 Studio의 명시적인 Windows 매니페스트를 포함한다. */
+/** @brief 탐색기가 기본 아이콘으로 선택하도록 Studio 아이콘을 wx 공용 아이콘보다 먼저 둔다. */
+TRACEWAVE_STUDIO_ICON ICON "@RFAD_STUDIO_ICON@"
 #define wxUSE_RC_MANIFEST 0
 #include <wx/msw/wx.rc>
 1 24 "@RFAD_STUDIO_MANIFEST@"

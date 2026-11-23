@@ -49,6 +49,7 @@ endif()
 
 set(RFAD_STUDIO_RC "${CMAKE_CURRENT_BINARY_DIR}/studio-app.rc")
 set(RFAD_STUDIO_MANIFEST "${CMAKE_CURRENT_SOURCE_DIR}/ui/wxwidgets/app.manifest")
+set(RFAD_STUDIO_ICON "${CMAKE_CURRENT_SOURCE_DIR}/ui/wxwidgets/tracewave.ico")
 configure_file(ui/wxwidgets/app.rc.in "${RFAD_STUDIO_RC}" @ONLY)
 if(MINGW)
     find_path(RFAD_WX_RESOURCE_INCLUDE wx/msw/wx.rc
@@ -59,12 +60,13 @@ if(MINGW)
         COMMAND "${CMAKE_RC_COMPILER}" -O coff -I .
             "${RFAD_STUDIO_RC}" "${RFAD_RESOURCE}"
         WORKING_DIRECTORY "${RFAD_WX_RESOURCE_INCLUDE}"
-        DEPENDS "${RFAD_STUDIO_RC}" "${RFAD_STUDIO_MANIFEST}" "${RFAD_WX_RESOURCE_INCLUDE}/wx/msw/wx.rc"
+        DEPENDS "${RFAD_STUDIO_RC}" "${RFAD_STUDIO_MANIFEST}" "${RFAD_STUDIO_ICON}"
+            "${RFAD_WX_RESOURCE_INCLUDE}/wx/msw/wx.rc"
         VERBATIM)
     set_source_files_properties("${RFAD_RESOURCE}" PROPERTIES EXTERNAL_OBJECT TRUE GENERATED TRUE)
 else()
     set(RFAD_RESOURCE "${RFAD_STUDIO_RC}")
-    set_property(SOURCE "${RFAD_RESOURCE}" APPEND PROPERTY OBJECT_DEPENDS "${RFAD_STUDIO_MANIFEST}")
+    set_property(SOURCE "${RFAD_RESOURCE}" APPEND PROPERTY OBJECT_DEPENDS "${RFAD_STUDIO_MANIFEST}" "${RFAD_STUDIO_ICON}")
 endif()
 
 add_executable(tracewave_gui WIN32

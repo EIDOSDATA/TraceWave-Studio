@@ -6,11 +6,13 @@
 #include "result_workspace.h"
 #include "rf_validation_controller.h"
 #include "output_controller.h"
+#include <wx/iconbndl.h>
 
 StudioFrame::StudioFrame(Options options)
     : wxFrame(nullptr, wxID_ANY, Display("TraceWave Studio"), wxDefaultPosition, wxSize(1360, 860)),
       m_options(std::move(options)), m_timer(this, IdTimer), m_started(Clock::now())
 {
+    SetIcons(wxIconBundle(wxS("TRACEWAVE_STUDIO_ICON"), nullptr));
     try
     {
         m_initialService = std::async(std::launch::async, [this]() { return StartServiceConnection(); });

@@ -22,6 +22,7 @@ def build(archive: Path, output: Path) -> None:
                 raise ValueError(f"후보 ZIP의 설치 소스가 현재 설치 소스와 다릅니다. {name}")
         source = payload.read("Code/tools/windows_setup/TraceWaveSetup.cs")
         script = payload.read("Code/tools/windows_setup/install.ps1").decode("utf-8-sig")
+        icon = payload.read("Code/ui/wxwidgets/tracewave.ico")
     compiler = Path(os.environ["SystemRoot"]) / "Microsoft.NET/Framework64/v4.0.30319/csc.exe"
     output.parent.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(prefix=".tracewave-setup-", dir=output.parent) as directory:
@@ -30,8 +31,9 @@ def build(archive: Path, output: Path) -> None:
         (stage / "TraceWaveSetup.cs").write_bytes(source)
         (stage / "install.ps1").write_bytes(script.encode("utf-8-sig"))
         (stage / "bundle-sha256.txt").write_text(identity["sha256"] + "\n", encoding="ascii")
+        (stage / "tracewave.ico").write_bytes(icon)
         subprocess.run([str(compiler), "/nologo", "/target:exe", "/platform:x64", "/optimize+",
-                        "/codepage:65001", f"/out:{executable}", f"/resource:{archive},studio.zip",
+                        "/codepage:65001", "/win32icon:tracewave.ico", f"/out:{executable}", f"/resource:{archive},studio.zip",
                         "/resource:install.ps1,install.ps1", "/resource:bundle-sha256.txt,bundle-sha256.txt",
                         "TraceWaveSetup.cs"], cwd=stage, check=True)
         os.link(executable, output)
