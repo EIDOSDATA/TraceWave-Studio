@@ -88,7 +88,9 @@ $guiArguments = @(
 
 CAD 환경 없이 직접 실행할 때는 `--cad-python` 항목을 생략한다. `--open-project projects/이름`을 추가하면 같은 workspace의 등록 프로젝트를 바로 연다.
 
-WSL2 openEMS를 설치/감사한 개발 환경에서는 `tools/launch_gui.ps1 -OpenEmsWsl`로 해석을 연결한다. 직접 실행할 때는 `--openems-wsl`을 추가한다. 고정 runtime profile과 설치 감사 자료는 서비스가 확인하며 프로젝트 파일에서 WSL 배포판이나 실행 명령을 지정하지 않는다. 연결하지 않은 경우에도 편집/저장과 이전에 게시한 결과 조회는 가능하다.
+기본 Setup.exe는 Windows x64 openEMS를 설치하고 감사를 마친 환경을 자동으로 연결한다. 개발 환경에서 Windows 해석기를 준비하려면 Code 폴더에서 서비스 Python으로 `tools/setup_openems_windows.py --cache .local/download-cache`를 실행한다.
+
+기존 WSL2 환경을 선택할 때는 `tools/launch_gui.ps1 -OpenEmsWsl`을 사용한다. GUI를 직접 실행할 때는 `--openems-wsl`을 추가한다. 고정 런타임 프로필과 설치 감사 자료는 서비스가 확인한다. 해석기가 연결되지 않은 경우에도 편집, 저장과 게시한 결과 조회는 가능하다.
 
 `프로젝트` 메뉴에서 새 프로젝트를 만들고 속성을 변경한 뒤 `변경 적용`을 누른다. `저장`은 현재 개정을 저장 기준점으로 지정하고 `스냅샷 만들기`는 불변 프로젝트 사본을 만든다. 열기는 같은 작업 영역에 등록된 `projects/이름` 경로를 받는다. 보존 프로젝트 묶음은 파일 메뉴의 복원으로, 지원 PCB/CAM과 제조사 원문은 `설계 > PCB / CAM 원문 가져오기`로 연다. [형식별 지원과 조건](../../../01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md), [제조사 라이브러리](../../../01_개발문서/05_기능설계/05_출력교환/07_제조사_안테나_라이브러리.md)
 
@@ -245,10 +247,10 @@ ctest --preset windows-release
 
 CAD smoke는 `--cad-smoke-test --open-project projects/이름 --smoke-report <절대 JSON 경로>`로 사전에 등록한 기하 fixture를 사용한다. 적용 전 입력, 실행 중 편집/저장, 고정 snapshot과 이전 개정 표시, 실제 GL frame, 취소 후 이전 결과 보존, 서비스 재시작 후 결과 복원을 확인하도록 구성했다. `--cad-expect-failure`는 미정 필수 기하 입력을 정상 출력으로 게시하지 않는 경로다. CAD smoke의 자체 제한 시간은 180초다. CTest에는 표시 mesh 경계/hash/경로와 카메라/picking의 C++ 시험이 포함된다. 최종 실행 수치와 확인 범위는 [개발 기록](../../../01_개발문서/09_개발계획/02_개발착수와_현재상태.md)의 GUI STEP/3D 검증 문단을 따른다. 기능 시험만으로 성능 예산이나 모든 GPU/DPI 조합의 수용을 판정하지 않는다.
 
-실제 WSL PCB GUI 시험은 아래 명령을 사용한다. 등록된 fixture는 작은 원형 PCB와 원호, 명시적 시험 물성을 사용하며 실제 IFA/FR4 기준을 대신하지 않는다.
+Windows에서 실행하는 PCB GUI 시험은 아래 명령을 사용한다. 등록된 fixture는 작은 원형 PCB와 원호, 명시적 시험 물성을 사용한다. 기존 WSL2 환경을 시험하려면 `RFAD_TEST_WINDOWS_SOLVER` 설정을 해제하고 `RFAD_TEST_WSL`을 `1`로 설정한다.
 
 ```powershell
-$env:RFAD_TEST_WSL = '1'
+$env:RFAD_TEST_WINDOWS_SOLVER = '1'
 .\.venv\Scripts\python.exe -X utf8 -m unittest discover -s tests -p test_gui_solver_process.py -v
 ```
 

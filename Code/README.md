@@ -12,7 +12,7 @@ Code는 개발 코드 영역이다. 제품 소스, 빌드 설정, 시험, fixtur
 | Python application service | 원본/단위/표현식/명령/undo/저장/snapshot/작업. `src/rfad/domain/`, `application/`, `storage/` |
 | 별도 OCCT worker | 정확 형상, STEP/B-rep, 표시 mesh. `adapters/cad/`, `tools/cad_worker.py` |
 | 별도 출력 worker | 같은 snapshot의 PDF/SVG/DXF 및 PCB/CAM 출력, 파일 재입력과 봉인 원문 parser. `adapters/exchange/`, `tools/exchange_worker.py` |
-| 별도 WSL2 openEMS worker | 해석 계획/준비/실행/취소/결과와 후처리. `adapters/solvers/openems/`, `tools/openems_worker.py` |
+| 별도 openEMS worker | Windows 기본 해석의 계획, 준비, 실행, 취소 및 후처리. 기존 WSL2 환경은 명시적으로 선택한다. `adapters/solvers/openems/`, `tools/openems_worker.py` |
 
 Windows 11이 주 개발 환경이다. 한글 IME, 스크린리더 오류 안내와 혼합 DPI 창 이동을 실제 Windows에서 확인했다. Linux GUI와 비평면 3차원 안테나 해석은 후속 범위다. [Windows 사용성 검수](../01_개발문서/07_검증/309_윈도우_한글입력과_접근성_검수.md)
 
@@ -52,7 +52,7 @@ $env:PYTHONPATH = 'src'
 .\tools\launch_gui.ps1
 ```
 
-새 후보는 기능 개발을 완료한 소스 개정으로 만든다. 그 후보와 고정 의존성을 온라인 상태의 별도 클린 Windows/WSL2 PC에서 받아 예제를 검수한다. [배포 절차](../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md), [이전 공개 후보 수신 기록](../01_개발문서/07_검증/310_공개_검증후보_배포와_독립수신_인계.md)
+새 후보는 기능 개발을 완료한 소스 개정으로 만든다. 온라인 상태의 별도 클린 Windows 11 x64 PC에서 Setup.exe를 받아 설치하고 예제를 검수한다. 기본 설치가 앱과 Windows 해석에 필요한 고정 의존성을 준비한다. [배포 절차](../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md), [이전 공개 후보 수신 기록](../01_개발문서/07_검증/310_공개_검증후보_배포와_독립수신_인계.md)
 
 GUI 실행 스크립트는 존재하는 `.venv-cad`, `.venv-exchange`와 `.local/pcb-catalog/catalog.sqlite`를 연결한다. `-CadPython <경로>`, `-ExchangePython <경로>`, `-Catalog <경로>`, `-NoCatalog`로 선택할 수 있다. 해석 환경 구성 후에는 `launch_gui.ps1 -OpenEmsWsl`을 사용한다. CAD/출력/solver가 없어도 가능한 편집/저장과 보존 결과 읽기는 유지한다.
 
