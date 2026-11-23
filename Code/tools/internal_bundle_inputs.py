@@ -16,7 +16,8 @@ TOTAL_LIMIT = 128 * 1024 * 1024
 FOLDER_ROOTS = ("Code/src/", "Code/ui/", "Code/tools/", "Code/tests/", "Code/fixtures/")
 SINGLE_FILES = {"Code/README.md", "Code/pyproject.toml", "Code/CMakeLists.txt", "Code/CMakePresets.json", "Code/.clang-format",
                 "Code/.editorconfig", "Code/runtime_profiles/native-windows-x64.json",
-                "Code/runtime_profiles/openems-wsl-build.json",
+                "Code/runtime_profiles/openems-wsl-build.json", "Code/runtime_profiles/wsl-development.json",
+                "Code/runtime_profiles/vtk-headless.json",
                 "01_개발문서/08_운영환경/01_파이썬_개발환경.md",
                 "01_개발문서/08_운영환경/02_리눅스하위시스템_개발환경.md",
                 "01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md",

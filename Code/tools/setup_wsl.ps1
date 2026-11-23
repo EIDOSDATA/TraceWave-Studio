@@ -2,13 +2,15 @@
 @file
 @brief 재부팅 후 전용 WSL2 배포의 설치를 한 번 재개하고 실제 실행을 확인한다.
 @param Install 배포가 없을 때 TraceWave-Dev만 새로 설치한다. 생략하면 조회만 한다.
+@param StateRoot 전용 배포 경로. 생략하면 기존 Code 내부 경로를 사용한다.
 @details 기존 배포의 설정, 패키지와 기본 배포를 변경하지 않는다.
 자동 재부팅, 자동 권한 상승, 반복 설치 및 openEMS 설치는 수행하지 않는다.
 #>
 [CmdletBinding()]
 param
 (
-    [switch]$Install
+    [switch]$Install,
+    [string]$StateRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -18,7 +20,11 @@ $profilePath = Join-Path $codeRoot 'runtime_profiles/wsl-development.json'
 $profile = Get-Content -LiteralPath $profilePath -Raw | ConvertFrom-Json
 $distribution = 'TraceWave-Dev'
 $distributionSource = 'Ubuntu-24.04'
-$stateRoot = Join-Path $codeRoot '.local/wsl'
+if (-not $StateRoot)
+{
+    $StateRoot = Join-Path $codeRoot '.local/wsl'
+}
+$stateRoot = [System.IO.Path]::GetFullPath($StateRoot)
 $installPath = [System.IO.Path]::GetFullPath((Join-Path $stateRoot $distribution))
 $statusPath = Join-Path $stateRoot 'status.json'
 $wslExecutable = (Get-Command 'wsl.exe' -ErrorAction Stop).Source
@@ -27,10 +33,6 @@ if ($profile.distribution.name -ne $distribution -or $profile.distribution.sourc
 {
     throw 'The WSL profile must name the dedicated TraceWave-Dev Ubuntu-24.04 distribution.'
 }
-if (-not $installPath.StartsWith($codeRoot + [System.IO.Path]::DirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase))
-{
-    throw 'The WSL installation directory must remain below Code.'
-}
 
 function Get-DistributionNames
 {
@@ -38,7 +40,12 @@ function Get-DistributionNames
     $lines = @(& $wslExecutable --list --quiet 2>&1)
     if ($LASTEXITCODE -ne 0)
     {
-        throw ('Cannot enumerate WSL distributions: ' + ($lines -join ' '))
+        $message = ($lines -join ' ') -replace [char]0, ''
+        if ($message -match 'WSL_E_DEFAULT_DISTRO_NOT_FOUND|WSL_E_DISTRO_NOT_FOUND')
+        {
+            return
+        }
+        throw ('Cannot enumerate WSL distributions: ' + $message)
     }
     foreach ($line in $lines)
     {

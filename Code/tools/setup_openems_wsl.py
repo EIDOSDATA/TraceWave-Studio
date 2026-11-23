@@ -226,7 +226,9 @@ print(json.dumps({"schema":"rfad.runtime.openems-audit/0.1","status":"passed","p
 def main() -> int:
     """! @brief 이미 실행 가능한 전용 WSL 배포의 개발 의존성과 native build를 구성한다."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--install-dependencies", action="store_true")
+    action = parser.add_mutually_exclusive_group()
+    action.add_argument("--install-dependencies", action="store_true")
+    action.add_argument("--audit-only", action="store_true", help="Reaudit the existing installed native runtime.")
     parser.add_argument("--skip-vtk-build", action="store_true", help="Reuse the VTK prefix already built and audited by build_headless_vtk.sh")
     parser.add_argument("--jobs", type=int, choices=range(1, 5), default=2)
     args = parser.parse_args()
@@ -238,12 +240,18 @@ def main() -> int:
         profile = json.loads(PROFILE.read_text(encoding="utf-8"))
         if profile["distribution"] != "TraceWave-Dev" or profile["root"] != "/home/tracewave/rfad-runtime" or profile["qt_allowed"] is not False:
             raise RuntimeError("Unexpected dedicated runtime profile.")
-        ensure_user(profile)
+        if not args.audit_only:
+            ensure_user(profile)
         with (output / "setup-openems.log").open("ab") as log:
             builder = Builder(log, args.jobs)
             release = builder.run(["cat", "/etc/os-release"])
             if 'VERSION_ID="24.04"' not in release or 'ID=ubuntu' not in release:
                 raise RuntimeError("Expected the dedicated Ubuntu 24.04 distribution.")
+            if args.audit_only:
+                builder.verify_vtk()
+                builder.audit()
+                print("Existing native runtime audit completed.")
+                return 0
             builder.dependencies(args.install_dependencies)
             builder.checkout()
             builder.python_environment()
