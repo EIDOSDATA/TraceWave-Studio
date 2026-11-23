@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 270,
+    "current_07_검증": 271,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28747,8 +28747,8 @@
       "path": "01_개발문서/07_검증/01_구현감사/03_구현추적.json",
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
-      "bytes": 645877,
-      "working_tree_sha256": "982834dd7b1bf0a17c0cd8369c911110046a246cef7358b7189c88926fb931a8"
+      "bytes": 645994,
+      "working_tree_sha256": "2eff749f51cef41c9300e68ea23aa88c488f31c85f77098d9b8621a68ae3f8ed"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32330,6 +32330,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/394_원호와_역에프의_반복탐색_종료근거.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 2860,
+      "working_tree_sha256": "ef118dfac2e3880103b3856c8706c60abb26fe58ba41194f81ec51f880191a29",
+      "text_lines": 21,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
@@ -33018,8 +33027,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 40015,
-      "working_tree_sha256": "cdc8ae32c1df743fbeb77ed6cca9a4c5e7270c97bf22e61dd741c2f0aecc3711",
+      "bytes": 40316,
+      "working_tree_sha256": "29f448c99f1313d16ce1231f8c8c43c007a8050f0a1aadfb31af69e727f89fab",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

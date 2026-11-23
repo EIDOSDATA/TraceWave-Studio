@@ -220,6 +220,20 @@ class DesignSweepServiceTests(unittest.TestCase):
             self.read("sweep.page", study_id=identity, offset=0, limit=26)
         self.assertEqual(self.document(), self.original)
 
+    def test_progress_reads_recorded_status_without_rechecking_an_engine(self):
+        """! @brief 현재 엔진 없이도 원래 진행 상태와 종료 이유를 변경 없이 읽는다."""
+        from unittest.mock import patch
+
+        identity = self.create()
+        before = self.service.journal.read()
+        with patch("rfad.application.design_sweep_service._environment", side_effect=AssertionError("계산 환경 조회")):
+            progress = self.read("sweep.progress", study_id=identity)
+        original = before["sweeps"][identity]
+        self.assertEqual(progress["counts"], original["counts"])
+        self.assertEqual(progress["state"], original["state"])
+        self.assertEqual(progress["recorded_stop_reason"], original.get("stop_reason"))
+        self.assertEqual(self.service.journal.read(), before)
+
     def test_rejected_creation_budget_leaves_no_snapshot_or_definition_files(self):
         """! @brief 확정된 예산 거절을 반복해도 숨은 불변 파일이나 참조를 게시하지 않는다."""
         self.spec["budget"]["disk_bytes"] = 1

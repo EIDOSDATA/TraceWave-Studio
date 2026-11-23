@@ -22,14 +22,14 @@ from rfad.domain.resource_limits import MAX_WORKER_SOURCE_FILES
 from rfad.domain.units import Quantity
 
 
-READS = {"sweep.context", "sweep.preview", "sweep.list", "sweep.get", "sweep.page", "sweep.result", "sweep.quantity", "sweep.export", "sweep.rank", "sweep.refine_preview", "sweep.recipe", "sweep.replay_preview"}
+READS = {"sweep.context", "sweep.preview", "sweep.list", "sweep.get", "sweep.progress", "sweep.page", "sweep.result", "sweep.quantity", "sweep.export", "sweep.rank", "sweep.refine_preview", "sweep.recipe", "sweep.replay_preview"}
 MUTATIONS = {"sweep.create", "sweep.start", "sweep.cancel", "sweep.resume"}
 MAX_STUDIES = 32
 FIELDS = {
     "sweep.context": set(), "sweep.list": set(),
     "sweep.preview": {"expected_revision", "specification"},
     "sweep.create": {"expected_revision", "specification", "review_hash"},
-    "sweep.get": {"study_id"}, "sweep.rank": {"study_id"}, "sweep.recipe": {"study_id"},
+    "sweep.progress": {"study_id"}, "sweep.get": {"study_id"}, "sweep.rank": {"study_id"}, "sweep.recipe": {"study_id"},
     "sweep.replay_preview": {"study_id"}, "sweep.start": {"study_id"},
     "sweep.cancel": {"study_id"}, "sweep.resume": {"study_id"}, "sweep.export": {"study_id"},
     "sweep.refine_preview": {"study_id", "rounds", "until_target", "resume"},
@@ -507,6 +507,10 @@ def read(service, method, params):
             for row in sorted(state.get("sweeps", {}).values(), key=lambda row: row["created_at"], reverse=True)
             if row["project_id"] == context_data["project_id"]]})
     study = owned(service, state, context_data, data["study_id"])
+    if method == "sweep.progress":
+        progress = {key: deepcopy(study[key]) for key in ("study_id", "state", "counts", "message", "current_job_id")}
+        progress["recorded_stop_reason"] = study.get("stop_reason")
+        return progress
     if method == "sweep.get":
         return view(service, state, study)
     definition, source = baseline(service, study)

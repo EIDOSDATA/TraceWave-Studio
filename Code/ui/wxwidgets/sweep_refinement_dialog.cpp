@@ -83,7 +83,7 @@ void SweepRefinementDialog::Stop(const std::string& message)
 
 void SweepRefinementDialog::Poll()
 {
-    Request("sweep.get", {{"study_id", m_waiting}}, false, [this](const Json& result)
+    Request("sweep.progress", {{"study_id", m_waiting}}, false, [this](const Json& result)
     {
         const auto state = result.at("state").get<std::string>();
         if (state == "running" || state == "resuming" || state == "cancel_requested")
@@ -104,6 +104,22 @@ void SweepRefinementDialog::Advance()
     {
         const auto action = result.at("stop_reason").get<std::string>();
         const auto count = result.at("iterations").size();
+        std::string details;
+        if (result.contains("details"))
+        {
+            const auto& stop = result.at("details");
+            details = "\n" + stop.at("message").get<std::string>();
+            for (const auto& row : stop.at("candidate_errors"))
+            {
+                details += "\n후보 " + std::to_string(row.at("ordinal").get<int>() + 1);
+                for (const auto& input : row.at("inputs"))
+                {
+                    details += " / " + input.at("name").get<std::string>() + " " +
+                               input.at("text").get<std::string>() + " " + input.at("unit").get<std::string>();
+                }
+                details += "\n" + row.at("message").get<std::string>();
+            }
+        }
         if (action == "wait")
         {
             m_waiting = result.at("input").at("study_id").get<std::string>();
@@ -116,7 +132,7 @@ void SweepRefinementDialog::Advance()
             const auto& command = result.at("input");
             if (action == "resume" && !m_resumed.insert(command.at("study_id").get<std::string>()).second)
             {
-                Stop("재개한 연구가 다시 중단되었습니다. 실행 이력을 확인하세요.");
+                Stop("재개한 연구가 다시 중단되었습니다." + details);
                 return;
             }
             SetStatus("후속 연구 " + std::to_string(count + (action == "create" ? 1 : 0)) + "회차 준비 중");
@@ -133,6 +149,6 @@ void SweepRefinementDialog::Advance()
             {"incomplete_bracket", "완료한 후보 부족"}, {"failed", "실행 실패"}, {"blocked", "실행 차단"},
             {"interrupted", "실행 중단"}, {"cancelled", "사용자 취소"}};
         const auto reason = reasons.find(action);
-        Stop("탐색 종료 / " + (reason == reasons.end() ? action : reason->second) + " / 후속 연구 " + std::to_string(count) + "개");
+        Stop("탐색 종료 / " + (reason == reasons.end() ? action : reason->second) + " / 후속 연구 " + std::to_string(count) + "개" + details);
     });
 }

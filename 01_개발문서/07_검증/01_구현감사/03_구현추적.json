@@ -8481,6 +8481,10 @@
       "extension_profile": "rfad.design-sweep/0.1",
       "status": "implemented"
     },
+    "sweep.progress": {
+      "extension_profile": "rfad.design-sweep/0.1",
+      "status": "implemented"
+    },
     "sweep.quantity": {
       "extension_profile": "rfad.design-sweep/0.1",
       "status": "implemented"
@@ -15057,8 +15061,8 @@
     },
     {
       "path": "Code/src/rfad/application/design_sweep_service.py",
-      "text_sha256": "09743daeea6cc5ef1ae52c70733e9a1d687463007a088c48c463f5e395b632d9",
-      "utf8_bytes": 40211
+      "text_sha256": "aa737c8db8f9bef044219000bbd4c73665adc0eb8424568b7fd1b72052ca8f4c",
+      "utf8_bytes": 40507
     },
     {
       "path": "Code/src/rfad/application/display_mesh.py",
@@ -15847,8 +15851,8 @@
     },
     {
       "path": "Code/tests/test_design_sweep_service.py",
-      "text_sha256": "b74bffc2f446d0c4868e14bc58c92b82bf2da222e3028d5d3f07d2a52a15ffb8",
-      "utf8_bytes": 23115
+      "text_sha256": "c4bf23607d143a50d554f79a80c4cb840793c17a195d3cca5b634c3837014177",
+      "utf8_bytes": 23948
     },
     {
       "path": "Code/tests/test_display_mesh.py",

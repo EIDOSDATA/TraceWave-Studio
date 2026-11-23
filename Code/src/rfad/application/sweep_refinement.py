@@ -44,6 +44,24 @@ def refine(service, project_id, seed_id, rounds, *, resume=False, until_target=F
         """! @brief 연구 상태와 사용 예산의 일관된 사본을 읽는다."""
         return call("get", {"study_id": identity})
 
+    def stop_details(child):
+        """! @brief 해당 후속 연구의 봉인 후보에서 마지막 차단 진단과 당시 입력을 읽는다."""
+        saved = call("progress", {"study_id": child["study_id"]})
+        diagnostics = []
+        for ordinal in range(child["counts"]["total"]):
+            candidate = call("page", {"study_id": child["study_id"], "offset": ordinal, "limit": 1})["candidates"][0]
+            if candidate["state"] == "completed":
+                continue
+            last = next((item for item in reversed(candidate.get("diagnostics", []))
+                         if item.get("severity") == "blocking"), None)
+            if last is None:
+                continue
+            diagnostics.append({"ordinal": ordinal, "code": last["code"], "message": last["message_ko"],
+                                "inputs": [{"name": value["name"], "text": value["text"], "unit": value["unit"]}
+                                           for value in candidate["values"]]})
+        return {"study_id": child["study_id"], "counts": deepcopy(child["counts"]),
+                "message": saved["recorded_stop_reason"] or saved["message"], "candidate_errors": diagnostics}
+
     seed = get(seed_id)
     if seed["state"] != "completed" or not seed["specification"]["target_ids"]:
         raise ProjectError("E_CONFLICT", "목표 표본을 계산한 완료 연구를 선택하십시오.")
@@ -110,16 +128,19 @@ def refine(service, project_id, seed_id, rounds, *, resume=False, until_target=F
                 action = "resume"
             else:
                 action = child["state"]
+            if action not in {"wait", "start"}:
+                outcome["details"] = stop_details(child)
             return {**outcome, "stop_reason": action, "input": ref}
         try:
             if child["state"] == "ready":
                 call("start", ref, mutation=True)
             elif resume and child["allowed_actions"]["resume"]:
                 call("resume", ref, mutation=True)
-            child = get(ref["study_id"])
-            while child["state"] in ACTIVE:
+            progress = call("progress", ref)
+            while progress["state"] in ACTIVE:
                 wait(0.3)
-                child = get(ref["study_id"])
+                progress = call("progress", ref)
+            child = get(ref["study_id"])
         except KeyboardInterrupt:
             child = get(ref["study_id"])
             if child["allowed_actions"]["cancel"]:
@@ -127,10 +148,10 @@ def refine(service, project_id, seed_id, rounds, *, resume=False, until_target=F
             raise
         record.update(state=child["state"], usage=child["budget_usage"])
         if child["state"] != "completed":
-            outcome["stop_reason"] = child["state"]
+            outcome.update(stop_reason=child["state"], details=stop_details(child))
             break
         if child["counts"]["completed"] != 3:
-            outcome["stop_reason"] = "incomplete_bracket"
+            outcome.update(stop_reason="incomplete_bracket", details=stop_details(child))
             break
         if until_target and meets_goals(child["study_id"]):
             outcome["stop_reason"] = "sample_targets_met"
