@@ -1,0 +1,74 @@
+{
+  "period_mm": [
+    40,
+    35
+  ],
+  "epsilon_left": 1,
+  "epsilon_right": 1,
+  "materials": {
+    "air": {
+      "epsilon_r": 1,
+      "tan_delta": 0,
+      "conductivity_s_per_m": 0
+    },
+    "substrate": {
+      "epsilon_r": 3.6,
+      "tan_delta": 0.018,
+      "conductivity_s_per_m": 0
+    },
+    "copper": {
+      "epsilon_r": 1,
+      "tan_delta": 0,
+      "conductivity_s_per_m": 58000000
+    }
+  },
+  "layers": [
+    {
+      "thickness_mm": 0.035,
+      "background": "air",
+      "regions": [
+        {
+          "material": "copper",
+          "outer": [
+            [
+              16,
+              14
+            ],
+            [
+              24,
+              14
+            ],
+            [
+              24,
+              21
+            ],
+            [
+              16,
+              21
+            ]
+          ],
+          "holes": []
+        }
+      ]
+    },
+    {
+      "thickness_mm": 1.6,
+      "background": "substrate",
+      "regions": []
+    }
+  ],
+  "frequencies_hz": [
+    10500000000
+  ],
+  "theta_deg": 24,
+  "phi_deg": 32,
+  "polarization": "TE",
+  "grid": [
+    15,
+    15
+  ],
+  "comparison_grid": [
+    25,
+    25
+  ]
+}
