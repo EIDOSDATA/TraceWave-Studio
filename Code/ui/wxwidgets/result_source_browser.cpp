@@ -38,6 +38,10 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     m_kind->SetSelection(0);
     m_kind->SetName("result.source-kind");
     layout->Add(m_kind, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
+    m_status = new wxStaticText(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE);
+    m_status->SetMinSize(FromDIP(wxSize(160, -1)));
+    StudioTheme::BindSecondary(*m_status);
+    layout->Add(m_status, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
     m_anchorLabel = label("보존 개정 범위");
     m_anchor = new wxChoice(this, wxID_ANY);
     m_anchor->SetName("result.source-revision");
@@ -77,11 +81,6 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     m_refresh = new wxButton(this, wxID_ANY, Display("결과 목록 새로 읽기"));
     StudioTheme::Button(*m_refresh);
     layout->Add(m_refresh, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
-    m_status = new wxStaticText(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
-                                wxST_NO_AUTORESIZE);
-    m_status->SetMinSize(FromDIP(wxSize(160, -1)));
-    StudioTheme::BindSecondary(*m_status);
-    layout->Add(m_status, 0, wxEXPAND | wxALL, FromDIP(8));
     SetSizer(layout);
     for (auto* choice : {m_kind, m_anchor, m_study})
     {
@@ -159,8 +158,7 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     Bind(wxEVT_SIZE,
          [this](wxSizeEvent& event)
          {
-             m_status->SetLabel(m_statusText);
-             m_status->Wrap(std::max(120, GetClientSize().x - FromDIP(20)));
+             UpdateStatusLayout();
              event.Skip();
          });
     Reset();
@@ -280,8 +278,19 @@ void ResultSourceBrowser::SetCatalog(const Json& response, const Json& selected)
     const auto totals = response.value("current_totals", Json::object());
     const auto counts = "현재 개정: 해석 " + std::to_string(totals.value("solver", 0)) + "건, 자료 " +
                         std::to_string(totals.value("network", 0)) + "건.";
-    SetStatus(m_items->GetItemCount() ? counts : "선택한 범위에 결과가 없습니다. " + counts +
-                        " 자료 종류 또는 보존 개정을 바꿔 확인하세요.");
+    const auto kind = Kind();
+    const bool hasOtherKind = (kind != "solver" && totals.value("solver", 0) > 0) ||
+                              (kind != "network" && totals.value("network", 0) > 0);
+    auto message = m_items->GetItemCount() ? counts : "선택한 범위에 결과가 없습니다. " + counts;
+    if (kind != "all" && hasOtherKind)
+    {
+        message += " 자료 종류에서 '현재 개정 전체'를 선택하면 함께 볼 수 있습니다.";
+    }
+    else if (m_items->GetItemCount() == 0 && kind != "all")
+    {
+        message += " 자료 종류 또는 보존 개정을 바꿔 확인하세요.";
+    }
+    SetStatus(message);
     UpdateLayout();
 }
 
@@ -321,8 +330,14 @@ void ResultSourceBrowser::SetCurrentContext()
 void ResultSourceBrowser::SetStatus(const std::string& message)
 {
     m_statusText = Display(message);
+    UpdateStatusLayout();
+}
+
+void ResultSourceBrowser::UpdateStatusLayout()
+{
     m_status->SetLabel(m_statusText);
-    m_status->Wrap(std::max(120, GetClientSize().x - FromDIP(20)));
+    m_status->Wrap(std::max(FromDIP(120), GetClientSize().x - FromDIP(20)));
+    m_status->InvalidateBestSize();
     Layout();
 }
 

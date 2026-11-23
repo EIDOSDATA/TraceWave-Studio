@@ -181,7 +181,9 @@ void StudioFrame::OpenSolverReview(const std::string& project, const std::string
         const auto target = DiagnosticSelection(repair.fieldPath);
         if (target.is_null() && (repair.fieldPath == "board" || repair.fieldPath == "ports"))
         {
+            m_solverRepairPending = true;
             m_views->SetSelection(0);
+            UpdateControls();
             wxCommandEvent action(wxEVT_MENU, repair.fieldPath == "board" ? IdBoard : IdNewPort);
             ProcessWindowEvent(action);
             return;
@@ -189,6 +191,7 @@ void StudioFrame::OpenSolverReview(const std::string& project, const std::string
         if (!target.is_null())
         {
             m_solverRepairPending = true;
+            m_views->SetSelection(0);
             RefreshEditor(target, [this, repair]()
             {
                 Ready("해석 오류의 속성으로 이동했습니다.");

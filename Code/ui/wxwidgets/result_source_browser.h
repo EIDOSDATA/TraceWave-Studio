@@ -38,6 +38,8 @@ public:
 private:
     friend class StudioSmokeDriver;
     void UpdateLayout();
+    /** @brief 현재 탐색 창 너비로 안내문을 접고 전체 줄 높이를 반영한다. */
+    void UpdateStatusLayout();
     wxChoice* m_kind = nullptr;
     wxChoice* m_anchor = nullptr;
     wxChoice* m_study = nullptr;
