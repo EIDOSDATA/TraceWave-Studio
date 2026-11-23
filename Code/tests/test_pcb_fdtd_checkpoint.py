@@ -17,6 +17,22 @@ CLI = TOOLS / "pcb_fdtd_checkpoint.py"
 class CheckpointInputTests(unittest.TestCase):
     """! @brief 공개 XML의 제한과 도구가 만든 상태의 봉인 경계를 대조한다."""
 
+    def test_abnormal_exit_cannot_complete(self):
+        """! @brief 통계 파일의 존재만으로 중단된 프로세스를 정상 종료에 포함하지 않는다."""
+        sys.path.insert(0, str(TOOLS))
+        from pcb_fdtd_checkpoint import status
+        state = {"status": "running", "pid": None, "runtime": {"boot": ""}}
+        with TemporaryDirectory() as temporary:
+            job = Path(temporary)
+            (job / "run").mkdir()
+            (job / "run/openEMS_stats.txt").write_text("2000 % number of iterations")
+            for code in (None, b"-9", b"1"):
+                if code is not None:
+                    (job / "initial-exit").write_bytes(code)
+                result = status(job, state)
+                self.assertEqual(result["status"], "interrupted")
+                self.assertNotIn("result", result)
+
     def test_rejects_unsupported_xml_and_changed_state(self):
         sys.path.insert(0, str(TOOLS))
         from pcb_checkpoint_store import input_xml, save, load

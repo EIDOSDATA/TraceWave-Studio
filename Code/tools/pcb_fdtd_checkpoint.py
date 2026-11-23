@@ -1,6 +1,7 @@
 """! @brief WSL2 단일 포트 PCB openEMS를 전용 폴더에서 실행하고 DMTCP 상태를 보존 및 복구한다."""
 
 import argparse
+import hashlib
 import json
 import math
 import os
@@ -10,7 +11,7 @@ import signal
 import subprocess
 import sys
 import time
-from uuid import uuid4
+from uuid import UUID, uuid4
 from xml.etree.ElementTree import ParseError
 
 from pcb_checkpoint_store import ARGS, DMTCP, ENGINE, JOB_ROOT, TRACES, digest, input_xml, loaded_libraries, locked, private_root, require, runtime, save
@@ -58,11 +59,42 @@ def job_has_solver(job):
     return False
 
 
-def start(file):
+def start_witness(job, args):
+    """! @brief CLI가 끝난 뒤에도 실제 자식의 종료 코드를 파일에 원자적으로 기록한다."""
+    reader, writer = os.pipe()
+    child = os.fork()
+    if child == 0:
+        os.close(reader)
+        try:
+            os.setsid()
+            with open(os.devnull, "r+b", buffering=0) as devnull:
+                for fd in range(3):
+                    os.dup2(devnull.fileno(), fd)
+            proc = launch(job, args)
+            os.write(writer, str(proc.pid).encode("ascii"))
+            os.close(writer)
+            code = proc.wait()
+            temporary = job / "tmp" / "initial-exit"
+            temporary.write_text(str(code), encoding="ascii")
+            os.replace(temporary, job / "initial-exit")
+        finally:
+            os._exit(0)
+    os.close(writer)
+    with os.fdopen(reader, "rb") as pipe:
+        pid = pipe.read(20)
+    require(pid.isdigit(), "고정 엔진의 실행을 시작하지 못했습니다.")
+    return int(pid)
+
+
+def start(file, binding=None):
     """! @brief 입력과 계산 환경을 봉인한 뒤 단일 포트 계산을 시작한다."""
     raw, steps = input_xml(file)
+    if binding is not None:
+        require(hashlib.sha256(raw).hexdigest() == binding["sha256"], "준비한 XML의 예상 SHA256이 실제 입력과 다릅니다.")
     key = private_root()
     identity = runtime()
+    if binding and binding.get("engine"):
+        require(identity["files"][str(ENGINE)]["sha256"] == binding["engine"], "준비 당시 openEMS와 현재 고정 엔진의 SHA256이 다릅니다.")
     job = JOB_ROOT / str(uuid4())
     job.mkdir(mode=0o700)
     for folder in ("run", "images", "tmp", "history"):
@@ -70,20 +102,19 @@ def start(file):
     xml = job / "run/pcb.xml"
     xml.write_bytes(raw)
     state = {"schema": 1, "job": job.name, "directory": str(job), "status": "starting", "steps": steps,
-             "runtime": identity, "xml": digest(xml), "attempt": 0}
+             "runtime": identity, "xml": digest(xml), "attempt": 0, "binding": binding}
     save(job, key, state)
-    proc = launch(job, [DMTCP / "bin/dmtcp_launch", "--new-coordinator", "--coord-host", "localhost", "--coord-port", "0",
+    pid = start_witness(job, [DMTCP / "bin/dmtcp_launch", "--new-coordinator", "--coord-host", "localhost", "--coord-port", "0",
                         "--port-file", job / "port", "--ckptdir", job / "images", "--ckpt-open-files", ENGINE, *ARGS])
-    state.update(pid=proc.pid, started=process_start(proc.pid), status="running")
+    state.update(pid=pid, started=process_start(pid), status="running")
     port_file = job / "port"
     deadline = time.monotonic() + 30
-    while not port_file.exists() and proc.poll() is None and time.monotonic() < deadline:
+    while not port_file.exists() and alive(state) and time.monotonic() < deadline:
         time.sleep(.05)
     port = port_file.read_text().strip() if port_file.exists() else ""
     if not (port.isdecimal() and 0 < int(port) <= 65535):
-        if proc.poll() is None:
-            os.killpg(proc.pid, signal.SIGTERM)
-            proc.wait(timeout=30)
+        if alive(state):
+            os.killpg(pid, signal.SIGTERM)
         state["status"] = "failed"
         save(job, key, state)
         raise ValueError("이 작업의 조정기를 시작하지 못했습니다.")
@@ -145,8 +176,19 @@ def suspend(job, key, state):
     """! @brief 실제 파형이 기록된 시점에 체크포인트를 완성하고 엔진을 중단한다."""
     if state["status"] == "suspended":
         return {"job": job.name, "status": "suspended"}
-    require(state["status"] in {"running", "checkpointing", "stopping"}, "중단할 실행 상태가 아닙니다.")
+    require(state["status"] in {"running", "checkpointing", "stopping", "completed"}, "중단할 실행 상태가 아닙니다.")
     verify(job, state)
+
+    def completed():
+        """! @brief 정지 요청보다 먼저 끝난 정상 해석을 확인된 출력과 함께 보존한다."""
+        observed = status(job, state)
+        require(observed["status"] == "completed", "실행 종료 또는 정상 종료 코드를 확인하지 못했습니다.")
+        state.update(result=observed["result"], status="completed")
+        save(job, key, state)
+        return {"job": job.name, "status": "completed", **state["result"]}
+
+    if state["status"] == "completed" or (state["status"] in ("running", "checkpointing") and not alive(state)):
+        return completed()
     if state["status"] == "running":
         def ready(name):
             """! @brief 두 프로브가 실제 수치 표본을 각각 두 개 이상 기록했는지 확인한다."""
@@ -157,13 +199,11 @@ def suspend(job, key, state):
                 return sum(bool(line.strip()) and not line.startswith(b"%") for line in stream.read(8192).splitlines()) >= 2
 
         limit = time.monotonic() + 120
-        while not all(ready(name) for name in TRACES):
-            if not alive(state):
-                state.update(result=finish(job, state), status="completed")
-                save(job, key, state)
-                return {"job": job.name, "status": "completed", **state["result"]}
+        while alive(state) and not all(ready(name) for name in TRACES):
             require(time.monotonic() < limit, "중단할 U/I 표본을 아직 얻지 못했습니다.")
             time.sleep(.05)
+        if not alive(state):
+            return completed()
         state["status"] = "checkpointing"
         save(job, key, state)
     if state["status"] == "checkpointing":
@@ -262,28 +302,77 @@ def resume(job, key, state):
     return {"job": job.name, "status": "completed", **state["result"]}
 
 
+def binding_from(args):
+    """! @brief 사용자 프로젝트, 준비 계획과 XML 해시를 하나의 실행 범위로 검증한다."""
+    values = (args.project, args.plan, args.sha256)
+    if all(value is None for value in values) and args.engine is None:
+        return None
+    require(all(values) and all(str(UUID(value)) == value for value in values[:2])
+            and re.fullmatch("[a-f0-9]{64}", args.sha256), "프로젝트, 준비 계획 UUID와 XML SHA256을 모두 지정하십시오.")
+    require(args.engine is None or re.fullmatch("[a-f0-9]{64}", args.engine), "엔진 SHA256이 유효하지 않습니다.")
+    return {**dict(zip(("project", "plan", "sha256"), values)), "engine": args.engine}
+
+
+def status(job, state):
+    """! @brief 비정상 또는 미확인 종료는 파형이 남아 있어도 성공으로 표시하지 않는다."""
+    active = alive(state)
+    result = {"job": job.name, "status": state["status"], "alive": active, "directory": str(job),
+              "can_resume": "checkpoint" in state and state["status"] in ("resuming", "suspended")}
+    if state["status"] in ("running", "checkpointing") and not active:
+        marker = job / "initial-exit"
+        if marker.is_symlink() or not marker.is_file() or marker.read_bytes() != b"0":
+            return {**result, "status": "interrupted", "reason": "엔진의 정상 종료를 확인하지 못했습니다."}
+        return {**result, "status": "completed", "result": finish(job, state)}
+    if state["status"] == "resuming" and not active:
+        result.update(status="interrupted", reason="재개 감독 종료를 확인 중입니다. 보존한 체크포인트에서 재시도할 수 있습니다.")
+    if state.get("result"):
+        require(state["result"] == finish(job, state), "완료 결과의 파일 또는 샘플이 바뀌었습니다.")
+        result["result"] = state["result"]
+    return result
+
+
 def main():
     """! @brief 입력 XML과 자체 작업 ID로 시작, 중단, 재개, 상태 조회를 제공한다."""
     parser = argparse.ArgumentParser(description="단일 포트 PCB openEMS 체크포인트")
     commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("start").add_argument("--xml", type=Path, required=True)
-    for action in ("suspend", "resume", "status"):
-        commands.add_parser(action).add_argument("job")
+    for action in ("start", "suspend", "resume", "status", "list"):
+        command = commands.add_parser(action)
+        for field in ("project", "plan", "sha256", "engine"):
+            command.add_argument("--" + field)
+        if action in ("start", "list"):
+            command.add_argument("--xml", type=Path, required=action == "start")
+        elif action != "list":
+            command.add_argument("job")
     args = parser.parse_args()
     os.umask(0o077)
+    binding = binding_from(args)
     if args.command == "start":
-        result = start(args.xml)
+        result = start(args.xml, binding)
+    elif args.command == "list":
+        require(binding is not None, "조회할 프로젝트와 준비 입력이 필요합니다.")
+        if args.xml:
+            raw, _ = input_xml(args.xml)
+            require(hashlib.sha256(raw).hexdigest() == binding["sha256"], "준비 XML의 SHA256이 다릅니다.")
+            identity = runtime()
+            require(not binding.get("engine") or binding["engine"] == identity["files"][str(ENGINE)]["sha256"],
+                    "고정 설치 엔진이 준비 당시 SHA256과 다릅니다.")
+        private_root()
+        jobs = []
+        for folder in JOB_ROOT.iterdir():
+            if re.fullmatch("[0-9a-f-]{36}", folder.name) and (folder / "state.json").exists():
+                with locked(folder.name, writing=False) as (job, key, state):
+                    if state.get("binding") == binding:
+                        jobs.append({"job": job.name, "status": state["status"], "created_ns": (job / "run/pcb.xml").stat().st_mtime_ns})
+        result = {"jobs": sorted(jobs, key=lambda row: row["created_ns"], reverse=True)[:64]}
     else:
         with locked(args.job, writing=args.command != "status") as (job, key, state):
+            require(binding is None or state.get("binding") == binding, "다른 프로젝트 또는 준비 입력에 속한 작업입니다.")
             if args.command == "suspend":
                 result = suspend(job, key, state)
             elif args.command == "resume":
                 result = resume(job, key, state)
             else:
-                result = {"job": job.name, "status": state["status"], "alive": alive(state), "directory": str(job)}
-                if state["status"] == "running" and not alive(state):
-                    state.update(result=finish(job, state), status="completed")
-                result.update(status=state["status"], result=state.get("result"))
+                result = status(job, state)
     print(json.dumps(result, ensure_ascii=False))
 
 

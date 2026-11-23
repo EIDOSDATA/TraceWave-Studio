@@ -27,6 +27,7 @@ struct SolverReviewDecision
     std::optional<SolverRepair> repair;
     bool editInstallation = false;
     bool multiport = false;
+    bool checkpoint = false;
 };
 
 /** @brief 검토한 설정의 실행/저장 또는 문제 속성 이동 요청을 반환한다. */

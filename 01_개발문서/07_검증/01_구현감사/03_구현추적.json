@@ -8389,6 +8389,10 @@
       "extension_profile": "rfad.rf-validation/0.1",
       "status": "implemented"
     },
+    "solver.checkpoint.sources": {
+      "extension_profile": "rfad.checkpoint-sources/0.1",
+      "status": "implemented"
+    },
     "solver.conditions": {
       "extension_profile": "rfad.solver-conditions/0.1",
       "status": "implemented"
@@ -15383,8 +15387,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "30daa3c95ca4c9f68e17d9f3ea01bdb270bcacf1e233859eb7358b9570c152e0",
-      "utf8_bytes": 40685
+      "text_sha256": "be58ad314bd285180bb4a67c7706962b17ad36716d18bad70a7b5d06b70210e3",
+      "utf8_bytes": 41043
     },
     {
       "path": "Code/src/rfad/application/solver.py",

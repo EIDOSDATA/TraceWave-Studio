@@ -24,6 +24,7 @@ from rfad.application import pcb_import_service
 from rfad.application import measurement_service, measurement_contract
 from rfad.application import archive_export_service, archive_receiver, handoff_evidence, handoff_service
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records, sketch_service, smart_dimension_service, sweep_selection
+from rfad.application import solver_checkpoint_source
 from rfad.application import large_results
 
 from rfad.application.template_candidates import READ_METHODS as TEMPLATE_READS
@@ -102,6 +103,7 @@ def capabilities(service=None, catalog=None) -> dict:
         for method in (solver_conditions_service.READ, solver_conditions_service.SAVE):
             result["methods"][method] = {"status": "implemented", "extension_profile": "rfad.solver-conditions/0.1"}
         result["methods"][project_activity.METHOD] = {"status": "implemented", "extension_profile": project_activity.PROFILE}
+        result["methods"][solver_checkpoint_source.METHOD] = {"status": "implemented", "extension_profile": "rfad.checkpoint-sources/0.1"}
         result["methods"][solver_evidence.METHOD] = {"status": "implemented", "extension_profile": "rfad.solver-evidence/0.1"}
         result["methods"][solver_preview.METHOD] = {"status": "implemented", "extension_profile": "rfad.solver-preview/0.1"}
         result["project_profile"] = {
@@ -363,7 +365,7 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         return _error(None, -32600, "Invalid Request")
     notification = "id" not in request
     method = request["method"]
-    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | smart_dimension_service.READS | sketch_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | large_results.READS | rf_validation_records.READS | sweep_selection.READS | {handoff_evidence.METHOD, project_evidence.METHOD, solver_preview.METHOD, solver_conditions_service.READ, solver_evidence.METHOD, project_activity.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "canvas.route.review", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
+    if service is not None and method in PROJECT_MUTATIONS | archive_receiver.READS | archive_export_service.READS | handoff_service.READS | measurement_service.READS | pcb_import_service.READS | pcb_exchange_service.READS | exchange_contract.READS | PCB_SELECTION_READS | STUDY_READS | TEMPLATE_READS | design_rule_service.READS | physical_setup_service.READS | precision_service.READS | smart_dimension_service.READS | sketch_service.READS | network_service.READS | design_sweep_service.READS | result_service.READS | large_results.READS | rf_validation_records.READS | sweep_selection.READS | {solver_checkpoint_source.METHOD, handoff_evidence.METHOD, project_evidence.METHOD, solver_preview.METHOD, solver_conditions_service.READ, solver_evidence.METHOD, project_activity.METHOD, "target.editor.get", "job.status", "editor.get", "canvas.get", "canvas.route.review", "editor.page", "canvas.page", "cad.latest", "result.open", "solver.latest", "solver.samples", "solver.radiation"}:
         if notification and method in PROJECT_MUTATIONS | archive_receiver.READS:
             return None
         try:
@@ -412,6 +414,8 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
                 result = solver_conditions_service.read(service, params)
             elif method == project_activity.METHOD:
                 result = project_activity.read(service, params)
+            elif method == solver_checkpoint_source.METHOD:
+                result = solver_checkpoint_source.read(service, params)
             elif method == solver_evidence.METHOD:
                 result = solver_evidence.read(service, params)
             elif method == solver_preview.METHOD:

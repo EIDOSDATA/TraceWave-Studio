@@ -221,6 +221,29 @@ void StudioSmokeDriver::SolverSmokeTick()
     {
         return;
     }
+    const bool checkpoint = wxFileName(m_frame.m_options.solverSettings).GetFullName() == "checkpoint-ui-smoke.json";
+    if (checkpoint && (m_solverSmokeStage == 2 || m_solverSmokeStage == 10 || m_solverSmokeStage == 11))
+    {
+        if (!m_frame.m_solverWorkflow.Active() && m_frame.m_solverState == "failed")
+        {
+            FinishSmoke(false, Utf8(m_frame.m_solverStatus->GetLabel()));
+            return;
+        }
+        if (m_solverSmokeStage == 2 || m_solverSmokeStage == 10)
+        {
+            const char* name = m_solverSmokeStage == 2 ? "solver.review.request" : "solver.review.checkpoint";
+            auto* button = dynamic_cast<wxButton*>(wxWindow::FindWindowByName(name));
+            if (button && button->IsShownOnScreen() && button->IsEnabled())
+            {
+                m_solverChecks.push_back(name);
+                m_solverSmokeStage = m_solverSmokeStage == 2 ? 10 : 11;
+                wxCommandEvent event(wxEVT_BUTTON, button->GetId());
+                event.SetEventObject(button);
+                button->ProcessWindowEvent(event);
+            }
+        }
+        return;
+    }
     if (m_solverSmokeStage == 1)
     {
         if (m_frame.m_scene.at("board").is_null())
@@ -261,7 +284,14 @@ void StudioSmokeDriver::SolverSmokeTick()
             m_solverChecks.push_back("circular_board_display");
         }
         m_solverSmokeStage = 2;
-        m_frame.StartSolver();
+        if (checkpoint)
+        {
+            m_frame.ConfigureSolver("", m_frame.m_solverSettings);
+        }
+        else
+        {
+            m_frame.StartSolver();
+        }
     }
     else if (m_solverSmokeStage == 2 && m_frame.m_options.solverExpectFailure && !m_frame.m_solverWorkflow.Active() &&
              m_frame.m_solverState == "failed")

@@ -189,6 +189,7 @@ void StudioFrame::OpenSolverReview(const std::string& project, const std::string
     if (decision->saveName.empty())
     {
         m_solverMultiport = decision->multiport;
+        m_checkpointPreparation = decision->checkpoint;
         m_solverSettings = decision->settings;
         StartSolver();
         return;
@@ -288,6 +289,7 @@ void StudioFrame::SubmitSolverPhase(const Studio::ServiceCommand& command)
 
 void StudioFrame::SolverRejected(const Json& error)
 {
+    m_checkpointPreparation = false;
     m_solverWorkflow.Stop();
     m_solverTask.Reset();
     m_solverTask.AbandonPoll();
@@ -378,6 +380,7 @@ void StudioFrame::PollSolver(Clock::time_point now)
                 m_solverTask.Reset();
                 if (m_solverWorkflow.CancellationRequested())
                 {
+                    m_checkpointPreparation = false;
                     m_solverWorkflow.Stop();
                     SolverStatus("cancelled", "취소 요청 이후 단계 실행을 멈췄습니다. 기존 결과는 보존했습니다.");
                     UpdateControls();
@@ -388,6 +391,7 @@ void StudioFrame::PollSolver(Clock::time_point now)
             else if (state == "failed" || state == "cancelled" || state == "interrupted")
             {
                 m_solverTask.Reset();
+                m_checkpointPreparation = false;
                 m_solverWorkflow.Stop();
                 const auto terminal = status.at("events").back();
                 if (terminal.contains("execution_cost"))
@@ -431,6 +435,15 @@ void StudioFrame::PollSolver(Clock::time_point now)
 
 void StudioFrame::SolverPhaseComplete(const Json& result)
 {
+    if (m_checkpointPreparation && result.contains("prepared_plan"))
+    {
+        m_checkpointPreparation = false;
+        m_solverWorkflow.Stop();
+        SolverStatus("prepared", "체크포인트 전용 XML 준비를 완료했습니다. 별도 엔진의 시작을 선택하십시오.");
+        UpdateControls();
+        OpenSolverCheckpoint(Json{{"prepared_plan_id", result.at("prepared_plan").at("prepared_plan_id")}});
+        return;
+    }
     const auto next = m_solverWorkflow.Complete(result);
     if (next)
     {

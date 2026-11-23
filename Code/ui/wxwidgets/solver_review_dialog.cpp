@@ -23,6 +23,7 @@
 #include <wx/listctrl.h>
 #include <wx/scrolwin.h>
 #include <wx/weakref.h>
+#include <wx/wrapsizer.h>
 #include <wx/wx.h>
 
 namespace
@@ -277,7 +278,7 @@ public:
         m_issueList->Hide();
         m_issueList->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { SelectIssue(); });
         root->Add(m_issueList, 0, wxEXPAND | wxLEFT | wxRIGHT, pad);
-        auto* actions = new wxBoxSizer(wxHORIZONTAL);
+        auto* actions = new wxWrapSizer(wxHORIZONTAL);
         auto* back = new wxButton(this, wxID_ANY, Display("조건 입력으로"));
         back->SetName("solver.review.back");
         StudioTheme::Button(*back);
@@ -304,6 +305,20 @@ public:
         StudioTheme::Button(*m_check);
         m_check->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { Review(); });
         actions->Add(m_check, 0, wxLEFT, pad);
+        m_checkpoint = new wxButton(this, wxID_ANY, Display("체크포인트 입력 준비"));
+        m_checkpoint->SetName("solver.review.checkpoint");
+        m_checkpoint->SetToolTip(Display("단일 스레드와 급전 한 개를 사용하며 필드, 방사, 전력 수지 기록을 끈 조건에서 별도 엔진 작업을 준비합니다."));
+        StudioTheme::Button(*m_checkpoint);
+        m_checkpoint->Disable();
+        m_checkpoint->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+        {
+            if (!m_result.empty() && !m_pending)
+            {
+                m_checkpointChosen = true;
+                EndModal(wxID_OK);
+            }
+        });
+        actions->Add(m_checkpoint, 0, wxLEFT, pad);
         m_run = new wxButton(this, wxID_ANY, Display("검토한 조건으로 실행"));
         m_run->SetName("solver.review.run");
         StudioTheme::Button(*m_run, true);
@@ -346,7 +361,7 @@ public:
         {
             return {Json(), "", std::nullopt, true};
         }
-        return {m_result.at("settings"), m_saveName, std::nullopt, false, m_result.contains("multiport")};
+        return {m_result.at("settings"), m_saveName, std::nullopt, false, m_result.contains("multiport"), m_checkpointChosen};
     }
 
 private:
@@ -422,6 +437,11 @@ private:
                 Invalidate();
             }
         });
+        m_singleThread = new wxCheckBox(frequency->GetStaticBox(), wxID_ANY, Display("체크포인트용 단일 스레드"));
+        m_singleThread->SetName("solver.checkpoint.single_thread");
+        m_singleThread->SetToolTip(Display("단일 스레드 튜닝 예산을 사용합니다. 해제하면 기본 계산 예산으로 돌아갑니다."));
+        frequency->Add(m_singleThread, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(8));
+        m_singleThread->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&) { Invalidate(); });
         m_advanced = new wxStaticText(frequency->GetStaticBox(), wxID_ANY, wxEmptyString);
         StudioTheme::BindSecondary(*m_advanced);
         frequency->Add(m_advanced, 0, wxEXPAND | wxALL, FromDIP(8));
@@ -1206,6 +1226,9 @@ private:
         SetOptionalControls();
         const bool useBudget = settings.contains("compute_profile");
         const bool useLoss = settings.contains("power_balance");
+        const auto profile = settings.value("compute_profile", Json::object());
+        m_singleThread->SetValue(profile.value("num_threads", 0) == 1 && profile.value("kind", "") == "tuning_refinement/0.1");
+        m_singleThread->Enable(!useBudget || profile.value("kind", "") == "tuning_refinement/0.1");
         m_advanced->SetLabel(Display(useBudget && useLoss ? "불러온 계산 예산 / 독립 손실 기록 사용"
             : useBudget ? "불러온 계산 예산 사용" : useLoss ? "불러온 독립 손실 기록 사용" : ""));
         m_advanced->Show(useBudget || useLoss);
@@ -1239,6 +1262,7 @@ private:
         m_intervals->Hide();
         m_coordinates->DisplayAxis(nullptr);
         m_result = Json::object();
+        m_checkpoint->Disable();
         m_model->DeleteAllItems();
         m_modelDetails->Clear();
         m_local->DisplayReport(Json::object());
@@ -1328,6 +1352,17 @@ private:
             band = {{"start", points.front()}, {"stop", points.back()}, {"count", points.size()}, {"points", points}};
         }
         settings = m_draft;
+        if (m_singleThread->IsEnabled())
+        {
+            if (m_singleThread->GetValue())
+            {
+                settings["compute_profile"] = Json{{"kind", "tuning_refinement/0.1"}, {"num_threads", 1}};
+            }
+            else if (settings.value("compute_profile", Json::object()).value("num_threads", 0) == 1)
+            {
+                settings.erase("compute_profile");
+            }
+        }
         if (m_bands.empty())
         {
             settings.erase("material_bands");
@@ -1763,6 +1798,9 @@ private:
         m_book->SetSelection(1);
         m_meshSummary->GetParent()->Layout();
         SetStatus("격자와 포함 형상 확인을 완료했습니다. 종료 / 기록 출력에서 예상 실행 비용을 확인할 수 있습니다.");
+        m_checkpoint->Enable(!m_result.contains("multiport") && !settings.contains("radiation") &&
+            !settings.contains("power_balance") && !settings.contains("field_probe") &&
+            settings.value("compute_profile", Json::object()).value("num_threads", 2) == 1);
         m_run->Enable(true);
         m_save->Enable(true);
     }
@@ -1818,6 +1856,7 @@ private:
     wxButton* m_load = nullptr;
     wxButton* m_save = nullptr;
     wxCheckBox* m_nf = nullptr;
+    wxCheckBox* m_singleThread = nullptr;
     wxCheckBox* m_magnetic = nullptr;
     std::map<std::string, wxTextCtrl*> m_fields;
     Json m_result = Json::object();
@@ -1831,6 +1870,8 @@ private:
     wxButton* m_check = nullptr;
     wxButton* m_jump = nullptr;
     wxButton* m_run = nullptr;
+    wxButton* m_checkpoint = nullptr;
+    bool m_checkpointChosen = false;
     wxTextCtrl* m_output = nullptr;
     SolverMeshView* m_plot = nullptr;
     wxChoice* m_plane = nullptr;

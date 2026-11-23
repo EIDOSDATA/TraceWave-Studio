@@ -237,6 +237,7 @@ private:
                           const std::string& resultId, Json proposedSettings = nullptr);
     /** @brief 봉인된 결과의 방사 조회 화면을 독립적으로 연다. */
     void OpenRadiation();
+    void OpenSolverCheckpoint(const Json& filter);
     void OpenSolverEvidence(const std::string& artifact, wxWindow* parent);
     /** @brief 작업 상태와 로그를 해석 패널에 표시한다. */
     void SolverStatus(const std::string& state, const std::string& message);
@@ -392,6 +393,7 @@ private:
     Json m_solverDraft = Json::object();
     bool m_solverRepairPending = false;
     bool m_solverMultiport = false;
+    bool m_checkpointPreparation = false;
     Json m_solverSettings = Json::object();
     Json m_solverResult = Json::object();
     Json m_solverSamples = Json::object();

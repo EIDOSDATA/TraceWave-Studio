@@ -18,6 +18,14 @@ void StudioFrame::BuildSolverInterface()
     AddTool(panel, tools, IdReuseSolverConditions, "결과 조건 다시 사용");
     AddTool(panel, tools, IdRadiation, "방사 패턴 조회");
     AddTool(panel, tools, IdProjectStudy, "프로젝트 연구");
+    auto* checkpoint = new wxButton(panel, wxID_ANY, Display("체크포인트 작업"));
+    checkpoint->SetName("solver.checkpoint.open");
+    StudioTheme::Button(*checkpoint);
+    tools->Add(checkpoint, 0, wxRIGHT, FromDIP(StudioTheme::InputGap));
+    checkpoint->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        OpenSolverCheckpoint(Json::object());
+    });
     m_solverCost = new wxButton(panel, wxID_ANY, Display("실행 비용과 종료"));
     m_solverCost->SetName("solver.cost.open");
     StudioTheme::Button(*m_solverCost);
