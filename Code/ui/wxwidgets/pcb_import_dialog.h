@@ -39,6 +39,12 @@ private:
     {
         std::string source;
         bool contactsOnly = false;
+        bool regionsOnly = false;
+        /** @brief 선택한 도형 종류가 사용하는 층 또는 넷의 대응 행인지 확인한다. */
+        bool Included(bool contacts, bool regions) const
+        {
+            return (!contactsOnly && !regionsOnly) || (contacts && contactsOnly) || (regions && regionsOnly);
+        }
         wxChoice* choice = nullptr;
         std::vector<Json> targets;
     };
@@ -94,6 +100,7 @@ private:
     wxChoice* m_angleUnit = nullptr;
     wxPanel* m_placement = nullptr;
     wxCheckBox* m_contacts = nullptr;
+    wxCheckBox* m_regions = nullptr;
     wxCheckBox* m_adoptStack = nullptr;
     wxCheckBox* m_components = nullptr;
     wxCheckBox* m_boardConfirmed = nullptr;

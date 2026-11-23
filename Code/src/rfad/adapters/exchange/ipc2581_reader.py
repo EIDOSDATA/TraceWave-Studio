@@ -187,6 +187,8 @@ def read(raw):
              "message": "단일 보드의 직선 외곽을 대조하고 내부 절삭만 추가합니다. 적층·넷·홀·실장 등은 원문에 보존합니다."}
             if editable else {"code": "ipc2581_review_only", "raw_preserved": True,
                               "message": "현재 지원하는 단일 보드의 닫힌 직선 프로파일이 없어 원문을 읽기만 합니다."})
+    from rfad.adapters.exchange import manufacturing_regions
+    regions, omitted = manufacturing_regions.ipc(steps[0], layers, factor, NS) if editable else ([], [])
     traces = _editable_traces(steps[0], layers, factor) if editable else []
     if traces:
         loss = {"code": "ipc2581_partial_copper", "raw_preserved": True,
@@ -197,7 +199,12 @@ def read(raw):
     components = manufacturing_placements.ipc(root, steps[0], layers, factor, pads, bores) if editable else []
     if pads or bores or stack or components:
         loss = {**loss, "message": loss["message"] + f" 선택 가능한 원형 패드 {len(pads)}개, 원형 홀 {len(bores)}개, 적층 {len(stack)}개, 실장 위치 {len(components)}개."}
-    return {"editable_components": components, "editable_pads": pads, "editable_holes": bores, "editable_stack": stack,
+    if regions or omitted:
+        reasons = sorted({row["reason"] for row in omitted})
+        summary = f" 적용 가능한 채움 동박 {len(regions)}개, 제외 {len(omitted)}건."
+        loss = {**loss, "message": loss["message"] + summary + (" " + " ".join(reasons) if reasons else "")}
+    return {"editable_regions": regions, "region_exclusions": omitted[:128], "region_exclusion_count": len(omitted),
+            "editable_components": components, "editable_pads": pads, "editable_holes": bores, "editable_stack": stack,
             "editable_traces": traces, "schema": "rfad.ipc2581-read/0.1", "version": "C", "units": units,
             "source_sha256": hashlib.sha256(raw).hexdigest(),
             "writer": None if history is None else history.get("software"),

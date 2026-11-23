@@ -134,3 +134,44 @@ def placements(candidate, data, pad_ids):
                 row["pins"].append({"number": pin["number"], "pad_ids": [identity], "hole_id": None})
             elif identity not in target["pad_ids"]:
                 target["pad_ids"].append(identity)
+
+
+def _boundary_key(loop):
+    """! @brief 동일 경계의 시작점, 진행 방향과 공선 중간점 차이를 1 nm 좌표에서 정규화한다."""
+    if len(loop) < 3 or any(None in pt for pt in loop):
+        return ()
+    points = [tuple(round(v * 1e6) for v in pt) for pt in loop]
+    points = [b for a, b, c in zip(points[-1:] + points[:-1], points, points[1:] + points[:1])
+              if (b[0] - a[0]) * (c[1] - b[1]) != (b[1] - a[1]) * (c[0] - b[0])]
+    if len(points) < 3:
+        return ()
+    def rotated(items):
+        """! @brief 사전식 최소 꼭짓점에서 고리를 시작한다."""
+        start = items.index(min(items))
+        return tuple(items[start:] + items[:start])
+    return min(rotated(points), rotated(list(reversed(points))))
+
+
+def regions(candidate, items):
+    """! @brief 닫힌 양극성 동박의 외곽과 절연 구멍을 동일 좌표계와 명시한 넷에 연결한다."""
+    for item in items:
+        candidate.source = item["source_id"]
+        layer, net = candidate.layer(item["layer"]), candidate.net(item["net"])
+        if net is None:
+            fail("채움 동박에는 대응할 대상 넷을 지정하십시오.", "mapping.nets", "E_CONFLICT")
+        outline = _boundary_key(item["outer_mm"])
+        holes = sorted(_boundary_key(loop) for loop in item["holes_mm"])
+        matches = [r for r in candidate.document["geometry"] if r["kind"] == "planar_region" and r["layer_id"] == layer
+                   and r["frame_id"] == candidate.mapping["frame_id"]
+                   and _boundary_key([point(candidate.document, pt) for pt in r["outer"]]) == outline]
+        if matches:
+            shape = matches[0]
+            existing = sorted(_boundary_key([point(candidate.document, pt) for pt in loop]) for loop in shape["holes"])
+            if len(matches) != 1 or shape["net_id"] != net or existing != holes:
+                fail("같은 외곽의 기존 동박과 넷 또는 절연 구멍이 다릅니다.", "mapping.nets", "E_CONFLICT")
+            _bind(candidate, "geometry", shape["id"])
+        else:
+            shape = candidate.geometry("planar_region", layer, net)
+            shape.update(outer=[candidate.point(pt) for pt in item["outer_mm"]],
+                         holes=[[candidate.point(pt) for pt in loop] for loop in item["holes_mm"]])
+            candidate.append("geometry", shape)

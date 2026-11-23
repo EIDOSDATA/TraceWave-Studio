@@ -27,7 +27,7 @@ class _ImportCandidate:
         self.path, self.source, self.owners, self.containers = "", "", {}, set()
         keys = {"board_id", "frame_id", "layers", "nets", "placement"}
         if parsed.get("format") in {"ipc2581_revc", "odbpp_zip"}:
-            for flag in ("include_contacts", "adopt_stack", "include_components"):
+            for flag in ("include_contacts", "adopt_stack", "include_components", "include_regions"):
                 if flag in mapping:
                     keys.add(flag)
                     if type(mapping[flag]) is not bool:
@@ -578,17 +578,22 @@ class _ImportCandidate:
         if self.mapping.get("adopt_stack"):
             manufacturing_import.stack(self, data)
         use_contacts = self.mapping.get("include_contacts", False)
-        if not self.layers and not self.nets and not use_contacts:
+        use_regions = self.mapping.get("include_regions", False)
+        if not self.layers and not self.nets and not use_contacts and not use_regions:
             if self.mapping.get("include_components"):
                 manufacturing_import.placements(self, data, {})
             return
         traces = data.get("editable_traces", [])
         pads = data.get("editable_pads", []) if use_contacts else []
         holes = data.get("editable_holes", []) if use_contacts else []
-        targets = {item["layer"] for item in [*traces, *pads]} | {name for hole in holes for name in hole["span"]}
-        nets = {item["net"] for item in [*traces, *pads]} | {hole["net"] for hole in holes if hole["plating"] == "plated"}
+        regions = data.get("editable_regions", []) if use_regions else []
+        if use_regions and not regions and len(self.parsed["records"]) == 1:
+            fail("원본에서 적용할 채움 동박을 확인하지 못했습니다.", "mapping.include_regions", "E_UNSUPPORTED")
+        targets = {item["layer"] for item in [*traces, *pads, *regions]} | {name for hole in holes for name in hole["span"]}
+        nets = {item["net"] for item in [*traces, *pads, *regions]} | {hole["net"] for hole in holes if hole["plating"] == "plated"}
         if set(self.layers) != targets or set(self.nets) != nets or len(set(self.layers.values())) != len(self.layers):
             fail("지원 도체 및 홀의 원문 층과 넷을 각각 대응하십시오.", "mapping", "E_CONFLICT")
+        manufacturing_import.regions(self, regions)
         pad_ids = manufacturing_import.contacts(self, data) if use_contacts else {}
         if self.mapping.get("include_components"):
             manufacturing_import.placements(self, data, pad_ids)
@@ -781,12 +786,24 @@ def import_sources(parsed):
         contact_count += len(data.get("editable_pads", [])) + len(data.get("editable_holes", []))
         stack_count += len(data.get("editable_stack", []))
         component_count += len(data.get("editable_components", []))
-    for key in layers.keys() - route_layers:
-        layers[key]["contacts_only"] = True
-    for key in nets.keys() - route_nets:
-        nets[key]["contacts_only"] = True
+    contact_layers, contact_nets = layers.keys() - route_layers, nets.keys() - route_nets
+    region_layers, region_nets, region_count = set(), set(), 0
+    for item in parsed["records"]:
+        for area in item["data"].get("editable_regions", []):
+            add_layer(area["layer"])
+            add_net(area["net"], area["net"])
+            region_layers.add(area["layer"])
+            region_nets.add(area["net"])
+            region_count += 1
+    for table, base, contacts, regions in ((layers, route_layers, contact_layers, region_layers),
+                                           (nets, route_nets, contact_nets, region_nets)):
+        for key in table.keys() - base:
+            if key in contacts:
+                table[key]["contacts_only"] = True
+            if key in regions:
+                table[key]["regions_only"] = True
     profile_available = _has_manufacturing_profile(parsed)
     return {"layers": list(layers.values()), "nets": list(nets.values()),
-            "manufacturing_profile_available": profile_available, "contact_count": contact_count, "stack_count": stack_count, "component_count": component_count,
+            "manufacturing_profile_available": profile_available, "region_count": region_count, "contact_count": contact_count, "stack_count": stack_count, "component_count": component_count,
             "ipc_profile_available": parsed.get("format") == "ipc2581_revc" and profile_available,
             "losses": [{"id": canonical_hash(row), "message": _loss_message(row, "원문에 보존되는 미지원 항목: "), "original": deepcopy(row)} for row in parsed["losses"]]}

@@ -160,26 +160,31 @@ void PcbImportDialog::BuildMapping(wxWindow* page)
                 0, wxEXPAND | wxALL, FromDIP(12));
     m_boardConfirmed = new wxCheckBox(page, wxID_ANY, Display("현재 기판 / 좌표계에 적용함을 확인"));
     layout->Add(m_boardConfirmed, 0, wxALL, FromDIP(12));
+    m_regions = new wxCheckBox(page, wxID_ANY, Display("채움 동박 외곽과 절연 구멍 적용"));
+    m_regions->SetName("pcb.import.manufacturing_regions");
+    m_regions->SetToolTip(Display("양극성 도체층과 넷이 확인된 닫힌 영역을 가져옵니다. 대상 넷을 선택하십시오."));
     m_contacts = new wxCheckBox(page, wxID_ANY, Display("원문 원형 패드와 관통 홀 적용"));
     m_adoptStack = new wxCheckBox(page, wxID_ANY, Display("원문 도체 및 유전체 층 두께 적용"));
     m_components = new wxCheckBox(page, wxID_ANY, Display("부품 참조 번호와 실장 위치 적용"));
     m_components->SetToolTip(Display("참조 번호, 실장 면, 좌표와 회전을 가져옵니다. 패드도 선택하면 명시된 핀을 연결합니다."));
-    for (auto* control : {m_contacts, m_adoptStack, m_components})
+    for (auto* control : {m_regions, m_contacts, m_adoptStack, m_components})
     {
         layout->Add(control, 0, wxLEFT | wxBOTTOM, FromDIP(12));
         control->Hide();
     }
-    m_contacts->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
+    const auto updateOptional = [this](wxCommandEvent&)
     {
         for (const auto* rows : {&m_layerRows, &m_netRows})
         {
             for (const auto& row : *rows)
             {
-                row.choice->Enable(!row.contactsOnly || m_contacts->GetValue());
+                row.choice->Enable(row.Included(m_contacts->GetValue(), m_regions->GetValue()));
             }
         }
         Changed();
-    });
+    };
+    m_contacts->Bind(wxEVT_CHECKBOX, updateOptional);
+    m_regions->Bind(wxEVT_CHECKBOX, updateOptional);
     m_components->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
     {
         Changed();
@@ -331,6 +336,8 @@ void PcbImportDialog::RenderMapping(const Json& response)
     }
     m_loading = true;
     m_mappingRows->GetSizer()->Clear(true);
+    m_regions->SetValue(false);
+    m_regions->Show(sources.value("region_count", 0) > 0);
     m_contacts->SetValue(false);
     m_adoptStack->SetValue(false);
     m_components->SetValue(false);
@@ -397,7 +404,8 @@ void PcbImportDialog::RenderMapping(const Json& response)
                 row.targets.push_back(target.at("id"));
             }
             row.contactsOnly = source.value("contacts_only", false);
-            row.choice->Enable(!row.contactsOnly);
+            row.regionsOnly = source.value("regions_only", false);
+            row.choice->Enable(row.Included(false, false));
             row.choice->SetSelection(0);
             row.choice->Bind(wxEVT_CHOICE,
                              [this](wxCommandEvent&)

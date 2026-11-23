@@ -76,9 +76,10 @@ def _matches_step(matrix, step):
     return len(names) == 1 and names[0].casefold() == step.casefold()
 
 
-def _trace_nets(eda):
-    """! @brief SNT TRC와 FID C가 명시적으로 연결한 층/도형 번호와 넷만 사용한다."""
+def _trace_nets(eda, *, planes=False):
+    """! @brief 배선 또는 평면 서브넷의 FID C에서 층과 도형 번호가 명시된 넷을 읽는다."""
     names, current, routed = [], None, False
+    claimed = set()
     result = {}
     for line in eda.splitlines():
         fields = line.split(";", 1)[0].split()
@@ -94,19 +95,21 @@ def _trace_nets(eda):
             current = fields[1] if len(fields) == 2 else None
             routed = False
         elif fields[0] == "SNT":
-            routed = fields == ["SNT", "TRC"]
+            routed = fields == (["SNT", "PLN", "S", "E", "0"] if planes else ["SNT", "TRC"])
         elif fields[0] == "PKG":
             break
-        elif routed and current is not None and len(fields) == 4 and fields[:2] == ["FID", "C"]:
+        elif (routed or planes) and len(fields) == 4 and fields[:2] == ["FID", "C"]:
             if not all(token.isdecimal() and len(token) <= 8 for token in fields[2:]):
                 return {}
             layer, number = map(int, fields[2:])
             if layer >= len(names):
                 return {}
             key = (names[layer], number)
-            if key in result:
+            if key in claimed:
                 return {}
-            result[key] = "" if current == "$NONE$" else current
+            claimed.add(key)
+            if routed and current is not None:
+                result[key] = "" if current == "$NONE$" else current
     return result
 
 
@@ -213,6 +216,7 @@ def read(raw):
                 if all(value.isascii() and value.isdigit() and len(value) <= 8 for value in (major, minor)):
                     version = f"{major}.{minor}"
             editable, traces = None, []
+            regions, omitted = [], []
             pads, bores, stack, components = [], [], [], []
             if len(steps) == 1 and _matches_step(levels, steps[0]):
                 content = _text(archive, board_paths[0])
@@ -221,6 +225,8 @@ def read(raw):
                 if not any(line.lstrip().startswith("STEP-REPEAT") for line in header.splitlines()):
                     editable = _profile(content, steps[0])
                     if editable:
+                        from rfad.adapters.exchange import manufacturing_regions
+                        regions, omitted = manufacturing_regions.odb(archive, names, prefix + "steps/" + steps[0] + "/", data)
                         traces = _editable_traces(archive, names, prefix, steps[0], data)
                         from rfad.adapters.exchange.manufacturing_contacts import odb
                         pads, bores, stack = odb(archive, names, prefix, steps[0], data, info)
@@ -237,7 +243,12 @@ def read(raw):
                 "message": f"외곽과 절삭을 대조합니다. 층과 넷을 지정하면 EDA 배선 참조가 있는 직선 및 원호 {len(traces)}개를 반영합니다. 나머지 제조 정보는 원문에 보존합니다."}
     if pads or bores or stack or components:
         loss = {**loss, "message": loss["message"] + f" 선택 가능한 원형 패드 {len(pads)}개, 원형 홀 {len(bores)}개, 적층 {len(stack)}개, 실장 위치 {len(components)}개."}
-    return {"editable_components": components, "editable_pads": pads, "editable_holes": bores, "editable_stack": stack,
+    if regions or omitted:
+        reasons = sorted({row["reason"] for row in omitted})
+        summary = f" 적용 가능한 채움 동박 {len(regions)}개, 제외 {len(omitted)}건."
+        loss = {**loss, "message": loss["message"] + summary + (" " + " ".join(reasons) if reasons else "")}
+    return {"editable_regions": regions, "region_exclusions": omitted[:128], "region_exclusion_count": len(omitted),
+            "editable_components": components, "editable_pads": pads, "editable_holes": bores, "editable_stack": stack,
             "editable_traces": traces, "schema": "rfad.odbpp-read/0.1", "version": version, "source_sha256": hashlib.sha256(raw).hexdigest(),
             "steps": steps, "steps_with_eda": with_eda, "layer_count": layers, "feature_files": features,
             "editable_profile": editable, "losses": [loss]}
