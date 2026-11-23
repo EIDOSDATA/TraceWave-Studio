@@ -416,9 +416,11 @@ def apply_command(document: dict, command: dict, expected_revision: str) -> tupl
         changed_ids, invalidation_set, inverse = apply_design_command(result, command_type, payload)
     else:
         _fail("E_UNSUPPORTED", "지원하지 않는 프로젝트 명령입니다.", "command.type")
+    from rfad.application import copper_pour
     from rfad.domain.pattern_features import propagate
     derived_changes = evaluate_parameters(result["parameters"], update=True)
     derived_changes.extend(propagate(document, result))
+    derived_changes.extend(copper_pour.propagate(document, result))
     if replay is not None:
         inverse_metadata = apply_metadata_replay(result, replay)
     else:

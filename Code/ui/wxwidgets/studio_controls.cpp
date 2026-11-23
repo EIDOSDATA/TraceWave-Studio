@@ -100,7 +100,7 @@ void StudioFrame::UpdateControls()
         {
             enabled = opened && m_designRulesSupported;
         }
-        else if (item.first == IdLine || item.first == IdArc || item.first == IdCoordinates)
+        else if (item.first == IdLine || item.first == IdArc || item.first == IdRoute || item.first == IdCoordinates)
         {
             enabled = drawing;
         }
@@ -154,8 +154,8 @@ void StudioFrame::UpdateControls()
         }
         item.second->Enable(enabled);
     }
-    SelectDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc)},
-                      m_drawTool == "line" ? 1 : (m_drawTool == "arc" ? 2 : 0));
+    SelectDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc), m_tools.at(IdRoute)},
+                      m_drawTool == "line" ? 1 : (m_drawTool == "arc" ? 2 : (m_drawTool == "route" ? 3 : 0)));
     for (const int id :
          {IdBoard, IdCircularBoard, IdLayer, IdDielectric, IdCoordinates, IdDeleteShape, IdValidate, IdExportStep,
           IdBuild3D, IdCancelCad, IdOutputFolder, IdRunSolver, IdReuseSolverConditions, IdCancelSolver, IdRadiation})

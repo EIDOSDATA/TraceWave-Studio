@@ -220,6 +220,29 @@ void StudioSmokeDriver::CanvasSmokeNext()
         m_canvasLine = m_frame.m_scene.at("shapes").at(0).at("id");
         m_canvasOriginalLine = CanvasShape(m_canvasLine);
         m_canvasChecks.push_back("two_click_line");
+        const auto originalAction = m_frame.m_canvas->onAction;
+        Json captured;
+        m_frame.m_canvas->onAction = [&captured](const Json& action)
+        {
+            captured = action;
+        };
+        m_frame.m_canvas->SetTool("route");
+        m_frame.m_canvas->SetRouteClearance(0.25);
+        CanvasClick(5, 5);
+        CanvasClick(7, 9);
+        wxKeyEvent back(wxEVT_KEY_DOWN);
+        back.m_keyCode = WXK_BACK;
+        m_frame.m_canvas->GetEventHandler()->ProcessEvent(back);
+        CanvasClick(9, 9);
+        CanvasClick(11, 9);
+        wxKeyEvent enter(wxEVT_KEY_DOWN);
+        enter.m_keyCode = WXK_RETURN;
+        m_frame.m_canvas->GetEventHandler()->ProcessEvent(enter);
+        m_frame.m_canvas->onAction = originalAction;
+        CanvasAssert(captured.value("type", "") == "create_route" && captured.at("source_id") == m_canvasLine &&
+                         captured.at("points").size() == 3 && captured.at("clearance_mm") == 0.25,
+                     "Route pointer, Backspace and Enter did not submit the polyline.");
+        m_canvasChecks.push_back("click_route_backspace_enter");
         m_frame.m_canvas->SetTool("arc");
         m_canvasStage = 4;
         CanvasClick(20, 30);

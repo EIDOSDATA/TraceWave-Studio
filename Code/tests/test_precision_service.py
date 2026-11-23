@@ -137,7 +137,8 @@ class PrecisionServiceTests(unittest.TestCase):
         request = {"jsonrpc": "2.0", "id": 1, "method": "capabilities.get", "params": {"contract_version": "rfad.api/2.0", "context": {}, "input": {}}}
         capability = handle_frame(json.dumps(request).encode(), self.service)["result"]
         self.assertTrue(capability["precision_profile"]["preview_required"])
-        self.assertFalse(capability["precision_profile"]["geometry_solver_supported"])
+        self.assertTrue(capability["precision_profile"]["geometry_solver_supported"])
+        self.assertEqual(capability["precision_profile"]["sketch_solver"]["operation"], "solve")
         self.assertNotIn("geometry.precision.apply", capability["project_profile"]["commands"])
 
     def test_capability_inspects_installation_without_loading_native_planar_engine(self):

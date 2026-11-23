@@ -76,6 +76,7 @@ enum
     IdSelect,
     IdLine,
     IdArc,
+    IdRoute,
     IdCoordinates,
     IdPolygon,
     IdCirclePad,

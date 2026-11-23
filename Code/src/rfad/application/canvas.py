@@ -22,6 +22,7 @@ OPERATIONS = {
     "create_layer": {"id", "name"},
     "create_dielectric_layer": {"id", "name"},
     "create_line": {"id", "layer_id", "width_mm", "start", "end"},
+    "create_route": {"id", "layer_id", "source_id", "width_mm", "clearance_mm", "points"},
     "create_arc": {"id", "layer_id", "width_mm", "center", "radius_mm", "start_angle_deg", "sweep_angle_deg"},
     "create_polygon": {"id", "layer_id", "outer", "holes"},
     "create_pad": {"id", "layer_id", "pad_shape", "center", "width_mm", "height_mm", "rotation_deg"},
@@ -435,6 +436,9 @@ def canvas_command(document: dict, operation: str, values: dict) -> dict:
     identity = _uuid(values["id"], "values.id")
     if operation.startswith("create_") and identity in _existing_ids(document):
         _fail("생성 ID가 기존 객체와 충돌합니다. 원본을 덮어쓰지 않았습니다.", "values.id", "E_CONFLICT")
+    if operation == "create_route":
+        from rfad.application.interactive_route import command
+        return command(document, values)
     if operation in ("create_board", "create_circular_board"):
         if document["board"] is not None:
             _fail("기판이 이미 있습니다. 속성 편집으로 기존 기판을 수정하십시오.", "board", "E_CONFLICT")

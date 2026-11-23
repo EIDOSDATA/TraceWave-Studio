@@ -190,7 +190,8 @@ def capabilities(service=None, catalog=None) -> dict:
                                      "automatic_interpolation": False, "physical_validation": False}
         result["precision_profile"] = {"profile": precision_service.PROFILE, "preview_required": True, "atomic_apply": True,
                                        "operations": list(precision_service.OPERATIONS), "limits": precision_service.LIMITS,
-                                       "planar_engine": precision_service.installation_metadata(), "geometry_solver_supported": False}
+                                       "planar_engine": precision_service.installation_metadata(), "geometry_solver_supported": True,
+                                       "sketch_solver": precision_service.SKETCH_SOLVER}
         result["object_name_profile"] = {"profile": "rfad.object-name/0.1", "project_schema": SCHEMA_VERSION,
                                          "maximum_characters": 256, "legacy_names_persisted_on_read": False,
                                          "rename_method": "editor.apply", "automatic_names": ["board", "geometry", "template_objects"]}
@@ -215,7 +216,7 @@ def capabilities(service=None, catalog=None) -> dict:
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.editor/0.1"} for name in ("editor.get", "editor.apply", "project.undo", "project.redo")})
         result["editor_profile"] = {"profile": "rfad.editor/0.1", "source": "draft_revision", "history_limit": 128, "history_persistent": True, "full_document_returned": False, "max_dto_bytes": 61440}
         result["methods"].update({name: {"status": "implemented", "extension_profile": "rfad.canvas/0.1"} for name in ("canvas.get", "canvas.apply")})
-        result["canvas_profile"] = {"profile": "rfad.canvas/0.1", "source": "draft_revision", "unit": "mm", "angle_unit": "deg", "operations": ["create_board", "create_circular_board", "create_layer", "create_dielectric_layer", "create_line", "create_arc", "create_polygon", "create_pad", "create_via", "translate", "move_endpoint", "remove"], "full_document_returned": False, "max_dto_bytes": 61440}
+        result["canvas_profile"] = {"profile": "rfad.canvas/0.1", "source": "draft_revision", "unit": "mm", "angle_unit": "deg", "operations": ["create_board", "create_circular_board", "create_layer", "create_dielectric_layer", "create_line", "create_route", "create_arc", "create_polygon", "create_pad", "create_via", "translate", "move_endpoint", "remove"], "full_document_returned": False, "max_dto_bytes": 61440}
         result["edit_view_transport"] = {"profile": edit_view_contract.PROFILE, "max_dto_bytes": MAX_SELECTION_RESULT_BYTES}
         result["edit_view_pages"] = {"profile": edit_view_pages.PROFILE, "max_dto_bytes": edit_view_pages.MAX_PAGE_BYTES,
                                       "max_rows": edit_view_pages.MAX_ROWS}

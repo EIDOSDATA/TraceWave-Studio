@@ -7319,6 +7319,7 @@
         "create_layer",
         "create_dielectric_layer",
         "create_line",
+        "create_route",
         "create_arc",
         "create_polygon",
         "create_pad",
@@ -7577,7 +7578,7 @@
     },
     "precision_profile": {
       "atomic_apply": true,
-      "geometry_solver_supported": false,
+      "geometry_solver_supported": true,
       "limits": {
         "max_coordinate_mm": 1000000.0,
         "max_dto_bytes": 262144,
@@ -7596,6 +7597,8 @@
         "edit_linear_pattern",
         "edit_circular_pattern",
         "detach_pattern",
+        "copper_pour",
+        "restore_copper_outline",
         "line_fillet",
         "curved_fillet",
         "curve_trim",
@@ -7622,7 +7625,19 @@
         "version_matches": false
       },
       "preview_required": true,
-      "profile": "rfad.precision-editor/0.1"
+      "profile": "rfad.precision-editor/0.1",
+      "sketch_solver": {
+        "apply": "precision.sketch.apply",
+        "get": "precision.sketch.get",
+        "operation": "solve",
+        "plane": "board",
+        "preview": "precision.sketch.preview",
+        "shapes": [
+          "line_path",
+          "arc_path",
+          "pad"
+        ]
+      }
     },
     "profile": "rfad.projects/0.2",
     "project_profile": {
@@ -14989,8 +15004,8 @@
     },
     {
       "path": "Code/src/rfad/application/canvas.py",
-      "text_sha256": "1f73075f56a9871a54cec3277c668cb70edeb71e50dbdb11d39cc27de5b64bf0",
-      "utf8_bytes": 34099
+      "text_sha256": "8babfc3f2d8a73b44dc3a3600732c5277cbf6bf9d031f6b9a31835c0b5aedcb3",
+      "utf8_bytes": 34330
     },
     {
       "path": "Code/src/rfad/application/catalog_api.py",
@@ -15199,13 +15214,13 @@
     },
     {
       "path": "Code/src/rfad/application/precision_candidates.py",
-      "text_sha256": "6d42c96a6c80a0d6000534980db8155969d3907ebc773dcb4b33f124d410ffe1",
-      "utf8_bytes": 24622
+      "text_sha256": "d1e3886e97e1bb73c03df726c1fc835b3f14d8097654e11c9eff15e4f26266be",
+      "utf8_bytes": 24938
     },
     {
       "path": "Code/src/rfad/application/precision_service.py",
-      "text_sha256": "d713c32a7c92d2f13738390a102469cec012544abf38305db3a1ebb67c8ab63c",
-      "utf8_bytes": 13566
+      "text_sha256": "9fd2a769d8fe6eb3e946635cde0b43db5799d05b8473f38d18942ec40eb25cfc",
+      "utf8_bytes": 14336
     },
     {
       "path": "Code/src/rfad/application/project_archive.py",
@@ -15344,8 +15359,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "064559b362bdb9d0760152f454210190b6d8ea02c045d0ec7bd23da493392df0",
-      "utf8_bytes": 40225
+      "text_sha256": "d421774d773f180708b80b8a3063ef87bbef3edcd43fb2822151ce197e7d0555",
+      "utf8_bytes": 40329
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -15559,8 +15574,8 @@
     },
     {
       "path": "Code/src/rfad/domain/pcb_features.py",
-      "text_sha256": "01851e7f44d54b691dcc6ab7f2294d0b09a3aa8851538966acef19055db52892",
-      "utf8_bytes": 34524
+      "text_sha256": "2c8573c0e3e1b0b6c3a1d847efe55e092ca09e5d54373af3379d7b279ac320b5",
+      "utf8_bytes": 34539
     },
     {
       "path": "Code/src/rfad/domain/pcb_selection_evidence.py",
@@ -15599,8 +15614,8 @@
     },
     {
       "path": "Code/src/rfad/domain/project.py",
-      "text_sha256": "d57d96e777daafb9d120e9e092b4a7f633b5412aab9bb2973f3e386ebc5d46a9",
-      "utf8_bytes": 26099
+      "text_sha256": "43d6258d532002dfc665e6355f30397a89bc7f541c5ebf4eb1a15149178795a6",
+      "utf8_bytes": 26212
     },
     {
       "path": "Code/src/rfad/domain/radiation_polarization.py",
@@ -15899,8 +15914,8 @@
     },
     {
       "path": "Code/tests/test_gui_process.py",
-      "text_sha256": "4eeaa7bcacd9bfa77834e0eb40c925fbc58095e85a77c01200b9d65a9fb4eea0",
-      "utf8_bytes": 25733
+      "text_sha256": "2e135570796abb7dd8437ae91bfced51f9e4fa4828cbda271dfb55f325a2a0dd",
+      "utf8_bytes": 25764
     },
     {
       "path": "Code/tests/test_gui_results_process.py",
@@ -16119,8 +16134,8 @@
     },
     {
       "path": "Code/tests/test_precision_service.py",
-      "text_sha256": "1d0c866aa7ca7b28776f21a69514c98939434f5f98e10990df0d9be36266fff4",
-      "utf8_bytes": 49141
+      "text_sha256": "b948be919a418d0fbe6a8181da44ef2bfbca2c1c270324c5f1e654255ce90fa1",
+      "utf8_bytes": 49237
     },
     {
       "path": "Code/tests/test_printed_seeds.py",
@@ -16399,8 +16414,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas.cpp",
-      "text_sha256": "9bc4e566ad39d7ba7f6ccf5fed0ce18660e55c6c1cb0dc677f54a4b8d962939d",
-      "utf8_bytes": 33313
+      "text_sha256": "79674d3ecc466f636c48ee377d8e75af19c9e83a139e27c817f55cddaf2a5b71",
+      "utf8_bytes": 35757
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_dimensions.cpp",
@@ -16424,8 +16439,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/drawing_rail.cpp",
-      "text_sha256": "1f3c14dbb753595afc76fcc41fb7ca2c7a73c2f913bfeb623d9d2b317c06b165",
-      "utf8_bytes": 4145
+      "text_sha256": "3e2114da422ae927ac7e25966a5bde906d3af43eba99c11a6d28831640813d4e",
+      "utf8_bytes": 4305
     },
     {
       "path": "Code/ui/wxwidgets/drawing_sheet_canvas.cpp",
@@ -16584,8 +16599,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/precision_dialog.cpp",
-      "text_sha256": "04acf0ac153a55866139fd54d33fb05afaa7f37b289e1f9904cffc63a63b5663",
-      "utf8_bytes": 21860
+      "text_sha256": "a4a63efab96664e44e88428c42bf2ae56376c3203e7a1601d5eff08ba5f36bfe",
+      "utf8_bytes": 22230
     },
     {
       "path": "Code/ui/wxwidgets/project_setup_dialog.cpp",
@@ -16699,8 +16714,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "416bfdee5bae7409102525b3de1005055d1988977570682f04c0f5a1056e1095",
-      "utf8_bytes": 34272
+      "text_sha256": "4921e5e6bd47d4a4aa61edd2305318b9a401f20b584e6c14ae9bf7b001fb6b79",
+      "utf8_bytes": 34436
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
@@ -16739,8 +16754,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_workspace.cpp",
-      "text_sha256": "4b3976e10456ba667c4798531db1a99d002b5ff64b7ab0d9b9a1e29241b6c0f0",
-      "utf8_bytes": 14236
+      "text_sha256": "d7bc9e73dd8262e5c6177dbb3690fc059f3f603599d068b219edbe854a9fb958",
+      "utf8_bytes": 14287
     },
     {
       "path": "Code/ui/wxwidgets/study_report_dialog.cpp",

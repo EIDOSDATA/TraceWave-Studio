@@ -6,6 +6,7 @@ from uuid import UUID, uuid5
 
 from rfad.adapters.planar_backend import operate, runtime
 from rfad.application.canonical import canonical_hash
+from rfad.application import copper_pour
 from rfad.domain.curve_boolean import _intersections, _piece, TOLERANCE_MM
 from rfad.domain.design import _uuid
 from rfad.domain.errors import ProjectError
@@ -26,6 +27,8 @@ OPERATIONS = {
     "edit_linear_pattern": ("직선 반복 설정 편집", {"count", "dx_mm", "dy_mm"}),
     "edit_circular_pattern": ("원형 반복 설정 편집", {"count", "pivot_x_mm", "pivot_y_mm", "step_deg"}),
     "detach_pattern": ("반복 연결 해제", set()),
+    copper_pour.FILL: ("구리면 자동 채움", {"clearance_mm", "tolerance_mm"}),
+    copper_pour.RESTORE: ("구리면 원래 경계 복원", set()),
     "line_fillet": ("두 직선 사이 필렛", {"radius_mm"}),
     "curved_fillet": ("원호에 접하는 필렛", {"radius_mm"}),
     "curve_trim": ("교차점에서 선·원호 자르기", {"target_id", "keep"}),
@@ -76,6 +79,8 @@ def operation_reason(document, rows, operation):
     """! @brief 비활성 사유를 서비스와 GUI가 같은 선택 기준으로 표시한다."""
     if not rows:
         return "도체 객체를 선택하십시오."
+    if operation in (copper_pour.FILL, copper_pour.RESTORE):
+        return copper_pour.reason(document, rows, operation)
     if operation in patterns.REGENERATE or operation == "detach_pattern":
         try:
             patterns.match(document, rows, operation)

@@ -225,6 +225,12 @@ void PrecisionDialog::BuildFields()
             number("step_deg", "회전 간격 (deg, 반시계 양수)", initial("step_deg", "90"));
         }
     }
+    else if (id == "copper_pour")
+    {
+        const Json previous = operation.value("values", Json::object());
+        number("clearance_mm", "다른 넷과 금지 영역 간격 (mm)", previous.value("clearance_mm", Json(0.25)).dump());
+        number("tolerance_mm", "곡선 다각형 근사 허용값 (mm)", previous.value("tolerance_mm", Json(0.01)).dump());
+    }
     else if (id == "line_fillet" || id == "curved_fillet")
     {
         number("radius_mm", "필렛 반경 (mm)", "1");

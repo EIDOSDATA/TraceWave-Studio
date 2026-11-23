@@ -260,8 +260,8 @@ void StudioFrame::ShowWorkspaceJob(long row, const std::string& state, const std
 
 void StudioFrame::UpdateWorkspace()
 {
-    SelectDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc)},
-                      m_drawTool == "line" ? 1 : (m_drawTool == "arc" ? 2 : 0));
+    SelectDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc), m_tools.at(IdRoute)},
+                      m_drawTool == "line" ? 1 : (m_drawTool == "arc" ? 2 : (m_drawTool == "route" ? 3 : 0)));
     if (m_workspaceBar == nullptr || m_workspaceJobs == nullptr)
     {
         return;

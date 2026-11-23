@@ -194,9 +194,9 @@ void StudioFrame::BuildInterface()
              if (m_tools.count(IdDeleteShape) != 0)
              {
                  StyleDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc),
-                                   m_tools.at(IdCoordinates), m_tools.at(IdFit), m_tools.at(IdDeleteShape)});
-                 SelectDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc)},
-                                   m_drawTool == "line" ? 1 : (m_drawTool == "arc" ? 2 : 0));
+                                   m_tools.at(IdCoordinates), m_tools.at(IdFit), m_tools.at(IdDeleteShape), m_tools.at(IdRoute)});
+                 SelectDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc), m_tools.at(IdRoute)},
+                                   m_drawTool == "line" ? 1 : (m_drawTool == "arc" ? 2 : (m_drawTool == "route" ? 3 : 0)));
              }
              m_manager->Update();
              event.Skip();
@@ -315,11 +315,12 @@ void StudioFrame::BuildInterface()
     AddTool(center, drawingTools, IdSelect, "선택");
     AddTool(center, drawingTools, IdLine, "선");
     AddTool(center, drawingTools, IdArc, "원호");
+    AddTool(center, drawingTools, IdRoute, "배선");
     AddTool(center, drawingTools, IdCoordinates, "좌표 입력");
     AddTool(center, drawingTools, IdFit, "전체 보기");
     AddTool(center, drawingTools, IdDeleteShape, "삭제");
     StyleDrawingRail({m_tools.at(IdSelect), m_tools.at(IdLine), m_tools.at(IdArc), m_tools.at(IdCoordinates),
-                      m_tools.at(IdFit), m_tools.at(IdDeleteShape)});
+                      m_tools.at(IdFit), m_tools.at(IdDeleteShape), m_tools.at(IdRoute)});
     centerSizer->Add(drawingTools, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));
     auto* context = new wxWrapSizer(wxHORIZONTAL);
     auto* layerTools = new wxBoxSizer(wxHORIZONTAL);
@@ -692,7 +693,7 @@ void StudioFrame::BuildInterface()
 void StudioFrame::AddTool(wxWindow* parent, wxSizer* sizer, int id, const std::string& label)
 {
     auto* button = new wxButton(parent, id, Display(label), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-    if (id != IdSelect && id != IdLine && id != IdArc)
+    if (id != IdSelect && id != IdLine && id != IdArc && id != IdRoute)
     {
         StudioTheme::Button(*button);
     }

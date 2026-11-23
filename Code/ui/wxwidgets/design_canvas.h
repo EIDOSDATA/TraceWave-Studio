@@ -35,6 +35,7 @@ public:
     void SetTool(const std::string& tool);
     void SetDrawingLayer(const std::string& identity);
     void SetStrokeWidth(double widthMm);
+    void SetRouteClearance(double gap);
     void SetEditingEnabled(bool enabled);
     void SetLayerVisible(const std::string& identity, bool visible);
     bool IsLayerVisible(const std::string& identity) const;
@@ -134,6 +135,8 @@ private:
     wxPoint2DDouble m_dragOffset{0.0, 0.0};
     wxPoint2DDouble m_cursor;
     std::vector<wxPoint2DDouble> m_points;
+    std::string m_routeSource;
+    double m_routeClearance = 0.0;
     std::string m_pendingId;
     wxPoint2DDouble m_pendingOffset{0.0, 0.0};
     wxRect m_displayMarkerBounds;

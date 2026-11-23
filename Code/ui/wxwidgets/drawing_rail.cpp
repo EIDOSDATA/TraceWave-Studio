@@ -47,6 +47,12 @@ wxBitmap ToolBitmap(std::size_t index, const wxColour& foreground, double scale)
         dc.DrawLine(7, 12, 17, 12);
         dc.DrawLine(12, 7, 12, 17);
     }
+    else if (index == 6)
+    {
+        dc.DrawLine(3, 18, 10, 11);
+        dc.DrawLine(10, 11, 21, 11);
+        dc.DrawCircle(3, 18, 2);
+    }
     else
     {
         dc.DrawLine(5, 5, 19, 19);
@@ -105,7 +111,7 @@ void SelectDrawingRail(const std::vector<wxButton*>& buttons, std::size_t select
         }
         if (button.GetBackgroundColour() != background || button.GetForegroundColour() != foreground)
         {
-            button.SetBitmap(ToolIcon(index, foreground));
+            button.SetBitmap(ToolIcon(index == 3 ? 6 : index, foreground));
             button.SetBackgroundColour(background);
             button.SetForegroundColour(foreground);
             button.Refresh();

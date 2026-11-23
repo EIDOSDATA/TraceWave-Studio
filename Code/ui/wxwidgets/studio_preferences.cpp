@@ -249,8 +249,8 @@ void StudioFrame::ShowCommandSearch()
             }
         }
     }
-    for (const auto& [id, label] : std::array<std::pair<int, const char*>, 3>{
-             {{IdLine, "선 그리기"}, {IdArc, "원호 그리기"}, {IdPrecision, "정밀 편집"}}})
+    for (const auto& [id, label] : std::array<std::pair<int, const char*>, 4>{
+             {{IdRoute, "대화식 배선"}, {IdLine, "선 그리기"}, {IdArc, "원호 그리기"}, {IdPrecision, "정밀 편집"}}})
     {
         commands.push_back({id, Display(label), Display("설계"), id == IdPrecision ? wxString("D") : wxString(),
                             nullptr, m_tools.at(id)});

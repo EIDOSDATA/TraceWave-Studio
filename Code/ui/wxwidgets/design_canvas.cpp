@@ -208,7 +208,7 @@ DesignCanvas::Json DesignCanvas::SelectionInfo(const std::string& identity) cons
 
 void DesignCanvas::SetTool(const std::string& tool)
 {
-    if (tool != "select" && tool != "line" && tool != "arc")
+    if (tool != "select" && tool != "line" && tool != "arc" && tool != "route")
     {
         throw std::runtime_error("지원하지 않는 캔버스 도구입니다.");
     }
@@ -219,9 +219,19 @@ void DesignCanvas::SetTool(const std::string& tool)
     CancelGesture();
     m_tool = tool;
     SetCursor(wxCursor(tool == "select" ? wxCURSOR_ARROW : wxCURSOR_CROSS));
+    if (tool == "route")
+    {
+        Status("배선 시작 도체와 경유점을 클릭한 뒤 Enter로 적용하세요. Esc로 취소합니다.");
+        return;
+    }
     Status(tool == "line" ? "선: 시작점과 끝점을 클릭하세요. Esc로 취소합니다."
                           : (tool == "arc" ? "원호: 중심, 시작점, 끝 방향을 클릭하세요. 기본 CCW, Shift는 CW입니다."
                                            : "선택: 파란 끝점은 끝점 편집, 도체 본체는 전체 이동. Esc로 취소합니다."));
+}
+
+void DesignCanvas::SetRouteClearance(double gap)
+{
+    m_routeClearance = gap;
 }
 
 void DesignCanvas::SetDrawingLayer(const std::string& identity)
@@ -602,6 +612,26 @@ void DesignCanvas::DrawPreview(wxDC& dc, CanvasRenderer& renderer) const
     }
     dc.SetPen(wxPen(m_colours.Focus(wxColour(41, 132, 202)), FromDIP(1), wxPENSTYLE_SHORT_DASH));
     dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    if (m_tool == "route")
+    {
+        auto points = m_points;
+        points.push_back(m_cursor);
+        for (std::size_t index = 1; index < points.size(); ++index)
+        {
+            const auto& a = points[index - 1];
+            const auto& b = points[index];
+            if (Distance(a, b) > MinimumLength)
+            {
+                Shape line;
+                line.kind = "line_path";
+                line.start = GeometryPoint(a);
+                line.end = GeometryPoint(b);
+                line.width = m_strokeWidth;
+                renderer.DrawShape(line, {0.0, 0.0}, wxColour(64, 148, 209), false);
+            }
+        }
+        return;
+    }
     const wxPoint first = WorldToScreen(m_points[0]);
     const wxPoint cursor = WorldToScreen(m_cursor);
     dc.DrawLine(first, cursor);
@@ -739,6 +769,27 @@ void DesignCanvas::CommitDrawing(bool clockwise)
     if (!Valid(m_cursor))
     {
         Status("표시 좌표 범위를 벗어나 입력하지 않았습니다.");
+        return;
+    }
+    if (m_tool == "route")
+    {
+        if (m_points.empty())
+        {
+            m_routeSource = HitTest(WorldToScreen(m_cursor), true);
+            if (m_routeSource.empty())
+            {
+                Status("현재 도체층에서 넷이 지정된 시작 도체를 클릭하세요.");
+                return;
+            }
+        }
+        else if (Distance(m_points.back(), m_cursor) <= MinimumLength || m_points.size() >= 33)
+        {
+            Status("서로 다른 경유점을 최대 33개까지 선택하세요.");
+            return;
+        }
+        m_points.push_back(m_cursor);
+        Status("다음 경유점을 클릭하거나 Enter로 배선을 적용하세요. Backspace는 마지막 점을 취소합니다.");
+        Refresh(false);
         return;
     }
     const auto storeRelations = [this](Json& action)
@@ -980,6 +1031,24 @@ void DesignCanvas::OnKeyDown(wxKeyEvent& event)
         {
             Status("캔버스 입력을 취소했습니다.");
         }
+        return;
+    }
+    if (m_tool == "route" && !m_points.empty() && event.GetKeyCode() == WXK_BACK)
+    {
+        m_points.pop_back();
+        Refresh(false);
+        return;
+    }
+    if (m_tool == "route" && m_editingEnabled && m_points.size() >= 2 &&
+        (event.GetKeyCode() == WXK_RETURN || event.GetKeyCode() == WXK_NUMPAD_ENTER))
+    {
+        Json points = Json::array();
+        for (const auto& point : m_points)
+        {
+            points.push_back(Coordinates(GeometryPoint(point)));
+        }
+        Emit({{"type", "create_route"}, {"source_id", m_routeSource}, {"layer_id", m_drawingLayer},
+              {"width_mm", m_strokeWidth}, {"clearance_mm", m_routeClearance}, {"points", points}});
         return;
     }
     if (event.GetKeyCode() == WXK_DELETE && m_editingEnabled && m_tool == "select" && !m_selection.empty())

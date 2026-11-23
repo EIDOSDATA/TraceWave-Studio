@@ -69,6 +69,10 @@ void StudioFrame::BindCanvas()
                 values.erase("sweep_angle");
             }
         }
+        else if (type == "create_route")
+        {
+            values["id"] = Uuid();
+        }
         else if (type == "translate")
         {
             values["dx_mm"] = values.at("delta").at(0);
@@ -112,7 +116,7 @@ void StudioFrame::BindCanvas()
                       UpdateStrokeWidth();
                   });
     for (const auto& tool :
-         std::vector<std::pair<int, std::string>>{{IdSelect, "select"}, {IdLine, "line"}, {IdArc, "arc"}})
+         std::vector<std::pair<int, std::string>>{{IdSelect, "select"}, {IdLine, "line"}, {IdArc, "arc"}, {IdRoute, "route"}})
     {
         Bind(
             wxEVT_MENU,
@@ -122,6 +126,21 @@ void StudioFrame::BindCanvas()
                 {
                     auto activate = [this, name]()
                     {
+                        if (name == "route")
+                        {
+                            Json settings{{"clearance", 0.0}};
+                            if (!AskNumbers("배선 간격", {{"clearance", "다른 넷과의 최소 간격 (mm)", 0.0}}, settings))
+                            {
+                                return;
+                            }
+                            const double gap = settings.at("clearance").get<double>();
+                            if (gap < 0.0 || gap > 1e6)
+                            {
+                                SetStatusText(Display("간격은 0~1000000 mm 범위로 입력하세요."));
+                                return;
+                            }
+                            m_canvas->SetRouteClearance(gap);
+                        }
                         m_drawTool = name;
                         m_canvas->SetTool(name);
                         UpdateWorkspace();
@@ -356,9 +375,12 @@ void StudioFrame::CanvasCommand(const std::string& operation, const Json& values
                               }
                           });
         },
-        [this](const Json& error)
+        [this, operation](const Json& error)
         {
-            RestoreCanvas();
+            if (operation != "create_route")
+            {
+                RestoreCanvas();
+            }
             Failure(error.value("message", std::string("2D 편집을 적용하지 못했습니다.")));
         });
 }

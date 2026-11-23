@@ -6,6 +6,7 @@ from uuid import UUID, uuid5
 from rfad.adapters.planar_backend import installation_metadata, runtime
 from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.application.canvas import build_canvas_dto
+from rfad.application import copper_pour
 from rfad.application.precision_candidates import (OPERATIONS, PLANAR_OPERATIONS, item_label,
                                                   operation_reason, parameter_copies, replacements, selected)
 from rfad.application.project_contract import _fields, _uuid
@@ -24,6 +25,8 @@ PROFILE = "rfad.precision-editor/0.1"
 READS = {"precision.get", "precision.preview"}
 MUTATION = "precision.apply"
 MAX_DTO_BYTES = 256 * 1024
+SKETCH_SOLVER = {"get": "precision.sketch.get", "preview": "precision.sketch.preview", "apply": "precision.sketch.apply",
+                 "operation": "solve", "shapes": ["line_path", "arc_path", "pad"], "plane": "board"}
 LIMITS = {"max_selection": MAX_SELECTION, "max_output_regions": 16, "max_region_points": 64,
           "max_region_holes": 8, "max_dto_bytes": MAX_DTO_BYTES, "max_coordinate_mm": 1e6,
           "max_origin_bytes": MAX_ORIGIN_BYTES, "max_origin_records": MAX_RECORDS}
@@ -96,6 +99,10 @@ def get(document, identities):
         item = {"id": operation, "label": label, "enabled": not reason, "reason": reason}
         if operation in patterns.REGENERATE and not reason:
             item["values"] = patterns.match(document, rows, operation)["head"]["values"]
+        if operation == copper_pour.FILL and not reason:
+            current = copper_pour.active(document).get(rows[0]["id"])
+            if current:
+                item["values"] = current["values"]
         operations.append(item)
     labels = display_names(document)
     return bounded({"profile": PROFILE, "project_id": document["project_id"], "revision_id": document["revision_id"],
@@ -105,7 +112,7 @@ def get(document, identities):
                     "parameters": [{"id": identity, "label": row["name"], "dimension": row["quantity"]["dimension"],
                                     "status": row["quantity"]["status"], "derived": "expression" in row}
                                    for identity, row in document["parameters"].items()],
-                    "limits": LIMITS, "planar_engine": runtime()[1], "geometry_solver_supported": False,
+                    "limits": LIMITS, "planar_engine": runtime()[1], "geometry_solver_supported": True, "sketch_solver": SKETCH_SOLVER,
                     "constraint_editor": "design.rules.get", "constraints_checked": False})
 
 
@@ -124,13 +131,15 @@ def preview(document, data):
         seed = canonical_hash({"base_content_hash": base_hash, "operation": data["operation"], "values": data["values"], "selection_ids": data["selection_ids"]})
         origin_id = str(uuid5(UUID(document["project_id"]), "precision:" + seed))
         operation = data["operation"]
-        if operation in patterns.REGENERATE or operation == "detach_pattern":
+        if operation in (copper_pour.FILL, copper_pour.RESTORE):
+            output, engine = copper_pour.edited(document, rows, operation, data["values"])
+        elif operation in patterns.REGENERATE or operation == "detach_pattern":
             rows, output, engine = patterns.editing(document, rows, operation, data["values"])
         else:
             output, engine = replacements(document, rows, operation, data["values"], origin_id)
             if operation in patterns.PATTERNS:
                 engine["linked_pattern"] = True
-        if output == rows and operation != "detach_pattern":
+        if output == rows and operation not in ("detach_pattern", copper_pour.FILL, copper_pour.RESTORE):
             fail("현재 원본과 같은 결과입니다. 변경할 값을 입력하십시오.", "values", "E_CONFLICT")
         dependencies = parameter_copies(document, [*rows, *output])
         digest = canonical_hash({"profile": PROFILE, "base_content_hash": base_hash, "expected_revision": data["expected_revision"],
@@ -147,6 +156,7 @@ def preview(document, data):
         candidate["schema_version"] = SCHEMA_VERSION
         apply_precision_command(candidate, payload)
         propagated = patterns.propagate(document, candidate)
+        propagated.extend(copper_pour.propagate(document, candidate))
         validate_project(candidate)
         size = len(canonical_bytes(candidate))
         if size > MAX_DOCUMENT_BYTES:
