@@ -17,7 +17,7 @@ COLLECTIONS = {"hole": "holes", "footprint": "footprints", "artwork_layer": "art
                "aperture": "apertures", "keepout": "keepouts", "import": "imports"}
 LIMITS = {"holes": 64, "footprints": 32, "artwork_layers": 4, "apertures": 128,
           "keepouts": 64, "imports": 16, "cutouts": 16}
-PATCH_COLLECTIONS = {"board.cutouts", *("pcb." + key for key in COLLECTIONS.values()), "geometry", "ports", "connections"}
+PATCH_COLLECTIONS = {"stackup", "board.cutouts", *("pcb." + key for key in COLLECTIONS.values()), "geometry", "ports", "connections"}
 MAX_PATCH_BYTES = 256 * 1024
 
 
@@ -42,7 +42,7 @@ def records(document, collection):
         return (document.get("board") or {}).get("cutouts", [])
     if collection.startswith("pcb.") and collection[4:] in COLLECTIONS.values():
         return document.get("pcb", empty_pcb())[collection[4:]]
-    if collection in ("geometry", "ports", "connections"):
+    if collection in ("stackup", "geometry", "ports", "connections"):
         return document[collection]
     fail("지원하지 않는 PCB collection입니다.", collection, "E_UNSUPPORTED")
 
@@ -418,6 +418,11 @@ def _apply_pcb_command(document, payload):
             _fields(item, {"present", "value"}, "pcb.command." + side)
             if type(item["present"]) is not bool or (item["present"] and (type(item["value"]) is not dict or item["value"].get("id") != identity)) or (not item["present"] and item["value"] is not None):
                 fail("record 존재 여부/ID가 실제 교체값과 다릅니다.", "pcb.command." + side)
+        if collection == "stackup":
+            new = change["replacement"]["value"]
+            if (payload["operation"] not in ("history.restore", "import.apply") or old is None or new is None
+                    or old.keys() != new.keys() or any(old[key] != new[key] for key in old if key not in ("z_min", "thickness"))):
+                fail("제조 자료는 기존 적층의 두께와 아래 면 위치만 수정합니다.", "pcb.command.stackup")
         if change["expected"] != {"present": old is not None, "value": old} or change["expected"] == change["replacement"]:
             fail("검토한 PCB 원본 record가 다르거나 변경이 없습니다.", "pcb.command.expected", "E_CONFLICT")
         if change["replacement"]["present"] and ((collection.startswith("pcb.") and not containers["replacement"]["pcb"]) or
@@ -432,6 +437,10 @@ def _apply_pcb_command(document, payload):
     for change in payload["changes"]:
         collection, identity = change["collection"], change["id"]
         target = records(document, collection)
+        if collection == "stackup":
+            index = next(index for index, layer in enumerate(target) if layer["id"] == identity)
+            target[index] = deepcopy(change["replacement"]["value"])
+            continue
         target[:] = [row for row in target if row["id"] != identity]
         if change["replacement"]["present"]:
             target.append(deepcopy(change["replacement"]["value"]))

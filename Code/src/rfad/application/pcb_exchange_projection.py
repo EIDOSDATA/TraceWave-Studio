@@ -107,10 +107,10 @@ def feature_scene(document):
     return output
 
 
-def exchange_projection(document, snapshot):
+def exchange_projection(document, snapshot, *, kicad_board=False):
     """! @brief native package 없이 원본 사본 하나와 공통 evaluated 도체/기계/제조 입력을 만든다."""
     from rfad.application.cad import build_cad_input
-    cad = build_cad_input(document, snapshot)
+    cad = build_cad_input(document, snapshot, require_barrel_thickness=not kicad_board)
     model = document.get("pcb", empty_pcb())
     labels = display_names(document)
     result = {"schema": "rfad.pcb-projection/0.1", "snapshot": deepcopy(snapshot), "source_semantics": deepcopy(document),

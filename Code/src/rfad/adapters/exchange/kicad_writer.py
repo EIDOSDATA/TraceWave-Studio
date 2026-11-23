@@ -231,7 +231,7 @@ def _artwork_name(projection, identity):
     return ("F." if layer["side"]=="top" else "B.")+("Mask" if layer["role"]=="solder_mask" else "Paste")
 
 
-def _hole(hole, nets, number=""):
+def _hole(hole, nets, number="", pad_diameter=None):
     """! @brief 완성 홀/슬롯과 도금 상태를 실제 drill 패드로 표현한다."""
     shape, plating = hole["shape"], hole["plating"]
     if plating["state"] not in ("plated", "unplated"):
@@ -239,10 +239,11 @@ def _hole(hole, nets, number=""):
     diameter = shape.get("diameter_mm", shape.get("finished_width_mm"))
     length = shape.get("finished_length_mm", diameter)
     thickness = plating["thickness_mm"] if plating["state"] == "plated" else 0
-    if thickness is None:
+    if thickness is None and pad_diameter is None:
         raise ProjectError("E_UNSUPPORTED", "도금 두께 미정은 구리 외경으로 변환할 수 없습니다.")
+    size = [length + 2 * thickness, diameter + 2 * thickness] if pad_diameter is None else [pad_diameter] * 2
     drill = "(drill " + ("oval " if shape["kind"] == "capsule" else "") + n(length) + (" " + n(diameter) if shape["kind"] == "capsule" else "") + ")"
-    return "(pad "+q(number)+" " + ("thru_hole" if plating["state"] == "plated" else "np_thru_hole") + " " + ("oval" if shape["kind"] == "capsule" else "circle") + " (at " + _xy(shape["center_mm"]) + " " + n(shape.get("rotation_deg", 0)) + ") (size " + n(length + 2 * thickness) + " " + n(diameter + 2 * thickness) + ") " + drill + ' (layers "*.Cu") ' + _net(plating["net_id"], nets, True) + " (uuid " + q(hole["id"]) + "))"
+    return "(pad "+q(number)+" " + ("thru_hole" if plating["state"] == "plated" else "np_thru_hole") + " " + ("oval" if shape["kind"] == "capsule" else "circle") + " (at " + _xy(shape["center_mm"]) + " " + n(shape.get("rotation_deg", 0)) + ") (size " + n(size[0]) + " " + n(size[1]) + ") " + drill + ' (layers "*.Cu") ' + _net(plating["net_id"], nets, True) + " (uuid " + q(hole["id"]) + "))"
 
 
 def _wrapper(identity, contents, name="TraceWave standalone geometry"):
@@ -282,9 +283,11 @@ def write_board(projection):
         result.extend(_edge(cutout["shape"], cutout["id"]))
     footprints=projection.get("footprints",[])
     owned={(member["collection"],member["id"]) for footprint in footprints for member in footprint["members"]}
+    from rfad.domain.drawing_layout import explicit_through_pads, kicad_copper_loops
+    rings, bundled = explicit_through_pads(projection)
     shapes = projection["shapes"]
     for shape in shapes:
-        if ("geometry",shape["id"]) in owned:
+        if ("geometry",shape["id"]) in owned or shape["id"] in bundled:
             continue
         kind = shape["kind"]
         layer = layers.get(shape["layer_id"])
@@ -299,10 +302,9 @@ def write_board(projection):
                 points = [_point_on_arc(shape, (index + fraction) / parts) for fraction in (0, .5, 1)]
                 result.append("(arc " + " ".join("(" + key + " " + _xy(point) + ")" for key, point in zip(("start", "mid", "end"), points)) + " (width " + n(shape["width_mm"]) + ") (layer " + q(layer) + ") " + net + " (uuid " + q(shape["id"] if parts == 1 else _id(shape["id"], str(index))) + "))")
         elif kind == "planar_region":
-            from rfad.domain.drawing_layout import copper_loops
             from rfad.adapters.exchange.pcb_geometry import filled_cache
             zone_net="(net "+q("" if shape["net_id"] is None else nets[shape["net_id"]][1])+")"
-            result.append(_zone(shape, layer, zone_net, cache=filled_cache(copper_loops(projection,shape))))
+            result.append(_zone(shape, layer, zone_net, cache=filled_cache(kicad_copper_loops(projection, shape, rings))))
         elif kind == "pad":
             result.append(_wrapper(_id(shape["id"], "container"), [_pad(shape, layer, _net(shape["net_id"], nets, True))]))
         elif kind == "via":
@@ -313,7 +315,7 @@ def write_board(projection):
             raise ProjectError("E_UNSUPPORTED", "지원하지 않는 KiCad 구리 객체입니다: " + kind)
     for hole in projection["mechanical"]["holes"]:
         if ("holes",hole["id"]) not in owned:
-            result.append(_wrapper(_id(hole["id"], "container"), [_hole(hole, nets)], "TraceWave mechanical bore"))
+            result.append(_wrapper(_id(hole["id"], "container"), [_hole(hole, nets, pad_diameter=rings.get(hole["id"]))], "TraceWave mechanical bore"))
     for footprint in footprints:
         result.append(_footprint(footprint,projection,layers,nets))
     for aperture in projection.get("apertures",[]):

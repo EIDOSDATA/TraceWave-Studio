@@ -115,7 +115,7 @@ def _check_frame(document: dict, frame_id: str, field: str) -> None:
         _fail("E_UNSUPPORTED", "CAD 출력에 미지원 좌표계 변환을 적용할 수 없습니다.", field)
 
 
-def _mechanical_dimensions(item: dict) -> None:
+def _mechanical_dimensions(item: dict, require_barrel_thickness: bool) -> None:
     """! @brief 저장 가능한 미정 기계 치수를 실제 CAD 접수에서 명시 차단한다."""
     shape = item["shape"]
     field = "pcb." + item["id"]
@@ -150,13 +150,13 @@ def _mechanical_dimensions(item: dict) -> None:
         state = item["plating"]["state"]
         if state not in ("unplated", "plated"):
             _fail("E_GEOMETRY", "도금 여부가 미정인 홀은 CAD 실체를 생성할 수 없습니다.", field)
-        if state == "plated":
+        if state == "plated" and (require_barrel_thickness or item["plating"]["thickness_mm"] is not None):
             known(item["plating"]["thickness_mm"], ".plating.thickness", True)
         if item["tool_diameter_mm"] is not None:
             known(item["tool_diameter_mm"], ".tool_diameter", True)
 
 
-def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE, *, purpose: str = "step") -> dict:
+def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE, *, purpose: str = "step", require_barrel_thickness: bool = True) -> dict:
     """! @brief 저장 원본과 분리된 mm/deg CAD worker 입력을 만든다.
 
     @param document snapshot artifact에서 읽어 해시를 확인할 원본 문서.
@@ -214,7 +214,7 @@ def build_cad_input(document: dict, snapshot_ref: dict, profile: str = PROFILE, 
     mechanical = mechanical_projection(document)
     if mechanical["holes"] or mechanical["cutouts"]:
         for item in mechanical["holes"] + mechanical["cutouts"]:
-            _mechanical_dimensions(item)
+            _mechanical_dimensions(item, require_barrel_thickness)
         result["mechanical"] = mechanical
     if PHYSICAL_KEY in document["extensions"]:
         surfaces, parts, omissions = project_setup(

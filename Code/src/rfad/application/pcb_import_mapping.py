@@ -25,7 +25,14 @@ class _ImportCandidate:
         self.record, self.mapping = deepcopy(record), mapping
         self.record["bindings"] = []
         self.path, self.source, self.owners, self.containers = "", "", {}, set()
-        _fields(mapping, {"board_id", "frame_id", "layers", "nets", "placement"})
+        keys = {"board_id", "frame_id", "layers", "nets", "placement"}
+        if parsed.get("format") in {"ipc2581_revc", "odbpp_zip"}:
+            for flag in ("include_contacts", "adopt_stack"):
+                if flag in mapping:
+                    keys.add(flag)
+                    if type(mapping[flag]) is not bool:
+                        fail("제조 자료 적용 선택은 참 또는 거짓이어야 합니다.", "mapping." + flag)
+        _fields(mapping, keys)
         if document["board"] is None or mapping["board_id"] != document["board"]["id"] or mapping["frame_id"] != document["board"]["frame_id"]:
             fail("현재 기판과 기판 좌표계를 명시적으로 선택하십시오.", "mapping", "E_CONFLICT")
         self.layers = self._mapping("layers", {row["id"] for row in document["stackup"] if row["role"] == "conductor"} | {row["id"] for row in document.get("pcb", empty_pcb())["artwork_layers"]})
@@ -566,13 +573,22 @@ class _ImportCandidate:
         if self.mapping["placement"] is not None:
             fail("제조 원본 배선에는 보드의 원래 좌표계를 사용하십시오.", "mapping.placement", "E_UNSUPPORTED")
         self.board([{"kind": "rect", "outer_mm": loop} for loop in [profile["outer_mm"], *profile["cutouts_mm"]]])
-        if not self.layers and not self.nets:
+        from rfad.application import manufacturing_import
+
+        if self.mapping.get("adopt_stack"):
+            manufacturing_import.stack(self, data)
+        use_contacts = self.mapping.get("include_contacts", False)
+        if not self.layers and not self.nets and not use_contacts:
             return
         traces = data.get("editable_traces", [])
-        if (set(self.layers) != {item["layer"] for item in traces}
-                or set(self.nets) != {item["net"] for item in traces}
-                or len(set(self.layers.values())) != len(self.layers)):
-            fail("지원 배선의 모든 원문 층과 넷을 대응하고 서로 다른 층에는 별도 대상을 지정하십시오.", "mapping", "E_CONFLICT")
+        pads = data.get("editable_pads", []) if use_contacts else []
+        holes = data.get("editable_holes", []) if use_contacts else []
+        targets = {item["layer"] for item in [*traces, *pads]} | {name for hole in holes for name in hole["span"]}
+        nets = {item["net"] for item in [*traces, *pads]} | {hole["net"] for hole in holes if hole["plating"] == "plated"}
+        if set(self.layers) != targets or set(self.nets) != nets or len(set(self.layers.values())) != len(self.layers):
+            fail("지원 도체 및 홀의 원문 층과 넷을 각각 대응하십시오.", "mapping", "E_CONFLICT")
+        if use_contacts:
+            manufacturing_import.contacts(self, data)
 
         def samples(row):
             """! @brief 방향에 관계없이 동일 원호의 중간점을 포함해 기존 형상과 대조한다."""
@@ -674,7 +690,7 @@ def import_candidate(document, parsed, import_record, mapping, acknowledged_loss
         apply_pcb_command(probe, patch)
         digest = canonical_hash({"source": canonical_hash(document), "parsed": canonical_hash(parsed), "import": import_record, "mapping": mapping, "acknowledged_losses": acknowledged_losses, "reason": reason, "patch": patch})
         changes = [{"collection": row["collection"], "id": row["id"], "label": (row["replacement"]["value"] or row["expected"]["value"]).get("name", "수입 원문"), "before": row["expected"]["value"], "after": row["replacement"]["value"], "before_display": record_summary(document, row["expected"]["value"]), "after_display": record_summary(candidate, row["replacement"]["value"]), "unit": ""} for row in patch["changes"]]
-        return bounded({**base, "can_apply": True, "review_hash": digest, "before_scene": build_canvas_dto(document), "scene": build_canvas_dto(candidate), "selection": {"kind": "project", "id": document["project_id"]}, "changes": changes, "losses": losses, "issues": [], "document_bytes": len(canonical_bytes(candidate)), "conditions": {"stackup": "현재 적층 유지; 파일의 물성 기본값을 채택하지 않음", "tool_and_plating": "기록되지 않은 공구와 도금 두께는 미정", "zone": "명시 solid 경계만 보존; 외부 CAD refill 합격 아님"}}), patch
+        return bounded({**base, "can_apply": True, "review_hash": digest, "before_scene": build_canvas_dto(document), "scene": build_canvas_dto(candidate), "selection": {"kind": "project", "id": document["project_id"]}, "changes": changes, "losses": losses, "issues": [], "document_bytes": len(canonical_bytes(candidate)), "conditions": {"stackup": ("원문 두께 및 아래 면 위치 적용, 기존 재료 유지" if mapping.get("adopt_stack") else "현재 적층 및 물성 유지"), "tool_and_plating": "기록되지 않은 공구와 도금 두께는 미정", "zone": "명시 solid 경계만 보존; 외부 CAD refill 합격 아님"}}), patch
     except ProjectError as error:
         return bounded({**base, "can_apply": False, "review_hash": None, "scene": None, "changes": [], "losses": losses, "issues": [{"severity": "blocker", "code": error.code, "message_ko": error.message, "details": error.details}]}), None
     except (KeyError, TypeError, ValueError, IndexError, OverflowError) as error:
@@ -745,8 +761,28 @@ def import_sources(parsed):
                     add_net(names[0], names[0] or None)
             elif function and function[0] in ("Soldermask", "Paste"):
                 add_layer(record["path"], "solder_mask" if function[0] == "Soldermask" else "solder_paste", "top" if "Top" in function else "bottom" if "Bot" in function or "Bottom" in function else None)
+    route_layers, route_nets = set(layers), set(nets)
+    contact_count, stack_count = 0, 0
+    for item in parsed["records"]:
+        data = item["data"]
+        if data["schema"] not in {"rfad.ipc2581-read/0.1", "rfad.odbpp-read/0.1"}:
+            continue
+        for row in data.get("editable_pads", []):
+            add_layer(row["layer"])
+            add_net(row["net"], row["net"] or None)
+        for row in data.get("editable_holes", []):
+            for name in row["span"]:
+                add_layer(name)
+            if row["plating"] == "plated":
+                add_net(row["net"], row["net"] or None)
+        contact_count += len(data.get("editable_pads", [])) + len(data.get("editable_holes", []))
+        stack_count += len(data.get("editable_stack", []))
+    for key in layers.keys() - route_layers:
+        layers[key]["contacts_only"] = True
+    for key in nets.keys() - route_nets:
+        nets[key]["contacts_only"] = True
     profile_available = _has_manufacturing_profile(parsed)
     return {"layers": list(layers.values()), "nets": list(nets.values()),
-            "manufacturing_profile_available": profile_available,
+            "manufacturing_profile_available": profile_available, "contact_count": contact_count, "stack_count": stack_count,
             "ipc_profile_available": parsed.get("format") == "ipc2581_revc" and profile_available,
             "losses": [{"id": canonical_hash(row), "message": _loss_message(row, "원문에 보존되는 미지원 항목: "), "original": deepcopy(row)} for row in parsed["losses"]]}

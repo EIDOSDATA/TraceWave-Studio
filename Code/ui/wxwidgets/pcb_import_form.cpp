@@ -160,6 +160,28 @@ void PcbImportDialog::BuildMapping(wxWindow* page)
                 0, wxEXPAND | wxALL, FromDIP(12));
     m_boardConfirmed = new wxCheckBox(page, wxID_ANY, Display("현재 기판 / 좌표계에 적용함을 확인"));
     layout->Add(m_boardConfirmed, 0, wxALL, FromDIP(12));
+    m_contacts = new wxCheckBox(page, wxID_ANY, Display("원문 원형 패드와 관통 홀 적용"));
+    m_adoptStack = new wxCheckBox(page, wxID_ANY, Display("원문 도체 및 유전체 층 두께 적용"));
+    for (auto* control : {m_contacts, m_adoptStack})
+    {
+        layout->Add(control, 0, wxLEFT | wxBOTTOM, FromDIP(12));
+        control->Hide();
+    }
+    m_contacts->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
+    {
+        for (const auto* rows : {&m_layerRows, &m_netRows})
+        {
+            for (const auto& row : *rows)
+            {
+                row.choice->Enable(!row.contactsOnly || m_contacts->GetValue());
+            }
+        }
+        Changed();
+    });
+    m_adoptStack->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
+    {
+        Changed();
+    });
     m_mappingRows = new wxPanel(page);
     m_mappingRows->SetSizer(new wxBoxSizer(wxVERTICAL));
     layout->Add(m_mappingRows, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
@@ -303,10 +325,14 @@ void PcbImportDialog::RenderMapping(const Json& response)
     }
     m_loading = true;
     m_mappingRows->GetSizer()->Clear(true);
+    m_contacts->SetValue(false);
+    m_adoptStack->SetValue(false);
+    m_contacts->Show(sources.value("contact_count", 0) > 0);
+    m_adoptStack->Show(sources.value("stack_count", 0) > 0);
     if (sources.value("manufacturing_profile_available", false) && !sources.value("layers", Json::array()).empty())
     {
         m_mappingRows->GetSizer()->Add(new wxStaticText(m_mappingRows, wxID_ANY,
-            Display("외곽만 적용하려면 아래 대응을 모두 비워 두십시오. 배선을 반영하려면 모든 층과 넷을 선택하십시오.")),
+            Display("도체를 적용하려면 활성화된 층과 넷의 대상을 선택하십시오. 외곽만 적용하려면 대응을 비워 두십시오.")),
             0, wxEXPAND | wxBOTTOM, FromDIP(6));
     }
     m_layerRows.clear();
@@ -362,6 +388,8 @@ void PcbImportDialog::RenderMapping(const Json& response)
                                            (kind == "layers" ? " / " + std::string(suffix) : "")));
                 row.targets.push_back(target.at("id"));
             }
+            row.contactsOnly = source.value("contacts_only", false);
+            row.choice->Enable(!row.contactsOnly);
             row.choice->SetSelection(0);
             row.choice->Bind(wxEVT_CHOICE,
                              [this](wxCommandEvent&)

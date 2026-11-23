@@ -166,7 +166,7 @@ def pcb_options(value, format_name, projection=None):
 def build_input(document, snapshot, data, run_id):
     """! @brief 원본 전체와 실제 평가 치수를 별도 파생 입력으로 고정한다."""
     if data["profile"] in PCB_PROFILES:
-        projection = exchange_projection(document, snapshot)
+        projection = exchange_projection(document, snapshot, kicad_board=data["format"] == "kicad_pcb")
         projection["omissions"] = deepcopy(projection.get("diagnostics", []))
         projection["omissions"] += [{"id": row["id"], "reason": "artwork_use_state=" + row["use_state"]}
                                     for row in projection["artwork_layers"] if row["use_state"] != "used"]
@@ -311,13 +311,14 @@ def pcb_preview(value, view_layer_id=None):
         paths.append(path(drawing_layout.mechanical_loops(footprint["placement_envelope"]), footprint["id"]))
     is_copper = selected in conductors
     if is_copper:
+        rings = drawing_layout.explicit_through_pads(projection)[0] if value["format"] == "kicad_pcb" else {}
         for shape in projection["shapes"]:
             if shape["kind"] != "via" and shape["layer_id"] == selected["id"]:
-                paths.append(path(drawing_layout.copper_loops(projection, shape), shape["id"], shape["net_id"], drawing_layout.COPPER))
+                paths.append(path(drawing_layout.kicad_copper_loops(projection, shape, rings), shape["id"], shape["net_id"], drawing_layout.COPPER))
             elif shape["kind"] == "via" and next(row["z_min_mm"] for row in conductors if row["id"] == shape["layer_id"]) <= selected["z_min_mm"] <= next(row["z_min_mm"] for row in conductors if row["id"] == shape["end_layer_id"]):
                 paths.append(path(drawing_layout.shape_loops(shape), shape["id"], shape["net_id"], drawing_layout.COPPER))
         for item in projection["mechanical"]["holes"]:
-            if item["plating"]["state"] == "plated":
+            if item["plating"]["state"] == "plated" and item["id"] not in rings:
                 paths.append(path(drawing_layout.mechanical_shell(item), item["id"], item["plating"]["net_id"], drawing_layout.COPPER))
     else:
         for item in projection["apertures"]:

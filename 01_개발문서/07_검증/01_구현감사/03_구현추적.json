@@ -14898,8 +14898,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/exchange/kicad_writer.py",
-      "text_sha256": "3466f271ce9efa8675ef62eca9efc42d04659af69d5283b3cd83611a98767a78",
-      "utf8_bytes": 24087
+      "text_sha256": "13ac673463aa3c5edf2fd778efef04b161bbedacdc23068580d0ae1eb7ebe8ff",
+      "utf8_bytes": 24361
     },
     {
       "path": "Code/src/rfad/adapters/exchange/pcb.py",
@@ -14913,8 +14913,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/exchange/pcb_verification.py",
-      "text_sha256": "2e9fceb622e6b672f7fd71fe8e4585c7b7e33b699c1bf74e2cddf0623ceed1ff",
-      "utf8_bytes": 29783
+      "text_sha256": "8a9f94845c0ad306d4f9a76f8e400fbbaf0a96bb360cd2feaa9105e05df23629",
+      "utf8_bytes": 31126
     },
     {
       "path": "Code/src/rfad/adapters/exchange/vendor_pattern.py",
@@ -14998,8 +14998,8 @@
     },
     {
       "path": "Code/src/rfad/application/cad.py",
-      "text_sha256": "e17e687af294ecb18360256fd20bfa8557db015eae4e68b665c5d563633726ab",
-      "utf8_bytes": 19969
+      "text_sha256": "812e2c54ced8793c420a80dc260a5138d39ca7079803fe166e5aaf6a1bea4dae",
+      "utf8_bytes": 20144
     },
     {
       "path": "Code/src/rfad/application/cad_artifacts.py",
@@ -15058,8 +15058,8 @@
     },
     {
       "path": "Code/src/rfad/application/exchange_contract.py",
-      "text_sha256": "269af81c52d84399664fcbfebf6e3e9286a3ef56646963f6f9b7807b0c4b1397",
-      "utf8_bytes": 22559
+      "text_sha256": "7fd25f93c9a96bfdd60b5048c44594337211874adef776e7e536cf24aec0753b",
+      "utf8_bytes": 22753
     },
     {
       "path": "Code/src/rfad/application/exchange_jobs.py",
@@ -15148,8 +15148,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_exchange_projection.py",
-      "text_sha256": "41bb5374f62917ad674b1f4cced150de44db5c138ccadb19cfb1ad5e140dee40",
-      "utf8_bytes": 16645
+      "text_sha256": "43389956fa165fb46db8b14efd4c682c8455677799fc6d08881a4379d0313e83",
+      "utf8_bytes": 16709
     },
     {
       "path": "Code/src/rfad/application/pcb_exchange_service.py",
@@ -15158,8 +15158,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_import_mapping.py",
-      "text_sha256": "eb711f3f467c940e28175fffcba81fabbf35b4af25743566349963ee468c4c40",
-      "utf8_bytes": 54798
+      "text_sha256": "40c87a4ddd774d73a2306c152568f9a25a5215c9735ef8cfd507315916c2405c",
+      "utf8_bytes": 56825
     },
     {
       "path": "Code/src/rfad/application/pcb_import_service.py",
@@ -15523,8 +15523,8 @@
     },
     {
       "path": "Code/src/rfad/domain/drawing_layout.py",
-      "text_sha256": "926f50b59a7413d847dbf1a943e5e8513620158430f0dc24bc536306bd67f5ce",
-      "utf8_bytes": 51237
+      "text_sha256": "a7607bece29572370fcbd8c4226a2fa5b2abc08e7e17019c386a60e1cb3e9dd7",
+      "utf8_bytes": 53608
     },
     {
       "path": "Code/src/rfad/domain/expressions.py",
@@ -15588,8 +15588,8 @@
     },
     {
       "path": "Code/src/rfad/domain/pcb_features.py",
-      "text_sha256": "2c8573c0e3e1b0b6c3a1d847efe55e092ca09e5d54373af3379d7b279ac320b5",
-      "utf8_bytes": 34539
+      "text_sha256": "a758d605a5f3ca1e6dbba5b223b8ec12654f16e95d3aec85c96fe93c26780dc4",
+      "utf8_bytes": 35239
     },
     {
       "path": "Code/src/rfad/domain/pcb_selection_evidence.py",
@@ -16593,8 +16593,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_review.cpp",
-      "text_sha256": "c9fa61bd187718b90e34f3890f47c2b1acb132e92ba05ce02eda09d7e65e8041",
-      "utf8_bytes": 9963
+      "text_sha256": "7b94d0f250c8463d49c3293e949f3d1ed7b4b4210ad7dcca994f4c48cc877b7a",
+      "utf8_bytes": 10409
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_transfer.cpp",

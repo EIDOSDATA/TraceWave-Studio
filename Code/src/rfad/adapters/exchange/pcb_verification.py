@@ -177,8 +177,18 @@ def kicad(raw,projection,format_name,options):
                 expected=None if material is None or source["role"]!="dielectric" else material.get(key)
                 require(row[key] is None if expected is None else _close(row[key],expected),"KiCad 물성의 미정/원문이 달라졌습니다.")
     checks=[];consumed=set()
+    through_pads = {pad_id: hole["id"] for hole in projection["mechanical"]["holes"]
+                    for pad_id in hole["plating"]["pad_ids"] if selected is None
+                    and hole["id"] in items and pad_id not in items}
     for shape in source_shapes:
         identity=shape["id"]
+        if identity in through_pads:
+            pad = items[through_pads[identity]]
+            require(shape["kind"] == "pad" and shape["pad_shape"] == "circle" and pad["pad_type"] == "thru_hole"
+                    and pad["pad_shape"] == "circle" and pad["layers"] == ["*.Cu"]
+                    and pad["net_name"] == nets.get(shape["net_id"]) and _close(pad["center_mm"], shape["center_mm"])
+                    and _close(pad["size_mm"], shape["size_mm"]), "관통 홀의 실제 구리 패드가 원본과 다릅니다.")
+            continue
         if shape["kind"]=="arc_path" and abs(shape["sweep_angle_deg"])>=359.999999:
             ids=[str(uuid5(UUID(identity),str(index))) for index in (0,1)]
             require(all(key in items for key in ids),"완전 원호의 실제 track 분할 객체가 없습니다.")
@@ -207,7 +217,7 @@ def kicad(raw,projection,format_name,options):
                 require(policy["connect_pads"]=="yes" and policy["island_removal_mode"]=="1" and _close(policy["clearance_mm"],0) and _close(policy["minimum_thickness_mm"],.001) and _close(policy["thermal_gap_mm"],0),"KiCad zone의 명시 접촉/섬 보존 설정이 달라졌습니다.")
                 from shapely import Polygon,unary_union
                 filled=unary_union([Polygon(points) for points in item["filled_polygons_mm"]])
-                checks.append(compare_regions(filled,polygonize(geometry.copper_loops(projection,shape))))
+                checks.append(compare_regions(filled,polygonize(geometry.kicad_copper_loops(projection, shape, set(through_pads.values())))))
             elif shape["kind"]=="pad":
                 center=shape["center_mm"]
                 rotation=shape["rotation_deg"]
@@ -236,7 +246,15 @@ def kicad(raw,projection,format_name,options):
         require(_close(item["center_mm"],center) and _close(item["drill"]["offset_mm"],[0,0]),"KiCad drill 중심이 달라졌습니다.")
         rotation=hole["shape"].get("rotation_deg",0)-(selected["placement"]["rotation_deg"] if selected is not None else 0)
         thickness=hole["plating"]["thickness_mm"] if hole["plating"]["state"]=="plated" else 0
-        require(_close(item["rotation_deg"],rotation) and _close(item["size_mm"],[length+2*thickness,width+2*thickness]) and item["layers"]==["*.Cu"],"KiCad 홀/슬롯의 방향 또는 구리 외경/층이 달라졌습니다.")
+        tied = [row for row in source_shapes if through_pads.get(row["id"]) == hole["id"]]
+        if tied:
+            require(len(tied) == len(copper) and {r["layer_id"] for r in tied} == {r["id"] for r in copper},
+                    "관통 패드와 원문 도체층의 수 또는 위치가 다릅니다.")
+            size = tied[0]["size_mm"]
+        else:
+            require(thickness is not None, "원본 패드 또는 도금 두께에 구리 외경의 근거가 없습니다.")
+            size = [length + 2 * thickness, width + 2 * thickness]
+        require(_close(item["rotation_deg"],rotation) and _close(item["size_mm"],size) and item["layers"]==["*.Cu"],"KiCad 홀/슬롯의 방향 또는 구리 외경/층이 달라졌습니다.")
         require(item["net_name"]==(None if selected is not None else nets.get(hole["plating"]["net_id"])),"KiCad 도금 홀의 net이 원문과 다릅니다.")
     require(consumed==set(items),"예상하지 않은 KiCad 구리/홀 객체가 추가되었습니다.")
     if selected is None:

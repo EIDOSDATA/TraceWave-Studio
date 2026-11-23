@@ -25,11 +25,21 @@ Json PcbImportDialog::Input() const
                  {"nets", Json::array()},
                  {"placement", nullptr}};
     const std::string format = m_uploadState.value("format", "");
-    const auto noTargets = [](const auto& rows)
+    const bool manufacturing = format == "ipc2581_revc" || format == "odbpp_zip";
+    const bool contacts = manufacturing && m_contacts->GetValue();
+    if (manufacturing)
     {
-        return std::none_of(rows.begin(), rows.end(), [](const auto& row) { return row.choice->GetSelection() > 0; });
+        mapping["include_contacts"] = contacts;
+        mapping["adopt_stack"] = m_adoptStack->GetValue();
+    }
+    const auto noTargets = [contacts](const auto& rows)
+    {
+        return std::none_of(rows.begin(), rows.end(), [contacts](const auto& row)
+        {
+            return (!row.contactsOnly || contacts) && row.choice->GetSelection() > 0;
+        });
     };
-    const bool outlineOnly = (format == "ipc2581_revc" || format == "odbpp_zip") &&
+    const bool outlineOnly = manufacturing && !contacts &&
                              noTargets(m_layerRows) && noTargets(m_netRows);
     for (const auto& kind : {std::string("layers"), std::string("nets")})
     {
@@ -39,6 +49,10 @@ Json PcbImportDialog::Input() const
         }
         for (const auto& row : kind == "layers" ? m_layerRows : m_netRows)
         {
+            if (row.contactsOnly && !contacts)
+            {
+                continue;
+            }
             const int index = row.choice->GetSelection();
             if (index <= 0 || static_cast<std::size_t>(index) >= row.targets.size())
             {

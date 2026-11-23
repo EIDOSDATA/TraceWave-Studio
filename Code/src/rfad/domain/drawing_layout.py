@@ -265,6 +265,46 @@ def copper_loops(projection, shape):
     return _mechanical_removed(_drilled(shape_loops(shape), vias, shape["id"]), projection)
 
 
+def explicit_through_pads(projection):
+    """! @brief 모든 도체층에 실제 같은 원형 패드가 연결된 독립 홀만 관통 패드 하나로 출력한다."""
+    owned = {(entry["collection"], entry["id"]) for footprint in projection.get("footprints", [])
+             for entry in footprint["members"]}
+    shapes = {shape["id"]: shape for shape in projection["shapes"]}
+    copper = {layer["id"] for layer in projection["layers"] if layer["role"] == "conductor"}
+    by_hole, bundled = {}, set()
+    for hole in projection["mechanical"]["holes"]:
+        plating = hole["plating"]
+        ids = plating["pad_ids"]
+        if (("holes", hole["id"]) in owned or hole["shape"]["kind"] != "circle"
+                or plating["state"] != "plated" or not ids or len(ids) != len(copper)):
+            continue
+        pads = [shapes[identity] for identity in ids if identity in shapes and ("geometry", identity) not in owned]
+        if len(pads) != len(ids) or {pad["layer_id"] for pad in pads} != copper:
+            continue
+        diameter = pads[0].get("size_mm", [0])[0]
+        if diameter <= hole["shape"]["diameter_mm"] or not all(
+                pad["kind"] == "pad" and pad["pad_shape"] == "circle" and pad["size_mm"] == [diameter, diameter]
+                and pad["net_id"] == plating["net_id"] and math.dist(pad["center_mm"], hole["shape"]["center_mm"]) < 1e-9
+                for pad in pads):
+            continue
+        if bundled.intersection(ids):
+            raise ProjectError("E_CONNECTIVITY", "둘 이상의 관통 홀이 같은 구리 패드를 참조합니다.")
+        by_hole[hole["id"]] = diameter
+        bundled.update(ids)
+    return by_hole, bundled
+
+
+def kicad_copper_loops(projection, shape, through_hole_ids):
+    """! @brief 관통 패드로 따로 그린 구리는 KiCad 구리면 캐시에서 완성 홀 개구만 절삭한다."""
+    if not through_hole_ids:
+        return copper_loops(projection, shape)
+    mechanical = projection["mechanical"]
+    openings = [hole["shape"] for hole in mechanical["holes"] if hole["id"] in through_hole_ids]
+    plane = {**mechanical, "holes": [hole for hole in mechanical["holes"] if hole["id"] not in through_hole_ids],
+             "cutouts": [*mechanical["cutouts"], *[{"shape": bore} for bore in openings]]}
+    return copper_loops({**projection, "mechanical": plane}, shape)
+
+
 def substrate_loops(projection, *, outline_only=False):
     """! @brief 외곽/기판 절삭과 실제 적층의 관통 제거를 구분해 반환한다."""
     loops = board_loops(projection["board"])

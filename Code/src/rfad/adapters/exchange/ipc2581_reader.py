@@ -191,7 +191,12 @@ def read(raw):
     if traces:
         loss = {"code": "ipc2581_partial_copper", "raw_preserved": True,
                 "message": f"외곽과 절삭을 대조합니다. 층과 넷을 지정하면 둥근 직선 및 원호 동박 {len(traces)}개를 반영합니다. 나머지 제조 정보는 원문에 보존합니다."}
-    return {"editable_traces": traces, "schema": "rfad.ipc2581-read/0.1", "version": "C", "units": units,
+    from rfad.adapters.exchange.manufacturing_contacts import ipc
+    pads, bores, stack = ipc(root, steps[0], layers, stackups, factor) if editable else ([], [], [])
+    if pads or bores or stack:
+        loss = {**loss, "message": loss["message"] + f" 선택 가능한 원형 패드 {len(pads)}개, 원형 홀 {len(bores)}개, 적층 {len(stack)}개."}
+    return {"editable_pads": pads, "editable_holes": bores, "editable_stack": stack,
+            "editable_traces": traces, "schema": "rfad.ipc2581-read/0.1", "version": "C", "units": units,
             "source_sha256": hashlib.sha256(raw).hexdigest(),
             "writer": None if history is None else history.get("software"),
             "sections": sorted({element.tag[len(NS):] for element in root if element.tag.startswith(NS)}),
