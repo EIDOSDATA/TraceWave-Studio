@@ -3,14 +3,14 @@
 #include "dialog_gateway.h"
 #include <deque>
 #include <memory>
-class StudioNotebook;
 class wxWindow;
 class RfValidationView;
 
 class RfValidationController final
 {
 public:
-    RfValidationController(StudioNotebook* views, wxWindow* navigation, wxWindow* conditions, DialogGateway gateway);
+    RfValidationController(wxWindow* parent, wxWindow* navigation, wxWindow* conditions, DialogGateway gateway);
+    wxWindow* View() const;
     ~RfValidationController();
     void Update(const std::string& project, const std::string& epoch, bool connected, bool supported, bool available,
                 int page);

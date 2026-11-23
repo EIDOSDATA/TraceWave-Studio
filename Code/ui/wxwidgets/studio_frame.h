@@ -105,7 +105,7 @@ private:
     /** @brief 첫 선택에서 분석과 출력 페이지를 기존 논리 탭 순서대로 구성한다. */
     void PrepareExtendedWorkspaces(std::size_t page);
     /** @brief 고정 입력의 도면/STEP 생성과 새 읽기 검수를 출력 페이지에 연결한다. */
-    void BuildOutputInterface();
+    wxWindow* BuildOutputInterface(wxWindow* parent);
     void ExportManufacturing();
     void PrepareOutputRecovery();
     void UpdateOutputViews();
@@ -124,7 +124,7 @@ private:
     int RunLargeResultLibrary(Json fixture);
     void UpdateResultViews();
     /** @brief 불변 검증 보고서의 조회를 기존 비교 작업 공간에 연결한다. */
-    void BuildValidationInterface();
+    wxWindow* BuildValidationInterface(wxWindow* parent);
     void UpdateValidationViews();
     void OpenValidationRecords();
     void BuildMeasurementInterface();

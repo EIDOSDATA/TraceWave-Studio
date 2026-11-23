@@ -185,10 +185,14 @@ void ResultWorkspace::Compare(ResultCompareView* view, std::size_t index, int of
 }
 void ResultWorkspace::Conditions(int offset)
 {
+    if (m_page != 14 && m_page != 16)
+    {
+        return;
+    }
     auto* view = ComparisonView();
     const auto descriptions = view->Descriptions();
     const int selected = view->Selected();
-    if ((m_page != 14 && m_page != 16) || selected <= 0 || static_cast<std::size_t>(selected) >= descriptions.size())
+    if (selected <= 0 || static_cast<std::size_t>(selected) >= descriptions.size())
     {
         return;
     }

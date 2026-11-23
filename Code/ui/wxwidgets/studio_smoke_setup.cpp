@@ -27,6 +27,14 @@ void StudioSmokeDriver::SetupSmokeTick()
              m_frame.m_options.sweepSmoke))
         {
             m_frame.PrepareExtendedWorkspaces(2);
+            if (m_frame.m_options.outputSmoke || m_frame.m_options.pcbExchangeSmoke)
+            {
+                m_frame.m_views->PreparePage(5);
+            }
+            if (m_frame.m_options.validationSmoke)
+            {
+                m_frame.m_views->PreparePage(15);
+            }
         }
         if (m_frame.m_options.pcbExchangeSmoke)
         {

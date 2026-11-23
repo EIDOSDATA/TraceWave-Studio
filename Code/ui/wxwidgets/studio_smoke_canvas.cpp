@@ -2,6 +2,7 @@
 #include "studio_internal.h"
 #include "studio_shell.h"
 #include "workspace_bar.h"
+#include "result_workspace.h"
 
 /** @brief 실제 캔버스 이벤트 처리기로 좌표 입력을 보내 서비스 저장까지 확인한다. */
 void StudioSmokeDriver::CanvasMouse(wxEventType type, double x, double y, bool left, bool middle)
@@ -58,12 +59,25 @@ void StudioSmokeDriver::CanvasSmokeNext()
         CanvasAssert(m_frame.m_views->GetPageCount() == 3 && !m_frame.m_results && !m_frame.m_output,
                      "편집 작업 전에 결과와 출력 화면이 생성됐습니다.");
         wxWindow* originalCanvasPage = m_frame.m_views->GetPage(0);
-        m_frame.m_views->SetSelection(2);
-        CanvasAssert(m_frame.m_views->GetPageCount() == 17 && m_frame.m_results && m_frame.m_output,
-                     "첫 해석 결과 선택에서 연계 페이지를 구성하지 못했습니다.");
+        m_frame.NavigateWorkspace(WorkspaceArea::Results);
+        CanvasAssert(m_frame.m_views->GetPageCount() == 17 && m_frame.m_views->GetSelection() == 9 &&
+                         m_frame.m_results && m_frame.m_results->m_network && !m_frame.m_output &&
+                         !m_frame.m_validation && !m_frame.m_results->m_field && !m_frame.m_results->m_radiation &&
+                         !m_frame.m_results->m_compare && !m_frame.m_results->m_measurement,
+                     "첫 결과 진입에서 미사용 탭의 네이티브 위젯까지 생성했습니다.");
+        auto* firstResult = m_frame.m_views->GetPage(9);
+        m_frame.m_views->SetSelection(13);
+        const auto* field = m_frame.m_results->m_field;
+        CanvasAssert(field != nullptr && !m_frame.m_results->m_radiation && !m_frame.m_output,
+                     "필드 탭을 열 때 해당 탭의 내용만 만들지 않았습니다.");
+        m_frame.NavigateWorkspace(WorkspaceArea::Design);
+        m_frame.NavigateWorkspace(WorkspaceArea::Results);
+        m_frame.m_views->SetSelection(13);
+        CanvasAssert(m_frame.m_views->GetPage(9) == firstResult && m_frame.m_results->m_field == field,
+                     "반복 진입에서 결과나 필드의 위젯을 다시 만들었습니다.");
         wxWindow* originalOutputPage = m_frame.m_views->GetPage(5);
         m_frame.m_views->SetSelection(5);
-        CanvasAssert(m_frame.m_views->GetPage(5) == originalOutputPage &&
+        CanvasAssert(m_frame.m_output && m_frame.m_views->GetPage(5) == originalOutputPage &&
                          m_frame.m_views->GetPage(5)->IsShownOnScreen(),
                      "첫 출력 선택이 페이지를 다시 만들거나 표시하지 못했습니다.");
         m_frame.m_views->SetSelection(2);

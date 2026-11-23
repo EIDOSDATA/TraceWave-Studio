@@ -28,7 +28,7 @@ public:
     /** @brief 방금 저장된 원본을 현재 개정 목록과 함께 즉시 연다. */
     void OpenRecent(const Json& source);
     void SetValidationAvailable(bool available);
-    void BuildMeasurementPage(StudioNotebook* views);
+    wxWindow* BuildMeasurementPage(wxWindow* parent);
     void SetMeasurementAvailable(bool available);
     void PreferMeasurement(const Json& reference);
     wxWindow* NavigationView() const;
@@ -109,6 +109,8 @@ private:
     MeasurementCompareView* m_measurement = nullptr;
     Json m_preferredMeasurement = nullptr;
     std::uint64_t m_measurementRequest = 0;
+    std::string m_viewMessage = "현재 프로젝트의 보존 원본을 선택하세요.";
+    bool m_validationAvailable = false;
     bool m_measurementAvailable = false;
     bool m_measurementsRefreshNeeded = true;
 };

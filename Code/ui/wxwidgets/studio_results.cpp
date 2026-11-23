@@ -130,6 +130,10 @@ void StudioFrame::BuildResultInterface()
         }
         m_results->NavigationView()->SetFocus();
     };
+    m_results->onOpenValidation = [this]()
+    {
+        OpenValidationRecords();
+    };
     m_results->onOpenTools = [this]()
     {
         m_views->SetSelection(6);

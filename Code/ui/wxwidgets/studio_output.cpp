@@ -4,9 +4,11 @@
 #include "output_pending_store.h"
 #include "output_workspace.h"
 #include "editor_sync.h"
+#include "studio_theme.h"
 
-void StudioFrame::BuildOutputInterface()
+wxWindow* StudioFrame::BuildOutputInterface(wxWindow* parent)
 {
+    const auto propertyChildren = m_properties->GetChildren().GetCount();
     OutputGateway gateway = [this](const std::string& method, const Json& input, bool mutation,
                                    std::function<void(const Json&)> success, std::function<void(const Json&)> failure,
                                    const std::string& key, const std::string& epoch)
@@ -20,9 +22,9 @@ void StudioFrame::BuildOutputInterface()
         Send(method, input, mutation, job ? Json::object() : Context(), std::move(success), std::move(failure), key,
              epoch);
     };
-    m_output = std::make_unique<OutputController>(m_views, m_properties, Utf8(m_options.workspace), std::move(gateway));
+    m_output = std::make_unique<OutputController>(parent, m_properties, Utf8(m_options.workspace), std::move(gateway));
     m_output->View()->ConditionsView()->Hide();
-    m_views->AddPage(m_output->View(), Display("출력"));
+    StudioTheme::BindNativeControls(*m_properties, propertyChildren);
     m_outputSummary = m_output->View()->StatusLabel();
     m_output->View()->onManufacturing = [this]()
     {
@@ -85,6 +87,7 @@ void StudioFrame::BuildOutputInterface()
             m_smoke->RecordNativeCancellation(job, milestone, details);
         };
     }
+    return m_output->View();
 }
 
 /** @brief 권위 영수증을 확인할 이전 출력이 있으면 편집 상태에서도 작업 전환 잠금을 복원한다. */
@@ -106,6 +109,7 @@ void StudioFrame::PrepareOutputRecovery()
     if (pending)
     {
         PrepareExtendedWorkspaces(5);
+        m_views->PreparePage(5);
     }
 }
 

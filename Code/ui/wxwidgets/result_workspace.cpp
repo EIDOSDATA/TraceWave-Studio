@@ -26,16 +26,6 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
     m_conditions->Hide();
     m_network = new ResultNetworkView(views);
     views->AddPage(m_network, Display("네트워크"));
-    m_smith = new SmithView(views);
-    views->AddPage(m_smith, Display("Smith"));
-    m_metrics = new ResultMetricsView(views);
-    views->AddPage(m_metrics, Display("전력 / 손실"));
-    m_radiation = new RadiationResultView(views);
-    views->AddPage(m_radiation, Display("방사 / 편파"));
-    m_field = new FieldResultView(views);
-    views->AddPage(m_field, Display("필드"));
-    m_compare = new ResultCompareView(views);
-    views->AddPage(m_compare, Display("결과 / 후보 비교"));
     m_browser->onRefresh = [this]()
     {
         Refresh();
@@ -64,8 +54,6 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
         }
     };
     m_network->onSelectSource = focus;
-    m_smith->onSelectSource = focus;
-    m_metrics->onSelectSource = focus;
     const auto validation = [this]()
     {
         if (onOpenValidation)
@@ -81,8 +69,6 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
             onSolverEvidence(artifact);
         }
     };
-    m_metrics->onValidation = validation;
-    m_radiation->onSelectSource = focus;
     m_network->onOpenTools = [this]()
     {
         if (onOpenTools)
@@ -98,91 +84,137 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
     {
         Network(row, column, offset);
     };
-    m_smith->onRequest = [this](int port, const std::string& chart, int offset)
+    views->AddDeferredPage(Display("Smith"), [this, focus](wxWindow* parent)
     {
-        Smith(port, chart, offset);
-    };
-    m_radiation->onRequest = [this](const Json& options)
-    {
-        Radiation(options);
-    };
-    m_radiation->onInvalidate = [this]()
-    {
-        ++m_viewGeneration;
-        m_pattern.Reset();
-    };
-    m_field->onFlux = [this](const Json& options)
-    {
-        auto input = options;
-        input.update(Pinned());
-        const auto generation = ++m_viewGeneration;
-        m_field->SetBusy(true);
-        Read("result.field.flux", input, [this, generation]()
+        m_smith = new SmithView(parent);
+        m_smith->onSelectSource = focus;
+        m_smith->onRequest = [this](int port, const std::string& chart, int offset)
         {
-            return generation == m_viewGeneration;
-        }, [this](const Json& response)
+            Smith(port, chart, offset);
+        };
+        if (!m_description.is_object())
         {
-            m_field->SetBusy(false);
-            if (!ResultUi::Matches(response, m_description))
-            {
-                throw std::runtime_error("통과 전력의 원본이 현재 결과와 다릅니다.");
-            }
-            m_field->SetFlux(response);
-        }, [this](const Json& error)
-        {
-            m_field->SetError("통과 전력 계산 실패: " + DiagnosticMessage(error));
-        });
-    };
-    m_field->onSlice = [this](const Json& options)
-    {
-        FieldSlice(options);
-    };
-    m_field->onRefine = [this](const Json& options)
-    {
-        auto input = options;
-        input.update(Pinned());
-        if (input.contains("max_rounds") && onFieldStudy)
-        {
-            Json selection, limits;
-            for (const auto* key : {"monitor_id", "component", "frequency_index", "plane", "roi"})
-            {
-                selection[key] = input.at(key);
-            }
-            for (const auto* key : {"threshold_fraction", "max_rules", "memory_limit_mib", "max_rounds", "max_s11_complex_delta"})
-            {
-                limits[key] = input.at(key);
-            }
-            onFieldStudy({{"source", input.at("source")}, {"pin", input.at("pin")}, {"selection", selection},
-                          {"limits", limits}, {"name", "전계 기반 국부 격자 연구"}});
-            return;
+            m_smith->Clear(m_viewMessage);
         }
-        const auto generation = ++m_viewGeneration;
-        m_field->SetBusy(true);
-        Read("result.field.refine", input, [this, generation]()
+        return m_smith;
+    });
+    views->AddDeferredPage(Display("전력 / 손실"), [this, focus, validation](wxWindow* parent)
+    {
+        m_metrics = new ResultMetricsView(parent);
+        m_metrics->onSelectSource = focus;
+        m_metrics->onValidation = validation;
+        m_metrics->SetValidationAvailable(m_validationAvailable);
+        if (!m_description.is_object())
         {
-            return generation == m_viewGeneration;
-        }, [this](const Json& response)
+            m_metrics->Clear(m_viewMessage);
+        }
+        return m_metrics;
+    });
+    views->AddDeferredPage(Display("방사 / 편파"), [this, focus](wxWindow* parent)
+    {
+        m_radiation = new RadiationResultView(parent);
+        m_radiation->onSelectSource = focus;
+        m_radiation->onRequest = [this](const Json& options)
         {
-            m_field->SetBusy(false);
-            if (!ResultUi::Matches(response, m_description))
+            Radiation(options);
+        };
+        m_radiation->onInvalidate = [this]()
+        {
+            ++m_viewGeneration;
+            m_pattern.Reset();
+        };
+        if (!m_description.is_object())
+        {
+            m_radiation->Clear(m_viewMessage);
+        }
+        return m_radiation;
+    });
+    views->AddDeferredPage(Display("필드"), [this](wxWindow* parent)
+    {
+        m_field = new FieldResultView(parent);
+        m_field->onFlux = [this](const Json& options)
+        {
+            auto input = options;
+            input.update(Pinned());
+            const auto generation = ++m_viewGeneration;
+            m_field->SetBusy(true);
+            Read("result.field.flux", input, [this, generation]()
             {
-                throw std::runtime_error("전계 격자 제안의 원본이 현재 결과와 다릅니다.");
-            }
-            if (response.at("status") == "refined" && onFieldRefinement)
+                return generation == m_viewGeneration;
+            }, [this](const Json& response)
             {
-                onFieldRefinement(response);
+                m_field->SetBusy(false);
+                if (!ResultUi::Matches(response, m_description))
+                {
+                    throw std::runtime_error("통과 전력의 원본이 현재 결과와 다릅니다.");
+                }
+                m_field->SetFlux(response);
+            }, [this](const Json& error)
+            {
+                m_field->SetError("통과 전력 계산 실패: " + DiagnosticMessage(error));
+            });
+        };
+        m_field->onSlice = [this](const Json& options)
+        {
+            FieldSlice(options);
+        };
+        m_field->onRefine = [this](const Json& options)
+        {
+            auto input = options;
+            input.update(Pinned());
+            if (input.contains("max_rounds") && onFieldStudy)
+            {
+                Json selection, limits;
+                for (const auto* key : {"monitor_id", "component", "frequency_index", "plane", "roi"})
+                {
+                    selection[key] = input.at(key);
+                }
+                for (const auto* key : {"threshold_fraction", "max_rules", "memory_limit_mib", "max_rounds", "max_s11_complex_delta"})
+                {
+                    limits[key] = input.at(key);
+                }
+                onFieldStudy({{"source", input.at("source")}, {"pin", input.at("pin")}, {"selection", selection},
+                              {"limits", limits}, {"name", "전계 기반 국부 격자 연구"}});
                 return;
             }
-            const auto status = response.at("status").get<std::string>();
-            m_field->SetError(status == "memory_limit" ? "제안한 격자의 예상 메모리가 상한을 초과합니다." :
-                status == "rule_limit" ? "기존 국부 격자 규칙 수가 상한에 도달했습니다." :
-                "이 단면과 변화 기준으로 추가 세분화할 구간이 없습니다.");
-        }, [this](const Json& error)
+            const auto generation = ++m_viewGeneration;
+            m_field->SetBusy(true);
+            Read("result.field.refine", input, [this, generation]()
+            {
+                return generation == m_viewGeneration;
+            }, [this](const Json& response)
+            {
+                m_field->SetBusy(false);
+                if (!ResultUi::Matches(response, m_description))
+                {
+                    throw std::runtime_error("전계 격자 제안의 원본이 현재 결과와 다릅니다.");
+                }
+                if (response.at("status") == "refined" && onFieldRefinement)
+                {
+                    onFieldRefinement(response);
+                    return;
+                }
+                const auto status = response.at("status").get<std::string>();
+                m_field->SetError(status == "memory_limit" ? "제안한 격자의 예상 메모리가 상한을 초과합니다." :
+                    status == "rule_limit" ? "기존 국부 격자 규칙 수가 상한에 도달했습니다." :
+                    "이 단면과 변화 기준으로 추가 세분화할 구간이 없습니다.");
+            }, [this](const Json& error)
+            {
+                m_field->SetError("전계 격자 검토 실패: " + DiagnosticMessage(error));
+            });
+        };
+        if (!m_description.is_object())
         {
-            m_field->SetError("전계 격자 검토 실패: " + DiagnosticMessage(error));
-        });
-    };
-    BindComparison(m_compare, 14);
+            m_field->Clear(m_viewMessage);
+        }
+        return m_field;
+    });
+    views->AddDeferredPage(Display("결과 / 후보 비교"), [this](wxWindow* parent)
+    {
+        m_compare = new ResultCompareView(parent);
+        BindComparison(m_compare, 14);
+        return m_compare;
+    });
     m_conditions->onConditionPage = [this](int offset)
     {
         Conditions(offset);
@@ -308,7 +340,10 @@ void ResultWorkspace::Update(const std::string& project, const std::string& epoc
     }
     m_available = available;
     m_browser->SetAvailable(available);
-    m_compare->SetAvailable(available);
+    if (m_compare != nullptr)
+    {
+        m_compare->SetAvailable(available);
+    }
     if (m_measurement != nullptr)
     {
         m_measurement->SetAvailable(available && m_measurementAvailable);
@@ -316,7 +351,10 @@ void ResultWorkspace::Update(const std::string& project, const std::string& epoc
     }
     for (wxWindow* view : std::vector<wxWindow*>{m_network, m_smith, m_metrics, m_radiation, m_field, m_compare})
     {
-        view->Enable(available);
+        if (view != nullptr)
+        {
+            view->Enable(available);
+        }
     }
     const bool active = (page >= 9 && page <= 14) || page == 16;
     m_browser->Show(active);
@@ -370,7 +408,10 @@ void ResultWorkspace::Reset()
     m_page = -1;
     m_revision.clear();
     m_browser->Reset();
-    m_compare->Clear();
+    if (m_compare != nullptr)
+    {
+        m_compare->Clear();
+    }
     if (m_measurement != nullptr)
     {
         m_measurement->Clear();
@@ -502,8 +543,12 @@ void ResultWorkspace::OpenRecent(const Json& source)
 
 void ResultWorkspace::SetValidationAvailable(bool available)
 {
+    m_validationAvailable = available;
     m_conditions->SetValidationAvailable(available);
-    m_metrics->SetValidationAvailable(available);
+    if (m_metrics != nullptr)
+    {
+        m_metrics->SetValidationAvailable(available);
+    }
 }
 void ResultWorkspace::Select(const Json& source, const Json& expectedPin)
 {
@@ -533,9 +578,18 @@ void ResultWorkspace::Select(const Json& source, const Json& expectedPin)
             m_description = description;
             m_conditions->SetDescription(description);
             m_network->SetDescription(description);
-            m_smith->SetDescription(description);
-            m_metrics->SetDescription(description);
-            m_radiation->SetDescription(description);
+            if (m_smith != nullptr)
+            {
+                m_smith->SetDescription(description);
+            }
+            if (m_metrics != nullptr)
+            {
+                m_metrics->SetDescription(description);
+            }
+            if (m_radiation != nullptr)
+            {
+                m_radiation->SetDescription(description);
+            }
             if (m_measurement != nullptr && m_page == 16)
             {
                 m_measurement->SetSelectionAvailable(true);
@@ -775,11 +829,24 @@ void ResultWorkspace::FieldSlice(const Json& options)
 }
 void ResultWorkspace::ClearViews(const std::string& reason)
 {
+    m_viewMessage = reason;
     m_network->Clear(reason);
-    m_smith->Clear(reason);
-    m_metrics->Clear(reason);
-    m_radiation->Clear(reason);
-    m_field->Clear(reason);
+    if (m_smith != nullptr)
+    {
+        m_smith->Clear(reason);
+    }
+    if (m_metrics != nullptr)
+    {
+        m_metrics->Clear(reason);
+    }
+    if (m_radiation != nullptr)
+    {
+        m_radiation->Clear(reason);
+    }
+    if (m_field != nullptr)
+    {
+        m_field->Clear(reason);
+    }
 }
 void ResultWorkspace::Error(const std::string& message)
 {

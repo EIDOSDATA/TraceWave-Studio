@@ -15,6 +15,9 @@ public:
     explicit StudioNotebook(wxWindow* parent);
     ~StudioNotebook() override;
     bool AddPage(wxWindow* page, const wxString& label, bool select = false);
+    /** @brief 탭 번호와 제목을 먼저 등록하고 해당 탭을 사용할 때 내용을 한 번 생성한다. */
+    void AddDeferredPage(const wxString& label, std::function<wxWindow*(wxWindow*)> create);
+    void PreparePage(std::size_t index);
     wxWindow* GetPage(std::size_t index) const;
     std::size_t GetPageCount() const;
     int GetSelection() const;
@@ -37,6 +40,7 @@ private:
         wxWindow* window;
         wxString label;
         int group = 0;
+        std::function<wxWindow*(wxWindow*)> create = {};
     };
     void ShowGroup(int group);
     void OnPageChanged(wxAuiNotebookEvent& event);

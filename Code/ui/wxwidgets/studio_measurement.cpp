@@ -24,7 +24,10 @@ bool Definitive(const Json& error)
 
 void StudioFrame::BuildMeasurementInterface()
 {
-    m_results->BuildMeasurementPage(m_views);
+    m_views->AddDeferredPage(Display("측정 비교"), [this](wxWindow* parent)
+    {
+        return m_results->BuildMeasurementPage(parent);
+    });
     m_results->onMeasurementTool = [this](const std::string& operation, const Json& record, const Json& selection)
     {
         OpenMeasurementTool(operation, record, selection);

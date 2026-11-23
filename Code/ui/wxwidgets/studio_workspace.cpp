@@ -68,7 +68,10 @@ void StudioFrame::BuildWorkspacePages()
                    ShowStudyReport(this);
                });
     m_views->AddPage(comparison, Display("수렴 연구"));
-    BuildOutputInterface();
+    m_views->AddDeferredPage(Display("출력"), [this](wxWindow* parent)
+    {
+        return BuildOutputInterface(parent);
+    });
 }
 
 void StudioFrame::BuildWorkspaceJobs()
@@ -143,7 +146,10 @@ void StudioFrame::PrepareExtendedWorkspaces(std::size_t page)
     BuildNetworkInterface();
     BuildSweepInterface();
     BuildResultInterface();
-    BuildValidationInterface();
+    m_views->AddDeferredPage(Display("독립 RF 검증"), [this](wxWindow* parent)
+    {
+        return BuildValidationInterface(parent);
+    });
     BuildMeasurementInterface();
     const auto constructed = std::chrono::steady_clock::now();
     StudioTheme::BindNativeControls(*navigation, navigationChildren);

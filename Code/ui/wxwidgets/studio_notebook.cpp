@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <numeric>
+#include <utility>
 
 void StudioNotebook::SetTabRowVisible(bool visible)
 {
@@ -131,9 +132,15 @@ StudioNotebook::~StudioNotebook()
 
 void StudioNotebook::OnPageChanged(wxAuiNotebookEvent& event)
 {
+    if (event.GetEventObject() != m_book)
+    {
+        event.Skip();
+        return;
+    }
     if (!m_switching && event.GetSelection() >= 0 && static_cast<std::size_t>(event.GetSelection()) < m_visible.size())
     {
         m_selection = static_cast<int>(m_visible[static_cast<std::size_t>(event.GetSelection())]);
+        PreparePage(static_cast<std::size_t>(m_selection));
         if (onSelectionChanged)
         {
             onSelectionChanged(m_selection);
@@ -171,6 +178,31 @@ bool StudioNotebook::AddPage(wxWindow* page, const wxString& label, bool select)
     }
     m_switching = false;
     return result;
+}
+
+void StudioNotebook::AddDeferredPage(const wxString& label, std::function<wxWindow*(wxWindow*)> create)
+{
+    auto* host = new wxPanel(this);
+    StudioTheme::BindSurface(*host);
+    AddPage(host, label);
+    m_pages.back().create = std::move(create);
+}
+
+/** @brief 선택과 출력 복구가 같은 호스트와 위젯을 사용한다. */
+void StudioNotebook::PreparePage(std::size_t index)
+{
+    if (index >= m_pages.size() || !m_pages[index].create)
+    {
+        return;
+    }
+    auto* host = m_pages[index].window;
+    auto create = std::exchange(m_pages[index].create, {});
+    auto* content = create(host);
+    auto* layout = new wxBoxSizer(wxVERTICAL);
+    layout->Add(content, 1, wxEXPAND);
+    host->SetSizer(layout);
+    StudioTheme::BindNativeControls(*host);
+    host->Layout();
 }
 
 wxWindow* StudioNotebook::GetPage(std::size_t index) const
@@ -261,6 +293,7 @@ int StudioNotebook::SetSelection(std::size_t index)
     {
         return wxNOT_FOUND;
     }
+    PreparePage(index);
     const int previous = m_selection;
     m_selection = static_cast<int>(index);
     if (m_pages[index].group != m_group)

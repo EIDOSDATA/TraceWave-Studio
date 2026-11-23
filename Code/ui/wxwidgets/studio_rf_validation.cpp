@@ -4,9 +4,13 @@
 #include "result_workspace.h"
 #include "studio_shell.h"
 #include "study_report_dialog.h"
+#include "studio_theme.h"
 
-void StudioFrame::BuildValidationInterface()
+wxWindow* StudioFrame::BuildValidationInterface(wxWindow* parent)
 {
+    auto* navigation = m_tree->GetParent();
+    const auto navigationChildren = navigation->GetChildren().GetCount();
+    const auto propertyChildren = m_properties->GetChildren().GetCount();
     DialogGateway gateway = [this](const std::string& method, const Json& input, bool mutation,
                                    std::function<void(const Json&)> success, std::function<void(const Json&)> failure)
     {
@@ -18,7 +22,9 @@ void StudioFrame::BuildValidationInterface()
         Send(method, input, false, Context(), std::move(success), std::move(failure));
     };
     m_validation =
-        std::make_unique<RfValidationController>(m_views, m_tree->GetParent(), m_properties, std::move(gateway));
+        std::make_unique<RfValidationController>(parent, navigation, m_properties, std::move(gateway));
+    StudioTheme::BindNativeControls(*navigation, navigationChildren);
+    StudioTheme::BindNativeControls(*m_properties, propertyChildren);
     m_validation->onOpenResult = [this](const Json& source, const Json& pin)
     {
         m_views->SetSelection(9);
@@ -28,21 +34,21 @@ void StudioFrame::BuildValidationInterface()
     {
         ShowStudyReport(this);
     };
-    m_results->onOpenValidation = [this]()
-    {
-        OpenValidationRecords();
-    };
+    return m_validation->View();
 }
 
 void StudioFrame::UpdateValidationViews()
 {
+    const bool available = m_connected && !m_closing && !m_busy && m_setupDialog == nullptr;
+    if (m_results)
+    {
+        m_results->SetValidationAvailable(available && m_validationSupported && !m_project.empty());
+    }
     if (!m_validation)
     {
         return;
     }
-    const bool available = m_connected && !m_closing && !m_busy && m_setupDialog == nullptr;
     m_validation->Update(m_project, m_epoch, m_connected, m_validationSupported, available, m_views->GetSelection());
-    m_results->SetValidationAvailable(available && m_validationSupported && !m_project.empty());
     m_tree->GetParent()->Layout();
     m_properties->Layout();
 }

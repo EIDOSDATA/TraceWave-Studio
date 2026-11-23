@@ -31,6 +31,7 @@ void StudioSmokeDriver::ValidationSafetyChecks()
         calls.push_back({method, input, std::move(success)});
     };
     auto controller = std::make_unique<RfValidationController>(views, navigation, conditions, gateway);
+    views->AddPage(controller->View(), Display("독립 RF 검증"));
     const auto project = m_validationFixture.at("project_id").get<std::string>();
     controller->Update(project, "validation-smoke-epoch", true, true, true, 0);
     const auto identity = m_validationFixture.at("validation_id").get<std::string>();

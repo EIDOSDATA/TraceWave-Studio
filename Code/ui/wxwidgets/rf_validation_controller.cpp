@@ -1,7 +1,6 @@
 /** @file @brief 불변 판정 ID와 선택 세대를 확인한 뒤에만 검증 표를 교체한다. */
 #include "rf_validation_controller.h"
 #include "rf_validation_view.h"
-#include "studio_notebook.h"
 #include "studio_support.h"
 #include <algorithm>
 #include <stdexcept>
@@ -25,12 +24,11 @@ void Page(const Json& response, int offset)
 }
 }
 
-RfValidationController::RfValidationController(StudioNotebook* views, wxWindow* navigation, wxWindow* conditions,
+RfValidationController::RfValidationController(wxWindow* parent, wxWindow* navigation, wxWindow* conditions,
                                                DialogGateway gateway)
     : m_gateway(std::move(gateway))
 {
-    m_view = new RfValidationView(views, navigation, conditions);
-    views->AddPage(m_view, Display("독립 RF 검증"));
+    m_view = new RfValidationView(parent, navigation, conditions);
     m_view->onRefresh = [this]()
     {
         Refresh();
@@ -68,6 +66,11 @@ RfValidationController::RfValidationController(StudioNotebook* views, wxWindow* 
             onLegacyReport();
         }
     };
+}
+
+wxWindow* RfValidationController::View() const
+{
+    return m_view;
 }
 
 RfValidationController::~RfValidationController()

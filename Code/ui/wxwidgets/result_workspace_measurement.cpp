@@ -6,10 +6,9 @@
 #include "studio_notebook.h"
 #include "studio_support.h"
 
-void ResultWorkspace::BuildMeasurementPage(StudioNotebook* views)
+wxWindow* ResultWorkspace::BuildMeasurementPage(wxWindow* parent)
 {
-    m_measurement = new MeasurementCompareView(views);
-    views->AddPage(m_measurement, Display("측정 비교"));
+    m_measurement = new MeasurementCompareView(parent);
     BindComparison(m_measurement->Comparison(), 16);
     m_measurement->onRefresh = [this]()
     {
@@ -89,6 +88,7 @@ void ResultWorkspace::BuildMeasurementPage(StudioNotebook* views)
         }
     };
     m_measurement->SetAvailable(false);
+    return m_measurement;
 }
 
 ResultCompareView* ResultWorkspace::ComparisonView() const
