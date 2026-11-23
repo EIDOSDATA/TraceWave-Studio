@@ -19,6 +19,7 @@
 #include <wx/textctrl.h>
 #include <algorithm>
 #include <fstream>
+#include <cmath>
 
 namespace
 {
@@ -135,6 +136,49 @@ void StudioSmokeDriver::ResultsSmokeTick()
             return;
         }
         auto& field = *workspace.m_field;
+        if (m_resultsFixture.contains("flux_surfaces"))
+        {
+            const bool first = m_setupStage == 100;
+            if (first || m_setupStage == 102)
+            {
+                const auto& item = m_resultsFixture.at("flux_surfaces").at(first ? 0 : 1);
+                CanvasAssert(field.m_fluxPanel->IsShown() && field.m_flux->IsEnabled(), "E/H 체적의 면 적분 입력이 없습니다.");
+                SetupSmoke::Choose(field.m_fluxFace, first ? 4 : 6);
+                for (int i = 0; i < 3; ++i)
+                {
+                    for (int end = 0; end < 2; ++end)
+                    {
+                        if (field.m_fluxBounds[i][end]->IsEnabled())
+                        {
+                            field.m_fluxBounds[i][end]->SetValue(Display(item.at("bounds_mm").at(i).at(end).dump()));
+                        }
+                    }
+                }
+                ++m_setupStage;
+                SetupSmoke::Click(field.m_flux);
+            }
+            else
+            {
+                const bool rectangle = m_setupStage == 101;
+                const auto& item = m_resultsFixture.at("flux_surfaces").at(rectangle ? 0 : 1);
+                const auto text = field.m_fluxReport->GetValue();
+                double actual = 0;
+                const auto expected = item.at("total").get<double>();
+                CanvasAssert(text.Contains(Display("W*s^2")) && text.AfterFirst(' ').BeforeFirst(' ').ToCDouble(&actual) &&
+                             std::abs(actual - expected) <= std::max(1e-44, std::abs(expected) * 1e-12) &&
+                             workspace.Pinned().at("pin") == m_resultsFixture.at("pin") && m_frame.m_revision == m_resultsRevision,
+                             "통과량 합계, Fourier 단위 또는 원본 pin이 다릅니다.");
+                m_setupChecks.push_back(rectangle ? "field_flux_rectangle" : "field_flux_box_six_faces");
+                if (!rectangle)
+                {
+                    CanvasAssert(text.Contains(Display("-x")) && text.Contains(Display("+z")), "바깥쪽 여섯 면의 표시가 없습니다.");
+                    FinishSmoke(true, "");
+                    return;
+                }
+                ++m_setupStage;
+            }
+            return;
+        }
         if (m_setupStage == 100 || m_setupStage == 104)
         {
             CanvasAssert(field.m_description.value("status", "") == "available" &&

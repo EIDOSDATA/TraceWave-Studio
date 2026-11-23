@@ -111,6 +111,28 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
         ++m_viewGeneration;
         m_pattern.Reset();
     };
+    m_field->onFlux = [this](const Json& options)
+    {
+        auto input = options;
+        input.update(Pinned());
+        const auto generation = ++m_viewGeneration;
+        m_field->SetBusy(true);
+        Read("result.field.flux", input, [this, generation]()
+        {
+            return generation == m_viewGeneration;
+        }, [this](const Json& response)
+        {
+            m_field->SetBusy(false);
+            if (!ResultUi::Matches(response, m_description))
+            {
+                throw std::runtime_error("통과 전력의 원본이 현재 결과와 다릅니다.");
+            }
+            m_field->SetFlux(response);
+        }, [this](const Json& error)
+        {
+            m_field->SetError("통과 전력 계산 실패: " + DiagnosticMessage(error));
+        });
+    };
     m_field->onSlice = [this](const Json& options)
     {
         FieldSlice(options);

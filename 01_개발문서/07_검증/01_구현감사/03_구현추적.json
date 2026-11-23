@@ -8285,6 +8285,10 @@
       "extension_profile": "rfad.result-workspace/0.1",
       "status": "implemented"
     },
+    "result.field.flux": {
+      "extension_profile": "rfad.result-workspace/0.1",
+      "status": "implemented"
+    },
     "result.field.page": {
       "extension_profile": "rfad.result-workspace/0.1",
       "status": "implemented"
@@ -15336,8 +15340,8 @@
     },
     {
       "path": "Code/src/rfad/application/result_fields.py",
-      "text_sha256": "7320e9669bce3dd58620a24bbd1e5338fc0c564dda4d0285d4066db68a3d4516",
-      "utf8_bytes": 18128
+      "text_sha256": "d912808760609731573b727a61f074a84c3e0302db05b81f1b3df5c8c519d316",
+      "utf8_bytes": 18558
     },
     {
       "path": "Code/src/rfad/application/result_metrics.py",
@@ -15351,8 +15355,8 @@
     },
     {
       "path": "Code/src/rfad/application/result_service.py",
-      "text_sha256": "f981f16262f7842592b433c3f538e8dbb74b3a238db6b837d9fa6f15efaec126",
-      "utf8_bytes": 8910
+      "text_sha256": "4aaf21e472f1bcf12cc9a598bea830e0581708443fb40222aaaea1f6adf4d996",
+      "utf8_bytes": 9149
     },
     {
       "path": "Code/src/rfad/application/result_smith.py",
@@ -16481,8 +16485,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/field_result_view.cpp",
-      "text_sha256": "561228421aa9a8529fb04e770a7c76449674931bec3beb965538c38340d19ad4",
-      "utf8_bytes": 22855
+      "text_sha256": "38b9039b842fffbe7816b2d4ba9f042844cde4bea16761415dbef270c1010dbc",
+      "utf8_bytes": 28172
     },
     {
       "path": "Code/ui/wxwidgets/frequency_assessment_display.cpp",
@@ -16686,8 +16690,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace.cpp",
-      "text_sha256": "2ee7d981016aba6ba526144f11d85a87f8cd1bb37758131b86072e36a0097871",
-      "utf8_bytes": 22767
+      "text_sha256": "7e7320e4787fae445e97fad168e8c8b35de7d710e80ab1fb1cc59fc105d64b1e",
+      "utf8_bytes": 23568
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace_compare.cpp",

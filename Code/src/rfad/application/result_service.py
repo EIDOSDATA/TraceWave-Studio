@@ -19,6 +19,7 @@ FIELDS = {
     "result.marker": {"source", "pin", "row", "column", "frequency_hz"},
     "result.smith": {"source", "pin", "port", "chart", "offset", "limit"},
     "result.export": {"source", "pin", "format"},
+    "result.field.flux": {"source", "pin", "frequency_index", "surface"},
     "result.field.describe": {"source", "pin"},
     "result.field.page": {"source", "pin", "monitor_id", "frequency_index", "component", "plane", "roi", "stride"},
     "result.field.refine": {"source", "pin", "monitor_id", "frequency_index", "component", "plane", "roi",
@@ -131,6 +132,10 @@ def read(service, method, params):
 
         return exported(service, value, data["format"])
     arguments = {key: item for key, item in data.items() if key not in ("source", "pin")}
+    if method == "result.field.flux":
+        from rfad.application.result_field_flux import integrate
+
+        return bounded(integrate(service, value, arguments))
     if method == "result.field.refine":
         from rfad.application.result_field_refine import propose
 

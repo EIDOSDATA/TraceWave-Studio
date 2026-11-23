@@ -23,7 +23,7 @@ MONITORS = {
 }
 WARNINGS = [
     "펄스 Fourier 원문 단위이며 연속파/실측 절대 전계가 아닙니다.",
-    "Yee 성분별 위치가 다릅니다. 공간 보간이나 벡터 크기 합성을 하지 않습니다.",
+    "원본 단면과 표본 마커는 각 성분의 실제 Yee 위치와 복소값을 표시합니다.",
     "재료 J는 native 재료 전류이며 sheet 경계의 전체 실제 전류를 뜻하지 않습니다.",
     "rotH의 원문 시간 위치를 유지합니다. 손실 적분의 시간/위상 보정은 적용하지 않았습니다.",
     "제작/측정 조건과 독립 물리 정확도는 미확립 상태를 유지합니다.",
@@ -202,6 +202,13 @@ def describe(service, resolved):
             "normalization": "pulse_fourier_spectrum_native_2dt", "frequency_hz": deepcopy(model["frequency_hz"]),
             "components": components, "source_ref": deepcopy(reference),
             "coordinate_basis": _basis(model), "phase_correction": "none_raw_time_location"})
+    volume = [m for m in response["monitors"] if m["monitor_id"] in ("probe_electric", "probe_magnetic")]
+    if len(volume) == 2 and volume[0]["frequency_hz"] == volume[1]["frequency_hz"]:
+        from rfad.application.result_field_flux import common_bounds
+
+        bounds = common_bounds([c["coordinates_mm"] for m in volume for c in m["components"]])
+        if bounds is not None:
+            response["flux_bounds_mm"] = bounds
     if response["monitors"]:
         response["status"] = "available"
         if all(item["monitor_id"].startswith("probe_") for item in response["monitors"]):

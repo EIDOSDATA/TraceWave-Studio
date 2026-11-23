@@ -3,6 +3,7 @@
 
 #include "studio_types.h"
 #include <wx/panel.h>
+#include <array>
 #include <functional>
 #include <string>
 
@@ -20,16 +21,20 @@ class FieldResultView final : public wxPanel
 public:
     explicit FieldResultView(wxWindow* parent);
     void SetDescription(const Json& description);
+    void SetFlux(const Json& response);
     void SetSlice(const Json& slice);
     void Clear(const std::string& message);
     void SetError(const std::string& message);
     void SetBusy(bool busy);
+    std::function<void(const Json&)> onFlux;
     std::function<void(const Json&)> onSlice;
     std::function<void(const Json&)> onRefine;
 
 private:
     friend class StudioSmokeDriver;
     friend class LargeResultDialog;
+    void ResetFluxBounds();
+    void RequestFlux();
     void RebuildMonitor();
     void RebuildComponent();
     void RebuildPlane();
@@ -58,6 +63,11 @@ private:
     wxStaticText* m_uLabel = nullptr;
     wxStaticText* m_vLabel = nullptr;
     wxStaticText* m_notice = nullptr;
+    wxPanel* m_fluxPanel = nullptr;
+    wxChoice* m_fluxFace = nullptr;
+    std::array<std::array<wxTextCtrl*, 2>, 3> m_fluxBounds{};
+    wxButton* m_flux = nullptr;
+    wxTextCtrl* m_fluxReport = nullptr;
     wxTextCtrl* m_marker = nullptr;
     wxButton* m_load = nullptr;
     wxPanel* m_refineOptions = nullptr;

@@ -12,6 +12,7 @@
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <algorithm>
+#include <cmath>
 #include <array>
 #include <vector>
 
@@ -113,6 +114,52 @@ FieldResultView::FieldResultView(wxWindow* parent) : wxPanel(parent)
     m_notice = new wxStaticText(m_controls, wxID_ANY, wxEmptyString);
     StudioTheme::BindSecondary(*m_notice);
     fields->Add(m_notice, 0, wxEXPAND);
+    m_fluxPanel = new wxPanel(m_controls);
+    auto* fluxLayout = new wxBoxSizer(wxVERTICAL);
+    fluxLayout->Add(Label(m_fluxPanel, "통과 전력 / 적분 면"), 0, wxBOTTOM, FromDIP(4));
+    m_fluxFace = new wxChoice(m_fluxPanel, wxID_ANY);
+    m_fluxFace->SetName(Display("적분 면의 바깥쪽 방향"));
+    for (const auto* face : {"+X", "-X", "+Y", "-Y", "+Z", "-Z", "직육면체 6면 (바깥쪽)"})
+    {
+        m_fluxFace->Append(Display(face));
+    }
+    m_fluxFace->SetSelection(4);
+    fluxLayout->Add(m_fluxFace, 0, wxEXPAND);
+    for (std::size_t i = 0; i < m_fluxBounds.size(); ++i)
+    {
+        const std::string axis(1, "XYZ"[i]);
+        fluxLayout->Add(Label(m_fluxPanel, axis + " 시작 / 끝 (mm)"), 0, wxTOP, FromDIP(4));
+        auto* pair = new wxBoxSizer(wxHORIZONTAL);
+        for (std::size_t end = 0; end < 2; ++end)
+        {
+            auto* input = new wxTextCtrl(m_fluxPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(80, -1)));
+            input->SetName(Display(axis + (end == 0 ? " 시작 (mm)" : " 끝 (mm)")));
+            input->Bind(wxEVT_TEXT, [this](wxCommandEvent& event)
+            {
+                m_fluxReport->Clear();
+                event.Skip();
+            });
+            m_fluxBounds[i][end] = input;
+            pair->Add(input, 1, wxRIGHT, FromDIP(4));
+        }
+        fluxLayout->Add(pair, 0, wxEXPAND);
+    }
+    m_flux = new wxButton(m_fluxPanel, wxID_ANY, Display("지정 면 통과 전력 계산"));
+    fluxLayout->Add(m_flux, 0, wxTOP | wxEXPAND, FromDIP(6));
+    m_fluxReport = new wxTextCtrl(m_fluxPanel, wxID_ANY, wxEmptyString, wxDefaultPosition,
+                                  FromDIP(wxSize(-1, 90)), wxTE_MULTILINE | wxTE_READONLY);
+    m_fluxReport->SetName(Display("면의 방향별 통과 전력과 단위"));
+    fluxLayout->Add(m_fluxReport, 0, wxTOP | wxEXPAND, FromDIP(4));
+    m_fluxPanel->SetSizer(fluxLayout);
+    fields->Add(m_fluxPanel, 0, wxTOP | wxEXPAND, FromDIP(8));
+    m_fluxFace->Bind(wxEVT_CHOICE, [this](wxCommandEvent&)
+    {
+        ResetFluxBounds();
+    });
+    m_flux->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        RequestFlux();
+    });
     m_refineOptions = new wxPanel(m_controls);
     auto* refineLayout = new wxBoxSizer(wxVERTICAL);
     auto input = [this, refineLayout](const std::string& label, int minimum, int maximum, int initial)
@@ -250,6 +297,7 @@ void FieldResultView::SetDescription(const Json& description)
             return;
         }
         m_description = description;
+        ResetFluxBounds();
         std::string notice = "색 범위는 현재 반환된 단면 표본의 크기입니다. 다른 단면과 색만으로 크기를 비교하지 마십시오.";
         if (description.contains("drive_reference"))
         {
@@ -521,6 +569,7 @@ void FieldResultView::ShowMarker(std::size_t index)
 void FieldResultView::ClearSlice(const std::string& message)
 {
     m_slice = nullptr;
+    m_fluxReport->Clear();
     m_request = nullptr;
     m_canvas->Clear(message);
     m_marker->Clear();
@@ -572,6 +621,15 @@ void FieldResultView::SetBusy(bool busy)
     m_load->Enable(component && !busy && m_frequency->GetSelection() >= 0);
     const auto* monitor = Monitor();
     const bool electric = monitor && (monitor->at("monitor_id") == "electric" || monitor->at("monitor_id") == "probe_electric");
+    const bool flux = onFlux && monitor && m_description.contains("flux_bounds_mm") &&
+        (monitor->at("monitor_id") == "probe_electric" || monitor->at("monitor_id") == "probe_magnetic");
+    if (m_fluxPanel->IsShown() != flux)
+    {
+        m_fluxPanel->Show(flux);
+        m_controls->Layout();
+        m_controls->FitInside();
+    }
+    m_fluxPanel->Enable(flux && !busy);
     const bool show = static_cast<bool>(onRefine) && electric;
     if (m_refineOptions->IsShown() != show)
     {
@@ -580,4 +638,69 @@ void FieldResultView::SetBusy(bool busy)
         m_controls->FitInside();
     }
     m_refine->Enable(show && m_slice.is_object() && !busy);
+}
+
+/** @brief 여섯 Yee 성분의 공통 mm 구간을 기본값으로 사용하고 법선 위치는 한 칸만 편집한다. */
+void FieldResultView::ResetFluxBounds()
+{
+    m_fluxReport->Clear();
+    if (!m_description.contains("flux_bounds_mm"))
+    {
+        return;
+    }
+    const auto& bounds = m_description.at("flux_bounds_mm");
+    const auto normal = m_fluxFace->GetSelection() / 2;
+    for (int i = 0; i < 3; ++i)
+    {
+        const bool fixed = i == normal;
+        const auto& pair = bounds.at(i);
+        const auto first = fixed ? Json((pair.at(0).get<double>() + pair.at(1).get<double>()) / 2) : pair.at(0);
+        m_fluxBounds[i][0]->ChangeValue(Display(first.dump()));
+        m_fluxBounds[i][1]->ChangeValue(fixed ? wxString() : Display(pair.at(1).dump()));
+        m_fluxBounds[i][1]->Enable(!fixed);
+    }
+}
+
+/** @brief 현재 고정 결과의 주파수와 사용자가 편집한 물리 면 경계를 읽는다. */
+void FieldResultView::RequestFlux()
+{
+    if (!onFlux || !m_fluxPanel->IsEnabled())
+    {
+        return;
+    }
+    const int face = m_fluxFace->GetSelection();
+    const int normal = face / 2;
+    Json surface = {{"kind", face == 6 ? "box" : "rectangle"}, {"bounds_mm", Json::array()}};
+    for (int i = 0; i < 3; ++i)
+    {
+        double start = 0.0;
+        double stop = 0.0;
+        if (!m_fluxBounds[i][0]->GetValue().ToDouble(&start) || !std::isfinite(start) ||
+            (i != normal && (!m_fluxBounds[i][1]->GetValue().ToDouble(&stop) || !std::isfinite(stop))))
+        {
+            m_fluxReport->ChangeValue(Display("각 축의 시작과 끝에 유한한 mm 값을 입력하십시오."));
+            return;
+        }
+        surface["bounds_mm"].push_back({start, i == normal ? start : stop});
+    }
+    if (face < 6)
+    {
+        surface["axis"] = std::string(1, "xyz"[normal]);
+        surface["direction"] = face % 2 == 0 ? 1 : -1;
+    }
+    onFlux({{"surface", surface}, {"frequency_index", m_frequency->GetSelection()}});
+}
+
+/** @brief 부호와 단위가 있는 면별 펄스 스펙트럼 통과량을 같은 입력 바로 아래에 표시한다. */
+void FieldResultView::SetFlux(const Json& response)
+{
+    std::string text = "합계 " + response.at("total_flux_w_s2").dump() + " W*s^2";
+    for (const auto& face : response.at("faces"))
+    {
+        text += "\n" + std::string(face.at("direction").get<int>() > 0 ? "+" : "-") +
+            face.at("axis").get<std::string>() + "  " + face.at("area_m2").dump() + " m^2  " +
+            face.at("flux_w_s2").dump() + " W*s^2";
+    }
+    m_fluxReport->ChangeValue(Display(text));
+    SetStatus("기록된 E/H 체적에서 선택한 면의 통과 전력을 계산했습니다.");
 }
