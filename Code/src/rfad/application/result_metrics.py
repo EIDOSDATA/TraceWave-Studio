@@ -94,6 +94,12 @@ def metrics(service, params):
                 if key in independent:
                     row["independent_losses"].append({"key": key, "label": label, "value": independent[key],
                                                        "state": "computed_unvalidated"})
+            for end, label in (("lower", "낮은 Z 끝 접합층 손실"), ("upper", "높은 Z 끝 접합층 손실")):
+                parts = [item for item in independent.get("junction_components", []) if item["end"] == end]
+                if parts:
+                    row["independent_losses"].append({"key": "via_junction_" + end, "label": label,
+                                                      "value": math.fsum(item["loss_w_s2"] for item in parts),
+                                                      "state": "computed_unvalidated"})
         else:
             row["reasons"].append("독립 흡수 적분 미기록. 수용 전력과 방사 전력의 차이를 개별 손실로 분배하지 않습니다.")
         if power["power_balance_status"] == "requires_review":

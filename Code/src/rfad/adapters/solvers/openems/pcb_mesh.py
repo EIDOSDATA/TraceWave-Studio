@@ -24,6 +24,7 @@ def audit_native_mesh(csx, case, lines):
     entities = {item["id"]: item for item in shapes + vias}
     properties = {"conductor_" + item["id"]: item for item in shapes}
     properties.update({"via_" + item["id"]: item for item in vias})
+    properties.update({joint["native_property"]: via for via in vias for joint in via.get("junctions", [])})
     nodes, observed, memberships = {}, {}, {identity: set() for identity in entities}
     edge_counts = {identity: 0 for identity in entities}
     polygons = {item["id"]: [_polygon(poly, item["id"]) for poly in shape_polygons(item, case["settings"]["curve_tolerance_mm"])] for item in shapes}

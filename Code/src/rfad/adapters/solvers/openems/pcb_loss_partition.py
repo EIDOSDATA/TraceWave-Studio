@@ -31,6 +31,9 @@ def sampled_material_partition(csx, case, lines, indices, sheet):
                  for item in case["layers"] if item["role"] == "dielectric"}
     materials.update({"via_" + item["id"]: ("via", item["id"], item["conductivity_s_per_m"])
                       for item in case.get("vias", [])})
+    joints = {joint["native_property"]: (via["id"], joint) for via in case.get("vias", [])
+              for joint in via.get("junctions", [])}
+    materials.update({name: ("junction", name, joint["conductivity_s_per_m"]) for name, (_, joint) in joints.items()})
     pieces = {name: {"kind": kind, "entity_id": identity, "indices": [], "coefficient": []}
               for name, (kind, identity, _) in materials.items()}
     for direction in range(3):
@@ -67,12 +70,15 @@ def sampled_material_partition(csx, case, lines, indices, sheet):
                     pieces[name]["coefficient"].append(coefficient)
                     total[key] += coefficient
     flat_total = total.ravel()
-    for piece in pieces.values():
+    for name, piece in pieces.items():
         piece["indices"] = np.asarray(piece["indices"], dtype=np.int64)
         coefficient = np.asarray(piece.pop("coefficient"), dtype=np.float64)
         piece["fraction"] = coefficient / flat_total[piece["indices"]]
-        if piece["kind"] == "via":
-            require(len(piece["indices"]) > 0, "비아의 체적 손실 표본이 격자에서 사라졌습니다.", "E_GEOMETRY")
+        if piece["kind"] in ("via", "junction"):
+            require(len(piece["indices"]) > 0, "비아 또는 접합의 체적 손실 표본이 격자에서 사라졌습니다.", "E_GEOMETRY")
+        if name in joints:
+            via_id, joint = joints[name]
+            piece.update(via_id=via_id, end=joint["end"], material_id=joint["material_id"])
     return total, list(pieces.values())
 
 
@@ -95,10 +101,21 @@ def partition_work(electric, conduction, total_current, weights, sheet, frequenc
     volume[~active] = 0.0
     require(not np.any((coefficient == 0) & active & (np.abs(conduction) > peak * 1e-7)),
             "재료에 배정되지 않은 전도 전류가 있습니다.", "E_HASH")
-    dielectric, vias = [], []
+    dielectric, barrels, joints = [], [], []
     for piece in pieces:
         value = float(np.sum(volume.ravel()[piece["indices"]] * piece["fraction"], dtype=np.float64))
-        (dielectric if piece["kind"] == "dielectric" else vias).append({"entity_id": piece["entity_id"], "loss_w_s2": value})
+        if piece["kind"] == "junction":
+            idx = piece["indices"]
+            direct = 0.5 * np.abs(electric.ravel()[idx]) ** 2 * coefficient.ravel()[idx] * np.asarray(weights).ravel()[idx]
+            check = float(np.sum(direct * piece["fraction"], dtype=np.float64))
+            require(math.isclose(value, check, rel_tol=0.005, abs_tol=1e-300),
+                    "접합의 E.J 전도 일과 sigma*|E|^2 적분이 다릅니다.", "E_HASH")
+            joints.append({**{key: piece[key] for key in ("via_id", "end", "material_id")},
+                           "loss_w_s2": value, "sigma_e2_w_s2": check})
+        else:
+            (dielectric if piece["kind"] == "dielectric" else barrels).append({"entity_id": piece["entity_id"], "loss_w_s2": value})
+    vias = [{"entity_id": item["entity_id"], "loss_w_s2": item["loss_w_s2"] + math.fsum(
+        part["loss_w_s2"] for part in joints if part["via_id"] == item["entity_id"])} for item in barrels]
     correction = np.exp(-1j * angle) / math.cos(angle)
     sheet_power = 0.5 * np.real(electric * np.conj(total_current * correction)) * np.asarray(weights)
     sheets = [{"entity_id": shape["id"], "loss_w_s2": float(np.sum(sheet_power[sheet == index], dtype=np.float64))}
@@ -108,6 +125,8 @@ def partition_work(electric, conduction, total_current, weights, sheet, frequenc
     result = {"dielectric_loss_w_s2": math.fsum(item["loss_w_s2"] for item in dielectric),
               "conductor_loss_w_s2": planar + via, "sheet_loss_w_s2": planar, "via_loss_w_s2": via,
               "sheet_components": sheets, "via_components": vias, "dielectric_components": dielectric}
+    if joints:
+        result.update(junction_components=joints, barrel_components=barrels)
     actual_volume = float(np.sum(volume, dtype=np.float64))
     require(math.isclose(actual_volume, result["dielectric_loss_w_s2"] + via, rel_tol=1e-10, abs_tol=1e-300),
             "체적 전도 일이 재료별 합계에 한 번씩 배정되지 않았습니다.", "E_HASH")

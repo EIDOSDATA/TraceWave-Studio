@@ -100,4 +100,5 @@ def read(service, params):
             targets.extend({"kind": "surface_opening", "id": row["id"], "opening_sha256": canonical_hash(opening),
                             "name": f"{row['name']} / 개구 {index + 1}"} for index, opening in enumerate(row["openings"]))
     return {"revision_id": expected, "design": domain.design_context(document),
-            "saved": deepcopy(domain.records(document)), "results": results, "local_mesh_targets": targets}
+            "saved": deepcopy(domain.records(document)), "results": results, "local_mesh_targets": targets,
+            "junction_materials": [{"id": row["id"], "name": row["name"]} for row in document["materials"]]}

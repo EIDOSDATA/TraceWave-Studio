@@ -14,6 +14,7 @@ from rfad.application.pcb_geometry import (MAX_POLYGON_POINTS, fail, scalar, len
                                             shape_polygons, distance_to_shape, _bounds, _inside_board)
 from rfad.application.pcb_mesh import MAX_GRID_POINTS, mesh_lines, validate_policy
 from rfad.application.pcb_local_mesh import validate_rules
+from rfad.application import pcb_junctions, pcb_material_bands
 from rfad.application.pcb_projection import EPSILON0, project_pcb
 from rfad.application.pcb_results import (RAW_NAMES, normalization_contract, read_statistics_values,
                                          check_termination, validate_preparation, validate_result)
@@ -39,9 +40,12 @@ PROFILE = "rfad.openems.pcb-single-port/0.1"
 def validate_settings(settings):
     """! @brief 공개 설정을 명시적이고 유한한 범위로 한정한다."""
     keys = {"frequency_hz", "grid_mm", "air_padding_mm", "curve_tolerance_mm", "max_timesteps", "end_criterion"}
-    if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance", "feature_subdivisions", "compute_profile", "local_mesh", "boundary_conditions", "field_probe"}:
+    if type(settings) is not dict or not keys <= set(settings) or set(settings) - keys - {"mesh_policy", "radiation", "power_balance", "feature_subdivisions", "compute_profile", "local_mesh", "boundary_conditions", "field_probe", "via_junctions", "material_bands"}:
         fail("E_SCHEMA", "PCB 해석 설정의 필수 필드가 다릅니다.", "settings")
     conditions(settings)
+    pcb_junctions.validate(settings)
+    if "material_bands" in settings:
+        pcb_material_bands.validate(settings["material_bands"])
     frequency = settings["frequency_hz"]
     required = {"start", "stop", "count"}
     if type(frequency) is not dict or not required <= set(frequency) or set(frequency) - required - {"points"}:
@@ -92,14 +96,21 @@ def validate_settings(settings):
     limits(settings)
 
 
-def check_pcb_input(document, settings):
+def check_pcb_input(document, settings, *, captured=None):
     """! @brief 단일 및 다중 급전 해석에 동일한 원본 형상과 물성 검사를 적용한다."""
     validate_project(document)
     for row in document.get("pcb", {}).get("holes", []):
         if row["plating"]["state"] != "unplated":
             fail("E_UNSUPPORTED", "기계 홀은 명시 비도금 상태만 해석합니다. 도금이 필요한 경우 지원 PCB 비아를 사용하십시오.",
                  "pcb.holes." + row["id"] + ".plating.state")
+    if captured is not None:
+        snapshot, runtime = captured
+        _snapshot(snapshot)
+        _runtime(runtime)
     validate_settings(settings)
+    if captured is not None and (snapshot["content_hash"] != canonical_hash(document) or
+                                 any(snapshot[key] != document[key] for key in ("project_id", "revision_id", "schema_version"))):
+        fail("E_HASH", "PCB 원본과 스냅샷 참조가 다릅니다.", "snapshot")
     # @brief validate_project가 검증한 편집 출처/외부 복소 자료는 원문에 보존하며 EM 형상에 투영하지 않는다.
     supported_extensions = {PCB_SELECTION_EXTENSION, TEMPLATE_ORIGIN_EXTENSION, PHYSICAL_KEY,
                             PRECISION_ORIGIN_EXTENSION, COPPER_ISLANDS_KEY, NETWORK_LIBRARY_EXTENSION, "rfad.sweep-selection", "rfad.measurement", SOLVER_CONDITIONS_KEY, SMART_DIMENSIONS_KEY, SKETCH_KEY, DRAWING_ANNOTATIONS_KEY}
@@ -119,11 +130,7 @@ def check_pcb_input(document, settings):
 
 def _payload(document, snapshot, runtime, settings):
     """! @brief 보존한 사용자 설계에서 native 소비 조건을 결정적으로 만든다."""
-    _snapshot(snapshot)
-    _runtime(runtime)
-    omissions = check_pcb_input(document, settings)
-    if snapshot["content_hash"] != canonical_hash(document) or any(snapshot[key] != document[key] for key in ("project_id", "revision_id", "schema_version")):
-        fail("E_HASH", "PCB 원본과 스냅샷 참조가 다릅니다.", "snapshot")
+    omissions = check_pcb_input(document, settings, captured=(snapshot, runtime))
     return {"schema": "rfad.analysis-plan/0.1", "analysis_profile": PROFILE, "runtime_profile": runtime["runtime_profile"],
             "snapshot": deepcopy(snapshot), "source_semantics": deepcopy(document), "runtime_identity": deepcopy(runtime),
             **({"physical_setup_omissions": omissions} if omissions else {}),

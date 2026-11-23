@@ -43,6 +43,25 @@ def validate_components(plan, row):
                 or not math.isclose(math.fsum(item["loss_w_s2"] for item in components), row[total], rel_tol=1e-10, abs_tol=0)):
             fail("E_HASH", "체적 손실의 원본 식별/재료별 합계가 다릅니다.")
     planar, via, conductor = [row.get(key) for key in ("sheet_loss_w_s2", "via_loss_w_s2", "conductor_loss_w_s2")]
+    expected = {(via["id"], joint["end"], joint["material_id"]) for via in case.get("vias", []) for joint in via.get("junctions", [])}
+    if expected or "junction_components" in row or "barrel_components" in row:
+        joints, barrels = row.get("junction_components"), row.get("barrel_components")
+        if (not expected or not isinstance(joints, list) or not isinstance(barrels, list)
+                or any(type(j) is not dict or set(j) != {"via_id", "end", "material_id", "loss_w_s2", "sigma_e2_w_s2"}
+                       or any(type(j[k]) not in (int, float) or not math.isfinite(j[k]) for k in ("loss_w_s2", "sigma_e2_w_s2"))
+                       or not math.isclose(j["loss_w_s2"], j["sigma_e2_w_s2"], rel_tol=0.005, abs_tol=1e-300) for j in joints)
+                or len(joints) != len(expected) or {(j["via_id"], j["end"], j["material_id"]) for j in joints} != expected
+                or len(barrels) != len(row["via_components"])
+                or any(type(b) is not dict or set(b) != {"entity_id", "loss_w_s2"} or type(b["loss_w_s2"]) not in (int, float)
+                       or not math.isfinite(b["loss_w_s2"]) for b in barrels)
+                or {b["entity_id"] for b in barrels} != {v["id"] for v in case["vias"]}):
+            fail("E_HASH", "접합 손실의 식별, 독립 적분 또는 배럴 목록이 다릅니다.")
+        total_by_via = {item["entity_id"]: item["loss_w_s2"] for item in row["via_components"]}
+        for barrel in barrels:
+            identity = barrel["entity_id"]
+            total_joints = math.fsum(j["loss_w_s2"] for j in joints if j["via_id"] == identity)
+            if not math.isclose(barrel["loss_w_s2"] + total_joints, total_by_via[identity], rel_tol=1e-10, abs_tol=1e-300):
+                fail("E_HASH", "배럴과 접합의 전도 손실 합계가 비아 전체와 다릅니다.")
     if (any(type(value) not in (int, float) or not math.isfinite(value) for value in (planar, via, conductor))
             or not math.isclose(planar + via, conductor, rel_tol=1e-10, abs_tol=0)):
         fail("E_HASH", "평면 도체와 비아의 독립 합계가 전체 도체 손실과 다릅니다.")

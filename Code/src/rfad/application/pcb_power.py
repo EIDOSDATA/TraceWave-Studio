@@ -84,7 +84,8 @@ def balance_rows(recording, radiation, losses, threshold):
             fail("E_SOLVER", "독립 전력 수지의 전력은 유한하고 수용 전력은 양수여야 합니다.")
         residual = accepted - radiated - dielectric - conductor
         fraction = residual / accepted
-        components = [*loss["sheet_components"], *loss.get("via_components", []), *loss.get("dielectric_components", [])]
+        components = [*loss["sheet_components"], *loss.get("via_components", []), *loss.get("dielectric_components", []),
+                      *loss.get("junction_components", []), *loss.get("barrel_components", [])]
         passed = abs(fraction) <= threshold and dielectric >= 0 and conductor >= 0 and all(item["loss_w_s2"] >= 0 for item in components)
         rows.append({"frequency_hz": field["frequency_hz"], "incident_power_w_s2": incident,
                      "reflected_power_w_s2": incident - accepted, "accepted_power_w_s2": accepted,
@@ -122,6 +123,8 @@ def validate_result(plan, result, radiation):
 
             validate_components(plan, row)
             keys += ["sheet_loss_w_s2", "via_loss_w_s2", "via_components", "dielectric_components"]
+            if "junction_components" in row:
+                keys += ["junction_components", "barrel_components"]
         losses.append({key: row[key] for key in keys})
     expected = balance_rows(recording, radiation, losses, threshold)
     if any("via_components" in row for row in rows) or plan["case"].get("vias"):

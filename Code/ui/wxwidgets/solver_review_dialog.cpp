@@ -1,6 +1,8 @@
 /** @file @brief 같은 창에서 해석 입력 수정, 읽기 전용 검토와 실행 승인까지 이어간다. */
 #include "solver_review_dialog.h"
 #include "solver_mesh_view.h"
+#include "solver_junction_dialog.h"
+#include "solver_material_bands.h"
 #include "solver_local_mesh_panel.h"
 #include "solver_mesh_quality_panel.h"
 #include "solver_cost_view.h"
@@ -392,6 +394,30 @@ private:
         StudioTheme::BindSecondary(*probeOrder);
         frequency->Add(probeOrder, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
         m_fields.at("field_probe")->SetHint(Display("2450000000, 2, 5, 2, 5, 2"));
+        m_junctionButton = new wxButton(frequency->GetStaticBox(), wxID_ANY, Display("PTH 접합층"));
+        m_junctionButton->SetName("solver.junctions.edit");
+        m_bandButton = new wxButton(frequency->GetStaticBox(), wxID_ANY, Display("대역별 재료"));
+        m_bandButton->SetName("solver.material_bands.edit");
+        frequency->Add(m_bandButton, 0, wxEXPAND | wxALL, FromDIP(8));
+        m_bandButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+        {
+            if (const auto edited = EditSolverMaterialBands(this, m_catalog.value("junction_materials", Json::array()), m_bands))
+            {
+                m_bands = *edited;
+                m_bandButton->SetLabel(Display("대역별 재료") + wxString::Format(" (%zu)", m_bands.size()));
+                Invalidate();
+            }
+        });
+        frequency->Add(m_junctionButton, 0, wxEXPAND | wxALL, FromDIP(8));
+        m_junctionButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+        {
+            if (const auto edited = EditSolverJunctions(this, m_catalog, m_junctions))
+            {
+                m_junctions = *edited;
+                m_junctionButton->SetLabel(Display("PTH 접합층") + wxString::Format(" (%zu)", m_junctions.size()));
+                Invalidate();
+            }
+        });
         m_advanced = new wxStaticText(frequency->GetStaticBox(), wxID_ANY, wxEmptyString);
         StudioTheme::BindSecondary(*m_advanced);
         frequency->Add(m_advanced, 0, wxEXPAND | wxALL, FromDIP(8));
@@ -1053,6 +1079,10 @@ private:
             }
         }
         m_fields.at("field_probe")->ChangeValue(wxJoin(probeValues, ','));
+        m_junctions = settings.value("via_junctions", Json::array());
+        m_bands = settings.value("material_bands", Json::array());
+        m_bandButton->SetLabel(Display("대역별 재료") + wxString::Format(" (%zu)", m_bands.size()));
+        m_junctionButton->SetLabel(Display("PTH 접합층") + wxString::Format(" (%zu)", m_junctions.size()));
         const auto modes = settings.value("boundary_conditions", Json::array());
         for (std::size_t i = 0; i < m_boundary.size(); ++i)
         {
@@ -1187,6 +1217,22 @@ private:
             band = {{"start", points.front()}, {"stop", points.back()}, {"count", points.size()}, {"points", points}};
         }
         settings = m_draft;
+        if (m_bands.empty())
+        {
+            settings.erase("material_bands");
+        }
+        else
+        {
+            settings["material_bands"] = m_bands;
+        }
+        if (m_junctions.empty())
+        {
+            settings.erase("via_junctions");
+        }
+        else
+        {
+            settings["via_junctions"] = m_junctions;
+        }
         settings.update(Json{{"frequency_hz", band},
                              {"grid_mm", values.at("grid_mm")}, {"air_padding_mm", values.at("air_padding_mm")},
                              {"curve_tolerance_mm", values.at("curve_tolerance_mm")}, {"max_timesteps", values.at("max_timesteps")},
@@ -1566,6 +1612,10 @@ private:
 
     const std::string m_revision;
     Json& m_draft;
+    Json m_junctions = Json::array();
+    wxButton* m_junctionButton = nullptr;
+    Json m_bands = Json::array();
+    wxButton* m_bandButton = nullptr;
     const Json& m_catalog;
     Studio::SolverReviewRequest m_request;
     Studio::SolverPropertyAvailable m_propertyAvailable;

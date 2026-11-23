@@ -84,6 +84,7 @@ def validate_preparation(plan, preparation):
                          "curve_tolerance_mm": plan["case"]["settings"]["curve_tolerance_mm"], "sheet_z_mm": shape["sheet_z_mm"],
                          "modeled_thickness_m": shape["thickness_m"], "conductivity_s_per_m": shape["conductivity_s_per_m"]})
     via_mappings = [{"source_entity_id": via["id"], "native_property": "via_" + via["id"], "drill_property": "drill_" + via["id"],
+                     **({"junctions": via["junctions"]} if "junctions" in via else {}),
                      "model": via["native_model"], "center_mm": via["center_mm"], "z_range_mm": [via["z_min_mm"], via["z_max_mm"]],
                      "inner_radius_mm": via["inner_radius_mm"], "outer_radius_mm": via["outer_radius_mm"],
                      "conductivity_s_per_m": via["conductivity_s_per_m"], "epsilon_r": via["epsilon_r"], "skin_depth_loss_validated": False,

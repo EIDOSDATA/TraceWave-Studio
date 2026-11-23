@@ -31,19 +31,27 @@ EPSILON0 = 8.8541878128e-12
 class MaterialProjection:
     """! @brief 한 물리 투영 안에서 재료 소비 내역을 보존한다."""
 
-    def __init__(self, document, frequency):
+    def __init__(self, document, frequency, bands=()):
         """! @brief 원본 재료를 조회하고 사용한 모델/물성만 별도로 누적한다."""
         self.document = document
         self.frequency = frequency
         self.sources = {item["id"]: item for item in document["materials"]}
         self.consumed = {}
+        from rfad.application.pcb_material_bands import select
+
+        self.bands = select(bands, self.sources, frequency)
+
+    def source_for(self, material_id):
+        """! @brief 원본 대상을 유지하면서 해당 계산 대역의 직접 출처를 선택한다."""
+        band = self.bands.get(material_id)
+        return self.sources[band["source_material_id"] if band else material_id]
 
     def consume(self, material_id, field, *, conductor=False, volume=False):
         """! @brief 사용 목적과 유효 대역을 검증하며 소비 물성을 누적한다."""
         if material_id not in self.sources:
             fail("E_MATERIAL_UNKNOWN", "해석에 소비할 실제 재료를 지정하십시오.", field)
-        source = self.sources[material_id]
-        material = "materials." + material_id
+        source = self.source_for(material_id)
+        material = "materials." + source["id"]
         try:
             fields = material_input_fields(model=source["model"], conductor_only=conductor, volume_conductor=volume,
                                            field=material + ".model")
@@ -60,6 +68,8 @@ class MaterialProjection:
                   for name, dimension in fields}
         result = {"id": material_id, "name": source["name"],
                   "validity_hz": {"min": low, "max": high}, "source_refs": deepcopy(source["source_refs"]), "assumptions": deepcopy(source["assumptions"])}
+        if material_id in self.bands:
+            result["frequency_band_source"] = deepcopy(self.bands[material_id])
         if "conductivity" in values:
             result["conductivity_s_per_m"] = values["conductivity"]
         if conductor:
@@ -212,7 +222,7 @@ def project_pcb(document, settings, *, multiport=False):
         fail("E_UNSUPPORTED", "다각형 기판의 독립 손실 적분은 별도 검증이 필요합니다.", "settings.power_balance")
     frequency = settings["frequency_hz"]
     center_hz = (frequency["start"] + frequency["stop"]) / 2
-    materials = MaterialProjection(document, frequency)
+    materials = MaterialProjection(document, frequency, settings.get("material_bands", ()))
     layers = []
     for source in document["stackup"]:
         field = "stackup." + source["id"]
@@ -222,7 +232,7 @@ def project_pcb(document, settings, *, multiport=False):
                 "z_min_mm": length(document, source["z_min"], field + ".z_min"), "thickness_mm": length(document, source["thickness"], field + ".thickness", positive=True)}
         if item["role"] == "dielectric":
             item.update(dielectric_volume(materials, item["material_id"], field + ".material_id", center_hz))
-        elif source["material_id"] in materials.sources and materials.sources[source["material_id"]]["model"] == TOTAL_TAN_DELTA_MODEL:
+        elif source["material_id"] in materials.sources and materials.source_for(source["material_id"])["model"] == TOTAL_TAN_DELTA_MODEL:
             fail("E_UNSUPPORTED", "총 손실 탄젠트 모델은 도체 층에 사용할 수 없습니다.",
                  "materials." + source["material_id"] + ".model")
         layers.append(item)
@@ -332,6 +342,9 @@ def project_pcb(document, settings, *, multiport=False):
         port = first
     else:
         port = project_port(document, shapes, frequency, settings)
+    from rfad.application import pcb_junctions
+
+    pcb_junctions.project(settings, vias, materials)
     connectivity = validate_native_contacts(shapes, port, settings["curve_tolerance_mm"], polygons_by_id, vias,
                                             ports=ports if multiport else None)
     excitation = {"kind": "gaussian", "center_hz": center_hz, "width_hz": center_hz / 2}
@@ -362,6 +375,8 @@ def project_pcb(document, settings, *, multiport=False):
     if voids:
         case["mechanical_voids"] = voids
     reference = wavelength_reference(case)
+    if materials.bands.keys() - materials.consumed.keys():
+        fail("E_MATERIAL_UNKNOWN", "대역별 물성의 대상 재료가 이 해석에 포함되지 않았습니다.", "settings.material_bands")
     if settings["grid_mm"] > reference["model_wavelength_mm"] / reference["min_wavelength_cells"]:
         fail("E_GEOMETRY", "최소 모델 파장당 10개 격자 초기 기준을 충족하지 못했습니다.", "settings.grid_mm")
     lines, local_mesh = build_grid(case)

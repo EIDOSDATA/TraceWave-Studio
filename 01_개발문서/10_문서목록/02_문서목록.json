@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 255,
+    "current_07_검증": 256,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -28748,7 +28748,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 645349,
-      "working_tree_sha256": "54b83f8aefdd031475f2f5d717788d3706353545adbdd835d3dfb5d7c1bc1ea5"
+      "working_tree_sha256": "e0f16e65fd968d271990292764a17996d61539f1fca5dc58b2034602858901a5"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32165,6 +32165,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/379_비아접합층과_급전전력_검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 6968,
+      "working_tree_sha256": "9818b34032afdf3b2caf7a3f3a7dbd6eab032328ba243071caf47a05d7cc41ee",
+      "text_lines": 51,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/37_스튜디오_재열기와_유휴성능_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
@@ -32770,8 +32779,8 @@
       "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 6271,
-      "working_tree_sha256": "43860053eecb1304577ec26a3768ae23324b02df3672387f2fddebd56afe8ad2",
+      "bytes": 6267,
+      "working_tree_sha256": "5a6290abb24f65b4da7ff477549bc79f86cd310f1c9e7b8c11b41b9c1ca73887",
       "text_lines": 31,
       "text_status": "utf8_read"
     },
@@ -32869,8 +32878,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 36831,
-      "working_tree_sha256": "613fdbf96cd3bd9854528cbaafef9bd6d8404d8b903aec1fa7c4945cc0a580e1",
+      "bytes": 37003,
+      "working_tree_sha256": "4f5257ecc532e231690b4f834be668ed0d2baa0c1a4b1bff2d4e5d0698362501",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

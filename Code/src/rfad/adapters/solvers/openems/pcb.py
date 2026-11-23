@@ -71,9 +71,15 @@ def add_geometry(csx, case):
         prop = csx.AddMaterial("via_" + via["id"], epsilon=via["epsilon_r"], kappa=via["conductivity_s_per_m"])
         prop.AddCylindricalShell(start=start, stop=stop, radius=(via["inner_radius_mm"] + via["outer_radius_mm"]) / 2,
                                  shell_width=via["plating_thickness_mm"], priority=6)
+        for joint in via.get("junctions", []):
+            layer = csx.AddMaterial(joint["native_property"], epsilon=joint["epsilon_r"], kappa=joint["conductivity_s_per_m"])
+            layer.AddCylindricalShell(start=[*via["center_mm"], joint["z_min_mm"]], stop=[*via["center_mm"], joint["z_max_mm"]],
+                                      radius=(via["inner_radius_mm"] + via["outer_radius_mm"]) / 2,
+                                      shell_width=via["plating_thickness_mm"], priority=7)
         bore = csx.AddMaterial("drill_" + via["id"], epsilon=1.0, kappa=0.0)
         bore.AddCylinder(start=start, stop=stop, radius=via["inner_radius_mm"], priority=30)
         via_mappings.append({"source_entity_id": via["id"], "native_property": "via_" + via["id"], "drill_property": "drill_" + via["id"],
+                             **({"junctions": via["junctions"]} if "junctions" in via else {}),
                              "model": via["native_model"], "center_mm": via["center_mm"], "z_range_mm": [via["z_min_mm"], via["z_max_mm"]],
                              "inner_radius_mm": via["inner_radius_mm"], "outer_radius_mm": via["outer_radius_mm"],
                              "conductivity_s_per_m": via["conductivity_s_per_m"], "epsilon_r": via["epsilon_r"], "skin_depth_loss_validated": False,
