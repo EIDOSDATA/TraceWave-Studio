@@ -73,7 +73,7 @@ class GuiCadProcessTests(unittest.TestCase):
                 "draft_applied_before_snapshot", "editing_enabled_during_cad", "snapshot_fixed_and_stale_label",
                 "save_during_cad", "verified_mesh_rendered", "step_package_accessible", "camera_controls",
                 "cancel_preserves_previous_result", "restart_restores_published_mesh",
-                "edit_error_does_not_drop_responses",
+                "edit_error_does_not_drop_responses", "cad_completion_keeps_workspace",
             })
             trace = report["native_cancel_trace"]
             self.assertFalse(trace["control"]["menu_enabled"])

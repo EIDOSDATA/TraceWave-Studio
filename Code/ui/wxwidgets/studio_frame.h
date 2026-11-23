@@ -223,7 +223,7 @@ private:
     /** @brief 재열기 때 게시 완료된 동일 프로젝트의 마지막 결과만 복원한다. */
     void RestoreCad();
     /** @brief 작은 참조만 GUI로 받아 파일 읽기와 hash 검사를 3D loader에 맡긴다. */
-    void AcceptCad(const Json& result, bool show);
+    void AcceptCad(const Json& result);
     void LoadCadMesh(const Json& result);
     /** @brief CAD 상태는 제한된 주기로 읽고 일반 편집 응답과 별도로 처리한다. */
     void PollCad(Clock::time_point now);

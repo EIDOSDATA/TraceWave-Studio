@@ -356,6 +356,7 @@ void StudioSmokeDriver::PhysicalSetupSmokeTick()
             break;
         case 12:
             m_setupStage = 13;
+            m_frame.m_views->SetSelection(1);
             m_frame.StartCad(false);
             break;
         case 13:
@@ -411,6 +412,7 @@ void StudioSmokeDriver::PhysicalSetupSmokeTick()
             break;
         case 19:
             m_setupStage = 20;
+            m_frame.m_views->SetSelection(1);
             m_frame.StartCad(false);
             break;
         case 20:

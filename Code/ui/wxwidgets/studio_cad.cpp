@@ -15,6 +15,7 @@ void StudioFrame::BindCad()
         wxEVT_MENU,
         [this](wxCommandEvent&)
         {
+            m_views->SetSelection(1);
             StartCad(false);
         },
         IdBuild3D);
@@ -186,9 +187,13 @@ void StudioFrame::UpdateModelState()
         if (m_modelView->LoadedSnapshotId() == m_loadingModel.at("snapshot").value("snapshot_id", ""))
         {
             m_displayResult = m_loadingModel;
+            m_loadingModel = Json::object();
+            UpdatePortLinks();
         }
-        m_loadingModel = Json::object();
-        UpdatePortLinks();
+        else if (!m_modelView->Error().empty())
+        {
+            m_loadingModel = Json::object();
+        }
     }
     std::string text = "아직 생성한 3D 형상이 없습니다. 층 위치와 두께를 입력한 뒤 갱신하세요.";
     if (!m_displayResult.empty())
@@ -357,11 +362,10 @@ void StudioFrame::RestoreCad()
             if (m_project == project && response.contains("result") && !response.at("result").is_null() &&
                 m_cadTask.Id().empty() && !m_cadPreparing)
             {
-                AcceptCad(response.at("result"), false);
-                if (response.contains("view_result"))
+                AcceptCad(response.at("result"));
+                if (response.at("result").value("projection_purpose", "") == "step" && response.contains("view_result"))
                 {
                     LoadCadMesh(response.at("view_result"));
-                    m_views->SetSelection(1);
                 }
             }
             UpdateControls();
@@ -374,8 +378,8 @@ void StudioFrame::RestoreCad()
         });
 }
 
-/** @brief 작은 참조만 GUI로 받아 파일 읽기와 hash 검사를 3D loader에 맡긴다. */
-void StudioFrame::AcceptCad(const Json& result, bool show)
+/** @brief 파일을 받아 3D 표시를 갱신하고 현재 작업 공간은 유지한다. */
+void StudioFrame::AcceptCad(const Json& result)
 {
     if (result.at("snapshot").at("project_id") != m_project || result.value("status", "") != "generated_unverified")
     {
@@ -413,10 +417,6 @@ void StudioFrame::AcceptCad(const Json& result, bool show)
     CadStatus("completed", purpose == "geometry" ? title + ". STEP 교환 파일은 STEP 출력으로 만드세요."
                                                  : "STEP 패키지를 생성했습니다. 출력 폴더에서 파일을 확인하세요.");
     m_cadDetails->ChangeValue(Display(listing));
-    if (purpose != "step" && (show || m_modelView->IsLoading()))
-    {
-        m_views->SetSelection(1);
-    }
     UpdateControls();
 }
 
@@ -446,7 +446,10 @@ void StudioFrame::LoadCadMesh(const Json& result)
 void StudioFrame::PollCad(Clock::time_point now)
 {
     const bool loading = m_modelView->IsLoading();
-    if (m_modelWasLoading != loading)
+    const bool settled = !loading && !m_loadingModel.empty() &&
+        (m_modelView->LoadedSnapshotId() == m_loadingModel.at("snapshot").value("snapshot_id", "") ||
+         !m_modelView->Error().empty());
+    if (m_modelWasLoading != loading || settled)
     {
         m_modelWasLoading = loading;
         UpdateControls();
@@ -475,7 +478,7 @@ void StudioFrame::PollCad(Clock::time_point now)
             if (state == "completed")
             {
                 m_cadTask.Reset();
-                AcceptCad(status.at("events").back().at("operation_result"), true);
+                AcceptCad(status.at("events").back().at("operation_result"));
             }
             else if (state == "failed" || state == "cancelled" || state == "interrupted")
             {

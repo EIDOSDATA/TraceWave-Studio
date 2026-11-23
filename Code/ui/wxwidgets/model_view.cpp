@@ -811,24 +811,35 @@ struct ModelView::Impl
 
     void Poll()
     {
-        if (!pendingLoad.valid() || pendingLoad.wait_for(std::chrono::seconds(0)) != std::future_status::ready)
-        {
-            return;
-        }
-        timer.Stop();
         try
         {
-            auto loaded = pendingLoad.get();
-            if (discard)
+            if (pendingLoad.valid())
+            {
+                if (pendingLoad.wait_for(std::chrono::seconds(0)) != std::future_status::ready)
+                {
+                    return;
+                }
+                auto loaded = pendingLoad.get();
+                if (!discard)
+                {
+                    candidate = std::make_shared<Scene>(std::move(loaded));
+                }
+            }
+            if (candidate == nullptr)
+            {
+                timer.Stop();
+                return;
+            }
+            if (!owner->IsShownOnScreen())
             {
                 return;
             }
+            timer.Stop();
             if (!EnsureCanvas())
             {
                 Failure("OpenGL 3D 화면을 만들 수 없습니다. STEP 출력과 편집/저장은 계속 사용할 수 있습니다.");
                 return;
             }
-            candidate = std::make_shared<Scene>(std::move(loaded));
             canvas->Show();
             canvas->SetScene(candidate);
             canvas->Selection(suppressPrimary ? std::string() : selection);
@@ -874,6 +885,14 @@ bool ModelView::LoadArtifact(const wxString& workspace, const Json& artifact, co
         return false;
     }
     m_impl->idleTimer.Stop();
+    if (m_impl->candidate != nullptr)
+    {
+        m_impl->candidate.reset();
+        if (m_impl->canvas != nullptr)
+        {
+            m_impl->canvas->SetScene(m_impl->scene);
+        }
+    }
     m_impl->discard = false;
     m_impl->recovering = false;
     m_impl->error.clear();
@@ -1095,7 +1114,7 @@ bool ModelView::HasMesh() const
 
 bool ModelView::IsLoading() const
 {
-    return m_impl->pendingLoad.valid() || m_impl->candidate != nullptr;
+    return m_impl->pendingLoad.valid() || (m_impl->candidate != nullptr && IsShownOnScreen());
 }
 
 std::string ModelView::Error() const

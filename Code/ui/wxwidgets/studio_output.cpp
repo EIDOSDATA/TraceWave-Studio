@@ -72,7 +72,7 @@ void StudioFrame::BuildOutputInterface()
     };
     m_output->onCadResult = [this](const Json& result)
     {
-        AcceptCad(result, false);
+        AcceptCad(result);
     };
     if (m_options.outputSmoke)
     {

@@ -1,6 +1,7 @@
 /** @file @brief 주 창의 smoke_workers 책임을 구현한다. */
 #include "studio_internal.h"
 #include "radiation_dialog.h"
+#include "workspace_bar.h"
 
 /** @brief 실제 GUI 명령과 서비스, CAD 프로세스 및 renderer의 연결을 검증한다. */
 void StudioSmokeDriver::CadSmokeTick()
@@ -19,7 +20,12 @@ void StudioSmokeDriver::CadSmokeTick()
         }
         m_cadSmokeStage = 2;
         m_frame.m_description->SetValue(Display("GUI CAD 출력 전 적용할 입력"));
+        m_frame.m_views->SetSelection(1);
         m_frame.StartCad(true);
+        if (m_frame.m_options.cadExpectFailure)
+        {
+            m_frame.NavigateWorkspace(WorkspaceArea::Output);
+        }
     }
     else if (m_cadSmokeStage == 2)
     {
@@ -28,6 +34,7 @@ void StudioSmokeDriver::CadSmokeTick()
             CanvasAssert(m_frame.m_cadResult.empty() && !m_frame.m_modelView->HasMesh() &&
                              !m_frame.m_tools.at(IdOutputFolder)->IsEnabled(),
                          "Failed CAD output was exposed.");
+            CanvasAssert(m_frame.m_views->GetSelection() == 5, "CAD 실패가 출력 화면을 바꾸었습니다.");
             m_cadChecks.push_back("invalid_input_not_published");
             m_cadSmokeStage = 7;
             FinishSmoke(true, "");
@@ -41,6 +48,7 @@ void StudioSmokeDriver::CadSmokeTick()
             m_cadChecks.push_back("draft_applied_before_snapshot");
             m_cadChecks.push_back("editing_enabled_during_cad");
             m_cadSmokeStage = 3;
+            m_frame.NavigateWorkspace(WorkspaceArea::Results);
             m_frame.m_name->SetValue(wxEmptyString);
             m_frame.ApplyCurrent(
                 [this]()
@@ -66,10 +74,19 @@ void StudioSmokeDriver::CadSmokeTick()
                          });
         }
     }
+    else if (m_cadSmokeStage == 3 && !m_frame.m_cadResult.empty() && m_frame.m_cadTask.Empty() &&
+             !m_frame.m_modelView->IsLoading() && m_frame.m_views->GetSelection() != 1)
+    {
+        CanvasAssert(m_frame.m_views->GetSelection() == 9, "CAD 완료가 사용자가 선택한 결과 화면을 바꾸었습니다.");
+        m_cadChecks.push_back("cad_completion_keeps_workspace");
+        m_frame.m_views->SetSelection(1);
+    }
     else if (m_cadSmokeStage == 3 && !m_frame.m_cadResult.empty() && m_frame.m_cadTask.Id().empty() &&
              !m_frame.m_modelView->IsLoading() && m_frame.m_modelView->HasMesh() &&
              m_frame.m_modelView->RenderedFrameCount() > 0)
     {
+        CanvasAssert(std::find(m_cadChecks.begin(), m_cadChecks.end(), "cad_completion_keeps_workspace") != m_cadChecks.end(),
+                     "CAD 갱신이 결과 화면을 덮어썼습니다.");
         CanvasAssert(m_frame.m_cadResult.at("snapshot").at("revision_id") != m_frame.m_revision &&
                          m_frame.m_editor.at("saved_revision") == m_frame.m_revision,
                      "Output snapshot changed or concurrent save failed.");
