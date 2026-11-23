@@ -103,6 +103,80 @@ class WslProcessTests(unittest.TestCase):
         with self.assertRaises(ProjectError):
             WslRuntime(transfer_timeout_seconds=float("inf"))
 
+    def test_slow_start_preserves_the_full_guest_execution_budget(self):
+        """! @brief 느린 전송과 시작 응답 유실 뒤에도 완료 및 guest 자체 시간 초과를 구분한다."""
+        for acknowledgement_lost in (False, True):
+            for outcome in ("completed", "timeout"):
+                with self.subTest(acknowledgement_lost=acknowledgement_lost, outcome=outcome):
+                    elapsed = 0
+                    commands = []
+                    active = self.status("active", False, worker_pid=37)
+
+                    def invoke(command, payload, **kwargs):
+                        """! @brief 시간 축 하나에서 30초 전송, 10초 인계, 899초 실행을 재현한다."""
+                        nonlocal elapsed
+                        commands.append(command)
+                        if command == "start":
+                            self.assertEqual(payload["timeout_seconds"], 900)
+                            elapsed = 30
+                            if acknowledgement_lost:
+                                raise ProjectError("E_RESOURCE", "시작 응답 유실")
+                            return self.status("starting", False)
+                        if command == "status":
+                            return self.status("starting", False)
+                        if command == "heartbeat":
+                            if elapsed == 30:
+                                elapsed = 40
+                                return active
+                            if elapsed == 40:
+                                elapsed = 939
+                                return active
+                            elapsed = 940
+                            return self.status(outcome)
+                        if command == "export":
+                            return self.status(outcome, exported_files=[])
+                        self.fail("예상하지 않은 제어 명령 " + command)
+
+                    with tempfile.TemporaryDirectory() as directory, patch.object(self.runtime, "_invoke", side_effect=invoke), \
+                            patch("rfad.application.wsl_process.time.monotonic", side_effect=lambda: elapsed):
+                        result = self.runtime.execute(self.stage(directory), run_id=self.run_id, nonce=self.nonce,
+                                                      cancel=threading.Event(), timeout_seconds=900)
+                    self.assertTrue(result["termination_confirmed"])
+                    self.assertEqual(result["state"], outcome)
+                    self.assertNotIn("transport_error", result)
+                    self.assertEqual(commands.count("start"), 1)
+                    self.assertEqual(commands.count("status"), int(acknowledgement_lost))
+                    self.assertEqual(commands.count("export"), int(outcome == "completed"))
+
+    def test_nonterminal_guest_cannot_extend_start_or_execution_deadlines(self):
+        """! @brief worker PID가 없는 준비 정체와 실제 작업 후의 무응답을 각각 한 번만 취소한다."""
+        for worker_pid, expected_message in ((None, "작업 시작 확인"), (37, "종료 확인")):
+            with self.subTest(worker_pid=worker_pid):
+                elapsed = 0
+                commands = []
+                status = self.status("active", False, worker_pid=worker_pid)
+
+                def invoke(command, payload, **kwargs):
+                    """! @brief 같은 상태를 계속 반환해 heartbeat마다 기한이 갱신되는 오류를 검출한다."""
+                    nonlocal elapsed
+                    commands.append(command)
+                    if command == "cancel":
+                        return self.status("cancelled")
+                    if command == "heartbeat":
+                        elapsed += 10
+                    if len(commands) > 20:
+                        self.fail("작업이 유한한 시간 안에 정리되지 않았습니다.")
+                    return status
+
+                with tempfile.TemporaryDirectory() as directory, patch.object(self.runtime, "_invoke", side_effect=invoke), \
+                        patch("rfad.application.wsl_process.time.monotonic", side_effect=lambda: elapsed):
+                    result = self.runtime.execute(self.stage(directory), run_id=self.run_id, nonce=self.nonce,
+                                                  cancel=threading.Event(), timeout_seconds=3)
+                self.assertIn(expected_message, result["transport_error"])
+                self.assertTrue(result["termination_confirmed"])
+                self.assertEqual(commands.count("cancel"), 1)
+                self.assertEqual(elapsed, 30 if worker_pid else 70)
+
     def test_confirmed_unstarted_job_has_no_output_to_export(self):
         """! @brief 인계 전 종료한 작업에서 없는 출력 폴더를 복사하지 않고 최초 사유를 보존한다."""
         failed = self.status("failed", not_started=True, reason="startup_owner_lost")
@@ -255,6 +329,17 @@ class WslLiveTransportTests(unittest.TestCase):
         self.assertEqual(result["state"], "completed", result)
         self.assertTrue(result["termination_confirmed"])
         self.assertTrue(json.loads((self.stage / "output" / "result.json").read_text())["ok"])
+
+    def test_owned_worker_timeout_is_reported_by_the_guest(self):
+        """! @brief 실제 Windows와 WSL의 인계 뒤 계산 시간 초과를 guest 종료 원인으로 읽는다."""
+        self.worker("time.sleep(30)\n")
+        result = self.runtime.execute(self.stage, run_id=self.run_id, nonce=self.nonce,
+                                      cancel=threading.Event(), timeout_seconds=2)
+        self.assertEqual(result["state"], "timeout", result)
+        self.assertEqual(result["native"]["termination"], "timeout")
+        self.assertTrue(result["termination_confirmed"])
+        self.assertFalse(result["outcome_unknown"])
+        self.assertNotIn("transport_error", result)
 
     def test_cancel_active_guest_while_worker_writes_one_thousand_log_lines_per_second(self):
         """! @brief 같은 WSL 감독기의 고속 로그와 세션을 옮긴 시험 후손을 함께 회수한다."""

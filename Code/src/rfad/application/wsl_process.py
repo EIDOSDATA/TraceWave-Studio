@@ -329,7 +329,9 @@ class WslRuntime:
                                details={"termination_confirmed": True, "outcome_unknown": False, "not_started": True}) from error
         status = {"protocol": PROTOCOL, "run_id": run_id, "nonce": nonce, "state": "starting",
                   "termination_confirmed": False, "outcome_unknown": True}
-        deadline = time.monotonic() + timeout_seconds + self.lease_seconds + 15
+        # @brief 시작 응답 유실 후에도 고정 입력 전송과 작업 소유권 확인에는 유한한 기한을 둔다.
+        deadline = time.monotonic() + self.transfer_timeout_seconds + self.control_timeout_seconds
+        worker_observed = False
         cursor = -1
         try:
             # @brief start 응답 손실은 재실행하지 않고 같은 소유권의 status 재접속으로 복구한다.
@@ -338,6 +340,10 @@ class WslRuntime:
             except ProjectError:
                 status = self.inspect(run_id, nonce)
             while True:
+                if not worker_observed and status.get("worker_pid"):
+                    # @brief 인계된 실제 작업의 첫 관측부터 종료를 감시하고 이후 heartbeat에서 연장하지 않는다.
+                    deadline = time.monotonic() + timeout_seconds + self.lease_seconds + 15
+                    worker_observed = True
                 if status.get("cursor", -1) != cursor:
                     cursor = status.get("cursor", -1)
                     if on_state is not None:
@@ -345,8 +351,9 @@ class WslRuntime:
                 if status.get("state") in TERMINAL:
                     break
                 if time.monotonic() >= deadline:
-                    self.cancel(run_id, nonce)
-                    raise ProjectError("E_RESOURCE", "WSL guest의 종료 확인 기한을 넘었습니다.", details={"outcome_unknown": True})
+                    message = ("WSL guest의 종료 확인 기한을 넘었습니다." if worker_observed
+                               else "WSL guest의 작업 시작 확인 기한을 넘었습니다.")
+                    raise ProjectError("E_RESOURCE", message, details={"outcome_unknown": True})
                 if cancel.is_set():
                     status = self.cancel(run_id, nonce)
                     if status.get("state") not in TERMINAL:
