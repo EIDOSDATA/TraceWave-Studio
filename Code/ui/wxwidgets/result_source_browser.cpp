@@ -254,6 +254,7 @@ void ResultSourceBrowser::SetCatalog(const Json& response, const Json& selected)
     m_loading = true;
     m_catalog = response;
     m_items->DeleteAllItems();
+    bool listedSelection = false;
     for (const auto& item : response.value("items", Json::array()))
     {
         const auto label = item.at("label").get<std::string>();
@@ -265,6 +266,7 @@ void ResultSourceBrowser::SetCatalog(const Json& response, const Json& selected)
         m_items->SetItem(row, 1, Display(status));
         if (!selected.is_null() && item.at("source") == selected)
         {
+            listedSelection = true;
             m_items->SetItemState(row, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
                                   wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
             m_items->EnsureVisible(row);
@@ -276,19 +278,35 @@ void ResultSourceBrowser::SetCatalog(const Json& response, const Json& selected)
                              std::to_string(response.value("total", 0))));
     m_loading = false;
     const auto totals = response.value("current_totals", Json::object());
-    const auto counts = "현재 개정: 해석 " + std::to_string(totals.value("solver", 0)) + "건, 자료 " +
-                        std::to_string(totals.value("network", 0)) + "건.";
     const auto kind = Kind();
-    const bool hasOtherKind = (kind != "solver" && totals.value("solver", 0) > 0) ||
-                              (kind != "network" && totals.value("network", 0) > 0);
-    auto message = m_items->GetItemCount() ? counts : "선택한 범위에 결과가 없습니다. " + counts;
-    if (kind != "all" && hasOtherKind)
+    const int total = response.value("total", 0);
+    const bool historical = kind == "network" && Anchor().is_object();
+    const std::string scope = kind == "solver" ? "전체 보존 해석 실행" : kind == "sweep" ? "선택한 연구 후보" :
+        historical ? "선택한 보존 개정의 자료" : kind == "network" ? "현재 개정의 자료" : "현재 개정 전체";
+    std::string message = scope + " " + std::to_string(total) + "건.";
+    if (selected.is_object() && !listedSelection)
     {
-        message += " 자료 종류에서 '현재 개정 전체'를 선택하면 함께 볼 수 있습니다.";
+        message += " 표시 중인 원본은 이 목록 페이지에 없습니다.";
     }
-    else if (m_items->GetItemCount() == 0 && kind != "all")
+    else if (total > 0 && !listedSelection)
     {
-        message += " 자료 종류 또는 보존 개정을 바꿔 확인하세요.";
+        message += total == 1 ? " 아래 원본 한 건을 선택하면 결과를 표시합니다."
+                              : " 아래에서 표시할 원본을 선택하세요.";
+    }
+    else if (total == 0)
+    {
+        if (kind == "solver")
+        {
+            message += " 완료 해석이 아직 없습니다. 해석 작업을 실행하거나 네트워크 자료를 선택하세요.";
+        }
+        else if (kind == "network" && !historical && totals.value("solver", 0) > 0)
+        {
+            message += " 현재 해석 결과는 '현재 개정 전체'에서 볼 수 있습니다.";
+        }
+        else
+        {
+            message += " 다른 자료 종류 또는 보존 범위를 확인하세요.";
+        }
     }
     SetStatus(message);
     UpdateLayout();
@@ -317,7 +335,7 @@ void ResultSourceBrowser::SetSolverContext()
     m_loading = true;
     m_kind->SetSelection(1);
     m_loading = false;
-    ClearCatalog("검증 보고서에서 직접 연 해석 원본의 목록 위치를 확인합니다.");
+    ClearCatalog("보존 해석 실행 목록을 읽고 있습니다.");
     UpdateLayout();
 }
 

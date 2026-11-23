@@ -68,6 +68,10 @@ void StudioSmokeDriver::SetupTargetSmoke(TargetEditorDialog& dialog)
                          dialog.m_fields->FieldValue("reference_impedance.mode") == "missing" &&
                          dialog.m_fields->FieldValue("port_id") == "" && !dialog.m_apply->IsEnabled(),
                      "신규 목표의 빈 입력 또는 미정 조건이 보존되지 않았습니다.");
+        CanvasAssert(dialog.m_fields->IsFieldVisible("band.start.mode") &&
+                         dialog.m_fields->IsFieldVisible("band.start.value") &&
+                         dialog.m_fields->IsFieldVisible("band.start.unit"),
+                     "신규 목표에서 입력 방식과 값 및 단위를 모두 표시해야 합니다.");
         m_setupSeedTarget = dialog.m_context.at("items").at(0).at("id");
         m_setupStage = 200;
         SetupSafetyChecks(dialog.m_context);

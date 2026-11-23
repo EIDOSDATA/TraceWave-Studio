@@ -179,7 +179,7 @@ void DesignRulesDialog::Render(const Json& context)
     FillChoice(m_parameter, context.at("parameters"), selection.at("parameter_id"), "매개변수 선택");
     m_parameter->Show(section == "parameter");
     m_parameterLabel->Show(section == "parameter");
-    m_fields->SetFields(context.at("fields"));
+    m_fields->SetFields(context.at("fields"), {{"kind", "design_rules"}});
     m_reason->ChangeValue(wxEmptyString);
     m_canvas->SetScene(context.at("scene"));
     m_loading = false;

@@ -486,7 +486,14 @@ void ResultWorkspace::OpenRecent(const Json& source)
     {
         return;
     }
-    m_browser->SetCurrentContext();
+    if (source.value("kind", "") == "solver")
+    {
+        m_browser->SetSolverContext();
+    }
+    else
+    {
+        m_browser->SetCurrentContext();
+    }
     Refresh();
     Select(source);
 }

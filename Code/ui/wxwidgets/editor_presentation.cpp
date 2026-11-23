@@ -64,7 +64,8 @@ Availability Evaluate(const std::string& key, const Fields& fields, bool showDet
             if (suffix == "value")
             {
                 enabled = enabled && mode == "value";
-                visible = visible && mode != "missing" && mode != "absent";
+                visible = visible && (descriptor.value("primary_quantity", false) ||
+                    (mode != "missing" && mode != "absent"));
             }
             else if (suffix == "unit")
             {
@@ -177,7 +178,7 @@ std::string ValueLabel(const std::string& key, const Fields& fields)
         return "";
     }
     const std::string inputMode = mode->second.value.get<std::string>();
-    return inputMode == "missing"
+    return inputMode == "missing" && !fields.at(key).descriptor->value("primary_quantity", false)
                ? unit->second.descriptor->at("label").get<std::string>()
                : ((rootValue && inputMode == "expression" ? std::string("마지막 적용값")
                                                           : fields.at(key).descriptor->at("label").get<std::string>() +

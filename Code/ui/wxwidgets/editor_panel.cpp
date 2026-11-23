@@ -47,7 +47,7 @@ int FieldGroup(const std::string& key, const Json& descriptor, const std::string
         return 1;
     }
     if (descriptor.value("advanced", false) || leaf == "status" || leaf == "parameter_id" ||
-        (leaf == "mode" && separator != std::string::npos) ||
+        (leaf == "mode" && separator != std::string::npos && !descriptor.value("primary_quantity", false)) ||
         (kind == "geometry" &&
          (key == "name" || key == "net_id" || key == "role" || key.find("flags.") == 0 || key.find("center.") == 0 ||
           key == "include_in_analysis" || key == "include_in_em" || key == "include_in_export")) ||
@@ -121,6 +121,7 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
              ? "재료 물성"
              : kind == "layer" ? "적층 치수"
              : kind == "target" ? "대역과 기준면"
+             : kind == "design_rules" ? "규칙 입력"
              : kind == "parameter" || kind == "new_parameter" ? "매개변수" : "형상 / 치수",
          kind == "target" ? "성능 기준" : "기판 / 재료", "출처와 가정", "고급 설정"}};
     for (std::size_t index = 0; index < m_groups.size(); ++index)
@@ -184,14 +185,21 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
                              return rank(left) < rank(right);
                          });
     }
-    for (const auto& descriptor : ordered)
+    for (auto& descriptor : ordered)
     {
         const std::string key = descriptor.at("key").get<std::string>();
         const std::string editor = descriptor.at("editor").get<std::string>();
-        const std::string valueKey = key == "unit" ? "value"
-                                                   : (key.size() > 5 && key.substr(key.size() - 5) == ".unit"
-                                                          ? key.substr(0, key.size() - 4) + "value"
-                                                          : "");
+        const auto separator = key.rfind('.');
+        const auto leaf = separator == std::string::npos ? key : key.substr(separator + 1);
+        const bool primary = (kind == "target" || kind == "design_rules") && separator != std::string::npos &&
+            (leaf == "mode" || leaf == "value");
+        if (primary)
+        {
+            descriptor["primary_quantity"] = true;
+        }
+        const auto prefix = separator == std::string::npos ? "" : key.substr(0, separator + 1);
+        const std::string valueKey = leaf == "unit" ? prefix + "value" :
+            primary && leaf == "value" ? prefix + "mode" : "";
         const auto valueField = m_fields.find(valueKey);
         const bool paired = !valueKey.empty() && valueField != m_fields.end();
         auto* rowPanel = paired ? valueField->second.row : new wxPanel(this);
@@ -212,7 +220,7 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
                 rowPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::InputGap));
         }
         auto* input = new wxBoxSizer(wxVERTICAL);
-        inputs->Add(input, paired ? 0 : 1, wxEXPAND | (paired ? wxLEFT : 0), paired ? FromDIP(6) : 0);
+        inputs->Add(input, !paired || leaf == "value" ? 1 : 0, wxEXPAND | (paired ? wxLEFT : 0), paired ? FromDIP(6) : 0);
         wxWindow* control = nullptr;
         wxBoxSizer* bindingButtons = nullptr;
         std::vector<wxWindow*> auxiliaries;
@@ -337,7 +345,7 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
                                key == "assumptions";
         if (!multiline && editor != "multichoice")
         {
-            control->SetMinSize(FromDIP(wxSize(paired ? 68 : 0, 32)));
+            control->SetMinSize(FromDIP(wxSize(primary && leaf == "mode" ? 106 : paired ? 68 : 0, 32)));
         }
         WriteValue(field, descriptor.at("value"));
         control->SetName(Display(descriptor.at("label").get<std::string>()));
@@ -772,6 +780,7 @@ void EditorPanel::UpdateModes()
     std::map<wxPanel*, bool> visibleRows;
     std::array<bool, 4> hasFields{};
     std::vector<wxString> missing;
+    bool missingInDetails = false;
     for (auto& item : m_fields)
     {
         const auto group = static_cast<std::size_t>(item.second.group);
@@ -792,6 +801,7 @@ void EditorPanel::UpdateModes()
                 label.RemoveLast(ending.size());
             }
             missing.push_back(label);
+            missingInDetails = missingInDetails || group == 3;
         }
         for (wxWindow* auxiliary : item.second.auxiliaries)
         {
@@ -826,7 +836,8 @@ void EditorPanel::UpdateModes()
         {
             stateText += Display(" 외 ") + wxString::Format("%zu", missing.size() - 1) + Display("개");
         }
-        stateText += Display(". 고급 설정의 입력 방식에서 확인하세요.");
+        stateText += Display(missingInDetails ? ". 고급 설정의 입력 방식에서 확인하세요."
+                                              : ". 해당 행에서 직접 입력 또는 미정을 선택하세요.");
     }
     m_valueState->SetLabel(stateText);
     m_valueState->Wrap(std::max(FromDIP(200), GetClientSize().x - FromDIP(24)));
