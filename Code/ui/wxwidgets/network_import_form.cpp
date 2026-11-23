@@ -229,7 +229,7 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
         rows->Add(port.project, 1, wxEXPAND);
         rows->Add(new wxStaticText(port.panel, wxID_ANY, Display("포트 모드")), 0, wxALIGN_CENTER_VERTICAL);
         port.mode =
-            Choices(port.panel, {"원문 유지", "미정 (unknown)", "단일 종단 (single_ended)"}, "network.import.mode");
+            Choices(port.panel, {"원문 유지", "미정 (unknown)", "단일 종단 (single_ended)", "직사각 도파관 (TE10)"}, "network.import.mode");
         port.mode->SetName(wxString::Format("network.import.mode.%zu", index));
         rows->Add(port.mode, 1, wxEXPAND);
         rows->Add(new wxStaticText(port.panel, wxID_ANY, Display("전류 방향")), 0, wxALIGN_CENTER_VERTICAL);
@@ -424,6 +424,7 @@ Json NetworkImportDialog::Declarations() const
         result["phasor_convention"] = phasors.at(m_phasor->GetSelection());
     }
     Json ports = Json::array();
+    const std::array<const char*, 4> modeNames = {"", "unknown", "single_ended", "rectangular_te10"};
     Json modes = m_sourceDescriptor.at("port_modes");
     Json orientations = m_sourceDescriptor.at("current_orientation");
     Json planes = m_sourceDescriptor.at("reference_planes");
@@ -436,7 +437,7 @@ Json NetworkImportDialog::Declarations() const
         changedPorts = changedPorts || project > 0;
         if (port.mode->GetSelection() > 0)
         {
-            modes[index] = port.mode->GetSelection() == 1 ? "unknown" : "single_ended";
+            modes[index] = modeNames.at(port.mode->GetSelection());
             changedModes = true;
         }
         if (port.orientation->GetSelection() > 0)

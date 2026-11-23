@@ -76,6 +76,7 @@ std::string State(const Json& value)
                                                           {"pseudo", "의사파"},
                                                           {"traveling", "진행파"},
                                                           {"single_ended", "단일종단"},
+                                                          {"rectangular_te10", "직사각 도파관 TE10"},
                                                           {"differential", "차동"},
                                                           {"into_dut", "대상 안쪽"},
                                                           {"out_of_dut", "대상 바깥쪽"},

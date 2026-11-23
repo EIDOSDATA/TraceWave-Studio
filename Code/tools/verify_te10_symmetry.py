@@ -18,7 +18,7 @@ from check_openems_environment import (
 )
 
 
-def solve(directory, mode, target_mm, executable):
+def solve(directory, mode, target_mm, executable, *, output_plane_mm=65):
     """! @brief 전체 모델과 같은 모드, 격자, 측정면을 사용해 복소 포트파를 계산한다."""
     directory.mkdir()
     structure = CSXCAD.ContinuousStructure()
@@ -47,7 +47,7 @@ def solve(directory, mode, target_mm, executable):
     grid.AddLine("z", z)
     # @brief 정규화와 급전 함수에는 전체 단면의 폭과 높이를 사용한다.
     inlet = fdtd.AddRectWaveGuidePort(1, [0, 0, 10], [x[-1], y[-1], 15], "z", WIDTH_M, HEIGHT_M, "TE10", excite=1)
-    outlet = fdtd.AddRectWaveGuidePort(2, [0, 0, 70], [x[-1], y[-1], 65], "z", WIDTH_M, HEIGHT_M, "TE10", excite=0)
+    outlet = fdtd.AddRectWaveGuidePort(2, [0, 0, output_plane_mm + 5], [x[-1], y[-1], output_plane_mm], "z", WIDTH_M, HEIGHT_M, "TE10", excite=0)
     fdtd.Write2XML(str(directory / "waveguide.xml"))
     command = [executable, "waveguide.xml", "--engine=multithreaded", "--numThreads=2",
                "--dump-statistics", "--exact-endcriteria"]

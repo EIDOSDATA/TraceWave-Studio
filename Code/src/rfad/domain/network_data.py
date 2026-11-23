@@ -114,8 +114,8 @@ def validate_dataset(data):
     for key in ("port_names", "reference_planes"):
         for value in data[key]:
             text(value, key, nullable=True, limit=256 if key == "port_names" else 4096)
-    if any(value not in ("single_ended", "unknown") for value in data["port_modes"]):
-        fail("현재 단일종단/미정 포트만 보존합니다.", "port_modes", "E_UNSUPPORTED")
+    if any(value not in ("single_ended", "rectangular_te10", "unknown") for value in data["port_modes"]):
+        fail("지원하는 포트 모드는 단일종단, 직사각 도파관 TE10 또는 미정입니다.", "port_modes", "E_UNSUPPORTED")
     if any(value not in ("into_dut", "unknown") for value in data["current_orientation"]):
         fail("전류 방향은 DUT 안쪽 또는 미정이어야 합니다.", "current_orientation")
     if (type(data["wave_definition"]) is not str or data["wave_definition"] not in WAVES

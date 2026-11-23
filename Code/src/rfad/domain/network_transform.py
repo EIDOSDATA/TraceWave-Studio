@@ -9,9 +9,10 @@ from rfad.adapters import network_backend
 from rfad.domain.network_data import UNITS, complex_value, fail, finite, text, validate_dataset
 
 
-def require_basis(data, *, phasor=False):
+def require_basis(data, *, phasor=False, waveguide=False):
     """! @brief 모르는 파/포트/기준면 조건을 50 ohm 또는 동일 기준으로 치환하지 않는다."""
-    if data["wave_definition"] == "unknown" or any(value != "single_ended" for value in data["port_modes"]):
+    modes = {"single_ended", "rectangular_te10"} if waveguide else {"single_ended"}
+    if data["wave_definition"] == "unknown" or any(value not in modes for value in data["port_modes"]):
         fail("파 정의와 단일종단 포트 모드를 명시하십시오.", "wave_definition", "E_UNSUPPORTED")
     if any(value != "into_dut" for value in data["current_orientation"]):
         fail("DUT 안쪽을 향하는 전류 규약을 명시하십시오.", "current_orientation", "E_UNSUPPORTED")
@@ -83,11 +84,36 @@ def _segment_length(segment):
     return distance
 
 
+def _guide_factors(guide, length, frequencies, sign):
+    """! @brief 균질 비자성 직사각 도파관의 단일 전파 모드에서 위상과 TE 임피던스를 구한다."""
+    if type(guide) is not dict or set(guide) != {"width_mm", "height_mm", "epsilon_r"}:
+        fail("TE10 도파관의 내폭, 내높이와 상대 유전율이 필요합니다.", "options.lines.waveguide")
+    a, b, epsilon = [finite(guide[k], "options.lines.waveguide." + k) for k in ("width_mm", "height_mm", "epsilon_r")]
+    if not 0 < b < a or not 1 <= epsilon <= 100:
+        fail("도파관은 양수 내높이보다 큰 내폭과 1~100의 상대 유전율이 필요합니다.", "options.lines.waveguide", "E_UNIT")
+    velocity = 299792458.0 / math.sqrt(epsilon)
+    cutoff = 500 * velocity / a
+    limit = min(2 * cutoff, 500 * velocity / b)
+    factors = []
+    for f in frequencies:
+        if not cutoff < f < limit:
+            fail("모든 표본이 TE10 차단 주파수와 다음 모드의 차단 주파수 사이에 있어야 합니다.",
+                 "options.lines.waveguide", "E_UNSUPPORTED")
+        ratio = cutoff / f
+        normal = math.sqrt((1 - ratio) * (1 + ratio))
+        cycles = (f / velocity) * normal * length
+        if not math.isfinite(cycles) or abs(cycles) > 5e7:
+            fail("도파관 기준면의 위상이 계산 범위를 넘었습니다.", "options.lines", "E_RESOURCE")
+        impedance = 376.730313668 / (math.sqrt(epsilon) * normal)
+        factors.append((cmath.exp(complex(0, sign * math.tau * math.remainder(cycles, 1))), impedance))
+    return factors
+
+
 def _shift_planes(data, options):
     """! @brief 포트별 정합 선로를 더하거나 제거하여 S 파의 기준면을 이동한다."""
     if set(options) != {"operation", "lines"} or data["parameter_kind"] != "S":
         fail("정합 선로 기준면 이동에는 S 자료와 선로 조건이 필요합니다.", "options", "E_UNSUPPORTED")
-    require_basis(data)
+    require_basis(data, waveguide=True)
     if data["phasor_convention"] == "unknown":
         fail("기준면을 이동하려면 시간/위상 부호 규약이 필요합니다.", "phasor_convention", "E_UNSUPPORTED")
     port_ids = data["port_ids"]
@@ -96,11 +122,15 @@ def _shift_planes(data, options):
         fail("이동할 포트마다 하나의 정합 선로를 지정하십시오.", "options.lines")
     planes = list(data["reference_planes"])
     delays, log_gains = [0.0] * len(planes), [0.0] * len(planes)
+    guides = {}
+    sign = -1.0 if data["phasor_convention"] == "exp(+j*omega*t)" else 1.0
     used = set()
     fields = {"port_id", "phase_velocity_m_per_s", "attenuation_db_per_m", "reference_plane"}
     coordinate_lengths = {}
     for line in lines:
-        if type(line) is not dict or set(line) not in (fields | {"length_mm"}, fields | {"segment"}):
+        guide_line = isinstance(line, dict) and "waveguide" in line
+        expected = {"port_id", "reference_plane", "waveguide"} if guide_line else fields
+        if type(line) is not dict or set(line) not in (expected | {"length_mm"}, expected | {"segment"}):
             fail("포트, 길이, 전파 속도, 감쇠와 새 기준면을 입력하십시오.", "options.lines")
         identity = line["port_id"]
         if type(identity) is not str or identity not in port_ids or identity in used:
@@ -113,11 +143,21 @@ def _shift_planes(data, options):
         else:
             length_mm = finite(line["length_mm"], "options.lines.length_mm")
         length = length_mm * 1e-3
-        velocity = finite(line["phase_velocity_m_per_s"], "options.lines.phase_velocity_m_per_s")
-        loss = finite(line["attenuation_db_per_m"], "options.lines.attenuation_db_per_m")
         new_plane = line["reference_plane"]
         text(new_plane, "options.lines.reference_plane", limit=256)
-        if not length or velocity <= 0 or loss < 0 or new_plane == planes[index]:
+        if not length or new_plane == planes[index]:
+            fail("0이 아닌 이동 길이와 다른 기준면 이름이 필요합니다.", "options.lines", "E_UNIT")
+        if guide_line:
+            if data["port_modes"][index] != "rectangular_te10":
+                fail("포트 모드를 직사각 도파관 TE10으로 확인한 자료가 필요합니다.", "port_modes", "E_CONFLICT")
+            guides[index] = _guide_factors(line["waveguide"], length, data["frequency_hz"], sign)
+            planes[index] = new_plane
+            continue
+        if data["port_modes"][index] == "rectangular_te10":
+            fail("TE10 모드의 기준면에는 도파관 단면을 지정하십시오.", "options.lines.waveguide", "E_UNSUPPORTED")
+        velocity = finite(line["phase_velocity_m_per_s"], "options.lines.phase_velocity_m_per_s")
+        loss = finite(line["attenuation_db_per_m"], "options.lines.attenuation_db_per_m")
+        if velocity <= 0 or loss < 0:
             fail("0 아닌 길이, 양의 위상 속도, 0 이상의 감쇠와 다른 기준면 이름이 필요합니다.", "options.lines", "E_UNIT")
         delay = length / velocity
         gain = -loss * (math.log(10) / 20) * length
@@ -125,12 +165,17 @@ def _shift_planes(data, options):
             fail("정합 선로의 위상 또는 감쇠가 계산 범위를 넘었습니다.", "options.lines", "E_RESOURCE")
         planes[index], delays[index], log_gains[index] = new_plane, delay, gain
 
-    sign = -1.0 if data["phasor_convention"] == "exp(+j*omega*t)" else 1.0
     values, diagnostics = [], []
     for index, frequency in enumerate(data["frequency_hz"]):
-        real_references(data, index)
+        references = real_references(data, index)
         factors = [cmath.exp(complex(gain, sign * math.tau * math.remainder(frequency * delay, 1.0)))
                    for gain, delay in zip(log_gains, delays)]
+        for port, rows in guides.items():
+            factor, impedance = rows[index]
+            if not math.isclose(references[port], impedance, rel_tol=1e-5):
+                fail("주파수별 포트 기준 임피던스가 지정한 TE10 모드 임피던스와 다릅니다.",
+                     "z0_ohm", "E_CONFLICT")
+            factors[port] = factor
         matrix = []
         for i, row in enumerate(data["values_ri"][index]):
             converted = []

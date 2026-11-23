@@ -156,6 +156,30 @@ installation_metadata()
 class NetworkTransformTests(unittest.TestCase):
     """! @brief 독립 1포트 수식과 비대칭 2포트 왕복으로 변환을 검증한다."""
 
+    def test_waveguide_plane_uses_dispersive_matched_mode(self):
+        """! @brief 알려진 TE10 모드의 이동, 반대 부호, 차단 주파수 및 Z0 불일치를 검사한다."""
+        import cmath
+        from rfad.application.network_forms import transform_input
+        frequencies = [9.5e9, 10e9, 10.5e9]
+        data = network((.2j,) * 3, frequencies)
+        data["port_modes"] = ["rectangular_te10"]
+        phases = [math.sqrt((2 * math.pi * f / 299792458.)**2 - (math.pi / .02)**2) for f in frequencies]
+        data["z0_ohm"] = [[[2 * math.pi * f * 1.25663706212e-6 / beta, 0]] for f, beta in zip(frequencies, phases)]
+        text = "1 | 0,0,0 > 3,4,0 > 3,4,0 | TE10(20,10,1) | 0 | 외부 측정면"
+        options = transform_input(data, {"operation": "shift_plane", "line_table": text})
+        for convention, sign in (("exp(+j*omega*t)", -1), ("exp(-j*omega*t)", 1)):
+            data["phasor_convention"] = convention
+            result = transform_dataset(data, options)["dataset"]
+            for sample, beta in zip(result["values_ri"], phases):
+                self.assertAlmostEqual(complex(*sample[0][0]), .2j * cmath.exp(sign * 2j * beta * .005))
+        data["z0_ohm"][0] = [[50., 0]]
+        with self.assertRaises(ProjectError):
+            transform_dataset(data, options)
+        for frequency in (6e9, 16e9):
+            data["frequency_hz"] = [frequency + i for i in range(3)]
+            with self.assertRaisesRegex(ProjectError, "차단"):
+                transform_dataset(data, options)
+
     def test_complex_one_port_s_z_y_matches_analytic_impedance(self):
         """! @brief 알려진 복소 부하에서 S/Z/Y를 독립 식과 대조한다."""
         impedance = 80 + 25j

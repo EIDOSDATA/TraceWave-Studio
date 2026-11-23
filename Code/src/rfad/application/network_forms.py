@@ -86,6 +86,15 @@ def transform_input(data, options):
             index, length, velocity, attenuation, plane = fields
             position = {"segment": _reference_segment(length)} if ">" in length else {
                 "length_mm": number(length, field="options.line_table.length_mm")}
+            if velocity.startswith("TE10(") and velocity.endswith(")"):
+                dims = velocity[5:-1].split(",")
+                if len(dims) != 3 or number(attenuation, field="options.line_table.attenuation_db_per_m") != 0:
+                    fail("TE10(내폭mm,내높이mm,상대유전율)과 무손실 감쇠 0을 입력하십시오.", "options.line_table")
+                guide = {key: number(v.strip(), field="options.line_table.waveguide")
+                         for key, v in zip(("width_mm", "height_mm", "epsilon_r"), dims)}
+                rows.append({"port_id": data["port_ids"][int(index) - 1], **position,
+                             "waveguide": guide, "reference_plane": plane})
+                continue
             rows.append({"port_id": data["port_ids"][int(index) - 1], **position,
                          "phase_velocity_m_per_s": number(velocity, field="options.line_table.phase_velocity_m_per_s"),
                          "attenuation_db_per_m": number(attenuation, field="options.line_table.attenuation_db_per_m"),
