@@ -29,7 +29,10 @@ def estimate(plan, lines):
     if "loss_recording" in case:
         raw_bytes += case["loss_recording"]["estimated_field_bytes"] + 3 * 16 * 1024
     if "field_recording" in case:
-        raw_bytes += 64 * 1024 + case["field_recording"]["point_count"] * 24
+        region = case["field_recording"]
+        raw_bytes += 64 * 1024 + region["point_count"] * 24
+        if "magnetic" in region:
+            raw_bytes += 64 * 1024 + region["magnetic"]["point_count"] * 24
     if "ports" in case and case.get("source") == "user_project":
         count = len(case["ports"])
         work *= count

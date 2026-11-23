@@ -251,6 +251,12 @@ void FieldResultView::SetDescription(const Json& description)
         }
         m_description = description;
         std::string notice = "색 범위는 현재 반환된 단면 표본의 크기입니다. 다른 단면과 색만으로 크기를 비교하지 마십시오.";
+        if (description.contains("drive_reference"))
+        {
+            const auto& drive = description.at("drive_reference");
+            notice += "\n\n급전 P" + std::to_string(drive.at("port_number").get<int>()) + " / " +
+                drive.at("reference_impedance_ohm").dump() + " ohm / 기준면 " + drive.at("reference_plane").get<std::string>();
+        }
         if (description.contains("warnings") && description.at("warnings").is_array())
         {
             for (const auto& warning : description.at("warnings"))

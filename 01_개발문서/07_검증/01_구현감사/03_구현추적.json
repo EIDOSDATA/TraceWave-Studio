@@ -14933,8 +14933,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/field_hdf5.py",
-      "text_sha256": "2b70d9a32789ade79e2011ad2cac19803745fd9c52aab8e2f46f9cbebe8dd200",
-      "utf8_bytes": 11725
+      "text_sha256": "8ee1e82826bb68539dff17c676a9f943c65019ee95108647d4db77f2483338f9",
+      "utf8_bytes": 11779
     },
     {
       "path": "Code/src/rfad/adapters/network_backend.py",
@@ -14963,8 +14963,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/solvers/openems/pcb.py",
-      "text_sha256": "dfaf51d15736edcccdae21cbf3c38019b3c1342d7f6358fb0574fc093ddb86b5",
-      "utf8_bytes": 22548
+      "text_sha256": "5d470632e01d18ad0ffbc61bdff021f1f256c96e5f92c7841e56aea8145b5161",
+      "utf8_bytes": 22688
     },
     {
       "path": "Code/src/rfad/adapters/solvers/openems/pcb_absorption.py",
@@ -15328,8 +15328,8 @@
     },
     {
       "path": "Code/src/rfad/application/result_fields.py",
-      "text_sha256": "38d0aa479f9ee21116edb61c3ee6f3329ea08b601a3d54fb2bb8c7a252133ad7",
-      "utf8_bytes": 16143
+      "text_sha256": "7320e9669bce3dd58620a24bbd1e5338fc0c564dda4d0285d4066db68a3d4516",
+      "utf8_bytes": 18128
     },
     {
       "path": "Code/src/rfad/application/result_metrics.py",
@@ -16473,8 +16473,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/field_result_view.cpp",
-      "text_sha256": "fda5ca12d84bdedb35d23b0cb74d1de1497eea63619afc180ca3759bd306b1b9",
-      "utf8_bytes": 22484
+      "text_sha256": "561228421aa9a8529fb04e770a7c76449674931bec3beb965538c38340d19ad4",
+      "utf8_bytes": 22855
     },
     {
       "path": "Code/ui/wxwidgets/frequency_assessment_display.cpp",

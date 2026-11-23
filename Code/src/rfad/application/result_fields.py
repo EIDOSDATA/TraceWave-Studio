@@ -6,7 +6,7 @@ import math
 from rfad.adapters import field_hdf5
 from rfad.application.canonical import canonical_bytes
 from rfad.application.project_contract import _fields
-from rfad.application.pcb_field_probe import NAME as PROBE_NAME, SCHEMA as PROBE_SCHEMA
+from rfad.application.pcb_field_probe import MAGNETIC_NAME, NAME as PROBE_NAME, REGION_SCHEMA, SCHEMA as PROBE_SCHEMA
 from rfad.application.result_sources import validate_solver_artifact
 from rfad.domain.errors import ProjectError
 
@@ -18,7 +18,8 @@ MONITORS = {
     "electric": ("pcb_loss_E.h5", "전기장 E / 기록 성분", "E", 0, "V*s/m"),
     "material_current": ("pcb_loss_J.h5", "재료 전류 J / 기록 성분", "J", 2, "A*s/m^2"),
     "total_current": ("pcb_loss_rotH.h5", "총 전류 rotH / 원문 시간 위치", "rotH", 3, "A*s/m^2"),
-    "probe_electric": (PROBE_NAME, "전기장 E / 지정 XY 단면", "E", 0, "V*s/m"),
+    "probe_electric": (PROBE_NAME, "전기장 E / 지정 영역", "E", 0, "V*s/m"),
+    "probe_magnetic": (MAGNETIC_NAME, "자기장 H / 지정 영역", "H", 1, "A*s/m"),
 }
 WARNINGS = [
     "펄스 Fourier 원문 단위이며 연속파/실측 절대 전계가 아닙니다.",
@@ -43,8 +44,18 @@ def _bounded(value):
 
 def _base(resolved):
     """! @brief 계산하지 않고 선택한 source/pin과 원문 미검증 상태를 전달한다."""
-    return {"profile": PROFILE, "source": deepcopy(resolved["source"]), "pin": deepcopy(resolved["pin"]),
-            "warnings": list(WARNINGS), "physics_validated": False}
+    response = {"profile": PROFILE, "source": deepcopy(resolved["source"]), "pin": deepcopy(resolved["pin"]),
+                "warnings": list(WARNINGS), "physics_validated": False}
+    result = resolved.get("normalized") or {}
+    plan = result.get("provenance", {}).get("analysis_plan", {})
+    case = plan.get("case", {})
+    if "field_recording" in case and "port" in case:
+        port = case["port"]
+        response["drive_reference"] = {"analysis_plan_id": plan["plan_id"], "port_id": port["id"],
+            "port_number": port["number"], "reference_plane": port["reference_plane"],
+            "reference_impedance_ohm": port["resistance_ohm"], "excitation": deepcopy(case["excitation"]),
+            "positive_geometry_id": port["positive_geometry_id"], "reference_geometry_id": port["reference_geometry_id"]}
+    return response
 
 
 def _model(resolved, monitor_id):
@@ -54,13 +65,14 @@ def _model(resolved, monitor_id):
         return None
     plan = result.get("provenance", {}).get("analysis_plan", {})
     case = plan.get("case", {})
-    if monitor_id == "probe_electric":
-        recording = case.get("field_recording")
+    magnetic = monitor_id == "probe_magnetic"
+    if monitor_id in {"probe_electric", "probe_magnetic"}:
+        recording = case.get("field_recording", {}).get("magnetic") if magnetic else case.get("field_recording")
         if recording is None:
             return None
-        if (recording.get("schema") != PROBE_SCHEMA or recording.get("dump_mode") != 0
-                or recording.get("dump_type") != 10):
-            fail("지정 전기장과 봉인한 기록 계획이 다릅니다.", "E_UNSUPPORTED")
+        if (recording.get("schema") not in ((REGION_SCHEMA,) if magnetic else (REGION_SCHEMA, PROBE_SCHEMA)) or recording.get("dump_mode") != 0
+                or recording.get("dump_type") != (11 if magnetic else 10)):
+            fail("지정 E/H 필드와 봉인한 기록 계획이 다릅니다.", "E_UNSUPPORTED")
     else:
         recording = case.get("loss_recording")
         if recording is None:
@@ -92,21 +104,25 @@ def _model(resolved, monitor_id):
             or any(type(v) not in (int, float) or not math.isfinite(v) or v <= 0 for v in frequencies)
             or any(a >= b for a, b in zip(frequencies, frequencies[1:]))):
         fail("필드 기록의 유한 격자/주파수 선언이 유효하지 않습니다.", "E_HASH")
-    primary, shape, next_nodes = {}, [], {}
+    mesh_axes, electric_nodes, shape, next_nodes = {}, {}, [], {}
     for axis, start, stop in zip("xyz", starts, stops):
         if type(start) is not int or type(stop) is not int or not 0 <= start <= stop < len(lines[axis])-1:
             fail("필드 기록의 성분 edge 범위가 계획 격자를 벗어납니다.", "E_HASH")
-        primary[axis] = lines[axis][start:stop+1]
+        source_axis = lines[axis]
+        electric_nodes[axis] = source_axis[start:stop + 1]
+        mesh_axes[axis] = ([(source_axis[i] + source_axis[i + 1]) * .5 for i in range(start, stop + 1)]
+                           if magnetic else electric_nodes[axis])
         next_nodes[axis] = lines[axis][stop+1]
         shape.append(stop-start+1)
-    for endpoint, indices in (("start_mm", starts), ("stop_mm", stops)):
+    for endpoint, index in (("start_mm", 0), ("stop_mm", -1)):
         recorded = recording.get(endpoint)
         if (type(recorded) is not list or len(recorded) != 3
                 or any(type(v) not in (int, float) or not math.isfinite(v) for v in recorded)
-                or any(not math.isclose(value, lines[axis][index], rel_tol=0, abs_tol=1e-9)
-                       for axis, index, value in zip("xyz", indices, recorded))):
+                or any(not math.isclose(value, mesh_axes[axis][index], rel_tol=0, abs_tol=1e-9)
+                       for axis, value in zip("xyz", recorded))):
             fail("필드 기록 영역의 끝점이 실제 전체 격자와 다릅니다.", "E_HASH")
-    return {"recording": recording, "shape": shape, "primary_coordinates_mm": primary,
+    return {"recording": recording, "shape": shape, "primary_coordinates_mm": mesh_axes,
+            "magnetic": magnetic, "electric_nodes_mm": electric_nodes,
             "next_nodes_mm": next_nodes, "frequency_hz": frequencies, "normalization": normalization}
 
 
@@ -136,13 +152,17 @@ def _read(service, resolved, model, monitor_id, selection=None):
         service.journal._ensure_open()
         path = service.journal._safe_path(reference["uri"])
     expected = {"shape": model["shape"], "frequency_hz": model["frequency_hz"],
-                "primary_coordinates_mm": model["primary_coordinates_mm"], "dump_type": MONITORS[monitor_id][3]}
+                "primary_coordinates_mm": model["primary_coordinates_mm"], "dump_type": MONITORS[monitor_id][3],
+                "dual_mesh": int(model["magnetic"])}
     return field_hdf5.read(path, reference, expected, selection), reference
 
 
 def _coordinates(model, primary, component):
     """! @brief 원문 primary 축과 봉인된 다음 격자선으로 실제 전기 edge 중심을 표시한다."""
     result = deepcopy(primary)
+    if model.get("magnetic"):
+        result[component] = list(model["electric_nodes_mm"][component])
+        return result
     values = primary[component]
     following = values[1:] + [model["next_nodes_mm"][component]]
     result[component] = [(a+b)*0.5 for a, b in zip(values, following)]
@@ -153,10 +173,17 @@ def _coordinate(model, primary, axis, component, index):
     """! @brief 반환 ROI에 들어가는 원본 좌표만 성분의 실제 edge 위치로 변환한다."""
     values = primary[axis]
     position = values[index]
+    if model.get("magnetic"):
+        return model["electric_nodes_mm"][axis][index] if axis == component else position
     if axis == component and "next_nodes_mm" in model:
         following = values[index + 1] if index + 1 < len(values) else model["next_nodes_mm"][axis]
         return (position + following) * 0.5
     return position
+
+
+def _basis(model):
+    """! @brief 각 성분을 실제 전기 edge 또는 자기 dual edge에 배치한다."""
+    return "dual_Yee_magnetic_edges" if model.get("magnetic") else "primary_Yee_electric_edge_midpoints"
 
 
 def describe(service, resolved):
@@ -174,11 +201,13 @@ def describe(service, resolved):
         response["monitors"].append({"monitor_id": monitor_id, "label": label, "unit": unit,
             "normalization": "pulse_fourier_spectrum_native_2dt", "frequency_hz": deepcopy(model["frequency_hz"]),
             "components": components, "source_ref": deepcopy(reference),
-            "coordinate_basis": "primary_Yee_electric_edge_midpoints", "phase_correction": "none_raw_time_location"})
+            "coordinate_basis": _basis(model), "phase_correction": "none_raw_time_location"})
     if response["monitors"]:
         response["status"] = "available"
-        if all(item["monitor_id"] == "probe_electric" for item in response["monitors"]):
+        if all(item["monitor_id"].startswith("probe_") for item in response["monitors"]):
             response["warnings"] = [WARNINGS[index] for index in (0, 1, 4)]
+        if any(item["monitor_id"] == "probe_magnetic" for item in response["monitors"]):
+            response["warnings"].append("자기장 H는 같은 급전에서 기록한 dual Yee 성분의 원래 시간 위상을 사용합니다.")
     else:
         response["warnings"].insert(0, "선택한 원본에는 지원하는 내부 복소 필드가 기록되지 않았습니다.")
     return _bounded(response)
@@ -226,12 +255,12 @@ def page(service, resolved, parameters):
     axes, selection, indices = _selection(model, parameters)
     observed, reference = _read(service, resolved, model, parameters["monitor_id"], selection)
     response = _base(resolved)
-    if monitor == "probe_electric":
+    if monitor.startswith("probe_"):
         response["warnings"] = [WARNINGS[index] for index in (0, 1, 4)]
     return present_page(response, model, observed["primary_coordinates_mm"], observed["values"],
                         reference, parameters, axes, indices, unit=MONITORS[parameters["monitor_id"]][4],
                         normalization="pulse_fourier_spectrum_native_2dt",
-                        coordinate_basis="primary_Yee_electric_edge_midpoints")
+                        coordinate_basis=_basis(model))
 
 
 def present_page(response, model, coordinates, raw_values, reference, parameters, axes, indices, *,

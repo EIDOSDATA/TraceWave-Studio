@@ -136,8 +136,8 @@ void CompareValues(wxListCtrl& table, const Json& current, const Json& source, c
         {"feature_subdivisions", "임계 구간 최소 분할"}, {"mesh_policy.kind", "외부 공기 격자 방식"},
         {"mesh_policy.air_cell_mm", "바깥 공기 격자 간격 (mm)"}, {"mesh_policy.growth_ratio", "공기 격자 성장률"},
         {"max_timesteps", "최대 시간 단계"}, {"end_criterion", "종료 에너지 비율"},
-        {"field_probe.frequency_hz", "전기장 단면 주파수 (Hz)"}, {"field_probe.x_mm", "전기장 단면 X 범위 (mm)"},
-        {"field_probe.y_mm", "전기장 단면 Y 범위 (mm)"}, {"field_probe.z_mm", "전기장 단면 Z (mm)"},
+        {"field_probe.frequency_hz", "필드 기록 주파수 (Hz)"}, {"field_probe.x_mm", "필드 기록 X 범위 (mm)"},
+        {"field_probe.magnetic", "자기장 H 기록"}, {"field_probe.y_mm", "필드 기록 Y 범위 (mm)"}, {"field_probe.z_mm", "필드 기록 Z (mm)"},
         {"radiation.frequency_hz", "NF2FF 기록 주파수 (Hz)"}, {"radiation.theta_step_deg", "NF2FF theta 간격 (deg)"},
         {"radiation.phi_step_deg", "NF2FF phi 간격 (deg)"},
         {"compute_profile.kind", "계산 예산 프로필"}, {"compute_profile.num_threads", "계산 스레드"},
@@ -388,12 +388,16 @@ private:
         Field(*frequency, "frequency_hz", "방사 기록 주파수 (Hz, 쉼표로 구분)");
         Field(*frequency, "theta_step_deg", "theta 간격 (5/10/15/30 deg)");
         Field(*frequency, "phi_step_deg", "phi 간격 (5/10/15/30 deg)");
-        Field(*frequency, "field_probe", "전기장 XY 단면 (선택)");
+        Field(*frequency, "field_probe", "전기장 기록 영역 (선택)");
         auto* probeOrder = new wxStaticText(frequency->GetStaticBox(), wxID_ANY,
-            Display("쉼표로 구분해 주파수 (Hz), X 최소/최대, Y 최소/최대, Z (mm) 입력"));
+            Display("주파수 (Hz), X 최소/최대, Y 최소/최대, Z 최소/최대 (mm). 단면은 법선축의 두 값을 같게 입력하세요. XY 단면은 Z 한 값도 가능합니다."));
         StudioTheme::BindSecondary(*probeOrder);
         frequency->Add(probeOrder, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
         m_fields.at("field_probe")->SetHint(Display("2450000000, 2, 5, 2, 5, 2"));
+        m_magnetic = new wxCheckBox(frequency->GetStaticBox(), wxID_ANY, Display("같은 급전에서 자기장 H도 기록"));
+        m_magnetic->SetName("solver.field_probe.magnetic");
+        frequency->Add(m_magnetic, 0, wxEXPAND | wxALL, FromDIP(8));
+        m_magnetic->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&) { Invalidate(); });
         m_junctionButton = new wxButton(frequency->GetStaticBox(), wxID_ANY, Display("PTH 접합층"));
         m_junctionButton->SetName("solver.junctions.edit");
         m_bandButton = new wxButton(frequency->GetStaticBox(), wxID_ANY, Display("대역별 재료"));
@@ -1159,14 +1163,28 @@ private:
         }
         m_fields.at("frequency_hz")->ChangeValue(wxJoin(frequencies, ','));
         wxArrayString probeValues;
+        m_magnetic->SetValue(false);
         if (settings.contains("field_probe"))
         {
             const auto& probe = settings.at("field_probe");
-            for (const auto& item : {probe.at("frequency_hz"), probe.at("x_mm").at(0), probe.at("x_mm").at(1),
-                                     probe.at("y_mm").at(0), probe.at("y_mm").at(1), probe.at("z_mm")})
+            probeValues.Add(Display(probe.at("frequency_hz").dump()));
+            for (const auto* key : {"x_mm", "y_mm"})
             {
-                probeValues.Add(Display(item.dump()));
+                const auto& span = probe.at(key);
+                probeValues.Add(Display((span.is_array() ? span.at(0) : span).dump()));
+                probeValues.Add(Display((span.is_array() ? span.at(1) : span).dump()));
             }
+            const auto& z = probe.at("z_mm");
+            if (z.is_array())
+            {
+                probeValues.Add(Display(z.at(0).dump()));
+                probeValues.Add(Display(z.at(1).dump()));
+            }
+            else
+            {
+                probeValues.Add(Display(z.dump()));
+            }
+            m_magnetic->SetValue(probe.value("magnetic", false));
         }
         m_fields.at("field_probe")->ChangeValue(wxJoin(probeValues, ','));
         m_junctions = settings.value("via_junctions", Json::array());
@@ -1380,26 +1398,41 @@ private:
         const auto probe = m_fields.at("field_probe")->GetValue().Strip(wxString::both);
         if (probe.empty())
         {
+            if (m_magnetic->GetValue())
+            {
+                return fail("field_probe", "자기장을 기록할 범위를 입력하세요.");
+            }
             settings.erase("field_probe");
         }
         else
         {
-            std::array<double, 6> coordinates{};
+            std::vector<double> coordinates;
             wxStringTokenizer tokens(probe, ",", wxTOKEN_RET_EMPTY_ALL);
-            for (auto& value : coordinates)
+            while (tokens.HasMoreTokens())
             {
-                if (!tokens.HasMoreTokens() || !tokens.GetNextToken().Strip(wxString::both).ToDouble(&value) ||
+                double value = 0;
+                if (coordinates.size() >= 7 || !tokens.GetNextToken().Strip(wxString::both).ToDouble(&value) ||
                     !std::isfinite(value))
                 {
-                    return fail("field_probe", "주파수와 좌표 6개를 쉼표로 구분해 입력하세요.");
+                    return fail("field_probe", "주파수와 좌표를 입력하세요. 단면은 6개, 체적은 7개 값입니다.");
                 }
+                coordinates.push_back(value);
             }
-            if (tokens.HasMoreTokens())
+            if (coordinates.size() < 6)
             {
-                return fail("field_probe", "주파수와 좌표 6개를 쉼표로 구분해 입력하세요.");
+                return fail("field_probe", "주파수와 좌표를 입력하세요. 단면은 6개, 체적은 7개 값입니다.");
             }
-            settings["field_probe"] = {{"frequency_hz", coordinates[0]}, {"x_mm", {coordinates[1], coordinates[2]}},
-                                       {"y_mm", {coordinates[3], coordinates[4]}}, {"z_mm", coordinates[5]}};
+            const auto span = [](double low, double high)
+            {
+                return low == high ? Json(low) : Json::array({low, high});
+            };
+            const auto z = coordinates.size() == 7 ? span(coordinates[5], coordinates[6]) : Json(coordinates[5]);
+            settings["field_probe"] = {{"frequency_hz", coordinates[0]}, {"x_mm", span(coordinates[1], coordinates[2])},
+                                       {"y_mm", span(coordinates[3], coordinates[4])}, {"z_mm", z}};
+            if (m_magnetic->GetValue())
+            {
+                settings["field_probe"]["magnetic"] = true;
+            }
         }
         if (m_symmetry->GetSelection() == 0)
         {
@@ -1688,16 +1721,23 @@ private:
         FillModel();
         const std::string radiation = settings.contains("radiation") ? "NF2FF 기록 사용" : "NF2FF 기록 끔";
         const std::string loss = settings.contains("power_balance") ? "독립 손실 기록 사용" : "독립 손실 기록 요청 없음";
-        wxString fieldSummary = Display("전기장 XY 단면 기록 요청 없음");
+        wxString fieldSummary = Display("E/H 필드 기록 요청 없음");
         if (m_result.contains("field_recording"))
         {
             const auto& field = m_result.at("field_recording");
-            const auto& start = field.at("start_mm");
-            const auto& stop = field.at("stop_mm");
-            fieldSummary = wxString::Format(Display("전기장 XY 단면 %.10g Hz / X %.6g~%.6g / Y %.6g~%.6g / Z %.6g mm / %d점"),
-                field.at("frequency_hz").at(0).get<double>(), start.at(0).get<double>(), stop.at(0).get<double>(),
-                start.at(1).get<double>(), stop.at(1).get<double>(), start.at(2).get<double>(),
-                field.at("point_count").get<int>());
+            const auto summary = [](const Json& region, const wxString& name)
+            {
+                const auto start = region.at("start_mm").get<std::array<double, 3>>();
+                const auto stop = region.at("stop_mm").get<std::array<double, 3>>();
+                return wxString::Format(Display("%s / %.10g Hz / X %.6g~%.6g / Y %.6g~%.6g / Z %.6g~%.6g mm / %d점"),
+                    name, region.at("frequency_hz").at(0).get<double>(), start[0], stop[0],
+                    start[1], stop[1], start[2], stop[2], region.at("point_count").get<int>());
+            };
+            fieldSummary = summary(field, Display("전기장 E"));
+            if (field.contains("magnetic"))
+            {
+                fieldSummary += "\n" + summary(field.at("magnetic"), Display("자기장 H"));
+            }
         }
         const auto cost = Studio::SolverEstimateText(m_result.value("execution_estimate", Json::object()));
         m_output->ChangeValue(wxString::Format(
@@ -1778,6 +1818,7 @@ private:
     wxButton* m_load = nullptr;
     wxButton* m_save = nullptr;
     wxCheckBox* m_nf = nullptr;
+    wxCheckBox* m_magnetic = nullptr;
     std::map<std::string, wxTextCtrl*> m_fields;
     Json m_result = Json::object();
     bool m_pending = false;

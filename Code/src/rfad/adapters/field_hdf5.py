@@ -130,10 +130,10 @@ def inspect(handle, h5py, np, expected, *, max_points=None, max_bytes=None):
         fail("필드 HDF5 root 객체가 지원 profile과 다릅니다.")
     _attributes(handle, {"openEMS_HDF5_version", "dual_mesh", "dump_type"}, {"legacy_fmt"})
     if (float(_attribute(handle, "openEMS_HDF5_version", np)) != 0.3
-            or _attribute(handle, "dual_mesh", np) != 0
+            or _attribute(handle, "dual_mesh", np) != expected.get("dual_mesh", 0)
             or _attribute(handle, "dump_type", np) != expected["dump_type"]
             or "legacy_fmt" in handle.attrs and _attribute(handle, "legacy_fmt", np) != 0):
-        fail("현재 primary Yee openEMS 0.3 필드만 지원합니다.", "E_VERSION")
+        fail("기록 계획의 Yee 격자 종류 또는 openEMS 0.3 필드 형식이 다릅니다.", "E_VERSION")
     seen = [handle.id]
     mesh = _child(handle, "Mesh", h5py, seen, True)
     _attributes(mesh, {"mesh_scaling", "mesh_type"})
