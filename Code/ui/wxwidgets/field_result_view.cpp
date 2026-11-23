@@ -6,6 +6,8 @@
 #include "studio_theme.h"
 #include <wx/button.h>
 #include <wx/choice.h>
+#include <wx/file.h>
+#include <wx/filedlg.h>
 #include <wx/scrolwin.h>
 #include <wx/sizer.h>
 #include <wx/spinctrl.h>
@@ -146,6 +148,13 @@ FieldResultView::FieldResultView(wxWindow* parent) : wxPanel(parent)
     }
     m_flux = new wxButton(m_fluxPanel, wxID_ANY, Display("지정 면 통과 전력 계산"));
     fluxLayout->Add(m_flux, 0, wxTOP | wxEXPAND, FromDIP(6));
+    auto* meshFlux = new wxButton(m_fluxPanel, wxID_ANY, Display("곡면 파일로 전력 계산"));
+    meshFlux->SetName("field.flux.mesh");
+    fluxLayout->Add(meshFlux, 0, wxTOP | wxEXPAND, FromDIP(4));
+    meshFlux->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        RequestMeshFlux();
+    });
     m_fluxReport = new wxTextCtrl(m_fluxPanel, wxID_ANY, wxEmptyString, wxDefaultPosition,
                                   FromDIP(wxSize(-1, 90)), wxTE_MULTILINE | wxTE_READONLY);
     m_fluxReport->SetName(Display("면의 방향별 통과 전력과 단위"));
@@ -704,9 +713,52 @@ void FieldResultView::RequestFlux()
 }
 
 /** @brief 부호와 단위가 있는 면별 펄스 스펙트럼 통과량을 같은 입력 바로 아래에 표시한다. */
+void FieldResultView::RequestMeshFlux()
+{
+    if (!onFlux || !m_fluxPanel->IsEnabled())
+    {
+        return;
+    }
+    wxFileDialog dialog(this, Display("유향 삼각 곡면 파일 (mm)"), wxEmptyString, wxEmptyString,
+                        Display("곡면 JSON (*.json)|*.json"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    if (dialog.ShowModal() != wxID_OK)
+    {
+        return;
+    }
+    constexpr wxFileOffset maximum = 512 * 1024;
+    wxFile file(dialog.GetPath(), wxFile::read);
+    const auto length = file.IsOpened() ? file.Length() : -1;
+    if (length <= 0 || length > maximum)
+    {
+        m_fluxReport->ChangeValue(Display("곡면 JSON을 열 수 있는지 확인하세요. 최대 크기는 512 KiB입니다."));
+        return;
+    }
+    std::string raw(static_cast<std::size_t>(length), '\0');
+    if (file.Read(raw.data(), raw.size()) != length)
+    {
+        m_fluxReport->ChangeValue(Display("곡면 파일의 원문을 읽을 수 없습니다."));
+        return;
+    }
+    const auto shape = Json::parse(raw, nullptr, false);
+    if (!shape.is_object() || shape.value("kind", Json()) != "mesh")
+    {
+        m_fluxReport->ChangeValue(Display("kind가 mesh인 밀리미터 곡면 JSON을 선택하세요."));
+        return;
+    }
+    onFlux({{"surface", shape}, {"frequency_index", m_frequency->GetSelection()}});
+}
+
+/** @brief 면의 합계와 적분한 곡면의 크기 및 해시를 표시한다. */
 void FieldResultView::SetFlux(const Json& response)
 {
     std::string text = "합계 " + response.at("total_flux_w_s2").dump() + " W*s^2";
+    const auto& surface = response.at("surface");
+    if (surface.at("kind") == "mesh")
+    {
+        text += "\n삼각형 " + surface.at("triangles").dump() + "개 / 면적 " +
+            surface.at("area_m2").dump() + " m^2\n" +
+            (surface.at("indexed_edges_closed").get<bool>() ? "모서리 연결이 닫힌 곡면" : "경계가 있는 곡면");
+    }
     for (const auto& face : response.at("faces"))
     {
         text += "\n" + std::string(face.at("direction").get<int>() > 0 ? "+" : "-") +

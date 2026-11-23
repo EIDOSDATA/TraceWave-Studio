@@ -84,6 +84,13 @@ def integrate_surface(electric, magnetic, surface):
     """! @brief 공통 체적 안의 유향 직사각면 또는 직육면체 바깥쪽 6면을 적분한다."""
     import numpy as np
 
+    common = common_bounds([c for c, _ in electric + magnetic])
+    if common is None:
+        raise ProjectError("E_UNSUPPORTED", "여섯 Yee 성분에 공통인 기록 체적이 없습니다.")
+    if isinstance(surface, dict) and surface.get("kind") == "mesh":
+        from rfad.application.result_mesh_flux import integrate_mesh
+
+        return integrate_mesh(np, electric, magnetic, surface, common, _interpolate)
     closed = isinstance(surface, dict) and surface.get("kind") == "box"
     _fields(surface, {"kind", "bounds_mm"} if closed else {"kind", "bounds_mm", "axis", "direction"})
     if not closed and (surface["kind"] != "rectangle" or surface["axis"] not in ("x", "y", "z")
@@ -94,9 +101,6 @@ def integrate_surface(electric, magnetic, surface):
             any(type(pair) is not list or len(pair) != 2 or
                 any(type(x) not in (int, float) or not math.isfinite(x) for x in pair) for pair in bounds)):
         raise ProjectError("E_SCHEMA", "X/Y/Z의 유한한 mm 경계를 각각 두 개 지정하십시오.")
-    common = common_bounds([c for c, _ in electric + magnetic])
-    if common is None:
-        raise ProjectError("E_UNSUPPORTED", "여섯 Yee 성분에 공통인 기록 체적이 없습니다.")
     normal = None if closed else "xyz".index(surface["axis"])
     for index, ((lo, hi), (lower, upper)) in enumerate(zip(bounds, common)):
         if lo < lower or hi > upper:
@@ -131,5 +135,6 @@ def integrate(service, resolved, parameters):
     response.update(profile="rfad.pcb-field-flux/0.1", frequency_hz=ef[index],
                     electric_ref=eref, magnetic_ref=href, fourier_convention="exp(-j*2*pi*f*t)",
                     warnings=[fields.WARNINGS[0], "같은 급전의 native E/H 시간 위상과 성분별 Yee 좌표를 사용합니다."],
-                    phase_correction="native_dual_sample_times", quadrature="piecewise_tensor_gauss_2x2")
+                    phase_correction="native_dual_sample_times")
+    response.setdefault("quadrature", "piecewise_tensor_gauss_2x2")
     return response

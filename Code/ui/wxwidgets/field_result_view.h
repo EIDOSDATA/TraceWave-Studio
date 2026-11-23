@@ -35,6 +35,7 @@ private:
     friend class LargeResultDialog;
     void ResetFluxBounds();
     void RequestFlux();
+    void RequestMeshFlux();
     void RebuildMonitor();
     void RebuildComponent();
     void RebuildPlane();
