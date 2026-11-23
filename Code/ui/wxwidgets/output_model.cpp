@@ -259,6 +259,33 @@ std::string OutputUi::Conditions(const Json& record)
     return result;
 }
 
+std::string OutputUi::PrimaryPath(const Json& record)
+{
+    const auto manifest = ManifestPath(record);
+    if (manifest.empty())
+    {
+        return {};
+    }
+    static const std::map<std::string, std::string> extensions{{"pdf", ".pdf"}, {"svg", ".svg"}, {"dxf", ".dxf"},
+        {"step", ".step"}, {"kicad_pcb", ".kicad_pcb"}, {"kicad_mod", ".kicad_mod"}, {"gerber_job", ".gbrjob"}};
+    const auto extension = extensions.find(record.value("format", ""));
+    if (extension == extensions.end())
+    {
+        return {};
+    }
+    const auto package = std::filesystem::u8path(manifest).parent_path();
+    for (const auto& artifact : record.at("result").value("artifacts", Json::array()))
+    {
+        const auto uri = artifact.value("uri", "");
+        const auto file = std::filesystem::u8path(uri);
+        if (file.parent_path() == package && file.extension() == extension->second && file.filename().string().find(':') == std::string::npos)
+        {
+            return uri;
+        }
+    }
+    return {};
+}
+
 std::string OutputUi::ManifestPath(const Json& record)
 {
     if (!record.is_object() || !record.value("result", Json(nullptr)).is_object())

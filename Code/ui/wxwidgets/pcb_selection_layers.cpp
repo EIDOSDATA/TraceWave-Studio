@@ -181,7 +181,7 @@ void PcbSelectionDialog::PopulateLayers(const Json& rows, bool preserveExisting)
         m_layers->SetCellValue(row, 0, Display(value.at("name")));
         m_layers->SetCellEditor(row, 1, new wxGridCellChoiceEditor(roles, false));
         m_layers->SetCellValue(row, 1, RoleLabel(value.at("role")));
-        m_layers->SetCellValue(row, 2, PcbView::Number(value.value("thickness_mm", Json(nullptr))));
+        m_layers->SetCellValue(row, 2, PcbView::ShortNumber(value.value("thickness_mm", Json(nullptr))));
         m_layers->SetCellValue(row, 3, Display(value.value("edit_reason", std::string())));
         m_layers->SetCellEditor(row, 4, new wxGridCellChoiceEditor(existing, false));
         std::string identifier;
@@ -295,6 +295,13 @@ void PcbSelectionDialog::RefreshMaterialChoices()
     }
 }
 
+Json PcbSelectionDialog::ReadLayerThickness(int row) const
+{
+    const auto original = m_rows.at(static_cast<std::size_t>(row)).value("thickness_mm", Json(nullptr));
+    const auto shown = m_layers->GetCellValue(row, 2);
+    return shown == PcbView::ShortNumber(original) ? original : PcbView::Number(shown, "층 두께");
+}
+
 Json PcbSelectionDialog::ReadLayerRows() const
 {
     Json rows = m_rows;
@@ -303,7 +310,7 @@ Json PcbSelectionDialog::ReadLayerRows() const
         const int row = static_cast<int>(index);
         rows[index]["name"] = Utf8(m_layers->GetCellValue(row, 0));
         rows[index]["role"] = RoleValue(m_layers->GetCellValue(row, 1));
-        rows[index]["thickness_mm"] = PcbView::Number(m_layers->GetCellValue(row, 2), "층 두께");
+        rows[index]["thickness_mm"] = ReadLayerThickness(row);
         rows[index]["edit_reason"] = Utf8(m_layers->GetCellValue(row, 3));
         for (int column : {4, 5})
         {
@@ -359,18 +366,18 @@ Json PcbSelectionDialog::CollectSpecification()
                 {{"key", key},
                  {"name", Utf8(m_layers->GetCellValue(row, 0))},
                  {"role", RoleValue(m_layers->GetCellValue(row, 1))},
-                 {"thickness_mm", PcbView::Number(m_layers->GetCellValue(row, 2), "층 두께")}});
+                 {"thickness_mm", ReadLayerThickness(row)}});
             if (original.value("parameter_bound", false))
             {
                 specification["thickness_overrides"][key] = {
-                    {"value_mm", PcbView::Number(m_layers->GetCellValue(row, 2), "층 두께")},
+                    {"value_mm", ReadLayerThickness(row)},
                     {"reason",
                      PcbView::Reason(m_layers->GetCellValue(row, 3), "매개변수 참조를 직접값으로 바꾸는 이유")}};
             }
         }
         else if (!m_source.is_null())
         {
-            const Json thickness = PcbView::Number(m_layers->GetCellValue(row, 2), "층 두께");
+            const Json thickness = ReadLayerThickness(row);
             if (thickness != original.value("thickness_mm", Json(nullptr)))
             {
                 specification["thickness_overrides"][key] = {

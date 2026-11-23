@@ -175,7 +175,8 @@ void MeasurementRecordDialog::Changed()
     m_review = nullptr;
     m_reviewInput = nullptr;
     m_changes->DeleteAllItems();
-    SetStatus("입력이 바뀌었습니다. 같은 원문의 새 기록 후보를 다시 검토하세요.");
+    const auto required = m_form->RequiredInput();
+    SetStatus(required.empty() ? "입력이 바뀌었습니다. 같은 원문의 새 기록 후보를 다시 검토하세요." : required);
     UpdateActions();
 }
 
@@ -202,6 +203,12 @@ void MeasurementRecordDialog::Preview()
 {
     if (!Editable() || m_pending || m_form->Pending() || m_recovery->pending.is_object())
     {
+        return;
+    }
+    if (!m_form->RequiredInput().empty())
+    {
+        m_tabs->SetSelection(0);
+        SetStatus(m_form->RequiredInput(true));
         return;
     }
     try

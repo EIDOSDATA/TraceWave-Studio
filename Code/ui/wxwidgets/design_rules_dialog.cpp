@@ -84,6 +84,45 @@ DesignRulesDialog::DesignRulesDialog(wxWindow* parent, const Json& context, Dial
     m_canvas = new DesignCanvas(this);
     m_canvas->SetEditingEnabled(false);
     review->Add(m_canvas, 1, wxEXPAND | wxBOTTOM, FromDIP(8));
+    auto* filters = new wxBoxSizer(wxHORIZONTAL);
+    m_filter = new wxChoice(this, wxID_ANY);
+    m_filter->SetName("rules.result_filter");
+    for (const auto* label : {"확인할 항목", "위반", "미평가", "충족", "적용 안 함"})
+    {
+        m_filter->Append(Display(label));
+    }
+    m_filter->SetSelection(0);
+    filters->Add(m_filter, 0, wxRIGHT, FromDIP(8));
+    m_connections = new wxChoice(this, wxID_ANY);
+    m_connections->SetName("rules.connection_component");
+    filters->Add(m_connections, 1, wxRIGHT, FromDIP(8));
+    m_editRule = new wxButton(this, wxID_ANY, Display("제조 규칙 설정"));
+    StudioTheme::Button(*m_editRule);
+    filters->Add(m_editRule, 0);
+    review->Add(filters, 0, wxEXPAND | wxBOTTOM, FromDIP(5));
+    m_filter->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { RenderFindings(); });
+    m_connections->Bind(wxEVT_CHOICE, [this](wxCommandEvent&)
+    {
+        const int index = m_connections->GetSelection() - 1;
+        if (!m_report.is_object() || index < 0)
+        {
+            m_canvas->SetInspection({}, std::nullopt);
+            return;
+        }
+        const auto ids = m_report.at("connectivity").at("components").at(index).get<std::vector<std::string>>();
+        m_canvas->SetInspection(ids, std::nullopt);
+        m_detail->ChangeValue(Display("연결 묶음 " + std::to_string(index + 1) + "의 도체 " + std::to_string(ids.size()) +
+                                     "개를 도면에 강조했습니다."));
+    });
+    m_editRule->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        if (Editable() && !m_pending && ConfirmDiscard())
+        {
+            auto selection = InitialSelection();
+            selection["section"] = "manufacturing_profile";
+            Load(selection);
+        }
+    });
     m_issues = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 125)), wxLC_REPORT | wxLC_SINGLE_SEL);
     m_issues->AppendColumn(Display("판정"), wxLIST_FORMAT_LEFT, FromDIP(75));
     m_issues->AppendColumn(Display("규칙"), wxLIST_FORMAT_LEFT, FromDIP(170));

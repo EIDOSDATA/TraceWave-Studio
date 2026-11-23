@@ -25,6 +25,8 @@ public:
     void Reset();
     /** @brief 보고서에 봉인된 원본 해시를 대조한 뒤 기존 결과 화면으로 연다. */
     void OpenPinned(const Json& source, const Json& pin);
+    /** @brief 방금 저장된 원본을 현재 개정 목록과 함께 즉시 연다. */
+    void OpenRecent(const Json& source);
     void SetValidationAvailable(bool available);
     void BuildMeasurementPage(StudioNotebook* views);
     void SetMeasurementAvailable(bool available);

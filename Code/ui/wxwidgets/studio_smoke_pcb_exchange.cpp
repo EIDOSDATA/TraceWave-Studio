@@ -212,6 +212,11 @@ void StudioSmokeDriver::PcbExchangeSmokeTick()
         view->SelectSnapshot(m_pcbExchangeFixture.at("snapshot"));
         view->m_pcb->m_tabs->SetSelection(1);
         output.Actions();
+        m_setupStage = 20;
+    }
+    else if (m_setupStage == 20 && idle)
+    {
+        CanvasAssert(view->HistoryFormat() == "gerber_job", "CAM 작업의 기본 출력 기록 범위가 다릅니다.");
         m_setupStage = 3;
         SetupSmoke::Click(view->m_pcb->m_preview);
     }

@@ -39,8 +39,7 @@ void PcbSelectionDialog::RenderPreview(const Json& result)
     std::string review = result.value("can_apply", false) ? "프로젝트에 적용할 수 있습니다.\n"
                                                           : "해결해야 할 항목이 있어 적용할 수 없습니다.\n";
     review += "CAD 생성과 EM 해석은 별도 입력 검사를 거칩니다. 이 화면은 해석 준비 완료를 승인하지 않습니다.\n\n";
-    review += "저장 한도: 프로젝트 32 KiB, 현재/과거 출처 합계 12 KiB입니다. 큰 적층이나 근거는 축약해서 적용하지 않고 "
-              "명시적으로 거부합니다.\n\n";
+    review += "\n적층 변경 요약\n";
     if (result.contains("size"))
     {
         review += "프로젝트 크기: " + PcbView::Text(result.at("size"), "document_bytes") + " / " +
@@ -50,17 +49,19 @@ void PcbSelectionDialog::RenderPreview(const Json& result)
     if (result.contains("changes"))
     {
         const auto& changes = result.at("changes");
-        for (const char* collection : {"materials", "stackup", "ports"})
+        for (const auto& [collection, label] : std::vector<std::pair<const char*, const char*>>{
+            {"materials", "재료"}, {"stackup", "적층"}, {"ports", "급전"}})
         {
             if (changes.contains(collection))
             {
                 const auto& counts = changes.at(collection);
-                review += "\n" + std::string(collection) + ": ";
-                for (const char* change : {"added", "removed", "changed"})
+                review += "\n" + std::string(label) + ": ";
+                for (const auto& [change, action] : std::vector<std::pair<const char*, const char*>>{
+                    {"added", "추가"}, {"removed", "제거"}, {"changed", "변경"}})
                 {
                     if (counts.contains(change))
                     {
-                        review += std::string(change) + " " + std::to_string(counts.at(change).size()) + "  ";
+                        review += std::string(action) + " " + std::to_string(counts.at(change).size()) + "  ";
                     }
                 }
             }
@@ -77,7 +78,10 @@ void PcbSelectionDialog::RenderPreview(const Json& result)
         review += "\n기존 객체가 사용하는 이전 출처 선택 " + std::to_string(result.at("retained_selections").size()) +
                   "개를 함께 보존합니다.\n";
     }
-    review += "\n확인할 사항\n";
+    if (!result.at("issues").empty())
+    {
+        review += "\n확인할 사항\n";
+    }
     for (const auto& issue : result.at("issues"))
     {
         review += (issue.value("severity", "warning") == "blocker" ? "[적용 차단] " : "[확인 필요] ") +
@@ -86,17 +90,26 @@ void PcbSelectionDialog::RenderPreview(const Json& result)
     if (result.contains("input_checks"))
     {
         const auto& checks = result.at("input_checks");
-        for (const char* scope : {"geometry", "step", "em"})
+        for (const auto& [scope, label] : std::vector<std::pair<const char*, const char*>>{
+            {"geometry", "형상"}, {"step", "STEP"}, {"em", "전자기 해석"}})
         {
             if (checks.contains(scope))
             {
                 const auto& check = checks.at(scope);
-                review += "\n" + std::string(scope) + " 입력 검사: " + PcbView::Text(check, "input_status") + "\n";
+                const auto status = check.value("input_status", "");
+                review += "\n" + std::string(label) + " 입력 검사: " +
+                          (status == "valid" ? "입력 확인" : status == "incomplete" ? "입력 보완 필요" : "상세 확인") + "\n";
                 if (check.contains("diagnostics"))
                 {
+                    std::vector<std::string> unique;
                     for (const auto& diagnostic : check.at("diagnostics"))
                     {
-                        review += "- " + DiagnosticMessage(diagnostic) + "\n";
+                        const auto message = DiagnosticMessage(diagnostic);
+                        if (std::find(unique.begin(), unique.end(), message) == unique.end())
+                        {
+                            unique.push_back(message);
+                            review += "- " + message + "\n";
+                        }
                     }
                 }
                 if (check.value("diagnostics_truncated", false))

@@ -253,6 +253,14 @@ void StudioSmokeDriver::ResultsSmokeTick()
     else if (m_setupStage == 2 && idle() && workspace.m_catalog.is_object())
     {
         auto* browser = workspace.m_browser;
+        if (browser->Kind() == "all")
+        {
+            CanvasAssert(workspace.m_catalog.at("resolved_revision_id") == m_resultsRevision &&
+                             workspace.m_catalog.at("current_totals").is_object(),
+                         "첫 결과 목록이 현재 개정의 해석과 등록 자료를 읽지 못했습니다.");
+            SetupSmoke::Choose(browser->m_kind, 0);
+            return;
+        }
         int selected = -1;
         for (std::size_t index = 0; index < browser->m_anchors.size(); ++index)
         {

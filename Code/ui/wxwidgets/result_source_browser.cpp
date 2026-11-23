@@ -31,7 +31,7 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     };
     label("자료 종류");
     m_kind = new wxChoice(this, wxID_ANY);
-    for (const auto* name : {"네트워크 자료", "해석 실행", "연구 후보"})
+    for (const auto* name : {"네트워크 자료", "해석 실행", "연구 후보", "현재 개정 전체"})
     {
         m_kind->Append(Display(name));
     }
@@ -57,8 +57,14 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     m_items->SetName("result.source-items");
     m_items->SetMinSize(FromDIP(wxSize(160, 150)));
     StudioTheme::Table(*m_items);
-    m_items->AppendColumn(Display("자료 / 후보 이름"), wxLIST_FORMAT_LEFT, FromDIP(175));
-    m_items->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(95));
+    m_items->AppendColumn(Display("자료 / 후보 이름"), wxLIST_FORMAT_LEFT, FromDIP(120));
+    m_items->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(76));
+    m_items->Bind(wxEVT_SIZE, [this](wxSizeEvent& event)
+    {
+        const int stateWidth = FromDIP(76);
+        m_items->SetColumnWidth(0, std::max(FromDIP(90), m_items->GetClientSize().x - stateWidth - FromDIP(16)));
+        event.Skip();
+    });
     layout->Add(m_items, 1, wxEXPAND | wxALL, FromDIP(8));
     m_page = new wxStaticText(this, wxID_ANY, Display("보존된 결과를 조회하세요."));
     layout->Add(m_page, 0, wxLEFT | wxRIGHT, FromDIP(8));
@@ -162,8 +168,8 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
 
 std::string ResultSourceBrowser::Kind() const
 {
-    const std::array<const char*, 3> kinds{{"network", "solver", "sweep"}};
-    return kinds.at(std::clamp(m_kind->GetSelection(), 0, 2));
+    const std::array<const char*, 4> kinds{{"network", "solver", "sweep", "all"}};
+    return kinds.at(std::clamp(m_kind->GetSelection(), 0, 3));
 }
 
 Json ResultSourceBrowser::Anchor() const
@@ -252,8 +258,13 @@ void ResultSourceBrowser::SetCatalog(const Json& response, const Json& selected)
     m_items->DeleteAllItems();
     for (const auto& item : response.value("items", Json::array()))
     {
-        const long row = m_items->InsertItem(m_items->GetItemCount(), Display(item.at("label")));
-        m_items->SetItem(row, 1, Display(ResultUi::State(item.value("result_state", Json(nullptr)))));
+        const auto label = item.at("label").get<std::string>();
+        const auto kind = item.at("source").value("kind", "");
+        const auto name = Kind() == "all" && kind == "solver" ? label.substr(0, label.find(" / ")) : label;
+        const long row = m_items->InsertItem(m_items->GetItemCount(), Display(name));
+        const auto state = item.value("result_state", Json(nullptr));
+        const auto status = state == "completed" ? "계산됨" : state == "recorded" ? "등록됨" : ResultUi::State(state);
+        m_items->SetItem(row, 1, Display(status));
         if (!selected.is_null() && item.at("source") == selected)
         {
             m_items->SetItemState(row, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
@@ -266,8 +277,11 @@ void ResultSourceBrowser::SetCatalog(const Json& response, const Json& selected)
                              std::to_string(offset + m_items->GetItemCount()) + " / " +
                              std::to_string(response.value("total", 0))));
     m_loading = false;
-    SetStatus(m_items->GetItemCount() ? "이름을 선택하면 해당 개정의 결과만 읽습니다."
-                                      : "이 범위에 보존된 결과가 없습니다. 다른 종류/개정/연구를 선택하세요.");
+    const auto totals = response.value("current_totals", Json::object());
+    const auto counts = "현재 개정: 해석 " + std::to_string(totals.value("solver", 0)) + "건, 자료 " +
+                        std::to_string(totals.value("network", 0)) + "건.";
+    SetStatus(m_items->GetItemCount() ? counts : "선택한 범위에 결과가 없습니다. " + counts +
+                        " 자료 종류 또는 보존 개정을 바꿔 확인하세요.");
     UpdateLayout();
 }
 
@@ -284,7 +298,7 @@ void ResultSourceBrowser::ClearCatalog(const std::string& message)
 
 void ResultSourceBrowser::Reset()
 {
-    m_kind->SetSelection(0);
+    m_kind->SetSelection(3);
     SetAnchors(Json::object());
     SetStudies(Json::object());
     ClearCatalog("현재 프로젝트의 결과를 선택하세요.");
@@ -296,6 +310,12 @@ void ResultSourceBrowser::SetSolverContext()
     m_loading = false;
     ClearCatalog("검증 보고서에서 직접 연 해석 원본의 목록 위치를 확인합니다.");
     UpdateLayout();
+}
+
+void ResultSourceBrowser::SetCurrentContext()
+{
+    m_kind->SetSelection(3);
+    ClearCatalog("현재 개정의 해석과 자료를 읽고 있습니다.");
 }
 
 void ResultSourceBrowser::SetStatus(const std::string& message)

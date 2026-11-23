@@ -196,7 +196,9 @@ void PcbSelectionDialog::UpdateControls()
     const bool editable = !m_applying && !m_disconnected && !m_closed &&
                           m_model.CurrentStage() != Studio::PcbSelectionModel::Stage::Stale;
     m_notebook->Enable(editable);
-    m_search->Enable(editable);
+    m_search->Enable(editable && !m_catalogConnecting);
+    m_connectCatalog->Enable(editable && !m_catalogConnecting);
+    m_manualFromCatalog->Enable(editable && !m_catalogConnecting);
     m_previous->Enable(editable && m_catalogRowCount > 1);
     m_next->Enable(editable && m_catalogRowCount > 1);
     m_catalogRowEntry->Enable(editable && m_catalogRowCount > 0);

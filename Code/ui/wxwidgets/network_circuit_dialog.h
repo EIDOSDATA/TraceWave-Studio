@@ -77,6 +77,8 @@ private:
     NetworkCircuitDrawing* m_drawing = nullptr;
     NetworkChart* m_resultGraph = nullptr;
     wxButton* m_reviewDefinition = nullptr;
+    wxButton* m_useLoadPlane = nullptr;
+    wxStaticText* m_step = nullptr;
     wxButton* m_reviewCalculation = nullptr;
     wxButton* m_apply = nullptr;
     std::vector<wxButton*> m_editButtons;

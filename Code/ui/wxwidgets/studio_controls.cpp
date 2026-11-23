@@ -163,6 +163,32 @@ void StudioFrame::UpdateControls()
     {
         GetMenuBar()->Enable(id, m_tools.at(id)->IsEnabled());
     }
+    const auto items = m_editor.value("items", Json::array());
+    bool hasPattern = false;
+    bool hasPort = false;
+    for (const auto& object : items)
+    {
+        const auto kind = object.value("kind", "");
+        hasPattern = hasPattern || kind == "geometry";
+        hasPort = hasPort || kind == "port";
+    }
+    const bool showDesignStart = hasProject && synchronized && (!board || m_activeLayer.empty() || !hasPattern || !hasPort);
+    const auto nextStep = Display(!board ? "기판을 만들면 도체층을 추가할 수 있습니다."
+        : m_activeLayer.empty() ? "도체층을 추가하거나 활성 층을 선택하세요."
+        : !hasPattern ? "선·원호를 그리거나 패턴 후보를 적용하세요."
+        : "이 PCB를 해석하려면 급전 포트를 추가하세요.");
+    const bool relayoutDesign = m_designStart->IsShown() != showDesignStart || m_designStep->GetLabel() != nextStep;
+    m_designStart->Show(showDesignStart);
+    m_designStep->SetLabel(nextStep);
+    for (const auto& [id, button] : m_designShortcuts)
+    {
+        button->Enable(GetMenuBar()->IsEnabled(id));
+    }
+    if (relayoutDesign)
+    {
+        m_designStart->Layout();
+        m_designStart->GetParent()->Layout();
+    }
     m_steps->Enable(opened);
     GetMenuBar()->Enable(IdPrecision, opened && synchronized && m_precisionSupported);
     m_layerChoice->Enable(drawing);

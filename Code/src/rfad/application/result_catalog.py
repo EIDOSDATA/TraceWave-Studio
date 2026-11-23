@@ -64,28 +64,35 @@ def sources(service, context, data):
     current = service._load(project)
     kind = data["kind"]
     anchors, revision = [], None
-    if kind == "network":
+    if kind in ("network", "all"):
+        if kind == "all" and any(data[key] is not None for key in ("revision_id", "snapshot_id", "study_id")):
+            fail("현재 개정 전체 결과에는 별도 개정이나 연구를 지정할 수 없습니다.")
         if data["study_id"] is not None or data["revision_id"] is None and data["snapshot_id"] is not None:
             fail("자료 목록의 개정/snapshot 선택이 유효하지 않습니다.")
         revision = current["revision_id"] if data["revision_id"] is None else data["revision_id"]
         document, _ = revision_document(service, state, project, context["project_id"], revision, data["snapshot_id"])
-        anchors = [{"source": {"kind": kind, "dataset_id": item["id"], "revision_id": revision, "snapshot_id": data["snapshot_id"]},
+        anchors = [{"source": {"kind": "network", "dataset_id": item["id"], "revision_id": revision, "snapshot_id": data["snapshot_id"]},
                     "label": item["name"], "source_kind": item["kind"], "source_revision_id": revision,
                     "source_time": None, "result_state": "recorded", "has_dataset": True,
                     "reference": item["dataset"]} for item in library(document)["datasets"]]
-    elif kind == "solver":
+    if kind in ("solver", "all"):
         if any(data[key] is not None for key in ("revision_id", "snapshot_id", "study_id")):
             fail("해석 목록에는 다른 개정/연구 anchor를 지정할 수 없습니다.")
         labels = solver_labels(state, context["project_id"])
-        for identity, display in labels.items():
+        entries = reversed(labels.items()) if kind == "all" else labels.items()
+        solver_rows = []
+        for identity, display in entries:
             record = state["solver_results"][identity]
+            if kind == "all" and record["snapshot"]["revision_id"] != revision:
+                continue
             supported = record.get("metadata", {}).get("profile") in ("rfad.openems.pcb-single-port/0.1", "rfad.openems.reference-benchmark/0.1")
-            anchors.append({"source": {"kind": kind, "artifact_id": identity},
+            solver_rows.append({"source": {"kind": "solver", "artifact_id": identity},
                 **display,
                 "source_kind": "solver", "source_revision_id": record["snapshot"]["revision_id"],
                 "result_state": "completed", "has_dataset": supported,
                 "unavailable_reason": None if supported else "이 profile은 공통 복소 투영을 지원하지 않습니다. 원래 해석 결과 조회를 사용하세요.",
                 "reference": record["normalized"]})
+        anchors = solver_rows + list(reversed(anchors)) if kind == "all" else solver_rows
     elif kind == "sweep":
         if data["revision_id"] is not None or data["snapshot_id"] is not None:
             fail("후보 목록에는 별도 개정 anchor를 지정할 수 없습니다.")
@@ -97,7 +104,7 @@ def sources(service, context, data):
                     "label": study["name"] + " / 후보 " + str(index + 1), "source_kind": "sweep",
                     "source_revision_id": study["snapshot"]["revision_id"], "source_time": None,
                     "reference": study["records"].get(str(index))} for index in range(study["counts"]["total"])]
-    else:
+    elif kind != "network":
         fail("지원하지 않는 결과 목록 종류입니다.", "E_UNSUPPORTED")
     result = page(anchors, data)
     for item in result["items"]:
@@ -107,5 +114,9 @@ def sources(service, context, data):
             item["result_state"] = "planned" if candidate is None else candidate["state"]
             item["has_dataset"] = candidate is not None and "dataset" in candidate["results"]
         item["available_views"] = {"network": item["has_dataset"]}
+    current_id = current["revision_id"]
+    totals = {"network": len(library(current)["datasets"]),
+              "solver": sum(record["project_id"] == context["project_id"] and record["snapshot"]["revision_id"] == current_id
+                            for record in state["solver_results"].values())}
     return _bounded({"profile": "rfad.result-source-list/0.1", "project_id": context["project_id"],
-                     "resolved_revision_id": revision, **result})
+                     "resolved_revision_id": revision, "current_totals": totals, **result})

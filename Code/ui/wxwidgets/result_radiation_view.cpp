@@ -200,10 +200,11 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
     const std::array<std::string, 10> columns{"theta (deg)",  "phi (deg)",    "Etheta (V*s/m)",  "Ephi (V*s/m)",
                                               "RHCP (V*s/m)", "LHCP (V*s/m)", "상대 위상 (deg)", "축비 (dB)",
                                               "관측량 값",    "상태"};
-    const std::array<int, 10> columnWidths{85, 75, 260, 260, 260, 260, 150, 145, 180, 240};
+    const std::array<int, 10> columnWidths{72, 70, 182, 182, 182, 182, 112, 84, 125, 145};
     for (std::size_t index = 0; index < columns.size(); ++index)
     {
-        m_samples->AppendColumn(Display(columns[index]), wxLIST_FORMAT_LEFT, FromDIP(columnWidths[index]));
+        m_samples->AppendColumn(Display(columns[index]), index > 0 && index < 9 ? wxLIST_FORMAT_RIGHT : wxLIST_FORMAT_LEFT,
+                                FromDIP(columnWidths[index]));
     }
     numbersLayout->Add(m_samples, 1, wxEXPAND | wxALL, FromDIP(8));
     auto* paging = new wxBoxSizer(wxHORIZONTAL);

@@ -58,6 +58,21 @@ OutputController::OutputController(wxWindow* parent, wxWindow* conditions, const
             Status("failed", error.what());
         }
     };
+    m_view->onOpenFile = [this]()
+    {
+        try
+        {
+            OpenFile();
+        }
+        catch (const std::exception& error)
+        {
+            Status("failed", error.what());
+        }
+    };
+    m_view->onHistoryScope = [this]()
+    {
+        Catalog();
+    };
     m_view->onChanged = [this]()
     {
         Changed();
@@ -138,6 +153,7 @@ void OutputController::Reset()
     m_uncertain = false;
     m_cancelRequested = false;
     m_refreshNeeded = true;
+    m_catalogFormat.clear();
     m_pending = nullptr;
     m_previewInput = nullptr;
     m_task.Reset();
@@ -331,7 +347,14 @@ void OutputController::Context(int offset, bool resetOptions)
 void OutputController::Catalog(int offset, const std::string& preferred)
 {
     const auto generation = ++m_catalogGeneration;
-    Read("export.list", {{"offset", offset}},
+    m_catalogFormat = m_view->HistoryFormat();
+    Json input{{"offset", offset}};
+    if (!m_catalogFormat.empty())
+    {
+        input["format"] = m_catalogFormat;
+    }
+    m_view->SetCatalog({{"items", Json::array()}, {"offset", 0}, {"next_offset", nullptr}}, preferred);
+    Read("export.list", input,
          [this, generation, offset, preferred](const Json& result)
          {
              if (generation != m_catalogGeneration)
@@ -386,6 +409,10 @@ void OutputController::Changed()
         }
         m_view->SetHandoffConditions(m_view->Snapshot(), m_view->Handoff()->Review());
         HandoffSync();
+    }
+    else if (m_available && m_active && m_view->HistoryFormat() != m_catalogFormat)
+    {
+        Catalog();
     }
     Actions();
 }
@@ -451,6 +478,27 @@ void OutputController::Verify()
         return;
     }
     Start("export.verify", {{"job_id", record.at("job_id")}, {"manifest_sha256", record.at("manifest_sha256")}});
+}
+
+void OutputController::OpenFile()
+{
+    const auto uri = OutputUi::PrimaryPath(m_view->Record());
+    if (uri.empty())
+    {
+        return;
+    }
+    const auto workspace = std::filesystem::canonical(std::filesystem::u8path(m_workspace));
+    const auto file = std::filesystem::canonical(workspace / std::filesystem::u8path(uri));
+    const auto relative = file.lexically_relative(workspace);
+    if (relative.empty() || relative.is_absolute() || *relative.begin() == ".." || !std::filesystem::is_regular_file(file))
+    {
+        Status("failed", "현재 작업 영역의 출력 파일을 확인할 수 없습니다.");
+        return;
+    }
+    if (!wxLaunchDefaultApplication(wxString(file.wstring())))
+    {
+        OpenFolder();
+    }
 }
 
 void OutputController::OpenFolder()

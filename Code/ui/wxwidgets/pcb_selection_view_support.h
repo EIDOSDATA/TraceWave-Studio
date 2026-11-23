@@ -18,6 +18,12 @@ inline wxString Number(const Json& value)
     return wxString::Format("%.17g", value.get<double>());
 }
 
+/** @brief 읽기 요약과 원래 값을 보존하는 두께 셀에 공학 유효 숫자를 표시한다. */
+inline wxString ShortNumber(const Json& value)
+{
+    return value.is_number() ? wxString::Format("%.8g", value.get<double>()) : wxString();
+}
+
 /** @brief 빈칸은 null, 명시적인 유한 숫자만 JSON 수치로 전달한다. */
 inline Json Number(const wxString& text, const std::string& label)
 {
@@ -45,6 +51,10 @@ inline std::string Text(const Json& value, const std::string& field, const std::
     if (value.at(field).is_string())
     {
         return value.at(field).get<std::string>();
+    }
+    if (value.at(field).is_number_float())
+    {
+        return Utf8(ShortNumber(value.at(field)));
     }
     if (value.at(field).is_primitive())
     {

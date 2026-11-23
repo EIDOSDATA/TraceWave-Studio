@@ -50,4 +50,6 @@ bool MatchesPreview(const Json& result, const Json& input);
 std::string Conditions(const Json& record);
 /** @brief 선택 기록에서 실제 게시한 manifest의 작업 영역 상대 경로만 찾는다. */
 std::string ManifestPath(const Json& record);
+/** @brief 같은 출력 묶음에서 선택한 형식의 대표 파일을 찾는다. */
+std::string PrimaryPath(const Json& record);
 }

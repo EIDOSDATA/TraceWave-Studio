@@ -147,6 +147,10 @@ void StudioFrame::OpenSolverReview(const std::string& project, const std::string
         },
         [this](const std::string& path)
         {
+            if (path == "board" || path == "ports")
+            {
+                return true;
+            }
             const auto target = DiagnosticSelection(path);
             if (target.is_null())
             {
@@ -175,6 +179,13 @@ void StudioFrame::OpenSolverReview(const std::string& project, const std::string
     {
         const auto repair = *decision->repair;
         const auto target = DiagnosticSelection(repair.fieldPath);
+        if (target.is_null() && (repair.fieldPath == "board" || repair.fieldPath == "ports"))
+        {
+            m_views->SetSelection(0);
+            wxCommandEvent action(wxEVT_MENU, repair.fieldPath == "board" ? IdBoard : IdNewPort);
+            ProcessWindowEvent(action);
+            return;
+        }
         if (!target.is_null())
         {
             m_solverRepairPending = true;

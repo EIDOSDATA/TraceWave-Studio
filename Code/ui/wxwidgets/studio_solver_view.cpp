@@ -1,6 +1,7 @@
 /** @file @brief 해석 탭의 상태, 그래프와 펼쳐 보는 작업 기록이다. */
 #include "studio_internal.h"
 #include "solver_cost_view.h"
+#include "result_workspace.h"
 #include "solver_evidence_dialog.h"
 #include "studio_theme.h"
 #include <wx/collpane.h>
@@ -40,6 +41,20 @@ void StudioFrame::BuildSolverInterface()
         }
         const bool recentFailure = m_solverState == "failed" || m_solverState == "cancelled" || m_solverState == "interrupted";
         Studio::ShowSolverCost(this, completed, m_solverLastAttempt, recentFailure);
+    });
+    m_solverOpenResult = new wxButton(panel, wxID_ANY, Display("이 해석의 결과 열기"));
+    m_solverOpenResult->SetName("solver.result.open");
+    StudioTheme::Button(*m_solverOpenResult);
+    m_solverOpenResult->Disable();
+    tools->Add(m_solverOpenResult, 0, wxRIGHT, FromDIP(StudioTheme::InputGap));
+    m_solverOpenResult->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        const auto artifact = m_solverResult.value("artifact_id", "");
+        if (!artifact.empty())
+        {
+            m_views->SetSelection(9);
+            m_results->OpenRecent({{"kind", "solver"}, {"artifact_id", artifact}});
+        }
     });
     m_solverEvidence = new wxButton(panel, wxID_ANY, Display("해석 입력과 출처"));
     m_solverEvidence->SetName("solver.evidence.open");
@@ -141,6 +156,8 @@ void StudioFrame::UpdateSolverView()
     m_solverCost->Enable(m_solverSamples.contains("execution_cost") || !m_solverLastAttempt.empty());
     const auto profile = m_solverSamples.value("metadata", Json::object()).value("profile", "");
     m_solverEvidence->Enable(profile == "rfad.openems.pcb-single-port/0.1" || profile == "rfad.openems.pcb-multiport/0.1");
+    m_solverOpenResult->Enable(m_resultsSupported && m_solverResult.contains("artifact_id") &&
+        (profile == "rfad.openems.pcb-single-port/0.1" || profile == "rfad.openems.reference-benchmark/0.1"));
     if (m_solverSamples.empty())
     {
         return;

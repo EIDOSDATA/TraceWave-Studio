@@ -52,6 +52,8 @@ public:
     void KeepContextForMeasurement();
 
     std::function<void(const std::string&)> onStatus;
+    /** @brief 검증된 3D 파일과 단면 조작이 첫 가시 프레임에 도달한 시간을 전달한다. */
+    std::function<void(const std::string&, long long)> onTiming;
     /** @brief 전용 계측 창에서 첫 파일을 열기 전에 지정하는 OpenGL 버퍼 표식이다. */
     std::function<void(wxWindow&)> onDrawDisplayMarker;
     std::function<void(const std::string&)> onSelection;

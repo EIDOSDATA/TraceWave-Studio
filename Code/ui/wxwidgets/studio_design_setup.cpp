@@ -123,6 +123,8 @@ void StudioFrame::ShowDesignSetup(const Json& context, DesignSetup kind)
         dialog->ShowModal();
         const Json result = dialog->GetAppliedResult();
         const bool needsReload = dialog->NeedsReload();
+        const auto templateSetup = kind == DesignSetup::Templates
+            ? static_cast<TemplateDialog*>(dialog.get())->NextSetup() : TemplateDialog::Setup::None;
         m_setupDialog = nullptr;
         if (!result.is_null())
         {
@@ -160,6 +162,12 @@ void StudioFrame::ShowDesignSetup(const Json& context, DesignSetup kind)
         {
             m_busy = false;
             UpdateControls();
+            if (templateSetup != TemplateDialog::Setup::None && m_connected && !m_closing)
+            {
+                m_views->SetSelection(0);
+                wxCommandEvent action(wxEVT_MENU, templateSetup == TemplateDialog::Setup::Board ? IdBoard : IdLayer);
+                ProcessWindowEvent(action);
+            }
         }
     }
     catch (const std::exception& error)

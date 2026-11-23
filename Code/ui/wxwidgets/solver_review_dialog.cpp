@@ -231,10 +231,22 @@ public:
         BuildMeshPage();
         BuildModelPage();
         BuildConditions();
-        m_output = new wxTextCtrl(Page("종료 / 기록 출력"), wxID_ANY, wxEmptyString, wxDefaultPosition,
-                                  wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
+        auto* output = Page("종료 / 기록 출력");
+        m_output = new wxTextCtrl(output, wxID_ANY, OutputHint(), wxDefaultPosition,
+                                  wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY | wxTE_WORDWRAP);
         m_output->SetName("solver.review.output");
-        m_output->GetParent()->GetSizer()->Add(m_output, 1, wxEXPAND | wxALL, pad);
+        output->GetSizer()->Add(m_output, 1, wxEXPAND | wxALL, pad);
+        auto* outputTools = new wxBoxSizer(wxHORIZONTAL);
+        m_outputCheck = new wxButton(output, wxID_ANY, Display("조건 검토로 예상 비용 확인"));
+        StudioTheme::Button(*m_outputCheck);
+        outputTools->Add(m_outputCheck, 0, wxRIGHT, pad);
+        m_outputCheck->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { Review(); });
+        m_outputEvidence = new wxButton(output, wxID_ANY, Display("격자와 입력 해시"));
+        StudioTheme::Button(*m_outputEvidence);
+        m_outputEvidence->Disable();
+        outputTools->Add(m_outputEvidence);
+        output->GetSizer()->Add(outputTools, 0, wxLEFT | wxRIGHT | wxBOTTOM, pad);
+        m_outputEvidence->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ShowOutputEvidence(); });
         m_localPage = m_book->GetPageCount();
         auto* local = Page("국부 격자");
         m_local = new SolverLocalMeshPanel(local, m_catalog.value("local_mesh_targets", Json::array()),
@@ -383,15 +395,31 @@ private:
         m_input->SetScrollRate(0, FromDIP(12));
         StudioTheme::BindSurface(*m_input);
         auto* columns = new wxBoxSizer(wxHORIZONTAL);
+        auto* frequency = new wxStaticBoxSizer(wxVERTICAL, m_input, Display("주파수와 종료"));
+        columns->Add(frequency, 1, wxEXPAND | wxALL, pad);
+        auto* meshSettings = new wxBoxSizer(wxVERTICAL);
+        columns->Add(meshSettings, 1, wxEXPAND | wxALL, pad);
         const auto group = [&](const char* title)
         {
             auto* box = new wxStaticBoxSizer(wxVERTICAL, m_input, Display(title));
-            columns->Add(box, 1, wxEXPAND | wxALL, pad);
+            meshSettings->Add(box, 0, wxEXPAND | wxBOTTOM, pad);
             return box;
         };
-        auto* frequency = group("주파수와 종료");
-        Field(*frequency, "start_hz", "시작 주파수 (Hz)");
-        Field(*frequency, "stop_hz", "끝 주파수 (Hz)");
+        auto* unitRow = new wxBoxSizer(wxHORIZONTAL);
+        auto* unitParent = frequency->GetStaticBox();
+        unitRow->Add(new wxStaticText(unitParent, wxID_ANY, Display("시작 / 끝 단위")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, pad);
+        m_frequencyUnit = new wxChoice(unitParent, wxID_ANY);
+        m_frequencyUnit->SetName("solver.frequency_unit");
+        for (const auto* unit : {"Hz", "MHz", "GHz"})
+        {
+            m_frequencyUnit->Append(unit);
+        }
+        m_frequencyUnit->SetSelection(0);
+        m_frequencyUnit->Bind(wxEVT_CHOICE, [this](wxCommandEvent&) { ChangeFrequencyUnit(); });
+        unitRow->Add(m_frequencyUnit);
+        frequency->Add(unitRow, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(8));
+        Field(*frequency, "start_hz", "시작 주파수");
+        Field(*frequency, "stop_hz", "끝 주파수");
         Field(*frequency, "count", "주파수 표본 수 (3~201)");
         Field(*frequency, "sample_points_hz", "직접 주파수 표본 (Hz, 쉼표, 선택)");
         m_fields.at("sample_points_hz")->SetHint(Display("비우면 시작/끝/표본 수 사용"));
@@ -407,6 +435,7 @@ private:
         auto* probeOrder = new wxStaticText(frequency->GetStaticBox(), wxID_ANY,
             Display("주파수 (Hz), X 최소/최대, Y 최소/최대, Z 최소/최대 (mm). 단면은 법선축의 두 값을 같게 입력하세요. XY 단면은 Z 한 값도 가능합니다."));
         StudioTheme::BindSecondary(*probeOrder);
+        probeOrder->Wrap(FromDIP(260));
         frequency->Add(probeOrder, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
         m_fields.at("field_probe")->SetHint(Display("2450000000, 2, 5, 2, 5, 2"));
         m_magnetic = new wxCheckBox(frequency->GetStaticBox(), wxID_ANY, Display("같은 급전에서 자기장 H도 기록"));
@@ -463,7 +492,7 @@ private:
         Field(*grid, "growth_ratio", "공기 격자 성장률 (1.05~1.5)");
         auto* note = new wxStaticText(box, wxID_ANY, Display("가변 격자에서 공기 여유는 바깥 격자 간격의 정수배이며 최소 12배입니다."));
         StudioTheme::BindSecondary(*note);
-        note->Wrap(FromDIP(300));
+        note->Wrap(FromDIP(260));
         grid->Add(note, 0, wxEXPAND | wxALL, FromDIP(8));
         m_graded->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
         {
@@ -1128,6 +1157,77 @@ private:
         Layout();
     }
 
+    /** @brief 제어에 표시하는 값과 해석에 전달하는 Hz를 분리한다. */
+    inline static constexpr std::array<double, 3> FrequencyUnits{1., 1.e6, 1.e9};
+    inline static constexpr std::array<const char*, 2> BandFields{"start_hz", "stop_hz"};
+
+    void DisplayBand(const std::array<double, 2>& values, int unit)
+    {
+        m_bandValues = values;
+        m_bandUnit = unit;
+        m_frequencyUnit->SetSelection(unit);
+        for (std::size_t i = 0; i < BandFields.size(); ++i)
+        {
+            m_bandText[i] = Display(Json(values[i] / FrequencyUnits[unit]).dump());
+            m_fields.at(BandFields[i])->ChangeValue(m_bandText[i]);
+        }
+    }
+
+    double BandHz(std::size_t index, double number) const
+    {
+        return m_fields.at(BandFields[index])->GetValue() == m_bandText[index] ? m_bandValues[index]
+                                                                              : number * FrequencyUnits[m_bandUnit];
+    }
+
+    void ChangeFrequencyUnit()
+    {
+        const int unit = m_frequencyUnit->GetSelection();
+        if (unit < 0 || unit == m_bandUnit)
+        {
+            return;
+        }
+        std::array<double, 2> values{};
+        for (std::size_t i = 0; i < BandFields.size(); ++i)
+        {
+            double shown = 0.;
+            const bool parsed = m_fields.at(BandFields[i])->GetValue().ToDouble(&shown);
+            values[i] = BandHz(i, shown);
+            if (!parsed || !std::isfinite(values[i]))
+            {
+                m_frequencyUnit->SetSelection(m_bandUnit);
+                SetStatus("시작과 끝 주파수에 유한한 값을 입력한 뒤 단위를 변경하세요.");
+                FocusInput(BandFields[i]);
+                return;
+            }
+        }
+        DisplayBand(values, unit);
+    }
+
+    /** @brief 검토를 완료한 원본 식별 정보를 읽고 복사할 수 있게 표시한다. */
+    void ShowOutputEvidence()
+    {
+        if (m_outputIdentity.empty())
+        {
+            return;
+        }
+        wxDialog details(this, wxID_ANY, Display("검토한 해석 입력의 식별 정보"), wxDefaultPosition,
+                         FromDIP(wxSize(590, 240)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+        auto* layout = new wxBoxSizer(wxVERTICAL);
+        auto* text = new wxTextCtrl(&details, wxID_ANY, Display(m_outputIdentity), wxDefaultPosition, wxDefaultSize,
+                                    wxTE_MULTILINE | wxTE_READONLY);
+        layout->Add(text, 1, wxEXPAND | wxALL, FromDIP(12));
+        layout->Add(details.CreateSeparatedButtonSizer(wxOK), 0, wxEXPAND | wxALL, FromDIP(8));
+        details.SetSizer(layout);
+        details.CentreOnParent();
+        details.ShowModal();
+    }
+
+    static wxString OutputHint()
+    {
+        return Display("조건 검토 후 예상 실행 비용과 종료 에너지 기준, 저장할 필드와 방사 기록을 표시합니다.\n"
+                       "이 화면의 조건 검토로 먼저 계산 가능한 입력인지 확인하세요.");
+    }
+
     /** @brief 직접 주파수 목록을 입력하는 동안 범위 및 균등 표본 수 입력을 잠근다. */
     void UpdateFrequencyControls()
     {
@@ -1136,6 +1236,7 @@ private:
         {
             m_fields.at(field)->Enable(uniform);
         }
+        m_frequencyUnit->Enable(uniform);
     }
 
     void SetOptionalControls()
@@ -1164,7 +1265,10 @@ private:
         m_fields.at("sample_points_hz")->ChangeValue(wxJoin(pointLabels, ','));
         const auto mesh = settings.value("mesh_policy", Json::object());
         const auto radiation = settings.value("radiation", Json::object());
-        const Json values{{"start_hz", band.at("start")}, {"stop_hz", band.at("stop")}, {"count", band.at("count")},
+        const std::array<double, 2> limits{band.at("start").get<double>(), band.at("stop").get<double>()};
+        DisplayBand(limits, limits[0] >= 1.e9 ? 2 : limits[0] >= 1.e6 ? 1 : 0);
+        const Json values{{"count", band.at("count")},
+
                           {"grid_mm", settings.value("grid_mm", 1.0)}, {"air_padding_mm", settings.value("air_padding_mm", 30.0)},
                           {"curve_tolerance_mm", settings.value("curve_tolerance_mm", .05)},
                           {"feature_subdivisions", settings.value("feature_subdivisions", 1)},
@@ -1273,7 +1377,9 @@ private:
         m_meshSettings->SetLabel(wxEmptyString);
         m_meshSummary->GetParent()->Layout();
         m_modelSummary->SetLabel(wxEmptyString);
-        m_output->Clear();
+        m_output->ChangeValue(OutputHint());
+        m_outputIdentity.clear();
+        m_outputEvidence->Disable();
         m_run->Enable(false);
         m_save->Enable(false);
         m_repair.reset();
@@ -1322,6 +1428,14 @@ private:
                 (whole && (number != std::floor(number) || number < range->second[0] || number > range->second[1])))
             {
                 return fail(key, whole ? "정수 범위에 맞는 값을 입력하세요." : "유한한 수를 입력하세요.");
+            }
+            if (key == BandFields[0] || key == BandFields[1])
+            {
+                number = BandHz(key == BandFields[0] ? 0 : 1, number);
+                if (!std::isfinite(number))
+                {
+                    return fail(key, "주파수가 표시 단위의 범위를 초과했습니다.");
+                }
             }
             values[key] = whole ? Json(static_cast<int>(number)) : Json(number);
         }
@@ -1507,6 +1621,8 @@ private:
         m_local->Enable(false);
         m_load->Enable(false);
         m_check->Enable(false);
+        m_outputCheck->Enable(false);
+        m_output->ChangeValue(Display("현재 조건의 예상 실행 비용과 기록 범위를 확인하고 있습니다."));
         SetStatus("해석 계획과 실제 입력 격자선을 확인하고 있습니다.");
         const wxWeakRef<SolverReviewDialog> weak(this);
         m_request("solver.preview", Json{{"settings", settings}, {"include_all_diagnostics", true}},
@@ -1532,6 +1648,7 @@ private:
         m_input->Enable(true);
         m_local->Enable(true);
         m_check->Enable(true);
+        m_outputCheck->Enable(true);
         m_load->Enable(!m_selected.empty());
         SetOptionalControls();
     }
@@ -1539,6 +1656,7 @@ private:
     void Reject(const Json& error)
     {
         EnableInputs();
+        m_output->ChangeValue(Display("조건 검토가 완료되지 않았습니다. 아래에 표시된 문제를 해결한 뒤 다시 검토하세요."));
         const auto data = error.value("data", Json::object());
         const auto diagnostics = data.value("diagnostics", Json::array());
         if (!diagnostics.empty())
@@ -1547,6 +1665,19 @@ private:
             return;
         }
         SetStatus(DiagnosticMessage(error));
+    }
+
+    /** @brief 표시 문구에서 코드 입력 이름을 실제 폼의 이름으로 바꾼다. */
+    static std::string IssueMessage(const Json& diagnostic)
+    {
+        auto label = Display(diagnostic.value("message_ko", "해석 입력을 확인하세요."));
+        for (const auto& [key, caption] : std::array<std::pair<const char*, const char*>, 4>{{
+            {"grid_mm", "모델 최대 격자 간격"}, {"air_padding_mm", "외부 공기 여유"},
+            {"curve_tolerance_mm", "곡선 근사 허용오차"}, {"feature_subdivisions", "임계 구간 최소 분할"}}})
+        {
+            label.Replace(key, Display(caption));
+        }
+        return Utf8(label);
     }
 
     /** @brief 목록에서 고른 진단이 다음 속성 이동의 유일한 대상이 된다. */
@@ -1559,9 +1690,9 @@ private:
         for (const auto& row : m_issues)
         {
             const auto path = row.value("details", Json::object()).value("field_path", std::string());
-            const auto label = row.value("message_ko", std::string());
-            m_issueList->Append(Display(std::to_string(++index) + " / " + label +
-                                        (path.empty() ? "" : " / " + path)));
+            const auto label = IssueMessage(row);
+            const std::string section = path == "board" ? "기판 / " : path == "ports" ? "급전 / " : "";
+            m_issueList->Append(Display(std::to_string(++index) + ". " + section + label));
         }
         m_issueList->SetSelection(0);
         m_issueList->Show();
@@ -1578,7 +1709,7 @@ private:
         const auto& diagnostic = m_issues.at(static_cast<std::size_t>(index));
         const auto details = diagnostic.value("details", Json::object());
         auto problem = "차단 문제 " + std::to_string(index + 1) + " / " + std::to_string(m_issueTotal) +
-                       "\n" + diagnostic.value("message_ko", std::string("해석 입력을 확인하세요."));
+                       "\n" + IssueMessage(diagnostic);
         if (m_issues.size() < m_issueTotal)
         {
             problem += "\n앞 " + std::to_string(m_issues.size()) + "개를 표시합니다. 수정 후 다시 검토하세요.";
@@ -1608,6 +1739,8 @@ private:
         if (m_propertyAvailable(repairField))
         {
             m_repair = Studio::SolverRepair{repairField, problem};
+            m_jump->SetLabel(Display(repairField == "board" ? "기판 설정 열기" :
+                                     repairField == "ports" ? "급전 포트 설정 열기" : "문제 속성으로 이동"));
             m_jump->Show();
             SetStatus(problem + " 속성에서 수정한 뒤 같은 조건으로 다시 검토할 수 있습니다.");
             m_jump->SetFocus();
@@ -1778,9 +1911,11 @@ private:
         m_output->ChangeValue(wxString::Format(
             Display("최대 %d 시간 단계 / 종료 에너지 비율 %.8g\n\n복소 표본, 사용한 개정과 해석 조건을 보존합니다.\n"),
             settings.at("max_timesteps").get<int>(), settings.at("end_criterion").get<double>()) +
-            cost + "\n\n" + Display(radiation + "\n" + loss + "\n") + fieldSummary + Display("\n\n격자 SHA-256 " +
-                    mesh.at("lines_sha256").get<std::string>() + "\n해석 입력 SHA-256 " +
-                    mesh.at("case_sha256").get<std::string>() + "\n검토한 프로젝트 개정 " + m_revision));
+            cost + "\n\n" + Display(radiation + "\n" + loss + "\n") + fieldSummary);
+        m_outputIdentity = "격자 SHA-256\n" + mesh.at("lines_sha256").get<std::string>() +
+                           "\n\n해석 입력 SHA-256\n" + mesh.at("case_sha256").get<std::string>() +
+                           "\n\n검토한 프로젝트 개정\n" + m_revision;
+        m_outputEvidence->Enable();
         if (m_result.contains("multiport"))
         {
             const auto& ports = m_result.at("multiport");
@@ -1868,6 +2003,13 @@ private:
     wxCheckBox* m_graded = nullptr;
     wxStaticText* m_status = nullptr;
     wxButton* m_check = nullptr;
+    wxButton* m_outputCheck = nullptr;
+    wxButton* m_outputEvidence = nullptr;
+    std::string m_outputIdentity;
+    wxChoice* m_frequencyUnit = nullptr;
+    int m_bandUnit = 0;
+    std::array<double, 2> m_bandValues{};
+    std::array<wxString, 2> m_bandText{};
     wxButton* m_jump = nullptr;
     wxButton* m_run = nullptr;
     wxButton* m_checkpoint = nullptr;

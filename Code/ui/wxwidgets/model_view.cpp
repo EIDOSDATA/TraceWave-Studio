@@ -21,6 +21,7 @@ namespace
 {
 using Scene = DisplayMesh::Scene;
 using Camera = DisplayMesh::Camera;
+using RenderClock = std::chrono::steady_clock;
 constexpr int EmptyContextIdleMs = 120000;
 constexpr double PreviewEnterPx = 0.65;
 constexpr double PreviewLeavePx = 0.8;
@@ -239,10 +240,15 @@ public:
         Refresh(false);
     }
 
-    void SetSection(std::optional<std::array<double, 4>> plane)
+    bool SetSection(std::optional<std::array<double, 4>> plane)
     {
+        if (m_section == plane)
+        {
+            return false;
+        }
         m_section = plane;
         Refresh(false);
+        return true;
     }
 
     void Layer(const std::string& identity, bool visible)
@@ -600,6 +606,7 @@ struct ModelView::Impl
     bool recovering = false;
     bool keepContextForMeasurement = false;
     bool reportedPreview = false;
+    std::optional<RenderClock::time_point> firstFrameStart, sectionFrameStart;
 
     explicit Impl(ModelView* window) : owner(window), timer(window), idleTimer(window)
     {
@@ -666,9 +673,24 @@ struct ModelView::Impl
             plane = std::array<double, 4>{0, 0, 0, side * (center[axis] - sectionOffset->GetValue())};
             (*plane)[axis] = side;
         }
-        if (canvas)
+        if (canvas && canvas->SetSection(plane) && available)
         {
-            canvas->SetSection(plane);
+            sectionFrameStart = RenderClock::now();
+        }
+    }
+
+    /** @brief 최초 또는 변경 프레임이 실제 그려진 시각을 한 번만 기록한다. */
+    void RecordFrame(std::optional<RenderClock::time_point>& started, const char* label)
+    {
+        if (!started)
+        {
+            return;
+        }
+        const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(RenderClock::now() - *started).count();
+        started.reset();
+        if (owner->onTiming)
+        {
+            owner->onTiming(label, duration);
         }
     }
 
@@ -687,6 +709,8 @@ struct ModelView::Impl
     void Failure(const std::string& text)
     {
         error = text;
+        firstFrameStart.reset();
+        sectionFrameStart.reset();
         recovering = false;
         candidate.reset();
         if (canvas != nullptr)
@@ -733,6 +757,7 @@ struct ModelView::Impl
         };
         canvas->onFrame = [this]()
         {
+            RecordFrame(sectionFrameStart, "3D 단면 조작에서 화면 표시까지");
             if (reportedPreview != canvas->ShowingPreview())
             {
                 reportedPreview = canvas->ShowingPreview();
@@ -745,6 +770,7 @@ struct ModelView::Impl
             if (candidate != nullptr)
             {
                 scene = std::move(candidate);
+                RecordFrame(firstFrameStart, "3D 파일 검증 시작에서 첫 화면 표시까지");
                 error.clear();
                 recovering = false;
                 Status("3D 기하 보기 | " + std::to_string(scene->triangles) +
@@ -884,6 +910,8 @@ bool ModelView::LoadArtifact(const wxString& workspace, const Json& artifact, co
         m_impl->Failure(exception.what());
         return false;
     }
+    m_impl->firstFrameStart = RenderClock::now();
+    m_impl->sectionFrameStart.reset();
     m_impl->Status("3D 표시 파일을 읽고 SHA256과 객체 대응을 확인하고 있습니다.");
     m_impl->timer.Start(30);
     return true;
@@ -896,6 +924,8 @@ void ModelView::Clear()
         m_impl->cancelled->store(true);
     }
     m_impl->discard = true;
+    m_impl->firstFrameStart.reset();
+    m_impl->sectionFrameStart.reset();
     m_impl->recovering = false;
     m_impl->candidate.reset();
     m_impl->scene.reset();

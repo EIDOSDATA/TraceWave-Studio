@@ -414,7 +414,24 @@ void NetworkCircuitDialog::UpdateActions()
                                  : m_elementIndex >= 0 && m_elementIndex + 1 < static_cast<int>(m_elements.size());
         m_editButtons[index]->Enable(enabled && allowed);
     }
-    m_reviewDefinition->Enable(enabled && !m_elements.empty() && (m_dirty || m_savedCircuitId.empty()));
+    const bool draft = m_dirty || m_savedCircuitId.empty();
+    const bool reviewed = !m_review.is_null() && m_review.value("can_apply", false);
+    const auto stage = Display(m_pending ? "검토 또는 저장 응답을 기다리고 있습니다."
+        : draft && m_elements.empty() ? "직렬 또는 병렬 소자를 추가하고 값을 입력하세요."
+        : draft && reviewed ? "회로 검토 완료. 회로 사본을 저장하면 결합 검토를 할 수 있습니다."
+        : draft ? "입력 기준면과 소자 값을 확인한 뒤 회로 검토를 누르세요."
+        : m_selection.is_null() ? "결합할 안테나 / 부하 입력 자료를 선택하세요."
+        : reviewed ? "결합 검토 완료. 원본과 계산값을 확인한 뒤 별도 결과로 저장하세요."
+        : "회로 사본과 부하가 준비됐습니다. 결합 검토를 누르세요.");
+    if (m_step->GetLabel() != stage)
+    {
+        m_step->SetLabel(stage);
+        Layout();
+    }
+    const auto planes = m_selection.is_object() ? m_selection.at("descriptor").value("reference_planes", Json::array())
+                                               : Json::array();
+    m_useLoadPlane->Enable(enabled && planes.size() == 1 && planes.front().is_string());
+    m_reviewDefinition->Enable(enabled && !m_elements.empty() && draft);
     m_reviewCalculation->Enable(enabled && !m_dirty && !m_savedCircuitId.empty() && !m_selection.is_null());
     m_apply->Enable(enabled && !m_review.is_null() && m_review.value("can_apply", false));
     m_apply->SetLabel(Display(!m_reviewInput.is_null() && m_reviewInput.value("operation", "") == "circuit_apply"

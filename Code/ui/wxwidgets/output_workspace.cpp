@@ -13,6 +13,7 @@
 #include "studio_theme.h"
 #include <wx/button.h>
 #include <wx/choice.h>
+#include <wx/checkbox.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/wrapsizer.h>
@@ -82,7 +83,25 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
     history->Add(m_records, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(4));
     m_catalogPrevious = Button(this, history, "이전 기록");
     m_catalogNext = Button(this, history, "다음 기록");
-    m_details = Button(this, history, "파일 / 검수");
+    m_allFormats = new wxCheckBox(this, wxID_ANY, Display("전체 형식"));
+    history->Add(m_allFormats, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(4));
+    m_allFormats->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
+    {
+        if (onHistoryScope)
+        {
+            onHistoryScope();
+        }
+    });
+    m_file = Button(this, history, "출력 파일 열기");
+    m_file->SetName("output.file.open");
+    m_file->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        if (onOpenFile)
+        {
+            onOpenFile();
+        }
+    });
+    m_details = Button(this, history, "파일 목록 / 검수");
     m_verify = Button(this, history, "다시 검수");
     m_folder = Button(this, history, "출력 폴더");
     layout->Add(history, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
@@ -438,6 +457,15 @@ Json OutputWorkspace::PreviewInput() const
     return input;
 }
 
+std::string OutputWorkspace::HistoryFormat() const
+{
+    if (m_allFormats->GetValue() || Kind() == 3)
+    {
+        return {};
+    }
+    return Input().value("format", "");
+}
+
 void OutputWorkspace::SetCatalog(const Json& catalog, const std::string& preferredJob)
 {
     m_refreshing = true;
@@ -451,7 +479,10 @@ void OutputWorkspace::SetCatalog(const Json& catalog, const std::string& preferr
     for (const auto& item : catalog.at("items"))
     {
         m_jobIds.push_back(item.at("job_id"));
+        const auto snapshot = item.value("snapshot", Json(nullptr));
+        const auto revision = snapshot.is_object() ? snapshot.value("revision_id", "") : "";
         m_records->Append(Display(item.value("label", "출력") + " / " + OutputUi::State(item.value("state", "")) +
+                                  (revision.empty() ? "" : " / 개정 " + revision.substr(0, 8)) +
                                   " / " + RfValidationUi::Time(item.value("created_at", Json(nullptr)))));
         if (m_jobIds.back() == m_selectedJob)
         {
@@ -556,6 +587,7 @@ void OutputWorkspace::Clear(const std::string& message)
 {
     m_context = nullptr;
     m_catalog = nullptr;
+    m_allFormats->SetValue(false);
     m_record = nullptr;
     m_selectedSnapshot = nullptr;
     m_selectedJob.clear();
@@ -611,7 +643,9 @@ void OutputWorkspace::SetAvailable(bool available, bool busy, bool reviewed, boo
     m_catalogNext->Enable(ready && m_catalog.is_object() && !m_catalog.value("next_offset", Json(nullptr)).is_null());
     m_details->Enable(!busy && m_record.is_object());
     m_verify->Enable(ready && canVerify);
-    m_folder->Enable(ready && m_record.is_object() && m_record.value("result", Json(nullptr)).is_object());
+    m_folder->Enable(ready && !OutputUi::ManifestPath(m_record).empty());
+    m_allFormats->Enable(ready);
+    m_file->Enable(ready && !OutputUi::PrimaryPath(m_record).empty());
     m_cancel->Enable(available && canCancel);
     m_recover->Enable(available && !busy && uncertain);
     m_cancel->Show(canCancel);

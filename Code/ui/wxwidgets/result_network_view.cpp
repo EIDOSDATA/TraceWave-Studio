@@ -209,7 +209,9 @@ void ResultNetworkView::Present()
         m_metric->SetSelection(5);
     }
     const auto metric = static_cast<std::size_t>(m_metric->GetSelection());
-    m_chart->SetPage(page, Display(ResultUi::Text(m_description.at("label"))));
+    const auto title = Display(ResultUi::Text(m_description.at("label")));
+    m_chart->SetToolTip(title);
+    m_chart->SetPage(page, title.length() > 38 ? title.Left(38) + "..." : title);
     const auto unit = page.value("unit", std::string());
     m_chart->SetMetric(Metrics.at(metric),
                        Display(Labels.at(metric) + (metric >= 3 && metric <= 5 && !unit.empty() ? " / " + unit : "")));
@@ -221,16 +223,16 @@ void ResultNetworkView::Present()
         diagnostic ? Labels.at(metric) : "VSWR", "상태 / 출처"};
     for (std::size_t index = 0; index < labels.size(); ++index)
     {
-        m_samples->InsertColumn(static_cast<long>(index), Display(labels[index]), wxLIST_FORMAT_LEFT,
-                                FromDIP(index == 7   ? 160
-                                        : index == 0 ? 60
-                                                     : 120));
+        static constexpr std::array<int, 8> widths{48, 116, 90, 90, 95, 96, 90, 140};
+        m_samples->InsertColumn(static_cast<long>(index), Display(labels[index]),
+                                index > 0 && index < 7 ? wxLIST_FORMAT_RIGHT : wxLIST_FORMAT_LEFT,
+                                FromDIP(widths[index]));
     }
     for (const auto& sample : page.at("samples"))
     {
         const long row =
             m_samples->InsertItem(m_samples->GetItemCount(), Display(std::to_string(sample.value("index", 0) + 1)));
-        m_samples->SetItem(row, 1, Display(StudioFrequency::Value(sample.value("frequency_hz", Json(nullptr)), scale)));
+        m_samples->SetItem(row, 1, Display(StudioFrequency::Value(sample.value("frequency_hz", Json(nullptr)), scale, 7)));
         for (std::size_t index = 0; index < 5; ++index)
         {
             m_samples->SetItem(

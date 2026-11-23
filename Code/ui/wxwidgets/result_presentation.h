@@ -5,7 +5,7 @@
 
 namespace ResultUi
 {
-std::string Number(const Json& value, int precision = 8);
+std::string Number(const Json& value, int precision = 6);
 std::string Text(const Json& value);
 std::string State(const Json& value);
 std::string SourceKind(const Json& value);

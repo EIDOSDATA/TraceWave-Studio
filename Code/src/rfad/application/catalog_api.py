@@ -1,23 +1,26 @@
 """! @brief 프로젝트 변경과 분리된 읽기 전용 카탈로그 RPC 경계를 제공한다."""
 
+from pathlib import Path
+
 from rfad.domain.errors import ProjectError
 from rfad.domain.resource_limits import MAX_STACKUP_RESULT_BYTES
 
 
 PROFILE = "rfad.catalog/0.1"
-METHODS = frozenset({"catalog.status", "catalog.search", "catalog.get", "catalog.stackup_draft", "catalog.stackup_suggestions"})
+METHODS = frozenset({"catalog.status", "catalog.connect", "catalog.search", "catalog.get", "catalog.stackup_draft", "catalog.stackup_suggestions"})
 
 
-def _service(catalog):
+def _service(catalog, workspace_service=None):
     """! @brief 요청받은 경우에만 카탈로그 모듈을 읽는다."""
     if catalog is not None:
         return catalog
     from rfad.catalog.service import CatalogService
 
-    return CatalogService(None)
+    database = None if workspace_service is None else workspace_service.pcb_selection.database
+    return CatalogService(database)
 
 
-def describe(catalog=None) -> dict:
+def describe(catalog=None, workspace_service=None) -> dict:
     """! @brief 프로젝트 적용이나 물리 검증을 포함하지 않는 조회 범위를 공개한다."""
     return {
         "profile": PROFILE,
@@ -26,11 +29,11 @@ def describe(catalog=None) -> dict:
         "simulation_readiness": "not_evaluated",
         "max_result_bytes": 48 * 1024,
         "max_stackup_result_bytes": MAX_STACKUP_RESULT_BYTES,
-        "status": _service(catalog).status(),
+        "status": _service(catalog, workspace_service).status(),
     }
 
 
-def query(method: str, params: object, catalog=None) -> dict:
+def query(method: str, params: object, catalog=None, workspace_service=None) -> dict:
     """! @brief 빈 프로젝트 context와 명시적 API 버전을 가진 조회만 허용한다."""
     if type(params) is not dict or set(params) != {"contract_version", "context", "input"}:
         raise ProjectError("E_SCHEMA", "카탈로그 조회에는 contract_version, context, input이 필요합니다.")
@@ -43,7 +46,25 @@ def query(method: str, params: object, catalog=None) -> dict:
     from rfad.catalog.models import CatalogError
 
     try:
-        service = _service(catalog)
+        if method == "catalog.connect":
+            if workspace_service is None:
+                raise ProjectError("E_STATE", "작업 영역 서비스에서 카탈로그를 연결하십시오.")
+            path = params["input"].get("database")
+            if set(params["input"]) != {"database"} or not isinstance(path, str) or not 1 <= len(path) <= 4096 or "\x00" in path:
+                raise ProjectError("E_SCHEMA", "연결할 카탈로그 파일 경로가 필요합니다.")
+            database = Path(path)
+            if not database.is_absolute():
+                raise ProjectError("E_SCHEMA", "카탈로그 파일의 전체 경로를 선택하십시오.")
+            from rfad.catalog.service import CatalogService
+
+            candidate = CatalogService(database)
+            status = candidate.status()
+            if status["available"]:
+                workspace_service.pcb_selection.database = database
+                if catalog is not None:
+                    catalog.repository = candidate.repository
+            return status
+        service = _service(catalog, workspace_service)
         if method == "catalog.status":
             if params["input"]:
                 raise ProjectError("E_SCHEMA", "카탈로그 상태 조회의 input은 빈 객체여야 합니다.")

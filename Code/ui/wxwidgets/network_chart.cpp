@@ -304,7 +304,8 @@ void NetworkChart::Paint(wxPaintEvent&)
             const int labelWidth = dc.GetTextExtent(xLabel).x;
             const int labelX = std::clamp(x - labelWidth / 2, margin, std::max(margin, size.x - margin - labelWidth));
             dc.DrawText(xLabel, labelX, plot.GetBottom() + FromDIP(4));
-            const wxString yLabel = Label(maxY - (maxY - minY) * index / 4);
+            const double tick = maxY - (maxY - minY) * index / 4;
+            const wxString yLabel = Label(std::abs(tick) <= (maxY - minY) * 1.e-12 ? 0. : tick);
             dc.DrawText(yLabel, plot.x - dc.GetTextExtent(yLabel).x - FromDIP(8), y - GetCharHeight() / 2);
         }
         std::unique_ptr<wxGraphicsContext> graphics(wxGraphicsContext::Create(dc));

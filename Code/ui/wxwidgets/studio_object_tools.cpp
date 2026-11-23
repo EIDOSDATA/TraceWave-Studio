@@ -1,6 +1,7 @@
 /** @file @brief 객체 편집 대화상자의 수명과 개정 갱신을 기존 연결 경계에 결합한다. */
 #include "studio_internal.h"
 #include "project_setup_dialog.h"
+#include "result_workspace.h"
 
 DialogGateway StudioFrame::ObjectToolGateway()
 {
@@ -75,10 +76,20 @@ void StudioFrame::ShowObjectTool(std::unique_ptr<ProjectSetupDialog> dialog, con
             {
                 target = {{"kind", "geometry"}, {"id", result.at("selection_ids").front()}};
             }
+            const auto operation = result.value("operation", "");
+            const auto imported = operation == "import" ? result.value("record_id", Json(nullptr))
+                : operation == "import_record" ? result.value("dataset_id", Json(nullptr)) : Json(nullptr);
+            const auto source = m_views->GetSelection() == 16 && imported.is_string()
+                ? Json{{"kind", "network"}, {"dataset_id", imported}, {"revision_id", m_revision}, {"snapshot_id", nullptr}}
+                : Json(nullptr);
             RefreshEditor(target,
-                          [this]()
+                          [this, source]()
                           {
                               Ready("편집을 적용했습니다. 저장으로 현재 개정을 확정할 수 있습니다.");
+                              if (source.is_object() && m_views->GetSelection() == 16)
+                              {
+                                  m_results->OpenRecent(source);
+                              }
                           });
         }
         else

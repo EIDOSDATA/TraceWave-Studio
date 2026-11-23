@@ -145,6 +145,26 @@ finally:
         self.assertTrue(any(item["epsilon_r"]["value_si"] is None for item in f.document["materials"]))
         self.assertTrue(first["pages"])
 
+    def test_format_specific_history_preserves_other_outputs(self):
+        """! @brief 형식 조회를 바꿔도 다른 형식과 원래 개정의 작업을 유지한다."""
+        f = self.fixture
+        requests = {kind: f.data(kind) for kind in ("pdf", "svg")}
+        for data in requests.values():
+            data["review_hash"] = f.complete("export.preview", data)["review_hash"]
+        ids = {}
+        for kind, data in requests.items():
+            job = f.service.mutate("export.build", f.request(data))["job_id"]
+            ids[kind] = job
+            f.service.mutate("job.cancel", f.request({"job_id": job, "reason": "목록 검증 접수 종료"}, {}))
+        before = f.service.journal.read()
+        for kind, job in ids.items():
+            view = f.read("export.list", {"offset": 0, "format": kind})
+            self.assertEqual(view["total"], 1)
+            self.assertEqual(view["items"][0]["job_id"], job)
+            self.assertEqual(view["items"][0]["snapshot"]["revision_id"], f.revision)
+        self.assertEqual({row["job_id"] for row in f.read("export.list", {})["items"]}, set(ids.values()))
+        self.assertEqual(f.service.journal.read(), before)
+
     def test_changed_option_hash_rejects_without_artifacts_or_job(self):
         """! @brief 검토 뒤 축척 변경이 이전 hash를 재사용하지 못한다."""
         f = self.fixture

@@ -49,11 +49,11 @@ SmithView::SmithView(wxWindow* parent)
     content->Add(m_chart, 2, wxEXPAND | wxRIGHT, FromDIP(12));
     auto* values = new wxBoxSizer(wxVERTICAL);
     m_markerValues =
-        new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(300, 310)), wxLC_REPORT | wxLC_HRULES);
+        new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(310, 310)), wxLC_REPORT | wxLC_HRULES);
     m_markerValues->SetName("result.smith.marker-values");
     StudioTheme::Table(*m_markerValues);
-    m_markerValues->AppendColumn(Display("항목"), wxLIST_FORMAT_LEFT, FromDIP(125));
-    m_markerValues->AppendColumn(Display("M1 실제 값"), wxLIST_FORMAT_LEFT, FromDIP(210));
+    m_markerValues->AppendColumn(Display("항목"), wxLIST_FORMAT_LEFT, FromDIP(110));
+    m_markerValues->AppendColumn(Display("M1 실제 값"), wxLIST_FORMAT_LEFT, FromDIP(180));
     values->Add(m_markerValues, 1, wxEXPAND);
     auto* markers = new wxWrapSizer(wxHORIZONTAL);
     m_markerPrevious = new wxButton(this, wxID_ANY, Display("이전 표본"));

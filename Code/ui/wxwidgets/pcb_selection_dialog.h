@@ -56,6 +56,8 @@ private:
     wxPanel* BuildPortsPage();
     wxPanel* BuildReviewPage();
     void Search();
+    /** @brief 현재 서비스 세션에서 사용자가 선택한 읽기 전용 인덱스를 연결한다. */
+    void ConnectCatalog();
     void ResetCatalogRows();
     void QueueCatalogPage(long row, bool selected = false);
     void LoadCatalogPage();
@@ -68,6 +70,8 @@ private:
     Json CollectSpecification();
     Json CollectPorts() const;
     Json ReadLayerRows() const;
+    /** @brief 화면에서 바꾸지 않은 층 두께의 원래 정밀도를 되돌려 준다. */
+    Json ReadLayerThickness(int row) const;
     void Preview();
     void Apply();
     void Changed();
@@ -111,6 +115,7 @@ private:
     long m_catalogWantedRow = -1;
     bool m_catalogPageQueued = false;
     bool m_catalogPageLoading = false;
+    bool m_catalogConnecting = false;
     std::vector<int> m_suggestionOffsets{0};
     std::vector<std::string> m_layerIds;
     std::vector<std::string> m_layerLabels;
@@ -138,6 +143,8 @@ private:
     PcbCatalogTable* m_results = nullptr;
     wxTextCtrl* m_detail = nullptr;
     wxButton* m_search = nullptr;
+    wxButton* m_connectCatalog = nullptr;
+    wxButton* m_manualFromCatalog = nullptr;
     wxButton* m_previous = nullptr;
     wxButton* m_next = nullptr;
     wxButton* m_useSource = nullptr;

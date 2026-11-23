@@ -468,8 +468,9 @@ void HandoffOutputView::ShowDetails(bool files)
     }
     else
     {
-        text = "설계 개정: " + m_review.at("revision_id").get<std::string>() + "\n";
-        text += "원본 SHA256: " + m_review.at("content_hash").get<std::string>() + "\n\n";
+        text = archive ? "프로젝트 복원에 포함되는 파일 " + std::to_string(m_review.at("file_count").get<int>()) +
+                            "개 / 미확보 " + std::to_string(m_review.at("missing_count").get<int>()) + "개\n\n"
+                       : "인계 보고서의 근거 " + std::to_string(m_review.at("evidence_count").get<int>()) + "건\n\n";
         for (const auto& limit : m_review.at("limitations"))
         {
             text += limit.get<std::string>() + "\n";
@@ -500,9 +501,29 @@ void HandoffOutputView::ShowDetails(bool files)
         }
     }
     auto* content = new wxTextCtrl(&dialog, wxID_ANY, Display(text), wxDefaultPosition, wxDefaultSize,
-                                   wxTE_MULTILINE | wxTE_READONLY | wxTE_DONTWRAP);
+                                   wxTE_MULTILINE | wxTE_READONLY | wxTE_WORDWRAP);
     content->SetName(Display(files ? "인계 파일 목록" : "보고서 내용"));
     layout->Add(content, 1, wxEXPAND | wxALL, FromDIP(12));
+    if (!files)
+    {
+        auto* identifiers = new wxButton(&dialog, wxID_ANY, Display("개정과 원본 해시"));
+        layout->Add(identifiers, 0, wxLEFT | wxRIGHT, FromDIP(12));
+        identifiers->Bind(wxEVT_BUTTON, [this, &dialog](wxCommandEvent&)
+        {
+            wxDialog details(&dialog, wxID_ANY, Display("인계 원본 식별 정보"), wxDefaultPosition,
+                             FromDIP(wxSize(600, 220)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+            auto* detailLayout = new wxBoxSizer(wxVERTICAL);
+            auto* raw = new wxTextCtrl(&details, wxID_ANY,
+                Display("설계 개정\n" + m_review.at("revision_id").get<std::string>() +
+                        "\n\n원본 SHA-256\n" + m_review.at("content_hash").get<std::string>()),
+                wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
+            detailLayout->Add(raw, 1, wxEXPAND | wxALL, FromDIP(12));
+            detailLayout->Add(details.CreateSeparatedButtonSizer(wxOK), 0, wxEXPAND | wxALL, FromDIP(8));
+            details.SetSizer(detailLayout);
+            details.CentreOnParent();
+            details.ShowModal();
+        });
+    }
     layout->Add(dialog.CreateSeparatedButtonSizer(wxOK), 0, wxEXPAND | wxALL, FromDIP(8));
     dialog.SetSizer(layout);
     dialog.CentreOnParent();

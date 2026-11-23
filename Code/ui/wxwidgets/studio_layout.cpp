@@ -311,6 +311,27 @@ void StudioFrame::BuildInterface()
     m_startOpen = startButton(IdOpen, "프로젝트 열기", false);
     m_startActions->SetSizer(startLayout);
     centerSizer->Add(m_startActions, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::PanelPadding));
+    m_designStart = new wxPanel(center);
+    auto* designStart = new wxWrapSizer(wxHORIZONTAL);
+    m_designStep = new wxStaticText(m_designStart, wxID_ANY, Display("먼저 기판과 도체층을 설정하세요."));
+    designStart->Add(m_designStep, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(4));
+    for (const auto& [id, label] : std::vector<std::pair<int, const char*>>{
+        {IdTargets, "설계 목표"}, {IdBoard, "사각 기판"}, {IdCircularBoard, "원형 기판"},
+        {IdLayer, "도체층 추가"}, {IdTemplates, "패턴 후보"}, {IdNewPort, "급전 추가"}})
+    {
+        auto* button = new wxButton(m_designStart, wxID_ANY, Display(label));
+        StudioTheme::Button(*button);
+        designStart->Add(button, 0, wxALL, FromDIP(4));
+        m_designShortcuts.emplace(id, button);
+        button->Bind(wxEVT_BUTTON, [this, id](wxCommandEvent&)
+        {
+            wxCommandEvent action(wxEVT_MENU, id);
+            ProcessWindowEvent(action);
+        });
+    }
+    m_designStart->SetSizer(designStart);
+    m_designStart->Hide();
+    centerSizer->Add(m_designStart, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
     auto* drawingTools = new wxWrapSizer(wxHORIZONTAL);
     AddTool(center, drawingTools, IdSelect, "선택");
     AddTool(center, drawingTools, IdLine, "선");

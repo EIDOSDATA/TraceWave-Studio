@@ -15,6 +15,7 @@ from rfad.application import network_service
 from rfad.application.canonical import canonical_bytes
 from rfad.application.design_sweep_store import baseline, candidate_source, load_candidate, load_definition, read_json
 from rfad.application.projects import ProjectService
+from rfad.application.solver_runtime import SolverRuntime
 from rfad.domain.project import validate_project
 from test_cad_worker_process import register_fixture
 from test_design_sweep import fixture
@@ -126,12 +127,14 @@ class GuiSweepTests(unittest.TestCase):
                 self.assertEqual(circuit["usage"]["native_solves"], 0)
                 self.assertEqual(circuit["current_job_id"], None)
                 self.assertFalse(state["solver_results"])
+                runtime = SolverRuntime.installed_windows()
                 for study in (grid, circuit):
                     definition, saved = baseline(service, study)
                     self.assertEqual(saved, stored_before)
                     self.assertEqual(definition["original_specification"]["source_refs"], ["GUI 명시 스윕 입력; 실측 아님"])
                     self.assertEqual(definition["specification"]["target_contexts"], [])
-                    self.assertFalse(definition["runtime_identity"])
+                    expected_runtime = runtime.identity if study is grid and runtime is not None else None
+                    self.assertEqual(definition["runtime_identity"], expected_runtime)
                 definition = load_definition(service, circuit)
                 self.assertEqual(definition["original_specification"]["variables"][0]["values"], [
                     {"text": text, "unit": unit, "source_refs": ["GUI 명시 스윕 입력; 실측 아님"]}

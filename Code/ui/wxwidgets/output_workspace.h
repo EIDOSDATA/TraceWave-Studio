@@ -13,6 +13,7 @@ class PcbCamOutputView;
 class OutputConditionsView;
 class wxChoice;
 class wxButton;
+class wxCheckBox;
 class wxStaticText;
 
 class OutputWorkspace final : public wxPanel
@@ -40,13 +41,15 @@ public:
     void SetHandoffConditions(const Json& input, const Json& review);
     Json Input() const;
     Json PreviewInput() const;
+    /** @brief 현재 형식을 기본 조회 범위에 사용한다. */
+    std::string HistoryFormat() const;
     std::string SelectedJob() const;
     int Kind() const;
     void SelectKind(int kind);
     const Json& Record() const;
     const Json& Preview() const;
     wxStaticText* StatusLabel() const;
-    std::function<void()> onRefresh, onSnapshot, onPreview, onBuild, onVerify, onCancel, onRecover, onOpenFolder;
+    std::function<void()> onRefresh, onSnapshot, onPreview, onBuild, onVerify, onCancel, onRecover, onOpenFolder, onOpenFile, onHistoryScope;
     std::function<void(const Json&)> onSelectSnapshot;
     std::function<void(const std::string&)> onSelectJob;
     std::function<void(int)> onSnapshotPage, onCatalogPage;
@@ -76,6 +79,8 @@ private:
     wxButton* m_details = nullptr;
     wxButton* m_verify = nullptr;
     wxButton* m_folder = nullptr;
+    wxButton* m_file = nullptr;
+    wxCheckBox* m_allFormats = nullptr;
     wxButton* m_cancel = nullptr;
     wxButton* m_recover = nullptr;
     wxStaticText* m_status = nullptr;

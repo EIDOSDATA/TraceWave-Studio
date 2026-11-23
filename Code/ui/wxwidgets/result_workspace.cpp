@@ -383,6 +383,7 @@ void ResultWorkspace::Refresh()
         return;
     }
     ++m_catalogGeneration;
+    m_catalog = nullptr;
     m_catalogHash.clear();
     m_anchorHash.clear();
     m_browser->ClearCatalog("목록을 다시 읽고 있습니다. 표시 원본의 고정 개정은 유지합니다.");
@@ -479,6 +480,17 @@ void ResultWorkspace::OpenPinned(const Json& source, const Json& pin)
     m_browser->SetSolverContext();
     Select(source, pin);
 }
+void ResultWorkspace::OpenRecent(const Json& source)
+{
+    if (!m_available)
+    {
+        return;
+    }
+    m_browser->SetCurrentContext();
+    Refresh();
+    Select(source);
+}
+
 void ResultWorkspace::SetValidationAvailable(bool available)
 {
     m_conditions->SetValidationAvailable(available);
@@ -515,6 +527,14 @@ void ResultWorkspace::Select(const Json& source, const Json& expectedPin)
             m_smith->SetDescription(description);
             m_metrics->SetDescription(description);
             m_radiation->SetDescription(description);
+            if (m_measurement != nullptr && m_page == 16)
+            {
+                m_measurement->SetSelectionAvailable(true);
+                if (source.value("kind", "") == "network")
+                {
+                    m_measurement->SetStatus("자료를 선택했습니다. 시료 / 교정 기록을 추가하거나 비교에 넣으세요.");
+                }
+            }
             if (m_catalog.is_object())
             {
                 m_browser->SetCatalog(m_catalog, source);

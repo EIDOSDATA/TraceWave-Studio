@@ -8,6 +8,7 @@
 #include <wx/button.h>
 #include <wx/choice.h>
 #include <wx/combobox.h>
+#include <wx/filedlg.h>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/panel.h>
@@ -112,6 +113,16 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
 {
     auto* panel = new wxPanel(m_notebook);
     auto* layout = new wxBoxSizer(wxVERTICAL);
+    auto* actions = new wxBoxSizer(wxHORIZONTAL);
+    m_connectCatalog = new wxButton(panel, wxID_ANY, Display("카탈로그 연결..."));
+    m_connectCatalog->SetName("pcb.catalog.connect");
+    m_manualFromCatalog = new wxButton(panel, wxID_ANY, Display("층 직접 입력"));
+    m_manualFromCatalog->SetName("pcb.catalog.manual");
+    actions->Add(m_connectCatalog, 0, wxRIGHT, FromDIP(8));
+    actions->Add(m_manualFromCatalog);
+    layout->Add(actions, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(10));
+    m_connectCatalog->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ConnectCatalog(); });
+    m_manualFromCatalog->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { UseManual(); });
     auto* filters = new wxBoxSizer(wxHORIZONTAL);
     m_entity = new wxChoice(panel, wxID_ANY);
     m_entity->SetName("pcb.entity");
@@ -236,6 +247,53 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
     return panel;
 }
 
+void PcbSelectionDialog::ConnectCatalog()
+{
+    if (m_catalogConnecting || m_applying || m_disconnected || m_closed)
+    {
+        return;
+    }
+    wxFileDialog file(this, Display("사용할 PCB 카탈로그 인덱스 선택"), wxEmptyString, wxEmptyString,
+                      Display("TraceWave 카탈로그 (*.sqlite;*.sqlite3;*.db)|*.sqlite;*.sqlite3;*.db|모든 파일 (*.*)|*.*"),
+                      wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    if (file.ShowModal() != wxID_OK)
+    {
+        return;
+    }
+    m_catalogConnecting = true;
+    UpdateControls();
+    SetStatus("선택한 인덱스의 형식과 개정을 확인하고 있습니다.");
+    wxWeakRef<PcbSelectionDialog> weak(this);
+    m_gateway(
+        "catalog.connect", {{"database", Utf8(file.GetPath())}}, false,
+        [weak](const Json& result)
+        {
+            if (!weak || weak->m_closed || weak->m_disconnected)
+            {
+                return;
+            }
+            weak->m_catalogConnecting = false;
+            weak->UpdateControls();
+            if (!result.value("available", false))
+            {
+                weak->SetStatus("연결할 수 없습니다. " + DiagnosticMessage(result.value("diagnostic", Json::object())) +
+                                " 다른 인덱스를 선택하거나 층 직접 입력을 사용하세요.");
+                return;
+            }
+            weak->Changed();
+            weak->Search();
+        },
+        [weak](const Json& error)
+        {
+            if (weak && !weak->m_closed && !weak->m_disconnected)
+            {
+                weak->m_catalogConnecting = false;
+                weak->UpdateControls();
+                weak->SetStatus("카탈로그 연결 실패: " + DiagnosticMessage(error));
+            }
+        });
+}
+
 /** @brief 이전 검색 세대를 폐기하고 상세/선택과 행 범위를 함께 초기화한다. */
 void PcbSelectionDialog::ResetCatalogRows()
 {
@@ -256,7 +314,7 @@ void PcbSelectionDialog::ResetCatalogRows()
 /** @brief 검색 범위와 첫 페이지를 동일 카탈로그 개정에서 가져온다. */
 void PcbSelectionDialog::Search()
 {
-    if (m_closed || m_applying || m_disconnected)
+    if (m_closed || m_applying || m_disconnected || m_catalogConnecting)
     {
         return;
     }
@@ -310,7 +368,9 @@ void PcbSelectionDialog::Search()
                     weak->m_model.Fail(token, error))
                 {
                     weak->m_pageLabel->SetLabel(Display("검색 실패"));
-                    weak->ShowFailure(error);
+                    weak->SetStatus(DiagnosticMessage(error) +
+                                    " 카탈로그 연결에서 인덱스를 선택하거나 층 직접 입력을 사용하세요.");
+                    weak->UpdateControls();
                 }
             });
     }

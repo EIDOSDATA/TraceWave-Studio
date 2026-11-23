@@ -49,6 +49,7 @@ private:
     void Recover();
     void Cancel();
     void OpenFolder();
+    void OpenFile();
     void HandoffSync();
     Json ArchiveOutputInput() const;
     void HandoffEvidence(int offset);
@@ -62,7 +63,7 @@ private:
     OutputWorkspace* m_view = nullptr;
     OutputGateway m_gateway;
     std::shared_ptr<int> m_lifetime = std::make_shared<int>(0);
-    std::string m_workspace, m_project, m_revision, m_epoch;
+    std::string m_workspace, m_project, m_revision, m_epoch, m_catalogFormat;
     bool m_connected = false, m_available = false, m_supported = false, m_active = false;
     bool m_refreshNeeded = true, m_uncertain = false, m_mutating = false, m_cancelRequested = false;
     bool m_handoffSupported = false;

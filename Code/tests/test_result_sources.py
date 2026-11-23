@@ -126,6 +126,28 @@ class ResultSourceTests(unittest.TestCase):
         with self.assertRaises(ProjectError):
             self.query("result.sources", **{**arguments, "offset": 1})
 
+    def test_current_result_list_combines_sources_without_mixing_design_revisions(self):
+        """! @brief 기본 목록에서 새 계산과 자료를 함께 보여도 이전 해석은 보존한다."""
+        project = self.fixture.project
+        state = self.fixture.service.journal.read()
+        current, old, other = (str(uuid4()) for _ in range(3))
+        for artifact, owner, revision in ((current, project, self.source["revision_id"]),
+                                           (old, project, self.fixture.original["revision_id"]),
+                                           (other, str(uuid4()), self.source["revision_id"])):
+            state["solver_results"][artifact] = {
+                "project_id": owner, "snapshot": {"revision_id": revision, "sealed_at": 1},
+                "metadata": {"profile": "rfad.openems.pcb-single-port/0.1"}, "normalized": {},
+            }
+        inputs = {"revision_id": None, "snapshot_id": None, "study_id": None, "offset": 0,
+                  "limit": 25, "catalog_hash": None}
+        with patch.object(self.fixture.service.journal, "read", return_value=state):
+            mixed = self.query("result.sources", kind="all", **inputs)
+            self.assertEqual([row["source"] for row in mixed["items"]],
+                             [{"kind": "solver", "artifact_id": current}, self.source])
+            self.assertEqual(mixed["current_totals"], {"network": 1, "solver": 1})
+            solver = self.query("result.sources", kind="solver", **inputs)
+            self.assertEqual({row["source"]["artifact_id"] for row in solver["items"]}, {current, old})
+
     def test_artifact_tampering_is_detected_and_read_does_not_repair_it(self):
         """! @brief 파일을 자동 재생성하지 않고 정확한 원문 hash 오류를 반환한다."""
         entry = self.fixture.read("network.library")["datasets"][0]

@@ -1,6 +1,7 @@
 /** @file @brief native 입력과 표시 전용 회로 선도로 외부 정합망의 세 탭을 구성한다. */
 #include "network_circuit_dialog.h"
 #include "frequency_display.h"
+#include "result_presentation.h"
 #include "network_chart.h"
 #include "studio_notebook.h"
 #include "studio_support.h"
@@ -173,6 +174,10 @@ void Field(wxWindow* parent, wxSizer* layout, const std::string& title, wxWindow
 
 std::string Number(const Json& value)
 {
+    if (value.is_number())
+    {
+        return ResultUi::Number(value);
+    }
     return value.is_null() ? "미정" : value.is_string() ? value.get<std::string>() : value.dump();
 }
 }
@@ -202,6 +207,10 @@ void NetworkCircuitDialog::BuildInterface()
         selectors->Add(column, 1, wxRIGHT, FromDIP(12));
     }
     layout->Add(selectors, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(16));
+    m_step = new wxStaticText(this, wxID_ANY, wxEmptyString);
+    m_step->SetName("network.circuit.next_step");
+    StudioTheme::BindSecondary(*m_step);
+    layout->Add(m_step, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, FromDIP(16));
     m_tabs = new StudioNotebook(this);
     auto* configuration = new wxScrolledWindow(m_tabs, wxID_ANY);
     configuration->SetScrollRate(FromDIP(16), FromDIP(16));
@@ -326,6 +335,20 @@ void NetworkCircuitDialog::BuildInterface()
     m_loadPlane->SetHint(Display("부하 데이터의 기준면과 정확히 같아야 합니다"));
     Field(input, inputLayout, "회로 입력 기준면", m_inputPlane);
     Field(input, inputLayout, "부하 연결 기준면", m_loadPlane);
+    m_useLoadPlane = new wxButton(input, wxID_ANY, Display("선택한 부하의 기준면 사용"));
+    StudioTheme::Button(*m_useLoadPlane);
+    inputLayout->Add(m_useLoadPlane, 0, wxBOTTOM, FromDIP(8));
+    m_useLoadPlane->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        if (m_selection.is_object())
+        {
+            const auto planes = m_selection.at("descriptor").value("reference_planes", Json::array());
+            if (planes.size() == 1 && planes.front().is_string())
+            {
+                m_loadPlane->SetValue(Display(planes.front()));
+            }
+        }
+    });
     m_dataDetails = new wxTextCtrl(input, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 220)),
                                    wxTE_MULTILINE | wxTE_READONLY);
     inputLayout->Add(m_dataDetails, 1, wxEXPAND | wxTOP, FromDIP(12));
@@ -347,11 +370,12 @@ void NetworkCircuitDialog::BuildInterface()
     m_results =
         new wxListCtrl(result, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 150)), wxLC_REPORT | wxLC_SINGLE_SEL);
     const std::array<std::pair<const char*, int>, 6> resultColumns{
-        {{"주파수 (Hz)", 145}, {"부하 S11 (dB)", 129}, {"결합 S11 (dB)", 129}, {"VSWR", 85},
+        {{"주파수 (Hz)", 115}, {"부하 S11 (dB)", 122}, {"결합 S11 (dB)", 125}, {"VSWR", 85},
          {"표본 상태", 110}, {"회로 손실 (%)", 130}}};
     for (std::size_t index = 0; index < resultColumns.size(); ++index)
     {
-        m_results->InsertColumn(static_cast<int>(index), Display(resultColumns[index].first), wxLIST_FORMAT_LEFT,
+        m_results->InsertColumn(static_cast<int>(index), Display(resultColumns[index].first),
+                                index != 0 && index != 4 ? wxLIST_FORMAT_RIGHT : wxLIST_FORMAT_LEFT,
                                 FromDIP(resultColumns[index].second));
     }
     StudioTheme::Table(*m_results);

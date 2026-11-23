@@ -17,6 +17,9 @@ class TemplateDialog final : public ProjectSetupDialog
 {
 public:
     TemplateDialog(wxWindow* parent, const Json& context, DialogGateway gateway);
+    enum class Setup { None, Board, Layer };
+    /** @brief 닫기 확인을 거친 경우에만 기판 또는 도체층 편집 위치를 반환한다. */
+    Setup NextSetup() const;
 
 private:
     friend class StudioSmokeDriver;
@@ -67,6 +70,9 @@ private:
     DesignCanvas* m_canvas = nullptr;
     wxTextCtrl* m_notes = nullptr;
     wxButton* m_previewButton = nullptr;
+    wxButton* m_setupButton = nullptr;
+    wxStaticText* m_requirements = nullptr;
+    Setup m_nextSetup = Setup::None;
     wxButton* m_applyButton = nullptr;
     wxButton* m_cancel = nullptr;
 };

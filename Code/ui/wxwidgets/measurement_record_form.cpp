@@ -46,11 +46,13 @@ MeasurementRecordForm::MeasurementRecordForm(wxWindow* parent, DialogGateway gat
     m_author->SetName("measurement.author");
     m_reason = new wxTextCtrl(this, wxID_ANY);
     m_reason->SetName("measurement.reason");
+    m_name->SetHint(Display("이 기록을 구분할 이름"));
+    m_reason->SetHint(Display("기록을 작성하거나 바꾸는 이유"));
     m_sources =
         new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 52)), wxTE_MULTILINE);
     m_sources->SetName("measurement.source_refs");
     for (const auto& item : std::vector<std::pair<const char*, wxWindow*>>{
-             {"기록 이름", m_name}, {"자료 분류", m_class}, {"작성자", m_author}, {"작성 / 변경 사유", m_reason}})
+             {"기록 이름 (필수)", m_name}, {"자료 분류", m_class}, {"작성자", m_author}, {"작성 / 변경 사유 (필수)", m_reason}})
     {
         general->Add(new wxStaticText(this, wxID_ANY, Display(item.first)), 0, wxALIGN_CENTER_VERTICAL);
         general->Add(item.second, 1, wxEXPAND);
@@ -336,6 +338,27 @@ std::string MeasurementRecordForm::Name() const
 {
     return Utf8(m_name->GetValue());
 }
+std::string MeasurementRecordForm::RequiredInput(bool focus)
+{
+    wxTextCtrl* missing = nullptr;
+    std::string message;
+    if (m_name->GetValue().Strip(wxString::both).empty())
+    {
+        missing = m_name;
+        message = "기록 이름을 입력하세요.";
+    }
+    else if (m_reason->GetValue().Strip(wxString::both).empty())
+    {
+        missing = m_reason;
+        message = "작성 / 변경 사유를 입력하세요. 교정 자료가 없으면 그 상태를 명시할 수 있습니다.";
+    }
+    if (focus && missing != nullptr)
+    {
+        missing->SetFocus();
+    }
+    return message;
+}
+
 std::string MeasurementRecordForm::Reason() const
 {
     return Utf8(m_reason->GetValue());

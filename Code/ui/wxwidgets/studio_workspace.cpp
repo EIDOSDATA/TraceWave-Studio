@@ -1,11 +1,15 @@
 /** @file @brief 작업별 이동, 표시 층과 실제 작업 상태를 기존 서비스 연결 위에 조립한다. */
 #include "studio_internal.h"
+#include <chrono>
 #include "workspace_bar.h"
 #include "studio_theme.h"
 #include "drawing_rail.h"
 #include "study_report_dialog.h"
 #include <wx/artprov.h>
 #include <wx/imaglist.h>
+#include <wx/statusbr.h>
+#include <wx/utils.h>
+#include <wx/wupdlock.h>
 
 void StudioFrame::BuildWorkspacePages()
 {
@@ -96,6 +100,7 @@ void StudioFrame::BuildWorkspaceJobs()
     m_views->SetPageText(2, Display("해석 결과"));
     m_views->onSelectionChanged = [this](int page)
     {
+        const auto started = std::chrono::steady_clock::now();
         if (page != 0)
         {
             EndPortPick(false);
@@ -110,6 +115,11 @@ void StudioFrame::BuildWorkspaceJobs()
         UpdateResultViews();
         UpdateValidationViews();
         UpdateOutputViews();
+        if (page == 1)
+        {
+            const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - started).count();
+            Log("3D 탭 전환의 화면 상태 반영 / " + std::to_string(elapsed) + " ms");
+        }
     };
 }
 
@@ -119,6 +129,12 @@ void StudioFrame::PrepareExtendedWorkspaces(std::size_t page)
     {
         return;
     }
+    const auto started = std::chrono::steady_clock::now();
+    auto* status = GetStatusBar();
+    status->PushStatusText(Display("작업 공간을 처음 준비하고 있습니다."));
+    status->Update();
+    const wxBusyCursor busy;
+    const wxWindowUpdateLocker update(this);
     auto* navigation = m_tree->GetParent();
     const auto navigationChildren = navigation->GetChildren().GetCount();
     const auto propertiesChildren = m_properties->GetChildren().GetCount();
@@ -129,6 +145,7 @@ void StudioFrame::PrepareExtendedWorkspaces(std::size_t page)
     BuildResultInterface();
     BuildValidationInterface();
     BuildMeasurementInterface();
+    const auto constructed = std::chrono::steady_clock::now();
     StudioTheme::BindNativeControls(*navigation, navigationChildren);
     StudioTheme::BindNativeControls(*m_properties, propertiesChildren);
     for (std::size_t index = firstNewPage; index < m_views->GetPageCount(); ++index)
@@ -139,13 +156,25 @@ void StudioFrame::PrepareExtendedWorkspaces(std::size_t page)
     {
         item.second->Enable(m_tools.at(item.first)->IsEnabled());
     }
+    status->PopStatusText();
+    const auto widgetTime = std::chrono::duration_cast<std::chrono::milliseconds>(constructed - started).count();
+    const auto styleTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - constructed).count();
+    Log("작업 공간 첫 구성 / 위젯 " + std::to_string(widgetTime) + " ms / 표시 설정 " +
+        std::to_string(styleTime) + " ms");
 }
 
 void StudioFrame::NavigateWorkspace(WorkspaceArea area)
 {
     const int pages[] = {0, 3, 9, 14, 5};
+    const bool leavingModel = m_views->GetSelection() == 1;
+    const auto started = std::chrono::steady_clock::now();
     m_views->SetSelection(pages[static_cast<int>(area)]);
     m_workspaceBar->Select(area);
+    if (leavingModel)
+    {
+        const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - started).count();
+        Log("3D에서 다른 작업 공간 전환 / " + std::to_string(elapsed) + " ms");
+    }
 }
 
 void StudioFrame::BuildWorkspaceLayers()

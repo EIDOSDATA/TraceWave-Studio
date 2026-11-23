@@ -18,6 +18,11 @@ TemplateDialog::TemplateDialog(wxWindow* parent, const Json& context, DialogGate
     RenderContext(context);
 }
 
+TemplateDialog::Setup TemplateDialog::NextSetup() const
+{
+    return m_nextSetup;
+}
+
 void TemplateDialog::RenderContext(const Json& context)
 {
     if (context.at("project_id") != m_projectId || context.at("expected_revision") != m_revision)
@@ -352,7 +357,17 @@ void TemplateDialog::UpdateActions()
                                                  m_card.at("template_id") == "builtin.explicit_planar_ifa");
     m_goalSize->Enable(editable && target >= 0 && goalCard);
     m_inputs->Enable(editable);
-    m_previewButton->Enable(editable && !m_pending && !m_card.is_null());
+    const bool boardMissing = m_context.at("board").is_null();
+    const bool layerMissing = m_binding->GetCount() == 0;
+    const bool layerUnselected = m_binding->GetSelection() < 0;
+    m_requirements->SetLabel(Display(boardMissing ? "기판을 만든 뒤 적용할 도체층을 추가하세요."
+        : layerMissing ? "이 프로젝트에 후보를 적용할 도체층이 없습니다."
+        : layerUnselected ? "후보를 적용할 도체층을 지정하세요." : ""));
+    m_requirements->Show(boardMissing || layerUnselected);
+    m_setupButton->SetLabel(Display(boardMissing ? "기판 만들기" : layerMissing ? "도체층 추가" : "도체층 선택"));
+    m_setupButton->Show(boardMissing || layerUnselected);
+    m_setupButton->Enable(editable && !m_pending);
+    m_previewButton->Enable(editable && !m_pending && !m_card.is_null() && !boardMissing && !layerUnselected);
     m_applyButton->Enable(editable && !m_pending && !m_preview.is_null() && m_preview.value("can_apply", false));
     m_cancel->Enable(!m_mutating);
 }

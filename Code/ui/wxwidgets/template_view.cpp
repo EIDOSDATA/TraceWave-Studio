@@ -94,6 +94,26 @@ void TemplateDialog::BuildInterface()
     m_previewButton->SetName("template.preview");
     StudioTheme::Button(*m_previewButton);
     actions->Add(m_previewButton, 0);
+    m_setupButton = new wxButton(this, wxID_ANY, Display("기판과 도체층 설정"));
+    StudioTheme::Button(*m_setupButton);
+    actions->Add(m_setupButton, 0, wxLEFT, FromDIP(8));
+    m_requirements = new wxStaticText(this, wxID_ANY, wxEmptyString);
+    StudioTheme::BindSecondary(*m_requirements);
+    layout->Add(m_requirements, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
+    m_setupButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        const bool boardMissing = m_context.at("board").is_null();
+        if (!boardMissing && m_binding->GetCount() > 0)
+        {
+            m_binding->SetFocus();
+            return;
+        }
+        if (Editable() && !m_pending && ConfirmDiscard())
+        {
+            m_nextSetup = boardMissing ? Setup::Board : Setup::Layer;
+            CloseDialog(true);
+        }
+    });
     actions->AddStretchSpacer();
     m_applyButton = new wxButton(this, wxID_ANY, Display("검토한 형상 적용"));
     m_applyButton->SetName("template.apply");

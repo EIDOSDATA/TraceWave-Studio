@@ -24,6 +24,8 @@ public:
     Json Changes() const;
     std::string Name() const;
     std::string Reason() const;
+    /** @brief 서비스 편집 화면으로 넘기기 전에 필수 입력을 바로 안내한다. */
+    std::string RequiredInput(bool focus = false);
     bool Dirty() const;
     bool Pending() const;
     std::function<void()> onChanged;

@@ -85,6 +85,10 @@ void StudioFrame::BindCad()
     {
         m_modelHint->SetLabel(Display(message));
     };
+    m_modelView->onTiming = [this](const std::string& operation, long long milliseconds)
+    {
+        Log(operation + " / " + std::to_string(milliseconds) + " ms");
+    };
     m_modelView->onSelectionCandidates = [this](const std::vector<std::string>& sources)
     {
         if (m_busy || m_setupDialog || !CurrentDisplayMesh())

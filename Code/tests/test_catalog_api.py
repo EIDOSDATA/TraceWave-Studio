@@ -116,6 +116,25 @@ class CatalogApiTests(unittest.TestCase):
         result = json.loads(output.getvalue())["result"]
         self.assertEqual(result["properties"]["properties"]["df"]["frequency"]["point_ghz"], 1)
 
+    def test_workspace_connect_validates_before_replacing_session_index(self):
+        """! @brief 화면에서 고른 인덱스를 검색과 적층 검토가 함께 사용한다."""
+        with ProjectService(self.root / "session catalog", auto_run=False) as service:
+            before = service.journal.read()
+
+            def invoke(method, value=None):
+                """! @brief 실제 GUI와 같은 빈 workspace 설정 문맥에서 RPC를 호출한다."""
+                return handle_frame(encoded(request(method, value)), service)
+
+            self.assertFalse(invoke("catalog.status")["result"]["available"])
+            connected = invoke("catalog.connect", {"database": str(self.database)})["result"]
+            self.assertTrue(connected["available"])
+            self.assertEqual(service.pcb_selection.database, self.database)
+            rejected = invoke("catalog.connect", {"database": str(self.root / "absent.sqlite")})["result"]
+            self.assertFalse(rejected["available"])
+            self.assertEqual(invoke("catalog.status")["result"]["catalog_id"], connected["catalog_id"])
+            self.assertEqual(invoke("catalog.search", {"entity": "observations"})["result"]["returned_count"], 2)
+            self.assertEqual(service.journal.read(), before)
+
     def test_broken_catalog_preserves_manual_material_save_undo_and_snapshot(self):
         broken = self.root / "broken.sqlite"
         broken.write_bytes(b"not sqlite")

@@ -30,6 +30,7 @@ std::string State(const Json& value)
                                                           {"missing", "미정"},
                                                           {"unknown", "미정"},
                                                           {"completed", "계산 완료"},
+                                                          {"recorded", "등록 완료"},
                                                           {"computed_unvalidated", "계산값 / 물리 미확립"},
                                                           {"sample_dependent", "전제 확인 / 표본별 판정"},
                                                           {"defined", "정의됨"},
@@ -118,7 +119,13 @@ std::string Complex(const Json& value, const std::string& state)
     {
         return "미정";
     }
-    return Number(value.at(0)) + (value.at(1) == 0.0 ? "" : " + j(" + Number(value.at(1)) + ")");
+    const double imaginary = value.at(1).get<double>();
+    if (imaginary == 0.)
+    {
+        return Number(value.at(0));
+    }
+    return Number(value.at(0), 5) + (imaginary < 0. ? " - j" : " + j") +
+           Number(imaginary < 0. ? -imaginary : imaginary, 5);
 }
 
 std::string SampleValue(const Json& point, const std::string& key)

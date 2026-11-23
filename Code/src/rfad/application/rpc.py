@@ -280,7 +280,7 @@ def capabilities(service=None, catalog=None) -> dict:
                                             "project_schema": SCHEMA_VERSION, "max_result_bytes": MAX_SELECTION_RESULT_BYTES,
                                             "readable_selection_schemas": ["rfad.pcb-selection/0.1", "rfad.pcb-selection/0.2"],
                                             "shared_evidence_supported": True}
-    result["catalog_profile"] = describe_catalog(catalog)
+    result["catalog_profile"] = describe_catalog(catalog, service)
     result["methods"].update({
         name: {"status": "implemented", "extension_profile": "rfad.catalog/0.1"}
         for name in sorted(CATALOG_METHODS)
@@ -468,7 +468,7 @@ def _dispatch(request: object, service=None, catalog=None) -> dict | None:
         try:
             response = {
                 "jsonrpc": "2.0", "id": request_id,
-                "result": query_catalog(method, request.get("params"), catalog),
+                "result": query_catalog(method, request.get("params"), catalog, service),
             }
         except ProjectError as error:
             response = _error(request_id, APPLICATION_ERRORS.get(error.code, 1099), error.message, error.code)

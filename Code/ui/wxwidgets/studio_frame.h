@@ -387,6 +387,7 @@ private:
     wxTextCtrl* m_solverDetails = nullptr;
     wxButton* m_solverCost = nullptr;
     wxButton* m_solverEvidence = nullptr;
+    wxButton* m_solverOpenResult = nullptr;
     bool m_solverConfigured = false;
     bool m_solverRestoring = false;
     std::string m_solverState = "idle";
@@ -434,6 +435,9 @@ private:
     wxCheckBox* m_drawingRelations = nullptr;
     wxStaticText* m_canvasHint = nullptr;
     wxPanel* m_startActions = nullptr;
+    wxPanel* m_designStart = nullptr;
+    wxStaticText* m_designStep = nullptr;
+    std::map<int, wxButton*> m_designShortcuts;
     wxButton* m_startCreate = nullptr;
     wxButton* m_startOpen = nullptr;
     wxStaticText* m_problemSummary = nullptr;

@@ -23,6 +23,8 @@ private:
     void Apply(bool remove);
     void Check();
     void ShowIssue(long index);
+    /** @brief 전체 판정 집계를 유지한 채 선택한 상태의 표시 행만 바꾼다. */
+    void RenderFindings();
     void ClearReport();
     bool HasDraft() const override;
     void UpdateActions() override;
@@ -30,6 +32,7 @@ private:
 
     Json m_context;
     Json m_report = nullptr;
+    Json m_findings = Json::array();
     bool m_loading = false;
     bool m_reloading = false;
     wxChoice* m_section = nullptr;
@@ -40,6 +43,9 @@ private:
     EditorPanel* m_fields = nullptr;
     DesignCanvas* m_canvas = nullptr;
     wxListCtrl* m_issues = nullptr;
+    wxChoice* m_filter = nullptr;
+    wxChoice* m_connections = nullptr;
+    wxButton* m_editRule = nullptr;
     wxTextCtrl* m_reason = nullptr;
     wxTextCtrl* m_detail = nullptr;
     wxButton* m_set = nullptr;

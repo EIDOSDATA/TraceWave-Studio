@@ -263,14 +263,23 @@ def read(service, method, params):
             "limits": {"views": 8, "file_bytes": contract.MAX_FILE_BYTES, "package_bytes": contract.MAX_PACKAGE_BYTES,
                        "response_bytes": contract.MAX_RESPONSE_BYTES, "concurrency": 1}})
     if method == "export.list":
-        contract.fields(data, set(), {"offset"})
+        contract.fields(data, set(), {"offset", "format"})
+        selected_format = data.get("format")
+        if selected_format is not None and (type(selected_format) is not str or
+                selected_format not in {"step", "pdf", "svg", "dxf", *contract.PCB_PROFILES.values()}):
+            raise ProjectError("E_SCHEMA", "출력 기록에서 지원하는 형식을 선택하십시오.")
         offset = data.get("offset", 0)
         if type(offset) is not int or not 0 <= offset <= 512:
             raise ProjectError("E_SCHEMA", "출력 목록 offset이 유효하지 않습니다.")
         jobs = [job for job in state["jobs"].values() if job.get("context") == context and job.get("operation_method") in ("geometry.build", "export.build", "export.verify")]
         jobs.reverse()
-        return bounded({"project_id": context["project_id"], "items": [_item(job) for job in jobs[offset:offset + 25]],
-                        "offset": offset, "total": len(jobs), "next_offset": offset + 25 if offset + 25 < len(jobs) else None})
+        rows = [_item(job) for job in jobs]
+        if selected_format is not None:
+            matching = {row["job_id"] for row in rows if row["format"] == selected_format}
+            rows = [row for row in rows if row["job_id"] in matching or
+                    (row["format"] == "verification" and state["jobs"][row["job_id"]].get("input", {}).get("job_id") in matching)]
+        return bounded({"project_id": context["project_id"], "items": rows[offset:offset + 25],
+                        "offset": offset, "total": len(rows), "next_offset": offset + 25 if offset + 25 < len(rows) else None})
     if method == "export.get":
         contract.fields(data, {"job_id"})
         job = owned_job(service, state, context, data["job_id"])

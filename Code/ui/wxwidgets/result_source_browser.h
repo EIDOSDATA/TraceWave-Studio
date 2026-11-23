@@ -27,6 +27,8 @@ public:
     void Reset();
     /** @brief 직접 연 보존 해석 원본의 종류를 바꾸되 다른 결과를 자동 선택하지 않는다. */
     void SetSolverContext();
+    /** @brief 최근 작업 직후 현재 개정의 통합 목록으로 이동한다. */
+    void SetCurrentContext();
     std::function<void()> onContextChanged;
     std::function<void()> onRefresh;
     std::function<void(int)> onPage;
