@@ -171,6 +171,11 @@ def _inside(center, loops):
                     crossings += 1
             else:
                 cx, cy = edge["center"]
+                if abs(edge["sweep_deg"]) == 360:
+                    # @brief 완전한 원은 시작각의 부동소수점 오차 없이 홀수 교차 여부를 판정한다.
+                    if math.hypot(x - cx, y - cy) < edge["radius"]:
+                        crossings += 1
+                    continue
                 q = (y - cy) / edge["radius"]
                 if abs(q) >= 1:
                     continue

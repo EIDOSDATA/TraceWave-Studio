@@ -125,7 +125,29 @@ class SolverReviewFollowup(unittest.TestCase):
         self.assertTrue(inner["cells_xy"])
         partial = {"kind": "circle", "center_mm": [0, 0], "radius_mm": .5, "z_mm": [0, .5]}
         report = pcb_clearance_review.planar_clearances([dielectric, {**drilled, "primitives": [partial]}], lines, 1)
-        self.assertEqual(report["volume_omitted_count"], 1)
+        self.assertEqual(report["volume_omitted_count"], 0)
+        suspended = {**inside, "primitives": [{"kind": "box", "bounds_mm": [[-.1, .1], [-.1, .1], [.2, .4]]}]}
+        report = pcb_clearance_review.planar_clearances([dielectric, {**drilled, "primitives": [partial]}, suspended], lines, 1)
+        vertical, = report["clearances"]
+        self.assertAlmostEqual(vertical["distance_mm"], .1)
+        self.assertEqual({vertical["z_mm"], vertical["other_z_mm"]}, {.4, .5})
+        self.assertTrue(vertical["cells_xyz"])
+
+        covering = {**partial, "radius_mm": 3, "z_mm": [0, 1]}
+        removed = pcb_clearance_review.planar_clearances([dielectric, {**drilled, "primitives": [covering]}, suspended], lines, 1)
+        self.assertEqual((removed["volume_omitted_count"], removed["clearances"]), (0, []))
+
+        bore = {"id": "via", "name": "via", "role": "via", "primitives": [
+            {"kind": "circle", "center_mm": [.35, 0], "radius_mm": radius, "z_mm": [0, 1], "opening": i == 1}
+            for i, radius in enumerate((.35, .25))]}
+        # @brief 두 원의 교점이 노출된 기판 벽이다. 겹침 안의 숨은 원호가 더 가까워도 선택하지 않는다.
+        small = {**inside, "primitives": [{"kind": "box", "bounds_mm": [[.32, .33], [-.01, .01], [.2, .4]]}]}
+        rows = pcb_clearance_review.planar_clearances([dielectric, drilled, bore, small], lines, 1)
+        self.assertEqual(rows["volume_omitted_count"], 0)
+        inner = next(row for row in rows["clearances"] if set(row["object_ids"]) == {"core", "part"})
+        cross_x = (.5 ** 2 - .35 ** 2 + .35 ** 2) / (.7)
+        self.assertAlmostEqual(inner["distance_mm"], math.hypot(cross_x - .33, math.sqrt(.5**2 - cross_x**2) - .01))
+
 
     def test_rectangular_and_slotted_cutouts_use_only_real_walls(self):
         """! @brief 다각형의 직선 면과 슬롯의 캡 및 직선 벽에 대한 독립 최솟값을 확인한다."""

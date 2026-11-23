@@ -6,6 +6,9 @@ from itertools import combinations
 import math
 
 from rfad.domain.boundary_distance import Arc, Segment, boundary_distance, point_distance
+from rfad.domain.curve_boolean import difference
+from rfad.domain.drawing_layout import _inside
+from rfad.domain.errors import ProjectError
 from rfad.domain.planar import point_in_loop
 
 
@@ -69,11 +72,6 @@ def _round_piece(outer, inner=0):
                   tuple(arc.point(0) for arc in arcs), rings=(center, inner, outer_radius))
 
 
-def _height(primitive):
-    """! @brief 투영 primitive들의 저장 형식에서 공통 Z 범위를 읽는다."""
-    return primitive["bounds_mm"][2] if primitive["kind"] == "box" else primitive["z_mm"]
-
-
 def _solid_piece(primitive):
     """! @brief 선형 다각형, 사각 타일 또는 원통을 실제 소비 경계로 바꾼다."""
     if primitive["kind"] == "box":
@@ -103,33 +101,68 @@ def _mechanical_opening(primitives):
                   capsule=(Segment(a, b), radius))
 
 
-def _pieces(row, mechanical, bore_heights):
-    """! @brief 닫힌 관통 절삭은 체적 경계에 포함하고 부분 절삭 및 겹친 보어는 제외한다."""
+def _curve_loops(piece):
+    """! @brief 원과 슬롯을 근사하지 않고 단면 차집합의 경계로 전달한다."""
+    loop = []
+    for edge, _ in piece.edges:
+        if isinstance(edge, Segment):
+            loop.append({"kind": "line", "start": edge.a, "end": edge.b})
+        else:
+            loop.append({"kind": "arc", "center": edge.center, "radius": edge.radius,
+                         "start_deg": math.degrees(edge.start), "sweep_deg": math.degrees(edge.sweep)})
+    return [loop]
+
+
+def _clipped_slab(piece, cuts, heights):
+    """! @brief 같은 Z 구간의 실제 재료 경계만 남기고 내부 절삭끼리 겹치는 변을 지운다."""
+    bounds = (*piece.bounds[:2], heights)
+    if not cuts:
+        return replace(piece, bounds=bounds)
+    loops = _curve_loops(piece)
+    for cut in cuts:
+        loops = difference(loops, _curve_loops(cut), _inside)
+        if not loops:
+            return None
+    edges, witnesses = [], []
+    for loop in loops:
+        for curve in loop:
+            if curve["kind"] == "line":
+                edge = Segment(tuple(curve["start"]), tuple(curve["end"]))
+                limits = _bounds((edge.a, edge.b))
+                witness = edge.a
+            else:
+                start, sweep = (math.radians(curve[key]) for key in ("start_deg", "sweep_deg"))
+                edge = Arc(tuple(curve["center"]), curve["radius"], start + min(0, sweep), abs(sweep))
+                limits = tuple((c - edge.radius, c + edge.radius) for c in edge.center)
+                witness = edge.point(edge.start)
+            edges.append((edge, limits))
+            witnesses.append(witness)
+    return replace(piece, bounds=bounds, edges=tuple(edges), witnesses=tuple(witnesses), openings=tuple(cuts))
+
+
+def _pieces(row, cuts):
+    """! @brief 우선순위가 높은 절삭과 PTH 바깥면을 높이별로 적용한 재료 체적을 만든다."""
     primitives = row["primitives"]
     role = row["role"]
     if role == "via" and primitives:
         outer, bore = primitives
         return [_round_piece(outer, bore["radius_mm"])]
     if role in {"surface", "dielectric"}:
-        if any(primitive.get("opening") for primitive in primitives):
-            return []
-        pieces = [_solid_piece(primitive) for primitive in primitives]
+        openings = [_solid_piece(p) for p in primitives if p.get("opening")]
         actual = []
-        for piece in pieces:
+        for primitive in primitives:
+            if primitive.get("opening"):
+                continue
+            piece = _solid_piece(primitive)
             low, high = piece.bounds[2]
-            if any(max(low, a) < min(high, b) for a, b in bore_heights):
-                return []
-            openings = [cut for cut in mechanical
-                        if max(low, cut.bounds[2][0]) < min(high, cut.bounds[2][1])
-                        and _box_gap(piece.bounds[:2], cut.bounds[:2]) == 0]
-            if openings:
-                # @brief 이 절삭은 계획의 기판 유전체를 관통하며, 부분 높이나 다른 재료를 재구성하지 않는다.
-                if role != "dielectric" or any(cut.bounds[2][0] > low or cut.bounds[2][1] < high for cut in openings):
-                    return []
-                piece = replace(piece, openings=tuple(openings),
-                                edges=piece.edges + tuple(edge for cut in openings for edge in cut.edges),
-                                witnesses=piece.witnesses + tuple(point for cut in openings for point in cut.witnesses))
-            actual.append(piece)
+            nearby = [cut for cut in (*cuts, *openings) if _box_gap(piece.bounds[:2], cut.bounds[:2]) == 0
+                      and max(low, cut.bounds[2][0]) < min(high, cut.bounds[2][1])]
+            levels = sorted({low, high, *(z for cut in nearby for z in cut.bounds[2] if low < z < high)})
+            for bottom, top in zip(levels, levels[1:]):
+                active = [cut for cut in nearby if cut.bounds[2][0] < top and bottom < cut.bounds[2][1]]
+                slab = _clipped_slab(piece, active, (bottom, top))
+                if slab is not None:
+                    actual.append(slab)
         return actual
     if role in {"conductor", "environment"}:
         return [_solid_piece(primitive) for primitive in primitives]
@@ -224,16 +257,19 @@ def planar_clearances(included, lines, grid_mm):
     objects = []
     omitted = 0
     mechanical = [_mechanical_opening(row["primitives"]) for row in included if row["role"] == "void"]
-    bore_heights = [_height(primitive) for row in included if row["role"] == "via"
-                    for primitive in row["primitives"] if primitive.get("opening")]
+    barrels = [_round_piece(row["primitives"][0]) for row in included if row["role"] == "via"]
+    cuts = [*mechanical, *barrels]
     for row in included:
-        pieces = _pieces(row, mechanical, bore_heights)
+        try:
+            pieces = _pieces(row, cuts)
+        except ProjectError:
+            # @brief 경계가 퇴화했거나 계산 상한을 넘은 체적만 누락 수에 포함한다.
+            omitted += 1
+            continue
         if pieces:
             box = tuple((min(axis[0] for axis in bounds), max(axis[1] for axis in bounds))
                         for bounds in zip(*(piece.bounds for piece in pieces)))
             objects.append((row, pieces, box))
-        elif row["role"] in {"surface", "dielectric"}:
-            omitted += 1
 
     candidates = []
     for left, right in combinations(objects, 2):
