@@ -6,10 +6,11 @@ import math
 from rfad.application.canonical import canonical_bytes
 from rfad.domain.design import _uuid
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_NETWORK_PORTS
 
 
 SCHEMA = "rfad.network-data/0.1"
-MAX_PORTS = 2
+MAX_PORTS = MAX_NETWORK_PORTS
 MAX_SAMPLES = 1001
 MAX_DATA_BYTES = 1024 * 1024
 UNITS = {"S": "1", "Z": "ohm", "Y": "S"}
@@ -102,7 +103,7 @@ def validate_dataset(data):
             fail("주파수는 0 이상이며 중복 없이 증가해야 합니다.", "frequency_hz")
         previous = frequency
     if type(identities) is not list or not 1 <= len(identities) <= MAX_PORTS:
-        fail("현재 네트워크는 1~2포트를 지원합니다.", "port_ids", "E_RESOURCE")
+        fail(f"현재 네트워크는 1~{MAX_PORTS}포트를 지원합니다.", "port_ids", "E_RESOURCE")
     for identity in identities:
         _uuid(identity, "port_ids")
     if len(set(identities)) != len(identities):

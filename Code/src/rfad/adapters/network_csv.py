@@ -30,7 +30,7 @@ def _mapping(value):
         fail("CSV 구분자와 header 여부를 명시해야 합니다.", "mapping")
     ports = value["port_count"]
     if type(ports) is not int or not 1 <= ports <= MAX_PORTS:
-        fail("CSV는 1~2포트를 지원합니다.", "mapping.port_count", code="E_RESOURCE")
+        fail(f"CSV는 1~{MAX_PORTS}포트를 지원합니다.", "mapping.port_count", code="E_RESOURCE")
     kind, form, unit = value["parameter_kind"], value["complex_format"], value["frequency_unit"]
     if type(kind) is not str or kind not in UNITS or value["value_unit"] != UNITS[kind]:
         fail("CSV S/Z/Y와 단위 1/ohm/S가 일치해야 합니다.", "mapping.value_unit", code="E_UNIT")

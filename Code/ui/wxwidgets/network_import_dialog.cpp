@@ -101,7 +101,7 @@ void NetworkImportDialog::Browse()
     wxFileDialog chooser(
         this, Display("가져올 복소 자료"), wxEmptyString, wxEmptyString,
         Display(
-            "지원 자료 (*.s1p;*.s2p;*.ts;*.csv;*.h5;*.hdf5)|*.s1p;*.s2p;*.ts;*.csv;*.h5;*.hdf5|모든 파일 (*.*)|*.*"),
+            "지원 자료 (*.s1p;*.s2p;*.s3p;*.s4p;*.ts;*.csv;*.h5;*.hdf5)|*.s1p;*.s2p;*.s3p;*.s4p;*.ts;*.csv;*.h5;*.hdf5|모든 파일 (*.*)|*.*"),
         wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     if (chooser.ShowModal() == wxID_OK)
     {

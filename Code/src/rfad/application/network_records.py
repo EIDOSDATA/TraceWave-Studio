@@ -106,25 +106,34 @@ def _quality(data, index):
             or data["wave_definition"] not in ("power", "traveling")
             or any(mode != "single_ended" for mode in data["port_modes"])
             or any(direction != "into_dut" for direction in data["current_orientation"])):
-        return None, "quality_basis_unknown", None, "quality_basis_unknown" if size == 2 else "not_applicable"
+        return None, "quality_basis_unknown", None, "quality_basis_unknown" if size > 1 else "not_applicable"
     if not all(flag for row in data["valid_mask"][index] for flag in row):
-        return None, "matrix_incomplete", None, "matrix_incomplete" if size == 2 else "not_applicable"
+        return None, "matrix_incomplete", None, "matrix_incomplete" if size > 1 else "not_applicable"
     pairs = [pair for row in data["values_ri"][index] for pair in row]
     scale = max(abs(value) for pair in pairs for value in pair)
     if scale == 0:
         sigma, residual = 0.0, 0.0
     elif size == 1:
         sigma, residual = math.hypot(*pairs[0]), None
-    else:
+    elif size == 2:
         a, b, c, d = (complex(x / scale, y / scale) for x, y in pairs)
         left, right = abs(a) ** 2 + abs(c) ** 2, abs(b) ** 2 + abs(d) ** 2
         cross = a.conjugate() * b + c.conjugate() * d
         sigma = scale * math.sqrt((left + right + math.hypot(left - right, 2 * abs(cross))) / 2)
         residual = scale * abs(b - c)
+    else:
+        matrix = [[complex(x/scale, y/scale) for x, y in row] for row in data["values_ri"][index]]
+        residual = scale * max(abs(matrix[r][c] - matrix[c][r]) for r in range(size) for c in range(r))
+        try:
+            import numpy as np
+        except ImportError:
+            state = "nonzero_residual" if residual > 1e-12 else "finite"
+            return None, "numeric_backend_unavailable", residual if math.isfinite(residual) else None, state if math.isfinite(residual) else "nonfinite"
+        sigma = scale * float(np.linalg.svd(matrix, compute_uv=False)[0])
     roundoff = 1e-12
     passivity = ("over_unity" if sigma > 1 + roundoff else "finite") if math.isfinite(sigma) else "nonfinite"
     reciprocity = "not_applicable"
-    if size == 2:
+    if size > 1:
         reciprocity = ("nonzero_residual" if residual > roundoff else "finite") if math.isfinite(residual) else "nonfinite"
     return (sigma if passivity != "nonfinite" else None, passivity,
             residual if reciprocity in ("nonzero_residual", "finite") else None, reciprocity)

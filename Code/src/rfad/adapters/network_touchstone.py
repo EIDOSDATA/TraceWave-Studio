@@ -98,7 +98,7 @@ def parse_touchstone(raw, file_name):
     seen = set()
     if version == "1.0":
         if suffix is None:
-            fail("1.0 profile은 포트 수가 명시된 .s1p/.s2p 파일 이름이 필요합니다.", "file_name", code="E_UNSUPPORTED")
+            fail("1.0 profile은 포트 수가 명시된 .sNp 파일 이름이 필요합니다.", "file_name", code="E_UNSUPPORTED")
         ports = _positive_integer(suffix[1], MAX_PORTS, option_line)
     else:
         while cursor < len(content):
@@ -144,7 +144,9 @@ def parse_touchstone(raw, file_name):
             fail("파일 이름의 포트 수와 [Number of Ports]가 다릅니다.", "file_name")
     frequencies, matrices, pending = [], [], []
     width, ended = 1 + 2 * ports * ports, False
-    indices = [(0, 0)] if ports == 1 else ([(0, 0), (1, 0), (0, 1), (1, 1)] if order == "21_12" else [(0, 0), (0, 1), (1, 0), (1, 1)])
+    indices = [(row, column) for row in range(ports) for column in range(ports)]
+    if ports == 2 and order == "21_12":
+        indices = [(0, 0), (1, 0), (0, 1), (1, 1)]
     for line, text, body in content[cursor:]:
         if ended:
             fail("[End] 뒤에 데이터가 있습니다.", line=line)
@@ -157,8 +159,10 @@ def parse_touchstone(raw, file_name):
         if text.startswith("#"):
             fail("현재 profile은 중복 옵션 행을 조용히 무시하지 않습니다.", line=line, code="E_UNSUPPORTED")
         tokens = text.split()
-        if version == "1.0" and len(tokens) != width:
-            fail("1.0의 각 주파수 행은 완전한 S 행렬이어야 합니다. noise/분할 행은 지원하지 않습니다.", line=line, code="E_UNSUPPORTED")
+        if version == "1.0":
+            row_width = width if ports <= 2 else 2 * ports + int(not pending)
+            if len(tokens) != row_width:
+                fail("Touchstone 1.0의 주파수 및 포트별 행 길이가 다릅니다.", line=line, code="E_UNSUPPORTED")
         pending += tokens
         if len(pending) > width:
             fail("한 행에 다음 주파수 또는 초과 값이 있습니다.", line=line)

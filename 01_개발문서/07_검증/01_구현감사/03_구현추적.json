@@ -7465,7 +7465,7 @@
       },
       "import_bytes": 524288,
       "physical_validation": false,
-      "ports": 2,
+      "ports": 4,
       "preview_required": true,
       "profile": "rfad.network-workspace/0.1",
       "samples": 1001
@@ -14933,8 +14933,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/network_csv.py",
-      "text_sha256": "c2066d43aa9b44a37f6fceb1af5926269dd35be742656a0c26666f13b5496cb5",
-      "utf8_bytes": 8362
+      "text_sha256": "fd02d84c0fba6374a12eec2a9c8ffe61994e83bc1696ea49507c3eb3f0640fb7",
+      "utf8_bytes": 8373
     },
     {
       "path": "Code/src/rfad/adapters/network_hdf5.py",
@@ -14943,8 +14943,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/network_touchstone.py",
-      "text_sha256": "828f86f0b317b59eb79b7fc220c9906b31da9ed2e77351a3f103e020bfe31afe",
-      "utf8_bytes": 11727
+      "text_sha256": "a4228660b04933ca95b01bc1a17c3d047ce80b05b478180b371f0f36c001dd7b",
+      "utf8_bytes": 11813
     },
     {
       "path": "Code/src/rfad/adapters/planar_backend.py",
@@ -15123,13 +15123,13 @@
     },
     {
       "path": "Code/src/rfad/application/network_records.py",
-      "text_sha256": "e12595b6e9534d277bc13afcd612767a65586a8e6c21afa09f6a03bae99c8a71",
-      "utf8_bytes": 12456
+      "text_sha256": "21010e0397a05aaf5e3629840d63cdd9431ec88881fa212b7e27269dc01714bc",
+      "utf8_bytes": 13048
     },
     {
       "path": "Code/src/rfad/application/network_service.py",
-      "text_sha256": "a6d242f8838f9f52464892ffc3bd39ce7615a0e14a56261a599ca75694bfd882",
-      "utf8_bytes": 13175
+      "text_sha256": "5a57539a57271dd6fc52849c3c1ead8a1260ae6fd8e60c55f2c900de14864a7e",
+      "utf8_bytes": 13210
     },
     {
       "path": "Code/src/rfad/application/network_solver_import.py",
@@ -15183,8 +15183,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_projection.py",
-      "text_sha256": "6694ac0a147b6958e86cd7416358a707d727fa2c200eda574dd0e15edf0efb22",
-      "utf8_bytes": 32391
+      "text_sha256": "da40471d07e2fc0d5d65f4446391a1b83d9431796884d9e2e8af0315bd42771d",
+      "utf8_bytes": 32598
     },
     {
       "path": "Code/src/rfad/application/pcb_radiation.py",
@@ -15373,8 +15373,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "c8e2b95e3d77ac02cef75233f3fb407864f98732edc6bd780792f9f4efd84960",
-      "utf8_bytes": 40544
+      "text_sha256": "4a96e526b4e398cd5c1ee9991bca435438ed4de96f15e69fdd05773a9fa1991e",
+      "utf8_bytes": 40576
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -15503,8 +15503,8 @@
     },
     {
       "path": "Code/src/rfad/domain/design.py",
-      "text_sha256": "99b99b709aa7261241acae517f5edd67f57f136219da0c09ac09d3ea980b8f6b",
-      "utf8_bytes": 38886
+      "text_sha256": "38655a16ef0ecab5eee880ee583d294a94bfa348a24971a1841754402d4be834",
+      "utf8_bytes": 38937
     },
     {
       "path": "Code/src/rfad/domain/design_checks.py",
@@ -15563,8 +15563,8 @@
     },
     {
       "path": "Code/src/rfad/domain/network_data.py",
-      "text_sha256": "86405e11664d1f9fe3f94648e954e95cfd0d6746d96254be84c527fe79bb563c",
-      "utf8_bytes": 9920
+      "text_sha256": "d232033da1aaaa1f80e860020f80ed89508875422458a8edb3a6b8d48ccee9e3",
+      "utf8_bytes": 10005
     },
     {
       "path": "Code/src/rfad/domain/network_library.py",
@@ -15813,8 +15813,8 @@
     },
     {
       "path": "Code/tests/test_design.py",
-      "text_sha256": "baf3cc43d66be5cd98dee2bf8ce135cea4318784ae0e87f227a22d138b185b37",
-      "utf8_bytes": 21485
+      "text_sha256": "fe5649054d6d6ba8e05e7fb6a35fca8dfae84f93882b5e326275d06779e92ab8",
+      "utf8_bytes": 21632
     },
     {
       "path": "Code/tests/test_design_rules.py",
@@ -16038,8 +16038,8 @@
     },
     {
       "path": "Code/tests/test_network_service.py",
-      "text_sha256": "cf3c9e49f0001a0de6cb9827bd197190affcdfef6ebc983bc67984a8917b476c",
-      "utf8_bytes": 30303
+      "text_sha256": "ad66ed689536c07578e149c38ecd0792775a8cdf85fff6b73012b02a9116f656",
+      "utf8_bytes": 31377
     },
     {
       "path": "Code/tests/test_object_names.py",
@@ -16523,8 +16523,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/network_import_dialog.cpp",
-      "text_sha256": "86815d7c0295924c0323cb0f8abbca9b7c65ed8b7e97f28a0d620a8eacf7520a",
-      "utf8_bytes": 10239
+      "text_sha256": "6f4820d721bdecbc40ec74a7ea1c5588c18b5a6ba824396c460ac4da1b483fd1",
+      "utf8_bytes": 10263
     },
     {
       "path": "Code/ui/wxwidgets/network_import_measurement.cpp",

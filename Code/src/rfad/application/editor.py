@@ -7,6 +7,7 @@ from uuid import UUID
 
 from rfad.domain.design import resolve_scalar
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_NETWORK_PORTS
 from rfad.domain.object_names import allocate_name, display_names, name_dto, object_label, validate_name
 from rfad.domain.parameter_graph import restore_parameter_command
 from rfad.domain.units import Quantity, QuantityError, _UNITS
@@ -102,8 +103,8 @@ def selected_object(document: dict, selection: dict) -> tuple[str, dict]:
                 "validity_hz": frequency_range, "source_refs": [], "assumptions": []}
         if document["board"] is None or len(document["geometry"]) < 2:
             _fail("포트를 생성하려면 기판과 서로 다른 도체 패턴 두 개가 필요합니다.", "ports", "E_PORT")
-        if len(document["ports"]) >= 2:
-            _fail("현재 사용할 수 있는 두 급전을 모두 지정했습니다. 기존 포트 속성을 편집하십시오.", "ports", "E_PORT")
+        if len(document["ports"]) >= MAX_NETWORK_PORTS:
+            _fail(f"현재 사용할 수 있는 {MAX_NETWORK_PORTS}개 급전을 모두 지정했습니다.", "ports", "E_PORT")
         return kind, {"id": identity, "name": allocate_name(document, {}, "ports"), "kind": "lumped", "positive_geometry_id": "", "reference_geometry_id": "",
             "resistance": Quantity.missing("impedance", "ohm").to_dict(), "reference_plane": "집중 포트의 급전 영역",
             "polarity": 1, "direction": [1.0, 0.0, 0.0], "validity_hz": frequency_range,

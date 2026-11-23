@@ -14,7 +14,7 @@ from rfad.domain.material_models import (LEGACY_MODEL, TOTAL_TAN_DELTA_MODEL,
 from rfad.domain.planar import MAX_REGION_HOLES, MAX_REGION_POINTS, validate_region
 from rfad.domain.units import Quantity, QuantityError
 from rfad.domain.object_names import NAMED_SCHEMAS, validate_name
-from rfad.domain.resource_limits import MAX_GEOMETRY
+from rfad.domain.resource_limits import MAX_GEOMETRY, MAX_NETWORK_PORTS
 
 
 DESIGN_COLLECTIONS = ("materials", "stackup", "nets", "geometry", "ports")
@@ -347,8 +347,8 @@ def validate_design(document: dict) -> None:
                 if not start_layer["order"] <= order <= end_layer["order"]:
                     _fail("E_GEOMETRY", "비아 패드가 연결 층 범위를 벗어났습니다.", field + ".pad_ids")
 
-    if len(document["ports"]) > 2:
-        _fail("E_UNSUPPORTED", "현재 설계는 최대 두 개의 lumped 급전을 지원합니다.", "ports")
+    if len(document["ports"]) > MAX_NETWORK_PORTS:
+        _fail("E_UNSUPPORTED", f"현재 설계는 최대 {MAX_NETWORK_PORTS}개의 lumped 급전을 지원합니다.", "ports")
     for port in document["ports"]:
         field = "ports." + port["id"]
         optional = {"excitation_box"} if "excitation_box" in port else set()

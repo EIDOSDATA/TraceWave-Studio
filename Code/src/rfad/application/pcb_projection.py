@@ -8,6 +8,7 @@ from copy import deepcopy
 
 from rfad.application.pcb_boundary import conditions
 import math
+from itertools import combinations
 
 from rfad.application.canonical import canonical_hash
 from rfad.application.pcb_contacts import validate_native_contacts
@@ -22,6 +23,7 @@ from rfad.application.pcb_voids import project_voids
 from rfad.application.pcb_results import normalization_contract
 from rfad.domain.design import material_input_fields, resolve_scalar
 from rfad.domain.errors import ProjectError
+from rfad.domain.resource_limits import MAX_NETWORK_PORTS
 from rfad.domain.material_models import TOTAL_TAN_DELTA_MODEL
 from rfad.domain.planar import validate_region
 
@@ -154,7 +156,7 @@ def project_port(document, shapes, frequency, settings, source=None):
     """! @brief 한 개의 명시적 급전 모델과 실제 도체 접점을 투영한다."""
     if source is None:
         if len(document["ports"]) > 1:
-            fail("E_PORT", "두 급전을 모두 해석하려면 pcb-multiport를 실행하십시오.", "ports")
+            fail("E_PORT", "모든 급전을 해석하려면 pcb-multiport를 실행하십시오.", "ports")
         if not document["ports"]:
             fail("E_PORT", "설계 메뉴에서 급전을 추가하고 양단 도체와 급전 영역을 지정하십시오.", "ports")
         source = document["ports"][0]
@@ -331,15 +333,16 @@ def project_pcb(document, settings, *, multiport=False):
             fail("E_RESOURCE", "전체 도체 polygon의 점 개수 상한을 초과했습니다.", field)
         shapes.append(item)
     if multiport:
-        if len(document["ports"]) != 2:
-            fail("E_PORT", "두 개의 연결된 lumped 급전이 필요합니다.", "ports")
+        if not 2 <= len(document["ports"]) <= MAX_NETWORK_PORTS:
+            fail("E_PORT", f"2~{MAX_NETWORK_PORTS}개의 연결된 lumped 급전이 필요합니다.", "ports")
         ports = [project_port(document, shapes, frequency, settings, source) for source in document["ports"]]
         for number, item in enumerate(ports, 1):
             item["number"] = number
-        first, second = ports
-        check_feed_intersection(first, second)
-        validate_native_contacts(shapes, second, settings["curve_tolerance_mm"], polygons_by_id, vias, ports=ports)
-        port = first
+        for first, second in combinations(ports, 2):
+            check_feed_intersection(first, second)
+        for additional in ports[1:]:
+            validate_native_contacts(shapes, additional, settings["curve_tolerance_mm"], polygons_by_id, vias, ports=ports)
+        port = ports[0]
     else:
         port = project_port(document, shapes, frequency, settings)
     from rfad.application import pcb_junctions

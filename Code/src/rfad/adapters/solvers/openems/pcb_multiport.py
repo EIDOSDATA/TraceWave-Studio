@@ -1,4 +1,4 @@
-"""! @brief 사용자 PCB의 공통 격자에서 두 급전을 각각 여기하고 복소 S 행렬을 구한다."""
+"""! @brief 사용자 PCB의 공통 격자에서 각 급전을 독립적으로 여기하여 전체 복소 S 행렬을 구한다."""
 
 from pathlib import Path
 import subprocess
@@ -11,7 +11,7 @@ from rfad.application.pcb_geometry import fail
 from rfad.application.pcb_mesh import mesh_lines
 from rfad.application.pcb_projection import project_pcb
 from rfad.application.pcb_solver import check_pcb_input
-from rfad.domain.network_data import make_dataset
+from rfad.domain.network_data import MAX_PORTS, make_dataset
 from .native import EXECUTABLE, file_identity, require, write_json
 from .pcb import add_geometry, statistics_and_termination
 from .pcb_mesh import audit_native_mesh
@@ -22,15 +22,16 @@ def scattering(incident, outgoing):
     """! @brief 모든 입력에 대한 a와 b를 열에 놓고 주파수별 S A = B를 푼다."""
     import numpy as np
 
-    require(incident.shape == outgoing.shape and incident.ndim == 3 and incident.shape[1:] == (2, 2),
-            "각 주파수에 두 포트, 두 여기의 입사파와 출력파가 필요합니다.")
+    require(incident.shape == outgoing.shape and incident.ndim == 3 and incident.shape[1] == incident.shape[2]
+            and 2 <= incident.shape[1] <= MAX_PORTS,
+            "각 주파수에 포트 수만큼의 독립 여기, 입사파와 출력파가 필요합니다.")
     require(np.isfinite(incident).all() and np.isfinite(outgoing).all(), "포트파에 비유한 값이 있습니다.")
     drives = np.abs(np.diagonal(incident, axis1=1, axis2=2))
     require(np.all(drives.max(axis=0) > 1e-18) and np.all(drives > drives.max(axis=0) * 1e-4),
             "급전의 유효 대역에 충분한 입사 스펙트럼이 없습니다.")
     scaled = incident / drives[:, None, :]
     condition = np.linalg.cond(scaled)
-    require(np.isfinite(condition).all() and np.all(condition <= 1e8), "두 여기의 입사파 행렬이 특이하거나 조건수가 높습니다.")
+    require(np.isfinite(condition).all() and np.all(condition <= 1e8), "여기별 입사파 행렬이 특이하거나 조건수가 높습니다.")
     matrix = np.linalg.solve(scaled.transpose(0, 2, 1),
                              (outgoing / drives[:, None, :]).transpose(0, 2, 1)).transpose(0, 2, 1)
     require(np.isfinite(matrix).all(), "계산한 S 행렬에 비유한 값이 있습니다.")
@@ -38,7 +39,7 @@ def scattering(incident, outgoing):
 
 
 def run_column(raw, case, lines, driven, frequencies):
-    """! @brief 두 실제 lumped 종단을 생성한 다음 한 포트를 여기해 모든 원시 파형을 읽는다."""
+    """! @brief 모든 실제 lumped 종단을 생성한 다음 한 포트를 여기해 전체 원시 파형을 읽는다."""
     import CSXCAD
     import numpy as np
     import openEMS
@@ -85,7 +86,7 @@ def run_column(raw, case, lines, driven, frequencies):
 
 
 def run(document, settings, destination):
-    """! @brief 원본 개정과 조건을 보존하고 두 실행의 종료가 확인되면 결과를 발행한다."""
+    """! @brief 원본 개정과 조건을 보존하고 전체 실행의 종료가 확인되면 결과를 발행한다."""
     import CSXCAD
     import numpy as np
     import openEMS
@@ -121,12 +122,14 @@ def run(document, settings, destination):
     data = make_dataset(parameter_kind="S", frequency_hz=frequencies.tolist(),
                         port_ids=[p["id"] for p in case["ports"]], values_ri=np.stack((matrix.real, matrix.imag), axis=-1).tolist(),
                         port_names=[p["name"] for p in document["ports"]], reference_planes=[p["reference_plane"] for p in case["ports"]],
-                        z0_ohm=[impedances for _ in frequencies], port_modes=["single_ended"] * 2, current_orientation=["into_dut"] * 2,
+                        z0_ohm=[impedances for _ in frequencies], port_modes=["single_ended"] * len(impedances),
+                        current_orientation=["into_dut"] * len(impedances),
                         wave_definition="power", phasor_convention="exp(+j*omega*t)", sample_origin=["computed"] * len(frequencies),
                         provenance=identity, conditions={"max_incident_matrix_condition": condition, "physical_setup_omissions": omissions})
-    (dest / "network.s2p").write_bytes(write_touchstone(data))
+    touchstone = dest / f"network.s{len(impedances)}p"
+    touchstone.write_bytes(write_touchstone(data))
     write_json(dest / "network.json", data)
     write_json(dest / "result.json", {"schema": "rfad.openems.pcb-multiport/0.1", **identity,
                                      "runs": [row[2] for row in columns], "network": file_identity(dest / "network.json"),
-                                     "touchstone": file_identity(dest / "network.s2p"), "measurement_validated": False})
+                                     "touchstone": file_identity(touchstone), "measurement_validated": False})
     return dest / "result.json"

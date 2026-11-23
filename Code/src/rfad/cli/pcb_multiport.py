@@ -1,4 +1,4 @@
-"""! @brief 저장된 사용자 PCB와 해석 조건에서 두 포트의 복소 S 행렬을 계산한다."""
+"""! @brief 저장된 사용자 PCB와 해석 조건에서 2~4포트의 복소 S 행렬을 계산한다."""
 
 import argparse
 import json

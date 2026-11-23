@@ -137,6 +137,22 @@ class NetworkServiceTests(unittest.TestCase):
         snapshot = self.workspace / self.snapshot["artifact"]["uri"]
         self.assertEqual(hashlib.sha256(snapshot.read_bytes()).hexdigest(), self.snapshot["artifact"]["sha256"])
 
+    def test_four_port_storage_channel_and_reopen(self):
+        """! @brief 비상호 4포트의 S43을 정상 화면 조회와 저장/재열기를 통해 확인한다."""
+        params = import_parameters()
+        raw = "# Hz S RI R 50\n"
+        for row in range(4):
+            raw += ("1000000000 " if row == 0 else "") + " ".join(f"{0.1*row + 0.01*col:.2f} 0.02" for col in range(4)) + "\n"
+        params.update(file_name="다중단자.s4p", source_base64=base64.b64encode(raw.encode()).decode("ascii"))
+        params["declarations"].update(reference_planes=["설계 단자"]*4, current_orientation=["into_dut"]*4,
+                                      port_modes=["single_ended"]*4)
+        identity = self.apply("import", params)
+        self.save_reopen()
+        result = self.read("network.get", dataset_id=identity, offset=0, limit=1, row=3, column=2)
+        self.assertEqual(len(result["descriptor"]["port_ids"]), 4)
+        self.assertEqual(result["page"]["samples"][0]["real"], 0.32)
+        self.assertEqual(result["page"]["samples"][0]["imag"], 0.02)
+
     def test_matched_line_port_shifts_and_exact_inverse(self):
         """! @brief 독립 산술, 포트별 경로 합, 저장 자료 및 역방향 복원을 확인한다."""
         parameters = import_parameters()

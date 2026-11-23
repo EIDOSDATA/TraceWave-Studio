@@ -10,7 +10,7 @@ from rfad.application.network_records import assessment_summary, bounded, descri
 from rfad.application.project_contract import _fields, _uuid
 from rfad.domain.errors import ProjectError
 from rfad.domain.network_library import COMMAND, KEY, MAX_RECORDS, digest, fail, library
-from rfad.domain.resource_limits import MAX_DOCUMENT_BYTES
+from rfad.domain.resource_limits import MAX_DOCUMENT_BYTES, MAX_NETWORK_PORTS
 
 PROFILE = "rfad.network-workspace/0.1"
 READS = {"network.library", "network.get", "network.preview", "network.assessment", "network.assessment.points", "network.export", "network.diagnostics", "network.quantity"}
@@ -93,7 +93,7 @@ def overview(document):
                     **model, "targets": targets,
                     "ports": [{"id": row["id"], "name": row["name"], "reference_plane": row["reference_plane"]} for row in document["ports"]],
                     "limits": {"records_per_kind": MAX_RECORDS, "source_bytes": MAX_IMPORT_BYTES,
-                               "ports": 2, "samples": 1001, "page_size": 201},
+                               "ports": MAX_NETWORK_PORTS, "samples": 1001, "page_size": 201},
                     "physical_validation": "not_established"})
 
 

@@ -183,7 +183,7 @@ def capabilities(service=None, catalog=None) -> dict:
             "export_formats": ["touchstone", "csv", "hdf5", "source"], "physical_validation": False}
         from rfad.adapters.network_backend import installation_metadata as network_engine_metadata
         from rfad.adapters.network_hdf5 import installation_metadata as hdf5_metadata
-        result["network_profile"] = {"profile": network_service.PROFILE, "ports": 2, "samples": 1001,
+        result["network_profile"] = {"profile": network_service.PROFILE, "ports": network_service.MAX_NETWORK_PORTS, "samples": 1001,
                                      "import_bytes": network_service.MAX_IMPORT_BYTES, "preview_required": True,
                                      "formats": ["touchstone", "csv", "hdf5"], "engine": network_engine_metadata(),
                                      "hdf5": hdf5_metadata(), "assessment": "rfad.target-assessment/0.1",

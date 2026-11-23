@@ -146,7 +146,7 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
     m_representation = Choices(m_csv, {"RI / 실수, 허수", "MA / 크기, 각도 (deg)", "DB / dB, 각도 (deg)"},
                                "network.import.representation");
     field("복소수 표현", m_representation);
-    m_portCount = Choices(m_csv, {"1", "2"}, "network.import.port_count");
+    m_portCount = Choices(m_csv, {"1", "2", "3", "4"}, "network.import.port_count");
     field("포트 수", m_portCount);
     m_ignored = new wxTextCtrl(m_csv, wxID_ANY);
     m_ignored->SetName("network.import.ignored_columns");
