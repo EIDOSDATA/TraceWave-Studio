@@ -26,7 +26,7 @@ from rfad.application import archive_export_service, archive_receiver, handoff_e
 from rfad.application import design_rule_service, physical_setup_service, precision_service, network_service, design_sweep_service, result_service, rf_validation_records, sketch_service, smart_dimension_service, sweep_selection
 from rfad.application import large_results
 
-TEMPLATE_READS = {"template.list", "template.get", "template.context", "template.synthesize"}
+from rfad.application.template_candidates import READ_METHODS as TEMPLATE_READS
 
 CONTRACT_VERSION = "rfad.api/2.0"
 from rfad.domain.resource_limits import MAX_FRAME_BYTES, MAX_DOCUMENT_BYTES, MAX_SELECTION_RESULT_BYTES

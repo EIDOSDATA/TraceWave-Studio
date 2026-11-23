@@ -20,7 +20,7 @@ from rfad.templates.cards import list_cards, describe_card, resolve_card
 
 
 PROFILE = "rfad.template-candidate/0.2"
-READ_METHODS = frozenset({"template.list", "template.get", "template.context", "template.synthesize"})
+READ_METHODS = frozenset({"template.list", "template.get", "template.context", "template.layout_candidates", "template.synthesize"})
 MUTATION_METHODS = frozenset({"template.apply"})
 MAX_RESULT_BYTES = 256 * 1024
 _CANDIDATE_FIELDS = {"expected_revision", "mode", "template", "instance_id", "target_refs", "binding", "explicit_inputs", "port"}
@@ -78,6 +78,12 @@ class TemplateCandidateCoordinator:
         if method == "template.context":
             _fields(data, {"expected_revision"})
             _uuid(data["expected_revision"])
+            return
+        if method == "template.layout_candidates":
+            _fields(data, {"expected_revision", "target_id", "binding", "instance_id", "region_mm", "ground_height_mm",
+                           "width_mm", "feed_gap_mm", "branch_pitch_mm", "clearance_mm"})
+            for name in ("expected_revision", "target_id", "instance_id"):
+                _uuid(data[name])
             return
         if method not in ("template.synthesize", "template.apply"):
             raise ProjectError("E_UNSUPPORTED", "지원하지 않는 템플릿 요청입니다.")
@@ -189,6 +195,9 @@ class TemplateCandidateCoordinator:
         state = self.service.journal.read()
         if method == "template.context":
             return self._context(self._document(state, context, data))
+        if method == "template.layout_candidates":
+            from rfad.application.template_layouts import screen
+            return _bounded(screen(self._document(state, context, data), data))
         return self._preview(state, context, data)[0]
 
     def apply(self, state, context, data):

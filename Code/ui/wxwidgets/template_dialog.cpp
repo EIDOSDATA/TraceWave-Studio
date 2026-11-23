@@ -202,6 +202,13 @@ Json TemplateDialog::Specification() const
             throw std::runtime_error(field.at("label").get<std::string>() + ": 값을 직접 입력하세요.");
         }
         const std::string unit = field.at("display_unit");
+        const auto candidate = m_layoutCandidates.value(m_card.at("template_id").get<std::string>(), Json::object());
+        if (candidate.contains("display_values") && candidate.at("display_values").at(key) == value &&
+            candidate.at("requested_inputs").at(key).contains("value_si"))
+        {
+            quantities[key] = candidate.at("requested_inputs").at(key);
+            continue;
+        }
         const auto references = m_card.value("reference_inputs", Json::object());
         quantities[key] = references.contains(key) && references.at(key).at("display_value") == value
                               ? Json{{"source", "card"}}
@@ -338,6 +345,7 @@ void TemplateDialog::UpdateActions()
     m_binding->Enable(editable);
     m_target->Enable(editable);
     const int target = m_target->GetSelection() - 1;
+    m_proposeLayout->Enable(editable && !m_pending && target >= 0 && m_binding->GetSelection() >= 0);
     m_goalLayoutNote->Enable(editable && target >= 0 &&
                              m_context.at("targets").at(target).value("layout_note", Json()).is_object());
     const bool goalCard = m_card.is_object() && (m_card.at("template_id") == "builtin.explicit_arc" ||

@@ -8539,6 +8539,10 @@
       "extension_profile": "rfad.template-candidate/0.2",
       "status": "implemented"
     },
+    "template.layout_candidates": {
+      "extension_profile": "rfad.template-candidate/0.2",
+      "status": "implemented"
+    },
     "template.list": {
       "extension_profile": "rfad.template-candidate/0.2",
       "status": "implemented"
@@ -15373,8 +15377,8 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "4a96e526b4e398cd5c1ee9991bca435438ed4de96f15e69fdd05773a9fa1991e",
-      "utf8_bytes": 40576
+      "text_sha256": "825bf9d51e22782deff5a519808bd3bf0266f177c2fe02f19600213677aa767d",
+      "utf8_bytes": 40562
     },
     {
       "path": "Code/src/rfad/application/solver.py",
@@ -15433,8 +15437,8 @@
     },
     {
       "path": "Code/src/rfad/application/template_candidates.py",
-      "text_sha256": "0da96a271a33906ed3056e7c127d94c229d8e9b3c4ddb6037dca9b5bc6fe3878",
-      "utf8_bytes": 13827
+      "text_sha256": "acd4cd8e6c77ec942f9bd32a5d2ebc5353f463ece3d26c51d97005792d07a2f4",
+      "utf8_bytes": 14442
     },
     {
       "path": "Code/src/rfad/application/wsl_process.py",
@@ -16803,8 +16807,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/template_dialog.cpp",
-      "text_sha256": "5a566f2738b0deaa281428282ee23831d3f109763b406772c5267b441332b285",
-      "utf8_bytes": 15545
+      "text_sha256": "ead3427409fed12015d0462f3d2da482905981684aca25d61f0975dca2421452",
+      "utf8_bytes": 16057
     },
     {
       "path": "Code/ui/wxwidgets/template_seed_view.cpp",

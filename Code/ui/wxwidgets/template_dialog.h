@@ -26,6 +26,7 @@ private:
     void SelectMode(int index);
     void RenderCardInputs();
     void ShowGoalLayoutNote();
+    void ProposeLayouts();
     void BuildSeedControls(wxSizer* layout);
     void RenderSeedControls();
     Json SeedSpecification() const;
@@ -47,6 +48,7 @@ private:
     Json m_cardModes = Json::object();
     Json m_card = nullptr;
     Json m_reviewedInput = nullptr;
+    Json m_layoutCandidates = Json::object();
     Json m_preview = nullptr;
     bool m_loading = false;
     bool m_reloadingContext = false;
@@ -59,6 +61,7 @@ private:
     wxChoice* m_binding = nullptr;
     wxChoice* m_target = nullptr;
     wxButton* m_goalLayoutNote = nullptr;
+    wxButton* m_proposeLayout = nullptr;
     wxCheckBox* m_goalSize = nullptr;
     EditorPanel* m_inputs = nullptr;
     DesignCanvas* m_canvas = nullptr;
