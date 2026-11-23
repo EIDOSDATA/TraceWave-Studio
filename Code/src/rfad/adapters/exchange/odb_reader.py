@@ -213,7 +213,7 @@ def read(raw):
                 if all(value.isascii() and value.isdigit() and len(value) <= 8 for value in (major, minor)):
                     version = f"{major}.{minor}"
             editable, traces = None, []
-            pads, bores, stack = [], [], []
+            pads, bores, stack, components = [], [], [], []
             if len(steps) == 1 and _matches_step(levels, steps[0]):
                 content = _text(archive, board_paths[0])
                 header_path = f"{prefix}steps/{steps[0]}/stephdr"
@@ -224,6 +224,9 @@ def read(raw):
                         traces = _editable_traces(archive, names, prefix, steps[0], data)
                         from rfad.adapters.exchange.manufacturing_contacts import odb
                         pads, bores, stack = odb(archive, names, prefix, steps[0], data, info)
+                        from rfad.adapters.exchange import manufacturing_placements
+                        components = manufacturing_placements.odb(archive, names, prefix + "steps/" + steps[0] + "/",
+                                                                  data, pads, bores, info.get("SAVE_APP", "").startswith("KiCad EDA "))
     except (BadZipFile, UnicodeError, RuntimeError, NotImplementedError) as error:
         raise ProjectError("E_SCHEMA", "ODB++ ZIP 또는 제조 텍스트를 읽을 수 없습니다.") from error
     loss = {"code": "odbpp_profile_only" if editable else "odbpp_review_only", "raw_preserved": True,
@@ -232,9 +235,9 @@ def read(raw):
     if traces:
         loss = {"code": "odbpp_partial_copper", "raw_preserved": True,
                 "message": f"외곽과 절삭을 대조합니다. 층과 넷을 지정하면 EDA 배선 참조가 있는 직선 및 원호 {len(traces)}개를 반영합니다. 나머지 제조 정보는 원문에 보존합니다."}
-    if pads or bores or stack:
-        loss = {**loss, "message": loss["message"] + f" 선택 가능한 원형 패드 {len(pads)}개, 원형 홀 {len(bores)}개, 적층 {len(stack)}개."}
-    return {"editable_pads": pads, "editable_holes": bores, "editable_stack": stack,
+    if pads or bores or stack or components:
+        loss = {**loss, "message": loss["message"] + f" 선택 가능한 원형 패드 {len(pads)}개, 원형 홀 {len(bores)}개, 적층 {len(stack)}개, 실장 위치 {len(components)}개."}
+    return {"editable_components": components, "editable_pads": pads, "editable_holes": bores, "editable_stack": stack,
             "editable_traces": traces, "schema": "rfad.odbpp-read/0.1", "version": version, "source_sha256": hashlib.sha256(raw).hexdigest(),
             "steps": steps, "steps_with_eda": with_eda, "layer_count": layers, "feature_files": features,
             "editable_profile": editable, "losses": [loss]}

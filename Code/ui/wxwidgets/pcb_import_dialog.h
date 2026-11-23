@@ -95,6 +95,7 @@ private:
     wxPanel* m_placement = nullptr;
     wxCheckBox* m_contacts = nullptr;
     wxCheckBox* m_adoptStack = nullptr;
+    wxCheckBox* m_components = nullptr;
     wxCheckBox* m_boardConfirmed = nullptr;
     wxWindow* m_mappingPage = nullptr;
     wxWindow* m_mappingRows = nullptr;

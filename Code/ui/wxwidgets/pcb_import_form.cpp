@@ -162,7 +162,9 @@ void PcbImportDialog::BuildMapping(wxWindow* page)
     layout->Add(m_boardConfirmed, 0, wxALL, FromDIP(12));
     m_contacts = new wxCheckBox(page, wxID_ANY, Display("원문 원형 패드와 관통 홀 적용"));
     m_adoptStack = new wxCheckBox(page, wxID_ANY, Display("원문 도체 및 유전체 층 두께 적용"));
-    for (auto* control : {m_contacts, m_adoptStack})
+    m_components = new wxCheckBox(page, wxID_ANY, Display("부품 참조 번호와 실장 위치 적용"));
+    m_components->SetToolTip(Display("참조 번호, 실장 면, 좌표와 회전을 가져옵니다. 패드도 선택하면 명시된 핀을 연결합니다."));
+    for (auto* control : {m_contacts, m_adoptStack, m_components})
     {
         layout->Add(control, 0, wxLEFT | wxBOTTOM, FromDIP(12));
         control->Hide();
@@ -176,6 +178,10 @@ void PcbImportDialog::BuildMapping(wxWindow* page)
                 row.choice->Enable(!row.contactsOnly || m_contacts->GetValue());
             }
         }
+        Changed();
+    });
+    m_components->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
+    {
         Changed();
     });
     m_adoptStack->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
@@ -327,6 +333,8 @@ void PcbImportDialog::RenderMapping(const Json& response)
     m_mappingRows->GetSizer()->Clear(true);
     m_contacts->SetValue(false);
     m_adoptStack->SetValue(false);
+    m_components->SetValue(false);
+    m_components->Show(sources.value("component_count", 0) > 0);
     m_contacts->Show(sources.value("contact_count", 0) > 0);
     m_adoptStack->Show(sources.value("stack_count", 0) > 0);
     if (sources.value("manufacturing_profile_available", false) && !sources.value("layers", Json::array()).empty())

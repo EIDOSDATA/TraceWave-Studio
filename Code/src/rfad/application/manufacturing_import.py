@@ -61,6 +61,7 @@ def contacts(candidate, data):
             shape = {"kind": "circle", "center": candidate.point(item["center_mm"]),
                      "diameter": candidate.quantity(item["diameter_mm"])}
             candidate.hole(shape, item["plating"], pads, net)
+    return pad_ids
 
 
 def stack(candidate, data):
@@ -87,3 +88,49 @@ def stack(candidate, data):
             layer["thickness"] = candidate.quantity(width)
         lower += width
         _bind(candidate, "stackup", layer["id"])
+
+
+def placements(candidate, data, pad_ids):
+    """! @brief 원문 실장 위치와 명시 핀만 연결하고 미지 부품 외곽 및 3D 모델을 생성하지 않는다."""
+    import math
+    from rfad.application.pcb_exchange_service import new_record
+    document = candidate.document
+    footprints = document["pcb"]["footprints"]
+    owners = {m["id"]: f["id"] for f in footprints for m in f["members"] if m["collection"] == "geometry"}
+    for item in data.get("editable_components", []):
+        candidate.source = item["source_id"]
+        found = [f for f in footprints if f["reference"] == item["reference"]]
+        if found:
+            row = found[0]
+            place = row["placement"]
+            angle = scalar(document, place["rotation"], "angle")
+            if (len(found) != 1 or place["side"] != item["side"] or angle is None
+                    or not _same_center(document, place["origin"], item["origin_mm"])
+                    or abs(math.remainder(angle - item["rotation_deg"], 360)) > 1e-5
+                    or (row["value"] and item["value"] and row["value"] != item["value"])):
+                fail("같은 참조 번호의 기존 실장 면, 위치, 회전 또는 표시값이 다릅니다. " + item["reference"], "mapping.include_components", "E_CONFLICT")
+            _bind(candidate, "pcb.footprints", row["id"])
+        else:
+            row = new_record(document, "footprint")
+            row.update(name=item["reference"], reference=item["reference"], value=item["value"], edit_state="original",
+                       placement={"origin": candidate.point(item["origin_mm"]), "side": item["side"],
+                                  "rotation": candidate.quantity(item["rotation_deg"], "deg")})
+            row = candidate.append("footprint", row)
+        for pin in item["pins"]:
+            identity = pad_ids.get(pin["source_id"])
+            if identity is None:
+                continue
+            if identity in owners and owners[identity] != row["id"]:
+                fail("원문 핀이 다른 풋프린트의 패드를 가리킵니다.", "mapping.include_components", "E_CONFLICT")
+            members = {v["id"] for v in row["members"] if v["collection"] == "geometry"}
+            if identity not in members:
+                row["members"].append({"collection": "geometry", "id": identity})
+                owners[identity] = row["id"]
+            prior = next((p for p in row["pins"] if identity in p["pad_ids"]), None)
+            if prior and prior["number"] != pin["number"]:
+                fail("기존 핀 번호와 원문 핀 번호가 다릅니다.", "mapping.include_components", "E_CONFLICT")
+            target = next((p for p in row["pins"] if p["number"] == pin["number"]), None)
+            if target is None:
+                row["pins"].append({"number": pin["number"], "pad_ids": [identity], "hole_id": None})
+            elif identity not in target["pad_ids"]:
+                target["pad_ids"].append(identity)

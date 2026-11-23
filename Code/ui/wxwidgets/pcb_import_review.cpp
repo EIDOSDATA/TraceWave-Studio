@@ -31,6 +31,7 @@ Json PcbImportDialog::Input() const
     {
         mapping["include_contacts"] = contacts;
         mapping["adopt_stack"] = m_adoptStack->GetValue();
+        mapping["include_components"] = m_components->GetValue();
     }
     const auto noTargets = [contacts](const auto& rows)
     {

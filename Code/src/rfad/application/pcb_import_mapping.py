@@ -27,7 +27,7 @@ class _ImportCandidate:
         self.path, self.source, self.owners, self.containers = "", "", {}, set()
         keys = {"board_id", "frame_id", "layers", "nets", "placement"}
         if parsed.get("format") in {"ipc2581_revc", "odbpp_zip"}:
-            for flag in ("include_contacts", "adopt_stack"):
+            for flag in ("include_contacts", "adopt_stack", "include_components"):
                 if flag in mapping:
                     keys.add(flag)
                     if type(mapping[flag]) is not bool:
@@ -579,6 +579,8 @@ class _ImportCandidate:
             manufacturing_import.stack(self, data)
         use_contacts = self.mapping.get("include_contacts", False)
         if not self.layers and not self.nets and not use_contacts:
+            if self.mapping.get("include_components"):
+                manufacturing_import.placements(self, data, {})
             return
         traces = data.get("editable_traces", [])
         pads = data.get("editable_pads", []) if use_contacts else []
@@ -587,8 +589,9 @@ class _ImportCandidate:
         nets = {item["net"] for item in [*traces, *pads]} | {hole["net"] for hole in holes if hole["plating"] == "plated"}
         if set(self.layers) != targets or set(self.nets) != nets or len(set(self.layers.values())) != len(self.layers):
             fail("지원 도체 및 홀의 원문 층과 넷을 각각 대응하십시오.", "mapping", "E_CONFLICT")
-        if use_contacts:
-            manufacturing_import.contacts(self, data)
+        pad_ids = manufacturing_import.contacts(self, data) if use_contacts else {}
+        if self.mapping.get("include_components"):
+            manufacturing_import.placements(self, data, pad_ids)
 
         def samples(row):
             """! @brief 방향에 관계없이 동일 원호의 중간점을 포함해 기존 형상과 대조한다."""
@@ -762,7 +765,7 @@ def import_sources(parsed):
             elif function and function[0] in ("Soldermask", "Paste"):
                 add_layer(record["path"], "solder_mask" if function[0] == "Soldermask" else "solder_paste", "top" if "Top" in function else "bottom" if "Bot" in function or "Bottom" in function else None)
     route_layers, route_nets = set(layers), set(nets)
-    contact_count, stack_count = 0, 0
+    contact_count, stack_count, component_count = 0, 0, 0
     for item in parsed["records"]:
         data = item["data"]
         if data["schema"] not in {"rfad.ipc2581-read/0.1", "rfad.odbpp-read/0.1"}:
@@ -777,12 +780,13 @@ def import_sources(parsed):
                 add_net(row["net"], row["net"] or None)
         contact_count += len(data.get("editable_pads", [])) + len(data.get("editable_holes", []))
         stack_count += len(data.get("editable_stack", []))
+        component_count += len(data.get("editable_components", []))
     for key in layers.keys() - route_layers:
         layers[key]["contacts_only"] = True
     for key in nets.keys() - route_nets:
         nets[key]["contacts_only"] = True
     profile_available = _has_manufacturing_profile(parsed)
     return {"layers": list(layers.values()), "nets": list(nets.values()),
-            "manufacturing_profile_available": profile_available, "contact_count": contact_count, "stack_count": stack_count,
+            "manufacturing_profile_available": profile_available, "contact_count": contact_count, "stack_count": stack_count, "component_count": component_count,
             "ipc_profile_available": parsed.get("format") == "ipc2581_revc" and profile_available,
             "losses": [{"id": canonical_hash(row), "message": _loss_message(row, "원문에 보존되는 미지원 항목: "), "original": deepcopy(row)} for row in parsed["losses"]]}
