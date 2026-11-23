@@ -91,7 +91,13 @@ SketchConstraintDialog::SketchConstraintDialog(wxWindow* parent, const Json& con
     m_freedom = new wxStaticText(this, wxID_ANY, Display("적용 전후 자유도"));
     m_freedom->SetName("sketch.freedom");
     StudioTheme::Heading(*m_freedom);
-    review->Add(m_freedom, 0, wxBOTTOM, FromDIP(8));
+    auto* reviewHeader = new wxBoxSizer(wxHORIZONTAL);
+    reviewHeader->Add(m_freedom, 1, wxALIGN_CENTER_VERTICAL);
+    m_clearChoices = new wxButton(this, wxID_ANY, Display("제안 선택 해제"));
+    m_clearChoices->SetName("sketch.clearChoices");
+    StudioTheme::Button(*m_clearChoices, false);
+    reviewHeader->Add(m_clearChoices, 0, wxLEFT, FromDIP(8));
+    review->Add(reviewHeader, 0, wxEXPAND | wxBOTTOM, FromDIP(8));
     m_proposals = new wxCheckListBox(this, wxID_ANY);
     m_proposals->SetName("sketch.proposals");
     review->Add(m_proposals, 2, wxEXPAND | wxBOTTOM, FromDIP(8));
@@ -166,6 +172,18 @@ SketchConstraintDialog::SketchConstraintDialog(wxWindow* parent, const Json& con
     m_preview->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
     {
         Preview();
+    });
+    m_clearChoices->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        for (unsigned int index = 0; index < m_proposals->GetCount(); ++index)
+        {
+            m_proposals->Check(index, false);
+        }
+        InvalidateRead();
+        m_review = nullptr;
+        SetStatus("저장할 관계와 구동 치수를 선택한 뒤 제안을 검토하세요.");
+        m_proposals->SetFocus();
+        UpdateActions();
     });
     m_automatic->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
     {
@@ -495,6 +513,7 @@ void SketchConstraintDialog::UpdateActions()
     m_group->Enable(!m_mutating);
     m_preview->Enable(request);
     m_automatic->Enable(request && !m_rows.empty());
+    m_clearChoices->Enable(request && setup && !m_rows.empty());
     m_solve->Enable(editable && !m_pending && m_groupIndex > 0 &&
                     !m_context.at("groups").at(m_groupIndex - 1).value("dimensions", Json::array()).empty());
     m_remove->Enable(editable && !m_pending && m_groupIndex > 0);

@@ -20,7 +20,7 @@
     "current_04_화면설계": 25,
     "current_05_기능설계": 46,
     "current_06_분석연구": 14,
-    "current_07_검증": 274,
+    "current_07_검증": 275,
     "current_08_운영환경": 7,
     "current_09_개발계획": 16,
     "current_11_검토기록": 8,
@@ -32380,6 +32380,15 @@
       "text_status": "utf8_read"
     },
     {
+      "path": "01_개발문서/07_검증/398_두도형의_구속과_구동치수_편집검증.md",
+      "category": "current_07_검증",
+      "review_scope": "본문/현재 설명/담당 기능 관계 검토",
+      "bytes": 3024,
+      "working_tree_sha256": "894c7b4f49f5fffb2f5ab0d4b6beda73ccca576c7ed9cf0e62bcd03de703004f",
+      "text_lines": 22,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/39_엠시피와_키캐드_교환_검증.md",
       "category": "current_07_검증",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
@@ -33068,8 +33077,8 @@
       "path": "01_개발문서/09_개발계획/15_기능채택과_개발검증_순서.md",
       "category": "current_09_개발계획",
       "review_scope": "본문/현재 설명/담당 기능 관계 검토",
-      "bytes": 40962,
-      "working_tree_sha256": "678d8dbe2d2e3ee8338f411044ba2131e49cd041eb19106ec48ab998128393a3",
+      "bytes": 41182,
+      "working_tree_sha256": "ceba2528ed650a1974b555d842fcdf348016d86696bcfd1de6dca1da15777359",
       "text_lines": 191,
       "text_status": "utf8_read"
     },

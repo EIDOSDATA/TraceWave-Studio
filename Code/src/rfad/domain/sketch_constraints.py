@@ -39,6 +39,12 @@ SPEC = {
     "midpoint": (3, set()),
     "point_on_line": (2, set()),
     "tangent": (2, set()),
+    "equal_length": (2, set()),
+    "equal_radius": (2, set()),
+    "concentric": (2, set()),
+    "lines_parallel": (2, set()),
+    "lines_perpendicular": (2, set()),
+    "mirror_points": (3, {"axis"}),
     "contact": (1, {"port_id", "end"}),
 }
 
@@ -53,7 +59,7 @@ def translation_groups(document):
     adjacency = {}
     for group in groups(document):
         for row in (*group["constraints"], *group["protected"]):
-            if row["kind"] not in {"offset", "coincident", "midpoint", "point_on_line", "tangent"}:
+            if row["kind"] not in {"offset", "coincident", "midpoint", "point_on_line", "tangent", "concentric", "mirror_points"}:
                 continue
             identities = {ref["id"] for ref in row["refs"]}
             if len(identities) > 1:
@@ -277,6 +283,33 @@ class Model:
             position, length, distance = self.line_position(first, row["refs"][1])
             outside = max(0, -position, position - length)
             return (math.hypot(outside, distance) if outside else distance,)
+        if kind in ("equal_length", "lines_parallel", "lines_perpendicular", "equal_radius", "concentric"):
+            second = row["refs"][1]
+            kinds = [self.shape(ref["id"])["kind"] for ref in (first, second)]
+            if first["id"] == second["id"]:
+                fail("서로 다른 두 스케치 객체를 선택하세요.", "constraints", "E_SCHEMA")
+            if kind in ("concentric", "equal_radius"):
+                if kinds != ["arc_path", "arc_path"] or any(ref["point"] != "center" for ref in (first, second)):
+                    fail("두 원호의 중심을 선택하세요.", "constraints", "E_SCHEMA")
+                if kind == "equal_radius":
+                    return (self.values[first["id"]]["radius"] - self.values[second["id"]]["radius"],)
+                a, b = self.location(first), self.location(second)
+                return a[0] - b[0], a[1] - b[1]
+            if kinds != ["line_path", "line_path"]:
+                fail("두 직선 도체를 선택하세요.", "constraints", "E_SCHEMA")
+            if kind == "equal_length":
+                lengths = [math.dist(self.location(anchor(ref["id"], "start")),
+                                     self.location(anchor(ref["id"], "end"))) for ref in (first, second)]
+                return (lengths[0] - lengths[1],)
+            angle = self.orientation(first) - self.orientation(second)
+            return (math.sin(angle) if kind == "lines_parallel" else math.cos(angle),)
+        if kind == "mirror_points":
+            if len({ref["id"] for ref in row["refs"]}) != 3:
+                fail("대칭점 두 개와 축을 지나는 별도 기준점을 선택하세요.", "constraints", "E_SCHEMA")
+            a, b, datum = (self.location(ref) for ref in row["refs"])
+            along = 0 if row["axis"] == "x" else 1
+            normal = 1 - along
+            return a[along] - b[along], (a[normal] + b[normal]) / 2 - datum[normal]
         if kind == "tangent":
             return (math.sin(self.orientation(first) - self.orientation(row["refs"][1])),)
         p = self.location(first)

@@ -1,5 +1,6 @@
 """! @brief 보존 기하에서 독립적인 스케치 구속과 적용 전후 국소 자유도를 계산한다."""
 
+from itertools import combinations
 import math
 
 from rfad.application.canonical import canonical_hash
@@ -14,7 +15,10 @@ POINTS = {"start": "시작점", "end": "끝점", "center": "중심"}
 LABELS = {"fixed": "기준점 고정", "offset": "기준점과의 거리", "scalar": "치수 고정",
           "length": "선 길이", "angle": "기준축과의 각도", "parallel": "기준축과 평행",
           "perpendicular": "기준축과 수직", "coincident": "점 일치", "point_on_line": "선 위의 점",
-          "midpoint": "선분 중점", "tangent": "접선", "contact": "급전 접촉"}
+          "midpoint": "선분 중점", "tangent": "접선", "contact": "급전 접촉",
+          "equal_length": "두 선의 동일 길이", "equal_radius": "두 원호의 동일 반경",
+          "concentric": "두 원호의 동심", "lines_parallel": "두 선의 평행",
+          "lines_perpendicular": "두 선의 직교", "mirror_points": "기준축 대칭점"}
 FIELDS = {"radius": "원호 반경", "start": "원호 시작각", "sweep": "원호 회전량", "rotation": "패드 회전각",
           "sx": "시작점 X", "sy": "시작점 Y", "ex": "끝점 X", "ey": "끝점 Y", "cx": "중심 X", "cy": "중심 Y"}
 
@@ -30,6 +34,8 @@ def label(document, geometry, row):
         return f"{name} / {port} {terminal} / {names[0]}"
     if kind in ("length", "parallel", "perpendicular", "angle"):
         items = names[0]
+    elif kind in ("equal_length", "equal_radius", "lines_parallel", "lines_perpendicular", "concentric"):
+        items = " / ".join(names)
     elif kind in ("point_on_line", "midpoint"):
         items = names[0] + " " + POINTS[row["refs"][0]["point"]] + " / " + names[1] + " 선분"
     else:
@@ -98,29 +104,43 @@ def _proper_point(model, identity):
     return sketch.anchor(identity, "start" if kind == "line_path" else "center")
 
 
-def _external_dimensions(document, model, selected):
-    """! @brief 기존 반경·회전량, 매개변수 결합과 재확인한 편집 길이를 계산한다."""
+def _external_dimensions(document, model, selected, shared_radii=(), *, skip_group=None):
+    """! @brief 기본 반경·회전량, 매개변수 결합과 원본에서 재확인한 정밀 길이 및 반경을 읽는다."""
     rows = []
+    linked = {ref["id"] for group in sketch.groups(document) if group["id"] != skip_group
+              for row in group["constraints"]
+              if row["kind"] == "equal_radius" for ref in row["refs"]}
+    linked.update(shared_radii)
     for identity in selected:
         shape = model.shape(identity)
         ref = _proper_point(model, identity)
         for field, value in model.raw[identity].items():
-            if "parameter_id" in value or (shape["kind"] == "arc_path" and field in ("radius", "sweep")):
+            if ("parameter_id" in value or shape["kind"] == "arc_path"
+                    and (field == "sweep" or field == "radius" and identity not in linked)):
                 rows.append(sketch.relation("scalar", ref, field=field, value=model.values[identity][field]))
     tracked = {}
     for record in document["extensions"].get(PRECISION_KEY, {}).get("records", []):
         values = record["values"]
-        if record["operation"] != "dimension_set" or values.get("dimension_key") != "line.length":
+        key = values.get("dimension_key")
+        if record["operation"] != "dimension_set" or key not in ("line.length", "arc.radius"):
             continue
         try:
             mm = Quantity.from_value(values["value"], values["unit"]).as_unit("mm")
         except (KeyError, QuantityError, ValueError, TypeError, OverflowError):
             continue
         for identity in record["selection_ids"]:
-            if identity in selected and model.shape(identity)["kind"] == "line_path":
-                row = sketch.relation("length", _proper_point(model, identity), value=mm)
-                if abs(model.residual(row)[0]) <= sketch.TOLERANCE:
-                    tracked[identity] = row
+            if identity not in selected:
+                continue
+            shape = model.shape(identity)
+            ref = _proper_point(model, identity)
+            if key == "line.length" and shape["kind"] == "line_path":
+                row = sketch.relation("length", ref, value=mm)
+            elif key == "arc.radius" and shape["kind"] == "arc_path":
+                row = sketch.relation("scalar", ref, field="radius", value=mm)
+            else:
+                continue
+            if abs(model.residual(row)[0]) <= sketch.TOLERANCE:
+                tracked[identity] = row
     return rows + list(tracked.values())
 
 
@@ -183,6 +203,29 @@ def _observed(model, selected):
     return found, list(dict.fromkeys(issues))
 
 
+def _paired_rows(model, selected, datum, axis):
+    """! @brief 두 선택 형상의 관계와 별도 기준점을 통과하는 축 대칭을 제안한다."""
+    for left, right in combinations(sorted(selected), 2):
+        a, b = _proper_point(model, left), _proper_point(model, right)
+        kinds = model.geometry[left]["kind"], model.geometry[right]["kind"]
+        if kinds == ("line_path", "line_path"):
+            for kind in ("equal_length", "lines_parallel", "lines_perpendicular"):
+                yield sketch.relation(kind, a, b)
+        elif kinds == ("arc_path", "arc_path"):
+            for kind in ("concentric", "equal_radius"):
+                yield sketch.relation(kind, a, b)
+        if datum["id"] in (left, right):
+            continue
+        for lp in sketch.ANCHORS[kinds[0]]:
+            for rp in sketch.ANCHORS[kinds[1]]:
+                lref, rref = sketch.anchor(left, lp), sketch.anchor(right, rp)
+                if math.dist(model.location(lref), model.location(rref)) <= sketch.TOLERANCE:
+                    continue
+                row = sketch.relation("mirror_points", lref, rref, datum, axis=axis)
+                if max(map(abs, model.residual(row))) <= sketch.TOLERANCE:
+                    yield row
+
+
 def _proposal_rows(model, selected, datum, axis):
     """! @brief 같은 원본을 유지할 수 있는 치수와 사용자 기준축의 방향 후보를 낸다."""
     origin = model.location(datum)
@@ -221,21 +264,46 @@ def analyze(document, setup, requested=None, *, skip_group=None):
     variables = [(identity, field) for identity in selected_ids for field in model.values[identity]]
     observed, issues = _observed(model, selected)
     existing = {}
-    for row in [*_external_dimensions(document, model, selected), *observed]:
-        existing[canonical_hash(row)] = row
+    paired = list(_paired_rows(model, selected_ids, setup["datum"], setup["axis"])) if len(selected_ids) <= 3 else []
+    requested_ids = set(requested or ())
+    shared_radii = {ref["id"] for row in paired if row["kind"] == "equal_radius"
+                    and canonical_hash(row) in requested_ids for ref in row["refs"]}
+    preserved = list(observed)
     for group in sketch.groups(document):
         if group["id"] == skip_group:
             continue
         for row in [*group["constraints"], *group["protected"]]:
             if any(ref["id"] in selected for ref in row["refs"]):
-                existing[canonical_hash(row)] = row
+                preserved.append(row)
+    for row in [*_external_dimensions(document, model, selected, shared_radii, skip_group=skip_group), *preserved]:
+        existing[canonical_hash(row)] = row
     basis = []
     for row in existing.values():
         _append(basis, _matrix(model, variables, row))
     size = len(variables)
-    before = size - len(basis)
+    previous_basis = basis.copy()
+    if shared_radii:
+        # @brief 적용 전 자유도는 사용자가 공유 반경을 선택하기 전의 독립 반경 치수도 포함한다.
+        for row in _external_dimensions(document, model, selected, skip_group=skip_group):
+            if canonical_hash(row) not in existing:
+                _append(previous_basis, _matrix(model, variables, row))
+    before = size - len(previous_basis)
     rows, plan, used = [], [], set()
-    for row in _proposal_rows(model, selected_ids, setup["datum"], setup["axis"]):
+
+    def can_share_radius(relation):
+        """! @brief 해당 쌍의 기본 반경만 해제하고 실제 남는 구속에서 관계가 독립인지 검사한다."""
+        released = shared_radii | {ref["id"] for ref in relation["refs"]}
+        dimensions = _external_dimensions(document, model, selected, released, skip_group=skip_group)
+        alternate = []
+        for equation in [*dimensions, *preserved, *plan]:
+            _append(alternate, _matrix(model, variables, equation))
+        rank = len(alternate)
+        _append(alternate, _matrix(model, variables, relation))
+        return len(alternate) > rank
+
+    radial_dimensions = [sketch.relation("scalar", _proper_point(model, key), field="radius",
+                                         value=model.values[key]["radius"]) for key in sorted(shared_radii)]
+    for row in [*paired, *radial_dimensions, *_proposal_rows(model, selected_ids, setup["datum"], setup["axis"])]:
         identity = canonical_hash(row)
         used.add(identity)
         name = label(document, model, row)
@@ -243,12 +311,15 @@ def analyze(document, setup, requested=None, *, skip_group=None):
         candidate = basis.copy()
         if max(map(abs, model.residual(row))) > sketch.TOLERANCE:
             state = "conflict"
-            reason = "현재 형상 방향과 맞지 않습니다."
+            reason = "현재 형상의 치수나 방향과 맞지 않습니다."
         else:
             _append(candidate, _matrix(model, variables, row))
-            state = "available" if len(candidate) > len(basis) else "redundant"
+            independent = len(candidate) > len(basis)
+            if not independent and row["kind"] == "equal_radius" and not chosen and identity not in existing:
+                independent = can_share_radius(row)
+            state = "available" if independent else "redundant"
             reason = "" if state == "available" else "기존 치수 또는 앞선 선택과 중복됩니다."
-        if state == "available" and (chosen or requested is None):
+        if state == "available" and (chosen or requested is None and row not in paired):
             state = "selected"
             chosen = True
             plan.append(row)
