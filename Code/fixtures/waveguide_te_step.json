@@ -1,0 +1,8 @@
+{
+    "wide_mm": 35,
+    "narrow_mm": 23,
+    "offset_mm": 2,
+    "epsilon_r": 1,
+    "frequencies_hz": [14500000000, 15000000000, 15500000000],
+    "modes": 24
+}

@@ -80,3 +80,5 @@ ctest --preset windows-release
 문서 변경 시 계약/화면/현재 상태/요구 연결을 함께 갱신한다. 기능별로 한국어 Doxygen, C++ Allman/4칸/중괄호 필수 규칙을 적용하고 주 창에 계산/영구 명령 로직을 몰지 않는다.
 
 일차원 유전체 격자의 주기 경계와 TE/TM 회절은 `python -m rfad floquet fixtures/floquet_dielectric_grating.json`으로 계산한다. [입력과 검증](../01_개발문서/07_검증/403_유전체_격자의_주기_플로케_경계_검증.md)
+
+직사각 도파관의 TE 다중모드 반사 및 전달은 `python -m rfad waveguide-modes fixtures/waveguide_te_step.json`으로 계산한다. [입력과 검증](../01_개발문서/07_검증/404_직사각_도파관_폭단차의_다중모드_검증.md)
