@@ -1,0 +1,109 @@
+{
+  "date_kst": "2026-11-25",
+  "candidate": "r1-rc10",
+  "setup_sha256": "dad29e1ae819be9a639c19d15b1d11457b5cc669dcc26aa0d7725bd52980c92c",
+  "embedded_bundle_sha256": "63ed36991a3ba435ffd37a4448eec6b80e50e3d1713c4e76fd8f1d426817a74b",
+  "gui_sha256": "8f905f592ce7b94e4bf332f25e2c62a563c25799f60eaa763fe726571520d9fe",
+  "environment": {
+    "windows": "Microsoft Windows 11 Pro",
+    "build": "26300.9974",
+    "architecture": "64비트",
+    "tracewave_root_exists": false,
+    "previous_app_count": 0,
+    "previous_start_menu_count": 0,
+    "global_pip_cache_files": 1
+  },
+  "separate_pc_confirmed_by_user": true,
+  "install": {
+    "revision": "6fd099136d5c8307f784a91383d358802f63d77b",
+    "windows_ready": true,
+    "simulation": "ready",
+    "solver_platform": "windows"
+  },
+  "install_exit_code": 0,
+  "reinstall_exit_code": 0,
+  "windows_openems": {
+    "openems": "0.37.0",
+    "csxcad": "0.7.0",
+    "native_audit_passed": true
+  },
+  "gui_cancel": {
+    "control": {
+      "button_enabled": false,
+      "elapsed_ms": 1.373,
+      "state": "cancel_requested"
+    },
+    "guest_worker_attached": true,
+    "job_id": "e18f83c3-a4cb-4073-8301-2a799d643a8e",
+    "phase_before": "analysis",
+    "receipt": {
+      "elapsed_ms": 122.373,
+      "events_cursor": 3,
+      "state": "cancel_requested"
+    },
+    "state_before": "running",
+    "terminal": {
+      "elapsed_ms": 263.052,
+      "events_cursor": 4,
+      "outcome_unknown": false,
+      "state": "cancelled",
+      "termination_confirmed": true
+    }
+  },
+  "transition": {
+    "mesh_triangles": 1428,
+    "window_ms_first": 1411,
+    "window_ms_repeat": 99,
+    "first_widget_build_ms": 994,
+    "first_style_ms": 0,
+    "first_log_local_time": "02:15:44",
+    "repeated_log_local_time": "02:16:01",
+    "project_revision": "fa9567f7-47aa-4dcd-b8a6-acb1fcd1321c",
+    "current_revision_sources": 0,
+    "total_preserved_analysis_sources": 1,
+    "displayed_samples": 31,
+    "source_pin": {
+      "identity_hash": "4546326691cd7215fead4236a1571810037f90c6b065aaf4cb6a96f2404db88b",
+      "dataset_sha256": "ffdb9e19f126f8a0d4f17a584f88601bf2ad031f41f68689c642d7edb819dd42"
+    },
+    "scope": "3D에서 결과 작업 공간으로 전환. 원본 선택과 표본 읽기는 별도."
+  },
+  "workspace": {
+    "file_count": 844,
+    "same_hashes_after_removal_and_reinstall": true,
+    "saved_revision": "fa9567f7-47aa-4dcd-b8a6-acb1fcd1321c",
+    "saved_sha256": "94bcb73df02088069a473e24bd16ae85afdffdda7f3c0a9743d39cf56bf0ccf5",
+    "result_artifact_id": "d6133573-263e-46be-af09-5b7308afdd84",
+    "result_pin": {
+      "identity_hash": "4546326691cd7215fead4236a1571810037f90c6b065aaf4cb6a96f2404db88b",
+      "dataset_sha256": "ffdb9e19f126f8a0d4f17a584f88601bf2ad031f41f68689c642d7edb819dd42"
+    },
+    "result_snapshot_id": "02747d17-4951-4b72-8d89-cbf4ed0b775a",
+    "result_snapshot_sha256": "269e71d9d66acc24c75a14ee1d25ebd76155795551aff2ec94eb37d9620c96cd",
+    "gui_reopen_passed": true,
+    "visible_samples": 31
+  },
+  "first_removal": {
+    "settings_uninstaller_confirmation_observed": true,
+    "completion_method": "Windows에 등록된 QuietUninstallString",
+    "exit_code": 0,
+    "remaining_install_root_children": [
+      "Workspace"
+    ],
+    "app_registrations": 0,
+    "start_menu_entries": 1,
+    "shortcut_exists": false,
+    "start_menu_entries_after_shell_refresh": 0,
+    "settings_installed_apps_entry_absent_observed": true
+  },
+  "interactive_standard_removal": {
+    "passed": false,
+    "state": "confirmation_pending"
+  },
+  "sbom": {
+    "format": "CycloneDX 1.6",
+    "schema_validated": true,
+    "components": 229,
+    "sha256": "f495cc88a5ee7514ece4907d431ecaffde0ed57c4e23c834a08dfe97f3b17749"
+  }
+}
