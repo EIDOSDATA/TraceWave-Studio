@@ -41,7 +41,7 @@
     "repository_guide": 3,
     "runtime_definition": 18,
     "screen_design_asset": 292,
-    "verification_record": 427
+    "verification_record": 428
   },
   "records": [
     {
@@ -32746,6 +32746,15 @@
       "working_tree_sha256": "665f9d207ac62da8bcc598ab69c77990cfc588ff009884765548cad7cd4883ea"
     },
     {
+      "path": "01_개발문서/07_검증/432_창과_렌더러_시제품_검증.md",
+      "category": "verification_record",
+      "review_scope": "해당 개정의 실행 근거와 판정 조건",
+      "bytes": 3367,
+      "working_tree_sha256": "67423aa68c28f663089c948f67b46faef42a89ada02f82edf65f0de3abf352fa",
+      "text_lines": 24,
+      "text_status": "utf8_read"
+    },
+    {
       "path": "01_개발문서/07_검증/43_윈도우배율별_편집도구_검증.md",
       "category": "verification_record",
       "review_scope": "해당 개정의 실행 근거와 판정 조건",
@@ -33204,9 +33213,9 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "document_navigation",
       "review_scope": "해당 분야의 진입점과 담당 계약 연결",
-      "bytes": 9817,
-      "working_tree_sha256": "728ed41226ab4e0fc589112f2b2a8f0a8da196e6a3f8d03f5899be68dc006c62",
-      "text_lines": 57,
+      "bytes": 10024,
+      "working_tree_sha256": "52dc94d64af2ddbd0f95360172fa794be92113e31f9307c01cde9c07f0de52cb",
+      "text_lines": 58,
       "text_status": "utf8_read"
     },
     {
@@ -33303,9 +33312,9 @@
       "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
       "category": "current_09_개발계획",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 6862,
-      "working_tree_sha256": "2310044dcaec189d7feebe22ac6d14347b4654a96460825bee1949808d662256",
-      "text_lines": 36,
+      "bytes": 7025,
+      "working_tree_sha256": "cbac25ac89f57e23dc00329a74f545cb408c17282acf7395f4b02dc204048a60",
+      "text_lines": 37,
       "text_status": "utf8_read"
     },
     {
@@ -33330,8 +33339,8 @@
       "path": "01_개발문서/09_개발계획/07_현행버전_완료후_리팩토링.md",
       "category": "current_09_개발계획",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 10058,
-      "working_tree_sha256": "0a3e8feb512a206cc5655cd2bfa5a902af9fe5d4f112765648796e10fb48c4a3",
+      "bytes": 10043,
+      "working_tree_sha256": "20471995a350d7f22a034d54855278acc55e47b1a5c678357c904188d65d5616",
       "text_lines": 39,
       "text_status": "utf8_read"
     },
@@ -33851,9 +33860,9 @@
       "path": "Code/README.md",
       "category": "repository_guide",
       "review_scope": "개발 문서 진입/현재 상태 검토",
-      "bytes": 17209,
-      "working_tree_sha256": "aadd2a60180e8b1fd10b8637b07de8d89622d9c727690a9d5c5adc567bb59b2f",
-      "text_lines": 111,
+      "bytes": 17360,
+      "working_tree_sha256": "f0e75899597576583e9907d294b8f4c5c10a21d4b411766ad96a6c76f15583e0",
+      "text_lines": 113,
       "text_status": "utf8_read"
     },
     {

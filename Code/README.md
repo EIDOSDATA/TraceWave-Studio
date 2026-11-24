@@ -43,6 +43,8 @@ Windows 11이 주 개발 환경이다. 한글 IME, 스크린리더 오류 안내
 
 ## 실행
 
+리팩토링 1단계의 창·렌더러 시제품은 별도 CMake 진입점에서 빌드한다. [시제품 실행과 검증](ui/prototype/README.md)
+
 앱 설치는 [Windows Setup.exe 안내](../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md)를 따른다. 아래 명령은 소스에서 개발할 때 저장소의 `Code` 폴더에서 실행한다. Windows 11 x64, CPython 3.12 x64와 PATH에서 찾을 수 있는 CMake, Ninja, MinGW-w64 GCC 및 tar가 필요하다. 검증한 도구 버전과 원본 해시는 [네이티브 빌드 프로필](runtime_profiles/native-windows-x64.json)에 있다.
 
 ### 편집기 빌드와 첫 실행
