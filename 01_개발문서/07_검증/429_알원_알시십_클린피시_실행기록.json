@@ -97,8 +97,64 @@
     "settings_installed_apps_entry_absent_observed": true
   },
   "interactive_standard_removal": {
-    "passed": false,
-    "state": "confirmation_pending"
+    "passed": true,
+    "completed_at_kst": "2026-11-25T02:51:54.9988791+09:00",
+    "windows_settings_removal": true,
+    "confirmation_performed_by_user": true,
+    "clean_state": {
+      "date": "2026-11-25T02:44:42.144857+09:00",
+      "root_children": [
+        "Workspace"
+      ],
+      "registration_count": 0,
+      "start_menu_count": 0,
+      "interactive_remove_observed": true
+    },
+    "setup_exit_code": 0,
+    "setup": {
+      "revision": "6fd099136d5c8307f784a91383d358802f63d77b",
+      "windows_ready": true,
+      "simulation": "ready",
+      "solver_platform": "windows"
+    },
+    "workspace_file_count": 850,
+    "workspace_manifest_sha256": "b46c7ef32efc213ec566957b2eea42867a7544f37260295b97f6fea32e5065ea",
+    "unchanged_across_removal_and_reinstall": true,
+    "project_saved_revision": "fa9567f7-47aa-4dcd-b8a6-acb1fcd1321c",
+    "project_saved_sha256": "94bcb73df02088069a473e24bd16ae85afdffdda7f3c0a9743d39cf56bf0ccf5",
+    "result_artifact_id": "d6133573-263e-46be-af09-5b7308afdd84",
+    "result_pin": {
+      "identity_hash": "4546326691cd7215fead4236a1571810037f90c6b065aaf4cb6a96f2404db88b",
+      "dataset_sha256": "ffdb9e19f126f8a0d4f17a584f88601bf2ad031f41f68689c642d7edb819dd42"
+    },
+    "studio_project_reopened": true,
+    "studio_result_visible": true,
+    "result_source_visible": true,
+    "displayed_samples": 31,
+    "visible_frequency_ghz": [
+      8,
+      12
+    ],
+    "restored_b0_replay": {
+      "passed": true,
+      "project_id": "8e9a5670-f4a4-4b43-9c67-5df94fb15517",
+      "saved_revision": "fa9567f7-47aa-4dcd-b8a6-acb1fcd1321c",
+      "saved_sha256": "94bcb73df02088069a473e24bd16ae85afdffdda7f3c0a9743d39cf56bf0ccf5",
+      "result_artifact_id": "d6133573-263e-46be-af09-5b7308afdd84",
+      "result_pin": {
+        "identity_hash": "4546326691cd7215fead4236a1571810037f90c6b065aaf4cb6a96f2404db88b",
+        "dataset_sha256": "ffdb9e19f126f8a0d4f17a584f88601bf2ad031f41f68689c642d7edb819dd42"
+      },
+      "samples": 31,
+      "frequency_hz": [
+        8000000000.0,
+        12000000000.0
+      ],
+      "public_api_contract": "rfad.api/2.0",
+      "mcp_protocol": "2025-11-25",
+      "mcp_tools": 187,
+      "mcp_results_identical_to_api": true
+    }
   },
   "sbom": {
     "format": "CycloneDX 1.6",

@@ -41,7 +41,7 @@
     "repository_guide": 3,
     "runtime_definition": 18,
     "screen_design_asset": 292,
-    "verification_record": 425
+    "verification_record": 427
   },
   "records": [
     {
@@ -25709,8 +25709,8 @@
       "path": "01_개발문서/02_시스템명세/01_설계_결정과_범위.md",
       "category": "current_02_시스템명세",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 18625,
-      "working_tree_sha256": "45886d1b5b2418195d2d1cc0bae578c4a388268914f0a07b19d9dc38075f9d4d",
+      "bytes": 18653,
+      "working_tree_sha256": "1b5ea97f30e1324b9666c55733c030c74602fb41a42488d6ccfee4829b025673",
       "text_lines": 113,
       "text_status": "utf8_read"
     },
@@ -25718,8 +25718,8 @@
       "path": "01_개발문서/02_시스템명세/02_시스템_명세.md",
       "category": "current_02_시스템명세",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 18910,
-      "working_tree_sha256": "bf4c6e0c83ba86a482e2248895a0f920b88dd35f85955028dbe474f2108b6af3",
+      "bytes": 18924,
+      "working_tree_sha256": "bc0b94935e4c63406d964f41dd76328ae4921219f28ea6110b077e8c72e1e9ef",
       "text_lines": 167,
       "text_status": "utf8_read"
     },
@@ -28768,7 +28768,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 646637,
-      "working_tree_sha256": "ddf0edd8e0e664108385bab5f360e4c366ba8cb0f580df7ad6326a2c1dec76e9"
+      "working_tree_sha256": "90969908f520836a362e5779dc61ddb9f7bf8b5aca48b8cfaf13facda309ed1a"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -29587,8 +29587,8 @@
       "path": "01_개발문서/07_검증/03_요구사항_추적표.md",
       "category": "current_07_검증",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 217910,
-      "working_tree_sha256": "4ea0514ff0bfba0053577cbc749576a2647a8a79c5b1c26a07e53dadc1b562ea",
+      "bytes": 217985,
+      "working_tree_sha256": "50a784a8e5565bf4b3bae95a02602c4001d658cb20b88e33f9bfee3f983bd60b",
       "text_lines": 916,
       "text_status": "utf8_read"
     },
@@ -29605,8 +29605,8 @@
       "path": "01_개발문서/07_검증/05_문서_검토와_승인.md",
       "category": "current_07_검증",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 36873,
-      "working_tree_sha256": "303b3c73da913e7d31d3c6c1e6545eca6e1b8aa2558b8f4b3be57a441311ebe9",
+      "bytes": 37060,
+      "working_tree_sha256": "3bd84b1ae4c56f39670de523171c626809ea749d1db361ed1e008b57e2b6492e",
       "text_lines": 205,
       "text_status": "utf8_read"
     },
@@ -32703,8 +32703,8 @@
       "path": "01_개발문서/07_검증/427_알원_알시십_클린피시_수신과_수용.md",
       "category": "verification_record",
       "review_scope": "해당 개정의 실행 근거와 판정 조건",
-      "bytes": 5287,
-      "working_tree_sha256": "04e31cccc0c945e5d1d4a59fcddb991878d8a0fe9ce5f44c604083be27eac1ac",
+      "bytes": 5430,
+      "working_tree_sha256": "4dc714ae8202528305568b4f26f138e3a384bf57420822e903a827cd51721ca6",
       "text_lines": 43,
       "text_status": "utf8_read"
     },
@@ -32719,8 +32719,8 @@
       "path": "01_개발문서/07_검증/429_알원_알시십_클린피시_실행기록.json",
       "category": "verification_record",
       "review_scope": "해당 개정의 실행 근거와 판정 조건",
-      "bytes": 3718,
-      "working_tree_sha256": "ae2d2f1f1db66f2ab1fe57286040f21b5512d7bd4a78347fa08e21d59002a537"
+      "bytes": 5881,
+      "working_tree_sha256": "34653c01f0564858ca0f12034fe6a9f126ad13afcbc32450ebb2c2747fb5b695"
     },
     {
       "path": "01_개발문서/07_검증/42_도킹표시와_재실행_실행기록.json",
@@ -32728,6 +32728,22 @@
       "review_scope": "해당 개정의 실행 근거와 판정 조건",
       "bytes": 4645,
       "working_tree_sha256": "c23e7c16e52f0f98e6f53f9cd4c06bdc64f046752d4bbe4e38a64f10efd25221"
+    },
+    {
+      "path": "01_개발문서/07_검증/430_알원_비제로_기준선_확정.md",
+      "category": "verification_record",
+      "review_scope": "해당 개정의 실행 근거와 판정 조건",
+      "bytes": 2327,
+      "working_tree_sha256": "c9020454cc55af5a288e57658bd77ae1f623a74e964b6cabcfefdbf29822f121",
+      "text_lines": 20,
+      "text_status": "utf8_read"
+    },
+    {
+      "path": "01_개발문서/07_검증/431_알원_비제로_고정목록.json",
+      "category": "verification_record",
+      "review_scope": "해당 개정의 실행 근거와 판정 조건",
+      "bytes": 4100,
+      "working_tree_sha256": "665f9d207ac62da8bcc598ab69c77990cfc588ff009884765548cad7cd4883ea"
     },
     {
       "path": "01_개발문서/07_검증/43_윈도우배율별_편집도구_검증.md",
@@ -33188,8 +33204,8 @@
       "path": "01_개발문서/07_검증/README.md",
       "category": "document_navigation",
       "review_scope": "해당 분야의 진입점과 담당 계약 연결",
-      "bytes": 9770,
-      "working_tree_sha256": "c2cac059c782040475082aff577a4f6dcc3290d12f3f40e344b5427249ff4890",
+      "bytes": 9817,
+      "working_tree_sha256": "728ed41226ab4e0fc589112f2b2a8f0a8da196e6a3f8d03f5899be68dc006c62",
       "text_lines": 57,
       "text_status": "utf8_read"
     },
@@ -33269,8 +33285,8 @@
       "path": "01_개발문서/09_개발계획/02_개발착수와_현재상태.md",
       "category": "current_09_개발계획",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 156255,
-      "working_tree_sha256": "0377a5f57b25baf153f2accccb6335cab8ee885cb51a99ae063d010c5789230f",
+      "bytes": 156348,
+      "working_tree_sha256": "3b9e87294d39ac52e0d35918ee406216027c6c4ac5546761924fb4d9be2d61d6",
       "text_lines": 886,
       "text_status": "utf8_read"
     },
@@ -33278,8 +33294,8 @@
       "path": "01_개발문서/09_개발계획/03_개발완료_계획.md",
       "category": "current_09_개발계획",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 19779,
-      "working_tree_sha256": "a3daaf2e0f7a6db4bf5e3d08bc146d4a76602776dae20dc32258b713174c9096",
+      "bytes": 19878,
+      "working_tree_sha256": "fac3e34be804513f2e9d79a0437d6904790b8c5d7e2dc051083576ada688b40c",
       "text_lines": 118,
       "text_status": "utf8_read"
     },
@@ -33287,8 +33303,8 @@
       "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
       "category": "current_09_개발계획",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 6786,
-      "working_tree_sha256": "96b78bea584db53ac0ae47babca9adcce5c2960fc1732b35b368a9dab71fb7c3",
+      "bytes": 6862,
+      "working_tree_sha256": "2310044dcaec189d7feebe22ac6d14347b4654a96460825bee1949808d662256",
       "text_lines": 36,
       "text_status": "utf8_read"
     },
@@ -33314,17 +33330,17 @@
       "path": "01_개발문서/09_개발계획/07_현행버전_완료후_리팩토링.md",
       "category": "current_09_개발계획",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 9784,
-      "working_tree_sha256": "d8c640a50595576d258f1e1f906640304cf153b8d24b14bb6498aa70edeeb66f",
-      "text_lines": 37,
+      "bytes": 10058,
+      "working_tree_sha256": "0a3e8feb512a206cc5655cd2bfa5a902af9fe5d4f112765648796e10fb48c4a3",
+      "text_lines": 39,
       "text_status": "utf8_read"
     },
     {
       "path": "01_개발문서/09_개발계획/08_새채팅_개발인계.md",
       "category": "current_09_개발계획",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 6868,
-      "working_tree_sha256": "81d01451fd8689c91989479351dd3e8728e9d581793a3dbfded662aa84073c42",
+      "bytes": 6801,
+      "working_tree_sha256": "eacfb732a18c9d2da372f05655e30c3e6a823993fbe9f96c529c3268ca3e7b3a",
       "text_lines": 59,
       "text_status": "utf8_read"
     },
@@ -33387,7 +33403,7 @@
       "category": "current_09_개발계획",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
       "bytes": 46581,
-      "working_tree_sha256": "b8587adb13c31b93476444370dad495f563dc04554015cd6bf21722cd5b3b1dd",
+      "working_tree_sha256": "1431de6bf626dc0acec164450c0cb84cee10553ca1b29a54795dd92d6b540bfe",
       "text_lines": 248,
       "text_status": "utf8_read"
     },
@@ -33395,8 +33411,8 @@
       "path": "01_개발문서/09_개발계획/README.md",
       "category": "document_navigation",
       "review_scope": "해당 분야의 진입점과 담당 계약 연결",
-      "bytes": 1564,
-      "working_tree_sha256": "33a22f2e5d404ce3903ed5042254aeae721b4c7389d1bc22b4a6db9fd7d65bfa",
+      "bytes": 1634,
+      "working_tree_sha256": "8144d52dbbfbd6665f9490b61174e84c92d3e2abe278f8c7e47253853b696c42",
       "text_lines": 14,
       "text_status": "utf8_read"
     },
@@ -34189,8 +34205,8 @@
       "path": "README.md",
       "category": "repository_guide",
       "review_scope": "개발 문서 진입/현재 상태 검토",
-      "bytes": 3998,
-      "working_tree_sha256": "a22e1bc8e6c9235754db271549d9e56892dd3f0a43fd54156093b809cbc764c5",
+      "bytes": 4056,
+      "working_tree_sha256": "8ca15946d7dc32c40472b235181a751968e1287c4bc3f4b8953424443167ac36",
       "text_lines": 26,
       "text_status": "utf8_read"
     }

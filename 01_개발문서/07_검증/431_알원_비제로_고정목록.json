@@ -1,0 +1,108 @@
+{
+  "baseline": "B0",
+  "release": "R1 RC10",
+  "frozen_on_kst": "2026-11-25",
+  "public_tag": "r1-rc10",
+  "local_baseline_tag": "r1-b0",
+  "source_revision": "6fd099136d5c8307f784a91383d358802f63d77b",
+  "platform": {
+    "windows": "Microsoft Windows 11 Pro",
+    "build": "26300.9974",
+    "architecture": "64비트",
+    "tracewave_root_exists": false,
+    "previous_app_count": 0,
+    "previous_start_menu_count": 0,
+    "global_pip_cache_files": 1
+  },
+  "solver": {
+    "openems": "0.37.0",
+    "csxcad": "0.7.0",
+    "native_audit_passed": true
+  },
+  "setup_sha256": "dad29e1ae819be9a639c19d15b1d11457b5cc669dcc26aa0d7725bd52980c92c",
+  "embedded_bundle_sha256": "63ed36991a3ba435ffd37a4448eec6b80e50e3d1713c4e76fd8f1d426817a74b",
+  "gui_sha256": "8f905f592ce7b94e4bf332f25e2c62a563c25799f60eaa763fe726571520d9fe",
+  "sbom_sha256": "f495cc88a5ee7514ece4907d431ecaffde0ed57c4e23c834a08dfe97f3b17749",
+  "proof_archive": {
+    "name": "TraceWave-Studio_R1_B0_보존.zip",
+    "bytes": 24248257,
+    "sha256": "b047bbf51a6a495d8bf6ad59453ca45aada77e156e38f6d25454047c65db582e"
+  },
+  "archive_members": {
+    "installer/TraceWave-Studio-R1-rc10-Setup.exe": {
+      "bytes": 15486464,
+      "sha256": "dad29e1ae819be9a639c19d15b1d11457b5cc669dcc26aa0d7725bd52980c92c"
+    },
+    "installer/TraceWave-Studio-R1-rc10-Setup.exe.sha256": {
+      "bytes": 102,
+      "sha256": "98f6ea3584bf9943391281b818be4b5d03b0a7909e679d180339e267ad92c90f"
+    },
+    "workspace/B0-workspace.zip": {
+      "bytes": 9109918,
+      "sha256": "85f0d9d06f8e617d2284f45bfc4dadb2845a90cc9fce5da286be8c317be65d81"
+    },
+    "workspace/B0-workspace-sha256.json": {
+      "bytes": 169291,
+      "sha256": "b46c7ef32efc213ec566957b2eea42867a7544f37260295b97f6fea32e5065ea"
+    },
+    "protocol/B0-public-api.json": {
+      "bytes": 89849,
+      "sha256": "258a99d088f2eb693de96e271f6026da4a520dd1eb6466f368a0edfd45211071"
+    },
+    "protocol/B0-mcp.json": {
+      "bytes": 260976,
+      "sha256": "4cfc7c7f520c2a2909021f83d3bb879fcc05e88a3bb4f35255aefbb5c178ae6a"
+    },
+    "verification/B0-replay.json": {
+      "bytes": 719,
+      "sha256": "e0a2b336f7cec2fc60f76c37224d9e0c54cc799c30a7f1f2aa690474e20fc09b"
+    },
+    "verification/R1-interactive-result.json": {
+      "bytes": 2168,
+      "sha256": "305c400ffd3fb9a8c8ae2be67e52061f386fa87e800af38cbe8f4760df5a71c0"
+    },
+    "verification/R1-interactive-removed.json": {
+      "bytes": 192,
+      "sha256": "2eaa6a318b175eec0ad5fb44188003647aa46d09f83ec6622abdafce1b5a4fae"
+    },
+    "verification/R1-setup-status.json": {
+      "bytes": 149,
+      "sha256": "a8bc3b52309195f51106f53b240667d65d0f90402fc591636ba38159fb90ca7d"
+    },
+    "verification/RC10-bom.cdx.json": {
+      "bytes": 271380,
+      "sha256": "f495cc88a5ee7514ece4907d431ecaffde0ed57c4e23c834a08dfe97f3b17749"
+    },
+    "verification/RC10-receipt.json": {
+      "bytes": 5881,
+      "sha256": "34653c01f0564858ca0f12034fe6a9f126ad13afcbc32450ebb2c2747fb5b695"
+    }
+  },
+  "workspace_file_count": 850,
+  "replay": {
+    "passed": true,
+    "project_id": "8e9a5670-f4a4-4b43-9c67-5df94fb15517",
+    "saved_revision": "fa9567f7-47aa-4dcd-b8a6-acb1fcd1321c",
+    "saved_sha256": "94bcb73df02088069a473e24bd16ae85afdffdda7f3c0a9743d39cf56bf0ccf5",
+    "result_artifact_id": "d6133573-263e-46be-af09-5b7308afdd84",
+    "result_pin": {
+      "identity_hash": "4546326691cd7215fead4236a1571810037f90c6b065aaf4cb6a96f2404db88b",
+      "dataset_sha256": "ffdb9e19f126f8a0d4f17a584f88601bf2ad031f41f68689c642d7edb819dd42"
+    },
+    "samples": 31,
+    "frequency_hz": [
+      8000000000.0,
+      12000000000.0
+    ],
+    "public_api_contract": "rfad.api/2.0",
+    "mcp_protocol": "2025-11-25",
+    "mcp_tools": 187,
+    "mcp_results_identical_to_api": true
+  },
+  "scope": "Windows 11 x64 내부 검증용 R1 소프트웨어 수용",
+  "open_conditions": [
+    "실제 제작, 납품 물성 및 교정 측정은 사례별 관리",
+    "기준 PC 성능 및 재부팅은 현행 R1 승인에서 제외",
+    "공개·상용 배포 정책과 WinLibs MCF의 정확한 상류 커밋은 별도 관리"
+  ]
+}
