@@ -527,7 +527,12 @@ void StudioFrame::AcceptSolver(const Json& result, bool show)
                     m_solverSamples = samples;
                     m_solverResult = result;
                     SolverStatus(show ? "completed" : "restored", show ? "이 해석의 결과를 열었습니다." : "이전 해석 결과를 열었습니다.");
-                    for (const auto& file : view.at("files"))
+                    const auto& files = view.at("files");
+                    if (!files.empty())
+                    {
+                        Log("해석 결과 파일 " + std::to_string(files.size()) + "개를 확인했습니다. 경로는 전체 기술 기록에서 볼 수 있습니다.");
+                    }
+                    for (const auto& file : files)
                     {
                         Log("해석 결과 파일: " + file.at("uri").get<std::string>());
                     }

@@ -8,6 +8,7 @@ class wxChoice;
 class wxListCtrl;
 class wxStaticText;
 class wxButton;
+class wxCheckBox;
 class ResultMetricsView final : public wxScrolledWindow
 {
 public:
@@ -21,6 +22,7 @@ public:
 
 private:
     void Present();
+    void SetNotice(const std::string& message);
     Json m_description = nullptr;
     Json m_result = nullptr;
     wxChoice* m_frequency = nullptr;
@@ -29,4 +31,7 @@ private:
     wxListCtrl* m_table = nullptr;
     NetworkChart* m_chart = nullptr;
     wxButton* m_validationButton = nullptr;
+    wxButton* m_rawButton = nullptr;
+    wxCheckBox* m_details = nullptr;
+    wxString m_noticeText;
 };

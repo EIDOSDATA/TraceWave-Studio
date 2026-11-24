@@ -7,7 +7,6 @@
 #include "rf_validation_controller.h"
 #include "output_controller.h"
 #include <wx/datetime.h>
-#include <wx/filename.h>
 #include <wx/iconbndl.h>
 
 StudioFrame::StudioFrame(Options options)
@@ -66,17 +65,15 @@ void StudioFrame::Log(const std::string& text)
     wxWindow* focused = wxWindow::FindFocus();
     const auto raw = Display(text);
     auto headline = raw.BeforeFirst('\n').Trim();
-    const auto pathLabel = Display("해석 결과 파일: ");
-    if (headline.StartsWith(pathLabel))
-    {
-        headline = pathLabel + wxFileName(headline.Mid(pathLabel.length())).GetFullName();
-    }
-    if (headline.length() > 150)
-    {
-        headline = headline.Left(147) + "...";
-    }
     const auto stamp = wxDateTime::Now().FormatISOTime() + "  ";
-    m_logSummary->AppendText(stamp + headline + "\n");
+    if (!headline.StartsWith(Display("해석 결과 파일: ")))
+    {
+        if (headline.length() > 150)
+        {
+            headline = headline.Left(147) + "...";
+        }
+        m_logSummary->AppendText(stamp + headline + "\n");
+    }
     m_log->AppendText(stamp + raw + "\n");
     for (auto* control : {m_logSummary, m_log})
     {

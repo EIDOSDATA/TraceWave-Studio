@@ -4,6 +4,7 @@
 #include "studio_theme.h"
 #include "system_appearance.h"
 #include "workspace_bar.h"
+#include <wx/clipbrd.h>
 #include <wx/display.h>
 #include <wx/srchctrl.h>
 
@@ -67,8 +68,20 @@ void AddLine(wxPanel& page, const char* label, const wxString& value)
     page.GetSizer()->Add(body, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, pad);
 }
 
-/** @brief 긴 경로와 로그는 native 읽기 전용 필드에서 복사할 수 있다. */
-void AddPath(wxPanel& page, const char* label, const wxString& value)
+/** @brief 현재 화면의 문자열을 원문 그대로 Windows 클립보드에 복사한다. */
+bool CopyEnvironmentText(const wxString& text)
+{
+    if (!wxTheClipboard->Open())
+    {
+        return false;
+    }
+    const bool copied = wxTheClipboard->SetData(new wxTextDataObject(text));
+    wxTheClipboard->Close();
+    return copied;
+}
+
+/** @brief 경로를 읽기 전용으로 표시하고 전체 경로를 한 번에 복사한다. */
+void AddPath(wxPanel& page, const char* label, const wxString& value, wxStaticText& status)
 {
     const int pad = page.FromDIP(StudioTheme::PanelPadding);
     auto* title = new wxStaticText(&page, wxID_ANY, Display(label));
@@ -77,8 +90,19 @@ void AddPath(wxPanel& page, const char* label, const wxString& value)
     auto* edit = new wxTextCtrl(&page, wxID_ANY, value.empty() ? Display("미연결") : value,
                                 wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
     edit->SetName(Display(label));
-    edit->SetToolTip(Display("전체 경로는 Ctrl+A, Ctrl+C로 복사합니다."));
-    page.GetSizer()->Add(edit, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, page.FromDIP(StudioTheme::InputGap));
+    edit->SetToolTip(value);
+    edit->SetInsertionPointEnd();
+    auto* row = new wxBoxSizer(wxHORIZONTAL);
+    row->Add(edit, 1, wxALIGN_CENTER_VERTICAL);
+    auto* copy = new wxButton(&page, wxID_ANY, Display("경로 복사"));
+    copy->SetName(Display(std::string(label) + " 전체 경로 복사"));
+    copy->Enable(!value.empty());
+    copy->Bind(wxEVT_BUTTON, [value, &status](wxCommandEvent&)
+    {
+        status.SetLabel(Display(CopyEnvironmentText(value) ? "전체 경로를 복사했습니다." : "클립보드를 열 수 없습니다. 다시 시도하세요."));
+    });
+    row->Add(copy, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, page.FromDIP(StudioTheme::InputGap));
+    page.GetSizer()->Add(row, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, pad);
 }
 
 /** @brief 닫기와 명시적 작업 버튼을 정렬하는 하단 행이다. */
@@ -202,29 +226,61 @@ void StudioFrame::ShowEnvironment()
     AddLine(components, "openEMS 해석", Display(m_solverConfigured
         ? (m_options.openEmsWsl ? "WSL2 openEMS 연결됨" : "Windows 기본 openEMS 연결됨")
         : "새 해석을 실행하려면 openEMS 연결이 필요합니다."));
-    AddLine(components, "편집과 결과 조회", Display("프로젝트 서비스가 연결되면 편집, 저장 및 기존 결과 조회가 가능합니다."));
+    AddLine(components, "다음 조치", Display(!m_connected
+        ? "Studio를 다시 시작하고 프로젝트 서비스 연결을 확인하세요. 계속 연결되지 않으면 진단 기록을 복사하세요."
+        : !m_solverConfigured || !m_cadConfigured
+            ? "필요한 기능의 연결이 끊겨 있습니다. 설치본은 Windows 설치 프로그램으로 필요한 환경을 복구한 뒤 Studio를 다시 여세요."
+            : "현재 연결 상태로 프로젝트를 편집하고 해석할 수 있습니다. 문제를 재현한 뒤 진단 기록에서 시간과 내용을 확인하세요."));
 
     auto& paths = *AddPage(*pages, "경로 / 연결");
-    AddPath(paths, "프로젝트 작업 영역", m_options.workspace);
-    AddPath(paths, "서비스 Python", m_options.python);
-    AddPath(paths, "CAD Python", m_options.cadPython);
-    AddPath(paths, "도면 / 교환 Python", m_options.exchangePython);
-    AddLine(paths, "연결 변경", Display("개발판에서는 실행 도우미(Code/tools/launch_gui.ps1)의 옵션을 지정해 다시 시작합니다."));
+    const int pad = dialog.FromDIP(StudioTheme::PanelPadding);
+    auto* pathStatus = new wxStaticText(&paths, wxID_ANY, Display("필요한 전체 경로를 복사할 수 있습니다."));
+    StudioTheme::BindSecondary(*pathStatus);
+    AddPath(paths, "프로젝트 작업 영역", m_options.workspace, *pathStatus);
+    AddPath(paths, "서비스 Python", m_options.python, *pathStatus);
+    AddPath(paths, "CAD Python", m_options.cadPython, *pathStatus);
+    AddPath(paths, "도면 / 교환 Python", m_options.exchangePython, *pathStatus);
+    paths.GetSizer()->Add(pathStatus, 0, wxEXPAND | wxALL, pad);
 
     auto& diagnostics = *AddPage(*pages, "진단 기록");
-    const int pad = dialog.FromDIP(StudioTheme::PanelPadding);
-    auto* technical = new wxCheckBox(&diagnostics, wxID_ANY, Display("전체 기술 기록"));
-    diagnostics.GetSizer()->Add(technical, 0, wxALL, pad);
-    auto* log = new wxTextCtrl(&diagnostics, wxID_ANY, m_logSummary->GetValue(), wxDefaultPosition, wxDefaultSize,
+    auto* mode = new wxChoice(&diagnostics, wxID_ANY);
+    mode->SetName(Display("진단 기록 표시 방식"));
+    mode->Append(Display("요약"));
+    mode->Append(Display("전체 기술 기록"));
+    mode->SetSelection(0);
+    auto* toolbar = new wxBoxSizer(wxHORIZONTAL);
+    toolbar->Add(mode, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, pad);
+    auto* refresh = new wxButton(&diagnostics, wxID_ANY, Display("새로 읽기"));
+    toolbar->Add(refresh, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, pad);
+    auto* copy = new wxButton(&diagnostics, wxID_ANY, Display("표시 기록 복사"));
+    toolbar->Add(copy, 0, wxALIGN_CENTER_VERTICAL);
+    diagnostics.GetSizer()->Add(toolbar, 0, wxALL, pad);
+    auto* log = new wxTextCtrl(&diagnostics, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
                                wxTE_MULTILINE | wxTE_READONLY);
     log->SetName(Display("현재 세션 진단 기록"));
-    diagnostics.GetSizer()->Add(log, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
-    technical->Bind(wxEVT_CHECKBOX, [this, log](wxCommandEvent& event)
+    diagnostics.GetSizer()->Add(log, 1, wxEXPAND | wxLEFT | wxRIGHT, pad);
+    auto* logStatus = new wxStaticText(&diagnostics, wxID_ANY, wxEmptyString);
+    StudioTheme::BindSecondary(*logStatus);
+    diagnostics.GetSizer()->Add(logStatus, 0, wxEXPAND | wxALL, pad);
+    const auto updateLog = [this, mode, log, logStatus, copy]()
     {
-        log->ChangeValue(event.IsChecked() ? m_log->GetValue() : m_logSummary->GetValue());
+        const bool technical = mode->GetSelection() == 1;
+        const auto text = technical ? m_log->GetValue() : m_logSummary->GetValue();
+        log->ChangeValue(text);
         log->ShowPosition(log->GetLastPosition());
+        copy->Enable(!text.empty());
+        logStatus->SetLabel(Display(text.empty() ? "현재 세션에 기록이 없습니다."
+            : technical ? "전체 경로와 기술 세부 사항이 표시됩니다."
+                        : "최신 기록을 아래에 표시합니다. 자세한 원인은 전체 기술 기록에서 확인하세요."));
+    };
+    mode->Bind(wxEVT_CHOICE, [updateLog](wxCommandEvent&) { updateLog(); });
+    refresh->Bind(wxEVT_BUTTON, [updateLog](wxCommandEvent&) { updateLog(); });
+    copy->Bind(wxEVT_BUTTON, [log, logStatus](wxCommandEvent&)
+    {
+        logStatus->SetLabel(Display(CopyEnvironmentText(log->GetValue()) ? "표시한 기록을 복사했습니다."
+            : "클립보드를 열 수 없습니다. 다시 시도하세요."));
     });
-    log->ShowPosition(log->GetLastPosition());
+    updateLog();
 
     Footer(dialog);
     Place(dialog, *this, wxSize(780, 610), wxSize(600, 510));

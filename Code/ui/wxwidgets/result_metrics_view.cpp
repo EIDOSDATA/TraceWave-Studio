@@ -6,11 +6,15 @@
 #include "studio_support.h"
 #include "studio_theme.h"
 #include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/dialog.h>
 #include <wx/choice.h>
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/wrapsizer.h>
+#include <algorithm>
 ResultMetricsView::ResultMetricsView(wxWindow* parent)
     : wxScrolledWindow(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL | wxTAB_TRAVERSAL)
 {
@@ -23,7 +27,10 @@ ResultMetricsView::ResultMetricsView(wxWindow* parent)
     StudioTheme::Title(*m_heading);
     layout->Add(m_heading, 0, wxEXPAND | wxALL, FromDIP(8));
     auto* toolbar = new wxWrapSizer(wxHORIZONTAL);
+    toolbar->Add(new wxStaticText(this, wxID_ANY, Display("기록 주파수")), 0,
+                 wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(4));
     m_frequency = new wxChoice(this, wxID_ANY);
+    m_frequency->SetName(Display("기록 주파수"));
     toolbar->Add(m_frequency, 0, wxALL, FromDIP(4));
     auto* select = new wxButton(this, wxID_ANY, Display("원본 선택"));
     toolbar->Add(select, 0, wxALL, FromDIP(4));
@@ -40,22 +47,59 @@ ResultMetricsView::ResultMetricsView(wxWindow* parent)
                                      onValidation();
                                  }
                              });
+    m_details = new wxCheckBox(this, wxID_ANY, Display("전체 지표"));
+    toolbar->Add(m_details, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(4));
+    m_rawButton = new wxButton(this, wxID_ANY, Display("원본 수치"));
+    toolbar->Add(m_rawButton, 0, wxALL, FromDIP(4));
+    m_details->Disable();
+    m_rawButton->Disable();
     layout->Add(toolbar, 0, wxEXPAND | wxLEFT, FromDIP(4));
-    m_table = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 300)), wxLC_REPORT);
-    m_table->SetMinSize(FromDIP(wxSize(-1, 300)));
+    m_notice = new wxStaticText(this, wxID_ANY, wxEmptyString);
+    m_notice->SetMinSize(wxSize(1, -1));
+    layout->Add(m_notice, 0, wxEXPAND | wxALL, FromDIP(8));
+    m_table = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 212)), wxLC_REPORT);
+    m_table->SetName(Display("선택 주파수의 전력과 손실"));
+    m_table->SetMinSize(FromDIP(wxSize(-1, 212)));
     StudioTheme::Table(*m_table);
     for (const auto& column : std::vector<std::pair<std::string, int>>{
-             {"항목", 185}, {"기록 값", 215}, {"분모 / 기록 범위", 220}, {"검증 상태", 230}})
+             {"항목", 175}, {"기록 값", 170}, {"판독 기준", 275}})
     {
         m_table->AppendColumn(Display(column.first), wxLIST_FORMAT_LEFT, FromDIP(column.second));
     }
     layout->Add(m_table, 0, wxEXPAND | wxALL, FromDIP(8));
-    m_notice = new wxStaticText(this, wxID_ANY, Display("NF2FF 전력 기록이 있는 원본을 선택하세요."));
-    layout->Add(m_notice, 0, wxEXPAND | wxALL, FromDIP(8));
+
     m_chart = new NetworkChart(this);
     m_chart->SetMinSize(FromDIP(wxSize(320, 230)));
     layout->Add(m_chart, 1, wxEXPAND | wxALL, FromDIP(8));
     SetSizer(layout);
+    Clear("방사 결과가 저장된 원본을 선택하세요.");
+    m_details->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
+    {
+        Present();
+    });
+    m_rawButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
+    {
+        const int selection = m_frequency->GetSelection();
+        if (selection < 0)
+        {
+            return;
+        }
+        const auto& selected = m_result.at("rows").at(static_cast<std::size_t>(selection));
+        Json raw{{"source", m_result.at("source")}, {"pin", m_result.at("pin")}, {"sample", selected}};
+        wxDialog dialog(this, wxID_ANY, Display("선택 주파수의 원본 수치"),
+                        wxDefaultPosition, FromDIP(wxSize(720, 500)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+        auto* contents = new wxBoxSizer(wxVERTICAL);
+        auto* data = new wxTextCtrl(&dialog, wxID_ANY, Display(raw.dump(2)), wxDefaultPosition,
+                                   wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY | wxTE_DONTWRAP);
+        data->SetName(Display("원본 수치와 출처"));
+        contents->Add(data, 1, wxEXPAND | wxALL, FromDIP(10));
+        auto* close = new wxButton(&dialog, wxID_OK, Display("닫기"));
+        close->SetDefault();
+        contents->Add(close, 0, wxALIGN_RIGHT | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(10));
+        dialog.SetSizer(contents);
+        dialog.CentreOnParent();
+        dialog.ShowModal();
+    });
     m_frequency->Bind(wxEVT_CHOICE,
                       [this](wxCommandEvent&)
                       {
@@ -72,6 +116,7 @@ ResultMetricsView::ResultMetricsView(wxWindow* parent)
     Bind(wxEVT_SIZE,
          [this](wxSizeEvent& event)
          {
+             m_notice->SetLabel(m_noticeText);
              m_notice->Wrap(std::max(FromDIP(220), GetClientSize().x - FromDIP(24)));
              Layout();
              FitInside();
@@ -115,35 +160,75 @@ void ResultMetricsView::Present()
         return;
     }
     m_table->DeleteAllItems();
-    std::string notice;
-    for (const auto& warning : m_result.value("warnings", Json::array()))
-    {
-        notice += ResultUi::Text(warning) + "\n";
-    }
     const int selection = m_frequency->GetSelection();
+    m_details->Enable(selection >= 0);
+    m_rawButton->Enable(selection >= 0);
+    const bool all = m_details->GetValue();
+    std::string notice;
+    if (selection < 0 || all)
+    {
+        for (const auto& warning : m_result.value("warnings", Json::array()))
+        {
+            notice += ResultUi::Text(warning) + "\n";
+        }
+    }
+    m_table->Show(selection >= 0);
+    m_chart->Show(selection >= 0);
     if (selection >= 0)
     {
         const auto& selected = m_result.at("rows").at(static_cast<std::size_t>(selection));
+        const auto balance = selected.at("numerical_balance_status");
+        const bool hasLosses = !selected.at("independent_losses").empty();
+        if (!all)
+        {
+            notice = "전력 단위 W*s^2 / 절대 전력 W 미평가\n";
+            if (balance == "within_initial_numerical_budget")
+            {
+                notice += "전력 수지: 초기 수치 기준 충족\n";
+            }
+            else if (balance == "requires_review")
+            {
+                notice += "전력 수지: 잔차와 초기 기준을 확인하세요.\n";
+            }
+            if (!hasLosses)
+            {
+                notice += "독립 손실 미기록. 새 해석에서 방사와 독립 손실 기록을 켜세요.\n";
+            }
+        }
+        const std::vector<std::string> overview{"accepted", "radiated", "radiation_efficiency", "total_efficiency",
+                                                "dielectric_loss_w_s2", "conductor_loss_w_s2", "relative_residual"};
         for (const auto& item : m_result.at("table_rows"))
         {
-            if (item.at("frequency_hz") != selected.at("frequency_hz"))
+            if (item.at("frequency_hz") != selected.at("frequency_hz") ||
+                (!all && std::find(overview.begin(), overview.end(), item.at("key").get<std::string>()) == overview.end()))
             {
                 continue;
             }
             const auto row = m_table->InsertItem(m_table->GetItemCount(), Display(ResultUi::Text(item.at("label"))));
-            m_table->SetItem(row, 1,
-                             Display(ResultUi::Number(item.at("value")) + " " + ResultUi::Text(item.at("unit"))));
+            const auto& value = item.at("value");
             const auto denominator = item.value("denominator", Json(nullptr));
-            m_table->SetItem(row, 2,
-                             Display(denominator == "accepted"   ? "수용 전력"
-                                     : denominator == "incident" ? "입사 전력"
-                                                                 : "실제 기록 주파수"));
-            m_table->SetItem(row, 3, Display(ResultUi::State(item.value("state", Json(nullptr)))));
+            const auto state = item.value("state", Json(nullptr));
+            m_table->SetItem(row, 1, Display(value.is_number() ? ResultUi::Number(value, 6) + " " +
+                ResultUi::Text(item.at("unit")) : ResultUi::State(state)));
+            const auto basis = denominator == "accepted" ? "수용 전력 기준" :
+                               denominator == "incident" ? "입사 전력 기준" : "기록 표본";
+            m_table->SetItem(row, 2, Display(all ? basis + std::string(" / ") + ResultUi::State(state) : basis));
         }
-        for (const auto& reason : selected.value("reasons", Json::array()))
+        if (all)
         {
-            notice += ResultUi::Text(reason) + "\n";
+            for (const auto& reason : selected.at("reasons"))
+            {
+                notice += ResultUi::Text(reason) + "\n";
+            }
         }
+        else if (selected.at("power_order_status") == "requires_review")
+        {
+            notice += "전력 순서와 효율을 검토하세요. 전체 지표에서 관련 값을 확인할 수 있습니다.\n";
+        }
+    }
+    else
+    {
+        notice += "다른 원본을 선택하거나 새 해석에서 원거리 방사 패턴을 기록하세요.";
     }
     std::vector<Json> pages;
     for (const std::string key : {"radiation_efficiency", "total_efficiency"})
@@ -171,11 +256,20 @@ void ResultMetricsView::Present()
     m_chart->SetSeries(pages, {Display("방사 효율 / 수용 전력 분모"), Display("총 효율 / 입사 전력 분모")}, false);
     m_chart->SetMetric("real", Display("효율 (%) / 기록 표본만"));
     m_chart->SetFrequencyUnit(StudioFrequency::ForSamples(m_result.at("rows")).unit);
-    m_notice->SetLabel(Display(notice));
+    SetNotice(notice);
+}
+
+/** @brief 안내 원문에서 매번 줄을 나누어 창을 넓히면 이전 줄바꿈도 해제한다. */
+void ResultMetricsView::SetNotice(const std::string& message)
+{
+    m_noticeText = Display(message);
+    m_noticeText.Trim();
+    m_notice->SetLabel(m_noticeText);
     m_notice->Wrap(std::max(FromDIP(220), GetClientSize().x - FromDIP(24)));
     Layout();
     FitInside();
 }
+
 void ResultMetricsView::Clear(const std::string& reason)
 {
     m_heading->SetLabel(Display("전력 / 손실"));
@@ -184,7 +278,12 @@ void ResultMetricsView::Clear(const std::string& reason)
     m_result = nullptr;
     m_frequency->Clear();
     m_frequency->Disable();
+    m_details->SetValue(false);
+    m_details->Disable();
+    m_rawButton->Disable();
     m_table->DeleteAllItems();
+    m_table->Hide();
     m_chart->Clear();
-    m_notice->SetLabel(Display(reason));
+    m_chart->Hide();
+    SetNotice(reason);
 }
