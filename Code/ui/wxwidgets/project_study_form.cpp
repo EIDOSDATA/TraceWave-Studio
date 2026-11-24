@@ -1,7 +1,6 @@
 /** @file @brief 연구 조건과 결과 화면의 위젯 배치를 담당한다. */
 #include "project_study_dialog.h"
 #include "studio_support.h"
-#include "frequency_display.h"
 #include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
@@ -52,18 +51,14 @@ void ProjectStudyDialog::Build()
         const std::string name = title;
         if (name == "격자 / 해석 조건")
         {
-            const auto band = m_context.value("port_band_hz", Json(nullptr));
-            auto* range = new wxStaticText(page, wxID_ANY, Display(band.is_object()
-                ? "급전 유효 대역 " + StudioFrequency::Range(band.at("min"), band.at("max")) + " / 입력 칸은 Hz"
-                : "급전 유효 대역을 확인할 수 없습니다. 예시 대역을 설계 조건에 맞게 검토하세요."));
-            range->Wrap(FromDIP(630));
-            outer->Add(range, 0, wxLEFT | wxTOP | wxRIGHT, FromDIP(10));
+            m_analysisBand = new wxStaticText(page, wxID_ANY, wxEmptyString);
+            outer->Add(m_analysisBand, 0, wxLEFT | wxTOP | wxRIGHT, FromDIP(10));
             for (const auto& field : std::vector<std::pair<std::string, std::string>>{
                      {"name", "새 연구 이름"},
                      {"grids", "격자 수준 (mm, 쉼표 / 감소 순서, 최대 6개)"},
                      {"adaptive_memory_limit_mib", "적응 격자 메모리 상한 (MiB, 비우면 모든 수준 실행)"},
-                     {"start", "시작 주파수 (Hz)"},
-                     {"stop", "끝 주파수 (Hz)"},
+                     {"start", "시작 주파수 (예: 2.4 GHz)"},
+                     {"stop", "끝 주파수 (예: 2483.5 MHz)"},
                      {"count", "포트 주파수 표본 수"},
                      {"air_padding_mm", "외부 공기 여백 (mm)"},
                      {"air_cell_mm", "외부 공기 격자 (mm)"},
@@ -78,23 +73,27 @@ void ProjectStudyDialog::Build()
         }
         else if (name == "방사 / 독립 손실")
         {
-            m_radiation = new wxCheckBox(page, wxID_ANY, Display("NF2FF 방사 기록"));
-            m_losses = new wxCheckBox(page, wxID_ANY, Display("유전체 / 도체 독립 손실과 전체 전력 수지"));
-            outer->Add(m_radiation, 0, wxBOTTOM, 8);
-            outer->Add(m_losses, 0, wxBOTTOM, 12);
+            m_radiation = new wxCheckBox(page, wxID_ANY, Display("원거리 방사 패턴 계산 (NF2FF)"));
+            m_losses = new wxCheckBox(page, wxID_ANY, Display("유전체·도체 손실과 전력 수지 계산"));
+            m_radiationBand = new wxStaticText(page, wxID_ANY, wxEmptyString);
+            outer->Add(m_radiationBand, 0, wxLEFT | wxTOP | wxRIGHT, FromDIP(10));
+            outer->Add(m_radiation, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(10));
+            outer->Add(m_losses, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(10));
             for (const auto& field : std::vector<std::pair<std::string, std::string>>{
-                     {"frequencies", "직접 포트 주파수 (Hz, 쉼표, 최대 3개)"},
-                     {"theta_step_deg", "theta 간격 (5/10/15/30 degree)"},
-                     {"phi_step_deg", "phi 간격 (5/10/15/30 degree)"},
+                     {"frequencies", "방사 주파수 (1~3개, 낮은 값부터)"},
+                     {"theta_step_deg", "극각 간격 (theta, 5/10/15/30도)"},
+                     {"phi_step_deg", "방위각 간격 (phi, 5/10/15/30도)"},
                      {"box_clearance_mm", "기록 상자의 최소 기판 거리 (mm)"},
-                     {"max_relative_residual", "전체 전력 상대 잔차 한계 (0.03 = 3%)"}})
+                     {"max_relative_residual", "전력 수지 상대 잔차 한계 (0.03 = 3%)"}})
             {
                 AddField(page, fields, field.first, field.second);
             }
-            outer->Add(new wxStaticText(page, wxID_ANY,
-                                        Display("손실은 방사와 함께 기록합니다. PTH는 native 체적 전류로 분리하며 얇은 "
-                                                "도금의 skin depth 정확도는 별도 검증합니다.")),
-                       0, wxBOTTOM, 12);
+            auto* help = new wxStaticText(page, wxID_ANY,
+                Display("주파수는 쉼표로 구분하세요. 예: 2.4 GHz, 2483.5 MHz (단위 생략 시 Hz).\n"
+                        "전력 수지를 계산할 때는 포트가 실제로 계산하는 주파수를 사용하세요.\n"
+                        "도금 관통홀(PTH) 손실은 별도로 표시합니다. 얇은 도금의 표피 깊이 정확도는 별도 검증이 필요합니다."));
+            help->Wrap(FromDIP(680));
+            outer->Add(help, 0, wxLEFT | wxRIGHT | wxTOP, FromDIP(10));
         }
         else
         {
@@ -120,6 +119,7 @@ void ProjectStudyDialog::Build()
         page->SetSizer(outer);
         m_pages->AddPage(page, Display(title));
     }
+    UpdateBandLabels();
     auto* results = new wxPanel(m_pages);
     auto* resultLayout = new wxBoxSizer(wxVERTICAL);
     m_cases =
@@ -207,11 +207,19 @@ void ProjectStudyDialog::Build()
     m_radiation->Bind(wxEVT_CHECKBOX,
                       [this](wxCommandEvent&)
                       {
+                          if (!m_radiation->GetValue())
+                          {
+                              m_losses->SetValue(false);
+                          }
                           UpdateControls();
                       });
     m_losses->Bind(wxEVT_CHECKBOX,
                    [this](wxCommandEvent&)
                    {
+                       if (m_losses->GetValue())
+                       {
+                           m_radiation->SetValue(true);
+                       }
                        UpdateControls();
                    });
 }

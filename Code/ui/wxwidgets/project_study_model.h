@@ -2,6 +2,7 @@
 #pragma once
 #include "studio_types.h"
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -9,6 +10,17 @@ namespace Studio
 {
 /** @brief 조건 화면의 문자열 초안이다. 물리 계산이나 원본 설계는 포함하지 않는다. */
 using StudyFields = std::map<std::string, std::string>;
+/** @brief 입력 오류를 원래 화면의 입력 칸으로 연결한다. */
+class StudyFieldError final : public std::runtime_error
+{
+public:
+    StudyFieldError(const std::string& field, const std::string& message)
+        : std::runtime_error(message), key(field)
+    {
+    }
+
+    const std::string key;
+};
 /** @brief 고정 수치 조건을 편집 가능한 문자열 초안으로 투영한다. */
 StudyFields StudyDraft(const Json& specification);
 /** @brief 기존 조건은 보존하고 새 손실 연구에는 화면의 초기 기준을 명시적으로 고정한다. */

@@ -35,6 +35,30 @@ int main(int argc, char** argv)
         auto fields = Studio::StudyDraft(specification);
         Check(Studio::StudySpecification(specification, fields, true, true) == specification,
               "draft lost source numeric precision");
+        auto units = fields;
+        units["start"] = "2400 MHz";
+        units["stop"] = "2.4835GHz";
+        units["frequencies"] = "2400000 kHz, 2441750000, 2.4835 GHz";
+        const Json converted = Studio::StudySpecification(specification, units, true, true);
+        Check(converted.at("settings").at("frequency_hz").at("start") == 2.4e9 &&
+              converted.at("settings").at("frequency_hz").at("stop") == 2.4835e9 &&
+              converted.at("settings").at("radiation").at("frequency_hz") == Json::array({2.4e9, 2.44175e9, 2.4835e9}),
+              "engineering-unit input changed stored Hz");
+        Json precision = specification;
+        precision["settings"]["frequency_hz"]["start"] = 2400123456.7890124;
+        Check(Studio::StudySpecification(precision, Studio::StudyDraft(precision), true, true) == precision,
+              "frequency draft lost raw Hz precision");
+        units["frequencies"] = "2.4 GHz, 3 fifths";
+        bool focused = false;
+        try
+        {
+            Studio::StudySpecification(specification, units, true, true);
+        }
+        catch (const Studio::StudyFieldError& error)
+        {
+            focused = error.key == "frequencies";
+        }
+        Check(focused, "invalid radiation input lost its field identity");
         const Json copied = Studio::StudySpecification(specification, fields, true, true, true);
         Check(copied.contains("loss_profile") && copied.at("loss_profile").at("max_relative_delta") == 0.02,
               "new study copy missed explicit loss criterion");

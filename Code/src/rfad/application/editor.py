@@ -339,15 +339,17 @@ def editor_selection(document: dict, saved_revision: str, history: dict, selecti
     if document["ports"]:
         port = next((row for row in document["ports"] if selected["id"] in
                      (row["id"], row["positive_geometry_id"], row["reference_geometry_id"])), document["ports"][0])
-        source_refs = set()
-        for scalar in (port["resistance"], *port["validity_hz"].values()):
-            if "parameter_id" in scalar:
-                scalar = document["parameters"][scalar["parameter_id"]]["quantity"]
-            source_refs.update(scalar.get("source_refs", []))
+        quantities = {key: resolve_scalar(document, value, dimension, field)
+                      for key, value, dimension, field in (
+                          ("reference_impedance_ohm", port["resistance"], "impedance", "port.resistance"),
+                          ("frequency_min_hz", port["validity_hz"]["min"], "frequency", "port.validity_hz.min"),
+                          ("frequency_max_hz", port["validity_hz"]["max"], "frequency", "port.validity_hz.max"))}
+        source_refs = {source for quantity in quantities.values() for source in quantity.source_refs}
         result["port_links"] = {"id": port["id"], "label": port["name"],
                                 "terminal_ids": [port["positive_geometry_id"], port["reference_geometry_id"]],
                                 "reference_plane": port.get("reference_plane", ""),
-                                "source_ref_count": len(source_refs)}
+                                "source_ref_count": len(source_refs),
+                                **{key: quantity.value_si for key, quantity in quantities.items()}}
     if any(field["editor"] == "coordinate_table" for field in selected_fields):
         result["coordinate_choices"] = _parameter_choices(document, "length")
     return result

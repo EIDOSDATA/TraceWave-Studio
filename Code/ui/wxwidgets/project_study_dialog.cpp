@@ -101,7 +101,25 @@ void ProjectStudyDialog::Call(const std::string& method, const Json& input, bool
                 self->m_status->SetLabel(Display(self->m_lastError));
                 if (method == "study.create")
                 {
-                    self->m_pages->SetSelection(0);
+                    const auto details = error.value("details", Json::object());
+                    if (details.is_object())
+                    {
+                        const auto path = details.value("field_path", std::string());
+                        std::string key = path.substr(path.find_last_of('.') + 1);
+                        if (path == "settings.radiation.frequency_hz")
+                        {
+                            key = "frequencies";
+                        }
+                        else if (path == "settings.power_balance")
+                        {
+                            key = "max_relative_residual";
+                        }
+                        else if (path == "settings.frequency_hz")
+                        {
+                            key = "start";
+                        }
+                        self->FocusField(key);
+                    }
                 }
                 self->UpdateControls();
             }
@@ -138,6 +156,7 @@ void ProjectStudyDialog::ReloadStudies()
          [this](const Json& context)
          {
              m_context = context;
+             UpdateBandLabels();
              Call("study.list", Json::object(), false,
                   [this](const Json& result)
                   {
@@ -202,6 +221,36 @@ void ProjectStudyDialog::SelectStudy(const std::string& identity)
     }
 }
 
+/** @brief 갱신된 설계 개정의 급전 대역을 두 입력 탭에 표시한다. */
+void ProjectStudyDialog::UpdateBandLabels()
+{
+    const auto band = m_context.value("port_band_hz", Json(nullptr));
+    const auto caption = band.is_object()
+        ? "급전 유효 대역  " + StudioFrequency::Range(band.at("min"), band.at("max"))
+        : "급전 유효 대역 미정. 프로젝트의 급전 속성에서 확인하세요.";
+    for (auto* label : {m_analysisBand, m_radiationBand})
+    {
+        label->SetLabel(Display(caption));
+        label->GetParent()->Layout();
+    }
+}
+
+/** @brief 사용자가 입력한 원문을 유지하고 문제 입력 칸으로 이동한다. */
+void ProjectStudyDialog::FocusField(const std::string& key)
+{
+    const auto field = m_fields.find(key);
+    if (field == m_fields.end() || !field->second->IsEnabled())
+    {
+        return;
+    }
+    const auto page = m_pages->FindPage(field->second->GetParent());
+    if (page != wxNOT_FOUND)
+    {
+        m_pages->SetSelection(page);
+        field->second->SetFocus();
+    }
+}
+
 void ProjectStudyDialog::CreateStudy()
 {
     try
@@ -211,11 +260,10 @@ void ProjectStudyDialog::CreateStudy()
         const auto& frequency = specification.at("settings").at("frequency_hz");
         if (band.is_object() && (frequency.at("start") < band.at("min") || frequency.at("stop") > band.at("max")))
         {
-            m_pages->SetSelection(0);
             m_lastError = "급전 유효 대역 " + StudioFrequency::Range(band.at("min"), band.at("max")) +
                 " 안에서 시작과 끝 주파수를 입력하세요.";
             m_status->SetLabel(Display(m_lastError));
-            m_fields.at(frequency.at("start") < band.at("min") ? "start" : "stop")->SetFocus();
+            FocusField(frequency.at("start") < band.at("min") ? "start" : "stop");
             return;
         }
         m_lastError.clear();
@@ -228,11 +276,16 @@ void ProjectStudyDialog::CreateStudy()
                  ReloadStudies();
              });
     }
+    catch (const Studio::StudyFieldError& error)
+    {
+        m_lastError = error.what();
+        m_status->SetLabel(Display(m_lastError));
+        FocusField(error.key);
+    }
     catch (const std::exception& error)
     {
         m_lastError = error.what();
         m_status->SetLabel(Display(m_lastError));
-        m_pages->SetSelection(0);
     }
 }
 
@@ -286,6 +339,11 @@ void ProjectStudyDialog::UpdateControls()
     {
         return;
     }
+    for (const auto* key : {"frequencies", "theta_step_deg", "phi_step_deg", "box_clearance_mm"})
+    {
+        m_fields.at(key)->Enable(m_radiation->GetValue());
+    }
+    m_fields.at("max_relative_residual")->Enable(m_losses->GetValue());
     bool matches = false;
     try
     {

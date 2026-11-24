@@ -360,7 +360,8 @@ set_target_properties(tracewave_gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE
 
 include(CTest)
 if(BUILD_TESTING)
-    add_executable(tracewave_project_study_tests tests/project_study_model_test.cpp ui/wxwidgets/project_study_model.cpp)
+    add_executable(tracewave_project_study_tests tests/project_study_model_test.cpp
+        ui/wxwidgets/project_study_model.cpp ui/wxwidgets/frequency_display.cpp)
     target_include_directories(tracewave_project_study_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     set_target_properties(tracewave_project_study_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     if(MSVC)

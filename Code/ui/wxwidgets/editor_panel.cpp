@@ -55,6 +55,11 @@ int FieldGroup(const std::string& key, const Json& descriptor, const std::string
     {
         return 3;
     }
+    if (kind == "port" || kind == "new_port")
+    {
+        return key == "name" || key == "reference_plane" || key.rfind("resistance.", 0) == 0 ||
+            key.rfind("validity_hz.", 0) == 0 ? 0 : 1;
+    }
     if (key == "name" || key == "layer_id" || key == "material_id" || key == "material_ref" || key == "net_id" ||
         key == "role" || key.find("flags.") == 0 || key == "include_in_analysis" || key == "include_in_em" ||
         key == "include_in_export")
@@ -116,14 +121,16 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
     m_valueState->SetForegroundColour(StudioTheme::Colours().secondary);
     m_layout->Add(m_valueState, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
     const std::string kind = selection.value("kind", "");
+    const bool port = kind == "port" || kind == "new_port";
     const std::array<std::string, 4> names{
         {kind == "material"
              ? "재료 물성"
              : kind == "layer" ? "적층 치수"
              : kind == "target" ? "대역과 기준면"
+             : port ? "급전 기준면과 유효 대역"
              : kind == "design_rules" ? "규칙 입력"
              : kind == "parameter" || kind == "new_parameter" ? "매개변수" : "형상 / 치수",
-         kind == "target" ? "성능 기준" : "기판 / 재료", "출처와 가정", "고급 설정"}};
+         kind == "target" ? "성능 기준" : port ? "단자와 급전 영역" : "기판 / 재료", "출처와 가정", "고급 설정"}};
     for (std::size_t index = 0; index < m_groups.size(); ++index)
     {
         auto& group = m_groups[index];
@@ -185,9 +192,24 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
                              return rank(left) < rank(right);
                          });
     }
+    if (port)
+    {
+        const auto plane = std::find_if(ordered.begin(), ordered.end(), [](const Json& field)
+        {
+            return field.at("key") == "reference_plane";
+        });
+        if (plane != ordered.end())
+        {
+            std::rotate(ordered.begin(), plane, std::next(plane));
+        }
+    }
     for (auto& descriptor : ordered)
     {
         const std::string key = descriptor.at("key").get<std::string>();
+        if (port && key == "reference_plane")
+        {
+            descriptor["multiline"] = true;
+        }
         const std::string editor = descriptor.at("editor").get<std::string>();
         const auto separator = key.rfind('.');
         const auto leaf = separator == std::string::npos ? key : key.substr(separator + 1);
@@ -572,7 +594,18 @@ Json EditorPanel::ReadValue(const Field& field) const
         }
         return lines;
     }
-    return Utf8(static_cast<wxTextCtrl*>(field.control)->GetValue());
+    const auto value = static_cast<wxTextCtrl*>(field.control)->GetValue();
+    if (field.descriptor.at("key") == "reference_plane" && field.descriptor.value("multiline", false))
+    {
+        auto original = Display(Text(field.descriptor.at("value")));
+        original.Replace("\r\n", "\n");
+        original.Replace("\r", "\n");
+        if (original == value)
+        {
+            return field.descriptor.at("value");
+        }
+    }
+    return Utf8(value);
 }
 
 void EditorPanel::WriteValue(Field& field, const Json& value)

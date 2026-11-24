@@ -1,5 +1,6 @@
 /** @file @brief 연구 폼의 엄격한 숫자 변환과 읽기 전용 전력 표시를 구현한다. */
 #include "project_study_model.h"
+#include "frequency_display.h"
 #include <cmath>
 #include <iomanip>
 #include <locale>
@@ -38,8 +39,39 @@ int Integer(const std::string& text)
     return static_cast<int>(value);
 }
 
+/** @brief 공학 단위 입력을 저장 계약의 Hz로 변환한다. 단위를 생략하면 Hz로 읽는다. */
+double Frequency(const std::string& text)
+{
+    std::istringstream input(text);
+    input.imbue(std::locale::classic());
+    double value = 0;
+    std::string unit;
+    if (!(input >> value))
+    {
+        throw std::runtime_error("주파수를 숫자로 입력하세요. 예: 2.4 GHz");
+    }
+    if (input >> unit)
+    {
+        if (unit != "Hz" && unit != "kHz" && unit != "MHz" && unit != "GHz")
+        {
+            throw std::runtime_error("주파수 단위는 Hz, kHz, MHz, GHz를 사용하세요.");
+        }
+        value *= StudioFrequency::ForRange(0.0, 0.0, unit).divisor;
+        input >> std::ws;
+        if (!input.eof())
+        {
+            throw std::runtime_error("한 주파수에 단위 하나만 입력하세요.");
+        }
+    }
+    if (!std::isfinite(value) || value <= 0)
+    {
+        throw std::runtime_error("0보다 큰 유한 주파수를 입력하세요.");
+    }
+    return value;
+}
+
 /** @brief 쉼표 목록의 빈 항목과 잘못된 수치를 거절한다. */
-Json Numbers(const std::string& text)
+Json Numbers(const std::string& text, double (*parse)(const std::string&))
 {
     Json values = Json::array();
     std::istringstream input(text);
@@ -50,7 +82,7 @@ Json Numbers(const std::string& text)
     }
     while (std::getline(input, part, ','))
     {
-        values.push_back(Number(part));
+        values.push_back(parse(part));
     }
     return values;
 }
@@ -75,8 +107,22 @@ std::string InputFormat(const Json& value)
     return value.dump();
 }
 
-/** @brief 직접 주파수 목록을 보간/추가 없이 문자열로 보존한다. */
-std::string List(const Json& values)
+/** @brief 간결한 단위로 왕복할 수 없으면 원래 Hz 정밀도를 그대로 표시한다. */
+std::string FrequencyInput(const Json& value)
+{
+    const auto original = InputFormat(value);
+    const double hz = value.get<double>();
+    const auto scale = StudioFrequency::ForRange(hz, hz);
+    const auto compact = StudioFrequency::WithUnit(value);
+    if (scale.unit != "Hz" && hz > 0 && Frequency(compact) == hz)
+    {
+        return compact;
+    }
+    return original + " Hz";
+}
+
+/** @brief 목록의 항목과 순서를 그대로 표시한다. */
+std::string List(const Json& values, std::string (*format)(const Json&))
 {
     std::string output;
     for (const auto& value : values)
@@ -85,7 +131,7 @@ std::string List(const Json& values)
         {
             output += ", ";
         }
-        output += InputFormat(value);
+        output += format(value);
     }
     return output;
 }
@@ -95,14 +141,13 @@ Studio::StudyFields Studio::StudyDraft(const Json& specification)
 {
     const auto& settings = specification.at("settings");
     const auto& frequency = settings.at("frequency_hz");
-    StudyFields fields{{"name", specification.at("name")}, {"grids", List(specification.at("grid_levels_mm"))}};
+    StudyFields fields{{"name", specification.at("name")}, {"grids", List(specification.at("grid_levels_mm"), InputFormat)}};
     fields["adaptive_memory_limit_mib"] = specification.contains("adaptive_mesh")
         ? InputFormat(specification.at("adaptive_mesh").at("memory_limit_mib"))
         : "";
-    for (const auto* key : {"start", "stop", "count"})
-    {
-        fields[key] = InputFormat(frequency.at(key));
-    }
+    fields["start"] = FrequencyInput(frequency.at("start"));
+    fields["stop"] = FrequencyInput(frequency.at("stop"));
+    fields["count"] = InputFormat(frequency.at("count"));
     for (const auto* key : {"air_padding_mm", "curve_tolerance_mm", "max_timesteps", "end_criterion"})
     {
         fields[key] = InputFormat(settings.at(key));
@@ -118,7 +163,7 @@ Studio::StudyFields Studio::StudyDraft(const Json& specification)
                           {"theta_step_deg", 15},
                           {"phi_step_deg", 15},
                           {"box_clearance_mm", 30}});
-    fields["frequencies"] = List(radiation.at("frequency_hz"));
+    fields["frequencies"] = List(radiation.at("frequency_hz"), FrequencyInput);
     for (const auto* key : {"theta_step_deg", "phi_step_deg", "box_clearance_mm"})
     {
         fields[key] = InputFormat(radiation.at(key));
@@ -148,37 +193,48 @@ Studio::StudyFields Studio::StudyDraft(const Json& specification)
 Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bool radiation, bool losses,
                                 bool newStudy)
 {
+    const auto parse = [&fields](const std::string& key, auto convert)
+    {
+        try
+        {
+            return convert(fields.at(key));
+        }
+        catch (const std::runtime_error& error)
+        {
+            throw StudyFieldError(key, error.what());
+        }
+    };
     Json result = basis;
     result["name"] = fields.at("name");
-    result["grid_levels_mm"] = Numbers(fields.at("grids"));
+    result["grid_levels_mm"] = parse("grids", [](const std::string& text) { return Numbers(text, Number); });
     if (result.at("grid_levels_mm").empty())
     {
-        throw std::runtime_error("격자 수준을 지정하십시오.");
+        throw StudyFieldError("grids", "격자 수준을 지정하세요.");
     }
     result.erase("adaptive_mesh");
     const auto& adaptiveLimit = fields.at("adaptive_memory_limit_mib");
     if (!adaptiveLimit.empty())
     {
-        result["adaptive_mesh"] = Json{{"memory_limit_mib", Integer(adaptiveLimit)}};
+        result["adaptive_mesh"] = Json{{"memory_limit_mib", parse("adaptive_memory_limit_mib", Integer)}};
     }
     auto& settings = result["settings"];
     settings["grid_mm"] = result.at("grid_levels_mm").back();
-    settings["frequency_hz"] = Json{{"start", Number(fields.at("start"))},
-                                    {"stop", Number(fields.at("stop"))},
-                                    {"count", Integer(fields.at("count"))}};
+    settings["frequency_hz"] = Json{{"start", parse("start", Frequency)},
+                                    {"stop", parse("stop", Frequency)},
+                                    {"count", parse("count", Integer)}};
     for (const auto* key : {"air_padding_mm", "curve_tolerance_mm", "end_criterion"})
     {
-        settings[key] = Number(fields.at(key));
+        settings[key] = parse(key, Number);
     }
-    settings["max_timesteps"] = Integer(fields.at("max_timesteps"));
-    const int subdivisions = Integer(fields.at("feature_subdivisions"));
+    settings["max_timesteps"] = parse("max_timesteps", Integer);
+    const int subdivisions = parse("feature_subdivisions", Integer);
     if (settings.contains("feature_subdivisions") || subdivisions != 1)
     {
         settings["feature_subdivisions"] = subdivisions;
     }
     settings["mesh_policy"] = Json{{"kind", "graded_air"},
-                                   {"air_cell_mm", Number(fields.at("air_cell_mm"))},
-                                   {"growth_ratio", Number(fields.at("growth_ratio"))}};
+                                   {"air_cell_mm", parse("air_cell_mm", Number)},
+                                   {"growth_ratio", parse("growth_ratio", Number)}};
     settings.erase("radiation");
     settings.erase("power_balance");
     if (losses && !radiation)
@@ -187,17 +243,17 @@ Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bo
     }
     if (radiation)
     {
-        settings["radiation"] = Json{{"frequency_hz", Numbers(fields.at("frequencies"))},
-                                     {"theta_step_deg", Integer(fields.at("theta_step_deg"))},
-                                     {"phi_step_deg", Integer(fields.at("phi_step_deg"))},
-                                     {"box_clearance_mm", Number(fields.at("box_clearance_mm"))}};
+        settings["radiation"] = Json{{"frequency_hz", parse("frequencies", [](const std::string& text) { return Numbers(text, Frequency); })},
+                                     {"theta_step_deg", parse("theta_step_deg", Integer)},
+                                     {"phi_step_deg", parse("phi_step_deg", Integer)},
+                                     {"box_clearance_mm", parse("box_clearance_mm", Number)}};
     }
     if (losses)
     {
-        settings["power_balance"] = Json{{"max_relative_residual", Number(fields.at("max_relative_residual"))}};
+        settings["power_balance"] = Json{{"max_relative_residual", parse("max_relative_residual", Number)}};
     }
-    const double relative = Number(fields.at("loss_max_relative_delta"));
-    const double floor = Number(fields.at("loss_absolute_fraction_floor"));
+    const double relative = parse("loss_max_relative_delta", Number);
+    const double floor = parse("loss_absolute_fraction_floor", Number);
     if (result.contains("loss_profile") || relative != 0.02 || floor != 1e-5 || (newStudy && losses))
     {
         result["loss_profile"] =
@@ -207,13 +263,13 @@ Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bo
     }
     for (const auto* key : {"max_s11_complex_delta", "max_resonance_relative_shift"})
     {
-        result["port_profile"][key] = Number(fields.at(std::string("port_") + key));
+        result["port_profile"][key] = parse(std::string("port_") + key, Number);
     }
     for (auto it = result["radiation_profile"].begin(); it != result["radiation_profile"].end(); ++it)
     {
         if (it.key() != "id" && it.key() != "minimum_levels")
         {
-            it.value() = Number(fields.at(it.key()));
+            it.value() = parse(it.key(), Number);
         }
     }
     return result;

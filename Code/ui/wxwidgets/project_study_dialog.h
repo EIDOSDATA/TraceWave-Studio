@@ -46,6 +46,8 @@ public:
 
 private:
     void Build();
+    void UpdateBandLabels();
+    void FocusField(const std::string& key);
     void AddField(wxWindow* parent, wxFlexGridSizer* grid, const std::string& key, const std::string& label);
     void Call(const std::string& method, const Json& input, bool mutation, std::function<void(const Json&)> completed);
     void ReloadStudies();
@@ -72,6 +74,8 @@ private:
     wxCheckBox* m_radiation = nullptr;
     wxCheckBox* m_losses = nullptr;
     wxStaticText* m_status = nullptr;
+    wxStaticText* m_analysisBand = nullptr;
+    wxStaticText* m_radiationBand = nullptr;
     wxTextCtrl* m_details = nullptr;
     wxListCtrl* m_cases = nullptr;
     wxNotebook* m_pages = nullptr;

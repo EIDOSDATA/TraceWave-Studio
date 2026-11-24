@@ -1,6 +1,7 @@
 /** @file @brief 편집 급전의 적용된 단자, 표시와 진단을 원본 ID로 연결한다. */
 #include "studio_internal.h"
 #include "editor_sync.h"
+#include "frequency_display.h"
 #include "studio_shell.h"
 #include "studio_theme.h"
 
@@ -229,11 +230,14 @@ void StudioFrame::UpdatePortLinks()
             const std::string name = conductor == items.end() ? "미정" : conductor->at("label").get<std::string>();
             connections += roles[i] + " 도체: " + name + "\n";
         }
-        const auto plane = port->value("reference_plane", std::string());
+        const auto impedance = port->value("reference_impedance_ohm", Json(nullptr));
+        const auto low = port->value("frequency_min_hz", Json(nullptr));
+        const auto high = port->value("frequency_max_hz", Json(nullptr));
         const auto sourceCount = port->value("source_ref_count", std::size_t(0));
-        connections += "기준면: " + (plane.empty() ? "미정" : plane);
-        connections += "\n저항 / 대역 출처: " + (sourceCount > 0 ? std::to_string(sourceCount) + "개" : "미정");
-        status = connections + (status.empty() ? "" : "\n" + status);
+        std::string summary = "적용 Z0: " + (impedance.is_number() ? impedance.dump() + " ohm" : "미정") +
+            "\n유효 대역: " + (low.is_number() && high.is_number() ? StudioFrequency::Range(low, high) : "미정") +
+            "\n저항 / 대역 출처: " + (sourceCount > 0 ? std::to_string(sourceCount) + "개" : "미정");
+        status = summary + "\n" + connections + status;
     }
     else
     {
