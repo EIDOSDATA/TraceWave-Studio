@@ -257,7 +257,14 @@ def main():
         require(target.read_text(encoding="utf-8") == encoded, "감사 산출물이 현재 근거와 다릅니다.")
     else:
         target.write_text(encoded, encoding="utf-8")
-    lines = ["# 기능별 구현 대조", "", "자동 생성: tools/build_implementation_audit.py. 근거 경로는 Code 기준이다. 시험 연결은 전체 AC 합격을 뜻하지 않는다.", ""]
+    lines = [
+        "# 기능별 구현 대조", "",
+        f"기능별 상태와 남은 범위는 {profile['review_date_kst']} 검토 개정 "
+        f"`{profile['reviewed_commit'][:7]}`의 판단이다. "
+        "이후 제품에 반영된 항목은 [후속 구현과 검증](../06_승인요구와_구현대조.md)에서 확인한다.", "",
+        "생성기는 현재 작업 트리에서 코드와 시험 경로, 문서 해시, 서비스 응답을 대조한다. "
+        "요구별 수용 판정에는 해당 개정의 실행 증거가 필요하다.", ""
+    ]
     for row in profile["functions"]:
         lines.extend(["## " + row["id"], "", "상태: " + row["implementation_status"] + ". 담당 단계: " + ("/".join(map(str, row["next_steps"])) or "R1 이후"), "", row["implemented"], "", "남은 범위:", ""])
         lines.extend("- " + item for item in row["gaps"])

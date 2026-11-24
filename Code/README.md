@@ -4,7 +4,7 @@ Code는 개발 코드 영역이다. 제품 소스, 빌드 설정, 시험, fixtur
 
 ## 시스템 구성
 
-| 구성 | 책임 / 코드 |
+| 구성 | 담당 기능과 코드 위치 |
 | --- | --- |
 | wxWidgets + wxAUI | native 입력/트리/표/메뉴와 도킹, View + 표시 상태 + service 연결. `ui/wxwidgets/` |
 | 사용자 정의 DesignCanvas | wxGraphicsContext 기반 2D 표시/편집. 원본 계산/명령은 서비스 소유 |
@@ -18,14 +18,14 @@ Windows 11이 주 개발 환경이다. 한글 IME, 스크린리더 오류 안내
 
 ## 현재 기능과 범위
 
-| 분야 | 현재 연결한 기능 / 계약 |
+| 분야 | 구현 범위와 계약 |
 | --- | --- |
 | 프로젝트/편집 | core 0.6 쓰기/0.1~0.6 읽기, 명령/undo/redo/저장/불변 snapshot, 표현식과 기본 도형. [프로젝트](../01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md), [2D](../01_개발문서/05_기능설계/02_설계편집/03_이차원표시와_직접편집.md) |
 | 목표/후보 | 다중 목표, 원호/IFA 명시 치수, G031/G001/G008/G009 부분 기하 및 조건부 초기 길이. [설계 기능](../01_개발문서/05_기능설계/02_설계편집/README.md) |
 | 제약/연결/환경 | 기본 제약/기대 연결/DRC, 적층/표면층/개구, 기본 외부 STEP 배치. [규칙](../01_개발문서/05_기능설계/02_설계편집/11_목표제약과_연결_설계규칙검사.md), [환경](../01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md) |
 | 재료/출처 | 제조사 자료 조회, 명시 채택/근사/사용자 수정, 미정과 출처 사본 보존. [재료 기능](../01_개발문서/05_기능설계/03_재료/README.md) |
-| CAD/해석 | 별도 worker에서 STEP 조립과 PCB 단일 급전 및 2~8포트 해석을 실행한다. 국부 격자 반복, 복소 결과, 단일 급전 E/H와 방사 기록을 조회한다. [해석](../01_개발문서/05_기능설계/04_해석결과/README.md), [CAD](../01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md) |
-| 복소 결과/회로 | 1~8포트 S/Z/Y 자료, 원문과 정규 HDF5, 명시 변환/실수 Z0 재정규화, 1포트 외부 이상 RLC, 정확 표본 목표 평가. [복소 자료 계약](../01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md), [파일 교환](../01_개발문서/05_기능설계/05_출력교환/03_복소결과_파일교환.md) |
+| CAD/해석 | 별도 worker에서 STEP 조립과 PCB 단일 급전 및 다중 급전 해석을 실행한다. 설계와 교환은 최대 12포트, Windows 실해석과 원시 재처리 대조는 9포트까지 확인했다. 국부 격자 반복, 복소 결과, 단일 급전 E/H와 방사 기록을 조회한다. [해석](../01_개발문서/05_기능설계/04_해석결과/README.md), [CAD](../01_개발문서/05_기능설계/05_출력교환/02_기계형상_입력과_출력계약.md) |
+| 복소 결과/회로 | 1~12포트 S/Z/Y 자료, 원문과 정규 HDF5, 명시 변환/실수 Z0 재정규화, 1포트 외부 이상 RLC, 정확 표본 목표 평가. [복소 자료 계약](../01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md), [파일 교환](../01_개발문서/05_기능설계/05_출력교환/03_복소결과_파일교환.md) |
 | 제조사 안테나 | Renesas AN-B-027 DXF 5종, TI 공식 SPL 2종과 Qorvo WB003을 원본 바이트·출처와 함께 편집 동박으로 가져온다. [라이브러리 계약](../01_개발문서/05_기능설계/05_출력교환/07_제조사_안테나_라이브러리.md) |
 | 공통 결과 화면 | 현재/과거 개정과 solver/스윕 원본 고정, 최대 8개 곡선 비교, Smith, 전력/효율, OpenGL 3D 방사/2D cut/편파, 기록 E/J/rotH 단면, 기록 E/H 체적과 삼각 곡면 전력 적분, 당시 조건과 내보내기. [유한 조회 계약](../01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md), [화면 계약](../01_개발문서/04_화면설계/21_다중결과와_방사필드_화면.md) |
 | 검증/연구 | IFA/방사/전력/개별 손실 연구와 원시 결과 재열기. [연구 기록](../01_개발문서/06_분석연구/README.md) |
@@ -43,28 +43,43 @@ Windows 11이 주 개발 환경이다. 한글 IME, 스크린리더 오류 안내
 
 ## 실행
 
-모든 명령의 작업 디렉터리는 Code다. Python 환경 준비는 [Windows 환경](../01_개발문서/08_운영환경/01_파이썬_개발환경.md), WSL은 [전용 환경](../01_개발문서/08_운영환경/02_리눅스하위시스템_개발환경.md), 빌드는 [wxWidgets 안내](ui/wxwidgets/README.md)를 따른다.
+앱 설치는 [Windows Setup.exe 안내](../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md)를 따른다. 아래 명령은 소스에서 개발할 때 저장소의 `Code` 폴더에서 실행한다. Windows 11 x64, CPython 3.12 x64와 PATH에서 찾을 수 있는 CMake, Ninja, MinGW-w64 GCC 및 tar가 필요하다. 검증한 도구 버전과 원본 해시는 [네이티브 빌드 프로필](runtime_profiles/native-windows-x64.json)에 있다.
+
+### 편집기 빌드와 첫 실행
+
+```powershell
+$serviceBase = py -3.12 -c 'import sys; print(sys.executable)'
+.\tools\setup_python.ps1 -Python $serviceBase -SkipCad
+.\tools\setup_native.ps1 -Jobs 4
+ctest --preset windows-release
+.\tools\launch_gui.ps1 -Workspace .local/gui-workspace
+```
+
+빌드 결과는 `build/windows-release/bin/tracewave_gui.exe`다. 창에서 **파일 > 새 프로젝트**를 선택하고 이름을 정한 다음 속성을 편집하고 저장한다. 창을 닫고 같은 실행 명령으로 작업 영역을 다시 열어 저장값을 확인한다. 서비스는 GUI가 시작한다. JSON-RPC 클라이언트를 개발할 때는 별도 작업 영역에서 아래 명령을 사용한다. `serve`는 표준 입력의 요청을 기다리며 표준 출력에 한 줄씩 응답한다. [GUI 실행 옵션](ui/wxwidgets/README.md#실행), [서비스 진입점](src/rfad/__main__.py)
 
 ```powershell
 $env:PYTHONPATH = 'src'
-.venv/Scripts/python.exe -X utf8 -m rfad doctor --output .local/runtime-doctor.json
-.venv/Scripts/python.exe -X utf8 -m rfad serve --workspace .local/projects-workspace
-.\tools\launch_gui.ps1
+.\.venv\Scripts\python.exe -X utf8 -m rfad doctor --output .local/runtime-doctor.json
+.\.venv\Scripts\python.exe -X utf8 -m rfad serve --workspace .local/service-workspace
 ```
 
-새 후보는 기능 개발을 완료한 소스 개정으로 만든다. 온라인 상태의 별도 클린 Windows 11 x64 PC에서 Setup.exe를 받아 설치하고 예제를 검수한다. 기본 설치가 앱과 Windows 해석에 필요한 고정 의존성을 준비한다. [배포 절차](../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md), [이전 공개 후보 수신 기록](../01_개발문서/07_검증/310_공개_검증후보_배포와_독립수신_인계.md)
+### 기능별 개발 환경
 
-GUI 실행 스크립트는 존재하는 `.venv-cad`, `.venv-exchange`와 `.local/pcb-catalog/catalog.sqlite`를 연결한다. `-CadPython <경로>`, `-ExchangePython <경로>`, `-Catalog <경로>`, `-NoCatalog`로 선택할 수 있다. 해석 환경 구성 후에는 `launch_gui.ps1 -OpenEmsWsl`을 사용한다. CAD/출력/solver가 없어도 가능한 편집/저장과 보존 결과 읽기는 유지한다.
+| 필요한 기능 | Code에서 준비할 항목 |
+| --- | --- |
+| STEP 생성 및 3D 메시 | `.\tools\setup_python.ps1 -Python $serviceBase`를 실행한다. 서비스와 별도로 `.venv-cad`에 CAD를 구성하고 STEP 시험을 수행한다. [Python 및 CAD 환경](../01_개발문서/08_운영환경/01_파이썬_개발환경.md) |
+| PDF, 도면, CAM 출력 | `.\tools\setup_exchange.ps1 -Python $serviceBase`로 `.venv-exchange`를 구성한다. [출력 패키지 목록](runtime_profiles/python-exchange-windows-x64.txt) |
+| 복소 연산, HDF5, 수치 예제 | `.\.venv\Scripts\python.exe -m pip install --only-binary=:all: --require-hashes -r runtime_profiles/python-network-windows-x64.txt` 실행 후 같은 Python으로 `-m pip check`를 수행한다. [네트워크 패키지 목록](runtime_profiles/python-network-windows-x64.txt) |
+| 정밀 평면 연산 | 서비스 Python에 같은 pip 옵션으로 [평면 연산 패키지 목록](runtime_profiles/python-planar-windows-x64.txt)을 설치한다. |
+| Windows 기본 PCB 해석 | `.\.venv\Scripts\python.exe -X utf8 tools/setup_openems_windows.py --cache .local/download-cache`를 실행한다. 별도 CPython과 openEMS를 설치하고 실제 로드된 DLL을 감사한다. 이후 GUI를 다시 열면 서비스가 Windows 환경을 찾는다. [고정 해석기 구성](runtime_profiles/python-openems-windows-x64.json) |
+| 기존 WSL2 결과의 실행 환경 재현 | 전용 배포판 및 native 감사가 준비되면 `.\tools\launch_gui.ps1 -OpenEmsWsl`로 선택한다. [WSL2 설정](../01_개발문서/08_운영환경/02_리눅스하위시스템_개발환경.md) |
+| 제조사 기판 검색 | 원본 자료로 SQLite를 만들면 GUI가 `.local/pcb-catalog/catalog.sqlite`에 읽기 전용으로 연결한다. [카탈로그 생성과 검증](../01_개발문서/05_기능설계/03_재료/01_기판카탈로그_조회계약.md) |
 
-연관 도면의 별도 환경은 `tools/setup_exchange.ps1 -Python .venv/Scripts/python.exe`로 준비한다. 서비스 직접 실행에는 `--exchange-python .venv-exchange/Scripts/python.exe`를 전달한다. [고정 wheel 목록](runtime_profiles/python-exchange-windows-x64.txt)과 runtime manifest의 글꼴 identity를 확인하며 한글 PDF 글꼴은 Windows의 기존 TTF를 부분 포함한다. 원래 OS 글꼴을 저장소에 복사하지 않는다. 기하/파일 검수와 제조/실측 수용은 별개다.
-
-복소 계산과 HDF5 교환은 Windows x64 CPython 3.12용 [고정 wheel 목록](runtime_profiles/python-network-windows-x64.txt)을 사용한다. `pip install --only-binary=:all: --require-hashes -r runtime_profiles/python-network-windows-x64.txt` 후 `pip check`로 확인한다. 수치 엔진이 없어도 기존 정규 JSON 조회, 프로젝트 저장/재열기 및 이력 복원은 가능하다. 실제 계산과 HDF5 입출력 때만 선택 의존성을 읽는다.
-
-STEP 출력은 필요한 기하 입력과 미적용 폼을 확인한 뒤 snapshot을 고정한다. 기본 모델에는 양수 두께/명시 z/필요 좌표가 있어야 한다. STEP 조립은 혼합 단위, 말단 배치, 평면 및 동축 메이트와 부품 교체를 다루며, 지원하는 표면층, 간이 유전체 케이스와 PEC 상자는 명시 조건에서 해석하며 외부 STEP 고체는 CAD 배치·표시·출력 범위에서 사용한다. [환경 계약](../01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md)의 저장/CAD/EM 구분을 따른다.
-
-GUI의 파일 저장과 별도 CLI writer를 동시에 같은 workspace에 사용하지 않는다. 서비스는 stdout에 UTF-8 JSON-RPC/NDJSON 응답만 기록한다. workspace 없는 bootstrap과 프로젝트를 연 서비스의 capability는 다르다. [bootstrap](../01_개발문서/02_시스템명세/07_초기구현_계약.md), [서비스/worker 경계](../01_개발문서/03_아키텍처/05_형상과_해석작업_연결경계.md).
+GUI는 준비된 CAD 및 출력 환경을 자동으로 찾는다. 다른 위치는 `-Python`, `-CadPython`, `-ExchangePython`, `-Catalog`로 선택한다. `-NoCatalog`는 로컬 카탈로그 연결을 생략한다. 해당 작업자가 없어도 편집과 저장, 보존된 결과 조회를 할 수 있다. [실행 스크립트](tools/launch_gui.ps1)
 
 ### 기능별 예제
+
+아래 표의 `python`에는 위에서 구성한 서비스 Python을 사용한다. PowerShell에서는 `python`을 `.\.venv\Scripts\python.exe`로 바꿔 같은 환경에서 실행할 수 있다.
 
 | Code에서 실행할 명령 | 지원 범위와 근거 |
 | --- | --- |
@@ -72,13 +87,19 @@ GUI의 파일 저장과 별도 CLI writer를 동시에 같은 workspace에 사�
 | `python -m rfad pcb-floquet fixtures/pcb_floquet_patch.json` | XY 주기 동박 적층의 비스듬한 입사, TE/TM 회절과 재료별 체적 흡수. [408 검증과 저장 PCB 진입점](../01_개발문서/07_검증/408_동박_피시비의_이중주기_플로케_검증.md) |
 | `python -m rfad waveguide-modes fixtures/waveguide_te_step.json` | 같은 높이의 직사각 도파관 폭 단차에서 TE(m,0) 모드 변환. [404 검증](../01_개발문서/07_검증/404_직사각_도파관_폭단차의_다중모드_검증.md) |
 | `python -m rfad waveguide-section 단면.json` | 공통 삼각 단면의 TE/TM 고유모드와 두 도파관 단차의 복소 산란. [409 검증과 예제 생성](../01_개발문서/07_검증/409_일반_도파관_단면의_티이_티엠_결합_검증.md) |
-| `python -m rfad waveguide-mode-files 단면.json --help` | 단면 모드를 openEMS 공간 분포 여기 및 프로브의 HDF5 두 파일로 출력. [410 검증](../01_개발문서/07_검증/410_아홉_급전과_분포_모드_원문_검증.md) |
+| `python -m rfad waveguide-mode-files --help` | 단면 모드를 openEMS 공간 분포 여기 및 프로브의 HDF5 두 파일로 출력. [410 검증](../01_개발문서/07_검증/410_아홉_급전과_분포_모드_원문_검증.md) |
 | `python -m rfad pcb-waveguide --help` | 저장한 직사각 PCB 양쪽의 단일 분포 TE/TM 포트 해석. [413 독립 대조](../01_개발문서/07_검증/413_저장_피시비의_분포_모드_포트_검증.md) |
 | `python -m rfad manufacturing-panel --help` | 단일 보드의 ODB++ 및 IPC-2581C 반복 배열. [412 IPC 패널](../01_개발문서/07_검증/412_아이피시_특수_드릴과_반복패널_검증.md) [407 패드스택과 패널](../01_개발문서/07_검증/407_층별_패드스택과_오디비_반복패널_검증.md) |
 
+보존 묶음, 다중 급전, 필드 연구와 후속 스윕, Altium 드릴 사본에 사용하는 명령은 각각 `archive`, `pcb-multiport`, `field-study`, `sweep-refine`, `altium-drill-copy`다. 전체 목록은 `python -m rfad --help`에서 확인한다. 위 수치 및 파일 명령에는 각각 `--help`를 붙여 입력과 출력을 확인한다. `doctor`, `serve`, `catalog`의 도움말은 최상위 목록을 표시하므로 환경 진단과 서비스는 위 예제, 카탈로그는 [카탈로그 명령 안내](../01_개발문서/05_기능설계/03_재료/01_기판카탈로그_조회계약.md)를 따른다. [CLI 구현](src/rfad/__main__.py)
+
 ## 시험과 기록
 
+전체 서비스 시험은 위에서 만든 `.venv`의 Python으로 실행한다. 결과 출처와 프로젝트 보존 묶음 시험은 Touchstone을 가져와 정규 HDF5 파일을 실제로 저장한다. 첫 실행에는 서비스 Python에 [네트워크 패키지 목록](runtime_profiles/python-network-windows-x64.txt)을 설치한다. 실행 예제에서 만든 별도 `.local/rf-check`에만 설치한 패키지는 이 환경에서 사용할 수 없다.
+
 ```powershell
+.venv/Scripts/python.exe -m pip install --only-binary=:all: --require-hashes -r runtime_profiles/python-network-windows-x64.txt
+.venv/Scripts/python.exe -m pip check
 .venv/Scripts/python.exe -X utf8 -m unittest discover -s tests -v
 ctest --preset windows-release
 .venv/Scripts/python.exe -X utf8 tools/build_implementation_audit.py --check

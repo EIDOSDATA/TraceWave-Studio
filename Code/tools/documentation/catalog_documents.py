@@ -40,15 +40,23 @@ def category(path):
             return "reference_support_tool", "자료 묶음의 지원 도구; 파일 목록/해시"
         return "reference_original_or_asset", "파일 목록/해시; 원문 내용 재검증 아님"
     if relative.startswith("Code/runtime_profiles/"):
-        if path.name in {"python-exchange-windows-x64.json", "python-exchange-windows-x64.txt",
-                         "windows-internal-bundle-x64.json"}:
-            return "runtime_definition", "내부 배포와 도면 교환의 고정 의존성 및 고지 정의"
+        if path.name.startswith("python-") or path.name in {
+            "native-windows-x64.json", "windows-internal-bundle-x64.json",
+            "openems-wsl-build.json", "vtk-headless.json", "wsl-development.json"
+        }:
+            return "runtime_definition", "빌드, 설치 또는 실행에 사용하는 고정 환경과 의존성"
         return "historical_verification", "당시 실행 기록 보존; 새 실행/합격 아님"
     if relative.startswith("01_개발문서/"):
         suffix = path.suffix.lower()
         folder = path.relative_to(DOCS).parts[0]
         if path.is_relative_to(DOCS / "07_검증/01_구현감사"):
             return "current_traceability", "기계 생성/구조 대조; AC 합격 아님"
+        if path.parent == DOCS / "07_검증/02_실행화면" and suffix in {".jpg", ".png"}:
+            return "native_screen_evidence", "Windows 프로그램을 실행해 캡처한 당시 화면"
+        if path.parent == DOCS / "07_검증":
+            number = path.stem.split("_")[0]
+            if number.isdecimal() and int(number) >= 7:
+                return "verification_record", "해당 개정의 실행 근거와 판정 조건"
         if folder == "10_문서목록":
             return "document_catalog", "분류/경로 대응"
         if folder == "04_화면설계" and suffix in {".png", ".svg", ".drawio"}:
@@ -60,7 +68,9 @@ def category(path):
         if folder == "11_검토기록" and suffix == ".json":
             return "documentation_validation_record", "문서 링크/그림 구조 검수; 제품 수용 아님"
         if suffix == ".md":
-            return "current_" + folder if folder != path.name else "document_navigation", "본문/현재 설명/담당 기능 관계 검토"
+            if path.parent == DOCS or path.name == "README.md":
+                return "document_navigation", "해당 분야의 진입점과 담당 계약 연결"
+            return "current_" + folder, "본문과 담당 기능 및 이력의 관계 검토"
         return "documentation_asset", "문서/시안 자산 보존"
     return "repository_guide", "개발 문서 진입/현재 상태 검토"
 
@@ -125,10 +135,43 @@ def main():
     CATALOG.mkdir(parents=True, exist_ok=True)
     inventory = build(options.date)
     (CATALOG / "02_문서목록.json").write_text(json.dumps(inventory, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
-    lines = ["# 문서와 참고 자료 전수 파일 집계", "", f"기준일: {inventory['date_kst']} KST. `catalog_documents.py` 생성 결과다. 분류/파일 읽기와 전문 내용의 검토 수준은 다르며 각 파일의 review_scope를 함께 읽는다.", "", "| 분류 | 파일 수 |", "| --- | --- |"]
+    labels = {
+        "approved_baseline_archive": "승인 기준선 원문과 기록",
+        "current_traceability": "요구와 구현의 추적 자료",
+        "document_catalog": "문서 목록과 이전 경로",
+        "document_navigation": "개발 문서 안내",
+        "documentation_asset": "개발 문서의 부속 자료",
+        "documentation_validation_record": "문서 검사 기록",
+        "historical_proposal": "최초 제안",
+        "historical_verification": "과거 환경 및 실행 기록",
+        "native_screen_evidence": "Windows 앱 실행 캡처",
+        "reference_extracted_text": "참고자료에서 추출한 텍스트",
+        "reference_guide": "참고자료 사용 안내",
+        "reference_index_or_data": "참고자료 색인과 자료표",
+        "reference_original_or_asset": "원본 웹페이지, 이미지 및 기타 첨부",
+        "reference_original_pdf": "참고자료 PDF",
+        "reference_support_tool": "참고자료에 포함된 도구",
+        "repository_guide": "저장소 및 빌드 안내",
+        "runtime_definition": "빌드 및 실행 환경 정의",
+        "screen_design_asset": "화면 설계 그림",
+        "verification_record": "개정별 검증 보고서와 실행 자료"
+    }
+    lines = [
+        "# 문서와 참고 자료 전수 파일 집계", "",
+        f"{inventory['date_kst']} KST 기준이다. [파일 목록](02_문서목록.json)에서 경로, "
+        "용도, 파일 크기, 작업 트리의 SHA-256과 확인 범위를 찾을 수 있다.", "",
+        "| 용도 | 파일 수 |", "| --- | ---: |"
+    ]
     for role, count in inventory["counts_by_category"].items():
-        lines.append(f"| {role} | {count} |")
-    lines += ["", f"전체 {len(inventory['records'])}개 파일. 동일 작업트리 바이트 그룹 {len(inventory['identical_byte_groups'])}개를 기록했으며 자동 삭제하지 않았다.", "", "전체 경로/분류/검토 수준/바이트/작업트리 SHA256은 [02_문서목록.json](02_문서목록.json)에 있다. PDF 전 페이지 의미 검토, RF 정확도, 외부 링크의 최신 유효성은 이 생성기의 검증 범위가 아니다. 과거 승인/출처 hash와의 실제 비교는 [검토 기록](../11_검토기록/05_해석과_참고자료_검토.md)을 따른다.", "", "02_문서목록.json과 이 요약은 자기 참조 hash를 피하기 위해 목록에서 제외한다. 원문/추출/기존 runtime 파일은 수정하지 않는다."]
+        label = labels.get(role, role.removeprefix("current_"))
+        lines.append(f"| {label} | {count:,} |")
+    lines.extend([
+        "", f"총 {len(inventory['records']):,}개 파일이다. 바이트가 같은 파일은 "
+        f"{len(inventory['identical_byte_groups'])}개 그룹이며 원문, 추출본, 실행 기록 등 각 출처를 보존한다.", "",
+        "자기 참조를 피하기 위해 이 집계와 기계 목록 두 파일은 수량에서 제외한다. "
+        "원문 PDF, 표와 프로그램 예제를 읽고 대조한 결과는 [참고자료 분류](05_참고자료분류.md)에서, "
+        "원본 식별값의 알려진 차이는 [출처 검토 기록](../11_검토기록/05_해석과_참고자료_검토.md)에서 확인한다."
+    ])
     (CATALOG / "03_문서집계.md").write_text("\n".join(lines)+"\n", encoding="utf-8")
     print(json.dumps({"files":len(inventory["records"]), "categories":inventory["counts_by_category"], "identical_groups":len(inventory["identical_byte_groups"])}, ensure_ascii=False))
 

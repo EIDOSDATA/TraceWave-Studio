@@ -2212,13 +2212,13 @@
       "id": "NFR-001-AC03",
       "source": "`merge_platform_decision`",
       "stage": "M/R1",
-      "text": "Linux native worker 기준군과 Windows 11 UI<->WSL2 Linux worker의 설치, 한글/공백 경로, 파일 전송, 로그, 취소, 복구, 출력 교환을 각각 실행하고 지원표를 발행한다. 어느 조합이든 미통과이면 R1 지원 완료를 선언하지 않는다."
+      "text": "Linux native worker 기준군과 Windows 11 기본 해석 worker의 설치, 한글 및 공백 경로, 로그, 취소, 복구, 출력 교환을 확인한다. 기존 WSL2 조합의 검증은 해당 환경이 준비되면 이어간다."
     },
     {
       "id": "NFR-002-AC01",
       "source": "`A::NFR-002`",
       "stage": "M/R1",
-      "text": "온라인 상태의 별도 클린 Windows/WSL2 PC에서 공개 후보와 고정 의존성을 설치하고 기준 프로젝트의 편집, 로컬 해석, 출력과 복구를 확인한다. R1 수신 검수 조건은 2026-11-23 사용자 결정에 따른다."
+      "text": "인터넷에 연결된 별도 클린 Windows 11 x64 PC에서 공개 후보를 기본 옵션으로 설치한다. 예제 편집, Windows 해석, 출력과 복구를 확인한 뒤 Windows 설정에서 제거하고 재설치하여 보존한 작업 데이터를 대조한다."
     },
     {
       "id": "NFR-002-AC02",
@@ -6831,7 +6831,7 @@
     {
       "ac_id": "NFR-001-AC03",
       "acceptance_status": "open",
-      "assertion_summary": "Linux native worker 기준군과 Windows 11 UI<->WSL2 Linux worker의 설치, 한글/공백 경로, 파일 전송, 로그, 취소, 복구, 출력 교환을 각각 실행하고 지원표를 발행한다",
+      "assertion_summary": "Linux native worker 기준군과 Windows 11 기본 해석 worker의 설치, 한글/공백 경로, 로그, 취소, 복구, 출력 교환을 확인한다. 기존 WSL2 조합의 검증은 해당 환경이 준비되면 이어간다.",
       "required_evidence": [
         "ENV",
         "RUN",
@@ -6843,7 +6843,7 @@
     {
       "ac_id": "NFR-002-AC01",
       "acceptance_status": "open",
-      "assertion_summary": "온라인 상태의 별도 클린 Windows/WSL2 PC에서 공개 후보와 고정 의존성을 설치하고 기준 프로젝트의 편집, 로컬 해석, 출력과 복구를 확인한다",
+      "assertion_summary": "온라인 상태의 별도 클린 Windows 11 x64 PC에서 공개 후보를 기본 옵션으로 설치하고 기준 프로젝트의 편집, Windows 해석, 출력과 복구를 확인한다. Windows 설정에서 제거하고 재설치해 작업 데이터를 대조한다.",
       "required_evidence": [
         "ENV",
         "RUN",
@@ -7465,7 +7465,7 @@
       },
       "import_bytes": 524288,
       "physical_validation": false,
-      "ports": 8,
+      "ports": 12,
       "preview_required": true,
       "profile": "rfad.network-workspace/0.1",
       "samples": 1001
@@ -7807,6 +7807,7 @@
       ],
       "resume_supported": false,
       "runtime_configured": false,
+      "runtime_profile": null,
       "source": "immutable_snapshot"
     },
     "study_profile": {
@@ -7868,33 +7869,33 @@
   "design_sources": [
     {
       "path": "01_개발문서/01_요구사항/01_사용자_요구사항.md",
-      "text_sha256": "808afebcea3d0a289f0495bb4b6afb8896bef523d25a6eefdae72932d52cf638",
-      "utf8_bytes": 331485
+      "text_sha256": "4701afebdef368feddd11201b34b3fd8214ec2fee32900eaa67999ffbb31d8a3",
+      "utf8_bytes": 321816
     },
     {
       "path": "01_개발문서/05_기능설계/01_기능_설계.md",
-      "text_sha256": "efdbf313fc2aa09fd269851dd28c5d6b96ce5710bf754cb557fbd4f0306724e8",
-      "utf8_bytes": 100671
+      "text_sha256": "f4a30d27ed8c1782fb06297e6b4bdf0f0656e9d9681c8c2974292d51e474ddbb",
+      "utf8_bytes": 100741
     },
     {
       "path": "01_개발문서/02_시스템명세/05_해석기_어댑터_계약.md",
-      "text_sha256": "018e8bdb6ef64c2130541bc566de31510661a2ae96151928e603f410154a06e3",
-      "utf8_bytes": 35609
+      "text_sha256": "e44768db1ac543f9ef8150e002fa0e6d5fb8eb434368ab9617137dbcdf5d140f",
+      "utf8_bytes": 36669
     },
     {
       "path": "01_개발문서/07_검증/01_검증과_수용_기준.md",
-      "text_sha256": "a9b6232e353b1d6074a502cb65783e94ad87d248e6a9f97084fdd710ce9891e8",
-      "utf8_bytes": 92310
+      "text_sha256": "b4a0ed2555fc96e6e05e2066f2fb26a2c2de1770681da13ec5758b841b7d4235",
+      "utf8_bytes": 92509
     },
     {
       "path": "01_개발문서/07_검증/03_요구사항_추적표.md",
-      "text_sha256": "35e4136c787c092eab7de6f1af5f2658dff45731c3f04a9f87c1be8f89210315",
-      "utf8_bytes": 216663
+      "text_sha256": "3a6a8d6c8def79b8cc9c96ccb0a044b4f74314979d3820733572f289d3dd1868",
+      "utf8_bytes": 216818
     },
     {
       "path": "01_개발문서/04_화면설계/02_화면_선정과_성능_설계.md",
-      "text_sha256": "42ac75bf92ec58038b10ab430ee10184236621d9b2d5004db3c59e75d1516b96",
-      "utf8_bytes": 13579
+      "text_sha256": "071179053f39ba0221ef1e1563fcd4f668dc37fa5a9457488c05ee6d7de0cb68",
+      "utf8_bytes": 13352
     }
   ],
   "extension_methods": {
@@ -7964,6 +7965,10 @@
     },
     "canvas.route.review": {
       "extension_profile": "rfad.canvas/0.1",
+      "status": "implemented"
+    },
+    "catalog.connect": {
+      "extension_profile": "rfad.catalog/0.1",
       "status": "implemented"
     },
     "catalog.get": {
@@ -8546,6 +8551,10 @@
       "status": "implemented"
     },
     "target.editor.get": {
+      "extension_profile": "rfad.target-editor/0.1",
+      "status": "implemented"
+    },
+    "target.editor.receipt": {
       "extension_profile": "rfad.target-editor/0.1",
       "status": "implemented"
     },
@@ -10574,8 +10583,8 @@
   ],
   "generator": {
     "path": "Code/tools/build_implementation_audit.py",
-    "text_sha256": "0d401544aaf38b472f279742714e0dcb092ab1d9e2ad7126bfbb2b0fb0703fdf",
-    "utf8_bytes": 17407
+    "text_sha256": "aea70ccbecc0c9b2d6a43618efc0d23fe02fc754771615d44ca0176caf7765ff",
+    "utf8_bytes": 17779
   },
   "initial_review_date_kst": "2026-11-12",
   "initial_reviewed_commit": "1ed9686b8eea5cec3b17931d8655565fbafc72e2",
@@ -14329,8 +14338,8 @@
     },
     {
       "path": "01_개발문서/04_화면설계/25_기판교환과_원문수입_화면.md",
-      "text_sha256": "38ad6dc718c51d6099f95032e086d5f5ec2eafb6ba8cb095be7df3dcf95f03e5",
-      "utf8_bytes": 8169
+      "text_sha256": "cc8b6dd1068732fafec895ccee646bc7e80dde7d7f8a7a46d960f95edafd6cd0",
+      "utf8_bytes": 8171
     },
     {
       "path": "01_개발문서/04_화면설계/26_측정기록과_정렬비교_화면.md",
@@ -14339,8 +14348,8 @@
     },
     {
       "path": "01_개발문서/04_화면설계/27_보고서와_인계_화면.md",
-      "text_sha256": "be23abefe1588667101c1f44918de54fc38a1d6d80384dee42d6a204a8d66486",
-      "utf8_bytes": 2952
+      "text_sha256": "25b319c06f5cffd505ad2649e187b9bf1b506a0750f467fe58c17cba6ae297b8",
+      "utf8_bytes": 2954
     },
     {
       "path": "01_개발문서/04_화면설계/28_보존묶음_복원_화면.md",
@@ -14349,18 +14358,18 @@
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/01_프로젝트_명령과_저장.md",
-      "text_sha256": "f09b6cb406dd9ff346a358711fad319fba1239eeeb72b8a0cd18a18a5055076b",
-      "utf8_bytes": 21279
+      "text_sha256": "f07c26bdd11a2ba0cc6f8552067989ee02a832e163398f6044d72beb98b9c3b2",
+      "utf8_bytes": 21290
     },
     {
       "path": "01_개발문서/05_기능설계/01_프로젝트/02_프로젝트_보존묶음과_편집복원.md",
-      "text_sha256": "e3bc8901c5839d514f0184055f8bea79a4199406965bcfc7baca773fda8cbaa4",
-      "utf8_bytes": 5263
+      "text_sha256": "ed1c44cfa5f364b13cb0a4a7823314e59ead8e389c80303ab9be900c1942a39b",
+      "utf8_bytes": 5264
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/02_속성편집과_실행취소.md",
-      "text_sha256": "343b7781c40f4ca286e40adc737c386f105398577bf2bdeeff2b5dd14e5f789e",
-      "utf8_bytes": 11378
+      "text_sha256": "c1b0fe60eadf3f09287f8945a7bdde8c47029ff01625508acadaeb18d57a0197",
+      "utf8_bytes": 11447
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/03_이차원표시와_직접편집.md",
@@ -14379,7 +14388,7 @@
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/07_목표편집_서비스계약.md",
-      "text_sha256": "7d971b2526f038c7ec8d81fdb608c4e456146d0664eade0afee4a498db263eae",
+      "text_sha256": "135fe078926be196d77016abc349fc84ffb7fcb508c018c0f1a3eb9037c2bce8",
       "utf8_bytes": 9653
     },
     {
@@ -14399,13 +14408,13 @@
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/11_목표제약과_연결_설계규칙검사.md",
-      "text_sha256": "09a4e7cde7c865a3da72c90760732a239ad2614ed13fc3babee18f1de23c2c49",
-      "utf8_bytes": 9591
+      "text_sha256": "aa7998644e9d2411bc59bead916d95166851ababd89bef4186abd4841478095c",
+      "utf8_bytes": 9580
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/12_적층과_외부환경.md",
-      "text_sha256": "4cd5c27fa5a86c8fc985da5fd6efa495d4e5a1f6334181bee865a99342df78e1",
-      "utf8_bytes": 19808
+      "text_sha256": "c6ad95cb344aad5e192f3f9b1c351a97da2b6753b45b8be18e9dc50008d56645",
+      "utf8_bytes": 19811
     },
     {
       "path": "01_개발문서/05_기능설계/02_설계편집/13_정밀편집과_평면연산.md",
@@ -14414,18 +14423,18 @@
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/03_사용자기판_단일포트_해석.md",
-      "text_sha256": "91969ce5a7448bd0d3a1772cb279461dce22ba8c3d88c9d1accbaa23563b76c6",
-      "utf8_bytes": 30253
+      "text_sha256": "7b0b2e76f8f559875505fe0fa09e9b83a4b1fbaf1d5da15ad0c89e4c4661e5b9",
+      "utf8_bytes": 30613
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/06_공통복소자료와_회로평가.md",
-      "text_sha256": "d51d0b75ef09a0230e95b38a4c717ce821199b6b927e8a20fc707b787a87fc09",
-      "utf8_bytes": 29087
+      "text_sha256": "a91b6fcbcda3472841b579e321b5c4733021d2193f2b3bf8e4995227d4204c8c",
+      "utf8_bytes": 29334
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/07_다중결과와_방사표시.md",
-      "text_sha256": "eb884c6ac34cfd7a8bffc76b71b00a464f65d66b074640bd8a3f40902794f627",
-      "utf8_bytes": 17563
+      "text_sha256": "42a4e4abed564ddbb2f65c7aec3c6fbca0982e2999563071e557d3d2a46b3163",
+      "utf8_bytes": 17701
     },
     {
       "path": "01_개발문서/05_기능설계/04_해석결과/08_독립참조와_유한검증_계약.md",
@@ -14444,8 +14453,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/03_복소결과_파일교환.md",
-      "text_sha256": "f21cdf131bf900207ad33559d1ad8ca02180c046355c037d55171bbbc5f21496",
-      "utf8_bytes": 13555
+      "text_sha256": "2c7ad29e778c1db656e15bd9e2c0c0873a06bc95283012aebd462a89b17dc612",
+      "utf8_bytes": 13795
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/04_연관도면과_출력재검수.md",
@@ -14454,8 +14463,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/05_기판형상과_제조파일_교환.md",
-      "text_sha256": "d56ece2e1419b65eb3f0abb92ae3c285be07c24e719bb003d1f53751f91401de",
-      "utf8_bytes": 17115
+      "text_sha256": "4c4b991fc9d75d5aac705ac4c949211e427b6911d80ab365d9e75e65a802c56c",
+      "utf8_bytes": 17494
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/06_고정설계_보고서와_인계.md",
@@ -14464,8 +14473,8 @@
     },
     {
       "path": "01_개발문서/05_기능설계/05_출력교환/07_제조사_안테나_라이브러리.md",
-      "text_sha256": "3927ebde8137d49486e5e2ff18a1d55f5912054cd86918f233d791ef263a1a94",
-      "utf8_bytes": 4389
+      "text_sha256": "35231e40cfb348e7c28e93bcb935797aad32c392ac0060468c06d174b11fd26b",
+      "utf8_bytes": 4391
     },
     {
       "path": "01_개발문서/05_기능설계/06_연구/01_명시적스윕과_실행계약.md",
@@ -14744,8 +14753,8 @@
     },
     {
       "path": "01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md",
-      "text_sha256": "eb9f66d668cd3d6bc913aae5b9be1a234c350c6b955e8a999a3ee538974ddd9e",
-      "utf8_bytes": 8120
+      "text_sha256": "510349f11a929cd998b50459c84d7324b643e4714801cf8f26b6b9d8c5392509",
+      "utf8_bytes": 9352
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -14979,8 +14988,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/solvers/openems/pcb.py",
-      "text_sha256": "5d470632e01d18ad0ffbc61bdff021f1f256c96e5f92c7841e56aea8145b5161",
-      "utf8_bytes": 22688
+      "text_sha256": "f0d47a34dc96b01f0cc9f0afe875c9b2ad00463cb097a77e7f33328367952908",
+      "utf8_bytes": 23090
     },
     {
       "path": "Code/src/rfad/adapters/solvers/openems/pcb_absorption.py",
@@ -15009,8 +15018,8 @@
     },
     {
       "path": "Code/src/rfad/adapters/solvers/openems/reference_benchmark.py",
-      "text_sha256": "ec3b6e6e50b27bf7834d5b291a8e00badf16a68526d9477b73fd9bd17b1c1cb7",
-      "utf8_bytes": 13169
+      "text_sha256": "7e40c35a6ab331f4a0a9fb2d3e1e6426e141d9166e7e2086a9e51790258ed43b",
+      "utf8_bytes": 13203
     },
     {
       "path": "Code/src/rfad/application/archive_export_service.py",
@@ -15049,8 +15058,8 @@
     },
     {
       "path": "Code/src/rfad/application/catalog_api.py",
-      "text_sha256": "7be29a5e0e924fa591e0f9c2198649b05aeca0c789f518048969e9431266ccad",
-      "utf8_bytes": 4129
+      "text_sha256": "a5e979e9ebab8a31979f096ff76969f57f46478fc5f276d4ebcfe6b14e0859fa",
+      "utf8_bytes": 5437
     },
     {
       "path": "Code/src/rfad/application/convergence.py",
@@ -15069,8 +15078,8 @@
     },
     {
       "path": "Code/src/rfad/application/design_sweep_service.py",
-      "text_sha256": "aa737c8db8f9bef044219000bbd4c73665adc0eb8424568b7fd1b72052ca8f4c",
-      "utf8_bytes": 40507
+      "text_sha256": "79d29462ad72b667c6966549762285105084e968f68bb4a37a1c53470a6d2c02",
+      "utf8_bytes": 40506
     },
     {
       "path": "Code/src/rfad/application/display_mesh.py",
@@ -15094,8 +15103,8 @@
     },
     {
       "path": "Code/src/rfad/application/exchange_service.py",
-      "text_sha256": "cf205443aaca4aae8521a6d390e3308f021e1551870ab1ffc7d5c49b06cb19ed",
-      "utf8_bytes": 26101
+      "text_sha256": "9e10fc314f869bab29ee15fdd583e51018ee309a66527b3c14e780a3e75cd790",
+      "utf8_bytes": 26803
     },
     {
       "path": "Code/src/rfad/application/handoff_archive.py",
@@ -15179,13 +15188,13 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_exchange_service.py",
-      "text_sha256": "444ab82f2847fa61604445a788e5041a839a816c97fb13f052d09908971124ca",
-      "utf8_bytes": 45788
+      "text_sha256": "55b2bef9756fb4bf895efb6cdf417e39a681c309f6ef3cbc687712d701f7d025",
+      "utf8_bytes": 45792
     },
     {
       "path": "Code/src/rfad/application/pcb_import_mapping.py",
-      "text_sha256": "b7b94381049e570739050af3d91412753e79fe4f9cc5757a680105a536222696",
-      "utf8_bytes": 58716
+      "text_sha256": "8f7cdcf3bec9ede88e2f73ab6233af413804b74dd96267ec2fcf487135a7380e",
+      "utf8_bytes": 58717
     },
     {
       "path": "Code/src/rfad/application/pcb_import_service.py",
@@ -15234,8 +15243,8 @@
     },
     {
       "path": "Code/src/rfad/application/pcb_selection_review.py",
-      "text_sha256": "fc6d8df7b412a263e2ac45646cbef60a689e5ad1e521ac7d6a13452c3a58485c",
-      "utf8_bytes": 7534
+      "text_sha256": "8690b05c73c97eccf054051abdd1862507edac97115fe6fc2c783cd176dc4705",
+      "utf8_bytes": 7627
     },
     {
       "path": "Code/src/rfad/application/pcb_solver.py",
@@ -15249,8 +15258,8 @@
     },
     {
       "path": "Code/src/rfad/application/physical_setup_service.py",
-      "text_sha256": "ef77d5e17cae0b2f7b7a1ecacaa65c2c7c494e9f9c6a84770603a787e2ea0b9c",
-      "utf8_bytes": 29042
+      "text_sha256": "09d3eb789571db9a5090d7e9531e406f3950a5b7e0becd05228d6255947c7dc3",
+      "utf8_bytes": 29044
     },
     {
       "path": "Code/src/rfad/application/precision_candidates.py",
@@ -15299,8 +15308,8 @@
     },
     {
       "path": "Code/src/rfad/application/project_study_commands.py",
-      "text_sha256": "310a4331a97855602722462a43adf37f2c494dfed982518654d98c8cde659de5",
-      "utf8_bytes": 6976
+      "text_sha256": "29a476de40b154058698f8e3fc6db8d88829267f73fa4919fa8e07822137644f",
+      "utf8_bytes": 7741
     },
     {
       "path": "Code/src/rfad/application/project_study_contract.py",
@@ -15329,13 +15338,13 @@
     },
     {
       "path": "Code/src/rfad/application/result_catalog.py",
-      "text_sha256": "3097edb8c1ceb98274c4dbe7b7c22d4e304707f25ade2a2df9b78009d7e4a1af",
-      "utf8_bytes": 7403
+      "text_sha256": "4fd250c259051e334a345353479aec8eb9042c4d85fd94a8e03f0649784bb785",
+      "utf8_bytes": 8299
     },
     {
       "path": "Code/src/rfad/application/result_complex.py",
-      "text_sha256": "4354cae32485b14d4314b09dd7a1bda94fd5ca2cbb93a4f77bfde47cb4d9920e",
-      "utf8_bytes": 11587
+      "text_sha256": "3b2f7461d547df4d5e9862f626e4e3d53f1b4c9ada89db44fdd61741e12cbaf3",
+      "utf8_bytes": 11685
     },
     {
       "path": "Code/src/rfad/application/result_export.py",
@@ -15344,8 +15353,8 @@
     },
     {
       "path": "Code/src/rfad/application/result_fields.py",
-      "text_sha256": "d912808760609731573b727a61f074a84c3e0302db05b81f1b3df5c8c519d316",
-      "utf8_bytes": 18558
+      "text_sha256": "273605282055bfeb24c0336c1d32b18a99d5952edb721ef020d41f5d821e249c",
+      "utf8_bytes": 18810
     },
     {
       "path": "Code/src/rfad/application/result_metrics.py",
@@ -15359,8 +15368,8 @@
     },
     {
       "path": "Code/src/rfad/application/result_service.py",
-      "text_sha256": "4aaf21e472f1bcf12cc9a598bea830e0581708443fb40222aaaea1f6adf4d996",
-      "utf8_bytes": 9149
+      "text_sha256": "b356605c7feee54d7df4e2a51871fd45980b78e263639bc4e4f40a015e812d96",
+      "utf8_bytes": 9184
     },
     {
       "path": "Code/src/rfad/application/result_smith.py",
@@ -15369,13 +15378,13 @@
     },
     {
       "path": "Code/src/rfad/application/result_sources.py",
-      "text_sha256": "dbc3b6b30cc032260f58b850f85a1265f78113b33ebbff82a0c2537dcbca89e3",
-      "utf8_bytes": 20663
+      "text_sha256": "deb4a757dffc7445724293d6adbd565c719774784b6c4fa176fd2c7903e3e6be",
+      "utf8_bytes": 20945
     },
     {
       "path": "Code/src/rfad/application/rf_reference_contract.py",
-      "text_sha256": "68f80a02de9f763c244e48f89876b726e41977145eef1a5d18dedd9c1ee51b29",
-      "utf8_bytes": 13107
+      "text_sha256": "7dcf585c3564b310f9734d6cfdc2289e5d0d2cb143f27351dccde6690813dcfa",
+      "utf8_bytes": 13101
     },
     {
       "path": "Code/src/rfad/application/rf_validation_assessment.py",
@@ -15384,8 +15393,8 @@
     },
     {
       "path": "Code/src/rfad/application/rf_validation_execution.py",
-      "text_sha256": "4d71492fab0b723587e43f0c19ba8c5c836de73d161b60a90092dbaec206103e",
-      "utf8_bytes": 5171
+      "text_sha256": "7fa4a68df825734edc25aeeb91cf50df018a0a33e4188091d99afd6e8f7395cd",
+      "utf8_bytes": 5139
     },
     {
       "path": "Code/src/rfad/application/rf_validation_plan.py",
@@ -15399,13 +15408,13 @@
     },
     {
       "path": "Code/src/rfad/application/rpc.py",
-      "text_sha256": "be58ad314bd285180bb4a67c7706962b17ad36716d18bad70a7b5d06b70210e3",
-      "utf8_bytes": 41043
+      "text_sha256": "b6f33f4d4ba4e3964acc6d928c7146bc3b5a422ec981938122c50200f587c0fe",
+      "utf8_bytes": 41511
     },
     {
       "path": "Code/src/rfad/application/solver.py",
-      "text_sha256": "f3a0961ebc0db853b91433f31feaa75a70ae0a547d77baa5c4e68dc51c93cb3a",
-      "utf8_bytes": 19082
+      "text_sha256": "7f237e146fdba71a960527e86bd67327ba8a47810f50c91f553cfe77fec1bc67",
+      "utf8_bytes": 19244
     },
     {
       "path": "Code/src/rfad/application/solver_artifacts.py",
@@ -15414,8 +15423,8 @@
     },
     {
       "path": "Code/src/rfad/application/solver_jobs.py",
-      "text_sha256": "5ac080c4d7808b75500d5365014500e4837b4d64c1a67158f60ccc5c38b769c0",
-      "utf8_bytes": 32620
+      "text_sha256": "d85cc842ee6ab600198455daf9a73b788090d8e08ecb0d9521b3b27782afa659",
+      "utf8_bytes": 32841
     },
     {
       "path": "Code/src/rfad/application/solver_queries.py",
@@ -15424,13 +15433,13 @@
     },
     {
       "path": "Code/src/rfad/application/solver_requests.py",
-      "text_sha256": "037395e7ffd40e0a6dc47a857e2d98740bfa890b51e40bd98da9dbaf51262443",
-      "utf8_bytes": 4442
+      "text_sha256": "b8115a1336a38b4efb90e52d9ddbf4273fcf934119be287cc4c94c3af9f2686f",
+      "utf8_bytes": 4477
     },
     {
       "path": "Code/src/rfad/application/solver_runtime.py",
-      "text_sha256": "b77114717b30a2a63338ac456d3cd45244194aa1986241a7c1f2290677d70c77",
-      "utf8_bytes": 5794
+      "text_sha256": "76caca249d3145ac6084930b8cdcbcbbaa9f1d188b0d60f80084789721d827f9",
+      "utf8_bytes": 6592
     },
     {
       "path": "Code/src/rfad/application/sweep_copy.py",
@@ -15444,8 +15453,8 @@
     },
     {
       "path": "Code/src/rfad/application/target_editor.py",
-      "text_sha256": "ec03685cb01709b8df462b954262dac51db2ce32a79eb15fbf3dbcc9c9495b93",
-      "utf8_bytes": 8211
+      "text_sha256": "acc128dc56c4768cff2a0d0363cbb3abdadb723b6cd87a149d737c31226fad47",
+      "utf8_bytes": 9311
     },
     {
       "path": "Code/src/rfad/application/target_editor_fields.py",
@@ -15754,13 +15763,13 @@
     },
     {
       "path": "Code/tests/gui_presentation_test.cpp",
-      "text_sha256": "79c8278bfdf4a3228c0847e36d9e56b00abbc8f314aa71554a49744a4a0dd8fd",
-      "utf8_bytes": 17124
+      "text_sha256": "cf36ce99880e2e65acd5b3c73a00b679557f2760f97dbed0b1e367e83f999a9a",
+      "utf8_bytes": 17957
     },
     {
       "path": "Code/tests/output_model_test.cpp",
-      "text_sha256": "9442a7db18dbecc6650f4b65a33169708799d7ae33063cdfe3f9880768546854",
-      "utf8_bytes": 11698
+      "text_sha256": "0e377f41dc7824bb1c59bb5618a18d339de6e1d14c3bc1b0df87a09af475a846",
+      "utf8_bytes": 11699
     },
     {
       "path": "Code/tests/pcb_feature_model_test.cpp",
@@ -15814,8 +15823,8 @@
     },
     {
       "path": "Code/tests/test_catalog_api.py",
-      "text_sha256": "1848c3271abce0c99ee2297329e680b428e0504c1b9f0b151cc751cd0c43fb0c",
-      "utf8_bytes": 9376
+      "text_sha256": "87cf7df7c07405ba4b4a64bcedfbc5b6355176be42f09d4d6debb177f57c0600",
+      "utf8_bytes": 10660
     },
     {
       "path": "Code/tests/test_catalog_build.py",
@@ -15839,8 +15848,8 @@
     },
     {
       "path": "Code/tests/test_design.py",
-      "text_sha256": "fe5649054d6d6ba8e05e7fb6a35fca8dfae84f93882b5e326275d06779e92ab8",
-      "utf8_bytes": 21632
+      "text_sha256": "865aa63de53d9685e395e9f94dd91f75d0e2b47f9b7c1751116107071edacd21",
+      "utf8_bytes": 21784
     },
     {
       "path": "Code/tests/test_design_rules.py",
@@ -15899,8 +15908,8 @@
     },
     {
       "path": "Code/tests/test_exchange_service.py",
-      "text_sha256": "093e3b5e16d4652598f2b1ad88c6b5068d201ff1c10adc5f36026cf6307cf30e",
-      "utf8_bytes": 12495
+      "text_sha256": "2c3d96af87595f3d5ecacf83e88801fab05c15e8630a23bde5a333c7fed02681",
+      "utf8_bytes": 13683
     },
     {
       "path": "Code/tests/test_expressions.py",
@@ -15909,8 +15918,8 @@
     },
     {
       "path": "Code/tests/test_gui_cad_process.py",
-      "text_sha256": "37ce53de78c5b578eef72aaaa8c05d6d8bc1bfef8fe2b5387a74093c26c11c7d",
-      "utf8_bytes": 6511
+      "text_sha256": "8529338580d731c04d9432e55ca2fc3d7ef2e42b8cf0ded7fa73fb5047f3822f",
+      "utf8_bytes": 6545
     },
     {
       "path": "Code/tests/test_gui_design_rules_process.py",
@@ -15929,8 +15938,8 @@
     },
     {
       "path": "Code/tests/test_gui_output_process.py",
-      "text_sha256": "037bec68065de57fb42cf517ccf3854519da18311b7aa57ebdf73f7ed584e8fc",
-      "utf8_bytes": 8548
+      "text_sha256": "679858228573011b3c9e0d50107133251ded45d3bd3208042ac5985677ad2d23",
+      "utf8_bytes": 8608
     },
     {
       "path": "Code/tests/test_gui_pcb_exchange_process.py",
@@ -15964,13 +15973,13 @@
     },
     {
       "path": "Code/tests/test_gui_solver_process.py",
-      "text_sha256": "829bc6e9730398815c5a2b3d1df2cb9e1cb30e324cddd8cbd31309f0c744a539",
-      "utf8_bytes": 11936
+      "text_sha256": "a3670152fba6722e58fd18e2bfc35bacdddbe81dc0d4b7cc36846b857e75bc21",
+      "utf8_bytes": 12237
     },
     {
       "path": "Code/tests/test_gui_sweep_process.py",
-      "text_sha256": "c09919ec0c17d8a885074d94ab7c0cdb0d4df982db823697453bb8e8c554d472",
-      "utf8_bytes": 11260
+      "text_sha256": "5812fcfea20994afb689a30552685405757a387177b5c122b43f489669fe886f",
+      "utf8_bytes": 11503
     },
     {
       "path": "Code/tests/test_gui_target_template_process.py",
@@ -16219,8 +16228,8 @@
     },
     {
       "path": "Code/tests/test_result_math.py",
-      "text_sha256": "02f463cb3c64616b560109990f65537567613a5b2046760a98a8c760fce7995d",
-      "utf8_bytes": 10685
+      "text_sha256": "28eb0315739ee93ad51cc42beae98d465d30342f868e11fd15307bf147cd9654",
+      "utf8_bytes": 11056
     },
     {
       "path": "Code/tests/test_result_metrics_bounds.py",
@@ -16234,8 +16243,8 @@
     },
     {
       "path": "Code/tests/test_result_sources.py",
-      "text_sha256": "b9d459b3a39b928822d970e5a0a28d2c8afb69a8b2c637bc047fa9bfbb983384",
-      "utf8_bytes": 11387
+      "text_sha256": "636302fed16eb6916c8df67088f8cd251842c63b80fcc5b30659b568c2c69015",
+      "utf8_bytes": 13909
     },
     {
       "path": "Code/tests/test_rf_reference.py",
@@ -16294,8 +16303,8 @@
     },
     {
       "path": "Code/tests/test_target_editor.py",
-      "text_sha256": "d164443ed8ee60ea9a1ce7bdc8fd71aa400e2bdd5dcabaf34687dbaeb3987930",
-      "utf8_bytes": 26376
+      "text_sha256": "127e21c6b40eba5445b749a7041fd88e5cee3d45b9d8acb94e55df651aca177b",
+      "utf8_bytes": 27650
     },
     {
       "path": "Code/tests/test_targets.py",
@@ -16344,8 +16353,8 @@
     },
     {
       "path": "Code/tools/internal_bundle_inputs.py",
-      "text_sha256": "9bc3926e5d770378e4f06a233dbaa00a30820b44723a65a8677af2bbbda3de4e",
-      "utf8_bytes": 8157
+      "text_sha256": "f09bb74104d25c35d05b6a944ffda26ab99063401de5e8884b77b2ce63204a1c",
+      "utf8_bytes": 8262
     },
     {
       "path": "Code/tools/mcp_stdio.py",
@@ -16439,8 +16448,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/archive_restore_dialog.cpp",
-      "text_sha256": "6ccf723e0956b5f2d55251dfdd90a64ede71688821d5c5f3459dd80da4c97b51",
-      "utf8_bytes": 18273
+      "text_sha256": "cf415780405dff9a276bfd770edbff0fea6dd043d1f5246d57e2fae85e9dc796",
+      "utf8_bytes": 18278
     },
     {
       "path": "Code/ui/wxwidgets/canvas_pcb_features.cpp",
@@ -16449,13 +16458,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/canvas_renderer.cpp",
-      "text_sha256": "5dbf47a2f5e91fa3cd8a61fad0f5bd65444eaadbade719db85ff9b976f5b169b",
+      "text_sha256": "9070077aaf22ac09607c6688c1a0327d9938a08bde28ed089cfd6ccf4b6da59e",
       "utf8_bytes": 13592
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas.cpp",
-      "text_sha256": "af89a4e32fac340e68ed0c9f433bba28958b80a53bb6b5fb754d9240b6f8ec8e",
-      "utf8_bytes": 40139
+      "text_sha256": "39ec04f8b835812c1f22f6f2661054393dd88e9fe9947f841790bb0ba077963e",
+      "utf8_bytes": 40147
     },
     {
       "path": "Code/ui/wxwidgets/design_canvas_dimensions.cpp",
@@ -16469,13 +16478,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/design_rules_dialog.cpp",
-      "text_sha256": "1a242c4155dcd8b6c3a656a7b83aa468658e999fc6361c1b9d51d0af3c2e3fed",
-      "utf8_bytes": 11718
+      "text_sha256": "433b07fbde3a9f2c9c84bc00c7f7ac632cc36998cb1306a7872b883c44522dab",
+      "utf8_bytes": 13634
     },
     {
       "path": "Code/ui/wxwidgets/design_rules_review.cpp",
-      "text_sha256": "a7b754051fb1dc440aed657e00b490dcf3d0095f6ead50f0b12996ca9fbd302e",
-      "utf8_bytes": 4054
+      "text_sha256": "1b6698c6af36cdffd8818ec1b5512b5225cdf3257c19c85fff87353b7294068f",
+      "utf8_bytes": 6417
     },
     {
       "path": "Code/ui/wxwidgets/drawing_rail.cpp",
@@ -16489,8 +16498,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/field_result_view.cpp",
-      "text_sha256": "cdbfb295ac046045824f3531fbaf14603a6f34db1d6b2416b38e563c9f6b96a2",
-      "utf8_bytes": 31039
+      "text_sha256": "3bb1de87c33819bbffd47b56d183ef00da9965c396db2db0ed17828d1b93857b",
+      "utf8_bytes": 32745
     },
     {
       "path": "Code/ui/wxwidgets/frequency_assessment_display.cpp",
@@ -16499,8 +16508,8 @@
     },
     {
       "path": "Code/ui/wxwidgets/frequency_display.cpp",
-      "text_sha256": "edbfd3e30807e020c71b2d8d8b398887417a6ba90ada3e1323945ef5b9b00c77",
-      "utf8_bytes": 3959
+      "text_sha256": "b22d537f4743fcf6fc3be318620bc4d643a16847031c0a97698980c4e4797477",
+      "utf8_bytes": 5652
     },
     {
       "path": "Code/ui/wxwidgets/handoff_output_controller.cpp",
@@ -16509,63 +16518,63 @@
     },
     {
       "path": "Code/ui/wxwidgets/handoff_output_view.cpp",
-      "text_sha256": "6f7c05b38afef62746ef1a0ce449cecd2f14df1bb3cb300ced0d77565912c0ca",
-      "utf8_bytes": 19604
+      "text_sha256": "4b7d205559c78506496e995cbd8d86311175182a08f1d4f11c8400ffbf43083d",
+      "utf8_bytes": 21804
     },
     {
       "path": "Code/ui/wxwidgets/measurement_compare_view.cpp",
-      "text_sha256": "6be772509d81d5b23d5e20f90b5703a38a74c0af04ad528559de9b2756741e95",
-      "utf8_bytes": 9651
+      "text_sha256": "a6f2693c85b00e8af91da12c9efa8a2b153dd0118624991d716d6d4252a542c3",
+      "utf8_bytes": 10340
     },
     {
       "path": "Code/ui/wxwidgets/measurement_history_dialog.cpp",
-      "text_sha256": "86d6ec4e362437aa0c171c6a0996d87c03d291d69422094c15528503b61e4b43",
-      "utf8_bytes": 14603
+      "text_sha256": "aaf1b31f9c5500233af3e4f8b29a04dc07904bd3419a0f811232e042c9aae9ba",
+      "utf8_bytes": 14651
     },
     {
       "path": "Code/ui/wxwidgets/network_assessment_dialog.cpp",
-      "text_sha256": "1bc5ed8eea9c5aaca78dc03438f3d020638adb558ff76c940fe1563e92cd058e",
-      "utf8_bytes": 26737
+      "text_sha256": "f657ee910ae121dfe4159817237125b569f0eec9d87b09662f89eea0c5bcf6a1",
+      "utf8_bytes": 26858
     },
     {
       "path": "Code/ui/wxwidgets/network_assessment_panel.cpp",
-      "text_sha256": "133bd677d9fdacbd7451bfdf4ef4d0ad53971a461c336cd0aafb73f7a78be8b7",
-      "utf8_bytes": 29878
+      "text_sha256": "67be431ea9111413a90bf0e089a1e9c822c19a465a1b71ff5e01eefc139829de",
+      "utf8_bytes": 30694
     },
     {
       "path": "Code/ui/wxwidgets/network_circuit_dialog.cpp",
-      "text_sha256": "b6b5b78611d3fb65b5090ce28d5939c56c3781dc10da18146c619a3ecf7373ab",
-      "utf8_bytes": 16035
+      "text_sha256": "d4c03d15f4a3a89a0880b33a7f04644a24c52b0be516a6861f9592cdea45c90a",
+      "utf8_bytes": 17265
     },
     {
       "path": "Code/ui/wxwidgets/network_circuit_view.cpp",
-      "text_sha256": "cd2e9ecb9d3c79c4e12830ec8506b7ec64027301ea6e7275584a0870e1dac980",
-      "utf8_bytes": 29476
+      "text_sha256": "1d0d15867794585b685595e9f7ff0f5e79964eaac4cbd2bc43f57d4b64e103be",
+      "utf8_bytes": 30815
     },
     {
       "path": "Code/ui/wxwidgets/network_export.cpp",
-      "text_sha256": "46adddfc08961630b6df962cd9a86addad30a3eb6da0b93f2ab4162f38d01b9a",
-      "utf8_bytes": 13942
+      "text_sha256": "d0844540ab03a6a40260da503e19fb0eef9d6de6ef26fa0338f37d4548bc9407",
+      "utf8_bytes": 13949
     },
     {
       "path": "Code/ui/wxwidgets/network_import_dialog.cpp",
-      "text_sha256": "ca0c5ba564a0f4c9702ff7a1242eefe3d88cfc74cae5ae617f757af82c48acea",
-      "utf8_bytes": 10643
+      "text_sha256": "565234c69e19d271648d68361489c8470a6b76357b08b31f3cfbd945380c5c7f",
+      "utf8_bytes": 11074
     },
     {
       "path": "Code/ui/wxwidgets/network_import_measurement.cpp",
-      "text_sha256": "10037b5a5fbb3bde68648c892c4980e4ce3541f591be4754ebde8b836fd0b30f",
-      "utf8_bytes": 4169
+      "text_sha256": "005aaf5b3656e7cee660476ac5df979a4f394244e96af0fb05ffa16a9f972872",
+      "utf8_bytes": 4154
     },
     {
       "path": "Code/ui/wxwidgets/network_panel.cpp",
-      "text_sha256": "b8819d9a283b957761b14aa1bc9dd20987dbb241629984d5f2a8135e60f54d61",
-      "utf8_bytes": 27705
+      "text_sha256": "fdee358ba0d7f231abe3a8a6ae7f78e2485c547902d063438327fc4615a94ef7",
+      "utf8_bytes": 28106
     },
     {
       "path": "Code/ui/wxwidgets/network_transform_dialog.cpp",
-      "text_sha256": "6c1335843f315c2a94a85a5e61f072da6a0157b921f9374676f9c34064faddf5",
-      "utf8_bytes": 32160
+      "text_sha256": "62f019ca116a093d70b98bedf42624f14aca22515c5041c097cb8f8bd17e6ba7",
+      "utf8_bytes": 32188
     },
     {
       "path": "Code/ui/wxwidgets/object_rename_dialog.cpp",
@@ -16574,23 +16583,23 @@
     },
     {
       "path": "Code/ui/wxwidgets/output_controller.cpp",
-      "text_sha256": "1abc8fed21eee7f1be8ceea8b6fbf7e282f23ae70865a9984ede7b7391cedbef",
-      "utf8_bytes": 14481
+      "text_sha256": "5feac1bd7e8e511b6ad05d5716975c3ed71d389cdf17d41b49ce96b0f6a08fa1",
+      "utf8_bytes": 16114
     },
     {
       "path": "Code/ui/wxwidgets/pcb_cam_output_data.cpp",
-      "text_sha256": "8b04c84e7040b76a8b1890315dbfa5ce9bf58656ac4bafcdb6128acecc3d259b",
-      "utf8_bytes": 8247
+      "text_sha256": "8551425fcfea4e3e3bf704fdaf0169ede7c9be701f8635ef6f44cc57dc8f50e8",
+      "utf8_bytes": 8367
     },
     {
       "path": "Code/ui/wxwidgets/pcb_cam_output_view.cpp",
-      "text_sha256": "71e027948505f521e63ff14990a347d924230f3b005c3b1fa2ca08773b25bf1f",
-      "utf8_bytes": 11222
+      "text_sha256": "1f9817238160a199ef991267a8b412052fed3e358c307c0ce02b8f8adb3476da",
+      "utf8_bytes": 11275
     },
     {
       "path": "Code/ui/wxwidgets/pcb_catalog_table.cpp",
-      "text_sha256": "cc9846375a34c52a1526752e2668950628b04311d6e838fce9a22a96a3aed2d2",
-      "utf8_bytes": 4099
+      "text_sha256": "5961b4a7e0fbc33f3b73375c23129268f05ea47c9631ff2c06cb0f65eb37f117",
+      "utf8_bytes": 4155
     },
     {
       "path": "Code/ui/wxwidgets/pcb_catalog_table.h",
@@ -16599,7 +16608,7 @@
     },
     {
       "path": "Code/ui/wxwidgets/pcb_feature_dialog.cpp",
-      "text_sha256": "dac03bd1a875f00c393d577c8175a5eea36f9d14819abcd2ae010162f824e35f",
+      "text_sha256": "b836a5e90b37a6a1e06babd6f4c769ec533cf106428404227f8a4e4f3376777a",
       "utf8_bytes": 12285
     },
     {
@@ -16609,48 +16618,48 @@
     },
     {
       "path": "Code/ui/wxwidgets/pcb_feature_model.cpp",
-      "text_sha256": "7e18d68ecaccb84bf86ece95069594f498014968886665a7ee1ba8fa11c2fccf",
-      "utf8_bytes": 5982
+      "text_sha256": "cac8d545c9fbf225799fe581d13d35ef96a030097b148b64dd41a73b7bf29c75",
+      "utf8_bytes": 6057
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_dialog.cpp",
-      "text_sha256": "19c61870c2d6bf48529c77b60445fe3c533442a4784dd0c1ca0f0d79fddb16c1",
-      "utf8_bytes": 8987
+      "text_sha256": "53e8e4183c34f3b71e22511344392c09593ff0a54286f95490be10d8248d24a1",
+      "utf8_bytes": 8993
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_review.cpp",
-      "text_sha256": "b73c1104df7d65a124cf477c8563ef5473cae104bdc85de36a6fdcca9ce58b1d",
-      "utf8_bytes": 10619
+      "text_sha256": "4157b86d1ae033d54192abf7edf4d901430b80dd69479828c525da58d294f8e3",
+      "utf8_bytes": 10639
     },
     {
       "path": "Code/ui/wxwidgets/pcb_import_transfer.cpp",
-      "text_sha256": "21803f829f642909a54a5b82fa68abb332e357ad047d1d88d356bf03438f626f",
-      "utf8_bytes": 17354
+      "text_sha256": "0e5f7c2607b1171f81999dfe6bd1be6e01c6d45c76b40401043b1ada9fdccea2",
+      "utf8_bytes": 17367
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_dialog.cpp",
-      "text_sha256": "a72e9dce1c67109718b8590c20656f74ead3f339a14115271050d1f05d39af4f",
-      "utf8_bytes": 11156
+      "text_sha256": "be1e320b47796128ba5fe192cd92616c65684a3223159059347a30284a9fb94d",
+      "utf8_bytes": 11157
     },
     {
       "path": "Code/ui/wxwidgets/physical_setup_review.cpp",
-      "text_sha256": "117cfb140d8f2e6ae54f63bea3c6b8e24d905889f40ef7f45e5d9de3069b48a2",
-      "utf8_bytes": 16044
+      "text_sha256": "2e8824de15b9ae6909a9dc08e14aed8b874a17754c7a34568eb66796238f45a9",
+      "utf8_bytes": 16039
     },
     {
       "path": "Code/ui/wxwidgets/precision_dialog.cpp",
-      "text_sha256": "612e877b4b285e2213bb1742972c0630613ae3e704841b3cfa64c9d3db846d9b",
-      "utf8_bytes": 24243
+      "text_sha256": "d4cbdf5a78ff4ca70ef3439ae1056713a51e44ebb456b3f981b20fafbd2c6c06",
+      "utf8_bytes": 24231
     },
     {
       "path": "Code/ui/wxwidgets/project_setup_dialog.cpp",
-      "text_sha256": "c12dab58dcaf7e315e49ffcd3ffec2e4e7aed98b338eaa74b4cfc1ce96538566",
-      "utf8_bytes": 7804
+      "text_sha256": "136a348d4f3b737b8c1ce70cf1fcd568ad3bfc72050f8c1ee91bcf2de2c1f86e",
+      "utf8_bytes": 8175
     },
     {
       "path": "Code/ui/wxwidgets/radiation_dialog.cpp",
-      "text_sha256": "cb42164f1166c4cf2dfb71c52aa817f31348c48ee351184ddec9a4c0337c6bab",
-      "utf8_bytes": 9842
+      "text_sha256": "22bf53449b420b0dec006448c63411725369e20e4ce1424e132559ad9d8e156f",
+      "utf8_bytes": 9931
     },
     {
       "path": "Code/ui/wxwidgets/radiation_pattern.h",
@@ -16659,48 +16668,48 @@
     },
     {
       "path": "Code/ui/wxwidgets/result_compare_view.cpp",
-      "text_sha256": "0f47b530c0ac29d8b7cb02eb893b5a4abdba060db3b7e952f11124fe01615085",
-      "utf8_bytes": 35061
+      "text_sha256": "255cff4f435ff49c5861d792c651f2261cb4fcc4b1870294c1659782f44124c3",
+      "utf8_bytes": 38811
     },
     {
       "path": "Code/ui/wxwidgets/result_conditions_view.cpp",
-      "text_sha256": "0ae70b976bfd6858dafb373454d2442f1b95fb0312d882b74d200b28ae2193f3",
-      "utf8_bytes": 20437
+      "text_sha256": "71c39d68bb0fff48923e673c18090f598fa4f6511d3840959a547ed3ace3b817",
+      "utf8_bytes": 20350
     },
     {
       "path": "Code/ui/wxwidgets/result_metrics_view.cpp",
-      "text_sha256": "08a5c8224e8bea7e75604823b1c7402abbc69b3d7d35d02b0f5d87087cc76c96",
-      "utf8_bytes": 7869
+      "text_sha256": "ab639b404dc84d6a55e8c7b7d95be7e79c30e521afec5020908f3becb5ed33d6",
+      "utf8_bytes": 12207
     },
     {
       "path": "Code/ui/wxwidgets/result_network_view.cpp",
-      "text_sha256": "ef43668b4446d55ce55979f56008fdd80dc6c0f60c7440a083f44d83b9f30210",
-      "utf8_bytes": 13160
+      "text_sha256": "646257ac5549c9f624157bff573ba489db69d93f3f4c9f4516cf94c6655db0ae",
+      "utf8_bytes": 14559
     },
     {
       "path": "Code/ui/wxwidgets/result_radiation_canvas.cpp",
-      "text_sha256": "93dd01d0b883c88c1641134551d035cdf1b1a0e806cf6f8eae10a7ed460a3d2d",
-      "utf8_bytes": 9914
+      "text_sha256": "0203f1c308d083a3ec1a5309a1b45620415505e02c5a28bbbf2d89edb15d3bbc",
+      "utf8_bytes": 9953
     },
     {
       "path": "Code/ui/wxwidgets/result_radiation_view.cpp",
-      "text_sha256": "8dd6af04c0c8386a58f27715577d1e07b484bf0d9ed34ae7b86f052182edc4eb",
-      "utf8_bytes": 21846
+      "text_sha256": "00b71527af05d5d92bd15769609e1f31449c21de43ace9e30d75874beb89f832",
+      "utf8_bytes": 23658
     },
     {
       "path": "Code/ui/wxwidgets/result_source_browser.cpp",
-      "text_sha256": "75d06a85e273c6e7880d4684a54afcf8106b1894e1d605d9b01f09d36c8c0e0c",
-      "utf8_bytes": 13551
+      "text_sha256": "5e8cab80ec913479a1cf72a23a35c75ce82b4016636858d3d2fc32b6fff04d62",
+      "utf8_bytes": 15939
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace.cpp",
-      "text_sha256": "fae496e7cdaa2172c937dcc8d024ff6be0705dd780a1f8bacc8d0f7d86e3917e",
-      "utf8_bytes": 24287
+      "text_sha256": "466ee197380caf1c29bf61234335a322e6a247d76d76fccda8fb660cfef71f70",
+      "utf8_bytes": 27015
     },
     {
       "path": "Code/ui/wxwidgets/result_workspace_compare.cpp",
-      "text_sha256": "b25fe1e4301a791e5721b9c040fcc4529fb9841e0101a23096070649764b1ecf",
-      "utf8_bytes": 15188
+      "text_sha256": "8729a9c80da84ab3b0fd7460238035034f64aa91ea684e371df7b0e9c1bcf3be",
+      "utf8_bytes": 15231
     },
     {
       "path": "Code/ui/wxwidgets/reviewed_request_store.cpp",
@@ -16709,18 +16718,18 @@
     },
     {
       "path": "Code/ui/wxwidgets/rf_validation_controller.cpp",
-      "text_sha256": "17335919b54e5e2a562200e133c21ea1337ffcce2a9f2376c71bc75b4c57cde7",
-      "utf8_bytes": 10067
+      "text_sha256": "4d008fb684f05daf564e597d4b2327c611e3c71de9739b939f860cc998f03ec3",
+      "utf8_bytes": 10081
     },
     {
       "path": "Code/ui/wxwidgets/rf_validation_details.cpp",
-      "text_sha256": "4d67618e736da7adeca06ec7b6892e64f22a5e3938366e2c9ede977350d8dcd3",
-      "utf8_bytes": 10644
+      "text_sha256": "0b1d03b845b0c9edbfc8fc2e33d71fabcf0980f27e9a1a59dc353b71a32bc461",
+      "utf8_bytes": 10634
     },
     {
       "path": "Code/ui/wxwidgets/rf_validation_view.cpp",
-      "text_sha256": "23527228a8796ffddcddb8380ae50b73f497cd771ab2871d1721e267e00be633",
-      "utf8_bytes": 14823
+      "text_sha256": "f099f91ea0c0e81ed1147bbc25fd63b1ee5d372b2ca9a0acb8d86a1d5394e1c0",
+      "utf8_bytes": 14843
     },
     {
       "path": "Code/ui/wxwidgets/service_client.cpp",
@@ -16729,13 +16738,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/smith_chart.cpp",
-      "text_sha256": "c69d00f45b210a42388b551fafc87e1ac29cd51f2adb262b603cc86c2d41ec11",
-      "utf8_bytes": 9964
+      "text_sha256": "ab2f47fc900f73723de96c4df911bcc4036c97663763927ed5a523106619f3ee",
+      "utf8_bytes": 9967
     },
     {
       "path": "Code/ui/wxwidgets/smith_view.cpp",
-      "text_sha256": "9cde1797947876df1241fcbebac51229b5380979d73f5004bd0232634062180b",
-      "utf8_bytes": 12325
+      "text_sha256": "ae178d23b73affd311126140c2ee38b16c3a1e134bfa8d7c2c909afa014301d1",
+      "utf8_bytes": 13470
     },
     {
       "path": "Code/ui/wxwidgets/studio_archive_restore.cpp",
@@ -16749,38 +16758,38 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_design_setup.cpp",
-      "text_sha256": "d68b2597e6a90a439f20a6f1d540acfeac8e45ccf31350bf98e725c4989d3069",
-      "utf8_bytes": 6335
+      "text_sha256": "06df2d0c44839a02512d43563bce5ed63bee55bceb929f7635b31785187aee0d",
+      "utf8_bytes": 8325
     },
     {
       "path": "Code/ui/wxwidgets/studio_layout.cpp",
-      "text_sha256": "4921e5e6bd47d4a4aa61edd2305318b9a401f20b584e6c14ae9bf7b001fb6b79",
-      "utf8_bytes": 34436
+      "text_sha256": "8fb91d9411ba811c366743ee89b43e6504f81cd21907ee3c211e37659dab0074",
+      "utf8_bytes": 38872
     },
     {
       "path": "Code/ui/wxwidgets/studio_navigation.cpp",
-      "text_sha256": "de07599bcaf76d2eee1fb62d78d4d01a10423d6ee88f4d2f3cfc219fad421f53",
-      "utf8_bytes": 24783
+      "text_sha256": "9f66611c8ebdc8beccc23788d9db6e896727bafae4ce51eb6ba2f893faba8ce0",
+      "utf8_bytes": 24815
     },
     {
       "path": "Code/ui/wxwidgets/studio_precision.cpp",
-      "text_sha256": "2b568e7e0fe8688c5289135c1247fd4d4da0fbdf0c254ffc083bd8c7633dce48",
-      "utf8_bytes": 7996
+      "text_sha256": "b0d140f5e56bdb06f9c489d5270bac99d3e38b0be3c140e4f458e721c71d56ed",
+      "utf8_bytes": 7994
     },
     {
       "path": "Code/ui/wxwidgets/studio_shell.cpp",
-      "text_sha256": "967a57a9427dedcab1cf68b919e3f2ebb231edff67da38fb4a449cd3d3cb6f67",
-      "utf8_bytes": 16329
+      "text_sha256": "5e6a6e9d70c8a0bc8ef68b527b00cfd53fa3a543867d2a3188a305b44bdc58d4",
+      "utf8_bytes": 16356
     },
     {
       "path": "Code/ui/wxwidgets/studio_sweep_selection.cpp",
-      "text_sha256": "2b815b960a7b254ede68d555afacd3e9045105c07c1b2233103c2be66698a9a6",
-      "utf8_bytes": 10416
+      "text_sha256": "4553aaeb7fc246f91ee09519a3425d2c3c3c631664a01bb03497926d051fcfb5",
+      "utf8_bytes": 10440
     },
     {
       "path": "Code/ui/wxwidgets/studio_theme.cpp",
-      "text_sha256": "ccabbeb5b600d61282362bb4bb696d029e08c72fea7401bf3b64596dfdfae409",
-      "utf8_bytes": 12692
+      "text_sha256": "8142da609418b36f56ec6de62c1a417d5d31840c0857b50400a52388a3125ba7",
+      "utf8_bytes": 16083
     },
     {
       "path": "Code/ui/wxwidgets/studio_theme.h",
@@ -16789,13 +16798,13 @@
     },
     {
       "path": "Code/ui/wxwidgets/studio_validation.cpp",
-      "text_sha256": "feb03e4b8c41f335a7d0542af90bf13305551248c6932161d7f05cd3f4e7afce",
-      "utf8_bytes": 6163
+      "text_sha256": "73beab2771bef8bf71684730137f2cd06280e7fe49fc0168bcd5c44e327e10b0",
+      "utf8_bytes": 6284
     },
     {
       "path": "Code/ui/wxwidgets/studio_workspace.cpp",
-      "text_sha256": "d7bc9e73dd8262e5c6177dbb3690fc059f3f603599d068b219edbe854a9fb958",
-      "utf8_bytes": 14287
+      "text_sha256": "908320662223f28674e2146383d5c9c5fc463f159c87a86076e70d4a4dfadeda",
+      "utf8_bytes": 15915
     },
     {
       "path": "Code/ui/wxwidgets/study_report_dialog.cpp",
@@ -16804,38 +16813,38 @@
     },
     {
       "path": "Code/ui/wxwidgets/study_report_model.cpp",
-      "text_sha256": "cb77ac8038dee720d64100b4979b5330ebb032743356f21d7b15be5be033489a",
-      "utf8_bytes": 7412
+      "text_sha256": "5ebd7c01588867e034e72ffaae414c23a992a9c33801f944870785f722e47b92",
+      "utf8_bytes": 7444
     },
     {
       "path": "Code/ui/wxwidgets/sweep_dialog.cpp",
-      "text_sha256": "713524d5166cf8f6fcccc735d11bcb80cd1e7a5b9ddacae88beee9d101c2d6fe",
-      "utf8_bytes": 26395
+      "text_sha256": "24ba34f64693fdcdaf73f40df5e452542fb172bf6bd1d9558df2af6358c271a4",
+      "utf8_bytes": 26368
     },
     {
       "path": "Code/ui/wxwidgets/sweep_panel.cpp",
-      "text_sha256": "30f7adf6c725cac4fac2d13b403de4da373c532e055a48b9a21119dceb41d1bf",
-      "utf8_bytes": 21761
+      "text_sha256": "24b352c0c7b6ee83d9e7fda95f6338604282acb8605b02042fa23ba6848477a6",
+      "utf8_bytes": 21715
     },
     {
       "path": "Code/ui/wxwidgets/sweep_selection_dialog.cpp",
-      "text_sha256": "5af0ee80118dfbe15e3d7347a440f84425ab709051ace606f0fad076b588e15b",
-      "utf8_bytes": 19083
+      "text_sha256": "a615a8be647ba8f136c00d2651d7bab9fbc464faaa5ab9614b02acfd7ac3af3d",
+      "utf8_bytes": 19192
     },
     {
       "path": "Code/ui/wxwidgets/target_editor_dialog.cpp",
-      "text_sha256": "74bda28b9fa5b5d1ed9f90eec5ad80137b08355d4566293bfdd3a1c56a606308",
-      "utf8_bytes": 6254
+      "text_sha256": "82381ff256657f1cc3f2658756564b8e24adc25f05ed028656b7287eba5b1ebc",
+      "utf8_bytes": 8731
     },
     {
       "path": "Code/ui/wxwidgets/template_dialog.cpp",
-      "text_sha256": "ead3427409fed12015d0462f3d2da482905981684aca25d61f0975dca2421452",
-      "utf8_bytes": 16057
+      "text_sha256": "c123d37041b40dc38b190d69669ac0c1699a3015d91b8f17c829c4236921fd1f",
+      "utf8_bytes": 17853
     },
     {
       "path": "Code/ui/wxwidgets/template_seed_view.cpp",
-      "text_sha256": "bb9c0d4fc13e6e63899399b39830d30102f1676a7d2326b4f450aed05db86f87",
-      "utf8_bytes": 4600
+      "text_sha256": "ffa50275e99dfbf0a7175e79c9e29df14daf9156139cdf1410cb0d55b9d83cea",
+      "utf8_bytes": 4603
     },
     {
       "path": "Code/ui/wxwidgets/workspace_bar.cpp",
@@ -16872,7 +16881,7 @@
     {
       "acceptance_status": "open",
       "id": "GUI-SPIKE-001",
-      "specified_row": "| GUI-SPIKE-001 | R1 wxMSW Studio의 시작, WSL2 연계, Qt 제외와 실제 배포 의존성 확인. wxGTK GUI는 후속 출시 범위 | 01, 07, 15 |"
+      "specified_row": "| GUI-SPIKE-001 | R1 wxMSW Studio의 시작, Windows 해석 연결 및 배포 의존성 확인. WSL2를 선택한 경우 해당 연결도 확인. wxGTK GUI는 후속 출시 범위 | 01, 07, 15 |"
     },
     {
       "acceptance_status": "open",
@@ -17504,7 +17513,7 @@
     {
       "acceptance_status": "open",
       "id": "VT-029",
-      "stage_contract": "**단계:** Linux native/headless worker 기본 계산 R0, Windows 11 x64 wxMSW/local WSL2 제품 수용 R1; Linux wxGTK GUI는 출시 버전 미정의 후속 범위; additional solvers/API automation R2; remote R3. **전체 수용:** 미확립. 개별 구현/시험 근거는 1절의 구현 감사를 따른다.",
+      "stage_contract": "**단계:** Linux native/headless worker 기본 계산 R0, Windows 11 x64 wxMSW와 Windows openEMS의 제품 수용 R1, 출시 버전 미정의 Linux wxGTK GUI, 추가 해석기와 API 자동화 R2, 원격 R3. 전체 수용은 미확립이다. 개별 구현 및 시험 근거는 1절의 구현 감사를 따른다.",
       "subcases": [
         "VT-029/PRJ-009-AC01.R1",
         "VT-029/PHY-041-AC03.R1",
