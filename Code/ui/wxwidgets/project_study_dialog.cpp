@@ -21,13 +21,13 @@ void ProjectStudyDialog::ServiceDisconnected(const std::string& message)
     m_disconnected = true;
     m_pending = false;
     m_timer.Stop();
-    m_status->SetLabel(Display("연결 종료: 완료/취소 여부를 추정하지 않습니다. " + message));
+    m_status->SetLabel(Display("연결 종료: 완료 또는 취소 여부를 추정하지 않습니다. " + message));
     UpdateControls();
 }
 
 ProjectStudyDialog::ProjectStudyDialog(wxWindow* parent, const Json& context, StudyGateway gateway,
                                        std::function<void()> closed)
-    : wxDialog(parent, wxID_ANY, Display("프로젝트 연구 / 격자와 방사·손실"), wxDefaultPosition, wxDefaultSize,
+    : wxDialog(parent, wxID_ANY, Display("프로젝트 연구 (격자, 방사, 손실)"), wxDefaultPosition, wxDefaultSize,
                wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
       m_gateway(std::move(gateway)), m_closed(std::move(closed)), m_context(context),
       m_basis(context.at("initial_specification")), m_timer(this)
@@ -169,7 +169,7 @@ void ProjectStudyDialog::ReloadStudies()
                       for (std::size_t i = 0; i < m_studies.size(); ++i)
                       {
                           const auto& study = m_studies.at(i);
-                          m_choice->Append(Display(study.at("name").get<std::string>() + " / " +
+                          m_choice->Append(Display(study.at("name").get<std::string>() + ", " +
                                                    Studio::StudyStatus(study.at("state"))));
                           if (study.at("study_id") == m_selected)
                           {
@@ -313,9 +313,9 @@ void ProjectStudyDialog::Render(const Json& view)
     if (selected != wxNOT_FOUND)
     {
         m_choice->SetString(
-            selected, Display(view.at("name").get<std::string>() + " / " + Studio::StudyStatus(view.at("state"))));
+            selected, Display(view.at("name").get<std::string>() + ", " + Studio::StudyStatus(view.at("state"))));
     }
-    m_status->SetLabel(Display(Studio::StudyStatus(view.at("state")) + " / " + view.value("message", std::string())));
+    m_status->SetLabel(Display(Studio::StudyStatus(view.at("state")) + ", " + view.value("message", std::string())));
     m_cases->DeleteAllItems();
     for (const auto& row : view.at("cases"))
     {
@@ -375,8 +375,8 @@ void ProjectStudyDialog::ShowPortSamples()
     {
         if (cases.at(i - 1).at("phase") == "done" && cases.at(i).at("phase") == "done")
         {
-            names.Add(Display("수준 " + std::to_string(i) + " / 수준 " + std::to_string(i + 1) + " (" +
-                              cases.at(i - 1).at("grid_mm").dump() + " mm / " + cases.at(i).at("grid_mm").dump() + " mm)"));
+            names.Add(Display("수준 " + std::to_string(i) + ", 수준 " + std::to_string(i + 1) + " (" +
+                              cases.at(i - 1).at("grid_mm").dump() + " mm, " + cases.at(i).at("grid_mm").dump() + " mm)"));
             indices.push_back(i);
         }
     }
@@ -400,7 +400,7 @@ void ProjectStudyDialog::ShowPortSamples()
                              FromDIP(wxSize(710, 480)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
              auto* layout = new wxBoxSizer(wxVERTICAL);
              auto* label = new wxStaticText(&dialog, wxID_ANY, Display("복소 S11 변화 허용값 " +
-                 result.at("max_s11_complex_delta").dump() + " / 선택한 두 격자에서 직접 계산한 주파수 표본"));
+                 result.at("max_s11_complex_delta").dump() + " (선택한 두 격자에서 직접 계산한 주파수 표본)"));
              layout->Add(label, 0, wxALL, FromDIP(8));
              auto* samples = new wxListCtrl(&dialog, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
              StudioTheme::Table(*samples);

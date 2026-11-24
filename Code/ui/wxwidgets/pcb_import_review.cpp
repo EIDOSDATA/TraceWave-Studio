@@ -17,7 +17,7 @@ Json PcbImportDialog::Input() const
     if (m_upload.empty() || !m_mappingLoaded || !m_boardConfirmed->GetValue() ||
         m_context.value("board_id", Json(nullptr)).is_null())
     {
-        throw std::runtime_error("현재 기판 / 좌표계와 원문 대응을 먼저 확인하세요.");
+        throw std::runtime_error("현재 기판 및 좌표계와 원문과의 대응을 먼저 확인하세요.");
     }
     Json mapping{{"board_id", m_context.at("board_id")},
                  {"frame_id", m_context.at("frame_id")},
@@ -72,7 +72,7 @@ Json PcbImportDialog::Input() const
         if ((!vendor && m_side->GetSelection() <= 0) || m_x->IsEmpty() || m_y->IsEmpty() || m_rotation->IsEmpty())
         {
             throw std::runtime_error(
-                "원본 배치의 X / Y / 회전을 입력하세요. KiCad 풋프린트에는 배치 면도 필요합니다.");
+                "원본 배치의 X, Y와 회전을 입력하세요. KiCad 풋프린트에는 배치 면도 필요합니다.");
         }
         const auto quantity = [](wxTextCtrl* value, wxChoice* unit)
         {
@@ -119,7 +119,7 @@ void PcbImportDialog::Preview()
                     response.value("source_revision_id", response.value("revision_id", "")) != m_revision ||
                     response.value("upload_id", "") != m_upload)
                 {
-                    throw std::runtime_error("가져오기 검토의 프로젝트 / 개정 / 원문 전송이 다릅니다.");
+                    throw std::runtime_error("검토 당시 프로젝트, 개정 또는 원문 전송 기록과 다릅니다.");
                 }
                 m_review = response;
                 m_reviewInput = input;
@@ -143,9 +143,9 @@ void PcbImportDialog::Preview()
                 ShowScene();
                 SetStatus(
                     response.value("can_apply", false)
-                        ? "변경 기하와 손실을 확인한 입력만 한 명령으로 적용합니다. 기존 출처 / 미정값과 가져온 원문을 "
+                        ? "변경된 형상과 손실을 확인한 입력을 한 명령으로 적용합니다. 기존 출처, 미정값과 가져온 원문을 "
                           "보존합니다."
-                        : "적용할 수 없는 항목이 있습니다. 대응 / 손실 확인 / 필수 입력을 수정한 뒤 다시 검토하세요.");
+                        : "적용할 수 없는 항목이 있습니다. 대응, 손실 확인 상태 및 필수 입력을 확인한 뒤 다시 검토하세요.");
             });
     }
     catch (const std::exception& error)

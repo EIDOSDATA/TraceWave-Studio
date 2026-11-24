@@ -165,7 +165,7 @@ void DrawingSheet::ValidatePages(const Json& pages)
         if (page.contains("view_box_mm"))
         {
             const auto& box = page.at("view_box_mm");
-            Require(box.is_array() && box.size() == 4, "도면 표시 원점/크기가 유효하지 않습니다.");
+            Require(box.is_array() && box.size() == 4, "도면 표시 원점과 크기가 유효하지 않습니다.");
             Number(box.at(0));
             Number(box.at(1));
             Require(Number(box.at(2)) == width && Number(box.at(3)) == height,

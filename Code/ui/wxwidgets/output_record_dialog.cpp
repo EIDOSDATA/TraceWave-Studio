@@ -49,7 +49,7 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
     auto* notice = new wxStaticText(
         this, wxID_ANY,
         Display(
-            "고정 입력의 포함/누락과 실제 검수 범위를 확인하세요. 파일 생성은 제조 또는 RF 합격을 뜻하지 않습니다."));
+            "고정 입력의 포함 및 누락과 실제 검수 범위를 확인하세요. 파일 생성은 제조 또는 RF 합격을 뜻하지 않습니다."));
     notice->Wrap(FromDIP(880));
     layout->Add(notice, 0, wxEXPAND | wxALL, FromDIP(12));
     auto* tabs = new StudioNotebook(this);
@@ -63,7 +63,7 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
     };
     auto* scope = page("포함과 누락");
     auto* scopeTable =
-        Table(scope, scope->GetSizer(), {{"원본 / 역할", 230}, {"출력", 160}, {"상태", 160}, {"사유", 430}});
+        Table(scope, scope->GetSizer(), {{"원본과 역할", 230}, {"출력", 160}, {"상태", 160}, {"사유", 430}});
     for (const auto& item : record.value("inclusions", Json::array()))
     {
         Row(*scopeTable, {OutputUi::Text(item.value("label", item.value("name", Json(nullptr)))),
@@ -76,14 +76,14 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
         Row(*scopeTable,
             {item.is_object() ? OutputUi::Text(item.value("label", item.value("name", Json(nullptr))), "원본 항목")
                               : "원본 항목",
-             "제외 / 의미 보존 범위", "범위 확인", OutputUi::Issues(Json::array({item}))});
+             "제외 항목과 의미 보존 범위", "범위 확인", OutputUi::Issues(Json::array({item}))});
     }
     const auto pcb = record.value("pcb_preview", Json::object());
     for (const auto& layer : pcb.value("layers", Json::array()))
     {
         Row(*scopeTable, {OutputUi::Text(layer.value("name", Json(nullptr)), "층 이름 미정"),
                           OutputUi::Text(layer.value("target_label", Json(nullptr))),
-                          layer.value("selected", false) ? "포함" : "사용 여부 / 제외 확인",
+                          layer.value("selected", false) ? "포함" : "포함 또는 제외 여부",
                           "고정 원본의 층 대응. 일부 층만 누락한 Job은 만들지 않습니다."});
     }
     const auto names = pcb.value("names", Json::object());
@@ -92,8 +92,8 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
         for (const auto& item : pcb.value(collection, Json::array()))
         {
             Row(*scopeTable, {OutputUi::Text(names.value(item.at("id").get<std::string>(), Json(nullptr)), "기계 형상"),
-                              std::string(collection) == "holes" ? "드릴 / 슬롯" : "내부 절삭", "실제 원문 형상",
-                              "완성 치수와 공구 지름 / 도금 미정값은 구분합니다."});
+                              std::string(collection) == "holes" ? "드릴 및 슬롯" : "내부 절삭", "실제 원문 형상",
+                              "완성 치수와 공구 지름을 따로 표시합니다. 도금이 미정이면 그 상태를 표시합니다."});
         }
     }
     const auto summary = record.value("summary", Json::object());
@@ -151,7 +151,7 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
         const auto dot = filename.rfind('.');
         const auto extension = dot == std::string::npos ? "" : filename.substr(dot);
         const std::string meaning = extension == ".pdf" ? "PDF 도면" : extension == ".gbrjob" ? "Gerber Job 목록" :
-            extension == ".gbr" ? "Gerber 층/외곽" : extension == ".drl" ? "드릴 좌표" :
+            extension == ".gbr" ? "Gerber 층과 외곽" : extension == ".drl" ? "드릴 좌표" :
             extension == ".step" ? "STEP 교환" : role == "manifest" ? "원본 파일 명세" : role;
         Row(*files, {filename, meaning,
                      OutputUi::Text(artifact.value("bytes", Json(nullptr)), "생성 전"),
@@ -176,7 +176,7 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
     auto* reader = new wxStaticText(
         verifyPage, wxID_ANY,
         Display(report.is_object() ? "검수 상태: " + OutputUi::State(report.value("status", "not_assessed")) +
-                                         " / 읽기 도구: " + OutputUi::Reader(report.value("reader", Json(nullptr)))
+                                         "\n읽기 도구: " + OutputUi::Reader(report.value("reader", Json(nullptr)))
                                    : "보존된 검수 보고서가 없습니다."));
     verifyPage->GetSizer()->Add(reader, 0, wxEXPAND | wxALL, FromDIP(8));
     auto* checks = Table(verifyPage, verifyPage->GetSizer(),
@@ -186,7 +186,7 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
                           {"오차", 110},
                           {"허용값", 110},
                           {"단위", 90},
-                          {"판정 / 사유", 360}});
+                          {"판정과 사유", 360}});
     if (report.is_object())
     {
         for (const auto& row : report.value("rows", Json::array()))
@@ -197,7 +197,7 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
                  OutputUi::Text(row.value("actual", Json(nullptr))), OutputUi::Text(row.value("error", Json(nullptr))),
                  OutputUi::Text(row.value("tolerance", Json(nullptr))),
                  OutputUi::Text(row.value("unit", Json(nullptr)), ""),
-                 OutputUi::State(row.value("state", row.value("status", "not_assessed"))) + " / " +
+                 OutputUi::State(row.value("state", row.value("status", "not_assessed"))) + ", " +
                      OutputUi::Text(row.value("reason", Json(nullptr)), "")});
         }
         for (const auto& check : report.value("checks", Json::array()))
@@ -207,14 +207,14 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
         }
         for (const auto& body : report.value("bodies", Json::array()))
         {
-            const auto name = OutputUi::Text(body.value("label", Json(nullptr)), "고체 / 이름 미제공");
+            const auto name = OutputUi::Text(body.value("label", Json(nullptr)), "고체 (이름 미제공)");
             for (const auto& key : std::vector<std::pair<std::string, std::string>>{
                      {"bbox_error_mm", "경계"}, {"center_error_mm", "중심"}, {"thickness_error_mm", "두께"}})
             {
                 if (body.contains(key.first))
                 {
                     Row(*checks,
-                        {name + " / " + key.second, "원본 sidecar", "새 reader", OutputUi::Text(body.at(key.first)),
+                        {name + ", " + key.second, "원본 sidecar", "새 reader", OutputUi::Text(body.at(key.first)),
                          OutputUi::Text(report.value("linear_tolerance_mm", Json(nullptr))), "mm",
                          OutputUi::State(report.value("status", "not_assessed"))});
                 }
@@ -226,7 +226,7 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
                 if (body.contains(metric[0]))
                 {
                     Row(*checks,
-                        {name + " / " + metric[2], "원본 sidecar", "새 reader", OutputUi::Text(body.at(metric[0])),
+                        {name + ", " + metric[2], "원본 sidecar", "새 reader", OutputUi::Text(body.at(metric[0])),
                          OutputUi::Text(body.value(metric[1], Json(nullptr))), metric[3],
                          OutputUi::State(report.value("status", "not_assessed"))});
                 }
@@ -239,7 +239,7 @@ OutputRecordDialog::OutputRecordDialog(wxWindow* parent, const Json& record, boo
                 if (body.contains(count.first))
                 {
                     Row(*checks,
-                        {name + " / " + count.second, "원본 sidecar와 대조", OutputUi::Text(body.at(count.first)), "",
+                        {name + ", " + count.second, "원본 sidecar와 대조", OutputUi::Text(body.at(count.first)), "",
                          "동일 수량", "개", OutputUi::State(report.value("status", "not_assessed"))});
                 }
             }

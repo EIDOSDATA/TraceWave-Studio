@@ -183,7 +183,7 @@ std::string ValueLabel(const std::string& key, const Fields& fields)
                : ((rootValue && inputMode == "expression" ? std::string("마지막 적용값")
                                                           : fields.at(key).descriptor->at("label").get<std::string>() +
                                                                 (inputMode == "parameter" ? " (마지막 적용값)" : "")) +
-                  " / 단위");
+                  " 단위");
 }
 
 /** @brief 단위만 변경된 초안의 환산 안내를 실제 변경 상태에서 생성한다. */

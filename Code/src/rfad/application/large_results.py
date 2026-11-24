@@ -249,7 +249,7 @@ def _field(handle, h5py, np, record, parameters=None):
     reference = record["artifact"]
     response = {"profile": result_fields.PROFILE, "warnings": WARNINGS, "physics_validated": False}
     if parameters is None:
-        response.update(status="available", monitors=[{"monitor_id": "external", "label": prefix + " / 외부 원문",
+        response.update(status="available", monitors=[{"monitor_id": "external", "label": prefix + " (외부 원문)",
             "unit": "미정", "frequency_hz": layout["frequency_hz"], "source_ref": reference,
             "components": [{"component": axis, "label": prefix+axis, "shape": layout["shape"],
                             "coordinates_mm": coordinates} for axis in "xyz"]}])

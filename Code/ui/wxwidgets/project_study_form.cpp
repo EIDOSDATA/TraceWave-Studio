@@ -36,16 +36,16 @@ void ProjectStudyDialog::Build()
     auto* root = new wxBoxSizer(wxVERTICAL);
     root->Add(
         new wxStaticText(this, wxID_ANY,
-                         Display("설계의 수식과 출처를 스냅샷에 보존합니다. 물성/제작/측정 미정값은 채우지 않습니다.")),
+                         Display("설계의 수식과 출처를 스냅샷에 보존합니다. 물성, 제작 및 측정의 미정값은 채우지 않습니다.")),
         0, wxALL, 10);
     auto* selection = new wxBoxSizer(wxHORIZONTAL);
     m_choice = new wxChoice(this, wxID_ANY);
     selection->Add(m_choice, 1, wxEXPAND | wxRIGHT, 8);
-    m_refresh = new wxButton(this, wxID_ANY, Display("연구 / 현재 개정 새로 읽기"));
+    m_refresh = new wxButton(this, wxID_ANY, Display("연구와 현재 개정 다시 읽기"));
     selection->Add(m_refresh);
     root->Add(selection, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
     m_pages = new wxNotebook(this, wxID_ANY);
-    for (const auto* title : {"격자 / 해석 조건", "방사 / 독립 손실", "초기 판정 기준"})
+    for (const auto* title : {"격자와 해석 조건", "방사 및 독립 손실", "초기 판정 기준"})
     {
         auto* page = new wxScrolledWindow(m_pages);
         StudioTheme::BindSurface(*page);
@@ -54,13 +54,13 @@ void ProjectStudyDialog::Build()
         auto* fields = new wxFlexGridSizer(2, FromDIP(7), FromDIP(12));
         fields->AddGrowableCol(1);
         const std::string name = title;
-        if (name == "격자 / 해석 조건")
+        if (name == "격자와 해석 조건")
         {
             m_analysisBand = new wxStaticText(page, wxID_ANY, wxEmptyString);
             outer->Add(m_analysisBand, 0, wxLEFT | wxTOP | wxRIGHT, FromDIP(10));
             for (const auto& field : std::vector<std::pair<std::string, std::string>>{
                      {"name", "새 연구 이름"},
-                     {"grids", "격자 수준 (mm, 쉼표 / 감소 순서, 최대 6개)"},
+                     {"grids", "격자 수준 (mm, 큰 값부터 쉼표로 구분, 최대 6개)"},
                      {"adaptive_memory_limit_mib", "적응 격자 메모리 상한 (MiB, 비우면 모든 수준 실행)"},
                      {"start", "시작 주파수 (예: 2.4 GHz)"},
                      {"stop", "끝 주파수 (예: 2483.5 MHz)"},
@@ -76,7 +76,7 @@ void ProjectStudyDialog::Build()
                 AddField(page, fields, field.first, field.second);
             }
         }
-        else if (name == "방사 / 독립 손실")
+        else if (name == "방사 및 독립 손실")
         {
             m_radiation = new wxCheckBox(page, wxID_ANY, Display("원거리 방사 패턴 계산 (NF2FF)"));
             m_losses = new wxCheckBox(page, wxID_ANY, Display("유전체·도체 손실과 전력 수지 계산"));
@@ -121,7 +121,7 @@ void ProjectStudyDialog::Build()
                     {{"max_pattern_delta", "정규화 패턴 최대 변화"},
                      {"max_radiated_relative_delta", "방사 전력 상대 변화"},
                      {"max_directivity_delta_db", "최대 지향성 변화 (dB)"},
-                     {"max_gain_delta_db", "이득 / 실현 이득 변화 (dB)"},
+                     {"max_gain_delta_db", "이득 및 실현 이득 변화 (dB)"},
                      {"max_efficiency_delta", "효율 변화 (0.02 = 2%p)"},
                      {"max_s11_complex_delta", "방사 비교의 복소 S11 최대 변화"}});
             section("수치 검증과 손실",
@@ -158,7 +158,7 @@ void ProjectStudyDialog::Build()
     m_details->SetHint(Display("저장된 연구를 선택하면 사례별 진행 상태와 전력 수지를 표시합니다."));
     resultLayout->Add(m_details, 1, wxEXPAND);
     results->SetSizer(resultLayout);
-    m_pages->AddPage(results, Display("진행 / 전력 수지"));
+    m_pages->AddPage(results, Display("진행 및 전력 수지"));
     root->Add(m_pages, 1, wxEXPAND | wxALL, 10);
     m_status = new wxStaticText(this, wxID_ANY, Display("연구가 선택되지 않았습니다. 조건을 확인하고 새 연구를 저장하세요."));
     root->Add(m_status, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);

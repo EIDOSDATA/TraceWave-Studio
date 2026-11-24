@@ -128,7 +128,7 @@ void ResultWorkspace::ComparePage(ResultCompareView* view, std::size_t index, in
                 response.at("page").at("channel") != Json{{"row", actualRow}, {"column", actualColumn}} ||
                 response.at("page").at("offset") != offset)
             {
-                throw std::runtime_error("비교 곡선의 원본/채널/페이지가 요청과 다릅니다.");
+                throw std::runtime_error("비교 곡선의 원본, 채널 또는 페이지가 요청과 다릅니다.");
             }
             view->SetPage(index, response);
         },
@@ -327,7 +327,7 @@ void ResultWorkspace::Export()
     const auto description = m_description;
     const std::weak_ptr<int> lifetime = m_lifetime;
     wxSingleChoiceDialog dialog(
-        m_network, Display("원본 자료와 조건/출처 파일을 함께 저장합니다. 과거 자료를 현재 설계에 등록하지 않습니다."),
+        m_network, Display("원본 자료와 조건과 출처 파일을 함께 저장합니다. 과거 자료를 현재 설계에 등록하지 않습니다."),
         Display("보존 결과 내보내기"), labels);
     if (dialog.ShowModal() != wxID_OK || lifetime.expired())
     {

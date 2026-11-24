@@ -20,7 +20,7 @@ inline std::optional<Json> EditSolverMaterialBands(wxWindow* owner, const Json& 
     wxArrayString choices;
     for (const auto& m : materials)
     {
-        choices.Add(Display(m.at("name").get<std::string>() + " / " + m.at("id").get<std::string>()));
+        choices.Add(Display(m.at("name").get<std::string>() + ", " + m.at("id").get<std::string>()));
     }
     auto* grid = new wxGrid(&dialog, wxID_ANY);
     grid->SetName("solver.material_bands.grid");
@@ -100,7 +100,7 @@ inline std::optional<Json> EditSolverMaterialBands(wxWindow* owner, const Json& 
                 || low < 1e6 || low >= high || high > 50e9)
             {
                 grid->SetGridCursor(row, target < 0 ? 0 : source < 0 ? 1 : 2);
-                wxMessageBox(Display("두 재료와 1 MHz~50 GHz 안의 시작/끝 주파수를 확인하세요."),
+                wxMessageBox(Display("두 재료와 1 MHz~50 GHz 안의 시작과 끝 주파수를 확인하세요."),
                              dialog.GetTitle(), wxOK | wxICON_INFORMATION, &dialog);
                 return;
             }

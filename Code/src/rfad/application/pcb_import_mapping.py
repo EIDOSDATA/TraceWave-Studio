@@ -726,7 +726,7 @@ def import_sources(parsed):
         layers[source] = item
     def add_net(source, name):
         """! @brief 파일 코드와 이름을 함께 보이고 무명/미연결을 분리한다."""
-        label = name if name else "이름 / 연결 미정"
+        label = name if name else "이름과 연결 미정"
         item = {"source": source, "label": label + (" (코드 " + source + ")" if source.isdigit() else ""), "source_name": name}
         if source in nets and nets[source] != item:
             fail("같은 원본 넷 키의 이름이 파일마다 다릅니다.", "mapping.nets", "E_CONFLICT")

@@ -240,7 +240,7 @@ void SketchConstraintDialog::FillPoints()
         const auto& shape = m_context.at("shapes").at(index);
         for (const auto& point : shape.at("points"))
         {
-            const auto label = shape.at("name").get<std::string>() + " / " + point.at("name").get<std::string>();
+            const auto label = shape.at("name").get<std::string>() + ", " + point.at("name").get<std::string>();
             const int added = m_datum->Append(Display(label));
             m_points.push_back(point);
             if (point.at("ref") == selected)
@@ -447,14 +447,14 @@ void SketchConstraintDialog::Present(const Json& result)
     m_proposals->Clear();
     for (const auto& row : m_rows)
     {
-        const auto caption = State(row.at("state").get<std::string>()) + " / " + row.at("label").get<std::string>();
+        const auto caption = State(row.at("state").get<std::string>()) + ", " + row.at("label").get<std::string>();
         const auto index = m_proposals->Append(Display(caption));
         m_proposals->Check(index, row.at("selected").get<bool>());
     }
     if (result.at("before").is_number_integer())
     {
         m_freedom->SetLabel(Display("자유도 " + result.at("before").dump() + " -> " +
-                                    result.at("after").dump() + " / 변수 " + result.at("variables").dump()));
+                                    result.at("after").dump() + ", 변수 " + result.at("variables").dump()));
     }
     std::string text = "선택한 제안과 기존 관계의 충돌 " + std::to_string(result.at("conflicts").size()) + "개\n";
     for (const auto& row : result.at("conflicts"))
@@ -463,11 +463,11 @@ void SketchConstraintDialog::Present(const Json& result)
     }
     if (result.contains("geometry_changes"))
     {
-        text += "\n반복 " + result.at("iterations").dump() + "회 / 최대 잔차 " +
+        text += "\n반복 " + result.at("iterations").dump() + "회, 최대 잔차 " +
                 result.at("max_residual").dump() + " (mm 또는 rad)\n";
         for (const auto& change : result.at("geometry_changes"))
         {
-            text += change.at("name").get<std::string>() + " / " + change.at("field").get<std::string>() + "  " +
+            text += change.at("name").get<std::string>() + ", " + change.at("field").get<std::string>() + "  " +
                     change.at("before").dump() + " -> " + change.at("after").dump() + " " +
                     change.at("unit").get<std::string>() + "\n";
         }

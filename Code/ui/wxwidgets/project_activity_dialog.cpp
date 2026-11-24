@@ -71,9 +71,9 @@ public:
         auto* layout = new wxBoxSizer(wxVERTICAL);
         auto* filters = new wxFlexGridSizer(2, FromDIP(6), FromDIP(8));
         filters->AddGrowableCol(1, 1);
-        m_revision = AddFilter(filters, "개정 / 스냅샷 ID", "project.activity.revision", "");
+        m_revision = AddFilter(filters, "개정 및 스냅샷 ID", "project.activity.revision", "");
         m_revision->SetToolTip(Display("개정 또는 스냅샷의 전체 ID나 앞부분을 입력하세요."));
-        m_object = AddFilter(filters, "객체 이름 / ID", "project.activity.object", object);
+        m_object = AddFilter(filters, "객체 이름과 ID", "project.activity.object", object);
         filters->Add(new wxStaticText(this, wxID_ANY, Display("기록 종류")), 0, wxALIGN_CENTER_VERTICAL);
         m_category = new wxChoice(this, wxID_ANY);
         m_category->SetName("project.activity.category");
@@ -311,7 +311,7 @@ private:
         {
             if (generation == m_searchGeneration)
             {
-                Status("검색 실패 / " + DiagnosticMessage(error));
+                Status("검색 실패: " + DiagnosticMessage(error));
             }
         });
     }
@@ -354,8 +354,8 @@ private:
         m_previous->Enable(first > 0);
         m_next->Enable(!data.at("next_offset").is_null());
         Status(items.empty() ? "검색 범위에 보존된 기록이 없습니다."
-               : std::to_string(first + 1) + "-" + std::to_string(first + items.size()) + " / "
-                     + std::to_string(data.at("total").get<int>()) + "개");
+               : std::to_string(first + 1) + "-" + std::to_string(first + items.size()) + " (전체 "
+                     + std::to_string(data.at("total").get<int>()) + "개)");
         if (!items.empty())
         {
             Present("목록에서 기록을 선택하세요.");
@@ -405,7 +405,7 @@ private:
     std::string DetailText() const
     {
         const auto& row = m_details.at("row");
-        std::string text = Kind(row.at("kind")) + " / " + row.at("name").get<std::string>() + "\n" +
+        std::string text = Kind(row.at("kind")) + ", " + row.at("name").get<std::string>() + "\n" +
             "기록 ID  " + row.at("id").get<std::string>() + "\n" +
             "당시 개정  " + row.at("revision_id").get<std::string>() + "\n";
         if (row.at("snapshot_id").is_string())

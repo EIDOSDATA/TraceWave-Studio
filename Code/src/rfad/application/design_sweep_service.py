@@ -550,7 +550,7 @@ def read(service, method, params):
         saved = read_json(service, candidate["results"]["assessment"])
         assessments = [assessment_summary(item) for item in saved["assessments"]]
     return bounded({"profile": PROFILE, "study_id": study["study_id"], "index": data["index"],
-        "entry": {"id": str(data["index"]), "name": study["name"] + " / 후보 " + str(data["index"] + 1),
+        "entry": {"id": str(data["index"]), "name": study["name"] + ", 후보 " + str(data["index"] + 1),
                   "dataset": candidate["results"]["dataset"], "kind": "sweep_candidate"},
         "descriptor": descriptor(result), "page": samples(result, data["offset"], data["limit"], data["row"], data["column"]),
         "assessments": assessments, "snapshot": definition["snapshot"], "candidate": _display_candidate(candidate, labels)})

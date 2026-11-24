@@ -71,10 +71,10 @@ std::optional<Json> RankingOptions(wxWindow* parent, const wxString& workspace, 
         layout->Add(sampleButton, 0, wxLEFT | wxRIGHT, gap);
         tolerance = new wxCheckBox(&dialog, wxID_ANY, Display("최소·공칭·최대 입력의 공차 모서리 비교"));
         tolerance->SetName("sweep.ranking.tolerance");
-        tolerance->SetToolTip(Display("저장한 카테시안 연구에서 공칭점과 각 축 최소/최대의 조합을 비교합니다."));
+        tolerance->SetToolTip(Display("저장한 카테시안 연구에서 공칭점과 각 축 최소와 최대의 조합을 비교합니다."));
         layout->Add(tolerance, 0, wxEXPAND | wxALL, gap);
         auto* probabilityLabel = new wxStaticText(
-            &dialog, wxID_ANY, Display("이산 분포 가중치 (선택)  /  최소, 공칭, 최대 순서"));
+            &dialog, wxID_ANY, Display("이산 분포 가중치 (선택, 최소·공칭·최대 순서)"));
         layout->Add(probabilityLabel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
         auto* probabilities = new wxFlexGridSizer(4, gap / 2, gap);
         probabilities->AddGrowableCol(0, 1);
@@ -90,7 +90,7 @@ std::optional<Json> RankingOptions(wxWindow* parent, const wxString& workspace, 
                 auto* input = new wxTextCtrl(&dialog, wxID_ANY, wxEmptyString, wxDefaultPosition,
                                              dialog.FromDIP(wxSize(66, -1)));
                 input->SetHint(Display(tip));
-                input->SetToolTip(name + " / " + Display(tip));
+                input->SetToolTip(name + ", " + Display(tip));
                 input->SetMaxLength(24);
                 probabilities->Add(input, 0, wxEXPAND);
                 distributions.push_back(input);
@@ -101,7 +101,7 @@ std::optional<Json> RankingOptions(wxWindow* parent, const wxString& workspace, 
     if (axes.size() >= 2)
     {
         auto* label = new wxStaticText(&dialog, wxID_ANY,
-            Display("후보 조합 가중치 (선택) / 축별 가중치와 함께 입력하지 않음"));
+            Display("후보 조합 가중치 (축별 가중치와 함께 입력할 수 없음)"));
         layout->Add(label, 0, wxEXPAND | wxLEFT | wxRIGHT, gap);
         jointWeights = new wxTextCtrl(&dialog, wxID_ANY);
         jointWeights->SetName("sweep.ranking.joint_weights");
@@ -291,7 +291,7 @@ void StudioFrame::BuildSweepInterface()
         OpenSweepSelection(index);
     };
     auto* prepare = m_views->GetPage(3);
-    auto* button = new wxButton(prepare, wxID_ANY, Display("설계 스윕 / 다축 연구"));
+    auto* button = new wxButton(prepare, wxID_ANY, Display("다축 설계 스윕"));
     StudioTheme::Button(*button);
     prepare->GetSizer()->Add(button, 0, wxALL, FromDIP(12));
     button->Bind(wxEVT_BUTTON,
@@ -331,7 +331,7 @@ void StudioFrame::UpdateSweepViews()
     }
     else if (active && !m_sweepSupported)
     {
-        m_sweepPanel->SetStatus("현재 서비스는 설계 스윕을 제공하지 않습니다. 저장/편집 기능은 유지됩니다.");
+        m_sweepPanel->SetStatus("현재 서비스는 설계 스윕을 제공하지 않습니다. 저장과 편집 기능은 유지됩니다.");
     }
 }
 
@@ -433,7 +433,7 @@ void StudioFrame::LoadSweep(const std::string& id, int offset)
             }
             m_sweepPanel->SetStudy(result);
             ShowWorkspaceJob(2, result.at("state"),
-                             result.at("name").get<std::string>() + " / " + result.value("message", ""));
+                             result.at("name").get<std::string>() + ", " + result.value("message", ""));
             Send(
                 "sweep.page", {{"study_id", id}, {"offset", offset}, {"limit", 25}}, false, Context(),
                 [this, project, generation, id](const Json& page)
@@ -509,7 +509,7 @@ void StudioFrame::SweepCommand(const std::string& action)
                  const auto ranked = result.at("ranked").get<int>();
                  const auto total = result.at("total").get<int>();
                  const auto counts = result.at("excluded");
-                 const auto summary = wxString::Format(Display("순위 %d / %d개. 미완료 %d, 목표 없음 %d, 평가 없음 %d, 표본 미확인 %d."),
+                 const auto summary = wxString::Format(Display("순위 %d위 (전체 %d개). 미완료 %d, 목표 없음 %d, 평가 없음 %d, 표본 미확인 %d."),
                      ranked, total, counts.value("not_completed", 0), counts.value("no_targets", 0),
                      counts.value("unavailable_assessment", 0), counts.value("incomplete_targets", 0));
                  m_sweepPanel->SetStatus(summary.ToStdString(wxConvUTF8));
@@ -532,7 +532,7 @@ void StudioFrame::SweepCommand(const std::string& action)
                      const bool canSuggest = next.value("status", std::string()) == "proposed";
                      if (canSuggest)
                      {
-                         labels.Add(wxString::Format(Display("다음 후보 검토 / %s %s / 후보 %d와 %d 사이"),
+                         labels.Add(wxString::Format(Display("다음 후보 검토: %s %s, 후보 %d와 %d 사이"),
                              Display(next.at("text")), Display(next.at("unit")),
                              next.at("basis_ordinal").get<int>() + 1, next.at("neighbor_ordinal").get<int>() + 1));
                      }
@@ -542,23 +542,23 @@ void StudioFrame::SweepCommand(const std::string& action)
                      }
                      for (const auto& row : rows)
                      {
-                         auto label = wxString::Format(Display("%d그룹 / 후보 %d"),
+                         auto label = wxString::Format(Display("그룹 %d, 후보 %d"),
                              row.at("front").get<int>(), row.at("ordinal").get<int>() + 1);
                          if (!tolerance.empty())
                          {
                              const auto ordinal = row.at("ordinal").get<int>();
                              if (ordinal == tolerance.at("nominal_ordinal"))
                              {
-                                 label += Display(" / 공칭");
+                                 label += Display(", 공칭");
                              }
                              else if (std::find(corners.begin(), corners.end(), ordinal) != corners.end())
                              {
-                                 label += Display(" / 모서리");
+                                 label += Display(", 모서리");
                              }
                          }
                          if (row.contains("weighted_score"))
                          {
-                             label += wxString::Format(Display(" / 가중 점수 %.2f%%"),
+                             label += wxString::Format(Display(", 가중 점수 %.2f%%"),
                                  row.at("weighted_score").get<double>() * 100);
                          }
                          const auto& scores = row.at("target_scores");
@@ -604,10 +604,10 @@ void StudioFrame::SweepCommand(const std::string& action)
                              const auto& sample = tolerance.at("process_samples");
                              const auto& model = sample.at("model_counts");
                              const auto& observed = sample.at("observed_counts");
-                             explanation += wxString::Format(Display("\n공정 표본 %d개 / %s / 계산점 밖 %d개"),
+                             explanation += wxString::Format(Display("\n공정 표본 %d개 (%s), 계산점 밖 %d개"),
                                  sample.at("sample_count").get<int>(), Display(sample.at("source").get<std::string>()),
                                  sample.at("outside_sampled_grid").get<int>());
-                             explanation += wxString::Format(Display("\n모델 통과 %d, 실패 %d, 미확인 %d / 실제 검사 통과 %d, 실패 %d, 미확인 %d"),
+                             explanation += wxString::Format(Display("\n모델: 통과 %d, 실패 %d, 미확인 %d\n실제 검사: 통과 %d, 실패 %d, 미확인 %d"),
                                  model.at("pass").get<int>(), model.at("fail").get<int>(), model.at("unknown").get<int>(),
                                  observed.at("pass").get<int>(), observed.at("fail").get<int>(), observed.at("unknown").get<int>());
                              const auto& interval = sample.at("observed_wilson_95");
@@ -624,7 +624,7 @@ void StudioFrame::SweepCommand(const std::string& action)
                              const auto source = probability.value("source_label", std::string());
                              if (!source.empty())
                              {
-                                 explanation += Display("\n후보 조합 가중치 / ") + Display(source).Left(72);
+                                 explanation += Display("\n후보 조합 가중치: ") + Display(source).Left(72);
                              }
                              explanation += wxString::Format(Display("\n가정한 이산 분포의 전체 목표 통과 %.2f~%.2f%% | 미확인 %.2f%%"),
                                  limits.at(0).get<double>() * 100, limits.at(1).get<double>() * 100,
@@ -655,7 +655,7 @@ void StudioFrame::SweepCommand(const std::string& action)
                              else
                              {
                                  const auto key = first.at("kind").get<std::string>() + ":" + first.at("id").get<std::string>();
-                                 explanation += wxString::Format(Display("\n%.8g Hz S11 변화 최대 / %s %.3g dB"),
+                                 explanation += wxString::Format(Display("\n%.8g Hz에서 최대 S11 변화: %s %.3g dB"),
                                      response.at("frequency_hz").get<double>(),
                                      Display(axisLabels.value(key, std::string("연구 변수"))).Left(28),
                                      first.at("maximum_abs_delta_db").get<double>());
@@ -673,7 +673,7 @@ void StudioFrame::SweepCommand(const std::string& action)
                                          return Display(axisLabels.value(key, std::string("연구 변수"))).Left(21);
                                      };
                                      const auto& axes = interaction.at("axes");
-                                     explanation += wxString::Format(Display("\n두 변수 교호 효과 / %s + %s / %.3g dB"),
+                                     explanation += wxString::Format(Display("\n두 변수 교호 효과 (%s + %s): %.3g dB"),
                                          label(axes.at(0)), label(axes.at(1)), interaction.at("maximum_abs_db").get<double>());
                                  }
                                  const auto incomplete = std::count_if(pairs.begin(), pairs.end(), [](const Json& pair)
@@ -752,12 +752,12 @@ void StudioFrame::SweepCommand(const std::string& action)
                      {"candidate_count", "후보 수"}, {"solver_runtime", "솔버 환경"},
                      {"calculation_engine", "계산 엔진"}, {"review_hash", "검토 해시"}}};
                  std::string text = result.at("matches").get<bool>() ? "보존 연구와 입력 검토 일치" : "보존 연구와 입력 검토에 차이가 있습니다.";
-                 text += " / 후보 " + result.at("counts").at("total").dump() + "개";
+                 text += ", 후보 " + result.at("counts").at("total").dump() + "개";
                  for (const auto& [key, label] : checks)
                  {
                      if (!result.at("checks").at(key).get<bool>())
                      {
-                         text += " / " + std::string(label) + " 다름";
+                         text += ", " + std::string(label) + " 다름";
                      }
                  }
                  text += "\n보존 개정 " + result.at("revision_id").get<std::string>();
@@ -867,7 +867,7 @@ void StudioFrame::SweepCommand(const std::string& action)
             m_sweepUncertain = code != "E_SCHEMA" && code != "E_CONFLICT" && code != "E_RESOURCE" &&
                                code != "E_VERSION" && code != "E_UNSUPPORTED";
             m_sweepPanel->SetStatus(
-                (m_sweepUncertain ? "적용 결과가 미확정입니다. 다시 실행하지 말고 목록 / 현재 상태를 새로 읽으세요.\n"
+                (m_sweepUncertain ? "적용 결과가 미확정입니다. 다시 실행하기 전에 목록과 현재 상태를 새로 읽어 확인하세요.\n"
                                   : "") +
                 DiagnosticMessage(error));
             UpdateControls();

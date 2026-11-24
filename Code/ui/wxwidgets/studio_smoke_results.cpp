@@ -448,7 +448,7 @@ void StudioSmokeDriver::ResultsSmokeTick()
         workspace.m_compare->m_sources->SetItemState(1, 0, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
         workspace.m_compare->m_sources->SetItemState(0, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
                                                      wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
-        CanvasAssert(workspace.m_conditions->m_heading->GetLabel() == Display("결과 조건 / 원본 보존") &&
+        CanvasAssert(workspace.m_conditions->m_heading->GetLabel() == Display("결과 조건과 보존 원본") &&
                          workspace.m_conditions->m_summary->GetValue().Contains(
                              Display(m_resultsFirst.at("label").get<std::string>())),
                      "기준 원본을 선택한 뒤 이전 비교 조건이 남았습니다.");

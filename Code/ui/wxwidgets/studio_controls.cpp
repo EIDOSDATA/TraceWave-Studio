@@ -208,7 +208,7 @@ void StudioFrame::UpdateControls()
     {
         m_canvasHint->SetLabel(Display(m_activeLayer.empty()
                                            ? "도체층을 추가한 뒤 선 또는 원호 도구를 선택하세요."
-                                           : "선택: 객체 속성 / 휠: 확대·축소 / 가운데 버튼: 이동 / Esc: 취소"));
+                                           : "객체 선택, 휠로 확대·축소, 가운데 버튼으로 이동, Esc로 취소"));
     }
     if (m_solverRepairBack->IsShown() != m_solverRepairPending)
     {
@@ -258,7 +258,7 @@ void StudioFrame::UpdateDraftState()
             m_editState = loading ? "loading" : "stale";
             SetTitle(Display(loading ? "TraceWave Studio - 프로젝트 불러오는 중"
                                      : "TraceWave Studio - 편집 상태 재조회 필요"));
-            m_revisionLabel->SetLabel(Display(loading ? "프로젝트 불러오는 중" : "편집 잠금 / F5로 다시 읽기"));
+            m_revisionLabel->SetLabel(Display(loading ? "프로젝트 불러오는 중" : "편집 잠금. F5로 다시 읽기"));
             m_revisionLabel->SetToolTip(
                 Display("현재 프로젝트와 같은 개정의 속성/2D 조회가 모두 완료되어야 편집할 수 있습니다."));
             SetStatusText(Display(loading ? "불러오는 중" : "표시 동기화 필요"), 1);

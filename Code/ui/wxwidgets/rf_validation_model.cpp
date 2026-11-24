@@ -13,16 +13,16 @@ namespace RfValidationUi
 std::string State(const Json& value)
 {
     static const std::map<std::string, std::string> names{{"plan", "계획 저장됨"},
-                                                          {"observed", "관측값 / 합격 한계 없음"},
+                                                          {"observed", "관측값 (합격 한계 없음)"},
                                                           {"identical", "원시 결과 재처리 일치"},
-                                                          {"requires_review", "기준 초과 / 검토 필요"},
+                                                          {"requires_review", "기준 초과 (검토 필요)"},
                                                           {"failed", "실패"},
                                                           {"cancelled", "취소됨"},
-                                                          {"partial_evidence", "부분 근거 / 전체 검증 미확립"},
+                                                          {"partial_evidence", "부분 근거 (전체 검증 미확립)"},
                                                           {"recorded", "기록 있음"},
                                                           {"not_started", "미실행"},
                                                           {"cancel_requested", "취소 요청됨"},
-                                                          {"observed_not_established", "변화 관측 / 미확립"},
+                                                          {"observed_not_established", "변화 관측 (검증 미확립)"},
                                                           {"within_preliminary_reference", "초기 참조 범위 이내"},
                                                           {"planned", "계획 저장됨"},
                                                           {"created", "계획 저장됨"},
@@ -109,7 +109,7 @@ std::string Notes(const Json& value)
 {
     if (value.is_null() || (value.is_array() && value.empty()))
     {
-        return "미정 / 기록 없음";
+        return "미정 (기록 없음)";
     }
     if (!value.is_array())
     {
@@ -166,7 +166,7 @@ std::string Resources(const Json& value)
                                      : ResultUi::Text(quantity);
         text += "\n";
     }
-    return text.empty() ? "기록 있음 / 고급 상세 확인" : text;
+    return text.empty() ? "기록 있음 (고급 상세에서 확인)" : text;
 }
 
 /** @brief 사전에 저장된 기준만 표시하고 새 합격 한계나 백분율을 계산하지 않는다. */
@@ -254,7 +254,7 @@ std::vector<std::vector<std::string>> Metrics(const Json& record)
              ResultUi::Number(item.value("error", Json(nullptr))),
              ResultUi::Number(item.value("tolerance", Json(nullptr))),
              item.value("unit", Json(nullptr)) == "ratio"     ? "1 (비율)"
-             : item.value("unit", Json(nullptr)) == "boolean" ? "0 / 1"
+             : item.value("unit", Json(nullptr)) == "boolean" ? "0 또는 1"
                                                               : ResultUi::Text(item.value("unit", Json(nullptr))),
              State(item.value("state", Json(nullptr))), Reason(item.value("reason", Json(nullptr)))});
     }

@@ -83,7 +83,7 @@ Json OutputPendingStore::Read(const std::string& workspace, const std::string& p
     if (data.value("schema", "") != "tracewave.gui-output-request/0.1" || data.at("project_id") != project ||
         Identity(data.at("workspace")) != Identity(workspace))
     {
-        throw std::runtime_error("출력 요청 복구의 작업 영역/프로젝트가 다릅니다.");
+        throw std::runtime_error("출력 요청 복구의 작업 영역 또는 프로젝트가 다릅니다.");
     }
     Validate(data.at("request"));
     return data.at("request");

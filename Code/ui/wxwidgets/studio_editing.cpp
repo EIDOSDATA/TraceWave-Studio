@@ -114,7 +114,7 @@ void StudioFrame::RefreshScene(std::function<void()> completed)
             m_canvasHint->SetLabel(
                 Display(m_activeLayer.empty()
                             ? "도체층을 추가한 뒤 선 또는 원호 도구를 선택하세요."
-                            : "선 또는 원호 도구를 선택하세요. 휠: 확대/축소, 가운데 버튼: 이동, Esc: 취소"));
+                            : "선 또는 원호 도구를 선택하세요. 휠: 확대·축소, 가운데 버튼: 이동, Esc: 취소"));
         }
         for (const auto& omission : m_scene.at("omissions"))
         {

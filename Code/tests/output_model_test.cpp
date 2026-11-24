@@ -50,7 +50,7 @@ int main()
         const auto preservedCam = camVerification;
         const auto displayedCam = OutputUi::RecordForDisplay(camVerification);
         Check(displayedCam.at("format") == "gerber_job" &&
-                  OutputUi::Purpose(displayedCam) == "Gerber / 드릴 / Job 패키지" &&
+                  OutputUi::Purpose(displayedCam) == "Gerber, 드릴 및 Job 패키지" &&
                   OutputUi::Reader(displayedCam.at("report").at("reader")) == "bounded Gerber/XNC/Job parsers" &&
                   displayedCam.at("report").at("kernel_independent") == false && camVerification == preservedCam,
               "CAM verification displayed a drawing or lost the actual reader / source");

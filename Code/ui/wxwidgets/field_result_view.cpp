@@ -39,7 +39,7 @@ FieldResultView::FieldResultView(wxWindow* parent) : wxPanel(parent)
     StudioTheme::BindSurface(*this);
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* titleRow = new wxBoxSizer(wxHORIZONTAL);
-    auto* title = Label(this, "기록 필드 / 실제 단면");
+    auto* title = Label(this, "기록된 필드 단면");
     StudioTheme::Title(*title);
     titleRow->Add(title, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(12));
     m_configure = new wxButton(this, wxID_ANY, Display("새 해석의 필드 기록 설정"));
@@ -114,8 +114,8 @@ FieldResultView::FieldResultView(wxWindow* parent) : wxPanel(parent)
         line->Add(count, 1);
         fields->Add(line, 0, wxEXPAND);
     };
-    range("가로: 시작 / 개수", m_uLabel, m_uStart, m_uCount);
-    range("세로: 시작 / 개수", m_vLabel, m_vStart, m_vCount);
+    range("가로 시작 위치와 개수", m_uLabel, m_uStart, m_uCount);
+    range("세로 시작 위치와 개수", m_vLabel, m_vStart, m_vCount);
     fields->Add(Label(m_controls, "표시 격자 간격 (stride)"), 0, wxTOP | wxBOTTOM, FromDIP(6));
     m_stride = new wxSpinCtrl(m_controls, wxID_ANY);
     m_stride->SetRange(1, 4096);
@@ -127,7 +127,7 @@ FieldResultView::FieldResultView(wxWindow* parent) : wxPanel(parent)
     fields->Add(m_notice, 0, wxEXPAND);
     m_fluxPanel = new wxPanel(m_controls);
     auto* fluxLayout = new wxBoxSizer(wxVERTICAL);
-    fluxLayout->Add(Label(m_fluxPanel, "통과 전력 / 적분 면"), 0, wxBOTTOM, FromDIP(4));
+    fluxLayout->Add(Label(m_fluxPanel, "전력을 적분할 면"), 0, wxBOTTOM, FromDIP(4));
     m_fluxFace = new wxChoice(m_fluxPanel, wxID_ANY);
     m_fluxFace->SetName(Display("적분 면의 바깥쪽 방향"));
     for (const auto* face : {"+X", "-X", "+Y", "-Y", "+Z", "-Z", "직육면체 6면 (바깥쪽)"})
@@ -139,7 +139,7 @@ FieldResultView::FieldResultView(wxWindow* parent) : wxPanel(parent)
     for (std::size_t i = 0; i < m_fluxBounds.size(); ++i)
     {
         const std::string axis(1, "XYZ"[i]);
-        fluxLayout->Add(Label(m_fluxPanel, axis + " 시작 / 끝 (mm)"), 0, wxTOP, FromDIP(4));
+        fluxLayout->Add(Label(m_fluxPanel, axis + " 시작과 끝 (mm)"), 0, wxTOP, FromDIP(4));
         auto* pair = new wxBoxSizer(wxHORIZONTAL);
         for (std::size_t end = 0; end < 2; ++end)
         {
@@ -330,8 +330,8 @@ void FieldResultView::SetDescription(const Json& description)
         if (description.contains("drive_reference"))
         {
             const auto& drive = description.at("drive_reference");
-            notice += "\n\n급전 P" + std::to_string(drive.at("port_number").get<int>()) + " / " +
-                drive.at("reference_impedance_ohm").dump() + " ohm / 기준면 " + drive.at("reference_plane").get<std::string>();
+            notice += "\n\n급전 P" + std::to_string(drive.at("port_number").get<int>()) + ", " +
+                drive.at("reference_impedance_ohm").dump() + " ohm, 기준면 " + drive.at("reference_plane").get<std::string>();
         }
         if (description.contains("warnings") && description.at("warnings").is_array())
         {
@@ -453,8 +453,8 @@ void FieldResultView::RebuildPlane()
         m_vCount->SetRange(1, vSize);
         m_vCount->SetValue(std::min(32, vSize));
         m_stride->SetValue(1);
-        m_uLabel->SetLabel(Display(m_uAxis + ": 시작 / 원본 개수"));
-        m_vLabel->SetLabel(Display(m_vAxis + ": 시작 / 원본 개수"));
+        m_uLabel->SetLabel(Display(m_uAxis + " 시작 위치와 원본 개수"));
+        m_vLabel->SetLabel(Display(m_vAxis + " 시작 위치와 원본 개수"));
         UpdatePosition();
     }
     catch (const Json::exception&)
@@ -564,7 +564,7 @@ void FieldResultView::SetSlice(const Json& slice)
         m_marker->Show();
         m_point->Enable(true);
         ShowMarker(0);
-        SetStatus("기록한 " + std::to_string(rows * columns) + "개 성분 표본. 색 범위는 현재 반환 단면의 크기이며 공간/주파수 보간은 없습니다.");
+        SetStatus("기록한 " + std::to_string(rows * columns) + "개 성분 표본. 색 범위는 현재 반환 단면의 크기이며 공간 및 주파수 보간은 없습니다.");
     }
     catch (const Json::exception&)
     {
@@ -600,7 +600,7 @@ void FieldResultView::ShowMarker(std::size_t index)
         text += "크기 " + ResultUi::Number(m_slice.at("magnitude")[row][column]) + " " + unit;
         text += " | 위상 " + ResultUi::Number(m_slice.at("phase_deg")[row][column]) + " deg";
         text += " | " + ResultUi::State(m_slice.at("state")[row][column]);
-        text += "\n펄스 Fourier 원문. 원문 시간 위치 유지 / 시간·위상 보정 미적용.";
+        text += "\n펄스 Fourier 원문입니다. 원문 시간 위치를 사용하며 시간·위상 보정은 적용하지 않았습니다.";
         m_marker->ChangeValue(Display(text));
     }
     catch (const Json::exception&)
@@ -792,7 +792,7 @@ void FieldResultView::SetFlux(const Json& response)
     const auto& surface = response.at("surface");
     if (surface.at("kind") == "mesh")
     {
-        text += "\n삼각형 " + surface.at("triangles").dump() + "개 / 면적 " +
+        text += "\n삼각형 " + surface.at("triangles").dump() + "개, 면적 " +
             surface.at("area_m2").dump() + " m^2\n" +
             (surface.at("indexed_edges_closed").get<bool>() ? "모서리 연결이 닫힌 곡면" : "경계가 있는 곡면");
     }

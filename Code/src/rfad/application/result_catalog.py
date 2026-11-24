@@ -48,7 +48,7 @@ def revisions(service, context, data):
         metadata = document["metadata"]
         rows.append({"revision_id": document["revision_id"], "snapshot_id": anchor["snapshot_id"],
             "revision_hash": canonical_hash(document), "name": metadata["name"],
-            "revision_label": metadata["name"] + " / 보존 개정 " + str(index + 1),
+            "revision_label": metadata["name"] + " (보존 개정 " + str(index + 1) + ")",
             "description": metadata["description"] if snapshot is None else snapshot["description"],
             "modified_at": metadata["modified_at"], "sealed_at": None if snapshot is None else snapshot["sealed_at"],
             "is_current": document["revision_id"] == current["revision_id"], "has_network_library": bool(library(document)["datasets"])})
@@ -101,7 +101,7 @@ def sources(service, context, data):
         if study is None or study["project_id"] != context["project_id"]:
             fail("현재 프로젝트의 연구를 찾을 수 없습니다.", "E_CONFLICT")
         anchors = [{"source": {"kind": kind, "study_id": study["study_id"], "index": index},
-                    "label": study["name"] + " / 후보 " + str(index + 1), "source_kind": "sweep",
+                    "label": study["name"] + ", 후보 " + str(index + 1), "source_kind": "sweep",
                     "source_revision_id": study["snapshot"]["revision_id"], "source_time": None,
                     "reference": study["records"].get(str(index))} for index in range(study["counts"]["total"])]
     elif kind != "network":

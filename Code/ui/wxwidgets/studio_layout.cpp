@@ -80,12 +80,12 @@ void StudioFrame::BuildInterface()
     auto* menu = new wxMenu;
     menu->Append(IdCreate, Display("새 프로젝트(&N)\tCtrl+N"));
     menu->Append(IdOpen, Display("프로젝트 열기(&O)\tCtrl+O"));
-    addEvidence(*menu, "저장본 / 복구 후보 검토...", 3);
+    addEvidence(*menu, "저장본과 복구 후보 검토...", 3);
     menu->Append(IdArchiveRestore, Display("프로젝트 보존 묶음 복원..."));
     menu->AppendSeparator();
     menu->Append(IdSave, Display("저장(&S)\tCtrl+S"));
     menu->Append(IdSnapshot, Display("스냅샷 만들기"));
-    menu->Append(IdExportStep, Display("STEP 출력 / 3D 갱신"));
+    menu->Append(IdExportStep, Display("STEP 출력 및 3D 갱신"));
     menu->Append(IdRefresh, Display("저장된 상태 다시 읽기\tF5"));
     menu->AppendSeparator();
     menu->Append(wxID_EXIT, Display("종료"));
@@ -104,23 +104,23 @@ void StudioFrame::BuildInterface()
     bar->Append(menu, Display("파일(&F)"));
     bar->Append(edit, Display("편집"));
     auto* design = new wxMenu;
-    design->Append(IdTargets, Display("목표 / 대역 설정"));
-    design->Append(IdTemplates, Display("문헌 / 형상 / 초기 후보"));
-    design->Append(IdDesignRules, Display("목표 제약 / 연결 / 기본 DRC"));
+    design->Append(IdTargets, Display("목표와 대역 설정"));
+    design->Append(IdTemplates, Display("문헌 기반 초기 형상"));
+    design->Append(IdDesignRules, Display("설계 제약, 연결 및 DRC"));
     design->AppendSeparator();
     design->Append(IdBoard, Display("직사각 기판 만들기"));
     design->Append(IdCircularBoard, Display("원형 기판 만들기"));
-    design->Append(IdPcbSelection, Display("기판 설정 / 제조업체 자료"));
-    design->Append(IdPhysicalSetup, Display("PCB / 적층과 외부 환경"));
-    design->Append(IdPcbFeatures, Display("PCB 형상 / 풋프린트 / 제조 입력"));
-    design->Append(IdPcbImport, Display("PCB / CAM 원문 가져오기"));
+    design->Append(IdPcbSelection, Display("기판과 제조업체 자료"));
+    design->Append(IdPhysicalSetup, Display("PCB 적층과 외부 환경"));
+    design->Append(IdPcbFeatures, Display("PCB 형상, 풋프린트 및 제조 입력"));
+    design->Append(IdPcbImport, Display("PCB 및 CAM 원문 가져오기"));
     design->Append(IdNewMaterial, Display("재료 추가"));
     design->Append(IdNewNet, Display("네트 추가"));
     design->Append(IdNewPort, Display("급전 포트 추가"));
     design->Append(IdLayer, Display("도체층 추가"));
     design->Append(IdDielectric, Display("유전체층 추가"));
     design->AppendSeparator();
-    design->Append(IdCoordinates, Display("좌표로 선 / 원호 추가"));
+    design->Append(IdCoordinates, Display("좌표로 선 또는 원호 추가"));
     design->Append(IdPolygon, Display("다각형 도체 면 추가"));
     design->Append(IdCirclePad, Display("원형 패드 추가"));
     design->Append(IdRectanglePad, Display("직사각 패드 추가"));
@@ -133,7 +133,7 @@ void StudioFrame::BuildInterface()
     analysis->Append(IdReuseSolverConditions, Display("결과 조건 다시 사용"));
     analysis->Append(IdCancelSolver, Display("해석 작업 취소"));
     analysis->Append(IdRadiation, Display("방사 패턴 조회"));
-    analysis->Append(IdProjectStudy, Display("프로젝트 연구 / 격자·방사·손실"));
+    analysis->Append(IdProjectStudy, Display("프로젝트 연구 (격자, 방사, 손실)"));
     Bind(
         wxEVT_MENU,
         [this](wxCommandEvent&)
@@ -151,14 +151,14 @@ void StudioFrame::BuildInterface()
         },
         studyReportId);
     const int largeResultsId = wxWindow::NewControlId();
-    analysis->Append(largeResultsId, Display("대용량 결과 / 등록과 비교"));
+    analysis->Append(largeResultsId, Display("대용량 결과 등록 및 비교"));
     Bind(wxEVT_MENU, [this](wxCommandEvent&) { ShowLargeResultLibrary(); }, largeResultsId);
-    analysis->Append(IdSweep, Display("설계 스윕 / 다축 연구"));
+    analysis->Append(IdSweep, Display("다축 설계 스윕"));
     Bind(wxEVT_MENU, [this](wxCommandEvent&) { m_views->SetSelection(8); }, IdSweep);
     bar->Append(analysis, Display("해석"));
     auto* view = new wxMenu;
     addEvidence(*view, "출처와 채택 이력...", 0);
-    view->Append(IdResetLayout, Display("기본 패널 배치 복원"), Display("패널 이동: F6 / 이전 패널: Shift+F6"));
+    view->Append(IdResetLayout, Display("기본 패널 배치 복원"), Display("F6으로 다음 패널, Shift+F6으로 이전 패널"));
     view->Append(IdFit, Display("전체 형상 맞춤"));
     view->Append(IdBuild3D, Display("현재 설계로 3D 갱신"));
     view->Append(IdOutputFolder, Display("STEP 출력 폴더 열기"));
@@ -168,16 +168,16 @@ void StudioFrame::BuildInterface()
     view->Append(preferences, Display("환경설정..."));
     Bind(wxEVT_MENU, [this](wxCommandEvent&) { ShowDisplayPreferences(); }, preferences);
     const int environmentHelp = wxWindow::NewControlId();
-    view->Append(environmentHelp, Display("실행 환경 / 진단..."));
+    view->Append(environmentHelp, Display("실행 환경 및 진단..."));
     Bind(wxEVT_MENU, [this](wxCommandEvent&) { ShowEnvironment(); }, environmentHelp);
     bar->Append(view, Display("보기"));
     SetMenuBar(bar);
     CreateStatusBar(3);
     const int statusWidths[] = {-2, -1, FromDIP(123)};
     SetStatusWidths(3, statusWidths);
-    SetStatusText(Display("mm / 스냅 끔"), 2);
+    SetStatusText(Display("mm, 스냅 끔"), 2);
     SetStatusText(Display("서비스 연결 중"), 0);
-    SetStatusText(Display("Windows wxWidgets / 개발용"), 1);
+    SetStatusText(Display("Windows 개발 빌드 (wxWidgets)"), 1);
     SetMinSize(FromDIP(wxSize(980, 680)));
     const wxRect workArea = wxGetClientDisplayRect();
     const wxSize preferred = FromDIP(wxSize(1660, 960));
@@ -227,10 +227,10 @@ void StudioFrame::BuildInterface()
                                                                         {IdUndo, "실행 취소"},
                                                                         {IdRedo, "다시 실행"},
                                                                         {IdExportStep, "STEP 출력"},
-                                                                        {IdTargets, "목표 / 대역 설정"},
-                                                                        {IdTemplates, "문헌 / 형상 / 초기 후보"},
-                                                                        {IdPcbSelection, "기판 설정 / 자료 선택"},
-                                                                        {IdPhysicalSetup, "적층 / 외부 환경"},
+                                                                        {IdTargets, "목표와 대역 설정"},
+                                                                        {IdTemplates, "문헌 기반 초기 형상"},
+                                                                        {IdPcbSelection, "기판 자료 선택"},
+                                                                        {IdPhysicalSetup, "적층과 외부 환경"},
                                                                         {IdBoard, "사각 기판"},
                                                                         {IdCircularBoard, "원형 기판"},
                                                                         {IdLayer, "도체층"},
@@ -420,14 +420,14 @@ void StudioFrame::BuildInterface()
     m_modelView = new ModelView(modelPanel);
     m_modelView->EnableSections();
     modelSizer->Add(m_modelView, 1, wxEXPAND);
-    m_modelHint = new wxStaticText(modelPanel, wxID_ANY, Display("표시용 형상 / 실제 두께 / 제조 및 RF 검증 전"));
+    m_modelHint = new wxStaticText(modelPanel, wxID_ANY, Display("실제 두께로 표시하는 형상 (제조 및 RF 검증 전)"));
     StudioTheme::BindSecondary(*m_modelHint);
     modelSizer->Add(m_modelHint, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::InputGap));
     modelPanel->SetSizer(modelSizer);
     m_views->AddPage(modelPanel, Display("3D 형상"));
     BuildSolverInterface();
     m_manager->AddPane(m_views,
-                       wxAuiPaneInfo().Name("canvas").Caption(Display("설계 / mm")).CenterPane().PaneBorder(false));
+                       wxAuiPaneInfo().Name("canvas").Caption(Display("설계 (mm)")).CenterPane().PaneBorder(false));
 
     auto* propertiesHost = new wxPanel(this);
     StudioTheme::BindSurface(*propertiesHost);
@@ -504,7 +504,7 @@ void StudioFrame::BuildInterface()
     m_problemSummary = new wxStaticText(problemPanel, wxID_ANY, Display("입력 검사를 실행하지 않았습니다."));
     problemHeader->Add(m_problemSummary, 1, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::InputGap));
     AddTool(problemPanel, problemHeader, IdValidate, "해석 입력 검사");
-    AddTool(problemPanel, problemHeader, IdDesignRules, "제약 / 연결 / DRC");
+    AddTool(problemPanel, problemHeader, IdDesignRules, "제약, 연결 및 DRC");
     problemSizer->Add(problemHeader, 0, wxEXPAND);
     m_problems =
         new wxListCtrl(problemPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL);

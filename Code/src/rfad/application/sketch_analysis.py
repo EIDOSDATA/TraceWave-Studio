@@ -37,7 +37,7 @@ def label(document, geometry, row):
     elif kind in ("equal_length", "equal_radius", "lines_parallel", "lines_perpendicular", "concentric"):
         items = " / ".join(names)
     elif kind in ("point_on_line", "midpoint"):
-        items = names[0] + " " + POINTS[row["refs"][0]["point"]] + " / " + names[1] + " 선분"
+        items = names[0] + " " + POINTS[row["refs"][0]["point"]] + " 및 " + names[1] + " 선분"
     else:
         items = " / ".join(name + " " + POINTS[ref["point"]] for name, ref in zip(names, row["refs"]))
     value = row.get("value")

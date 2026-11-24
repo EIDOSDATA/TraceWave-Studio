@@ -23,7 +23,7 @@ MeasurementRecordDialog::MeasurementRecordDialog(wxWindow* parent, const Json& c
 {
     SetName("measurement.record.dialog");
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* heading = new wxStaticText(this, wxID_ANY, Display("시료와 교정 / 원문 자료를 바꾸지 않는 새 기록"));
+    auto* heading = new wxStaticText(this, wxID_ANY, Display("새 시료와 교정 기록 (원문 보존)"));
     StudioTheme::Title(*heading);
     layout->Add(heading, 0, wxALL, FromDIP(12));
     m_tabs = new StudioNotebook(this);
@@ -78,7 +78,7 @@ MeasurementRecordDialog::MeasurementRecordDialog(wxWindow* parent, const Json& c
                                           "전파, 교정 재현 또는 실측 일치 판정을 자동 수행하지 않습니다."));
     note->Wrap(FromDIP(800));
     sourceLayout->Add(note, 0, wxEXPAND | wxALL, FromDIP(12));
-    m_advanced = new wxCollapsiblePane(source, wxID_ANY, Display("고급 / 고정 원문과 출처"), wxDefaultPosition,
+    m_advanced = new wxCollapsiblePane(source, wxID_ANY, Display("고급: 고정 원문과 출처"), wxDefaultPosition,
                                        wxDefaultSize, wxCP_DEFAULT_STYLE | wxCP_NO_TLW_RESIZE);
     m_advanced->GetPane()->SetSizer(new wxBoxSizer(wxVERTICAL));
     m_source = new wxTextCtrl(m_advanced->GetPane(), wxID_ANY, Display(selection.dump(2)), wxDefaultPosition,
@@ -260,7 +260,7 @@ void MeasurementRecordDialog::Render(const Json& response)
         m_chart->SetPage(response.at("page"), Display("보존 원문 자료"));
     }
     SetStatus(response.value("can_apply", false)
-                  ? "원본 데이터는 유지됩니다. 검토한 새 시료 / 교정 기록만 저장할 수 있습니다."
+                  ? "원본 데이터를 보존하며 검토한 새 시료 및 교정 기록만 저장합니다."
                   : "입력 조건을 확인하세요. 원문과 미적용 초안은 유지됩니다.");
 }
 

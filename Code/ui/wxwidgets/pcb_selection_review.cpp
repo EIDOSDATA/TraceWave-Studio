@@ -64,7 +64,7 @@ void PcbSelectionDialog::RenderPreview(const Json& result)
     review += "\n적층 변경 요약\n";
     if (result.contains("size"))
     {
-        review += "프로젝트 크기: " + PcbView::Text(result.at("size"), "document_bytes") + " / " +
+        review += "프로젝트 크기: " + PcbView::Text(result.at("size"), "document_bytes") + ", " +
                   PcbView::Text(result.at("size"), "document_limit_bytes") + " bytes\n";
     }
     review += "모델 층 두께 합계: " + PcbView::Text(result, "modeled_total_thickness_mm") + " mm\n";
@@ -177,7 +177,7 @@ void PcbSelectionDialog::PaintSection(wxPaintEvent&)
         dc.SetBrush(wxBrush(color));
         dc.DrawRectangle(FromDIP(10), y, std::max(10, size.x - FromDIP(20)), rowHeight - FromDIP(4));
         const wxString label =
-            Display(PcbView::Text(layer, "name") + " / " + PcbView::Text(layer, "thickness_mm") + " mm");
+            Display(PcbView::Text(layer, "name") + ", " + PcbView::Text(layer, "thickness_mm") + " mm");
         dc.SetClippingRegion(FromDIP(16), y, std::max(1, size.x - FromDIP(32)), rowHeight);
         dc.DrawText(label, FromDIP(16), y + FromDIP(3));
         dc.DestroyClippingRegion();
@@ -188,7 +188,7 @@ void PcbSelectionDialog::PaintSection(wxPaintEvent&)
             break;
         }
     }
-    dc.DrawText(Display("표시 " + std::to_string(shown) + " / 전체 " + std::to_string(m_sectionLayers.size()) + "층"),
+    dc.DrawText(Display("표시 " + std::to_string(shown) + ", 전체 " + std::to_string(m_sectionLayers.size()) + "층"),
                 FromDIP(12), FromDIP(8));
     if (shown < m_sectionLayers.size())
     {

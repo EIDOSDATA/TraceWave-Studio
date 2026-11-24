@@ -52,14 +52,14 @@ MeasurementRecordForm::MeasurementRecordForm(wxWindow* parent, DialogGateway gat
         new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 52)), wxTE_MULTILINE);
     m_sources->SetName("measurement.source_refs");
     for (const auto& item : std::vector<std::pair<const char*, wxWindow*>>{
-             {"기록 이름 (필수)", m_name}, {"자료 분류", m_class}, {"작성자", m_author}, {"작성 / 변경 사유 (필수)", m_reason}})
+             {"기록 이름 (필수)", m_name}, {"자료 분류", m_class}, {"작성자", m_author}, {"작성 또는 변경 사유 (필수)", m_reason}})
     {
         general->Add(new wxStaticText(this, wxID_ANY, Display(item.first)), 0, wxALIGN_CENTER_VERTICAL);
         general->Add(item.second, 1, wxEXPAND);
     }
     layout->Add(general, 0, wxEXPAND | wxALL, FromDIP(12));
     auto* notice = new wxStaticText(this, wxID_ANY,
-                                    Display("빈 값은 미정입니다. 값마다 계획 / 사용자 명시 / 제출 근거를 구분합니다. "
+                                    Display("빈 값은 미정입니다. 값마다 계획, 사용자 명시, 제출 근거를 구분합니다. "
                                             "기록 저장은 교정 또는 실측 합격이 아닙니다."));
     notice->Wrap(FromDIP(800));
     StudioTheme::BindSecondary(*notice);
@@ -69,18 +69,18 @@ MeasurementRecordForm::MeasurementRecordForm(wxWindow* parent, DialogGateway gat
     auto* right = new wxPanel(this);
     auto* leftLayout = new wxBoxSizer(wxVERTICAL);
     auto* rightLayout = new wxBoxSizer(wxVERTICAL);
-    BuildSection(left, leftLayout, "specimen", "시료 / 제작·조립");
-    BuildSection(left, leftLayout, "acquisition", "취득 / 장비 설정");
-    BuildSection(right, rightLayout, "calibration", "교정 / 기준면");
-    BuildSection(right, rightLayout, "fixture", "케이블 / 지그 / 급전");
-    BuildSection(right, rightLayout, "environment", "환경 / 자세");
+    BuildSection(left, leftLayout, "specimen", "시료의 제작과 조립");
+    BuildSection(left, leftLayout, "acquisition", "취득과 장비 설정");
+    BuildSection(right, rightLayout, "calibration", "교정과 기준면");
+    BuildSection(right, rightLayout, "fixture", "케이블, 지그 및 급전");
+    BuildSection(right, rightLayout, "environment", "환경과 자세");
     left->SetSizer(leftLayout);
     right->SetSizer(rightLayout);
     columns->Add(left, 1, wxEXPAND | wxRIGHT, FromDIP(6));
     columns->Add(right, 1, wxEXPAND | wxLEFT, FromDIP(6));
     layout->Add(columns, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     BuildCollections(layout);
-    layout->Add(new wxStaticText(this, wxID_ANY, Display("전체 출처 (한 줄에 하나 / 기존 원문 보존)")), 0,
+    layout->Add(new wxStaticText(this, wxID_ANY, Display("전체 출처 (한 줄에 하나, 기존 원문 보존)")), 0,
                 wxLEFT | wxRIGHT | wxTOP, FromDIP(12));
     layout->Add(m_sources, 0, wxEXPAND | wxALL, FromDIP(12));
     SetSizer(layout);
@@ -146,7 +146,7 @@ void MeasurementRecordForm::BuildSection(wxWindow* parent, wxBoxSizer* layout, c
         fields->Add(row, 0, wxEXPAND);
         field->sources = new wxTextCtrl(panel, wxID_ANY);
         field->sources->Hide();
-        auto* evidence = new wxButton(panel, wxID_ANY, Display("근거 / 출처..."));
+        auto* evidence = new wxButton(panel, wxID_ANY, Display("근거와 출처..."));
         fields->Add(evidence, 0, wxALIGN_RIGHT | wxBOTTOM, FromDIP(4));
         evidence->Bind(wxEVT_BUTTON,
                        [this, field](wxCommandEvent&)
@@ -350,7 +350,7 @@ std::string MeasurementRecordForm::RequiredInput(bool focus)
     else if (m_reason->GetValue().Strip(wxString::both).empty())
     {
         missing = m_reason;
-        message = "작성 / 변경 사유를 입력하세요. 교정 자료가 없으면 그 상태를 명시할 수 있습니다.";
+        message = "작성 또는 변경 사유를 입력하세요. 교정 자료가 없으면 그 상태를 명시할 수 있습니다.";
     }
     if (focus && missing != nullptr)
     {

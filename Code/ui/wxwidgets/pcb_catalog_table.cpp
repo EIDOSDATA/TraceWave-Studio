@@ -101,7 +101,7 @@ std::string PcbCatalogTable::NativeLabel(const Json& row)
 
 std::string PcbCatalogTable::NativeDimensions(const Json& row)
 {
-    return PcbView::Text(row, "layer_count") + "층 / 공칭 " + PcbView::Text(row, "nominal_thickness_mm") + " mm";
+    return PcbView::Text(row, "layer_count") + "층, 공칭 " + PcbView::Text(row, "nominal_thickness_mm") + " mm";
 }
 
 /** @brief 그리기 콜백에서는 I/O 없이 이미 수신한 셀 또는 대기 문구를 반환한다. */

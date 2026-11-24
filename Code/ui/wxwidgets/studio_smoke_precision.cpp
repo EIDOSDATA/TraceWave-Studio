@@ -55,7 +55,7 @@ void StudioSmokeDriver::CanvasPrecisionSmokeNext()
         wxCommandEvent toggle(wxEVT_CHECKBOX, check->GetId());
         toggle.SetEventObject(check);
         check->GetEventHandler()->ProcessEvent(toggle);
-        CanvasAssert(m_frame.GetStatusBar()->GetStatusText(2) == Display("mm / 스냅 켬"),
+        CanvasAssert(m_frame.GetStatusBar()->GetStatusText(2) == Display("mm, 스냅 켬"),
                      "스냅 체크 상자와 상태 표시줄이 일치하지 않습니다.");
         m_frame.m_canvas->SetTool("line");
         const auto arcStart = ArcEndpoint(CanvasShape(m_canvasArc), false);

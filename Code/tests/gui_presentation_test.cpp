@@ -62,7 +62,7 @@ void SweepResultChecks()
               text.find("측정 조건: 미정") != std::string::npos && text.find("기준면: 미정") != std::string::npos &&
               text.find("자료 포트 1: 미정") != std::string::npos && text.find("기준 Z0: 50 ohm") != std::string::npos,
           "summary preserves independently unknown conditions and readable impedance");
-    Check(text.find("보존한 목표 이름 / 미평가") != std::string::npos &&
+    Check(text.find("보존한 목표 이름, 미평가") != std::string::npos &&
               text.find("명시 포트/기준면 대응이 없습니다") != std::string::npos &&
               text.find("internal-port-identity") == std::string::npos && text.find("source_refs") == std::string::npos,
           "summary exposes the actual reason and name without internal JSON or IDs");
@@ -70,7 +70,7 @@ void SweepResultChecks()
     result["assessments"][0]["evidence"] = {{"target_original_summary", {{"name", "큰 목표 원문"}}}};
     result["assessments"][0]["reason"] = nullptr;
     result["assessments"][0]["diagnostic"] = {{"message_ko", "원문 조건을 확인해야 합니다."}};
-    Check(SweepUi::ResultConditions(result).find("큰 목표 원문 / 미평가") != std::string::npos &&
+    Check(SweepUi::ResultConditions(result).find("큰 목표 원문, 미평가") != std::string::npos &&
               SweepUi::ResultConditions(result).find("원문 조건을 확인해야 합니다.") != std::string::npos,
           "large original summaries and diagnostic reasons remain accessible");
 }
@@ -281,7 +281,7 @@ void EditorChecks()
     fields.at("mode").value = "expression";
     available = EditorPresentation::Evaluate("value", fields, false);
     Check(!available.enabled && available.visible &&
-              EditorPresentation::ValueLabel("value", fields) == "마지막 적용값 / 단위",
+              EditorPresentation::ValueLabel("value", fields) == "마지막 적용값 단위",
           "expression preserves readonly last value");
     fields.at("mode").value = "missing";
     Check(!EditorPresentation::Evaluate("value", fields, false).visible, "missing hides value");

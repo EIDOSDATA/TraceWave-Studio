@@ -24,8 +24,8 @@ MeasurementAttachmentDialog::MeasurementAttachmentDialog(wxWindow* parent, const
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* note =
         new wxStaticText(this, wxID_ANY,
-                         Display("파일을 그대로 보관한 뒤 시료 / 교정 기록에 연결합니다. 기록 편집을 취소해도 이미 "
-                                 "보관한 원문은 남습니다. 파일당 512 KiB, 프로젝트당 최대 16개 / 8 MiB입니다."));
+                         Display("파일을 그대로 보관한 뒤 시료 또는 교정 기록에 연결합니다. 기록 편집을 취소해도 이미 "
+                                 "보관한 원문은 남습니다. 파일당 512 KiB, 프로젝트당 최대 16개와 총 8 MiB까지 보관할 수 있습니다."));
     note->Wrap(FromDIP(720));
     layout->Add(note, 0, wxEXPAND | wxALL, FromDIP(12));
     m_path = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY);
@@ -128,7 +128,7 @@ void MeasurementAttachmentDialog::Browse()
     m_sha256 = DisplayMesh::Sha256(std::string(bytes.begin(), bytes.end()));
     m_bytes = bytes.size();
     m_path->ChangeValue(chooser.GetPath());
-    SetStatus("원문 " + std::to_string(m_bytes) + " 바이트 / 이름과 해시를 함께 보관합니다.");
+    SetStatus("원문 " + std::to_string(m_bytes) + "바이트. 이름과 해시를 함께 보관합니다.");
     UpdateActions();
 }
 void MeasurementAttachmentDialog::Upload()

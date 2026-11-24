@@ -46,7 +46,7 @@ std::string HistoryAction(const std::string& key, const std::string& operation)
     static const std::map<std::string, std::string> operations = {
         {"import", "네트워크 자료 가져오기"}, {"solver", "해석 자료 등록"}, {"transform", "네트워크 변환"},
         {"evaluate", "성능 기준 평가"}, {"circuit_apply", "정합 회로 적용"},
-        {"record", "시료 / 교정 기록 저장"}, {"import_record", "측정 자료와 시료 가져오기"},
+        {"record", "시료 및 교정 기록 저장"}, {"import_record", "측정 자료와 시료 가져오기"},
         {"align", "측정 원본 정렬"}, {"compare", "측정 비교 저장"}
     };
     if (key == "network.library.replace" || key == "measurement.workspace.replace")
@@ -91,7 +91,7 @@ wxTextCtrl* ReadOnly(wxWindow& parent, const char* name, const wxString& value =
 
 int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page)
 {
-    wxDialog dialog(parent, wxID_ANY, Display("출처와 채택 이력 / 저장본 확인"), wxDefaultPosition, wxDefaultSize,
+    wxDialog dialog(parent, wxID_ANY, Display("출처, 채택 이력 및 저장본"), wxDefaultPosition, wxDefaultSize,
                     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
     dialog.SetName("project.evidence.dialog");
     StudioTheme::ApplyTypography(dialog);
@@ -123,18 +123,18 @@ int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page
 
     auto* tabs = new StudioNotebook(&dialog);
     root->Add(tabs, 1, wxEXPAND | wxLEFT | wxRIGHT, pad);
-    auto* adoption = Page(*tabs, "원문 / 채택값");
-    auto* values = Table(*adoption, {{"항목", 145}, {"원문 / 종류", 170}, {"채택 당시", 220}, {"현재 값", 270}});
+    auto* adoption = Page(*tabs, "원문과 채택값");
+    auto* values = Table(*adoption, {{"항목", 145}, {"원문과 종류", 170}, {"채택 당시", 220}, {"현재 값", 270}});
     adoption->GetSizer()->Add(values, 2, wxEXPAND | wxALL, pad);
     auto* original = ReadOnly(*adoption, "보존 원문과 선택 행 상세");
     adoption->GetSizer()->Add(original, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
-    auto* assumptions = Page(*tabs, "가정 / 생략");
+    auto* assumptions = Page(*tabs, "가정과 생략");
     auto* assumptionText = ReadOnly(*assumptions, "생성 당시 가정과 생략");
     assumptions->GetSizer()->Add(assumptionText, 1, wxEXPAND | wxALL, pad);
 
     auto* changes = Page(*tabs, "변경 이력");
     auto* historyNote = new wxStaticText(changes, wxID_ANY,
-        wxString::Format(Display("현재 이력 %d건 중 최근 최대 24건 / 다시 실행 가능 %d건"),
+        wxString::Format(Display("이력 %d건 중 최근 최대 24건 표시. 다시 실행할 수 있는 이력 %d건."),
                         evidence.at("history_total").get<int>(), evidence.at("redo_count").get<int>()));
     StudioTheme::BindSecondary(*historyNote);
     changes->GetSizer()->Add(historyNote, 0, wxALL, pad);
@@ -155,7 +155,7 @@ int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page
     }
     Rows(*history, briefHistory);
     changes->GetSizer()->Add(history, 2, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
-    auto* changeDetail = ReadOnly(*changes, "선택 변경의 개정 / 명령 / 대상",
+    auto* changeDetail = ReadOnly(*changes, "선택한 변경의 개정, 명령 및 대상",
                                   Display("변경 행을 선택하면 전체 개정 ID와 명령을 읽을 수 있습니다."));
     changes->GetSizer()->Add(changeDetail, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
     history->Bind(wxEVT_LIST_ITEM_SELECTED, [&](wxListEvent& event)
@@ -163,7 +163,7 @@ int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page
         const auto index = static_cast<std::size_t>(event.GetIndex());
         const auto& row = historyRows.at(index);
         const auto& brief = briefHistory.at(index);
-        changeDetail->ChangeValue(Display(brief.at(0).get<std::string>() + " / " + brief.at(1).get<std::string>() +
+        changeDetail->ChangeValue(Display(brief.at(0).get<std::string>() + ", " + brief.at(1).get<std::string>() +
             "\n접수 시각  " + brief.at(2).get<std::string>() + "\n사유  " + brief.at(3).get<std::string>() +
             "\n변경 전  " + row.at(0).get<std::string>() + "\n변경 후  " +
             row.at(1).get<std::string>() + "\n명령  " + row.at(2).get<std::string>() + "\n대상 ID  " +
@@ -171,7 +171,7 @@ int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page
                                             : row.at(3).get<std::string>())));
     });
 
-    auto* recovery = Page(*tabs, "저장본 / 복구 후보");
+    auto* recovery = Page(*tabs, "저장본과 복구 후보");
     auto* status = new wxStaticText(recovery, wxID_ANY,
         Display(evidence.at("saved_revision") == evidence.at("revision_id")
           ? "현재 적용 개정과 저장본이 일치합니다."
@@ -186,7 +186,7 @@ int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page
     const auto recoveryRows = recoveryDetails.value("rows", Json::array());
     const auto recoverySummary = recoveryRows.empty() ? Display("표시할 속성 변경 없음") :
         wxString::Format(Display("속성 변경 %zu건%s"), recoveryRows.size(),
-            recoveryDetails.value("has_more", false) ? Display(" 표시 / 나머지 변경 있음") : wxString());
+            recoveryDetails.value("has_more", false) ? Display(" 표시 (나머지 변경 있음)") : wxString());
     auto* changesLabel = new wxStaticText(recovery, wxID_ANY, recoverySummary);
     StudioTheme::Heading(*changesLabel);
     recovery->GetSizer()->Add(changesLabel, 0, wxLEFT | wxRIGHT | wxBOTTOM, pad);
@@ -205,8 +205,8 @@ int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page
     {
         const auto& row = recoveryRows.at(static_cast<std::size_t>(event.GetIndex()));
         const auto& target = row.at(1).get_ref<const std::string&>();
-        savedDetail->ChangeValue(Display(row.at(0).get<std::string>() + (target.empty() ? "" : " / " + target) +
-            " / " + row.at(2).get<std::string>() + "\n저장본  " + row.at(3).get<std::string>() +
+        savedDetail->ChangeValue(Display(row.at(0).get<std::string>() + (target.empty() ? "" : ", " + target) +
+            ", " + row.at(2).get<std::string>() + "\n저장본  " + row.at(3).get<std::string>() +
             "\n현재 개정  " + row.at(4).get<std::string>()));
     });
     auto* instructions = new wxStaticText(recovery, wxID_ANY,
@@ -235,7 +235,7 @@ int ShowProjectEvidence(wxWindow* parent, const Json& evidence, std::size_t page
         const auto& record = records.at(static_cast<std::size_t>(choice->GetSelection()));
         const auto& row = record.at("values").at(static_cast<std::size_t>(event.GetIndex()));
         original->ChangeValue(Display("항목  " + row.at(0).get<std::string>() +
-             "\n원문 / 종류  " + row.at(1).get<std::string>() + "\n채택 당시  " + row.at(2).get<std::string>() +
+             "\n원문과 종류  " + row.at(1).get<std::string>() + "\n채택 당시  " + row.at(2).get<std::string>() +
              "\n현재 값  " + row.at(3).get<std::string>() + "\n\n" + record.at("source").get<std::string>()));
     });
     update();

@@ -40,7 +40,7 @@ void PcbImportDialog::BuildSource(wxWindow* page)
     auto* inputs = new wxWrapSizer(wxHORIZONTAL);
     m_format = new wxChoice(page, wxID_ANY);
     m_formats = {"kicad_pcb", "kicad_mod", "gerber_job", "gerber_x2", "xnc", "ipc2581_revc", "odbpp_zip"};
-    for (const auto& label : {"KiCad 보드", "KiCad 풋프린트", "Gerber Job", "Gerber X2", "Excellon / XNC", "IPC-2581 Rev C", "ODB++ ZIP"})
+    for (const auto& label : {"KiCad 보드", "KiCad 풋프린트", "Gerber Job", "Gerber X2", "Excellon 및 XNC", "IPC-2581 Rev C", "ODB++ ZIP"})
     {
         m_format->Append(Display(label));
     }
@@ -52,7 +52,7 @@ void PcbImportDialog::BuildSource(wxWindow* page)
     m_format->SetName(Display("가져올 형식 또는 제조사 안테나 예제"));
     m_format->SetSelection(0);
     m_browse = new wxButton(page, wxID_ANY, Display("파일 선택"));
-    m_uploadButton = new wxButton(page, wxID_ANY, Display("원문 전송 / 이어 보내기"));
+    m_uploadButton = new wxButton(page, wxID_ANY, Display("원문 전송 및 재개"));
     m_parseButton = new wxButton(page, wxID_ANY, Display("보존 원문 읽기"));
     for (wxWindow* control : std::vector<wxWindow*>{m_format, m_browse, m_uploadButton, m_parseButton})
     {
@@ -69,7 +69,7 @@ void PcbImportDialog::BuildSource(wxWindow* page)
     {
         const auto label = OutputUi::Text(entry.value("label", entry.value("name", Json(nullptr))),
                                           "보존 전송 " + std::to_string(m_uploadIds.size()));
-        m_uploadChoice->Append(Display(label + " / " + entry.value("format", "") + " / " +
+        m_uploadChoice->Append(Display(label + ", " + entry.value("format", "") + ", " +
                                        OutputUi::State(entry.value("status", "unknown"))));
         m_uploadIds.push_back(entry.at("upload_id").get<std::string>());
     }
@@ -158,7 +158,7 @@ void PcbImportDialog::BuildMapping(wxWindow* page)
                          "소스층마다 기존 층을 직접 선택하고, 소스 넷마다 기존 넷 또는 명시적인 미할당을 선택하세요.",
                          90),
                 0, wxEXPAND | wxALL, FromDIP(12));
-    m_boardConfirmed = new wxCheckBox(page, wxID_ANY, Display("현재 기판 / 좌표계에 적용함을 확인"));
+    m_boardConfirmed = new wxCheckBox(page, wxID_ANY, Display("현재 기판과 좌표계에 적용 확인"));
     layout->Add(m_boardConfirmed, 0, wxALL, FromDIP(12));
     m_regions = new wxCheckBox(page, wxID_ANY, Display("채움 동박 외곽과 절연 구멍 적용"));
     m_regions->SetName("pcb.import.manufacturing_regions");
@@ -198,7 +198,7 @@ void PcbImportDialog::BuildMapping(wxWindow* page)
     layout->Add(m_mappingRows, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     m_placement = new wxPanel(page);
     auto* position = new wxWrapSizer(wxHORIZONTAL);
-    position->Add(new wxStaticText(m_placement, wxID_ANY, Display("원본 배치 X / Y / 회전")), 0, wxALL,
+    position->Add(new wxStaticText(m_placement, wxID_ANY, Display("원본의 배치 X, Y와 회전")), 0, wxALL,
                   FromDIP(6));
     m_x = new wxTextCtrl(m_placement, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(90, -1)));
     m_y = new wxTextCtrl(m_placement, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(90, -1)));
@@ -271,7 +271,7 @@ void PcbImportDialog::BuildReview(wxWindow* page)
     }
     layout->Add(m_changes, 0, wxEXPAND | wxALL, FromDIP(8));
     layout->Add(
-        new wxStaticText(page, wxID_ANY, Display("읽기 과정의 손실 / 생략 - 원문은 보존하며 항목마다 확인합니다.")), 0,
+        new wxStaticText(page, wxID_ANY, Display("읽기 중 손실되거나 생략된 항목을 확인하세요. 원문은 보존됩니다.")), 0,
         wxALL, FromDIP(8));
     m_losses = new wxCheckListBox(page, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 110)));
     layout->Add(m_losses, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
@@ -303,7 +303,7 @@ void PcbImportDialog::BuildOriginal(wxWindow* page)
     auto* layout = new wxBoxSizer(wxVERTICAL);
     m_source = Readable(page,
                         "원문 파일과 읽기 보고서의 SHA256을 보존합니다. 변환 이후에는 가져온 상태와 사용자의 수정을 "
-                        "구분합니다. 제작 조건 / 측정 정확도 / RF 성능은 이 가져오기에서 확인하지 않습니다.",
+                        "구분합니다. 제작 조건, 측정 정확도, RF 성능은 별도로 확인해야 합니다.",
                         180);
     layout->Add(m_source, 0, wxEXPAND | wxALL, FromDIP(12));
     m_advanced = new wxCollapsiblePane(page, wxID_ANY, Display("고급 원문 상세"));
@@ -356,7 +356,7 @@ void PcbImportDialog::RenderMapping(const Json& response)
     {
         m_mappingRows->GetSizer()->Add(
             new wxStaticText(m_mappingRows, wxID_ANY,
-                             Display(kind == "layers" ? "원문 층 -> 기존 층" : "원문 넷 -> 기존 넷 / 미할당")),
+                             Display(kind == "layers" ? "원문 층 -> 기존 층" : "원문 넷에 기존 넷 지정 또는 미할당")),
             0, wxTOP | wxBOTTOM, FromDIP(8));
         for (const auto& source : sources.value(kind, Json::array()))
         {
@@ -400,7 +400,7 @@ void PcbImportDialog::RenderMapping(const Json& response)
                                     : role == "solder_paste" ? "솔더 페이스트"
                                                              : "";
                 row.choice->Append(Display(OutputUi::Text(target.value("name", Json(nullptr)), "임시 이름") +
-                                           (kind == "layers" ? " / " + std::string(suffix) : "")));
+                                           (kind == "layers" ? ", " + std::string(suffix) : "")));
                 row.targets.push_back(target.at("id"));
             }
             row.contactsOnly = source.value("contacts_only", false);

@@ -71,13 +71,13 @@ void StudioFrame::AddPolygon()
     {
         return;
     }
-    wxDialog dialog(this, wxID_ANY, Display("다각형 도체 면 / mm"), wxDefaultPosition, FromDIP(wxSize(500, 440)),
+    wxDialog dialog(this, wxID_ANY, Display("다각형 도체 면 (mm)"), wxDefaultPosition, FromDIP(wxSize(500, 440)),
                     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* help = new wxStaticText(
         &dialog, wxID_ANY,
         Display("한 줄에 x, y를 입력하세요. 첫 묶음은 외곽, 빈 줄 다음은 구멍입니다.\n마지막 점을 반복하지 않습니다. "
-                "총 64점 / 구멍 최대 8개.\n접지 역할, 네트와 재료는 생성 후 속성에서 지정합니다."));
+                "최대 64점과 구멍 8개를 입력할 수 있습니다.\n접지 역할, 네트와 재료는 생성 후 속성에서 지정합니다."));
     layout->Add(help, 0, wxEXPAND | wxALL, 12);
     auto* input =
         new wxTextCtrl(&dialog, wxID_ANY, Display(m_polygonDraft), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
@@ -138,13 +138,13 @@ void StudioFrame::AddVia()
     {
         return;
     }
-    wxDialog dialog(this, wxID_ANY, Display("도금 비아 / mm"), wxDefaultPosition, wxDefaultSize,
+    wxDialog dialog(this, wxID_ANY, Display("도금 비아 (mm)"), wxDefaultPosition, wxDefaultSize,
                     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
     auto* layout = new wxBoxSizer(wxVERTICAL);
     layout->Add(
         new wxStaticText(
             &dialog, wxID_ANY,
-            Display("시작은 활성 도체층입니다. 적층 순서상 뒤에 있는 끝 도체층을 선택하세요.\n완성 구멍/도금/공구 "
+            Display("시작은 활성 도체층입니다. 적층 순서상 뒤에 있는 끝 도체층을 선택하세요.\n완성 구멍, 도금 및 공구 "
                     "구멍은 서로 다른 값입니다. 빈칸은 미정입니다.\n패드와 도금 물성은 자동으로 생성하지 않습니다.")),
         0, wxEXPAND | wxALL, 12);
     const int gap = dialog.FromDIP(StudioTheme::InputGap);

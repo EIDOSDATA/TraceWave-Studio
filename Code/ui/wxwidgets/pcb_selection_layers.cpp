@@ -56,7 +56,7 @@ wxPanel* PcbSelectionDialog::BuildLayersPage()
     m_layers = new wxGrid(panel, wxID_ANY);
     m_layers->SetName("pcb.layers");
     m_layers->CreateGrid(0, 6);
-    const char* labels[] = {"층 이름", "역할", "두께 mm", "두께/참조 수정 이유", "기존 층 연결", "재료 연결"};
+    const char* labels[] = {"층 이름", "역할", "두께 mm", "두께 또는 참조를 수정한 이유", "기존 층 연결", "재료 연결"};
     const int widths[] = {150, 85, 100, 205, 235, 195};
     for (int column = 0; column < 6; ++column)
     {

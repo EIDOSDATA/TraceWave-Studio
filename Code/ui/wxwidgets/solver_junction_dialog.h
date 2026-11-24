@@ -50,7 +50,7 @@ inline std::optional<Json> EditSolverJunctions(wxWindow* owner, const Json& cata
     field("배럴 안쪽 접합 두께 (mm)", thickness);
     layout->Add(fields, 0, wxEXPAND | wxALL, dialog.FromDIP(8));
     auto* commands = new wxBoxSizer(wxHORIZONTAL);
-    auto* apply = new wxButton(&dialog, wxID_ANY, Display("추가 / 변경"));
+    auto* apply = new wxButton(&dialog, wxID_ANY, Display("추가 또는 변경"));
     auto* remove = new wxButton(&dialog, wxID_ANY, Display("선택 삭제"));
     commands->Add(apply, 0, wxRIGHT, dialog.FromDIP(6));
     commands->Add(remove);
@@ -75,8 +75,8 @@ inline std::optional<Json> EditSolverJunctions(wxWindow* owner, const Json& cata
             const int m = find(materials, row.at("material_id"));
             const auto vName = v == wxNOT_FOUND ? Display(row.at("via_id").get<std::string>()) : via->GetString(v);
             const auto mName = m == wxNOT_FOUND ? Display(row.at("material_id").get<std::string>()) : material->GetString(m);
-            existing->Append(vName + " / " + end->GetString(row.at("end") == "lower" ? 0 : 1) + " / " + mName
-                             + wxString::Format(" / %.12g mm", row.at("thickness_mm").get<double>()));
+            existing->Append(vName + ", " + end->GetString(row.at("end") == "lower" ? 0 : 1) + ", " + mName
+                             + wxString::Format(", %.12g mm", row.at("thickness_mm").get<double>()));
         }
         remove->Disable();
     };

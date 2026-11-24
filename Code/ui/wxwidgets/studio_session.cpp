@@ -192,7 +192,7 @@ void StudioFrame::Send(const std::string& method, const Json& input, bool mutati
         {
             m_busy = false;
             Log(error.at("message").get<std::string>());
-            SetStatusText(Display("요청 미전송 / 진행 중인 작업 확인 후 다시 시도하세요."), 0);
+            SetStatusText(Display("요청을 보내지 못했습니다. 진행 중인 작업을 확인한 뒤 다시 시도하세요."), 0);
             UpdateControls();
             if (m_options.smoke)
             {

@@ -290,15 +290,15 @@ void ArchiveRestoreDialog::ShowReview(const Json& result)
     row("설계 개정", field("saved_revision"), field("revision_id"));
     row("프로젝트 경로", field("path"), field("path"));
     row("실행 작업", "작업과 실행 환경 제외", "자동 재실행 없음");
-    row("제작 / 실측 검증", "미확립", "미확립");
-    std::string summary = m_name + "\n보존 파일 " + std::to_string(result.at("files").get<int>()) + "개 / 명령 " +
-                          std::to_string(result.at("commands").get<int>()) + "개 / 스냅샷 " +
-                          std::to_string(result.at("snapshots").get<int>()) + "개\n미확보/제외 " +
-                          std::to_string(result.at("missing_count").get<int>()) + "개 / 보존되지 않은 상위 개정 " +
+    row("제작 및 실측 검증", "미확립", "미확립");
+    std::string summary = m_name + "\n보존 파일 " + std::to_string(result.at("files").get<int>()) + "개, 명령 " +
+                          std::to_string(result.at("commands").get<int>()) + "개, 스냅샷 " +
+                          std::to_string(result.at("snapshots").get<int>()) + "개\n미확보 또는 제외 " +
+                          std::to_string(result.at("missing_count").get<int>()) + "개, 보존되지 않은 상위 개정 " +
                           std::to_string(result.at("unavailable_parent_count").get<int>()) + "개\nSHA256 " + m_digest;
     for (const auto& entry : result.at("omitted_preview"))
     {
-        summary += "\n" + Missing(entry.at("reason")) + " / " + entry.at("reference").at("uri").get<std::string>();
+        summary += "\n" + Missing(entry.at("reason")) + ": " + entry.at("reference").at("uri").get<std::string>();
     }
     if (result.at("missing_count").get<std::size_t>() > result.at("omitted_preview").size())
     {

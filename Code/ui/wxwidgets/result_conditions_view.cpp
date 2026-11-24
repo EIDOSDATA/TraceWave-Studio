@@ -22,7 +22,7 @@ std::string RecordedCondition(const Json& conditions, const std::string& key)
 {
     return !conditions.is_object() || !conditions.contains(key) || conditions.at(key).is_null()
                ? "미정"
-               : "원문 기록 있음 / 확정 여부는 출처 확인";
+               : "원문 기록 있음 (확정 여부는 출처 확인)";
 }
 
 /** @brief 조건 차이의 단위와 미정 사유를 삭제하지 않고 읽을 수 있는 문장으로 만든다. */
@@ -129,7 +129,7 @@ ResultConditionsView::ResultConditionsView(wxWindow* parent) : wxPanel(parent)
     m_originalGroup = AddGroup("원본", "original", m_summary);
     m_basisGroup = AddGroup("기준", "basis", m_basis);
     m_validationGroup = AddGroup("검증 상태", "validation", m_validation);
-    m_advanced = AddGroup("고급 / 보존된 조건 원문", "raw", m_source, true);
+    m_advanced = AddGroup("고급: 보존된 조건 원문", "raw", m_source, true);
     SetSizer(layout);
     m_copy->Bind(wxEVT_BUTTON,
                  [this](wxCommandEvent&)
@@ -202,7 +202,7 @@ void ResultConditionsView::SetDescription(const Json& description)
     m_comparison = nullptr;
     m_conditionPage = nullptr;
     m_pager->Hide();
-    m_heading->SetLabel(Display("결과 조건 / 원본 보존"));
+    m_heading->SetLabel(Display("결과 조건과 보존 원본"));
     m_heading->SetToolTip(m_heading->GetLabel());
     m_originalGroup->SetLabel(Display("원본"));
     m_basisGroup->SetLabel(Display("기준"));
@@ -231,9 +231,9 @@ void ResultConditionsView::SetDescription(const Json& description)
             const auto values = descriptor.value(key, Json(nullptr));
             return values.is_array() && index < values.size() ? values.at(index) : Json(nullptr);
         };
-        basis += "\n\n" + ResultUi::PortName(descriptor, index) + " / Z0 " + ResultUi::Complex(item("z0_ohm")) +
+        basis += "\n\n" + ResultUi::PortName(descriptor, index) + ", Z0 " + ResultUi::Complex(item("z0_ohm")) +
                  " ohm\n기준면: " + ResultUi::Text(item("reference_planes")) + "\n" +
-                 ResultUi::State(item("port_modes")) + " / " + ResultUi::State(item("current_orientation"));
+                 ResultUi::State(item("port_modes")) + ", " + ResultUi::State(item("current_orientation"));
     }
     if (descriptor.value("z0_frequency_dependent", false))
     {
@@ -241,7 +241,7 @@ void ResultConditionsView::SetDescription(const Json& description)
     }
     if (description.value("measurement_record", Json(nullptr)).is_object())
     {
-        m_basisGroup->SetLabel(Display("시료 / 교정 / 기준"));
+        m_basisGroup->SetLabel(Display("시료, 교정 및 기준"));
         basis = MeasurementUi::Summary(description.at("measurement_record")) + "\n" + basis;
     }
     SetText(m_basis, basis, 206);
@@ -257,11 +257,11 @@ void ResultConditionsView::SetDescription(const Json& description)
     if (reference.is_object() && reference.value("kind", "") == "explicit_synthetic_reference" &&
         reference.value("case", "") == "pec-dipole-nf2ff")
     {
-        validation += "\n\n별도 합성 참조 사례 / 사용자 PCB 아님\n모델: " +
+        validation += "\n\n별도의 합성 참조 사례\n모델: " +
                       ResultUi::Text(reference.value("native_model", Json(nullptr))) +
                       "\n이상적인 얇은 반파장 해석식과 유한 반경 모델의 차이를 포함합니다."
                       "\n독립 판정은 프로젝트 검증 기록에서 명시 보고서를 선택해 확인하세요."
-                      "\n제작 / 실측 검증은 미확립입니다.";
+                      "\n제작과 실측 검증은 미확립 상태입니다.";
     }
     if (numerical.is_object())
     {
@@ -349,8 +349,8 @@ void ResultConditionsView::PageActions()
         const int offset = m_conditionPage.value("offset", 0);
         const auto count = m_conditionPage.at("items").size();
         m_pageLabel->SetLabel(Display("조건 " + std::to_string(offset + (count ? 1 : 0)) + "~" +
-                                      std::to_string(offset + count) + " / " + std::to_string(ConditionTotal()) +
-                                      (m_conditionsPending ? " / 조회 중" : "")));
+                                      std::to_string(offset + count) + " (전체 " + std::to_string(ConditionTotal()) + "건)" +
+                                      (m_conditionsPending ? " (조회 중)" : "")));
     }
 }
 
@@ -361,9 +361,9 @@ void ResultConditionsView::PresentComparison()
     m_heading->SetToolTip(m_heading->GetLabel());
     m_originalGroup->SetLabel(Display("비교 원본"));
     m_basisGroup->SetLabel(Display("수학 비교 기준"));
-    m_validationGroup->SetLabel(Display("물리 / 검증 상태"));
-    std::string original = "A / 기준: " + (m_leftName.empty() ? "기준 원본" : m_leftName) +
-                           "\nB / 비교: " + (m_rightName.empty() ? "비교 원본" : m_rightName) +
+    m_validationGroup->SetLabel(Display("물리 조건과 검증 상태"));
+    std::string original = "기준 A: " + (m_leftName.empty() ? "기준 원본" : m_leftName) +
+                           "\n비교 B: " + (m_rightName.empty() ? "비교 원본" : m_rightName) +
                            "\n차이 = B - A\n같은 실제 주파수만 비교합니다.\n\n";
     std::string basis =
         "수학 비교\n" +
@@ -388,7 +388,7 @@ void ResultConditionsView::PresentComparison()
     SetText(m_validation, validation, 206);
     const Json details{{"comparison", response}, {"displayed_condition_page", m_conditionPage}};
     SetText(m_source, details.dump(2, ' ', false, Json::error_handler_t::replace), 220);
-    m_copyText = "비교 원본\n" + original + "\n수학 비교 기준\n" + basis + "\n물리 / 검증 상태\n" + validation;
+    m_copyText = "비교 원본\n" + original + "\n수학 비교 기준\n" + basis + "\n물리 조건과 검증 상태\n" + validation;
     m_copy->Enable(true);
     PageActions();
     m_copyText = m_pageLabel->GetLabel().ToStdString(wxConvUTF8) + "\n\n" + m_copyText;
@@ -411,7 +411,7 @@ void ResultConditionsView::Clear(const std::string& message)
     m_validationGroup->SetLabel(Display("검증 상태"));
     SetText(m_summary, message, 164);
     SetText(m_basis, "원본 선택 후 기록된 기준을 표시합니다.", 206);
-    SetText(m_validation, "제작 / 측정 조건 미정\n검증 완료를 뜻하지 않습니다.", 206);
+    SetText(m_validation, "제작과 측정 조건이 미정입니다.\n검증 완료를 뜻하지 않습니다.", 206);
     SetText(m_source, "", 220);
     m_copyText.clear();
     m_copy->Enable(false);

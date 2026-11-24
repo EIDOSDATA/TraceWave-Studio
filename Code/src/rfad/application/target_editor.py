@@ -29,7 +29,7 @@ def input_status(target):
     result.update(input_origins=origins, has_estimated_inputs=origins["estimated"] > 0,
                   has_source_defaults=origins["source_default"] > 0,
                   explicit_sample_count=len(target["band"]["sampling"].get("frequencies", [])),
-                  summary=f"미평가 / 추정 입력 {origins['estimated']}개 / 자료 기본값 {origins['source_default']}개 / 미정 조건 {len(result['missing_conditions'])}개")
+                  summary=f"미평가. 추정 입력 {origins['estimated']}개, 자료 기본값 {origins['source_default']}개, 미정 조건 {len(result['missing_conditions'])}개")
     return result
 
 

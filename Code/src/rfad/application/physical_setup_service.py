@@ -36,7 +36,7 @@ FIELDS = {
     "x": "X", "y": "Y", "z": "Z",
     "width": "폭", "height": "길이", "depth": "높이", "yaw": "Z축 회전",
     "case_thickness": "벽과 덮개 두께 (케이스용)",
-    "instance_replacements": "말단 교체 / 원본과 새 면 대응",
+    "instance_replacements": "말단 교체 및 원본과 새 면 대응",
     "instance_offsets": "STEP 말단 배치와 원점, 평면, 축 맞춤",
     "openings": "개구 (mm, 줄마다 X Y 폭 길이)", "active_scenario_id": "활성 시나리오",
 }

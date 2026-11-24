@@ -120,18 +120,18 @@ wxBoxSizer* Footer(wxDialog& dialog)
 
 void StudioFrame::ShowDisplayPreferences()
 {
-    wxDialog dialog(this, wxID_ANY, Display("환경설정 / 화면과 키보드"), wxDefaultPosition,
+    wxDialog dialog(this, wxID_ANY, Display("화면과 키보드 환경설정"), wxDefaultPosition,
                     wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
     dialog.SetName("studio.preferences");
     auto* root = BuildDialog(dialog, "환경설정", "Studio의 패널 표시, 단축키와 Windows 표시 상태를 확인합니다.");
     auto* pages = new StudioNotebook(&dialog);
     root->Add(pages, 1, wxEXPAND | wxLEFT | wxRIGHT, dialog.FromDIP(StudioTheme::PanelPadding));
 
-    auto& layout = *AddPage(*pages, "화면 / 배치");
+    auto& layout = *AddPage(*pages, "화면 배치");
     AddLine(layout, "패널 표시", Display("이 창과 보기 메뉴에서 선택한 패널 표시를 사용자 설정에 저장합니다."));
     const std::array<const char*, 4> panelLabels = {
         m_shell->IsCompact() ? "프로젝트 탐색과 선택 속성" : "프로젝트 탐색", "선택 속성",
-        "레이어 표시", "문제 / 작업 / 로그"
+        "레이어 표시", "문제, 작업 및 로그"
     };
     const auto visibility = m_shell->PanelVisibility();
     std::array<wxCheckBox*, 4> panels{};
@@ -168,7 +168,7 @@ void StudioFrame::ShowDisplayPreferences()
     table->InsertColumn(2, Display("사용 위치"), wxLIST_FORMAT_LEFT, dialog.FromDIP(205));
     const char* shortcuts[][3] = {
         {"명령 찾기", "Ctrl+Shift+P", "작업 창"}, {"프로젝트 객체 찾기", "Ctrl+F", "열린 프로젝트"},
-        {"다음 / 이전 패널", "F6 / Shift+F6", "작업 창"}, {"객체 이름 바꾸기", "F2", "탐색 / 선택 객체"},
+        {"다음 또는 이전 패널", "F6, Shift+F6", "작업 창"}, {"객체 이름 바꾸기", "F2", "탐색과 선택 객체"},
         {"정밀 편집", "D", "2D 작업 화면"}, {"현재 도구 취소", "Esc", "2D 작업 화면"},
         {"프로젝트 저장", "Ctrl+S", "열린 프로젝트"}
     };
@@ -180,7 +180,7 @@ void StudioFrame::ShowDisplayPreferences()
     }
     keyboard.GetSizer()->Add(table, 1, wxEXPAND | wxALL, dialog.FromDIP(StudioTheme::PanelPadding));
 
-    auto& colours = *AddPage(*pages, "색상 / 접근성");
+    auto& colours = *AddPage(*pages, "색상과 접근성");
     AddLine(colours, "현재 색상", Display(StudioAppearance::HighContrast() ? "Windows 고대비" : "Studio 라이트"));
     AddLine(colours, "Windows 배율",
             wxString::Format(Display("%d%%. 배율과 고대비는 Windows 설정에서 변경합니다."),
@@ -214,15 +214,15 @@ void StudioFrame::ShowDisplayPreferences()
 
 void StudioFrame::ShowEnvironment()
 {
-    wxDialog dialog(this, wxID_ANY, Display("실행 환경 / 진단"), wxDefaultPosition, wxDefaultSize,
+    wxDialog dialog(this, wxID_ANY, Display("실행 환경 및 진단"), wxDefaultPosition, wxDefaultSize,
                     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
     dialog.SetName("studio.environment");
-    auto* root = BuildDialog(dialog, "실행 환경 / 진단", "현재 세션의 편집 서비스와 선택한 실행 환경을 확인합니다.");
+    auto* root = BuildDialog(dialog, "실행 환경 및 진단", "현재 세션의 편집 서비스와 선택한 실행 환경을 확인합니다.");
     auto* pages = new StudioNotebook(&dialog);
     root->Add(pages, 1, wxEXPAND | wxLEFT | wxRIGHT, dialog.FromDIP(StudioTheme::PanelPadding));
     auto& components = *AddPage(*pages, "구성 요소");
     AddLine(components, "프로젝트 서비스", Display(m_connected ? "연결됨" : "연결 확인 필요"));
-    AddLine(components, "CAD / STEP", Display(m_cadConfigured ? "실행 환경 연결됨" : "내보내려면 CAD 실행 환경 연결 필요"));
+    AddLine(components, "CAD 및 STEP", Display(m_cadConfigured ? "실행 환경 연결됨" : "내보내려면 CAD 실행 환경 연결 필요"));
     AddLine(components, "openEMS 해석", Display(m_solverConfigured
         ? (m_options.openEmsWsl ? "WSL2 openEMS 연결됨" : "Windows 기본 openEMS 연결됨")
         : "새 해석을 실행하려면 openEMS 연결이 필요합니다."));
@@ -232,14 +232,14 @@ void StudioFrame::ShowEnvironment()
             ? "필요한 기능의 연결이 끊겨 있습니다. 설치본은 Windows 설치 프로그램으로 필요한 환경을 복구한 뒤 Studio를 다시 여세요."
             : "현재 연결 상태로 프로젝트를 편집하고 해석할 수 있습니다. 문제를 재현한 뒤 진단 기록에서 시간과 내용을 확인하세요."));
 
-    auto& paths = *AddPage(*pages, "경로 / 연결");
+    auto& paths = *AddPage(*pages, "경로와 연결");
     const int pad = dialog.FromDIP(StudioTheme::PanelPadding);
     auto* pathStatus = new wxStaticText(&paths, wxID_ANY, Display("필요한 전체 경로를 복사할 수 있습니다."));
     StudioTheme::BindSecondary(*pathStatus);
     AddPath(paths, "프로젝트 작업 영역", m_options.workspace, *pathStatus);
     AddPath(paths, "서비스 Python", m_options.python, *pathStatus);
     AddPath(paths, "CAD Python", m_options.cadPython, *pathStatus);
-    AddPath(paths, "도면 / 교환 Python", m_options.exchangePython, *pathStatus);
+    AddPath(paths, "도면 교환용 Python", m_options.exchangePython, *pathStatus);
     paths.GetSizer()->Add(pathStatus, 0, wxEXPAND | wxALL, pad);
 
     auto& diagnostics = *AddPage(*pages, "진단 기록");
@@ -362,7 +362,7 @@ void StudioFrame::ShowCommandSearch()
         run->Enable(command && command->IsEnabled());
         status->SetLabel(list->GetItemCount() == 0 ? Display("일치하는 명령 없음")
             : command && !command->IsEnabled() ? Display("현재 프로젝트, 선택 또는 작업 상태에서 실행할 수 없습니다.")
-            : Display("Tab: 목록 이동 / 방향키: 선택 / Enter: 실행 / Esc: 닫기"));
+            : Display("Tab으로 목록 이동, 방향키로 선택, Enter로 실행, Esc로 닫기"));
     };
     const auto populate = [&]()
     {

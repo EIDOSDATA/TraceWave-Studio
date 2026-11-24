@@ -336,7 +336,7 @@ void StudioFrame::ShowNetworkTool(NetworkAction action, const Json& context, con
             formats.Add(Display("가져온 원문 바이트"));
             keys.push_back("source");
         }
-        wxSingleChoiceDialog format(this, Display("자료와 조건/출처 파일을 함께 내보냅니다."), Display("결과 내보내기"),
+        wxSingleChoiceDialog format(this, Display("자료와 조건과 출처 파일을 함께 내보냅니다."), Display("결과 내보내기"),
                                     formats);
         if (format.ShowModal() != wxID_OK)
         {

@@ -91,7 +91,7 @@ private:
         case 1: return Display(Axes[finding.region.axis]);
         case 2: return ZoneName(finding.zone);
         case 3: return Coordinates(m_report, finding.region);
-        case 4: return wxString::Format("%.8g / %.8g", finding.observed, finding.limit);
+        case 4: return wxString::Format("%.8g, %.8g", finding.observed, finding.limit);
         case 5: return SettingName(finding.setting);
         }
         return {};
@@ -128,7 +128,7 @@ SolverMeshQualityPanel::SolverMeshQualityPanel(wxWindow* parent, Locate locate, 
     m_findings->AppendColumn(Display("축"), wxLIST_FORMAT_LEFT, FromDIP(36));
     m_findings->AppendColumn(Display("영역"), wxLIST_FORMAT_LEFT, FromDIP(65));
     m_findings->AppendColumn(Display("경고 구간 (mm)"), wxLIST_FORMAT_LEFT, FromDIP(156));
-    m_findings->AppendColumn(Display("최악값 / 기준"), wxLIST_FORMAT_RIGHT, FromDIP(140));
+    m_findings->AppendColumn(Display("최악값과 기준"), wxLIST_FORMAT_RIGHT, FromDIP(140));
     m_findings->AppendColumn(Display("확인할 설정"), wxLIST_FORMAT_LEFT, FromDIP(188));
     root->Add(m_findings, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, gap);
     m_details = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 82)),
@@ -235,7 +235,7 @@ void SolverMeshQualityPanel::UpdateSelection()
     {
         const auto& lines = m_report.lines[row->worst.axis];
         const auto first = row->worst.first;
-        detail += wxString::Format(Display("\n인접 폭 %.8g mm / %.8g mm. 얇은 층과 형상에 고정된 격자선도 확인하세요."),
+        detail += wxString::Format(Display("\n인접 폭은 %.8g mm와 %.8g mm입니다. 얇은 층과 형상에 고정된 격자선도 확인하세요."),
             lines[first + 1] - lines[first], lines[first + 2] - lines[first + 1]);
     }
     else if (row->metric == Metric::Wavelength || row->metric == Metric::MaximumWidth)

@@ -17,8 +17,8 @@ from rfad.domain.units import Quantity, units_for_dimension
 PROFILE = "rfad.pcb-features-editor/0.1"
 READS = {"pcb.features.get", "pcb.features.preview", "pcb.features.receipt"}
 MUTATION = "pcb.features.apply"
-SECTIONS = {"cutout": "기판 내부 절삭", "hole": "관통 홀 / 슬롯", "footprint": "풋프린트",
-            "artwork_layer": "제조 이미지 층", "aperture": "마스크 / 페이스트 개구", "keepout": "금지 영역"}
+SECTIONS = {"cutout": "기판 내부 절삭", "hole": "관통 홀과 슬롯", "footprint": "풋프린트",
+            "artwork_layer": "제조 이미지 층", "aperture": "마스크 및 페이스트 개구", "keepout": "금지 영역"}
 OPERATIONS = {section + suffix for section in SECTIONS for suffix in (".set", ".remove")} | {"footprint.place", "footprint.member_edit", "footprint.detach"}
 MAX_DTO_BYTES = 384 * 1024
 
@@ -138,7 +138,7 @@ def normalize_record(document, record):
 
 def _choices(rows, *, optional=False):
     """! @brief UUID 대신 원본 이름을 표시하되 선택 값은 안정 ID를 유지한다."""
-    return ([{"value": None, "label": "미정 / 연결 없음"}] if optional else []) + [{"value": row["id"], "label": row.get("label", row.get("name", "원본 객체"))} for row in rows]
+    return ([{"value": None, "label": "미정 (연결 없음)"}] if optional else []) + [{"value": row["id"], "label": row.get("label", row.get("name", "원본 객체"))} for row in rows]
 
 
 def _quantity_display(document, value):
@@ -207,7 +207,7 @@ def form_fields(document, record, section, context):
     elif section == "keepout":
         field(["all_conductor_layers"], "모든 도체층에 적용", "boolean")
         field(["layer_ids"], "개별 도체층 (모든 도체층을 선택하면 보존)", "reference_list", choices=_choices(context["layers"]))
-        for key, label in (("tracks", "선 / 원호"), ("vias", "비아 / 도금 홀"), ("pads", "패드"), ("copper_pours", "도체 영역"), ("footprints", "풋프린트")):
+        for key, label in (("tracks", "선과 원호"), ("vias", "비아와 도금 홀"), ("pads", "패드"), ("copper_pours", "도체 영역"), ("footprints", "풋프린트")):
             field(["prohibit", key], label + " 금지", "boolean")
     elif section == "footprint":
         for key, label in (("reference", "참조 번호"), ("value", "표시값"), ("library_id", "원본 라이브러리 식별")):
@@ -217,7 +217,7 @@ def form_fields(document, record, section, context):
         numeric(["placement", "rotation"], record["placement"]["rotation"], "배치 회전")
         field(["placement", "side"], "배치 면", "choice", choices=[{"value": None, "label": "미정"}, {"value": "top", "label": "상면"}, {"value": "bottom", "label": "하면"}])
         field(["members"], "소유 객체", "members", choices=context["member_choices"])
-        field(["pins"], "핀과 패드 / 홀 대응", "pins", choices=_choices(context["pads"]), hole_choices=_choices(context["holes"], optional=True))
+        field(["pins"], "핀, 패드 및 홀 대응", "pins", choices=_choices(context["pads"]), hole_choices=_choices(context["holes"], optional=True))
         if record["placement_envelope"] is not None:
             shape(record["placement_envelope"], ["placement_envelope"])
     field(["source_refs"], "출처 원문", "source_refs")
@@ -329,7 +329,7 @@ def record_summary(document, record):
                     walk(item, name + (" X" if axis == 0 else " Y"))
     walk(record.get("shape", record), "값")
     if "members" in record:
-        values.append(f"멤버 {len(record['members'])}개 / 핀 {len(record['pins'])}개")
+        values.append(f"멤버 {len(record['members'])}개, 핀 {len(record['pins'])}개")
     if "use_state" in record:
         values.append({"used": "사용", "not_used": "사용 안 함", "unknown": "사용 여부 미정"}[record["use_state"]])
     if not values:

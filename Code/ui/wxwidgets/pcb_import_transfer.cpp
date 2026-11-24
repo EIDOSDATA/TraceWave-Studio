@@ -72,7 +72,7 @@ std::string OdbSummary(const Json& parsed)
     const auto profile = data.value("editable_profile", Json());
     if (profile.is_object())
     {
-        text += "\n" + profile.at("step").get<std::string>() + " / 원본 단위 " +
+        text += "\n" + profile.at("step").get<std::string>() + ", 원본 단위 " +
             profile.at("units").get<std::string>() + "\n같은 기판 외곽을 확인한 뒤 직선 내부 절삭 " +
             std::to_string(profile.at("cutouts_mm").size()) + "개를 적용할 수 있습니다.";
     }
@@ -96,10 +96,10 @@ void PcbImportDialog::Browse()
     const auto filter = ipc ? "IPC-2581 Rev C XML (*.xml)|*.xml" :
         odb ? "ODB++ 데이터셋 (*.zip)|*.zip" :
         vendor ? "제조사 원본 (*.zip;*.dxf;*.spl;*.gbr)|*.zip;*.dxf;*.spl;*.gbr|모든 파일 (*.*)|*.*" :
-                                "PCB / CAM (*.kicad_pcb;*.kicad_mod;*.gbr;*.gbrjob;*.drl;*.xnc)|"
+                                "PCB 및 CAM (*.kicad_pcb;*.kicad_mod;*.gbr;*.gbrjob;*.drl;*.xnc)|"
                                 "*.kicad_pcb;*.kicad_mod;*.gbr;*.gbrjob;*.drl;*.xnc|모든 파일 (*.*)|*.*";
     const long flags = wxFD_OPEN | wxFD_FILE_MUST_EXIST | ((vendor || ipc || odb) ? 0 : wxFD_MULTIPLE);
-    wxFileDialog dialog(this, Display("가져올 PCB / CAM 원문 파일"), wxEmptyString, wxEmptyString,
+    wxFileDialog dialog(this, Display("가져올 PCB 및 CAM 원문 파일"), wxEmptyString, wxEmptyString,
                         Display(filter), flags);
     if (dialog.ShowModal() != wxID_OK)
     {
@@ -166,7 +166,7 @@ bool PcbImportDialog::LoadFiles(const std::vector<wxString>& paths)
                     found->sha256 != row.at("sha256"))
                 {
                     throw std::runtime_error(
-                        "선택한 파일의 이름 / 길이 / SHA256이 이전 원문과 다릅니다. 이어 보내기를 중단합니다.");
+                        "선택한 파일의 이름, 길이 또는 SHA256이 이전 원문과 다릅니다. 이어 보내기를 중단합니다.");
                 }
             }
         }
@@ -377,7 +377,7 @@ void PcbImportDialog::RenderUpload(const Json& response)
         }
         else
         {
-            summary += "\n읽기 완료. 층 / 넷을 직접 선택하고 손실 항목을 확인한 뒤 변환 후보를 검토하세요.";
+            summary += "\n읽기 완료. 층과 넷을 직접 선택하고 손실 항목을 확인한 뒤 변환 후보를 검토하세요.";
         }
         m_poll.Stop();
     }
@@ -401,7 +401,7 @@ void PcbImportDialog::RenderUpload(const Json& response)
     m_summary->ChangeValue(Display(summary));
     m_raw->ChangeValue(Display(response.dump(2)));
     std::string sources =
-        "원문 파일은 이름 / 바이트 / SHA256으로 보존됩니다. 제작 / 측정 / RF 검증을 뜻하지 않습니다.\n";
+        "원문 파일의 이름, 바이트와 SHA256을 보존합니다. 제작, 측정, RF 검증은 별도로 확인해야 합니다.\n";
     for (const auto& file : response.value("files", Json::array()))
     {
         sources += "\n" + file.at("path").get<std::string>() + "\nSHA256: " + file.at("sha256").get<std::string>();

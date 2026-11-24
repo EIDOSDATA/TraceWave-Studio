@@ -17,7 +17,7 @@ const std::vector<std::pair<std::string, std::string>> Collections{
     {"calibration.port_ids", "교정 적용 포트"},
     {"calibration.reference_planes", "포트별 교정 기준면"},
     {"calibration.frequency_range_hz", "교정 주파수 범위"},
-    {"uncertainty", "불확도 / 범위 / 상관"},
+    {"uncertainty", "불확도, 범위 및 상관"},
     {"external_processing", "외부 처리 이력"},
     {"attachments", "근거 파일 연결"},
     {"calibration.certificate_refs", "교정 증서 원문"},
@@ -29,13 +29,13 @@ const std::vector<std::pair<std::string, std::string>> Collections{
 
 void MeasurementRecordForm::BuildCollections(wxBoxSizer* layout)
 {
-    layout->Add(new wxStaticText(this, wxID_ANY, Display("적용 범위 / 불확도 / 근거")), 0, wxALL, FromDIP(12));
+    layout->Add(new wxStaticText(this, wxID_ANY, Display("적용 범위, 불확도 및 근거")), 0, wxALL, FromDIP(12));
     m_collectionList =
         new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 180)), wxLC_REPORT | wxLC_SINGLE_SEL);
     m_collectionList->SetMinSize(FromDIP(wxSize(-1, 180)));
     m_collectionList->SetName("measurement.collections");
     m_collectionList->AppendColumn(Display("기록 항목"), wxLIST_FORMAT_LEFT, FromDIP(250));
-    m_collectionList->AppendColumn(Display("원문 / 초안 상태"), wxLIST_FORMAT_LEFT, FromDIP(430));
+    m_collectionList->AppendColumn(Display("원문과 초안 상태"), wxLIST_FORMAT_LEFT, FromDIP(430));
     StudioTheme::Table(*m_collectionList);
     layout->Add(m_collectionList, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     auto* buttons = new wxWrapSizer(wxHORIZONTAL);
@@ -105,7 +105,7 @@ void MeasurementRecordForm::RefreshCollections()
         const std::string summary = m_collectionInputs.contains(item.first) ? "서비스 검토가 필요한 명시 수량 초안"
                                                                             : MeasurementUi::Text(value);
         m_collectionList->SetItem(
-            row, 1, Display(summary + (m_collectionChanged[item.first] ? " / 미적용 변경" : " / 원문 보존")));
+            row, 1, Display(summary + (m_collectionChanged[item.first] ? " (미적용 변경)" : " (원문 보존)")));
     }
     if (selected >= 0 && selected < m_collectionList->GetItemCount())
     {

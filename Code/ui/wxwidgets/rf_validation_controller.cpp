@@ -239,7 +239,7 @@ void RfValidationController::Catalog(int offset)
           },
           [this](const Json& error)
           {
-              m_view->SetStatus("목록 조회 실패 / 마지막 기록 유지: " + DiagnosticMessage(error));
+              m_view->SetStatus("목록 조회에 실패해 마지막 기록을 표시합니다. 사유: " + DiagnosticMessage(error));
           }});
 }
 
@@ -292,7 +292,7 @@ void RfValidationController::Record()
     const auto id = m_validationId;
     const auto report = m_reportId;
     const auto generation = ++m_selectionGeneration;
-    m_view->SetPending(true, "선택한 검증 기록 조회 중 / 원본과 기존 판정은 변경하지 않습니다.");
+    m_view->SetPending(true, "선택한 검증 기록을 읽고 있습니다. 원본과 기존 판정은 보존됩니다.");
     Read({"rf.validation.get",
           {{"validation_id", id}, {"report_id", report}},
           [this, id, report, generation]()
@@ -306,7 +306,7 @@ void RfValidationController::Record()
                   response.at("cases").size() > 9 || !response.at("rows").is_array() ||
                   response.at("rows").size() > 128 || (report.is_null() != response.at("assessment_hash").is_null()))
               {
-                  throw std::runtime_error("검증 판정의 선택/고정 해시/행 범위가 요청과 다릅니다.");
+                  throw std::runtime_error("검증 판정의 선택, 고정 해시 또는 행 범위가 요청과 다릅니다.");
               }
               m_view->SetRecord(response);
           },

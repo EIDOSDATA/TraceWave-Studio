@@ -36,7 +36,7 @@ std::string PropertySummary(const Json& dto)
         const auto& value = property.at("value");
         summary += "\n\n" + std::string(name) + ": " + PcbView::Text(value, "scalar") + ", 범위 " +
                    PcbView::Text(value, "minimum") + " ~ " + PcbView::Text(value, "maximum") + ", 종류 " +
-                   PcbView::Text(value, "representation") + "\n한정자: " + PcbView::Text(value, "comparison") + " / " +
+                   PcbView::Text(value, "representation") + "\n한정자: " + PcbView::Text(value, "comparison") + ", " +
                    PcbView::Text(value, "limit_operator") + ", 원문 표기: " + PcbView::Text(value, "text") + "\n" +
                    (std::string(name) == "df" ? "Df 전용 주파수: " : "기록 주파수: ") +
                    FrequencySummary(property.at("frequency")) +
@@ -152,7 +152,7 @@ wxPanel* PcbSelectionDialog::BuildCatalogPage()
     layout->Add(filters, 0, wxEXPAND | wxALL, FromDIP(10));
     m_results = new PcbCatalogTable(panel, [this](long row) { QueueCatalogPage(row); });
     m_results->SetName("pcb.results");
-    const char* columns[] = {"공개 주체", "제품 / 적층 표기", "구성 / 형태", "Dk", "Df", "보고 주파수 GHz"};
+    const char* columns[] = {"공개 주체", "제품과 적층 표기", "구성과 형태", "Dk", "Df", "보고 주파수 GHz"};
     const int widths[] = {150, 260, 180, 75, 75, 130};
     for (int column = 0; column < 6; ++column)
     {
@@ -363,7 +363,7 @@ void PcbSelectionDialog::Search()
                 weak->m_catalogSearchInput["catalog_id"] = result.at("catalog_id");
                 weak->m_results->Begin(entity, weak->m_catalogRowCount, result.at("items"));
                 const std::string count = total > SearchableRows
-                    ? std::to_string(SearchableRows) + " / " + std::to_string(total) + "건 (검색 범위를 좁히세요)"
+                    ? std::to_string(SearchableRows) + "건 표시 (전체 " + std::to_string(total) + "건). 검색 범위를 좁히세요."
                     : "검색 결과 " + std::to_string(total) + "건";
                 weak->m_pageLabel->SetLabel(Display(count));
                 weak->SetStatus(total == 0 ? "인덱스는 연결되어 있습니다. 이 자료 종류와 검색 조건의 결과는 0건입니다."
@@ -521,7 +521,7 @@ void PcbSelectionDialog::SelectResult(long index)
     m_selectedEntity = m_catalogSearchInput.at("entity");
     const auto detail = ++m_detailRevision;
     m_detail->ChangeValue(Display(
-        "선택: " + PcbView::Text(m_selected, "publisher") + " / " +
+        "선택: " + PcbView::Text(m_selected, "publisher") + ", " +
         (m_selectedEntity == "native_templates" ? PcbCatalogTable::NativeLabel(m_selected) : PcbView::Text(m_selected, "product")) +
         "\n자료 ID: " + m_selected.at("id").get<std::string>() + "\n상세 조건을 읽고 있습니다."));
     UpdateControls();
@@ -570,7 +570,7 @@ void PcbSelectionDialog::SelectResult(long index)
             }
             if (item.contains("truncated_fields") && !item.at("truncated_fields").empty())
             {
-                summary += "\n일부 목록/상세 표기가 축약되었습니다.";
+                summary += "\n일부 목록과 상세 표기가 축약되었습니다.";
             }
             if (item.contains("review_flags"))
             {

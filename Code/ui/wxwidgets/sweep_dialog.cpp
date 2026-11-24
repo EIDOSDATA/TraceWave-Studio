@@ -34,7 +34,7 @@ Json Sources(wxTextCtrl* input)
 }
 
 SweepDialog::SweepDialog(wxWindow* parent, const Json& context, DialogGateway gateway)
-    : ProjectSetupDialog(parent, "설계 스윕과 다축 연구 / 새 연구 설정", context, std::move(gateway)),
+    : ProjectSetupDialog(parent, "새 다축 설계 스윕", context, std::move(gateway)),
       m_context(context), m_basis(context.at("initial_specification"))
 {
     SetName("sweep.dialog");
@@ -304,7 +304,7 @@ void SweepDialog::LoadCatalog()
     for (const auto& row : m_catalog)
     {
         const bool allowed = !row.value("read_only", false) && row.value("eligible", true);
-        m_availableVariables->Append(Display(row.at("name").get<std::string>() + (allowed ? "" : " / 선택 불가")));
+        m_availableVariables->Append(Display(row.at("name").get<std::string>() + (allowed ? "" : " (선택 불가)")));
     }
     if (!m_catalog.empty())
     {
@@ -379,7 +379,7 @@ void SweepDialog::SelectVariable(int index)
                 m_valueUnit->SetStringSelection(
                     Display(previousIndex == index && !previousUnit.empty() ? previousUnit : recommended));
             }
-            m_variableNotice->SetLabel(Display(found->at("name").get<std::string>() + " / 원본: " +
+            m_variableNotice->SetLabel(Display(found->at("name").get<std::string>() + ", 원본: " +
                                                SweepUi::Quantity(found->value("quantity", Json(nullptr)))));
         }
         m_valueMode->SetSelection(variable.contains("range") ? 1 : 0);

@@ -14,7 +14,7 @@ void StudioFrame::OpenProject(const std::string& mode, const std::string& path, 
     }
     if (m_output && m_output->Active() && path != m_path)
     {
-        Log("출력 요청의 접수/완료 여부를 확인한 뒤 다른 프로젝트를 여세요. 기존 요청 키와 파일은 보존합니다.");
+        Log("출력 요청의 접수 및 완료 여부를 확인한 뒤 다른 프로젝트를 여세요. 기존 요청 키와 파일은 보존합니다.");
         return;
     }
     if (m_cadPreparing || !m_cadTask.Id().empty() || m_modelView->IsLoading() || m_cadRestoring ||
@@ -122,7 +122,7 @@ void StudioFrame::RefreshProject()
     }
     if (m_selection.at("kind").get<std::string>().rfind("new_", 0) == 0)
     {
-        selectedLabel = "새 객체 / 미적용 입력";
+        selectedLabel = "새 객체 (미적용)";
     }
     m_selectionLabel->SetLabel(Display(selectedLabel));
     m_selectionLabel->SetToolTip(Display(selectedLabel));

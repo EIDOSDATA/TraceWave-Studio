@@ -61,7 +61,7 @@ ResultSourceBrowser::ResultSourceBrowser(wxWindow* parent)
     m_items->SetName("result.source-items");
     m_items->SetMinSize(FromDIP(wxSize(160, 150)));
     StudioTheme::Table(*m_items);
-    m_items->AppendColumn(Display("자료 / 후보 이름"), wxLIST_FORMAT_LEFT, FromDIP(120));
+    m_items->AppendColumn(Display("자료 또는 후보 이름"), wxLIST_FORMAT_LEFT, FromDIP(120));
     m_items->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(76));
     m_items->Bind(wxEVT_SIZE, [this](wxSizeEvent& event)
     {
@@ -259,7 +259,9 @@ void ResultSourceBrowser::SetCatalog(const Json& response, const Json& selected)
     {
         const auto label = item.at("label").get<std::string>();
         const auto kind = item.at("source").value("kind", "");
-        const auto name = Kind() == "all" && kind == "solver" ? label.substr(0, label.find(" / ")) : label;
+        const auto name = Kind() == "all" && kind == "solver"
+            ? item.value("short_label", label.substr(0, label.find(" / ")))
+            : label;
         const long row = m_items->InsertItem(m_items->GetItemCount(), Display(name));
         const auto state = item.value("result_state", Json(nullptr));
         const auto status = state == "completed" ? "계산됨" : state == "recorded" ? "등록됨" : ResultUi::State(state);
@@ -274,8 +276,8 @@ void ResultSourceBrowser::SetCatalog(const Json& response, const Json& selected)
     }
     const int offset = response.value("offset", 0);
     m_page->SetLabel(Display(std::to_string(offset + (m_items->GetItemCount() ? 1 : 0)) + "~" +
-                             std::to_string(offset + m_items->GetItemCount()) + " / " +
-                             std::to_string(response.value("total", 0))));
+                             std::to_string(offset + m_items->GetItemCount()) + " (전체 " +
+                             std::to_string(response.value("total", 0)) + "건)"));
     m_loading = false;
     const auto totals = response.value("current_totals", Json::object());
     const auto kind = Kind();

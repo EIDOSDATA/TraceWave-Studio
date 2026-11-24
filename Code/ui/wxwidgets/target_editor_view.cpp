@@ -19,7 +19,7 @@ void TargetEditorDialog::BuildInterface()
     layout->Add(title, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     auto* help = new wxStaticText(
         this, wxID_ANY,
-        Display("떨어진 대역은 목표를 각각 추가합니다. 기준 주파수 / 임피던스 / 급전은 미정으로 둘 수 있습니다."));
+        Display("떨어진 대역에는 목표를 각각 추가하세요. 기준 주파수, 임피던스, 급전은 미정으로 둘 수 있습니다."));
     StudioTheme::BindSecondary(*help);
     layout->Add(help, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
     auto* content = new wxBoxSizer(wxHORIZONTAL);
@@ -44,7 +44,7 @@ void TargetEditorDialog::BuildInterface()
     content->Add(right, 1, wxEXPAND);
     layout->Add(content, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(StudioTheme::PanelPadding));
     auto* reasonRow = new wxBoxSizer(wxHORIZONTAL);
-    reasonRow->Add(new wxStaticText(this, wxID_ANY, Display("추가 / 수정 / 삭제 사유")), 0,
+    reasonRow->Add(new wxStaticText(this, wxID_ANY, Display("추가, 수정 또는 삭제 사유")), 0,
                    wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(StudioTheme::InputGap));
     m_reason = new wxTextCtrl(this, wxID_ANY);
     m_reason->SetName("target.reason");
@@ -56,7 +56,7 @@ void TargetEditorDialog::BuildInterface()
     m_remove = new wxButton(this, wxID_ANY, Display("선택 목표 삭제"));
     m_remove->SetName("target.remove");
     actions->Add(m_remove, 0);
-    auto* history = new wxButton(this, wxID_ANY, Display("목표 출처 / 변경 이력..."));
+    auto* history = new wxButton(this, wxID_ANY, Display("목표 출처와 변경 이력..."));
     StudioTheme::Button(*history);
     actions->Add(history, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, FromDIP(StudioTheme::InputGap));
     history->Bind(wxEVT_UPDATE_UI, [this](wxUpdateUIEvent& event)
@@ -133,8 +133,8 @@ void TargetEditorDialog::ChoosePreset()
     wxArrayString choices;
     for (const auto& preset : presets)
     {
-        choices.Add(Display(preset.at("name").get<std::string>() + " / " + preset.at("scope").get<std::string>() +
-                            " / " + preset.at("version").get<std::string>()));
+        choices.Add(Display(preset.at("name").get<std::string>() + ", " + preset.at("scope").get<std::string>() +
+                            ", " + preset.at("version").get<std::string>()));
     }
     wxSingleChoiceDialog picker(this, Display("새 목표에 사용할 대역과 원문 판을 선택하세요."),
                                 Display("대역 프리셋"), choices, nullptr, wxCHOICEDLG_STYLE | wxRESIZE_BORDER);

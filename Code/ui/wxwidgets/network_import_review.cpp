@@ -54,7 +54,7 @@ void NetworkImportDialog::BuildReviewPage(wxWindow* page)
 {
     const int pad = FromDIP(StudioTheme::PanelPadding);
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* heading = new wxStaticText(page, wxID_ANY, Display("검토 요약 / 아직 프로젝트에 적용하지 않음"));
+    auto* heading = new wxStaticText(page, wxID_ANY, Display("적용 전 검토 요약"));
     StudioTheme::Heading(*heading);
     layout->Add(heading, 0, wxEXPAND | wxALL, pad);
     m_summary =
@@ -83,8 +83,7 @@ void NetworkImportDialog::BuildReviewPage(wxWindow* page)
     views->AddPage(tablePage, Display("실제 표본"));
     layout->Add(views, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
     auto* note = new wxStaticText(page, wxID_ANY,
-                                  Display("가져오기는 원문과 정규화 자료를 함께 저장하는 한 명령입니다. 교정 / 기준면 "
-                                          "/ 시료의 미정은 실측 검증 완료로 바뀌지 않습니다."));
+                                  Display("원문과 정규화 자료를 함께 저장합니다. 교정, 기준면, 시료의 미정 조건은 그대로 표시합니다."));
     note->Wrap(FromDIP(820));
     StudioTheme::BindSecondary(*note);
     layout->Add(note, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
@@ -141,7 +140,7 @@ void NetworkImportDialog::Preview()
         m_samples->DeleteAllItems();
         m_chart->Clear();
         m_summary->ChangeValue(Display("원문 형식, 유한 표본과 명시 조건을 서비스에서 검사하고 있습니다."));
-        SetStatus("파일 / 조건을 검토하는 중입니다.");
+        SetStatus("파일과 조건을 검토하고 있습니다.");
         Request(MeasurementSelected() ? "measurement.preview" : "network.preview", input, false,
                 [this, input](const Json& result)
                 {
@@ -160,7 +159,7 @@ void NetworkImportDialog::Preview()
                     m_tabs->SetSelection(ReviewPage);
                     SetStatus(
                         result.value("can_apply", false)
-                            ? "후보를 확인했습니다. 필요하면 열 / 포트 대응에서 미정 조건을 명시한 뒤 다시 검토하세요."
+                            ? "후보를 확인했습니다. 필요하면 열과 포트 대응 탭에서 조건을 입력한 뒤 다시 검토하세요."
                             : "가져올 수 없습니다. 검토 안내와 입력 조건을 확인하세요.");
                 });
     }
@@ -199,33 +198,33 @@ void NetworkImportDialog::RenderReview(const Json& result)
     const auto& descriptor = result.at("descriptor");
     m_measurementForm->SetDescriptor(descriptor);
     text += "자료 종류: " + descriptor.at("parameter_kind").get<std::string>() +
-            " / 단위: " + descriptor.at("unit").get<std::string>() +
-            " / 표본 수: " + std::to_string(descriptor.at("sample_count").get<std::size_t>()) + "\n";
+            ", 단위: " + descriptor.at("unit").get<std::string>() +
+            ", 표본 수: " + std::to_string(descriptor.at("sample_count").get<std::size_t>()) + "\n";
     text += "주파수: " + StudioFrequency::Range(descriptor.at("frequency_min_hz"), descriptor.at("frequency_max_hz")) +
             "\n";
     text += "파 정의: " + Value(descriptor.at("wave_definition")) +
-            " / 시간 위상: " + Value(descriptor.at("phasor_convention")) + "\n";
+            ", 시간 위상: " + Value(descriptor.at("phasor_convention")) + "\n";
     for (std::size_t index = 0; index < descriptor.at("port_ids").size(); ++index)
     {
         text += "포트 " + std::to_string(index + 1) + ": " + Value(descriptor.at("port_names").at(index)) +
-                " / 기준면: " + Value(descriptor.at("reference_planes").at(index)) +
-                " / 모드: " + Value(descriptor.at("port_modes").at(index)) +
-                " / 전류: " + Value(descriptor.at("current_orientation").at(index));
+                ", 기준면: " + Value(descriptor.at("reference_planes").at(index)) +
+                ", 모드: " + Value(descriptor.at("port_modes").at(index)) +
+                ", 전류: " + Value(descriptor.at("current_orientation").at(index));
         if (descriptor.at("z0_ohm").is_null() || descriptor.at("z0_ohm").at(index).is_null())
         {
-            text += " / Z0: 미정\n";
+            text += ", Z0: 미정\n";
         }
         else
         {
             const auto& z0 = descriptor.at("z0_ohm").at(index);
-            text += " / Z0: " + Value(z0.at(0)) + " + j(" + Value(z0.at(1)) + ") ohm\n";
+            text += ", Z0: " + Value(z0.at(0)) + " + j(" + Value(z0.at(1)) + ") ohm\n";
         }
     }
     if (descriptor.value("z0_frequency_dependent", false))
     {
         text += "Z0는 주파수에 따라 다릅니다. 위 수치는 첫 표본이며 전체 배열을 보존합니다.\n";
     }
-    text += "원문 바이트 / 출처 / 기존 조건을 보존합니다. 사용자 명시 조건은 원본 조건과 별도로 기록합니다.\n";
+    text += "원문 바이트, 출처 및 기존 조건을 보존합니다. 사용자 명시 조건은 별도로 기록합니다.\n";
     text += "미정 조건이 남아도 가져올 수 있으나, 조건이 필요한 후속 계산은 차단될 수 있습니다.\n";
     const auto& page = result.at("page");
     const auto frequencyScale = StudioFrequency::ForDescriptor(descriptor);

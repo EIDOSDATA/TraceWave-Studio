@@ -31,13 +31,13 @@ std::string State(const Json& value)
                                                           {"unknown", "미정"},
                                                           {"completed", "계산 완료"},
                                                           {"recorded", "등록 완료"},
-                                                          {"computed_unvalidated", "계산값 / 물리 미확립"},
-                                                          {"sample_dependent", "전제 확인 / 표본별 판정"},
+                                                          {"computed_unvalidated", "계산값 (물리 검증 미확립)"},
+                                                          {"sample_dependent", "전제 확인 후 표본별 판정"},
                                                           {"defined", "정의됨"},
-                                                          {"zero_magnitude_phase_undefined", "크기 0 / 위상 미정"},
+                                                          {"zero_magnitude_phase_undefined", "크기 0 (위상 미정)"},
                                                           {"undefined_zero_component", "영 성분으로 위상 미정의"},
                                                           {"undefined_zero_field", "영전계로 편파 미정의"},
-                                                          {"infinite_linear", "무한 축비 / 선형 편파"},
+                                                          {"infinite_linear", "무한 축비 (선형 편파)"},
                                                           {"circular", "원형 편파"},
                                                           {"elliptical", "타원 편파"},
                                                           {"overflow", "표현 범위 초과"},
@@ -52,7 +52,7 @@ std::string State(const Json& value)
                                                           {"nonconverged", "미수렴"},
                                                           {"not_established", "미확립"},
                                                           {"not_evaluated", "미평가"},
-                                                          {"conditional", "표본 통과 / 조건부"},
+                                                          {"conditional", "표본 통과 (조건부)"},
                                                           {"pass", "표본 통과"},
                                                           {"fail", "기준 미달"},
                                                           {"singular", "특이"},
@@ -63,7 +63,7 @@ std::string State(const Json& value)
                                                           {"outside_validity", "적용 범위 밖"},
                                                           {"infinite", "무한대"},
                                                           {"nonfinite_projection", "표시 투영 범위 초과"},
-                                                          {"active_region", "단위원 바깥 / 능동 영역"},
+                                                          {"active_region", "단위원 바깥 (능동 영역)"},
                                                           {"inside_unit_circle", "단위원 안쪽"},
                                                           {"on_unit_circle", "단위원 경계"},
                                                           {"computed", "계산"},
@@ -195,7 +195,7 @@ std::string ConditionSummary(const Json& description)
         "원본\n" + Text(description.value("label", Json(nullptr))) + "\n" +
         SourceKind(description.value("source", Json::object()).value("kind", Json(nullptr))) +
         "\n입력: " + Text(revision.value("label", revision.value("name", Json(nullptr)))) +
-        (description.value("is_current_design", false) ? "\n현재 설계 개정" : "\n저장 당시 개정 / 현재 편집과 구분") +
+        (description.value("is_current_design", false) ? "\n현재 설계 개정" : "\n저장 당시 개정 (현재 편집과 별개)") +
         "\n\n주파수\n" +
         StudioFrequency::Range(descriptor.value("frequency_min_hz", Json(nullptr)),
                                descriptor.value("frequency_max_hz", Json(nullptr))) +
@@ -210,7 +210,7 @@ std::string ConditionSummary(const Json& description)
             return values.is_array() && index < values.size() ? values.at(index) : Json(nullptr);
         };
         text += "\n\n" + PortName(descriptor, index) + "\n기준면: " + Text(item("reference_planes")) +
-                "\nZ0: " + Complex(item("z0_ohm")) + " ohm\n" + State(item("port_modes")) + " / " +
+                "\nZ0: " + Complex(item("z0_ohm")) + " ohm\n" + State(item("port_modes")) + ", " +
                 State(item("current_orientation"));
     }
     if (descriptor.value("z0_frequency_dependent", false))
@@ -223,7 +223,7 @@ std::string ConditionSummary(const Json& description)
         return conditions.is_null() ||
                        (conditions.is_object() && (!conditions.contains(key) || conditions.at(key).is_null()))
                    ? "미정"
-                   : "원문 기록 있음 / 확정 여부는 출처 확인";
+                   : "원문 기록 있음 (확정 여부는 출처 확인)";
     };
     text += "\n\n검증 상태\n계산: " + State(states.value("computation", Json(nullptr))) +
             "\n수치 수렴: " + State(states.value("numerical", Json("not_established"))) +
@@ -240,7 +240,7 @@ std::string ConditionSummary(const Json& description)
         text += "\n독립 수렴: " + State(numerical.value("formal_convergence", Json("not_established")));
     }
     const auto references = description.value("source_refs", Json::array());
-    text += "\n\n보존 출처: " + std::to_string(references.is_array() ? references.size() : 0) + "개 / 원문은 고급 상세";
+    text += "\n\n보존 출처: " + std::to_string(references.is_array() ? references.size() : 0) + "개 (원문은 고급 상세에서 확인)";
     const auto assessments = description.value("historical_assessments", Json::array());
     if (assessments.is_array() && !assessments.empty())
     {

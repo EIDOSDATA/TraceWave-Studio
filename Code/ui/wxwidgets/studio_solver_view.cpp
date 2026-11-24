@@ -178,11 +178,11 @@ void StudioFrame::UpdateSolverView()
         return;
     }
     const bool stale = m_solverSamples.at("snapshot").at("revision_id") != m_revision;
-    const std::string prefix = awaitingResult ? "아래는 이전 실행의 결과 / " : "";
+    const std::string prefix = awaitingResult ? "아래는 이전 실행의 결과입니다. " : "";
     if (profile == "rfad.openems.pcb-multiport/0.1")
     {
-        const auto label = Display(prefix + (stale ? "이전 설계의 전체 S 행렬 / 네트워크에서 조회"
-                                                   : "현재 설계의 전체 S 행렬 / 네트워크에서 조회"));
+        const auto label = Display(prefix + (stale ? "이전 설계의 전체 S 행렬은 네트워크 탭에서 열 수 있습니다."
+                                                   : "현재 설계의 전체 S 행렬은 네트워크 탭에서 열 수 있습니다."));
         m_solverViewState->SetLabel(label);
         m_solverViewState->SetToolTip(label);
         return;

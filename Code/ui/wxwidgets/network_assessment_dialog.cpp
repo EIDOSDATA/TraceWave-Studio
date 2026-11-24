@@ -28,7 +28,7 @@ std::string Metric(const std::string& value)
 
 std::string Status(const std::string& value)
 {
-    return value == "conditional" ? "표본 통과 / 조건부"
+    return value == "conditional" ? "표본 통과 (조건부)"
            : value == "pass"      ? "표본 통과"
            : value == "fail"      ? "실패"
                                   : "미평가";
@@ -71,7 +71,7 @@ NetworkAssessmentDialog::NetworkAssessmentDialog(wxWindow* parent, const Json& c
     m_history->Append(Display("새 평가 후보"));
     for (const auto& row : context.at("assessments"))
     {
-        m_history->Append(Display(row.at("name").get<std::string>() + " / " + Status(row.at("status"))));
+        m_history->Append(Display(row.at("name").get<std::string>() + ", " + Status(row.at("status"))));
     }
     m_history->SetSelection(0);
     ShowTargetPlane();
@@ -109,7 +109,7 @@ void NetworkAssessmentDialog::BuildInterface()
     AddField(settings, inputs, "목표 포트에 대응할 자료 포트", m_ports);
     m_plane = new wxTextCtrl(settings, wxID_ANY);
     m_plane->SetName("network.assessment.reference_plane");
-    m_plane->SetHint(Display("빈칸은 미정 / 평가 기준면을 명시하세요"));
+    m_plane->SetHint(Display("평가 기준면을 입력하세요. 빈칸은 미정입니다."));
     AddField(settings, inputs, "평가 기준면", m_plane);
     m_name = new wxTextCtrl(settings, wxID_ANY, Display("목표 평가 01"));
     m_name->SetName("network.assessment.name");
@@ -129,7 +129,7 @@ void NetworkAssessmentDialog::BuildInterface()
     auto* resultLayout = new wxBoxSizer(wxVERTICAL);
     m_history = new wxChoice(results, wxID_ANY);
     m_history->SetName("network.assessment.history");
-    AddField(results, resultLayout, "저장된 평가 / 검토 중 후보", m_history);
+    AddField(results, resultLayout, "저장된 평가와 검토 중인 후보", m_history);
     m_criteria =
         new wxListCtrl(results, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 175)), wxLC_REPORT | wxLC_SINGLE_SEL);
     m_criteria->SetName("network.assessment.criteria");
@@ -319,7 +319,7 @@ void NetworkAssessmentDialog::RenderSelection()
     m_loading = true;
     const int previous = m_ports->GetSelection();
     m_ports->Clear();
-    std::string details = "주파수 정책: 정확한 표본만 사용\n보간/외삽/기준면 자동 이동 없음\n\n";
+    std::string details = "주파수 정책: 정확한 표본만 사용\n보간, 외삽 및 기준면 자동 이동 없음\n\n";
     if (!m_selection.is_null())
     {
         const auto& descriptor = m_selection.at("descriptor");
@@ -350,7 +350,7 @@ void NetworkAssessmentDialog::RenderSelection()
                    "\n\n";
     }
     details +=
-        "표본 통과는 연속 대역이나 물리 정확도의 합격이 아닙니다.\n제작/측정 조건 미정은 원본에서 그대로 유지됩니다.";
+        "표본 통과는 연속 대역이나 물리 정확도의 합격이 아닙니다.\n제작 및 측정 조건 미정은 원본에서 그대로 유지됩니다.";
     m_conditions->ChangeValue(Display(details));
     m_loading = loading;
     UpdateActions();
@@ -492,15 +492,15 @@ void NetworkAssessmentDialog::RenderAssessment(const Json& assessment)
                             Display((criterion.at("operator") == "le" ? "<= " : ">= ") + TextValue(limit.at("value")) +
                                     " " + limit.at("unit").get<std::string>()));
         m_criteria->SetItem(row, 2,
-                            Display(TextValue(criterion.at("coverage").at("available")) + " / " +
-                                    TextValue(criterion.at("coverage").at("required"))));
+                            Display(TextValue(criterion.at("coverage").at("available")) + "개 (필요 " +
+                                    TextValue(criterion.at("coverage").at("required")) + "개)"));
         m_criteria->SetItem(row, 3, Display(Status(criterion.at("status"))));
         m_criteria->SetItem(row, 4, Display(criterion.value("reason", "")));
     }
     m_summary->ChangeValue(
         Display("평가: " + Status(assessment.at("status")) +
-                "\n연속 대역 검증: 미확립 / 실물 물리 검증: 미확립\n"
-                "전체 표본을 확인하려면 저장된 평가의 지표를 선택하고 이전/다음 표본으로 조회하세요."));
+                "\n연속 대역 검증과 실물 검증은 미확립 상태입니다.\n"
+                "전체 표본을 확인하려면 저장된 평가의 지표를 선택하고 이전 및 다음 표본 버튼으로 조회하세요."));
     m_loading = false;
     m_criterion = assessment.at("criteria").empty() ? -1 : 0;
     if (m_criterion >= 0)
@@ -587,8 +587,9 @@ void NetworkAssessmentDialog::RenderPoints(const Json& points, int offset, int t
         m_points->SetItem(row, 2, Display(Status(point.at("status"))));
         m_points->SetItem(row, 3, Display(point.at("reason").is_null() ? "" : point.at("reason").get<std::string>()));
     }
-    m_pageLabel->SetLabel(Display((m_recordId.empty() ? "후보 미리보기 " : "저장된 평가 ") + std::to_string(offset) +
-                                  "부터 " + std::to_string(points.size()) + " / " + std::to_string(total) + "개 표본"));
+    m_pageLabel->SetLabel(Display((m_recordId.empty() ? "후보 미리보기 " : "저장된 평가 ") +
+                                  std::to_string(points.empty() ? 0 : offset + 1) + "~" +
+                                  std::to_string(offset + points.size()) + " (전체 " + std::to_string(total) + "개 표본)"));
     UpdateActions();
 }
 

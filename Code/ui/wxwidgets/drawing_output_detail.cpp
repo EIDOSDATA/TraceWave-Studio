@@ -86,7 +86,7 @@ void DrawingOutputView::AddDetail()
                             {"layer_id", ids.at(layer->GetSelection())},
                             {"bounds_mm", region},
                             {"label", Utf8(name->GetValue())}});
-    const auto row = m_views->Append(name->GetValue() + Display(" / 상세 영역"));
+    const auto row = m_views->Append(name->GetValue() + Display(" (상세 영역)"));
     m_views->Check(row);
     m_views->SetSelection(row);
     Changed();

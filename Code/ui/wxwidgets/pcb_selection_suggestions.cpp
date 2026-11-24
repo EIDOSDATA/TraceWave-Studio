@@ -19,7 +19,7 @@ namespace
 /** @brief 공개값과 근사 필요 상태를 함께 표시하며 비수치 값을 추정하지 않는다. */
 std::string PropertyLabel(const Json& property)
 {
-    return PcbView::Text(property, "value") + " / " +
+    return PcbView::Text(property, "value") + ", " +
            Studio::PcbSuggestions::StateLabel(property.at("state").get<std::string>());
 }
 
@@ -45,7 +45,7 @@ std::string ConditionsLabel(const Json& property)
     result += "\n자료 기록: " + PcbView::Text(property, "record_id");
     if (property.contains("source"))
     {
-        result += "\n출처: " + PcbView::Text(property.at("source"), "publisher") + " / " +
+        result += "\n출처: " + PcbView::Text(property.at("source"), "publisher") + ", " +
                   PcbView::Text(property.at("source"), "source_id") +
                   "\n원문 위치: " + PcbView::Text(property.at("source"), "source_location");
     }
@@ -53,8 +53,8 @@ std::string ConditionsLabel(const Json& property)
     {
         result += "\n원문 범위: " + PcbView::Text(property.at("reported_limits"), "_min") + " ~ " +
                   PcbView::Text(property.at("reported_limits"), "_max") +
-                  " / 한정자: " + PcbView::Text(property.at("reported_limits"), "_comparison") +
-                  " / 상한 조건: " + PcbView::Text(property.at("reported_limits"), "_limit_operator");
+                  ", 한정자: " + PcbView::Text(property.at("reported_limits"), "_comparison") +
+                  ", 상한 조건: " + PcbView::Text(property.at("reported_limits"), "_limit_operator");
     }
     if (property.contains("reported_value"))
     {
@@ -75,7 +75,7 @@ void PcbSelectionDialog::BuildSuggestions(wxPanel* panel, wxBoxSizer* layout)
         new wxListCtrl(panel, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 110)), wxLC_REPORT | wxLC_SINGLE_SEL);
     StudioTheme::Table(*m_suggestions);
     m_suggestions->SetName("pcb.suggestions");
-    const char* columns[] = {"층", "두께 mm / 상태", "Dk / 상태", "Df / 상태"};
+    const char* columns[] = {"층", "두께 (mm)와 상태", "Dk와 상태", "Df와 상태"};
     const int widths[] = {180, 215, 230, 230};
     for (int column = 0; column < 4; ++column)
     {
@@ -159,14 +159,14 @@ void PcbSelectionDialog::PopulateSuggestions(const Json& response)
         m_suggestionOffsets.erase(previous + 1, m_suggestionOffsets.end());
     }
     m_suggestionPage->SetLabel(
-        Display((count == 0 ? "0" : std::to_string(offset + 1) + "-" + std::to_string(offset + count)) + " / " +
-                PcbView::Text(response, "total_count") + "층"));
+        Display((count == 0 ? "0" : std::to_string(offset + 1) + "-" + std::to_string(offset + count)) + " (전체 " +
+                PcbView::Text(response, "total_count") + "층)"));
     for (const auto& item : response.at("layers"))
     {
         const auto index = m_suggestions->InsertItem(m_suggestions->GetItemCount(), Display(item.at("name")));
         m_suggestions->SetItem(
             index, 1,
-            Display(PcbView::Text(item, "thickness_mm") + " / " +
+            Display(PcbView::Text(item, "thickness_mm") + ", " +
                     Studio::PcbSuggestions::StateLabel(item.at("thickness_state").get<std::string>())));
         m_suggestions->SetItem(index, 2, Display(PropertyLabel(item.at("properties").at("epsilon_r"))));
         m_suggestions->SetItem(index, 3, Display(PropertyLabel(item.at("properties").at("tan_delta"))));

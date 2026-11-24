@@ -49,7 +49,7 @@ Json PhysicalSetupDialog::InitialSelection()
 }
 
 PhysicalSetupDialog::PhysicalSetupDialog(wxWindow* parent, const Json& context, DialogGateway gateway)
-    : ProjectSetupDialog(parent, "PCB / 적층과 외부 환경", context, std::move(gateway))
+    : ProjectSetupDialog(parent, "PCB 적층과 외부 환경", context, std::move(gateway))
 {
     SetName("physical.setup.dialog");
     const int pad = FromDIP(StudioTheme::PanelPadding);
@@ -57,7 +57,7 @@ PhysicalSetupDialog::PhysicalSetupDialog(wxWindow* parent, const Json& context, 
     auto* select = new wxBoxSizer(wxHORIZONTAL);
     m_section = new wxChoice(this, wxID_ANY);
     m_section->SetName("physical.section");
-    for (const auto* label : {"기본 적층 / 명목 두께", "표면층 / 개구", "활성 시나리오", "설치 시나리오", "외부 물체"})
+    for (const auto* label : {"기본 적층과 명목 두께", "표면층과 개구", "활성 시나리오", "설치 시나리오", "외부 물체"})
     {
         m_section->Append(Display(label));
     }
@@ -99,7 +99,7 @@ PhysicalSetupDialog::PhysicalSetupDialog(wxWindow* parent, const Json& context, 
     m_status = new wxStaticText(this, wxID_ANY, wxEmptyString);
     layout->Add(m_status, 0, wxEXPAND | wxALL, pad);
     auto* actions = new wxBoxSizer(wxHORIZONTAL);
-    actions->Add(new wxStaticText(this, wxID_ANY, Display("변경 사유 / 출처")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, pad);
+    actions->Add(new wxStaticText(this, wxID_ANY, Display("변경 사유와 출처")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, pad);
     m_reason = new wxTextCtrl(this, wxID_ANY);
     m_reason->SetName("physical.reason");
     m_reason->SetMaxLength(512);

@@ -29,8 +29,8 @@ MeasurementOperationDialog::MeasurementOperationDialog(wxWindow* parent, const J
     SetName("measurement.operation.dialog");
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* heading = new wxStaticText(this, wxID_ANY,
-                                     Display(operation == "align" ? "명시 정렬 / 원문과 별도 파생 자료"
-                                                                  : "측정 비교 / 당시 원본과 조건을 고정한 보고서"));
+                                     Display(operation == "align" ? "원문을 보존하는 명시 정렬"
+                                                                  : "원본과 조건이 고정된 측정 비교 보고서"));
     StudioTheme::Title(*heading);
     layout->Add(heading, 0, wxALL, FromDIP(12));
     m_tabs = new StudioNotebook(this);
@@ -77,7 +77,7 @@ MeasurementOperationDialog::MeasurementOperationDialog(wxWindow* parent, const J
         new wxListCtrl(review, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 150)), wxLC_REPORT | wxLC_SINGLE_SEL);
     m_points->SetMinSize(FromDIP(wxSize(-1, 150)));
     for (const auto& column :
-         std::vector<std::pair<std::string, int>>{{"주파수", 170}, {"실제 / 파생 복소값", 260}, {"상태 / 출처", 300}})
+         std::vector<std::pair<std::string, int>>{{"주파수", 170}, {"실제 및 파생 복소값", 260}, {"상태와 출처", 300}})
     {
         m_points->AppendColumn(Display(column.first), wxLIST_FORMAT_LEFT, FromDIP(column.second));
     }
@@ -91,7 +91,7 @@ MeasurementOperationDialog::MeasurementOperationDialog(wxWindow* parent, const J
                      review->FitInside();
                      event.Skip();
                  });
-    m_tabs->AddPage(review, Display("실제 후보 / 판정"));
+    m_tabs->AddPage(review, Display("실제 후보와 판정"));
     auto* source = new wxScrolledWindow(m_tabs, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
     source->SetScrollRate(0, FromDIP(16));
     auto* sourceLayout = new wxBoxSizer(wxVERTICAL);
@@ -100,7 +100,7 @@ MeasurementOperationDialog::MeasurementOperationDialog(wxWindow* parent, const J
                                           "재현·공진 이동 맞춤은 수행하지 않습니다."));
     note->Wrap(FromDIP(800));
     sourceLayout->Add(note, 0, wxEXPAND | wxALL, FromDIP(12));
-    auto* advanced = new wxCollapsiblePane(source, wxID_ANY, Display("고급 / 원문과 연산 근거"), wxDefaultPosition,
+    auto* advanced = new wxCollapsiblePane(source, wxID_ANY, Display("고급: 원문과 연산 근거"), wxDefaultPosition,
                                            wxDefaultSize, wxCP_DEFAULT_STYLE | wxCP_NO_TLW_RESIZE);
     advanced->GetPane()->SetSizer(new wxBoxSizer(wxVERTICAL));
     m_source = new wxTextCtrl(advanced->GetPane(), wxID_ANY, Display(selection.dump(2)), wxDefaultPosition,
@@ -231,9 +231,9 @@ void MeasurementOperationDialog::Render(const Json& response)
 {
     m_points->DeleteAllItems();
     m_chart->Clear();
-    std::string text = response.value("can_apply", false) ? "명시 후보 검토 완료 / 원문 보존\n" : "후보 적용 불가\n";
+    std::string text = response.value("can_apply", false) ? "명시 후보 검토 완료. 원문을 보존합니다.\n" : "후보 적용 불가\n";
     text += MeasurementUi::Issues(response);
-    text += "실측 일치: 미확립 / 불확도 전파: 수행하지 않음\n";
+    text += "실측 일치 미확립, 불확도 전파 미실행.\n";
     const auto comparison = response.value("comparison_preview", Json(nullptr));
     if (comparison.is_object())
     {
@@ -241,7 +241,7 @@ void MeasurementOperationDialog::Render(const Json& response)
         const auto scale = StudioFrequency::ForSamples(points);
         const int total = comparison.at("total").get<int>();
         const int comparable = comparison.at("comparable_points").get<int>();
-        text += "비교 가능 " + std::to_string(comparable) + " / " + std::to_string(total) + " 표본\n";
+        text += "비교 가능 " + std::to_string(comparable) + "개 (전체 " + std::to_string(total) + "개 표본)\n";
         text += "검토에는 첫 " + std::to_string(points.size()) +
                 "개를 표시합니다. 저장 후 전체 조건과 표본을 조회할 수 있습니다.\n";
         m_points->SetColumnWidth(2, FromDIP(610));
@@ -258,7 +258,7 @@ void MeasurementOperationDialog::Render(const Json& response)
                              {"real", difference.is_array() ? difference.at(0) : Json(nullptr)},
                              {"status", difference.is_array() ? "valid" : "missing"}});
         }
-        m_chart->SetMetric("real", Display("비교 - 기준 / 실수부"));
+        m_chart->SetMetric("real", Display("비교값과 기준값의 실수부 차이"));
         m_chart->SetFrequencyUnit(scale.unit);
         m_chart->SetPage({{"samples", curve}}, Display("비교 후보"));
     }
@@ -286,7 +286,7 @@ void MeasurementOperationDialog::Render(const Json& response)
                               Display(ResultUi::Complex(Json::array(
                                   {sample.value("real", Json(nullptr)), sample.value("imag", Json(nullptr))}))));
             m_points->SetItem(row, 2,
-                              Display(ResultUi::State(sample.value("status", Json(nullptr))) + " / " +
+                              Display(ResultUi::State(sample.value("status", Json(nullptr))) + ", " +
                                       ResultUi::State(sample.value("origin", Json(nullptr)))));
         }
     }

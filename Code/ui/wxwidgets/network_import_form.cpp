@@ -79,7 +79,7 @@ void NetworkImportDialog::BuildFilePage(wxWindow* page)
     file->Add(m_browse);
     form->Add(file, 1, wxEXPAND);
     form->Add(new wxStaticText(page, wxID_ANY, Display("파일 형식")), 0, wxALIGN_CENTER_VERTICAL);
-    m_format = Choices(page, {"Touchstone S / 1~2 포트", "CSV / 명시 열 대응", "TraceWave 정규 HDF5"},
+    m_format = Choices(page, {"Touchstone S (1~2 포트)", "CSV (명시 열 대응)", "TraceWave 정규 HDF5"},
                        "network.import.format");
     form->Add(m_format, 1, wxEXPAND);
     layout->Add(form, 0, wxEXPAND | wxALL, pad);
@@ -94,7 +94,7 @@ void NetworkImportDialog::BuildFilePage(wxWindow* page)
     auto* note = new wxStaticText(
         page, wxID_ANY,
         Display(
-            "파싱 성공은 측정 신뢰성이나 안테나 성능의 검증이 아닙니다. 제작 / 측정 조건의 미정 상태를 유지합니다."));
+            "파일을 읽은 뒤에도 측정 신뢰성과 안테나 성능은 별도로 확인해야 합니다. 제작과 측정의 미정 조건은 그대로 표시합니다."));
     note->Wrap(FromDIP(820));
     StudioTheme::BindSecondary(*note);
     layout->Add(note, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
@@ -121,7 +121,7 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
     const int pad = FromDIP(StudioTheme::PanelPadding);
     auto* layout = new wxBoxSizer(wxVERTICAL);
     m_csv = new wxPanel(page);
-    auto* csvLayout = new wxStaticBoxSizer(wxVERTICAL, m_csv, Display("CSV 열 대응 / 열 번호는 0부터 시작"));
+    auto* csvLayout = new wxStaticBoxSizer(wxVERTICAL, m_csv, Display("CSV 열 대응 (열 번호는 0부터 시작)"));
     auto* fields = new wxFlexGridSizer(4, FromDIP(8), FromDIP(12));
     fields->AddGrowableCol(1, 1);
     fields->AddGrowableCol(3, 1);
@@ -144,8 +144,8 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
     m_frequencyUnit->SetToolTip(Display("CSV 원문의 숫자를 해석하는 단위입니다. 검토 결과의 표시 단위와 구분합니다."));
     field("원문 주파수 단위", m_frequencyUnit);
     m_parameter = Choices(m_csv, {"S (1)", "Z (ohm)", "Y (S)"}, "network.import.parameter");
-    field("자료 종류 / 단위", m_parameter);
-    m_representation = Choices(m_csv, {"RI / 실수, 허수", "MA / 크기, 각도 (deg)", "DB / dB, 각도 (deg)"},
+    field("자료 종류와 단위", m_parameter);
+    m_representation = Choices(m_csv, {"RI (실수부, 허수부)", "MA (크기, 각도는 도)", "DB (크기 dB, 각도는 도)"},
                                "network.import.representation");
     field("복소수 표현", m_representation);
     m_portCount = new wxChoice(m_csv, wxID_ANY);
@@ -181,7 +181,7 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
     {
         auto* input = new wxTextCtrl(m_csv, wxID_ANY);
         input->SetName(wxString::Format("network.import.z0.%zu", index));
-        input->SetHint(wxString::Format("port %zu / ohm", index + 1));
+        input->SetHint(wxString::Format(Display("포트 %zu (ohm)"), index + 1));
         input->SetMaxLength(128);
         m_z0[index] = input;
         impedance->Add(input, 1, wxRIGHT, pad);
@@ -200,12 +200,12 @@ void NetworkImportDialog::BuildMappingPage(wxWindow* page)
 
     auto* note = new wxStaticText(
         page, wxID_ANY,
-        Display("포트 / 파 / 기준면은 첫 파일 검토 후 편집할 수 있습니다. 바꾸지 않은 조건은 원문 그대로 보존합니다."));
+        Display("포트, 파 정의, 기준면은 파일을 먼저 검토한 뒤 편집할 수 있습니다. 바꾸지 않은 조건은 원문 그대로 보존합니다."));
     note->Wrap(FromDIP(820));
     layout->Add(note, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
     m_conditions = new wxPanel(page);
     auto* conditions =
-        new wxStaticBoxSizer(wxVERTICAL, m_conditions, Display("명시 조건 채택 / 원본 조건은 별도 보존"));
+        new wxStaticBoxSizer(wxVERTICAL, m_conditions, Display("명시 조건 채택 (원본 조건 별도 보존)"));
     auto* globals = new wxFlexGridSizer(4, FromDIP(8), FromDIP(12));
     globals->AddGrowableCol(1, 1);
     globals->AddGrowableCol(3, 1);

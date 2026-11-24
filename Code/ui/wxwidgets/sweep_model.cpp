@@ -123,7 +123,7 @@ std::string CandidateValues(const Json& candidate)
     {
         if (!text.empty())
         {
-            text += " / ";
+            text += ", ";
         }
         text += value.is_object() && (value.contains("quantity") || value.contains("value"))
                     ? value.value("name", "") + " " +
@@ -184,7 +184,7 @@ std::string VariableSummary(const Json& variable)
     if (variable.contains("range"))
     {
         const auto& range = variable.at("range");
-        return Quantity(range.at("start")) + " ~ " + Quantity(range.at("stop")) + " / " + Text(range.at("count")) +
+        return Quantity(range.at("start")) + " ~ " + Quantity(range.at("stop")) + ", " + Text(range.at("count")) +
                "개";
     }
     std::string text;

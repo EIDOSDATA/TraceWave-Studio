@@ -120,7 +120,7 @@ void ResultWorkspace::LoadMeasurements()
     }
     const auto project = m_project, revision = m_revision;
     const auto request = ++m_measurementRequest;
-    m_measurement->SetStatus("현재 개정의 시료 / 교정 기록을 읽고 있습니다.");
+    m_measurement->SetStatus("현재 개정의 시료 및 교정 기록을 읽고 있습니다.");
     Read(
         "measurement.context", {{"revision_id", nullptr}, {"offset", 0}, {"limit", 32}},
         [this, project, revision, request]()

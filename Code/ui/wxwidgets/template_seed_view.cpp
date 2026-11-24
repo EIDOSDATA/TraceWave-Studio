@@ -14,7 +14,7 @@ void TemplateDialog::BuildSeedControls(wxSizer* layout)
     m_seedPanel = new wxPanel(this);
     StudioTheme::BindSurface(*m_seedPanel);
     auto* form = new wxBoxSizer(wxVERTICAL);
-    auto* title = new wxStaticText(m_seedPanel, wxID_ANY, Display("초기 길이 추정 / 공진 및 정합 해석은 별도"));
+    auto* title = new wxStaticText(m_seedPanel, wxID_ANY, Display("초기 길이 추정 (공진 및 정합 해석은 별도)"));
     StudioTheme::Heading(*title);
     form->Add(title, 0, wxBOTTOM, FromDIP(StudioTheme::Space));
     m_seedRecipe = new wxChoice(m_seedPanel, wxID_ANY);
@@ -67,7 +67,7 @@ void TemplateDialog::RenderSeedControls()
         Json{{"key", "frequency.unit"}, {"label", "단위"}, {"editor", "choice"}, {"value", "GHz"}, {"readonly", false},
              {"choices", Json::array({Json{{"value", "Hz"}, {"label", "Hz"}}, Json{{"value", "MHz"}, {"label", "MHz"}},
                                       Json{{"value", "GHz"}, {"label", "GHz"}}})}},
-        Json{{"key", "assumption"}, {"label", "조건을 채택한 가정/사유"}, {"editor", "text"}, {"value", ""}, {"readonly", false}}}));
+        Json{{"key", "assumption"}, {"label", "조건을 채택한 가정과 사유"}, {"editor", "text"}, {"value", ""}, {"readonly", false}}}));
     if (m_seedDrafts.contains(DraftKey()))
     {
         const auto& draft = m_seedDrafts.at(DraftKey());

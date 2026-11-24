@@ -15,18 +15,18 @@ PROFILE = "rfad.result-field/0.1"
 MAX_RESPONSE = 256 * 1024
 MAX_PAGE = field_hdf5.MAX_ROI_POINTS
 MONITORS = {
-    "electric": ("pcb_loss_E.h5", "전기장 E / 기록 성분", "E", 0, "V*s/m"),
-    "material_current": ("pcb_loss_J.h5", "재료 전류 J / 기록 성분", "J", 2, "A*s/m^2"),
-    "total_current": ("pcb_loss_rotH.h5", "총 전류 rotH / 원문 시간 위치", "rotH", 3, "A*s/m^2"),
-    "probe_electric": (PROBE_NAME, "전기장 E / 지정 영역", "E", 0, "V*s/m"),
-    "probe_magnetic": (MAGNETIC_NAME, "자기장 H / 지정 영역", "H", 1, "A*s/m"),
+    "electric": ("pcb_loss_E.h5", "기록된 전기장 E 성분", "E", 0, "V*s/m"),
+    "material_current": ("pcb_loss_J.h5", "기록된 재료 전류 J 성분", "J", 2, "A*s/m^2"),
+    "total_current": ("pcb_loss_rotH.h5", "총 전류 rotH (원문 시간 위치)", "rotH", 3, "A*s/m^2"),
+    "probe_electric": (PROBE_NAME, "지정 영역의 전기장 E", "E", 0, "V*s/m"),
+    "probe_magnetic": (MAGNETIC_NAME, "지정 영역의 자기장 H", "H", 1, "A*s/m"),
 }
 WARNINGS = [
     "펄스 Fourier 원문 단위이며 연속파/실측 절대 전계가 아닙니다.",
     "원본 단면과 표본 마커는 각 성분의 실제 Yee 위치와 복소값을 표시합니다.",
     "재료 J는 native 재료 전류이며 sheet 경계의 전체 실제 전류를 뜻하지 않습니다.",
     "rotH의 원문 시간 위치를 유지합니다. 손실 적분의 시간/위상 보정은 적용하지 않았습니다.",
-    "제작/측정 조건과 독립 물리 정확도는 미확립 상태를 유지합니다.",
+    "제작과 측정 조건 및 독립 물리 정확도는 미확립 상태입니다.",
 ]
 
 

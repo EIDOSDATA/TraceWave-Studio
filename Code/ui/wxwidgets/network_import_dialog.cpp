@@ -47,7 +47,7 @@ NetworkImportDialog::NetworkImportDialog(wxWindow* parent, const Json& context, 
     auto* measurement = new wxPanel(m_tabs);
     BuildMeasurementPage(measurement, gateway);
     m_tabs->AddPage(file, Display("파일과 형식"));
-    m_tabs->AddPage(mapping, Display("열 / 포트 대응"));
+    m_tabs->AddPage(mapping, Display("열과 포트 대응"));
     m_tabs->AddPage(measurement, Display("시료와 교정"));
     m_tabs->AddPage(review, Display("가져오기 검토"));
     layout->Add(m_tabs, 1, wxEXPAND | wxLEFT | wxRIGHT, pad);
@@ -57,7 +57,7 @@ NetworkImportDialog::NetworkImportDialog(wxWindow* parent, const Json& context, 
     auto* actions = new wxBoxSizer(wxHORIZONTAL);
     actions->AddStretchSpacer();
     auto* close = new wxButton(this, wxID_CANCEL, Display("취소"));
-    m_preview = new wxButton(this, wxID_ANY, Display("파일 / 조건 검토"));
+    m_preview = new wxButton(this, wxID_ANY, Display("파일 및 조건 검토"));
     m_preview->SetName("network.import.preview");
     m_apply = new wxButton(this, wxID_APPLY, Display("가져오기"));
     m_apply->SetName("network.import.apply");
@@ -85,7 +85,7 @@ NetworkImportDialog::NetworkImportDialog(wxWindow* parent, const Json& context, 
                                    RecoverMeasurement();
                                });
     m_loading = false;
-    SetStatus("Touchstone / 명시 CSV / TraceWave 정규 HDF5를 지원합니다. 원문 상한은 512 KiB입니다.");
+    SetStatus("Touchstone, 열을 지정한 CSV, TraceWave 정규 HDF5를 지원합니다. 원문의 크기 제한은 512 KiB입니다.");
     UpdateActions();
     Layout();
 }
@@ -152,7 +152,7 @@ bool NetworkImportDialog::LoadFile(const wxString& path)
     if (Format() == "hdf5")
     {
         m_raw->ChangeValue(
-            Display("이진 HDF5 파일입니다. 서비스 검토에서 정규 프로필과 배열/메타데이터의 일치를 확인합니다."));
+            Display("이진 HDF5 파일입니다. 서비스에서 배열과 메타데이터가 정규 프로필과 일치하는지 확인합니다."));
     }
     else
     {
@@ -172,7 +172,7 @@ bool NetworkImportDialog::LoadFile(const wxString& path)
     m_loading = false;
     ChangeInputs(true);
     m_tabs->SetSelection(FilePage);
-    SetStatus("파일을 읽었습니다. CSV는 열 대응을 확인하고, 파일 / 조건 검토를 실행하세요.");
+    SetStatus("파일을 읽었습니다. CSV의 열 대응을 확인한 뒤 파일 및 조건 검토를 실행하세요.");
     return true;
 }
 

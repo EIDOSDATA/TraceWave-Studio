@@ -49,8 +49,8 @@ std::string CopyState(const std::string& value)
 {
     static const std::map<std::string, std::string> labels{
         {"included", "파일 포함"},
-        {"external_storage_reference_only", "외부 저장 / 참조만"},
-        {"registered_reference_only", "등록 근거 / 참조만"},
+        {"external_storage_reference_only", "외부 저장 자료 참조"},
+        {"registered_reference_only", "등록 근거 참조"},
         {"no_file_record", "기록만"},
     };
     const auto found = labels.find(value);
@@ -71,7 +71,7 @@ std::string EvidenceName(const Json& row)
     }
     const auto format = row.value("detail", Json::object()).value("format", Json(nullptr));
     const std::string title = format == "pdf" ? "PDF 도면" : format == "svg" ? "SVG 도면" :
-        (format == "step" ? "STEP 교환" : format == "gerber_job" ? "Gerber Job / 드릴" : "보존 출력");
+        (format == "step" ? "STEP 교환" : format == "gerber_job" ? "Gerber Job 및 드릴" : "보존 출력");
     return title + (name == "export.verify" ? " 검수" : " 생성");
 }
 }
@@ -308,7 +308,7 @@ void HandoffOutputView::SetEvidence(const Json& value)
             const bool included = std::find(m_selected.begin(), m_selected.end(), selected) != m_selected.end();
             const bool file =
                 row.at("artifact").is_object() || !row.at("detail").value("artifacts", Json::array()).empty();
-            m_list->SetItem(index, 2, Display(included ? "파일 포함 요청" : file ? "등록 근거" : "조건 / 기록"));
+            m_list->SetItem(index, 2, Display(included ? "파일 포함 요청" : file ? "등록 근거" : "조건과 기록"));
         }
     }
     UpdateActions();
@@ -349,7 +349,7 @@ void HandoffOutputView::SetCatalog(const Json& value, const std::string& preferr
     m_history->Clear();
     for (const auto& row : m_packages)
     {
-        const auto index = m_history->Append(Display(row.at("file_name").get<std::string>() + " / " +
+        const auto index = m_history->Append(Display(row.at("file_name").get<std::string>() + ", " +
                                                      row.at("artifact").at("sha256").get<std::string>().substr(0, 8)));
         if (row.at("package_id") == keep)
         {
@@ -432,25 +432,25 @@ void HandoffOutputView::UpdateActions()
     m_history->Enable(m_available && !m_packages.empty());
     m_save->Enable(m_available && SelectedPackage().is_object());
     std::string info =
-        m_snapshot ? "고정 설계와 보고서를 포함합니다. 파일 포함 선택 " + std::to_string(m_selected.size()) + " / 64"
+        m_snapshot ? "고정 설계와 보고서를 포함합니다. 파일 포함 선택 " + std::to_string(m_selected.size()) + "개 (최대 64개)"
                    : "위 목록에서 고정 입력을 선택하세요. 발행 기록은 따로 열 수 있습니다.";
     if (archive)
     {
         info = "현재 적용 개정과 저장 기준점으로 편집 복원용 ZIP을 만듭니다.";
         if (m_review.is_object())
         {
-            info = "검토 완료 / 파일 " + std::to_string(m_review.at("file_count").get<int>()) + "개 / 제외 및 미확보 " +
-                   std::to_string(m_review.at("missing_count").get<int>()) + "개 / " +
+            info = "검토 완료. 파일 " + std::to_string(m_review.at("file_count").get<int>()) + "개, 제외 또는 미확보 " +
+                   std::to_string(m_review.at("missing_count").get<int>()) + "개, " +
                    std::to_string(m_review.at("estimated_bytes").get<int>()) + " B";
         }
     }
     else if (m_review.is_object())
     {
-        info = "검토 완료 / 보고서 근거 " + std::to_string(m_review.at("evidence_count").get<int>()) + "건 / " +
+        info = "검토 완료. 보고서 근거 " + std::to_string(m_review.at("evidence_count").get<int>()) + "건, " +
                std::to_string(m_review.at("estimated_bytes").get<int>()) + " B";
     }
     const auto label = Display(
-        info + (archive ? "\n제작/실측 합격 미확립 / 편집 복원용" : "\n제작/실측 합격 미확립 / 읽기 전용 인계"));
+        info + (archive ? "\n편집 복원용입니다. 제작과 실측 합격은 확인되지 않았습니다." : "\n읽기 전용 인계입니다. 제작과 실측 합격은 확인되지 않았습니다."));
     if (m_summary->GetLabel() != label)
     {
         m_summary->SetLabel(label);
@@ -474,10 +474,10 @@ void HandoffOutputView::ShowDetails(bool files)
     std::string text;
     if (files)
     {
-        text = "manifest.json / 목록과 원문 SHA256\n";
+        text = "manifest.json (목록과 원문 SHA256)\n";
         for (const auto& row : m_review.at("files"))
         {
-            text += "\n" + row.at("uri").get<std::string>() + " / " + std::to_string(row.at("bytes").get<int>()) +
+            text += "\n" + row.at("uri").get<std::string>() + ", " + std::to_string(row.at("bytes").get<int>()) +
                     " B\n" + row.at("sha256").get<std::string>() + "\n";
         }
         if (archive && m_review.at("file_count").get<std::size_t>() > m_review.at("files").size() + 1)
@@ -488,7 +488,7 @@ void HandoffOutputView::ShowDetails(bool files)
     else
     {
         text = archive ? "프로젝트 복원에 포함되는 파일 " + std::to_string(m_review.at("file_count").get<int>()) +
-                            "개 / 미확보 " + std::to_string(m_review.at("missing_count").get<int>()) + "개\n\n"
+                            "개, 미확보 " + std::to_string(m_review.at("missing_count").get<int>()) + "개\n\n"
                        : "인계 보고서의 근거 " + std::to_string(m_review.at("evidence_count").get<int>()) + "건\n\n";
         for (const auto& limit : m_review.at("limitations"))
         {
@@ -498,7 +498,7 @@ void HandoffOutputView::ShowDetails(bool files)
         {
             for (const auto& row : m_review.at("omitted_preview"))
             {
-                text += "\n" + row.at("reason").get<std::string>() + " / " +
+                text += "\n" + row.at("reason").get<std::string>() + ", " +
                         row.at("reference").at("uri").get<std::string>() + "\n";
             }
             if (m_review.at("missing_count").get<std::size_t>() > m_review.at("omitted_preview").size())
@@ -510,7 +510,7 @@ void HandoffOutputView::ShowDetails(bool files)
         {
             for (const auto& row : m_review.at("preview_records"))
             {
-                text += "\n" + Kind(row.at("kind")) + " / " + EvidenceName(row) + " / " +
+                text += "\n" + Kind(row.at("kind")) + ", " + EvidenceName(row) + ", " +
                         CopyState(row.at("copy_state")) + "\n";
             }
             if (m_review.at("evidence_count").get<std::size_t>() > m_review.at("preview_records").size())

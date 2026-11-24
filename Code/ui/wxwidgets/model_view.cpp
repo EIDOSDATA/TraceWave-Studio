@@ -41,7 +41,7 @@ public:
     {
         SetBackgroundStyle(wxBG_STYLE_PAINT);
         SetName(Text("3D 형상 보기"));
-        SetToolTip(Text("방향키: 회전 / Shift+방향키: 이동 / +, -: 확대·축소 / F: 전체 보기"));
+        SetToolTip(Text("방향키로 회전, Shift+방향키로 이동, +와 -로 확대·축소, F로 전체 보기"));
         Bind(wxEVT_PAINT, &MeshCanvas::Paint, this);
         Bind(wxEVT_SIZE, [this](wxSizeEvent& event)
         {
@@ -611,7 +611,7 @@ struct ModelView::Impl
     explicit Impl(ModelView* window) : owner(window), timer(window), idleTimer(window)
     {
         auto* sizer = new wxBoxSizer(wxVERTICAL);
-        message = new wxStaticText(window, wxID_ANY, Text("3D 형상을 생성하면 여기에 표시합니다. 물성/해석 결과와 구분되는 기하 보기입니다."));
+        message = new wxStaticText(window, wxID_ANY, Text("3D 형상을 생성하면 여기에 표시합니다. 물성과 해석 결과와 구분되는 기하 보기입니다."));
         message->Wrap(window->FromDIP(500));
         sizer->Add(message, 0, wxEXPAND | wxALL, window->FromDIP(8));
         window->SetSizer(sizer);
@@ -837,7 +837,7 @@ struct ModelView::Impl
             timer.Stop();
             if (!EnsureCanvas())
             {
-                Failure("OpenGL 3D 화면을 만들 수 없습니다. STEP 출력과 편집/저장은 계속 사용할 수 있습니다.");
+                Failure("OpenGL 3D 화면을 만들 수 없습니다. STEP 출력과 편집과 저장은 계속 사용할 수 있습니다.");
                 return;
             }
             canvas->Show();
@@ -1006,7 +1006,7 @@ void ModelView::EnableSections()
     m_impl->sectionKeepUpper->SetName("model.section.direction");
     m_impl->sectionKeepUpper->SetValue(true);
     row->Add(m_impl->sectionKeepUpper, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, gap);
-    auto* hint = new wxStaticText(this, wxID_ANY, Text("표시용 단면 / 절단면 채움 및 원본 변경 없음"));
+    auto* hint = new wxStaticText(this, wxID_ANY, Text("표시용 단면 (절단면 채움, 원본 보존)"));
     row->Add(hint, 0, wxALIGN_CENTER_VERTICAL);
     GetSizer()->Insert(0, row, 0, wxEXPAND | wxALL, gap);
     const auto update = [this](wxCommandEvent&) { m_impl->UpdateSection(); };

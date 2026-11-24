@@ -21,7 +21,7 @@ ResultMetricsView::ResultMetricsView(wxWindow* parent)
     StudioTheme::BindSurface(*this);
     SetScrollRate(0, FromDIP(16));
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    m_heading = new wxStaticText(this, wxID_ANY, Display("전력 / 손실"));
+    m_heading = new wxStaticText(this, wxID_ANY, Display("전력과 손실"));
     m_heading->SetWindowStyleFlag(m_heading->GetWindowStyleFlag() | wxST_ELLIPSIZE_END);
     m_heading->SetMinSize(wxSize(1, -1));
     StudioTheme::Title(*m_heading);
@@ -131,7 +131,7 @@ void ResultMetricsView::SetDescription(const Json& description)
 {
     Clear("기록한 전력과 독립 손실을 조회하고 있습니다.");
     m_description = description;
-    m_heading->SetLabel(Display("전력 / 손실"));
+    m_heading->SetLabel(Display("전력과 손실"));
     m_heading->SetToolTip(Display(ResultUi::Text(description.at("label"))));
 }
 void ResultMetricsView::SetMetrics(const Json& result)
@@ -181,7 +181,7 @@ void ResultMetricsView::Present()
         const bool hasLosses = !selected.at("independent_losses").empty();
         if (!all)
         {
-            notice = "전력 단위 W*s^2 / 절대 전력 W 미평가\n";
+            notice = "전력 단위는 W*s^2입니다. 절대 전력 (W)은 미평가 상태입니다.\n";
             if (balance == "within_initial_numerical_budget")
             {
                 notice += "전력 수지: 초기 수치 기준 충족\n";
@@ -212,7 +212,7 @@ void ResultMetricsView::Present()
                 ResultUi::Text(item.at("unit")) : ResultUi::State(state)));
             const auto basis = denominator == "accepted" ? "수용 전력 기준" :
                                denominator == "incident" ? "입사 전력 기준" : "기록 표본";
-            m_table->SetItem(row, 2, Display(all ? basis + std::string(" / ") + ResultUi::State(state) : basis));
+            m_table->SetItem(row, 2, Display(all ? basis + std::string(", ") + ResultUi::State(state) : basis));
         }
         if (all)
         {
@@ -253,8 +253,8 @@ void ResultMetricsView::Present()
                          {"parameter_kind", "scalar"},
                          {"unit", "%"}});
     }
-    m_chart->SetSeries(pages, {Display("방사 효율 / 수용 전력 분모"), Display("총 효율 / 입사 전력 분모")}, false);
-    m_chart->SetMetric("real", Display("효율 (%) / 기록 표본만"));
+    m_chart->SetSeries(pages, {Display("방사 효율 (분모는 수용 전력)"), Display("총 효율 (분모는 입사 전력)")}, false);
+    m_chart->SetMetric("real", Display("효율 (%) (기록된 표본)"));
     m_chart->SetFrequencyUnit(StudioFrequency::ForSamples(m_result.at("rows")).unit);
     SetNotice(notice);
 }
@@ -272,7 +272,7 @@ void ResultMetricsView::SetNotice(const std::string& message)
 
 void ResultMetricsView::Clear(const std::string& reason)
 {
-    m_heading->SetLabel(Display("전력 / 손실"));
+    m_heading->SetLabel(Display("전력과 손실"));
     m_heading->SetToolTip(wxEmptyString);
     m_description = nullptr;
     m_result = nullptr;

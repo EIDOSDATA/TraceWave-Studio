@@ -27,7 +27,7 @@ StepOutputView::StepOutputView(wxWindow* parent)
     auto* tools = new wxBoxSizer(wxVERTICAL);
     tools->Add(
         new wxStaticText(this, wxID_ANY,
-                         Display("출력 단위\nmm\n\n기준 좌표\n프로젝트 원점\n\nSTEP profile\nAP242 / 명시 기계 형상")),
+                         Display("출력 단위\nmm\n\n기준 좌표\n프로젝트 원점\n\nSTEP 프로파일\nAP242 (명시 기계 형상)")),
         0, wxALL, FromDIP(8));
     const auto button = [this, tools](const char* text, bool primary = false)
     {
@@ -40,7 +40,7 @@ StepOutputView::StepOutputView(wxWindow* parent)
     m_preview = button("STEP 포함 범위 검토", true);
     m_build = button("검토한 STEP 생성");
     m_verify = button("새 reader로 다시 검수");
-    m_details = button("파일 / 검수 기록");
+    m_details = button("파일과 검수 기록");
     body->Add(tools, 0, wxEXPAND);
     layout->Add(body, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     m_scope =
@@ -48,7 +48,7 @@ StepOutputView::StepOutputView(wxWindow* parent)
     StudioTheme::Table(*m_scope);
     m_scope->SetMinSize(FromDIP(wxSize(280, 140)));
     for (const auto& column :
-         std::vector<std::pair<const char*, int>>{{"대상", 240}, {"포함", 130}, {"상태 / 이유", 520}})
+         std::vector<std::pair<const char*, int>>{{"대상", 240}, {"포함", 130}, {"상태와 사유", 520}})
     {
         m_scope->AppendColumn(Display(column.first), wxLIST_FORMAT_LEFT, FromDIP(column.second));
     }
@@ -166,13 +166,13 @@ void StepOutputView::SetResult(const Json& result, const wxString& workspace)
     std::string message = "생성 상태: " + OutputUi::State(result.value("status", "not_assessed"));
     if (verification.is_object())
     {
-        message += " / " + OutputUi::State(verification.value("status", "not_assessed"));
+        message += ", " + OutputUi::State(verification.value("status", "not_assessed"));
         if (verification.value("fresh_reader_process", false))
         {
-            message += " / 새 reader 프로세스";
+            message += ", 별도 읽기 프로세스";
         }
     }
-    m_notice->SetLabel(Display(message + "\n같은 OCCT 커널의 일치는 독립 커널/제조/RF 검증을 뜻하지 않습니다."));
+    m_notice->SetLabel(Display(message + "\n같은 OCCT 커널의 일치는 독립 커널, 제조 및 RF 검증을 뜻하지 않습니다."));
 }
 
 void StepOutputView::LoadQueued()

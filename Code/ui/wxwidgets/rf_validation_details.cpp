@@ -27,8 +27,8 @@ void RfValidationView::SetCatalog(const Json& result, const std::string& selecte
     }
     const int count = static_cast<int>(result.at("items").size()), offset = result.at("offset").get<int>();
     m_catalogRange->SetLabel(Display("기록 " + std::to_string(offset + (count ? 1 : 0)) + "~" +
-                                     std::to_string(offset + count) + " / " +
-                                     std::to_string(result.at("total").get<int>())));
+                                     std::to_string(offset + count) + " (전체 " +
+                                     std::to_string(result.at("total").get<int>()) + "건)"));
     m_rebuilding = false;
     if (result.at("total") == 0)
     {
@@ -43,14 +43,14 @@ void RfValidationView::SetReports(const Json& result, const Json& selectedReport
     m_reports = result;
     m_reportChoice->Clear();
     m_reportIds = {Json(nullptr)};
-    m_reportChoice->Append(Display("계획 / 현재 작업 상태 (판정 아님)"));
+    m_reportChoice->Append(Display("계획과 현재 작업 상태"));
     int selected = selectedReport.is_null() ? 0 : -1;
     int ordinal = result.at("total").get<int>() - result.at("offset").get<int>();
     for (const auto& item : result.at("items"))
     {
         m_reportIds.push_back(item.at("report_id"));
-        m_reportChoice->Append(Display("판정 " + std::to_string(ordinal--) + " / " +
-                                       RfValidationUi::Time(item.value("created_at", Json(nullptr))) + " / " +
+        m_reportChoice->Append(Display("판정 " + std::to_string(ordinal--) + ", " +
+                                       RfValidationUi::Time(item.value("created_at", Json(nullptr))) + ", " +
                                        RfValidationUi::State(item.value("status", Json(nullptr)))));
         if (item.at("report_id") == selectedReport)
         {
@@ -61,13 +61,13 @@ void RfValidationView::SetReports(const Json& result, const Json& selectedReport
     {
         m_reportIds.push_back(selectedReport);
         selected = static_cast<int>(m_reportIds.size()) - 1;
-        m_reportChoice->Append(Display("현재 선택 판정 / 다른 목록 페이지"));
+        m_reportChoice->Append(Display("선택한 판정 (다른 페이지)"));
     }
     m_reportChoice->SetSelection(selected);
     const int count = static_cast<int>(result.at("items").size()), offset = result.at("offset").get<int>();
     m_reportRange->SetLabel(Display(
-        "보존 판정 " + std::to_string(offset + (count ? 1 : 0)) + "~" + std::to_string(offset + count) + " / " +
-        std::to_string(result.at("total").get<int>()) + " / 계획 조회는 최신 판정으로 자동 대체되지 않습니다."));
+        "보존 판정 " + std::to_string(offset + (count ? 1 : 0)) + "~" + std::to_string(offset + count) + " (전체 " +
+        std::to_string(result.at("total").get<int>()) + "건). 계획을 조회하는 동안 최신 판정으로 자동 전환하지 않습니다."));
     m_rebuilding = false;
     UpdateActions();
     Relayout();
@@ -78,29 +78,29 @@ void RfValidationView::SetRecord(const Json& result)
     m_record = result;
     const bool assessed = result.value("report_id", Json(nullptr)).is_string();
     m_identity->SetLabel(Display(ResultUi::Text(result.at("name")) + "\n" +
-                                 (assessed ? "선택한 불변 판정 / " : "계획과 현재 작업 / ") +
+                                 (assessed ? "선택한 보존 판정: " : "계획과 현재 작업: ") +
                                  RfValidationUi::State(result.value("status", Json(nullptr)))));
     Populate(m_cases, RfValidationUi::Cases(result));
     Populate(m_states, RfValidationUi::States(result));
     Populate(m_metrics, RfValidationUi::Metrics(result));
     m_original->ChangeValue(
         Display("검증 묶음\n" + ResultUi::Text(result.at("name")) + "\n\n" +
-                (assessed ? "보존 판정 조회 / 재평가하지 않음" : "판정 미선택 / 계획과 실제 작업 상태만 조회") +
+                (assessed ? "보존 판정 조회 (재평가 없음)" : "계획과 작업 상태 (판정 미선택)") +
                 "\n프로젝트 설계와 별도 합성 검증 사례\n\n예약 예산\n" +
                 RfValidationUi::Resources(result.value("budget", Json(nullptr))) + "\n누적 예약과 실행 기록\n" +
                 RfValidationUi::Resources(result.value("usage", Json(nullptr)))));
     m_basis->ChangeValue(
         Display("출처\n" + RfValidationUi::Notes(result.value("source_refs", Json(nullptr))) +
-                "\n\n가정 / 적용 범위\n" + RfValidationUi::Notes(result.value("assumptions", Json(nullptr))) +
+                "\n\n가정과 적용 범위\n" + RfValidationUi::Notes(result.value("assumptions", Json(nullptr))) +
                 "\n\n사전 고정한 기준\n" + RfValidationUi::Criteria(result.value("criteria", Json(nullptr)))));
     m_limits->ChangeValue(Display(
         "제작 조건: " +
         (result.value("manufacturing", Json(nullptr)).is_null()
              ? std::string("미정")
-             : std::string("원문 기록 있음 / 확정 여부는 출처 확인")) +
+             : std::string("원문 기록 있음 (확정 여부는 출처 확인)")) +
         "\n측정 조건: " +
         (result.value("measurement", Json(nullptr)).is_null() ? std::string("미정")
-                                                              : std::string("원문 기록 있음 / 실측 검증과 별도")) +
+                                                              : std::string("원문 기록 있음 (실측 검증과 별개)")) +
         "\n\n남은 한계\n" + RfValidationUi::Notes(result.value("limitations", Json(nullptr)))));
     m_metricDetail->ChangeValue(Display("지표를 선택하면 오차 정의, 고정 한계와 출처를 확인할 수 있습니다."));
     m_raw->ChangeValue(Display(result.dump(2, ' ', false, Json::error_handler_t::replace)));
@@ -109,7 +109,7 @@ void RfValidationView::SetRecord(const Json& result)
         text->ShowPosition(0);
     }
     SetPending(false, assessed
-                          ? "당시 고정한 기준의 판정입니다. 다른 모델이나 실제 납품/측정 정확도로 확대하지 않습니다."
+                          ? "당시 고정한 기준의 판정입니다. 다른 모델이나 실제 납품과 측정 정확도로 확대하지 않습니다."
                           : "현재 작업의 완료는 독립 참조 또는 실측 합격이 아닙니다. 보존 판정을 명시 선택하세요.");
     Relayout();
 }
@@ -160,7 +160,7 @@ void RfValidationView::ClearRecord(const std::string& message)
     m_metrics->DeleteAllItems();
     m_original->ChangeValue(Display(message));
     m_basis->ChangeValue(Display("실제 출처와 가정은 기록 선택 후 표시합니다."));
-    m_limits->ChangeValue(Display("제작 / 측정 조건 미정\n독립 참조 / 실측 검증 미확립"));
+    m_limits->ChangeValue(Display("제작과 측정 조건 미정\n독립 참조와 실측 검증 미확립"));
     m_metricDetail->ChangeValue(wxEmptyString);
     m_raw->ChangeValue(wxEmptyString);
     SetPending(false, message);

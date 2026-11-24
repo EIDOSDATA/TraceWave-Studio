@@ -41,7 +41,7 @@ wxPanel* PcbSelectionDialog::BuildMaterialsPage()
     fields->Add(
         new wxStaticText(
             form, wxID_ANY,
-            Display("Dk와 Df는 별도로 선택합니다. 물성 관측을 검색한 뒤 해당 버튼으로 연결하세요.\n범위/한정자/시험 "
+            Display("Dk와 Df는 별도로 선택합니다. 물성 관측을 검색한 뒤 해당 버튼으로 연결하세요.\n범위, 한정자, 시험 "
                     "조건은 서비스가 확인합니다. 직접 근사한 값에는 원문과 이유를 함께 남깁니다.")),
         0, wxEXPAND | wxBOTTOM, FromDIP(10));
     auto* identity = new wxFlexGridSizer(2, FromDIP(8), FromDIP(8));
@@ -90,7 +90,7 @@ wxPanel* PcbSelectionDialog::BuildMaterialsPage()
         box->Add(values, 0, wxEXPAND | wxALL, FromDIP(6));
         property.reason = new wxTextCtrl(form, wxID_ANY);
         property.reason->SetName(Display("pcb." + PropertyFields[index] + ".reason"));
-        property.reason->SetHint(Display("선택 / 근사 / 미정으로 남긴 이유"));
+        property.reason->SetHint(Display("선택, 근사 또는 미정 사유"));
         box->Add(property.reason, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(6));
         property.source = new wxStaticText(form, wxID_ANY, Display("연결한 관측 없음"));
         property.source->SetName(Display("pcb." + PropertyFields[index] + ".source"));
@@ -292,7 +292,7 @@ void PcbSelectionDialog::LoadMaterial(int index)
             if (property.at("record_id") == controls.recordId)
             {
                 controls.value->ChangeValue(PcbView::Number(property.at("value")));
-                controls.source->SetLabel(Display("공개값 / " + controls.recordId));
+                controls.source->SetLabel(Display("공개값: " + controls.recordId));
                 controls.source->SetToolTip(Display(property.at("reason")));
             }
         }
@@ -435,8 +435,8 @@ void PcbSelectionDialog::AttachObservation(std::size_t property)
     auto& controls = m_properties.at(property);
     controls.recordId = m_selected.at("id");
     controls.catalogId = m_selectedCatalog;
-    controls.source->SetLabel(Display(PcbView::Text(m_selected, "publisher") + " / " +
-                                      PcbView::Text(m_selected, "product") + " / " + controls.recordId));
+    controls.source->SetLabel(Display(PcbView::Text(m_selected, "publisher") + ", " +
+                                      PcbView::Text(m_selected, "product") + ", " + controls.recordId));
     MaterialChanged();
 }
 

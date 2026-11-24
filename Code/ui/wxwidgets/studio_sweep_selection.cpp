@@ -212,7 +212,7 @@ void StudioFrame::ShowSweepSelection(const Json& context)
         {
             m_views->SetSelection(0);
             m_sweepPanel->SetStatus(
-                "새 사본 생성 완료 / 명시 열기 요청 중입니다. 열기가 실패해도 다시 생성하지 않습니다. 생성 위치: " +
+                "새 사본을 만들었습니다. 열기를 요청하고 있습니다. 열기에 실패하면 생성 위치에서 다시 열 수 있습니다. 생성 위치: " +
                 result.at("path").get<std::string>());
             OpenProject("open", result.at("path").get<std::string>(), "",
                         [this, project, workspace, result]()

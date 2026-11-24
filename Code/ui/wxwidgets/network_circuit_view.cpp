@@ -74,7 +74,7 @@ private:
             dc.SetPen(wxPen(static_cast<int>(index) == m_selected ? colour.accent : colour.text, FromDIP(2)));
             dc.SetTextForeground(static_cast<int>(index) == m_selected ? colour.accent : colour.text);
             const std::string label =
-                element.value("name", kind) + " / " +
+                element.value("name", kind) + ", " +
                 (state == "connected" ? (element.value("value_text", "").empty()
                                              ? "미정"
                                              : element.value("value_text", "") + " " + element.value("value_unit", ""))
@@ -186,7 +186,7 @@ void NetworkCircuitDialog::BuildInterface()
 {
     StudioTheme::ApplyTypography(*this);
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* title = new wxStaticText(this, wxID_ANY, Display("외부 정합망 / 기본 RLC"));
+    auto* title = new wxStaticText(this, wxID_ANY, Display("외부 정합망 (기본 RLC)"));
     StudioTheme::Title(*title);
     layout->Add(title, 0, wxALL, FromDIP(16));
     auto* introduction = new wxStaticText(
@@ -200,7 +200,7 @@ void NetworkCircuitDialog::BuildInterface()
     m_datasets = new wxChoice(this, wxID_ANY);
     m_datasets->SetName("network.circuit.dataset");
     for (const auto& pair : std::vector<std::pair<std::string, wxWindow*>>{{"회로 사본", m_circuits},
-                                                                           {"안테나 / 부하 입력 자료", m_datasets}})
+                                                                           {"안테나 또는 부하 자료", m_datasets}})
     {
         auto* column = new wxBoxSizer(wxVERTICAL);
         Field(this, column, pair.first, pair.second);
@@ -272,7 +272,7 @@ void NetworkCircuitDialog::BuildInterface()
          });
     left->Insert(1, tools, 0, wxEXPAND | wxBOTTOM, FromDIP(8));
     auto* order = new wxStaticText(configuration, wxID_ANY,
-                                   Display("목록은 입력에서 부하 방향 순서입니다. 이상 소자 / 부품 손실·공차 미정"));
+                                   Display("목록 순서는 입력에서 부하 방향입니다. 이상 소자를 사용하며 실제 부품의 손실과 공차는 미정입니다."));
     StudioTheme::BindSecondary(*order);
     left->Add(order, 0, wxTOP, FromDIP(12));
     body->Add(left, 3, wxEXPAND | wxALL, FromDIP(16));
@@ -315,7 +315,7 @@ void NetworkCircuitDialog::BuildInterface()
     Field(m_elementFields, fields, "값", m_value);
     m_unit = new wxChoice(m_elementFields, wxID_ANY);
     m_unit->SetName("network.circuit.unit");
-    Field(m_elementFields, fields, "표시 / 입력 단위", m_unit);
+    Field(m_elementFields, fields, "입력과 표시 단위", m_unit);
     m_source = new wxTextCtrl(m_elementFields, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 70)),
                               wxTE_MULTILINE | wxTE_READONLY);
     Field(m_elementFields, fields, "입력 출처 (보존)", m_source);
@@ -549,7 +549,7 @@ void NetworkCircuitDialog::RenderElement()
             m_unit->Append(Display(unit));
         }
         m_unit->SetStringSelection(Display(element.value("value_unit", units.front())));
-        std::string source = "이상 소자 / 실물 부품 검증 미확립\n";
+        std::string source = "이상 소자 (실물 부품 검증 미확립)\n";
         for (const auto& value : element.at("value").at("source_refs"))
         {
             source += value.get<std::string>() + "\n";
@@ -576,9 +576,9 @@ void NetworkCircuitDialog::RenderData()
     }
     const auto& descriptor = m_selection.at("descriptor");
     std::string details = "입력 자료: " + m_selection.at("entry").at("name").get<std::string>() + "\n";
-    details += "종류: " + descriptor.at("parameter_kind").get<std::string>() + " / " +
-               std::to_string(descriptor.at("port_ids").size()) + "포트\n";
-    details += "표본: " + Number(descriptor.at("sample_count")) + "개 / " +
+    details += "종류: " + descriptor.at("parameter_kind").get<std::string>() + " (" +
+               std::to_string(descriptor.at("port_ids").size()) + "포트)\n";
+    details += "표본: " + Number(descriptor.at("sample_count")) + "개, 주파수 " +
                StudioFrequency::Range(descriptor.at("frequency_min_hz"), descriptor.at("frequency_max_hz")) + "\n";
     details += "\n부하 기준면: " + ResultUi::Text(descriptor.at("reference_planes").at(0)) + "\n";
     const auto& impedance = descriptor.at("z0_ohm");
@@ -649,8 +649,8 @@ void NetworkCircuitDialog::RenderResult(const Json& result)
         const auto loss = power.is_null() ? Json(nullptr) : power.at("ideal_circuit_loss_fraction");
         m_results->SetItem(row, 5, loss.is_null() ? Display("미평가") : wxString::Format("%.5g", 100 * loss.get<double>()));
     }
-    m_pageLabel->SetLabel(Display("읽기 전용 후보 / 앞 " + std::to_string(page.at("samples").size()) + " / " +
-                                  Number(page.at("total")) + "개 표본. 저장 후 결과 화면에서 전체 표본을 조회합니다."));
+    m_pageLabel->SetLabel(Display("읽기 전용 후보. 첫 " + std::to_string(page.at("samples").size()) + "개 표본 (전체 " +
+                                  Number(page.at("total")) + "개). 저장 후 결과 화면에서 전체 표본을 조회합니다."));
     const auto& conditions = result.at("matching_conditions");
     const auto& descriptor = result.at("descriptor");
     const auto& impedance = descriptor.at("z0_ohm");

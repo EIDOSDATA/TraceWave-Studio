@@ -48,7 +48,7 @@ public:
     {
         auto* root = new wxBoxSizer(wxVERTICAL);
         const auto pad = FromDIP(10);
-        root->Add(new wxStaticText(this, wxID_ANY, Display("단일 급전 / 스레드 1개 / 방사 및 필드 기록 끔")), 0, wxALL, pad);
+        root->Add(new wxStaticText(this, wxID_ANY, Display("단일 급전, 스레드 1개, 방사 및 필드 기록 끔")), 0, wxALL, pad);
         root->Add(new wxStaticText(this, wxID_ANY, Display("일반 해석과 별도로 U/I 시간 파형을 계산합니다. 프로젝트 결과 및 수렴 판정은 일반 해석에서 확인하십시오.")),
                   0, wxLEFT | wxRIGHT | wxBOTTOM, pad);
         auto* info = new wxTextCtrl(this, wxID_ANY, Display("설계 개정  " + source.at("revision_id").get<std::string>()
@@ -252,12 +252,12 @@ private:
             auto label = labels.count(m_state) ? labels.at(m_state) : m_state;
             if (response.at("reason").is_string())
             {
-                label += " / " + response.at("reason").get<std::string>();
+                label += ", " + response.at("reason").get<std::string>();
             }
             if (response.at("samples").is_object())
             {
-                label += "\\n시간 단계 " + response.at("iterations").dump() + " / 전압 표본 "
-                    + response.at("samples").at("port_ut_1").dump() + " / 전류 표본 " + response.at("samples").at("port_it_1").dump();
+                label += "\\n시간 단계 " + response.at("iterations").dump() + ", 전압 표본 "
+                    + response.at("samples").at("port_ut_1").dump() + ", 전류 표본 " + response.at("samples").at("port_it_1").dump();
             }
             if (response.at("directory").is_string())
             {

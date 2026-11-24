@@ -63,17 +63,17 @@ DrawingOutputView::DrawingOutputView(wxWindow* parent)
         return input;
     };
     m_format = choice("출력 형식", {"PDF", "SVG", "DXF"});
-    m_mode = choice("파일 용도", {"기술 도면 / 치수와 주석", "1:1 형상 / 도체와 외곽만"});
+    m_mode = choice("파일 용도", {"기술 도면 (치수와 주석)", "1:1 형상 (도체와 외곽만)"});
     m_sheet = choice("용지", {"A4", "A3"});
     m_orientation = choice("방향", {"가로", "세로"});
-    form->Add(new wxStaticText(properties, wxID_ANY, Display("출력 축척 (종이 / 실제)")), 0, wxTOP | wxBOTTOM,
+    form->Add(new wxStaticText(properties, wxID_ANY, Display("출력 축척 (종이 크기 대비 실제 크기)")), 0, wxTOP | wxBOTTOM,
               FromDIP(8));
     m_scale = new wxSpinCtrlDouble(properties, wxID_ANY, "1", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0.01,
                                    100.0, 1.0, 0.1);
     m_scale->SetDigits(3);
     m_scale->SetName(Display("출력 축척"));
     form->Add(m_scale, 0, wxEXPAND);
-    form->Add(new wxStaticText(properties, wxID_ANY, Display("출력 뷰 / 최대 8개")), 0, wxTOP | wxBOTTOM, FromDIP(8));
+    form->Add(new wxStaticText(properties, wxID_ANY, Display("출력 뷰 (최대 8개)")), 0, wxTOP | wxBOTTOM, FromDIP(8));
     m_views = new wxCheckListBox(properties, wxID_ANY);
     m_views->SetMinSize(FromDIP(wxSize(230, 130)));
     form->Add(m_views, 0, wxEXPAND);
@@ -101,7 +101,7 @@ DrawingOutputView::DrawingOutputView(wxWindow* parent)
                              }
                          });
     m_dimensions = new wxCheckBox(properties, wxID_ANY, Display("연관 치수 포함"));
-    m_notes = new wxCheckBox(properties, wxID_ANY, Display("제작/측정 안내 포함"));
+    m_notes = new wxCheckBox(properties, wxID_ANY, Display("제작 및 측정 안내 포함"));
     m_dimensions->SetValue(true);
     m_notes->SetValue(true);
     form->Add(m_dimensions, 0, wxTOP, FromDIP(12));
@@ -342,23 +342,23 @@ void DrawingOutputView::SetPreview(const Json& review)
         if (page.contains("annotation_review"))
         {
             chosen = static_cast<int>(index);
-            label += " / 참조 치수";
+            label += " (참조 치수)";
             m_placements = page.value("dimension_placements", Json(nullptr));
         }
         else if (page.value("page_role", "") == "hole_table")
         {
-            label += " / 홀 표";
+            label += " (홀 표)";
         }
         m_page->Append(Display(label));
     }
     m_page->SetSelection(chosen);
     m_canvas->SetPage(chosen);
     const auto issues = OutputUi::Issues(review.value("issues", Json::array()));
-    auto message = issues.empty() ? "고정 입력의 실제 종이 배치입니다. 생성 전 포함/누락 목록을 확인하세요." : issues;
+    auto message = issues.empty() ? "고정 입력의 실제 종이 배치입니다. 생성 전 포함 및 누락 목록을 확인하세요." : issues;
     m_annotationReview = review.value("annotation_review", Json(nullptr));
     if (m_annotationReview.is_object())
     {
-        message = Utf8(wxString::Format(Display("기입 %d개 / 누락 %zu개 / 병합 중복 %zu개 / 홀 표 %d행"),
+        message = Utf8(wxString::Format(Display("기입 %d개, 누락 %zu개, 중복 병합 %zu개, 홀 표 %d행"),
                                         m_annotationReview.value("dimension_count", 0),
                                         m_annotationReview.at("missing").size(), m_annotationReview.at("duplicates").size(),
                                         m_annotationReview.value("hole_count", 0))) +
@@ -366,7 +366,7 @@ void DrawingOutputView::SetPreview(const Json& review)
         if (m_annotationReview.contains("placement"))
         {
             const auto& placement = m_annotationReview.at("placement");
-            message += "\n" + Utf8(wxString::Format(Display("자동 이동 %d개 / 수동 고정 %d개 / 남은 간섭 %zu개"),
+            message += "\n" + Utf8(wxString::Format(Display("자동 이동 %d개, 수동 고정 %d개, 남은 간섭 %zu개"),
                                        placement.value("moved", 0), placement.value("pinned", 0),
                                        placement.at("collisions").size()));
         }

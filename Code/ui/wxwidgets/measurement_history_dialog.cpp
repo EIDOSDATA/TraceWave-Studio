@@ -39,12 +39,12 @@ MeasurementHistoryDialog::MeasurementHistoryDialog(wxWindow* parent, const Json&
     m_section = new wxChoice(page, wxID_ANY);
     if (m_collection == "alignments")
     {
-        m_section->Append(Display("보간 / 원문 계보"));
+        m_section->Append(Display("보간 이력과 원문"));
     }
     else
     {
         m_section->Append(Display("당시 표본 차이"));
-        m_section->Append(Display("당시 시료 / 교정 조건 차이"));
+        m_section->Append(Display("기록 당시 시료와 교정 조건의 차이"));
     }
     m_section->SetSelection(0);
     body->Add(m_section, 0, wxALL, FromDIP(8));
@@ -74,7 +74,7 @@ MeasurementHistoryDialog::MeasurementHistoryDialog(wxWindow* parent, const Json&
                                          Display("과거 보고서는 현재 엔진으로 다시 계산하지 않습니다. 기록된 정확도와 "
                                                  "불확도를 독립 검증 합격으로 바꾸지 않습니다.")),
                         0, wxEXPAND | wxALL, FromDIP(12));
-    auto* advanced = new wxCollapsiblePane(original, wxID_ANY, Display("고급 / 봉인 원문"), wxDefaultPosition,
+    auto* advanced = new wxCollapsiblePane(original, wxID_ANY, Display("고급: 봉인 원문"), wxDefaultPosition,
                                            wxDefaultSize, wxCP_DEFAULT_STYLE | wxCP_NO_TLW_RESIZE);
     advanced->GetPane()->SetSizer(new wxBoxSizer(wxVERTICAL));
     m_source = new wxTextCtrl(advanced->GetPane(), wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 300)),
@@ -158,7 +158,7 @@ void MeasurementHistoryDialog::LoadSummary()
                     "\n사유: " +
                     input.value("reason",
                                 input.value("specification", Json::object()).value("reason", std::string("미기록")));
-                summary += "\n실측 일치: 미확립 / 불확도 전파: 수행하지 않음\n당시 원본, 표본 상태와 조건을 보존한 "
+                summary += "\n실측 일치 미확립, 불확도 전파 미실행.\n당시 원본, 표본 상태와 조건을 보존한 "
                            "읽기 전용 보고서입니다.";
                 m_summary->ChangeValue(Display(summary));
                 if (m_collection == "alignments")
@@ -196,7 +196,7 @@ void MeasurementHistoryDialog::LoadAlignment(const Json& summary)
                                 throw std::runtime_error("정렬 곡선의 원본 해시가 달라졌습니다.");
                             }
                             m_chart->SetFrequencyUnit(StudioFrequency::ForPage(response.at("page")).unit);
-                            m_chart->SetPage(response.at("page"), Display("보존 정렬 자료 / 첫 201표본"));
+                            m_chart->SetPage(response.at("page"), Display("보존된 정렬 자료 (첫 201개 표본)"));
                             LoadSection(0);
                         });
             });
@@ -230,9 +230,9 @@ void MeasurementHistoryDialog::RenderSection(const Json& response)
     m_items->ClearAll();
     const auto section = response.at("section").get<std::string>();
     std::vector<std::string> columns =
-        section == "conditions" ? std::vector<std::string>{"조건", "기준", "비교", "상태 / 사유"}
+        section == "conditions" ? std::vector<std::string>{"조건", "기준", "비교", "상태와 사유"}
         : section == "points"   ? std::vector<std::string>{"주파수", "비교 - 기준", "표본 출처", "사유"}
-                                : std::vector<std::string>{"표본 / 주파수", "원문 표본", "계보 종류", "근거"};
+                                : std::vector<std::string>{"표본과 주파수", "원문 표본", "계보 종류", "근거"};
     for (const auto& title : columns)
     {
         m_items->AppendColumn(Display(title), wxLIST_FORMAT_LEFT, FromDIP(title == columns.back() ? 380 : 210));
@@ -256,7 +256,7 @@ void MeasurementHistoryDialog::RenderSection(const Json& response)
             const auto origins = value.value("sample_origins", Json::object());
             fields = {StudioFrequency::Value(value.value("frequency_hz", Json(nullptr)), scale) + " " + scale.unit,
                       ResultUi::Complex(difference),
-                      ResultUi::State(origins.value("left", Json(nullptr))) + " / " +
+                      ResultUi::State(origins.value("left", Json(nullptr))) + ", " +
                           ResultUi::State(origins.value("right", Json(nullptr))),
                       MeasurementUi::Text(value.value("reason", Json(nullptr)))};
             samples.push_back({{"frequency_hz", value.value("frequency_hz", Json(nullptr))},
@@ -271,7 +271,7 @@ void MeasurementHistoryDialog::RenderSection(const Json& response)
             auto evidence = MeasurementUi::Text(value.value("reason", Json(nullptr)));
             if (weight.is_number())
             {
-                evidence = "가중치 " + weight.dump() + " / " + evidence;
+                evidence = "가중치 " + weight.dump() + ", " + evidence;
             }
             const auto indices = value.value("source_indices", Json(nullptr));
             fields = {frequency.is_null() ? "단계 " + std::to_string(value.at("operation").get<int>())
@@ -286,10 +286,11 @@ void MeasurementHistoryDialog::RenderSection(const Json& response)
     }
     if (section == "points")
     {
-        m_chart->SetMetric("real", Display("비교 - 기준 / 실수부"));
+        m_chart->SetMetric("real", Display("비교값과 기준값의 실수부 차이"));
         m_chart->SetFrequencyUnit(scale.unit);
         m_chart->SetPage({{"samples", samples}}, Display("보존 차이 표본"));
     }
-    SetStatus("당시 보고서 " + std::to_string(m_offset + 1) + " ~ " + std::to_string(m_offset + values.size()) + " / " +
-              std::to_string(response.at("total").get<int>()) + " 항목. 재계산하지 않은 보존 기록입니다.");
+    SetStatus("당시 보고서 " + std::to_string(values.empty() ? 0 : m_offset + 1) + "~" +
+              std::to_string(m_offset + values.size()) + " (전체 " +
+              std::to_string(response.at("total").get<int>()) + "개 항목). 보존 당시의 값입니다.");
 }

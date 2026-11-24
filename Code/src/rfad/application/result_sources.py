@@ -80,14 +80,16 @@ def solver_labels(state, project_id):
                 time_label = "기록 시각 표시 범위 초과"
         description = records[identity]["snapshot"].get("description") or "설명 미지정"
         metadata = records[identity].get("metadata", {})
-        label = "해석 결과 " + str(ordinal)
+        short_label = "해석 결과 " + str(ordinal)
+        label = short_label
         if metadata.get("installation_name"):
-            label += " / " + metadata["installation_name"]
+            label += " (" + metadata["installation_name"] + ")"
         if metadata.get("profile") == "rfad.openems.reference-benchmark/0.1":
             grid = metadata.get("reference_grid_mm")
             level = (3.0, 2.5, 2.0).index(grid) + 1 if type(grid) in (float, int) and grid in (3.0, 2.5, 2.0) else None
-            label = "PEC 다이폴 / " + ("격자 수준 " + str(level) + " / " if level is not None else "") + "합성 검증 사례"
-        result[identity] = {"label": label + " / " + time_label + " / " + description,
+            short_label = "PEC 다이폴"
+            label = short_label + " 합성 검증" + (" (격자 수준 " + str(level) + ")" if level is not None else "")
+        result[identity] = {"label": ", ".join((label, time_label, description)), "short_label": short_label,
             "source_time": stamp, "source_time_kind": kind}
     return result
 
@@ -239,7 +241,7 @@ def _sweep(service, state, project, project_id, source):
               "source_document_role": "study_baseline", "anchor_document": baseline_document,
               "dataset_artifact": deepcopy(reference), "calculated_ordinal": source["index"],
               "selection_values": deepcopy(candidate["values"]),
-              "label": study["name"] + " / 후보 " + str(source["index"] + 1),
+              "label": study["name"] + ", 후보 " + str(source["index"] + 1),
               "source_record": {"definition": study["definition"], "candidate": study["records"][str(source["index"])]}}
     assessment = candidate.get("results", {}).get("assessment")
     if assessment is not None:
@@ -306,8 +308,10 @@ def resolve(service, context, source, pin=None):
         result.update(_sweep(service, state, project, project_id, source))
     document = result["source_document"]
     metadata = document["metadata"]
+    # @brief 원래 개정 레이블을 기존 결과 고정 식별자의 해시에 유지한다.
     result["source_revision"] = {"id": document["revision_id"], "hash": canonical_hash(document),
         "name": metadata["name"], "label": metadata["name"] + " / " + metadata["modified_at"], "modified_at": metadata["modified_at"]}
+    result["source_revision_label"] = metadata["name"] + " (" + metadata["modified_at"] + ")"
     result["descriptor"] = descriptor(result["dataset"])
     result["pin"] = {"identity_hash": canonical_hash({"source": source, "project_id": project_id,
         "source_revision": result["source_revision"], "source_record": result["source_record"], "dataset_artifact": result["dataset_artifact"]}),

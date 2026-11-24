@@ -15,7 +15,7 @@ const std::vector<FieldDefinition>& Fields()
         {"specimen.fabrication_revision", "제작 개정", "text", {}},
         {"specimen.assembly_revision", "조립 개정", "text", {}},
         {"specimen.mounting_cycle", "장착 회차", "quantity", {"1"}},
-        {"specimen.trim_notes", "조정 / 변경 기록", "text", {}},
+        {"specimen.trim_notes", "조정 및 변경 기록", "text", {}},
         {"acquisition.instrument", "측정 장비", "text", {}},
         {"acquisition.serial", "장비 일련 번호", "text", {}},
         {"acquisition.firmware", "장비 펌웨어", "text", {}},
@@ -33,7 +33,7 @@ const std::vector<FieldDefinition>& Fields()
         {"fixture.connector", "커넥터", "text", {}},
         {"fixture.cable", "케이블", "text", {}},
         {"fixture.fixture_id", "지그 식별", "text", {}},
-        {"fixture.path_notes", "연결 순서 / 급전", "text", {}},
+        {"fixture.path_notes", "연결 순서와 급전", "text", {}},
         {"fixture.mounting_notes", "장착 조건", "text", {}},
         {"fixture.included_effects", "포함 효과 (한 줄에 하나)", "texts", {}},
         {"fixture.corrected_effects", "외부 보정 효과 (한 줄에 하나)", "texts", {}},
@@ -41,7 +41,7 @@ const std::vector<FieldDefinition>& Fields()
         {"environment.humidity", "상대 습도", "quantity", {"%", "1"}},
         {"environment.enclosure", "외장 조건", "text", {}},
         {"environment.battery", "배터리 조건", "text", {}},
-        {"environment.pose", "자세 / 방향", "text", {}},
+        {"environment.pose", "자세와 방향", "text", {}},
         {"environment.nearby_objects", "주변 물체 (한 줄에 하나)", "texts", {}}};
     return fields;
 }
@@ -146,7 +146,7 @@ std::string Summary(const Json& record)
 {
     if (!record.is_object())
     {
-        return "시료 / 교정 기록 없음. 측정 조건을 확인하지 않았습니다.";
+        return "시료 및 교정 기록이 없습니다. 측정 조건을 확인하지 않았습니다.";
     }
     const std::string kind = record.value("data_class", "unknown");
     std::string text = "기록: " + record.value("name", std::string("이름 미기록")) + "\n자료 분류: " +
@@ -167,7 +167,7 @@ std::string Summary(const Json& record)
         }
     }
     text += "불확도: " + std::to_string(record.value("uncertainty", Json::array()).size()) +
-            "개 기록 / 자동 전파와 실측 일치 판정은 수행하지 않습니다.\n";
+            "개 기록. 자동 전파와 실측 일치 판정은 수행하지 않습니다.\n";
     return text;
 }
 

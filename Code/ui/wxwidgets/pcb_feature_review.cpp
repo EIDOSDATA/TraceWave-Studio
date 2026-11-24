@@ -20,11 +20,11 @@ std::string OperationLabel(const std::string& operation)
 {
     const auto dot = operation.find('.');
     const auto action = dot == std::string::npos ? operation : operation.substr(dot + 1);
-    static const std::map<std::string, std::string> labels{{"set", "입력 / 수정"},
+    static const std::map<std::string, std::string> labels{{"set", "입력 및 수정"},
                                                            {"remove", "삭제"},
-                                                           {"place", "배치 이동 / 면 전환"},
+                                                           {"place", "배치 이동 및 면 전환"},
                                                            {"member_edit", "소유 항목 수정"},
-                                                           {"detach", "그룹 해제 / 형상 보존"}};
+                                                           {"detach", "그룹 해제 (형상 보존)"}};
     const auto found = labels.find(action);
     return found == labels.end() ? "지원 동작" : found->second;
 }
@@ -66,7 +66,7 @@ void PcbFeatureDialog::Load(const std::string& section, const Json& id, const Js
             {
                 if (result.value("project_id", "") != m_projectId || result.value("revision_id", "") != m_revision)
                 {
-                    throw std::runtime_error("PCB 폼이 현재 프로젝트/개정과 다릅니다.");
+                    throw std::runtime_error("PCB 폼이 현재 프로젝트 또는 개정과 다릅니다.");
                 }
                 Render(result);
             });
@@ -85,7 +85,7 @@ void PcbFeatureDialog::Render(const Json& context)
     m_section->SetSelection(found == m_sections.end() ? 1 : static_cast<int>(found - m_sections.begin()));
     m_recordIds = Json::array({nullptr});
     m_record->Clear();
-    m_record->Append(Display("새 객체 / 미적용"));
+    m_record->Append(Display("새 객체 (미적용)"));
     m_record->SetSelection(0);
     for (const auto& row : context.value("rows", Json::array()))
     {
@@ -259,7 +259,7 @@ void PcbFeatureDialog::Preview()
                 if (result.value("project_id", "") != m_projectId ||
                     result.value("source_revision_id", result.value("revision_id", "")) != m_revision)
                 {
-                    throw std::runtime_error("변경 후보의 원본 프로젝트/개정이 다릅니다.");
+                    throw std::runtime_error("변경 후보의 원본 프로젝트 또는 개정이 다릅니다.");
                 }
                 m_review = result;
                 m_reviewInput = input;

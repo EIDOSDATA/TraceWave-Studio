@@ -32,7 +32,7 @@ wxString ReviewText(const Json& report)
         text += Display(label) + wxString::Format(" (%zu)\n", rows.size());
         for (const auto& row : rows)
         {
-            text += Display("  " + row.value("title", std::string()) + " / " + row.value("reason", std::string())) +
+            text += Display("  " + row.value("title", std::string()) + ", " + row.value("reason", std::string())) +
                     "\n";
         }
         text += "\n";
@@ -44,7 +44,7 @@ wxString ReviewText(const Json& report)
     {
         const auto& placement = report.at("placement");
         text += Display("자동 이동 ") + wxString::Format("%d", placement.at("moved").get<int>()) +
-                Display("개 / 수동 고정 ") + wxString::Format("%d", placement.at("pinned").get<int>()) + Display("개\n");
+                Display("개, 수동 고정 ") + wxString::Format("%d", placement.at("pinned").get<int>()) + Display("개\n");
         text += Display("남은 치수 간섭 ") + wxString::Format("(%zu)\n", placement.at("collisions").size());
         for (const auto& row : placement.at("collisions"))
         {
@@ -53,7 +53,7 @@ wxString ReviewText(const Json& report)
         text += "\n" + Display("적용할 수 없는 수동 위치 ") + wxString::Format("(%zu)\n", placement.at("unavailable").size());
         for (const auto& row : placement.at("unavailable"))
         {
-            text += Display("  " + row.value("key", std::string()) + " / " + row.value("reason", std::string())) + "\n";
+            text += Display("  " + row.value("key", std::string()) + ", " + row.value("reason", std::string())) + "\n";
         }
     }
     return text;
@@ -84,7 +84,7 @@ void DrawingOutputView::UpdateAnnotationActions()
     const bool missingView = m_annotation.is_object() &&
                              std::find(m_viewValues.begin(), m_viewValues.end(), m_annotation.at("view")) ==
                                  m_viewValues.end();
-    m_annotationEdit->SetLabel(Display(missingView ? "자동 치수 / 뷰 확인" : "자동 치수"));
+    m_annotationEdit->SetLabel(Display(missingView ? "자동 치수에 필요한 뷰 확인" : "자동 치수"));
     m_annotationEdit->Enable(m_available && m_hasSnapshot && technical);
     m_annotationSave->Enable(m_available && technical && CurrentAnnotation() != m_storedAnnotation);
     const bool movable = m_available && technical && m_placements.is_object() && !m_placements.at("items").empty();
@@ -143,7 +143,7 @@ void DrawingOutputView::EditAnnotations()
     datum->Append(Display("기판 외곽의 X/Y 최솟값"));
     for (const auto& point : m_annotationCatalog.value("datums", Json::array()))
     {
-        datum->Append(Display("홀 중심 / " + point.value("name", std::string())));
+        datum->Append(Display("홀 중심: " + point.value("name", std::string())));
         datums.push_back({{"kind", "hole"}, {"id", point.at("id")}});
     }
     int datumIndex = 0;
@@ -154,12 +154,12 @@ void DrawingOutputView::EditAnnotations()
         datumIndex = static_cast<int>(std::distance(datums.begin(), found));
         if (found == datums.end())
         {
-            datum->Append(Display("저장한 홀 중심 / 원본 확인 필요"));
+            datum->Append(Display("저장한 홀 중심 (원본 확인 필요)"));
             datums.push_back(saved);
         }
     }
     datum->SetSelection(datumIndex);
-    for (const auto* name : {"기준선식 / 기준점부터", "연쇄식 / 앞 홀부터", "좌표식 / 순서와 관계없는 X, Y"})
+    for (const auto* name : {"기준선식 (기준점부터)", "연쇄식 (앞 홀부터)", "좌표식 (순서와 관계없는 X, Y)"})
     {
         style->Append(Display(name));
     }
@@ -184,7 +184,7 @@ void DrawingOutputView::EditAnnotations()
     table->SetName(Display("홀 표 별도 페이지"));
     table->SetValue(m_annotation.is_object() && m_annotation.value("hole_table", false));
     body->Add(table, 0, wxLEFT | wxRIGHT | wxBOTTOM, dialog.FromDIP(14));
-    body->Add(new wxStaticText(&dialog, wxID_ANY, Display("모델 치수 불러오기 / 기입할 항목 선택")), 0,
+    body->Add(new wxStaticText(&dialog, wxID_ANY, Display("불러올 모델 치수 선택")), 0,
               wxLEFT | wxRIGHT, dialog.FromDIP(14));
     auto* models = new wxCheckListBox(&dialog, wxID_ANY);
     models->SetName(Display("모델 치수 불러오기"));
@@ -213,7 +213,7 @@ void DrawingOutputView::EditAnnotations()
             const std::string amount = row.at("value").is_number()
                                            ? OutputUi::Text(row.at("value")) + " " + row.value("unit", "")
                                            : "미정";
-            models->Append(Display(row.value("name", "") + " / " + row.value("label", "") + " / " + amount));
+            models->Append(Display(row.value("name", "") + ", " + row.value("label", "") + ", " + amount));
             models->Check(static_cast<unsigned>(modelRefs.size()),
                           std::find(old.begin(), old.end(), reference) != old.end());
             modelRefs.push_back(reference);
@@ -222,7 +222,7 @@ void DrawingOutputView::EditAnnotations()
         {
             if (std::find(modelRefs.begin(), modelRefs.end(), reference) == modelRefs.end())
             {
-                models->Append(Display("원본 확인 필요 / " + reference.value("key", "")));
+                models->Append(Display("원본 확인 필요: " + reference.value("key", "")));
                 models->Check(static_cast<unsigned>(modelRefs.size()));
                 modelRefs.push_back(reference);
             }
@@ -316,7 +316,7 @@ void DrawingOutputView::InspectAnnotations()
                     wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
     StudioTheme::BindSurface(dialog);
     auto* sizer = new wxBoxSizer(wxVERTICAL);
-    const auto summary = wxString::Format(Display("기입 %d개 / 홀 표 %d행"), m_annotationReview.value("dimension_count", 0),
+    const auto summary = wxString::Format(Display("기입 %d개, 홀 표 %d행"), m_annotationReview.value("dimension_count", 0),
                                           m_annotationReview.value("hole_count", 0));
     sizer->Add(new wxStaticText(&dialog, wxID_ANY, summary), 0, wxALL, dialog.FromDIP(12));
     auto* report = new wxTextCtrl(&dialog, wxID_ANY, ReviewText(m_annotationReview), wxDefaultPosition,

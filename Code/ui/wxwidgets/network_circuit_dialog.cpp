@@ -19,7 +19,7 @@ const std::array<std::string, 4> States{"connected", "open", "short", "dnp"};
 
 NetworkCircuitDialog::NetworkCircuitDialog(wxWindow* parent, const Json& context, const Json& selection,
                                            DialogGateway gateway)
-    : ProjectSetupDialog(parent, "외부 정합망 / 기본 RLC", context, std::move(gateway)), m_context(context),
+    : ProjectSetupDialog(parent, "외부 정합망 (기본 RLC)", context, std::move(gateway)), m_context(context),
       m_selection(selection)
 {
     SetName("network.circuit.dialog");
@@ -114,7 +114,7 @@ void NetworkCircuitDialog::InvalidateReview()
         m_resultGraph->Clear();
         m_results->DeleteAllItems();
         m_resultDetails->ChangeValue(
-            Display("결합 검토 후 실제 원본/파생 표본을 표시합니다. 방사 효율은 자동 승계하지 않습니다."));
+            Display("결합 검토 후 실제 원본 및 파생 표본을 표시합니다. 방사 효율은 자동 승계하지 않습니다."));
         m_pageLabel->SetLabel(Display("결합 결과 없음"));
     }
 }
@@ -420,7 +420,7 @@ void NetworkCircuitDialog::UpdateActions()
         : draft && m_elements.empty() ? "직렬 또는 병렬 소자를 추가하고 값을 입력하세요."
         : draft && reviewed ? "회로 검토 완료. 회로 사본을 저장하면 결합 검토를 할 수 있습니다."
         : draft ? "입력 기준면과 소자 값을 확인한 뒤 회로 검토를 누르세요."
-        : m_selection.is_null() ? "결합할 안테나 / 부하 입력 자료를 선택하세요."
+        : m_selection.is_null() ? "결합할 안테나 또는 부하 자료를 선택하세요."
         : reviewed ? "결합 검토 완료. 원본과 계산값을 확인한 뒤 별도 결과로 저장하세요."
         : "회로 사본과 부하가 준비됐습니다. 결합 검토를 누르세요.");
     if (m_step->GetLabel() != stage)

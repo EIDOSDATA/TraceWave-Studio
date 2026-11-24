@@ -9,7 +9,7 @@ from unittest.mock import patch
 from uuid import uuid4
 
 from rfad.application.result_service import read
-from rfad.application.canonical import canonical_bytes
+from rfad.application.canonical import canonical_bytes, canonical_hash
 from rfad.domain.errors import ProjectError
 from test_network_service import import_parameters
 
@@ -81,6 +81,18 @@ class ResultSourceTests(unittest.TestCase):
         self.fixture.save_reopen()
         results = {format_name: self.query("result.export", source=self.source, pin=description["pin"], format=format_name)
                    for format_name in ("source", "csv", "hdf5", "touchstone")}
+        sidecar = results["source"]["sidecar"]
+        revision = description["source_revision"]
+        self.assertEqual(revision["label"], f"{revision['name']} ({revision['modified_at']})")
+        original_revision = {**revision, "label": f"{revision['name']} / {revision['modified_at']}"}
+        self.assertEqual(sidecar["source_revision"], original_revision)
+        legacy_pin = {**description["pin"], "identity_hash": canonical_hash({
+            "source": self.source, "project_id": self.fixture.project, "source_revision": original_revision,
+            "source_record": {"entry": sidecar["dataset"], "revision_hash": original_revision["hash"]},
+            "dataset_artifact": sidecar["dataset_artifact"],
+        })}
+        self.assertEqual(description["pin"], legacy_pin)
+        self.query("result.page", source=self.source, pin=legacy_pin, row=0, column=0, offset=0, limit=3)
         source = base64.b64decode(results["source"]["content_base64"])
         self.assertEqual(source, base64.b64decode(import_parameters(declared=False)["source_base64"]))
         self.assertEqual(results["source"]["file_name"], "한글 시험.s1p")

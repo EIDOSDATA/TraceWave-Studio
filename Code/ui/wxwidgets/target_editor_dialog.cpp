@@ -9,7 +9,7 @@
 #include <stdexcept>
 
 TargetEditorDialog::TargetEditorDialog(wxWindow* parent, const Json& context, DialogGateway gateway)
-    : ProjectSetupDialog(parent, "RF 목표 / 대역과 성능 기준", context, std::move(gateway))
+    : ProjectSetupDialog(parent, "RF 목표의 대역과 성능 기준", context, std::move(gateway))
 {
     SetName("target.dialog");
     BuildInterface();
@@ -33,7 +33,7 @@ void TargetEditorDialog::RenderContext(const Json& context)
     int row = 0;
     for (const auto& item : context.at("items"))
     {
-        m_targets->Append(Display(item.at("label").get<std::string>() + " / " + item.value("summary", "")));
+        m_targets->Append(Display(item.at("label").get<std::string>() + ", " + item.value("summary", "")));
         if (item.at("id") == m_targetId)
         {
             selected = row;
@@ -46,7 +46,7 @@ void TargetEditorDialog::RenderContext(const Json& context)
     m_reason->ChangeValue(wxEmptyString);
     const std::string summary = context.at("input_status").value("summary", "미평가");
     const std::string selection = !m_presetId.is_null() ? "대역 프리셋 초안" : (m_targetId.is_null() ? "새 목표" : "선택한 목표");
-    m_summary->SetLabel(Display(selection + " / " + summary));
+    m_summary->SetLabel(Display(selection + ", " + summary));
     m_summary->Wrap(std::max(200, GetClientSize().x - FromDIP(280)));
     SetStatus("목표 저장은 해석 실행이나 성능 합격을 뜻하지 않습니다. 미정 입력과 원래 출처를 보존합니다.");
     m_loading = false;

@@ -68,23 +68,23 @@ wxString TerminationText(const Json& end, const Json& estimate)
     wxString text = Reason(end);
     if (!end.value("confirmed", false))
     {
-        text += Display(" / 프로세스 종료 확인 대기");
+        text += Display(" (프로세스 종료 확인 대기)");
     }
     if (end.value("iterations", Json()).is_number())
     {
-        text += Display(" / 시간 단계 ") + Display(end.at("iterations").dump()) +
-                " / " + Display(estimate.at("max_timesteps").dump());
+        text += Display(", 시간 단계 ") + Display(end.at("iterations").dump()) +
+                Display(", 최대 ") + Display(estimate.at("max_timesteps").dump());
     }
     if (end.value("target_energy_ratio", Json()).is_number())
     {
         text += wxString::Format(Display("\n목표 에너지 비율 %.6g"), end.at("target_energy_ratio").get<double>());
         if (end.value("decay_db", Json()).is_number())
         {
-            text += wxString::Format(Display(" / 실제 감쇠 %.4g dB"), end.at("decay_db").get<double>());
+            text += wxString::Format(Display(", 실제 감쇠 %.4g dB"), end.at("decay_db").get<double>());
         }
         else if (end.value("zero_energy", false))
         {
-            text += Display(" / 보고된 에너지 0");
+            text += Display(", 보고된 에너지 0");
         }
     }
     const auto message = end.value("message", std::string());
@@ -122,7 +122,7 @@ void DisplayRows(wxListCtrl& table, const Json& estimate, const Json& actual)
         elapsed.is_number() ? Time(elapsed) : Display("미계측"), elapsedChange);
     const double memoryEstimate = estimate.at("memory_bytes");
     const auto memory = actual.value("peak_rss_bytes", Json());
-    add("메모리 / 피크 RSS", Bytes(memoryEstimate),
+    add("최대 메모리 (RSS)", Bytes(memoryEstimate),
         memory.is_number() ? Bytes(memory) : Display("미계측"),
         memory.is_number() ? delta(memory, memoryEstimate) : wxString("-"));
     const double rawEstimate = estimate.at("raw_output_bytes");
@@ -140,8 +140,8 @@ wxString Studio::SolverEstimateText(const Json& estimate)
     }
     return Display("예상 실행 비용\nopenEMS 시간 ") + TimeRange(estimate) +
         Display(" (최대 시간 단계 기준)\n메모리 ") + Bytes(estimate.at("memory_bytes")) +
-        Display(" / 원시 출력 ") + Bytes(estimate.at("raw_output_bytes")) +
-        Display("\n계획 허용 한도 ") + Time(estimate.at("plan_wall_limit_seconds")) + " / " +
+        Display(", 원시 출력 ") + Bytes(estimate.at("raw_output_bytes")) +
+        Display("\n계획 허용 한도 ") + Time(estimate.at("plan_wall_limit_seconds")) + ", " +
         Bytes(estimate.at("package_limit_bytes")) +
         Display("\n참조 처리율을 적용한 초기 추정입니다. 실제 에너지 종료 시점과 PC 부하에 따라 달라집니다.");
 }
@@ -234,7 +234,7 @@ void Studio::ShowSolverCost(wxWindow* parent, const Json& completed, const Json&
         if (!energy.empty())
         {
             const auto& samples = energy.at("samples");
-            common += wxString::Format(Display("\n\n에너지 감쇠 기록 %zu / %zu개 (로그 기록 간격)"),
+            common += wxString::Format(Display("\n\n에너지 감쇠 기록 %zu개 (전체 %zu개, 로그 기록 간격)"),
                 samples.size(), energy.at("logged_total").get<std::size_t>());
             for (const auto& sample : samples)
             {

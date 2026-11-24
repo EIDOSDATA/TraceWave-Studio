@@ -51,13 +51,13 @@ void StudioFrame::BuildWorkspacePages()
     action(analysis, analysis->GetSizer(), IdValidate, "현재 설계 입력 검사");
     action(analysis, analysis->GetSizer(), IdRunSolver, "해석 조건 확인 및 실행");
     action(analysis, analysis->GetSizer(), IdProjectStudy, "수치 연구 설정");
-    auto* environment = new wxButton(analysis, wxID_ANY, Display("실행 환경 / 진단"));
+    auto* environment = new wxButton(analysis, wxID_ANY, Display("실행 환경 및 진단"));
     StudioTheme::Button(*environment);
     analysis->GetSizer()->Add(environment, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
     environment->Bind(wxEVT_BUTTON, [this](wxCommandEvent&) { ShowEnvironment(); });
     m_views->AddPage(analysis, Display("해석 준비"));
     auto* comparison = page("수렴 연구", "저장된 수렴 연구 보고서의 조건과 판정을 확인합니다.\n여러 원본의 RF 곡선은 "
-                                         "결과 / 후보 비교 탭에서 비교합니다.");
+                                         "결과 화면의 후보 비교 탭에서 비교합니다.");
     auto* open = new wxButton(comparison, wxID_ANY, Display("수렴 연구 보고서 열기"));
     StudioTheme::Button(*open);
     comparison->GetSizer()->Add(open, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
@@ -81,10 +81,10 @@ void StudioFrame::BuildWorkspaceJobs()
     m_workspaceJobs->AppendColumn(Display("작업"), wxLIST_FORMAT_LEFT, FromDIP(120));
     m_workspaceJobs->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(125));
     m_workspaceJobs->AppendColumn(Display("내용"), wxLIST_FORMAT_LEFT, FromDIP(500));
-    m_workspaceJobs->InsertItem(0, Display("CAD / STEP"));
+    m_workspaceJobs->InsertItem(0, Display("CAD 및 STEP"));
     m_workspaceJobs->InsertItem(1, Display("해석"));
     m_workspaceJobs->InsertItem(2, Display("설계 연구"));
-    m_workspaceJobs->InsertItem(3, Display("도면 / 출력 검수"));
+    m_workspaceJobs->InsertItem(3, Display("도면 및 출력 검수"));
     m_workspaceJobs->Bind(wxEVT_SIZE,
                           [this](wxSizeEvent& event)
                           {
@@ -122,7 +122,7 @@ void StudioFrame::BuildWorkspaceJobs()
         if (page == 1)
         {
             const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - started).count();
-            Log("3D 탭 전환의 화면 상태 반영 / " + std::to_string(elapsed) + " ms");
+            Log("3D 탭 전환의 화면 상태 반영: " + std::to_string(elapsed) + " ms");
         }
     };
 }
@@ -166,8 +166,8 @@ void StudioFrame::PrepareExtendedWorkspaces(std::size_t page)
     status->PopStatusText();
     const auto widgetTime = std::chrono::duration_cast<std::chrono::milliseconds>(constructed - started).count();
     const auto styleTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - constructed).count();
-    Log("작업 공간 첫 구성 / 위젯 " + std::to_string(widgetTime) + " ms / 표시 설정 " +
-        std::to_string(styleTime) + " ms");
+    Log("작업 공간 첫 구성 (위젯 " + std::to_string(widgetTime) + " ms, 표시 설정 " +
+        std::to_string(styleTime) + " ms)");
 }
 
 void StudioFrame::NavigateWorkspace(WorkspaceArea area)
@@ -180,7 +180,7 @@ void StudioFrame::NavigateWorkspace(WorkspaceArea area)
     if (leavingModel)
     {
         const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - started).count();
-        Log("3D에서 다른 작업 공간 전환 / " + std::to_string(elapsed) + " ms");
+        Log("3D에서 다른 작업 공간으로 전환: " + std::to_string(elapsed) + " ms");
     }
 }
 
@@ -193,7 +193,7 @@ void StudioFrame::BuildWorkspaceLayers()
     panel->SetName("workspace.layer-content");
     StudioTheme::BindSurface(*panel);
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    m_workspaceBoard = new wxCheckBox(panel, wxID_ANY, Display("기판 외곽 / 2D 표시"));
+    m_workspaceBoard = new wxCheckBox(panel, wxID_ANY, Display("2D 기판 외곽 표시"));
     m_workspaceBoard->SetName("workspace.board");
     m_workspaceBoard->SetValue(true);
     layout->Add(m_workspaceBoard, 0, wxALL, FromDIP(StudioTheme::InputGap));
@@ -204,14 +204,14 @@ void StudioFrame::BuildWorkspaceLayers()
                            });
     m_workspaceLayers = new wxCheckListBox(panel, wxID_ANY);
     m_workspaceLayers->SetName("workspace.layers");
-    m_workspaceLayers->SetToolTip(Display("선택: 활성 도체층 / 체크: 도체층 2D 표시. 유전체 적층은 프로젝트 트리에서 "
+    m_workspaceLayers->SetToolTip(Display("층을 선택해 활성화하고 체크하면 2D 도면에 표시됩니다. 유전체 적층은 프로젝트 트리에서 "
                                           "편집합니다. 저장 원본과 해석 포함 여부는 변경하지 않습니다."));
     layout->Add(m_workspaceLayers, 1, wxEXPAND | wxALL, FromDIP(StudioTheme::Space));
     panel->SetSizer(layout);
     host->GetSizer()->Add(panel, 1, wxEXPAND);
     m_manager->AddPane(host, wxAuiPaneInfo()
                                  .Name("layers")
-                                 .Caption(Display("레이어 / 2D 표시"))
+                                 .Caption(Display("2D 레이어 표시"))
                                  .Left()
                                  .Layer(1)
                                  .Position(1)
@@ -290,7 +290,7 @@ void StudioFrame::ShowWorkspaceJob(long row, const std::string& state, const std
         m_workspaceJobs->SetItem(row, 1,
                                  Display(needsCad ? "환경 필요" : (found == labels.end() ? state : found->second)));
         m_workspaceJobs->SetItem(
-            row, 2, Display(needsCad ? "CAD 환경 연결 필요. 보기 > 실행 환경 / 진단에서 확인하세요." : message));
+            row, 2, Display(needsCad ? "CAD 환경 연결 필요. 보기 > 실행 환경 및 진단에서 확인하세요." : message));
     }
 }
 

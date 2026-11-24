@@ -115,7 +115,7 @@ def surface_label(case):
     rows = case.get("surface_layers", [])
     if not rows:
         return ""
-    return " / ".join(row["name"] + (f" (개구 {len(row['openings_mm'])}개)" if row["openings_mm"] else " (개구 없음)")
+    return ", ".join(row["name"] + (f" (개구 {len(row['openings_mm'])}개)" if row["openings_mm"] else " (개구 없음)")
                       for row in rows)
 
 

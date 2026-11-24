@@ -112,8 +112,8 @@ void DrawingOutputView::EditPlacement()
     choice->SetName(Display("이동할 치수"));
     for (const auto& row : rows)
     {
-        choice->Append(Display(row.at("title").get<std::string>() + " / " + row.at("label").get<std::string>() +
-                               (row.at("pinned").get<bool>() ? " / 수동 고정" : "")));
+        choice->Append(Display(row.at("title").get<std::string>() + ", " + row.at("label").get<std::string>() +
+                               (row.at("pinned").get<bool>() ? " (수동 고정)" : "")));
     }
     choice->SetSelection(0);
     choice->SetMinSize(dialog.FromDIP(wxSize(465, -1)));

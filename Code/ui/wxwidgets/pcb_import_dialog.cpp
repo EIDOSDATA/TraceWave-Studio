@@ -20,7 +20,7 @@
 
 PcbImportDialog::PcbImportDialog(wxWindow* parent, const Json& context, DialogGateway gateway,
                                  std::shared_ptr<PcbImportRecovery> recovery)
-    : ProjectSetupDialog(parent, "PCB / CAM 원문 가져오기", context, gateway), m_context(context),
+    : ProjectSetupDialog(parent, "PCB 및 CAM 원문 가져오기", context, gateway), m_context(context),
       m_gateway(std::move(gateway)), m_recovery(std::move(recovery)), m_poll(this)
 {
     SetName("pcb.import.dialog");
@@ -29,7 +29,7 @@ PcbImportDialog::PcbImportDialog(wxWindow* parent, const Json& context, DialogGa
     StudioTheme::Heading(*title);
     layout->Add(title, 0, wxALL, FromDIP(12));
     m_tabs = new StudioNotebook(this);
-    for (const auto& label : {"파일 / 전송", "층 / 넷 대응", "후보 / 손실 검토", "출처 / 원문"})
+    for (const auto& label : {"파일과 전송", "층과 넷 대응", "후보와 손실 검토", "출처와 원문"})
     {
         auto* page = new wxScrolledWindow(m_tabs, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
         page->SetScrollRate(0, FromDIP(16));

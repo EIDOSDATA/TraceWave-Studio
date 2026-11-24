@@ -128,7 +128,7 @@ bool EditRow(wxWindow* parent, Json& row, const Json& context, DialogGateway gat
     addChoice("estimation", "평가 방법", {{"unspecified", "미정"}, {"type_a", "A형"}, {"type_b", "B형"}},
               row.value("estimation", "unspecified"));
     addText("distribution", "분포", Exact(row.value("distribution", Json(nullptr))));
-    addText("method", "평가 절차 / 근거", Exact(row.value("method", Json(nullptr))));
+    addText("method", "평가 절차와 근거", Exact(row.value("method", Json(nullptr))));
     const auto correlation = row.value("correlation", Json::object());
     addChoice("correlation", "상관 상태",
               {{"unknown", "미정"}, {"declared_independent", "독립이라고 명시"}, {"documented", "근거 문서 있음"}},
@@ -286,8 +286,8 @@ MeasurementCollectionEdit EditMeasurementUncertainty(wxWindow* parent, const Jso
         list->Clear();
         for (std::size_t index = 0; index < rows.size(); ++index)
         {
-            list->Append(Display("불확도 " + std::to_string(index + 1) + " / " +
-                                 rows.at(index).at("measurand").value("representation", std::string()) + " / " +
+            list->Append(Display("불확도 " + std::to_string(index + 1) + ", " +
+                                 rows.at(index).at("measurand").value("representation", std::string()) + ", " +
                                  MeasurementUi::Text(rows.at(index).value("value", Json(nullptr)))));
         }
     };

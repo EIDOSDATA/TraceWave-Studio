@@ -247,17 +247,17 @@ void PhysicalSetupDialog::RenderReview()
         const auto unit = m_stepReview.value("source_length_unit", std::string("mm"));
         const auto solid = m_stepReview.at("solid_count").get<int>();
         const bool assembly = m_stepReview.at("shape") == "assembly";
-        const auto units = unit == "mixed" ? std::string("혼합 / 각 부품의 원문 문맥별 환산 (mm, inch = 25.4 mm)")
-                                           : unit + " / 변환 배율 " + m_stepReview.value("source_to_mm", Json(1.0)).dump();
+        const auto units = unit == "mixed" ? std::string("혼합 단위 (부품별 원문에 따라 환산, 1 inch = 25.4 mm)")
+                                           : unit + ", 변환 배율 " + m_stepReview.value("source_to_mm", Json(1.0)).dump();
         text += "\n\nSTEP 미리보기 " + m_stepReview.at("name").get<std::string>() +
-                (assembly ? "\n조립 STEP / 닫힌 고체 " + std::to_string(solid) + "개" : "\n닫힌 단일 고체") +
-                " / 면 " + std::to_string(m_stepReview.at("faces").get<int>()) +
+                (assembly ? "\n조립 STEP: 닫힌 고체 " + std::to_string(solid) + "개" : "\n닫힌 단일 고체") +
+                ", 면 " + std::to_string(m_stepReview.at("faces").get<int>()) +
                 "개\n원본 단위 " + units +
                 "\n변환한 범위 " + box.dump() + " mm\nSHA-256 " +
                 m_stepReview.at("sha256").get<std::string>() + "\n재료 미정";
         if (assembly)
         {
-            text += "\n\n조립 트리 / 원본 좌표 (mm)";
+            text += "\n\n조립 트리 (원본 좌표, mm)";
             for (const auto& item : m_stepReview.at("assembly_instances"))
             {
                 const auto& transform = item.at("transform_mm");
@@ -275,7 +275,7 @@ void PhysicalSetupDialog::RenderReview()
                         " " + item.at("name").get<std::string>() + "  " + position.dump();
             }
         }
-        text += "\n\n메이트 기준면 / 원본 좌표 (mm)";
+        text += "\n\n메이트 기준면 (원본 좌표, mm)";
         for (const auto& leaf : m_stepReview.value("mate_faces", Json::array()))
         {
             text += "\n말단 경로 " + leaf.at("path").dump();

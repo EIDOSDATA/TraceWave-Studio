@@ -75,9 +75,9 @@ void CanvasRenderer::DrawGrid(bool visible)
         m_dc.DrawLine(0, origin.y, size.x, origin.y);
     }
     m_dc.SetTextForeground(m_colours.Detail(wxColour(94, 107, 121)));
-    m_dc.DrawText("X / mm", std::max(2, size.x - FromDIP(60)),
+    m_dc.DrawText("X (mm)", std::max(2, size.x - FromDIP(60)),
                   std::clamp(origin.y + 4, 2, std::max(2, size.y - FromDIP(22))));
-    m_dc.DrawText("Y / mm", std::clamp(origin.x + 4, 2, std::max(2, size.x - FromDIP(60))), FromDIP(4));
+    m_dc.DrawText("Y (mm)", std::clamp(origin.x + 4, 2, std::max(2, size.x - FromDIP(60))), FromDIP(4));
 }
 
 /** @brief 기판 외곽은 도체와 별도 배경으로 표시한다. */

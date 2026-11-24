@@ -32,7 +32,7 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
     SetScrollRate(0, FromDIP(16));
     StudioTheme::BindSurface(*this);
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    m_heading = new wxStaticText(this, wxID_ANY, Display("방사 / 편파"));
+    m_heading = new wxStaticText(this, wxID_ANY, Display("방사와 편파"));
     m_heading->SetWindowStyleFlag(m_heading->GetWindowStyleFlag() | wxST_ELLIPSIZE_END);
     m_heading->SetMinSize(wxSize(1, -1));
     StudioTheme::Title(*m_heading);
@@ -51,7 +51,7 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
     }
     m_scale->Append(Display("선형 표시"));
     m_scale->Append(Display("dB 표시"));
-    for (const auto& label : {"theta / phi (co 미지정)", "theta를 co로 지정", "phi를 co로 지정"})
+    for (const auto& label : {"극각과 방위각 (co 미지정)", "theta를 co로 지정", "phi를 co로 지정"})
     {
         m_basis->Append(Display(label));
     }
@@ -141,7 +141,7 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
     auto* side = new wxPanel(spatial);
     side->SetMinSize(FromDIP(wxSize(225, -1)));
     auto* sideLayout = new wxBoxSizer(wxVERTICAL);
-    auto* fit = new wxButton(side, wxID_ANY, Display("등각 보기 / F"));
+    auto* fit = new wxButton(side, wxID_ANY, Display("등각 보기 (F)"));
     sideLayout->Add(fit, 0, wxEXPAND | wxALL, FromDIP(4));
     fit->Bind(wxEVT_BUTTON,
               [this](wxCommandEvent&)
@@ -149,7 +149,7 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
                   m_canvas->Fit();
               });
     auto* axes = new wxStaticText(side, wxID_ANY,
-                                  Display("마우스 드래그: 회전\n휠: 확대 / 축소\nx: 빨강 / y: 초록 / z: 파랑\n좌표: "
+                                  Display("마우스를 끌어 회전합니다.\n휠로 확대·축소합니다.\n빨강 x축, 초록 y축, 파랑 z축\n좌표: "
                                           "무차원 표시\n면 연결과 색 혼합: 표시 전용"));
     sideLayout->Add(axes, 0, wxEXPAND | wxALL, FromDIP(8));
     m_colour = new wxPanel(side, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(205, 65)));
@@ -227,7 +227,7 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
                           {"polarization", m_data.at("polarization").at(theta).at(phi)},
                           {"projection", m_data.at("projection").at(theta).at(phi)}};
         wxTextEntryDialog detail(this, Display("표의 요약값에 대응하는 원본 표시 표본입니다. Ctrl+C로 복사할 수 있습니다."),
-                                 Display("편파 / 방사 표본 상세"), Display(sample.dump(2)), wxOK | wxTE_MULTILINE | wxTE_READONLY);
+                                 Display("편파와 방사 표본 상세"), Display(sample.dump(2)), wxOK | wxTE_MULTILINE | wxTE_READONLY);
         detail.SetSize(FromDIP(wxSize(700, 560)));
         detail.ShowModal();
     });
@@ -238,7 +238,7 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
     paging->Add(m_next, 0, wxALL, FromDIP(4));
     numbersLayout->Add(paging, 0, wxALL, FromDIP(4));
     numbers->SetSizer(numbersLayout);
-    m_tabs->AddPage(numbers, Display("편파 / 방사 수치"));
+    m_tabs->AddPage(numbers, Display("편파와 방사 수치"));
     m_previous->Bind(wxEVT_BUTTON,
                      [this](wxCommandEvent&)
                      {
@@ -283,7 +283,7 @@ void RadiationResultView::SetDescription(const Json& description)
 {
     Clear("봉인된 방사 표본을 조회하고 있습니다.");
     m_description = description;
-    m_heading->SetLabel(Display("방사 / 편파"));
+    m_heading->SetLabel(Display("방사와 편파"));
     m_heading->SetToolTip(Display(ResultUi::Text(description.at("label"))));
     m_observable->SetSelection(0);
     m_scale->SetSelection(0);
@@ -333,14 +333,14 @@ void RadiationResultView::SetPattern(const Json& data)
     const std::string co = data.value("co_component", Json(nullptr)) == "e_theta" ? "Etheta"
                            : data.value("co_component", Json(nullptr)) == "e_phi" ? "Ephi"
                                                                                   : "미지정";
-    std::string details = "openEMS 0.37.0의 원형 편파 규약 / 전파 방향: 바깥쪽 e_r / 우수 구면 기저\n시간 규약: " +
-                          ResultUi::Text(convention.value("phasor", Json(nullptr))) + " / co 성분: " + co +
+    std::string details = "openEMS 0.37.0 원형 편파 규약. 바깥쪽 e_r로 전파하며 우수 구면 기저를 사용합니다.\n시간 규약: " +
+                          ResultUi::Text(convention.value("phasor", Json(nullptr))) + ", co 성분: " + co +
                           "\nRHCP = " + ResultUi::Text(convention.value("rh_formula", Json(nullptr))) +
                           "\nLHCP = " + ResultUi::Text(convention.value("lh_formula", Json(nullptr)));
     m_convention->SetLabel(Display(details));
     m_convention->Wrap(std::max(FromDIP(220), GetClientSize().x - FromDIP(32)));
     PresentObservation(data.value("target_observation", Json(nullptr)));
-    SetBusy(false, "실제 기록 표본 / 총장 peak 정규화. 표면 연결은 표시 전용이며 추가 RF 표본이 아닙니다.");
+    SetBusy(false, "실제 기록 표본을 총장의 최댓값으로 정규화했습니다. 표면 연결은 표시 전용입니다.");
     if (!m_canvas->Ready())
     {
         m_status->SetLabel(Display("OpenGL 표시 환경을 사용할 수 없습니다. 2D 절단면과 실제 수치표를 확인하세요."));
@@ -366,11 +366,11 @@ void RadiationResultView::PresentObservation(const Json& observation)
         status == "recorded" ? "한계 미정" : "미평가";
     const std::string gain = observation.at("value_state") == "negative_infinity" ? "-Inf dBi" :
         observation.at("gain_dbi").is_null() ? "미기록" : ResultUi::Number(observation.at("gain_dbi")) + " dBi";
-    m_observation->SetLabel(Display(observation.at("name").get<std::string>() + " / " +
+    m_observation->SetLabel(Display(observation.at("name").get<std::string>() + ", " +
         (frequency.is_null() ? "주파수 미정" : StudioFrequency::WithUnit(frequency.at("value_si"))) +
-        " / theta " + ResultUi::Number(point.at("theta_deg")) + " deg / phi " +
-        ResultUi::Number(point.at("phi_deg")) + " deg / " + ResultUi::Text(point.at("polarization")) +
-        "\n실현 이득 " + gain + " / " + decision + " / " + observation.at("reason").get<std::string>()));
+        ", 극각 " + ResultUi::Number(point.at("theta_deg")) + " deg, 방위각 " +
+        ResultUi::Number(point.at("phi_deg")) + " deg, " + ResultUi::Text(point.at("polarization")) +
+        "\n실현 이득 " + gain + ", " + decision + ", " + observation.at("reason").get<std::string>()));
     m_observation->Wrap(std::max(FromDIP(220), GetClientSize().x - FromDIP(32)));
 }
 void RadiationResultView::PresentSamples()
@@ -413,7 +413,7 @@ void RadiationResultView::PresentSamples()
                         : ResultUi::Number(quantity) + " " + (projection.contains("quantity_db") ? "dBi" : "dB")));
         m_samples->SetItem(row, 4,
                            Display(ResultUi::State(polarization.value("axial_ratio_state", Json(nullptr))) +
-                                   (projection.value("clipped", false) ? " / 표시 하한 적용" : "")));
+                                   (projection.value("clipped", false) ? " (표시 하한 적용)" : "")));
     }
     m_previous->Enable(m_sampleOffset > 0);
     m_next->Enable(m_sampleOffset + 201 < total);
@@ -467,7 +467,7 @@ void RadiationResultView::SetError(const std::string& message)
 }
 void RadiationResultView::Clear(const std::string& reason)
 {
-    m_heading->SetLabel(Display("방사 / 편파"));
+    m_heading->SetLabel(Display("방사와 편파"));
     m_heading->SetToolTip(wxEmptyString);
     m_description = nullptr;
     m_data = nullptr;

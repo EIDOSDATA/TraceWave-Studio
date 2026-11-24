@@ -18,11 +18,11 @@
 void TemplateDialog::BuildInterface()
 {
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* title = new wxStaticText(this, wxID_ANY, Display("직접 입력 / 문헌 형상 카드"));
+    auto* title = new wxStaticText(this, wxID_ANY, Display("직접 입력과 문헌 형상 목록"));
     StudioTheme::Heading(*title);
     layout->Add(title, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     auto* help = new wxStaticText(
-        this, wxID_ANY, Display("문헌 치수와 수정값, 생략 항목을 확인합니다. 형상 생성은 RF/제조/실측 검증과 구분합니다."));
+        this, wxID_ANY, Display("문헌 치수와 수정값, 생략 항목을 확인합니다. 형상 생성은 RF, 제조 및 실측 검증과 구분합니다."));
     StudioTheme::BindSecondary(*help);
     layout->Add(help, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
     auto* selectors = new wxFlexGridSizer(2, FromDIP(StudioTheme::InputGap), FromDIP(StudioTheme::InputGap));
@@ -73,7 +73,7 @@ void TemplateDialog::BuildInterface()
     BuildSeedControls(inputs);
     content->Add(inputs, 1, wxEXPAND | wxRIGHT, FromDIP(StudioTheme::PanelPadding));
     auto* review = new wxBoxSizer(wxVERTICAL);
-    auto* previewTitle = new wxStaticText(this, wxID_ANY, Display("후보 형상 / 새로 생성할 도체 강조 (mm)"));
+    auto* previewTitle = new wxStaticText(this, wxID_ANY, Display("후보 형상 (새 도체 강조, mm)"));
     StudioTheme::Heading(*previewTitle);
     review->Add(previewTitle, 0, wxBOTTOM, FromDIP(StudioTheme::InputGap));
     m_canvas = new DesignCanvas(this);
@@ -186,19 +186,19 @@ void TemplateDialog::ShowGoalLayoutNote()
         const auto state = row.at("outside_ideal_envelope");
         if (!row.value("board_supported", true))
         {
-            text += Display(" / 현재 보드 종류 미지원");
+            text += Display(" (현재 기판 종류 미지원)");
         }
         else if (state.is_null())
         {
-            text += Display(" / 보드 외곽 적합성 미확인");
+            text += Display(" (기판 외곽 적합성 미확인)");
         }
         else if (state.get<bool>())
         {
-            text += Display(" / 이상 형상도 보드 외곽 초과");
+            text += Display(" (이상 형상도 기판 외곽 초과)");
         }
         else
         {
-            text += Display(" / 보드 외곽 한도 안");
+            text += Display(" (기판 외곽 안에 맞음)");
         }
     }
     text += Display("\n\n선폭, 접지·단락·급전, 설치 여유와 유전체 영향은 실제 형상과 해석에서 확인합니다.");
@@ -268,12 +268,12 @@ void TemplateDialog::ProposeLayouts()
             const auto name = Display(row.at("name").get<std::string>());
             if (row.at("available").get<bool>())
             {
-                allowed.Add(name + wxString::Format(" / %.6g mm", row.at("size_mm").get<double>()));
+                allowed.Add(name + wxString::Format(", %.6g mm", row.at("size_mm").get<double>()));
                 candidates.push_back(row);
             }
             else
             {
-                details += name + " / " + Display(row.at("reason").get<std::string>()) + "\n";
+                details += name + ": " + Display(row.at("reason").get<std::string>()) + "\n";
             }
         }
         if (allowed.empty())

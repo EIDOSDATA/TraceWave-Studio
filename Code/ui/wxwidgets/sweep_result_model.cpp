@@ -109,11 +109,11 @@ std::string ResultConditions(const Json& result)
 {
     const auto& descriptor = result.at("descriptor");
     std::string text =
-        "저장된 연구 후보 / 실제 계산 결과\n계산 완료, 목표 표본 판정, 수치 수렴, 실측 검증은 서로 구분합니다.\n\n";
+        "저장된 연구 후보의 계산 결과\n계산 완료, 목표 표본 판정, 수치 수렴, 실측 검증을 따로 표시합니다.\n\n";
     text += "전체 주파수: " +
             StudioFrequency::Range(descriptor.value("frequency_min_hz", Json(nullptr)),
                                    descriptor.value("frequency_max_hz", Json(nullptr))) +
-            "\n자료 종류: " + KnownText(descriptor.value("parameter_kind", Json(nullptr))) + " / " +
+            "\n자료 종류: " + KnownText(descriptor.value("parameter_kind", Json(nullptr))) + ", " +
             KnownText(descriptor.value("unit", Json(nullptr))) +
             "\n표본 수: " + KnownText(descriptor.value("sample_count", Json(nullptr))) +
             "\n파 정의: " + Convention(descriptor.value("wave_definition", Json(nullptr))) +
@@ -125,7 +125,7 @@ std::string ResultConditions(const Json& result)
                 "\n기준면: " + KnownText(Item(descriptor, "reference_planes", index)) +
                 "\n기준 Z0: " + Impedance(Item(descriptor, "z0_ohm", index)) +
                 "\n포트 모드: " + Convention(Item(descriptor, "port_modes", index)) +
-                " / 전류 방향: " + Convention(Item(descriptor, "current_orientation", index));
+                ", 전류 방향: " + Convention(Item(descriptor, "current_orientation", index));
     }
     if (descriptor.value("z0_frequency_dependent", false))
     {
@@ -181,7 +181,7 @@ std::string ResultConditions(const Json& result)
         const auto evidence = assessment.value("evidence", Json::object());
         const auto target =
             evidence.value("target_original", evidence.value("target_original_summary", Json::object()));
-        text += KnownText(target.value("name", Json("저장 당시 목표"))) + " / " +
+        text += KnownText(target.value("name", Json("저장 당시 목표"))) + ", " +
                 Status(assessment.value("status", "not_evaluated")) + "\n";
         for (const auto* key : {"reason", "diagnostic"})
         {
@@ -220,7 +220,7 @@ std::string ResultConditions(const Json& result)
             }
         }
     }
-    text += "\n수치 수렴: 별도 검증 / 실측 검증: 미확립\n입력 스냅샷과 원본 조건은 저장 당시 그대로 보존합니다.";
+    text += "\n수치 수렴은 별도 검증이 필요하며 실측 검증은 미확립 상태입니다.\n입력 스냅샷과 원본 조건은 저장 당시 그대로 보존합니다.";
     return text;
 }
 }

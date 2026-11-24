@@ -288,7 +288,7 @@ Model Model::Parse(const nlohmann::json& scene)
                  shape.center.x - shape.radius >= shape.center.x + shape.radius ||
                  shape.center.y - shape.radius >= shape.center.y + shape.radius))
             {
-                throw DisplayRangeError("패드/비아 외곽이 표시 범위 또는 좌표 정밀도를 벗어났습니다.");
+                throw DisplayRangeError("패드와 비아 외곽이 표시 범위 또는 좌표 정밀도를 벗어났습니다.");
             }
             shapes.push_back(std::move(shape));
         }

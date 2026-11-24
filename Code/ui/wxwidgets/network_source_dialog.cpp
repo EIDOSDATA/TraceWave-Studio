@@ -16,7 +16,7 @@ NetworkSolverDialog::NetworkSolverDialog(wxWindow* parent, const Json& context, 
 {
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* help = new wxStaticText(this, wxID_ANY,
-                                  Display("기존 완료 계산의 원본/조건을 보존하여 공통 복소 자료로 등록합니다. 새 "
+                                  Display("기존 완료 계산의 원본과 조건을 보존하여 공통 복소 자료로 등록합니다. 새 "
                                           "해석을 실행하거나 실측 합격으로 바꾸지 않습니다."));
     help->Wrap(FromDIP(950));
     layout->Add(help, 0, wxEXPAND | wxALL, FromDIP(12));
@@ -30,8 +30,8 @@ NetworkSolverDialog::NetworkSolverDialog(wxWindow* parent, const Json& context, 
             selected = index;
         }
         ++index;
-        m_result->Append(Display("계산 결과 " + std::to_string(index) + " / 표본 " + entry.at("sample_count").dump() +
-                                 " / " + entry.value("profile", "")));
+        m_result->Append(Display("계산 결과 " + std::to_string(index) + ", 표본 " + entry.at("sample_count").dump() +
+                                 ", " + entry.value("profile", "")));
     }
     if (m_result->GetCount() != 0)
     {
@@ -125,7 +125,7 @@ void NetworkSolverDialog::Preview()
                                                     {"진단", result.value("issues", Json::array())}}
                                                    .dump(2)));
                 SetStatus(result.value("can_apply", false)
-                              ? "기존 결과의 등록 후보입니다. 물리/실측 검증 상태는 그대로 유지됩니다."
+                              ? "기존 결과의 등록 후보입니다. 물리 모델과 실측 검증 상태는 그대로 유지됩니다."
                               : "자료를 등록할 수 없습니다. 진단을 확인하세요.");
                 UpdateActions();
             });
@@ -213,8 +213,8 @@ void NetworkDiagnosticsDialog::Read(int offset)
                 m_details->ChangeValue(Display(result.at("diagnostics").dump(2)));
                 const auto count = result.at("diagnostics").size();
                 SetStatus("진단 " + std::to_string(count == 0 ? 0 : m_offset + 1) + "-" +
-                          std::to_string(m_offset + count) + " / " + result.at("total").dump() +
-                          "개. 전체 진단은 원본 파일에 보존됩니다.");
+                          std::to_string(m_offset + count) + " (전체 " + result.at("total").dump() +
+                          "개). 전체 진단은 원본 파일에 보존됩니다.");
                 UpdateActions();
             });
 }

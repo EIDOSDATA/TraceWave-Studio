@@ -47,7 +47,7 @@ PcbCamOutputView::PcbCamOutputView(wxWindow* parent)
     m_footprint->SetMinSize(FromDIP(wxSize(170, -1)));
     m_preview = new wxButton(this, wxID_ANY, Display("포함 범위 검토"));
     m_build = new wxButton(this, wxID_ANY, Display("검토한 패키지 생성"));
-    m_manufacturing = new wxButton(this, wxID_ANY, Display("IPC-2581C / ODB++ 내보내기"));
+    m_manufacturing = new wxButton(this, wxID_ANY, Display("IPC-2581C와 ODB++ 내보내기"));
     m_manufacturing->SetToolTip(Display("선택한 KiCad 보드 출력 기록에서 원본과 제조 파일을 담은 ZIP을 만듭니다."));
     m_manufacturing->Disable();
     m_import = new wxButton(this, wxID_ANY, Display("PCB 파일 가져오기"));
@@ -63,9 +63,9 @@ PcbCamOutputView::PcbCamOutputView(wxWindow* parent)
     m_gerber =
         Page(m_tabs, "Gerber", {{"원본 층", 200}, {"출력 대응", 220}, {"역할", 140}, {"면", 90}, {"포함 상태", 150}});
     m_drills =
-        Page(m_tabs, "드릴 / 라우트",
-             {{"이름", 190}, {"기계 형상", 120}, {"완성 치수 / mm", 180}, {"공구 지름 / mm", 130}, {"도금 상태", 150}});
-    m_files = Page(m_tabs, "Job / 검수", {{"파일", 300}, {"역할", 160}, {"크기 / bytes", 120}, {"보존 상태", 190}});
+        Page(m_tabs, "드릴 및 라우트",
+             {{"이름", 190}, {"기계 형상", 120}, {"완성 치수 (mm)", 180}, {"공구 지름 (mm)", 130}, {"도금 상태", 150}});
+    m_files = Page(m_tabs, "Job 및 검수", {{"파일", 300}, {"역할", 160}, {"크기 (바이트)", 120}, {"보존 상태", 190}});
     layout->Add(m_tabs, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
     auto* layerRow = new wxWrapSizer(wxHORIZONTAL);
     layerRow->Add(new wxStaticText(this, wxID_ANY, Display("미리보기 층")), 0, wxALL | wxALIGN_CENTER_VERTICAL,
@@ -73,7 +73,7 @@ PcbCamOutputView::PcbCamOutputView(wxWindow* parent)
     m_layer = new wxChoice(this, wxID_ANY);
     m_layer->SetMinSize(FromDIP(wxSize(220, -1)));
     layerRow->Add(m_layer, 0, wxALL, FromDIP(4));
-    m_coordinates = new wxStaticText(this, wxID_ANY, Display("원본 XY / 위에서 본 좌표 / 1:1 / 임의 미러 없음"));
+    m_coordinates = new wxStaticText(this, wxID_ANY, Display("위에서 본 원본 XY 좌표로 1:1 출력합니다. 임의 미러링은 적용하지 않습니다."));
     layerRow->Add(m_coordinates, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(4));
     layout->Add(layerRow, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
     m_canvas = new DrawingSheetCanvas(this);
@@ -81,7 +81,7 @@ PcbCamOutputView::PcbCamOutputView(wxWindow* parent)
     layout->Add(m_canvas, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
     m_notice = new wxStaticText(
         this, wxID_ANY,
-        Display("고정 입력의 원본 층과 사용 여부를 선택합니다. 제작/측정 합격과 수신 도구의 채움은 별도 검증입니다."));
+        Display("고정 입력의 원본 층과 사용 여부를 선택합니다. 제작 및 측정 합격과 수신 도구의 채움은 별도 검증입니다."));
     layout->Add(m_notice, 0, wxEXPAND | wxALL, FromDIP(8));
     SetSizer(layout);
     m_format->Bind(wxEVT_CHOICE,
@@ -227,7 +227,7 @@ void PcbCamOutputView::SetContext(const Json& context)
     for (const auto& footprint : pcb.value("footprints", Json::array()))
     {
         m_footprints.push_back(footprint.at("id"));
-        m_footprint->Append(Display(OutputUi::Text(footprint.value("name", Json(nullptr)), "풋프린트 / 이름 미정")));
+        m_footprint->Append(Display(OutputUi::Text(footprint.value("name", Json(nullptr)), "풋프린트 (이름 미정)")));
     }
     m_footprint->SetSelection(wxNOT_FOUND);
     m_refreshing = false;

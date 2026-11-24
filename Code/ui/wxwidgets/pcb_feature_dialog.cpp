@@ -78,7 +78,7 @@ PcbFeatureDialog::PcbFeatureDialog(wxWindow* parent, const Json& context, Dialog
     m_changes->SetMinSize(FromDIP(wxSize(-1, 120)));
     StudioTheme::Table(*m_changes);
     for (const auto& column : std::vector<std::pair<std::string, int>>{
-             {"항목", 240}, {"원래 값", 230}, {"후보 값", 230}, {"단위 / 상태", 180}})
+             {"항목", 240}, {"원래 값", 230}, {"후보 값", 230}, {"단위와 상태", 180}})
     {
         m_changes->AppendColumn(Display(column.first), wxLIST_FORMAT_LEFT, FromDIP(column.second));
     }
@@ -129,7 +129,7 @@ PcbFeatureDialog::PcbFeatureDialog(wxWindow* parent, const Json& context, Dialog
     m_conditions = new wxTextCtrl(source, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 230)),
                                   wxTE_MULTILINE | wxTE_READONLY);
     sourceLayout->Add(m_conditions, 1, wxEXPAND | wxALL, FromDIP(12));
-    m_advanced = new wxCollapsiblePane(source, wxID_ANY, Display("고급 / 보존 원문"), wxDefaultPosition, wxDefaultSize,
+    m_advanced = new wxCollapsiblePane(source, wxID_ANY, Display("고급: 보존 원문"), wxDefaultPosition, wxDefaultSize,
                                        wxCP_DEFAULT_STYLE | wxCP_NO_TLW_RESIZE);
     m_advanced->GetPane()->SetSizer(new wxBoxSizer(wxVERTICAL));
     m_source = new wxTextCtrl(m_advanced->GetPane(), wxID_ANY, wxEmptyString, wxDefaultPosition,

@@ -27,7 +27,7 @@ inline nlohmann::json ParsePolygonInput(const std::string& text)
         {
             if (ring.size() < 3)
             {
-                throw std::runtime_error("각 외곽/구멍에는 점 세 개 이상이 필요합니다.");
+                throw std::runtime_error("각 외곽과 구멍에는 점 세 개 이상이 필요합니다.");
             }
             rings.push_back(ring);
             ring = Json::array();

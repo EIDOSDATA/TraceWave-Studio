@@ -110,6 +110,6 @@ def review(service, state, document, lines):
             if checked == parts.keys():
                 break
     except (ProjectError, ValueError, KeyError, TypeError) as error:
-        return {"rows": [], "status": "invalid", "message": "CAD 봉인 검토 실패 / " + str(error)}
+        return {"rows": [], "status": "invalid", "message": "CAD 봉인 검토 실패: " + str(error)}
     return {"rows": output, "status": "available" if checked == parts.keys() else "partial",
-            "message": f"현재 개정 CAD 기계 간극 {len(output)}/{len(parts)}개 / STEP은 EM 미포함"}
+            "message": f"현재 개정 CAD 기계 간극 {len(output)}/{len(parts)}개. STEP 형상은 전자기 해석에 포함되지 않습니다."}

@@ -282,7 +282,7 @@ void DesignCanvas::PresentRouteReview(unsigned long version, bool valid, const s
         return;
     }
     m_routeConflict = !valid;
-    Status(message + " / V 층 전환, Enter 적용, Backspace 되돌리기");
+    Status(message + ". V로 층 전환, Enter로 적용, Backspace로 되돌리기");
     Refresh(false);
 }
 
@@ -697,7 +697,7 @@ void DesignCanvas::PaintScene(wxDC& dc, const wxRect& damage)
         dc.DrawLine(point.x, point.y - radius, point.x, point.y + radius);
     }
     dc.SetTextForeground(m_colours.Detail(wxColour(73, 86, 103)));
-    dc.DrawText(Display("2D 설계 / mm"), FromDIP(10), FromDIP(10));
+    dc.DrawText(Display("2D 설계 (mm)"), FromDIP(10), FromDIP(10));
     if (m_scene.omissionCount > 0)
     {
         dc.DrawText(Display("표시 생략 " + std::to_string(m_scene.omissionCount) + "개"), FromDIP(10), FromDIP(30));

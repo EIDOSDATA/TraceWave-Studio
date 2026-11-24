@@ -14,7 +14,7 @@ PrecisionDialog::PrecisionDialog(wxWindow* parent, const Json& context, const Js
       m_objects(objects), m_originalScene(scene)
 {
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* heading = new wxStaticText(this, wxID_ANY, Display("치수 / 회전·미러 / 평면 연산"));
+    auto* heading = new wxStaticText(this, wxID_ANY, Display("치수, 회전, 미러 및 평면 연산"));
     StudioTheme::Heading(*heading);
     layout->Add(heading, 0, wxALL, FromDIP(12));
     auto* body = new wxBoxSizer(wxHORIZONTAL);
@@ -53,7 +53,7 @@ PrecisionDialog::PrecisionDialog(wxWindow* parent, const Json& context, const Js
     scrollSizer->Add(m_fields, 1, wxEXPAND);
     scroll->SetSizer(scrollSizer);
     right->Add(scroll, 1, wxEXPAND);
-    right->Add(new wxStaticText(this, wxID_ANY, Display("변경 이유 / 메모")), 0, wxTOP | wxBOTTOM, FromDIP(8));
+    right->Add(new wxStaticText(this, wxID_ANY, Display("변경 이유 또는 메모")), 0, wxTOP | wxBOTTOM, FromDIP(8));
     m_reason = new wxTextCtrl(this, wxID_ANY, wxEmptyString);
     m_reason->SetName("precision.reason");
     right->Add(m_reason, 0, wxEXPAND);
@@ -144,7 +144,7 @@ void PrecisionDialog::LoadContext(const Json& context)
             (dimension.at("value").is_null() ? "미정" : dimension.at("value").dump()) + " " + dimension.at("unit").get<std::string>();
         if (!dimension.value("parameter_id", Json()).is_null())
         {
-            summary += " / 매개변수 연결";
+            summary += " (매개변수 연결)";
         }
         summary += "\n";
     }
@@ -236,7 +236,7 @@ void PrecisionDialog::BuildFields()
         }
         m_patternExclusions = new wxTextCtrl(m_fields, wxID_ANY, disabled);
         m_patternExclusions->SetName("precision.excluded_instances");
-        row("제외할 순번 (예: 2, 4 / 원본은 1)", m_patternExclusions);
+        row("제외할 순번 (예: 2, 4. 원본은 1)", m_patternExclusions);
         m_patternExclusions->Bind(wxEVT_TEXT, [this](wxCommandEvent&) { ChangeInputs(); });
     }
     else if (id == "copper_pour")
@@ -492,11 +492,11 @@ void PrecisionDialog::Preview()
             m_reviewInput = input;
             m_canvas->SetScene(result.at("scene").is_null() ? m_originalScene : result.at("scene"));
             m_canvas->FitView();
-            std::string summary = "읽기 전용 후보 / 아직 원본에 적용하지 않음\n";
+            std::string summary = "읽기 전용 후보 (원본에 적용 전)\n";
             for (const auto& change : result.at("changes"))
             {
                 const std::string action = change.value("action", "");
-                summary += change.value("label", "") + " / " + (action == "remove" ? "교체로 제거" : (action == "create" ? "새 도형" : "수정")) + "\n";
+                summary += change.value("label", "") + ": " + (action == "remove" ? "교체로 제거" : (action == "create" ? "새 도형" : "수정")) + "\n";
             }
             for (const auto& notice : result.value("notices", Json::array()))
             {

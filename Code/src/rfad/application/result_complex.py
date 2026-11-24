@@ -123,7 +123,8 @@ def condition_differences(left, right):
                       "한쪽 조건이 미정입니다." if state == "one_unknown" else
                       "기록된 조건이 같습니다. 물리 검증 완료를 뜻하지 않습니다." if state == "equal" else
                       "기록된 조건이 다릅니다. 비교 목적과 적용 범위를 확인하세요."})
-    add("source_revision", "입력 개정", left["source_revision"]["label"], right["source_revision"]["label"])
+    add("source_revision", "입력 개정", left["source_revision"]["label"], right["source_revision"]["label"],
+        display_a=left.get("source_revision_label"), display_b=right.get("source_revision_label"))
     add("numerical.termination", "보존된 해석 종료 상태", left.get("numerical_details", {}).get("termination"), right.get("numerical_details", {}).get("termination"))
     add("numerical.formal_convergence", "독립 수렴 검증", None, None)
     for key, label in (("wave_definition", "파 정의"), ("phasor_convention", "위상 규약"),
@@ -148,7 +149,7 @@ def condition_differences(left, right):
     add("selection_values", "선택 후보 변수", left["selection_values"], right["selection_values"])
     a, b = left["dataset"]["conditions"], right["dataset"]["conditions"]
     for key in sorted({"manufacturing", "measurement", *(a or {}), *(b or {})}):
-        add("conditions." + key, labels.get(key, "조건 / " + key), None if a is None else a.get(key), None if b is None else b.get(key))
+        add("conditions." + key, labels.get(key, "조건: " + key), None if a is None else a.get(key), None if b is None else b.get(key))
     return result
 
 

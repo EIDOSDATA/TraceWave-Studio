@@ -15,7 +15,7 @@ MeasurementCompareView::MeasurementCompareView(wxWindow* parent) : wxPanel(paren
     StudioTheme::BindSurface(*this);
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* tools = new wxWrapSizer(wxHORIZONTAL);
-    tools->Add(new wxStaticText(this, wxID_ANY, Display("시료 / 교정 기록")), 0, wxALIGN_CENTER_VERTICAL | wxALL,
+    tools->Add(new wxStaticText(this, wxID_ANY, Display("시료 및 교정 기록")), 0, wxALIGN_CENTER_VERTICAL | wxALL,
                FromDIP(4));
     m_record = new wxChoice(this, wxID_ANY);
     m_record->SetName("measurement.records");
@@ -23,7 +23,7 @@ MeasurementCompareView::MeasurementCompareView(wxWindow* parent) : wxPanel(paren
     tools->Add(m_record, 0, wxALL, FromDIP(4));
     m_refresh = new wxButton(this, wxID_ANY, Display("목록 새로고침"));
     m_add = new wxButton(this, wxID_ANY, Display("기록을 비교에 추가"));
-    m_edit = new wxButton(this, wxID_ANY, Display("시료 / 교정 편집"));
+    m_edit = new wxButton(this, wxID_ANY, Display("시료 및 교정 편집"));
     m_new = new wxButton(this, wxID_ANY, Display("선택 원본에 기록 추가"));
     m_import = new wxButton(this, wxID_ANY, Display("자료 가져오기"));
     m_align = new wxButton(this, wxID_ANY, Display("명시 정렬 검토"));
@@ -35,7 +35,7 @@ MeasurementCompareView::MeasurementCompareView(wxWindow* parent) : wxPanel(paren
     }
     layout->Add(tools, 0, wxEXPAND | wxALL, FromDIP(4));
     auto* history = new wxWrapSizer(wxHORIZONTAL);
-    history->Add(new wxStaticText(this, wxID_ANY, Display("보존 정렬 / 비교 보고서")), 0,
+    history->Add(new wxStaticText(this, wxID_ANY, Display("보존된 정렬과 비교 보고서")), 0,
                  wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(4));
     m_history = new wxChoice(this, wxID_ANY);
     m_history->SetMinSize(FromDIP(wxSize(240, -1)));
@@ -190,7 +190,7 @@ void MeasurementCompareView::SetRecords(const Json& context, const Json& preferr
         {
             item["collection"] = collection;
             const int index =
-                m_history->Append(Display((std::string(collection) == "alignments" ? "정렬 / " : "비교 / ") +
+                m_history->Append(Display((std::string(collection) == "alignments" ? "정렬: " : "비교: ") +
                                           item.value("name", std::string("이름 미기록"))));
             m_histories.push_back(item);
             if (item == previousRef)
@@ -201,7 +201,7 @@ void MeasurementCompareView::SetRecords(const Json& context, const Json& preferr
     }
     if (preferredRow != wxNOT_FOUND)
     {
-        SetStatus("방금 저장한 시료 / 교정 기록이 선택되었습니다. 비교에 추가하거나 기록을 확인하세요.");
+        SetStatus("방금 저장한 시료 및 교정 기록이 선택되었습니다. 비교에 추가하거나 기록을 확인하세요.");
     }
     else if (m_records.empty())
     {
@@ -209,11 +209,11 @@ void MeasurementCompareView::SetRecords(const Json& context, const Json& preferr
     }
     else if (selected == wxNOT_FOUND)
     {
-        SetStatus("시료 / 교정 기록을 선택한 뒤 비교에 추가하세요.");
+        SetStatus("시료 및 교정 기록을 선택한 뒤 비교에 추가하세요.");
     }
     else
     {
-        SetStatus("선택한 시료 / 교정 기록의 당시 출처가 유지됩니다.");
+        SetStatus("선택한 시료 및 교정 기록의 당시 출처를 사용합니다.");
     }
     Actions();
 }

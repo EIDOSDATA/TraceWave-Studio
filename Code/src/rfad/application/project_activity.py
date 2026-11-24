@@ -166,7 +166,7 @@ class Activity:
                     snapshot = self.state["snapshots"].get(package["snapshot_id"])
                     if snapshot is None or snapshot["revision_id"] != package["revision_id"]:
                         raise ProjectError("E_HASH", "인계 보고서의 등록 개정과 스냅샷이 다릅니다.")
-                    name = "인계 보고서 / " + (snapshot["description"] or package["file_name"])
+                    name = "인계 보고서: " + (snapshot["description"] or package["file_name"])
                     yield self.entry("handoff_report", package["package_id"], name, "recorded", snapshot, package)
 
     def document(self, row, snapshot):

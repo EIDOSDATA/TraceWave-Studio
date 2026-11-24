@@ -9,7 +9,7 @@
 void StudioFrame::BuildPrecisionTools(wxWindow* parent, wxSizer* layout)
 {
     GetMenuBar()->GetMenu(1)->AppendSeparator();
-    GetMenuBar()->GetMenu(1)->Append(IdPrecision, Display("정밀 2D 편집 / 치수"));
+    GetMenuBar()->GetMenu(1)->Append(IdPrecision, Display("정밀 2D 치수 편집"));
     AddTool(parent, layout, IdPrecision, "정밀 편집");
     const auto canOpen = [this]()
     {

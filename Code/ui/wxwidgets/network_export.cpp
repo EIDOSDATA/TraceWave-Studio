@@ -196,7 +196,7 @@ Path Target(const wxString& path, const wxString& workspace, DisplayMesh::Handle
     const Path storage = ActualDirectory(Path(workspace.ToStdWstring()));
     Require(
         !Inside(parent, storage),
-        "프로젝트 작업 영역 안에는 교환 파일을 저장하지 않습니다. 원본/과거 자료 보존을 위해 외부 폴더를 선택하세요.");
+        "프로젝트 작업 영역 안에는 교환 파일을 저장하지 않습니다. 원본과 과거 자료 보존을 위해 외부 폴더를 선택하세요.");
     Path current = parent.root_path();
     directories.Open(current, true);
     for (const auto& part : parent.relative_path())
@@ -250,7 +250,7 @@ void WriteNetworkExportFiles(const Json& result, const wxString& path, const wxS
     Require(result.at("sidecar").is_object() && result.at("sidecar").value("schema", "") == "rfad.network-export/0.1",
             "조건 sidecar의 형식이 다릅니다.");
     const std::string sidecar = result.at("sidecar").dump(2) + "\n";
-    Require(sidecar.size() <= 1024U * 1024U, "조건 sidecar의 1 MiB 표시/저장 상한을 초과했습니다.");
+    Require(sidecar.size() <= 1024U * 1024U, "조건 sidecar의 1 MiB 표시 및 저장 상한을 초과했습니다.");
     DisplayMesh::Handles directories;
     const Path target = Target(path, workspace, directories);
     const Path parent = target.parent_path();

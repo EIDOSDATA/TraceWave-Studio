@@ -73,7 +73,7 @@ int FieldGroup(const std::string& key, const Json& descriptor, const std::string
 wxString ShortLabel(const std::string& source)
 {
     wxString label = Display(source);
-    for (const auto* suffix : {" / 단위", " 값"})
+    for (const auto* suffix : {" / 단위", " 단위", " 값"})
     {
         const wxString ending = Display(suffix);
         if (label.EndsWith(ending))
@@ -129,8 +129,8 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
              : kind == "target" ? "대역과 기준면"
              : port ? "급전 기준면과 유효 대역"
              : kind == "design_rules" ? "규칙 입력"
-             : kind == "parameter" || kind == "new_parameter" ? "매개변수" : "형상 / 치수",
-         kind == "target" ? "성능 기준" : port ? "단자와 급전 영역" : "기판 / 재료", "출처와 가정", "고급 설정"}};
+             : kind == "parameter" || kind == "new_parameter" ? "매개변수" : "형상과 치수",
+         kind == "target" ? "성능 기준" : port ? "단자와 급전 영역" : "기판 및 재료", "출처와 가정", "고급 설정"}};
     for (std::size_t index = 0; index < m_groups.size(); ++index)
     {
         auto& group = m_groups[index];
@@ -140,7 +140,7 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
         group.header->SetFont(GetFont().Bold());
         group.header->SetBackgroundColour(StudioTheme::Colours().panel);
         group.header->SetMinSize(FromDIP(wxSize(-1, 34)));
-        group.header->SetToolTip(Display("그룹 펼치기 / 접기. 입력 초안은 유지됩니다."));
+        group.header->SetToolTip(Display("그룹을 펼치거나 접습니다. 입력 초안은 유지됩니다."));
         m_layout->Add(group.header, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP | wxBOTTOM, FromDIP(8));
         group.rows = new wxBoxSizer(wxVERTICAL);
         m_layout->Add(group.rows, 0, wxEXPAND | wxBOTTOM, FromDIP(8));
@@ -154,7 +154,7 @@ void EditorPanel::SetFields(const Json& fields, const Json& selection, const Jso
     if (kind == "geometry" || kind == "board" || kind == "layer" || kind == "material")
     {
         auto* conditionNotice = new wxStaticText(
-            this, wxID_ANY, Display("제작 / 측정 조건은 별도 확인이 필요합니다.\n미정값은 자동 확정하지 않습니다."));
+            this, wxID_ANY, Display("제작과 측정 조건은 별도로 확인하세요.\n미정값은 자동 확정하지 않습니다."));
         conditionNotice->SetForegroundColour(StudioTheme::Colours().secondary);
         conditionNotice->Wrap(FromDIP(286));
         m_layout->Add(conditionNotice, 0, wxEXPAND | wxALL, FromDIP(8));

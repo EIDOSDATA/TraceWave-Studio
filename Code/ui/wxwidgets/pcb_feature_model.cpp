@@ -42,10 +42,10 @@ std::string PcbFeatureUi::SectionLabel(const std::string& section)
 {
     static const std::map<std::string, std::string> labels{{"overview", "PCB 형상과 제조 입력"},
                                                            {"cutout", "기판 내부 절삭"},
-                                                           {"hole", "관통 홀 / 슬롯"},
+                                                           {"hole", "관통 홀과 슬롯"},
                                                            {"footprint", "풋프린트"},
                                                            {"artwork_layer", "제조 이미지 층"},
-                                                           {"aperture", "마스크 / 페이스트 개구"},
+                                                           {"aperture", "마스크 및 페이스트 개구"},
                                                            {"keepout", "금지 영역"}};
     const auto found = labels.find(section);
     return found == labels.end() ? "PCB 객체" : found->second;
@@ -67,8 +67,8 @@ std::string PcbFeatureUi::Conditions(const Json& context)
     const auto record = form.value("record", Json::object());
     std::string text = "선택 객체: " + Text(record.value("name", Json(nullptr))) + "\n";
     text += "종류: " + SectionLabel(form.value("section", "")) + "\n";
-    text += record.value("origin", Json(nullptr)).is_null() ? "수입 원본: 연결 없음 / 직접 입력 기록\n"
-                                                            : "수입 원본: 보존 참조 있음 / 고급 원문 확인\n";
+    text += record.value("origin", Json(nullptr)).is_null() ? "직접 입력한 기록입니다. 가져온 원본은 연결되지 않았습니다.\n"
+                                                            : "가져온 원본의 참조가 있습니다. 고급 설정에서 원문을 확인하세요.\n";
     for (const auto& row : context.value("rows", Json::array()))
     {
         if (row.value("id", Json(nullptr)) == form.value("record_id", Json(nullptr)))
@@ -97,7 +97,7 @@ std::string PcbFeatureUi::Conditions(const Json& context)
     }
     if (!missing)
     {
-        text += "표시된 단일 입력에는 미정값이 없습니다. 좌표/참조 목록과 원문 조건은 별도 확인합니다.\n";
+        text += "표시된 단일 입력에는 미정값이 없습니다. 좌표와 참조 목록과 원문 조건은 별도 확인합니다.\n";
     }
     text += "\n출처\n";
     for (const auto& reference : record.value("source_refs", Json::array()))
@@ -108,7 +108,7 @@ std::string PcbFeatureUi::Conditions(const Json& context)
     {
         text += "추가 출처 식별자 미기록\n";
     }
-    text += "\n제작 검증: 미확립 / 측정 검증: 미확립\n기계 제거, 제조 이미지와 물리 표면은 별도입니다. 마스크/페이스트 "
+    text += "\n제작과 측정 검증은 미확립 상태입니다.\n기계 제거, 제조 이미지와 물리 표면은 별도입니다. 마스크와 페이스트 "
             "개구로 물리 두께나 재료를 자동 확정하지 않습니다.\n새 PCB 기계 형상의 해석 적용은 별도 지원 범위 확인이 "
             "필요합니다.";
     return text;

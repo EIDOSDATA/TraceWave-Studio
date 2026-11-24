@@ -44,7 +44,7 @@ CoordinateEditorDialog::CoordinateEditorDialog(wxWindow* parent, const Json& des
         if (!id.empty())
         {
             m_parameterIds.push_back(id);
-            m_parameterLabels.Add(Display(choice.at("label").get<std::string>() + " / " + id));
+            m_parameterLabels.Add(Display(choice.at("label").get<std::string>() + " (ID " + id + ")"));
         }
     }
     for (int column = 0; column < 8; ++column)

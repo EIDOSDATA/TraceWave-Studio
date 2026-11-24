@@ -44,7 +44,7 @@ std::string Conditions(const Json& review)
     const auto source = review.value("source", Json(nullptr));
     text += source.is_null() ? "연결된 계산 결과 없음\n" : "검토한 계산 원본과 봉인 식별을 보존합니다.\n";
     text += "선택한 후보 순서와 계산을 재사용한 후보 순서는 같지 않을 수 있습니다.\n\n선택 원본의 당시 검증 상태\n";
-    text += "새 작업 사본의 재계산 / 수렴 / 제작 / 실측 상태로 승계하지 않습니다.\n";
+    text += "새 작업 사본의 재계산, 수렴, 제작, 실측 상태는 따로 검증해야 합니다.\n";
     const std::map<std::string, std::string> labels{{"geometry", "명시 형상"},      {"computation", "계산"},
                                                     {"target", "목표 평가"},        {"numerical", "수치 수렴"},
                                                     {"convergence", "수렴"},        {"physics", "물리 정확도"},
@@ -59,7 +59,7 @@ std::string Conditions(const Json& review)
                 item.second + ": " + ResultUi::State(value.is_object() ? value.value("state", Json(nullptr)) : value);
             if (value.is_object() && value.value("reason", Json(nullptr)).is_string())
             {
-                text += " / " + value.at("reason").get<std::string>();
+                text += ". " + value.at("reason").get<std::string>();
             }
             text += "\n";
         }
@@ -74,12 +74,12 @@ std::string Conditions(const Json& review)
         }
     }
     text +=
-        "\n제작 / 측정\n원문 미정값은 그대로 보존합니다. 사본 생성은 제작 조건이나 실측 검증을 확정하지 않습니다.\n";
+        "\n제작과 측정\n원문의 미정값을 보존합니다. 새 사본의 제작 조건과 실측 검증은 따로 확인하세요.\n";
     text += "\n당시 목표 평가\n";
     const auto assessments = review.value("historical_assessments", Json::array());
     if (!assessments.is_array() || assessments.empty())
     {
-        text += "보존된 목표 평가 없음 / 목표 통과로 해석하지 않습니다.\n";
+        text += "보존된 목표 평가가 없습니다. 목표 달성 여부는 미확인입니다.\n";
     }
     else
     {

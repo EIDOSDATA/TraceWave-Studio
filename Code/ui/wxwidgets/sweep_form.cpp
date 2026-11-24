@@ -37,7 +37,7 @@ void SweepDialog::BuildInterface()
     auto* heading = new wxStaticText(this, wxID_ANY, Display("새 연구 설정"));
     StudioTheme::Title(*heading);
     root->Add(heading, 0, wxALL, FromDIP(12));
-    Label(this, root, "기준 원본과 출처는 그대로 보존합니다. 후보 검토 / 연구 저장 / 실제 실행은 별도 동작입니다.");
+    Label(this, root, "기준 원본과 출처를 보존합니다. 후보 검토, 연구 저장, 해석 실행은 각각 진행합니다.");
     m_pages = new StudioNotebook(this);
     for (int index = 0; index < 4; ++index)
     {
@@ -120,7 +120,7 @@ void SweepDialog::BuildVariables(wxWindow* page, wxSizer* layout)
     m_variableList->SetName("sweep.variables");
     StudioTheme::Table(*m_variableList);
     m_variableList->AppendColumn(Display("변수 이름"), wxLIST_FORMAT_LEFT, FromDIP(200));
-    m_variableList->AppendColumn(Display("명시 값 / 범위"), wxLIST_FORMAT_LEFT, FromDIP(650));
+    m_variableList->AppendColumn(Display("명시 값과 범위"), wxLIST_FORMAT_LEFT, FromDIP(650));
     layout->Add(m_variableList, 0, wxEXPAND | wxALL, FromDIP(12));
     m_variableNotice =
         new wxStaticText(page, wxID_ANY, Display("변수를 추가한 뒤 명시 값 목록 또는 범위를 입력하세요."));
@@ -128,7 +128,7 @@ void SweepDialog::BuildVariables(wxWindow* page, wxSizer* layout)
     auto* inputMode = new wxBoxSizer(wxHORIZONTAL);
     m_valueMode = new wxChoice(page, wxID_ANY);
     m_valueMode->Append(Display("명시 값 목록"));
-    m_valueMode->Append(Display("시작 / 끝 / 개수"));
+    m_valueMode->Append(Display("시작, 끝, 개수"));
     m_valueMode->SetSelection(0);
     m_valueMode->SetName("sweep.value-mode");
     inputMode->Add(m_valueMode, 0, wxALL, FromDIP(4));
@@ -294,7 +294,7 @@ void SweepDialog::BuildVariables(wxWindow* page, wxSizer* layout)
             {
                 if (wxMessageBox(
                         Display(
-                            "입력 방식을 바꾸면 선택 변수의 값 목록/범위와 명시 후보 행을 지웁니다. 계속하시겠습니까?"),
+                            "입력 방식을 바꾸면 선택 변수의 값 목록 또는 범위와 명시 후보 행을 지웁니다. 계속하시겠습니까?"),
                         Display("값 입력 방식"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION, this) != wxYES)
                 {
                     m_valueMode->SetSelection(previousRange ? 1 : 0);
@@ -393,7 +393,7 @@ void SweepDialog::BuildVariables(wxWindow* page, wxSizer* layout)
 void SweepDialog::BuildSettings(wxWindow* page, wxSizer* layout)
 {
     Label(page, layout,
-          "회로 스윕은 원본 복소 자료와 저장 정합망을 선택합니다. 형상/수치 연구는 같은 기준 원본의 해석 설정을 "
+          "회로 스윕은 원본 복소 자료와 저장 정합망을 선택합니다. 형상 및 수치 연구는 같은 기준 원본의 해석 설정을 "
           "사용합니다.");
     auto* network = new wxFlexGridSizer(2, FromDIP(8), FromDIP(12));
     network->AddGrowableCol(1);
@@ -416,15 +416,15 @@ void SweepDialog::BuildSettings(wxWindow* page, wxSizer* layout)
     layout->Add(network, 0, wxEXPAND | wxALL, FromDIP(12));
     m_sourceNotice = new wxStaticText(
         page, wxID_ANY,
-        Display("원본의 제작/측정 조건과 기준면은 미정일 수 있습니다. 선택으로 조건을 확정하지 않습니다."));
+        Display("원본의 제작 및 측정 조건과 기준면은 미정일 수 있습니다. 선택으로 조건을 확정하지 않습니다."));
     layout->Add(m_sourceNotice, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(12));
-    Label(page, layout, "해석 수치 설정 / 변경한 필드만 반영");
-    m_recordRadiation = new wxCheckBox(page, wxID_ANY, Display("NF2FF 방사 기록 사용 / 초기 수치 제안, 수렴 미검증"));
+    Label(page, layout, "해석 수치 설정 (변경 항목만 반영)");
+    m_recordRadiation = new wxCheckBox(page, wxID_ANY, Display("NF2FF 방사 기록 사용 (초기 수치 제안, 수렴 미검증)"));
     m_recordRadiation->SetName("sweep.record-radiation");
-    m_featureSubdivisions = new wxCheckBox(page, wxID_ANY, Display("임계 구간 분할 사용 / 초기 제안 1"));
+    m_featureSubdivisions = new wxCheckBox(page, wxID_ANY, Display("임계 구간 분할 사용 (초기 제안 1)"));
     m_featureSubdivisions->SetName("sweep.feature-subdivisions");
     m_recordLosses =
-        new wxCheckBox(page, wxID_ANY, Display("독립 손실과 전력 수지 기록 / 방사 기록 필요, 잔차 기준 0.03"));
+        new wxCheckBox(page, wxID_ANY, Display("독립 손실 및 전력 수지 기록 (방사 기록 필요, 잔차 기준 0.03)"));
     m_recordLosses->SetName("sweep.record-losses");
     for (auto* option : {m_recordRadiation, m_featureSubdivisions, m_recordLosses})
     {
@@ -491,7 +491,7 @@ void SweepDialog::BuildSettings(wxWindow* page, wxSizer* layout)
     m_radiationCount->SetValue(3);
     m_radiationCount->SetName("sweep.radiation-count");
     radiation->Add(m_radiationCount);
-    Label(page, radiation, "개 / 1~3");
+    Label(page, radiation, "개 (허용 1~3개)");
     for (const auto& frequency : m_context.at("optional_radiation_frequencies"))
     {
         const auto index = m_radiationFields.size();
@@ -542,7 +542,7 @@ void SweepDialog::BuildSettings(wxWindow* page, wxSizer* layout)
                                }
                            });
     layout->Add(radiation, 0, wxEXPAND | wxALL, FromDIP(12));
-    Label(page, layout, "목표 선택 / 저장 당시 목표 개정과 원문을 보존");
+    Label(page, layout, "목표 선택 (저장 당시 개정과 원문 보존)");
     m_targets = new wxCheckListBox(page, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 110)));
     m_targets->SetName("sweep.targets");
     for (const auto& target : m_context.at("targets"))
@@ -560,7 +560,7 @@ void SweepDialog::BuildSettings(wxWindow* page, wxSizer* layout)
     m_port = new wxChoice(page, wxID_ANY);
     m_port->SetName("sweep.target-port");
     mapping->Add(m_port, 1, wxEXPAND);
-    Label(page, mapping, "명시 기준면 / 비우면 미정");
+    Label(page, mapping, "명시 기준면 (빈칸은 미정)");
     m_referencePlane = new wxTextCtrl(page, wxID_ANY);
     m_referencePlane->SetName("sweep.target-plane");
     mapping->Add(m_referencePlane, 1, wxEXPAND);
@@ -631,7 +631,7 @@ void SweepDialog::BuildBudget(wxWindow* page, wxSizer* layout)
     m_candidateBudget->SetValue(budget.at("max_candidates").get<int>());
     m_candidateBudget->SetName("sweep.max-candidates");
     fields->Add(m_candidateBudget, 1, wxEXPAND);
-    Label(page, fields, "개 / 최대 128");
+    Label(page, fields, "개 (최대 128개)");
     Label(page, fields, "실제 EM 해석 횟수 상한");
     m_nativeBudget = new wxSpinCtrl(page, wxID_ANY);
     m_nativeBudget->SetRange(0, 128);
@@ -662,13 +662,13 @@ void SweepDialog::BuildBudget(wxWindow* page, wxSizer* layout)
                     });
     }
     Label(page, fields, "동시 실행");
-    Label(page, fields, "1개 / 현재 지원 범위");
+    Label(page, fields, "1개 (현재 지원 범위)");
     Label(page, fields, "native 작업 슬롯 공유");
     layout->Add(fields, 0, wxEXPAND | wxALL, FromDIP(16));
     Label(page, layout,
           "예산을 모두 쓰면 새 후보 실행을 중지합니다. 취소 후 실제 작업 종료를 확인하며, 재개는 완료 후보와 과거 "
           "시도를 유지합니다.");
-    Label(page, layout, "기록할 출처 / 가정 (한 줄에 하나, 선택 입력)");
+    Label(page, layout, "기록할 출처와 가정 (한 줄에 하나, 선택 입력)");
     m_sources =
         new wxTextCtrl(page, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 130)), wxTE_MULTILINE);
     m_sources->SetName("sweep.sources");
@@ -746,23 +746,23 @@ void SweepDialog::RenderReview(const Json& result)
         m_previewRows->SetItem(row, 3, Display(why));
     }
     m_reviewSummary->SetLabel(
-        Display("전체 후보 " + std::to_string(result.value("candidate_count", 0)) + "개 / 처음 " +
+        Display("전체 후보 " + std::to_string(result.value("candidate_count", 0)) + "개, 처음 " +
                 std::to_string(m_previewRows->GetItemCount()) + "개 표시\n" + "유효 " +
-                std::to_string(result.value("counts", Json::object()).value("valid", 0)) + " / 입력 불가 " +
-                std::to_string(result.value("counts", Json::object()).value("invalid", 0)) + " / 미지원 " +
-                std::to_string(result.value("counts", Json::object()).value("unsupported", 0)) + " / 중복 " +
+                std::to_string(result.value("counts", Json::object()).value("valid", 0)) + ", 입력 불가 " +
+                std::to_string(result.value("counts", Json::object()).value("invalid", 0)) + ", 미지원 " +
+                std::to_string(result.value("counts", Json::object()).value("unsupported", 0)) + ", 중복 " +
                 std::to_string(result.value("counts", Json::object()).value("duplicates", 0)) + "\n" +
-                (result.value("can_create", false) ? "저장 가능 / 실행은 별도" : "저장 차단 / 입력과 예산 진단 확인")));
+                (result.value("can_create", false) ? "저장 가능 (실행은 별도)" : "저장 차단. 입력 및 예산 진단을 확인하세요.")));
     std::string diagnostics = SweepUi::Diagnostics(result.value("diagnostics", Json::array()));
     for (const auto& reason : result.value("reason_counts", Json::array()))
     {
-        diagnostics += "\n" + reason.at("code").get<std::string>() + " / " + reason.at("count").dump() +
-                       "개 / 첫 후보 " + std::to_string(reason.at("first_ordinal").get<int>() + 1) +
-                       " / " + reason.at("message").get<std::string>();
+        diagnostics += "\n" + reason.at("code").get<std::string>() + ", " + reason.at("count").dump() +
+                       "개, 첫 후보 " + std::to_string(reason.at("first_ordinal").get<int>() + 1) +
+                       ", " + reason.at("message").get<std::string>();
     }
     const auto budget = result.value("budget_estimate", Json::object());
     diagnostics +=
-        "\n\n예산 예상 / 실제 관측값 아님\n실제 EM 해석 대상: " +
+        "\n\n계산 비용 추정\n실제 EM 해석 대상: " +
         SweepUi::Text(budget.value("native_solves", Json(nullptr))) +
         "\n메시/RAM/디스크는 실제 준비 시 다시 검사합니다. 물성이나 기준면 미정값을 자동으로 채우지 않습니다.";
     m_diagnostics->ChangeValue(Display(diagnostics));

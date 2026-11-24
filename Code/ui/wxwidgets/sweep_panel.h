@@ -70,6 +70,8 @@ private:
     std::map<std::string, wxButton*> m_actions;
     std::vector<std::string> m_ids;
     std::string m_id;
+    std::string m_noticeText = "연구를 저장한 뒤 실행할 수 있습니다. 수렴과 실측 검증은 별도로 확인합니다.";
+    std::string m_statusText;
     Json m_study = nullptr;
     Json m_rows = Json::array();
     int m_offset = 0;

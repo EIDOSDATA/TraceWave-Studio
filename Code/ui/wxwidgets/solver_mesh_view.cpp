@@ -453,6 +453,6 @@ void SolverMeshView::Paint(wxPaintEvent&)
     dc.SetPen(wxPen(palette.border));
     Rectangle(dc, topLeft, bottomRight);
     const int top = std::max(0, topLeft.y - dc.GetCharHeight());
-    dc.DrawText(wxString::FromUTF8(Axes[second]) + " / mm", topLeft.x, top);
-    dc.DrawText(wxString::FromUTF8(Axes[first]) + " / mm", bottomRight.x - FromDIP(46), bottomRight.y);
+    dc.DrawText(wxString::FromUTF8(Axes[second]) + " (mm)", topLeft.x, top);
+    dc.DrawText(wxString::FromUTF8(Axes[first]) + " (mm)", bottomRight.x - FromDIP(46), bottomRight.y);
 }

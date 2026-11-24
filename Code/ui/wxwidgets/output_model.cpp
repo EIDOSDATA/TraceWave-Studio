@@ -51,7 +51,7 @@ std::string OutputUi::Purpose(const Json& record)
     }
     if (profile == "rfad.exchange.cam/0.1" || format == "gerber_job")
     {
-        return "Gerber / 드릴 / Job 패키지";
+        return "Gerber, 드릴 및 Job 패키지";
     }
     if (profile == "rfad.step.mechanical/0.1" || format == "step")
     {
@@ -64,7 +64,7 @@ std::string OutputUi::Purpose(const Json& record)
     }
     if (profile == "rfad.exchange.drawing/0.1" || format == "pdf" || format == "svg" || format == "dxf")
     {
-        return format == "verification" ? "연관 도면 재검수 / 원래 용도 확인" : "기술 도면";
+        return format == "verification" ? "연관 도면 재검수 (원래 용도 확인)" : "기술 도면";
     }
     return "보존 원문의 출력 범위 확인";
 }
@@ -100,7 +100,7 @@ std::string OutputUi::Text(const Json& value, const std::string& missing)
 std::string OutputUi::State(const std::string& state)
 {
     static const std::map<std::string, std::string> labels{{"preview_only", "검토만 완료"},
-                                                           {"generated_unverified", "생성 완료 / 검수 범위 확인"},
+                                                           {"generated_unverified", "생성 완료 (검수 범위 확인)"},
                                                            {"verified_profile", "명시 교환 범위 검수 통과"},
                                                            {"passed", "통과"},
                                                            {"passed_profile", "명시 교환 범위 검수 통과"},
@@ -113,8 +113,8 @@ std::string OutputUi::State(const std::string& state)
                                                            {"queued", "대기"},
                                                            {"uploading", "원문 전송 중"},
                                                            {"sealed", "원문 봉인"},
-                                                           {"abandoned", "전송 중단 / 원문 보존"},
-                                                           {"parsed_unapplied", "읽기 완료 / 미적용"},
+                                                           {"abandoned", "전송 중단 (원문 보존)"},
+                                                           {"parsed_unapplied", "읽기 완료 (미적용)"},
                                                            {"not_started", "시작 전"},
                                                            {"running", "실행 중"},
                                                            {"completed", "완료"},
@@ -221,10 +221,10 @@ std::string OutputUi::Conditions(const Json& record)
     std::string result =
         "제작 조건: " +
         (record.contains("manufacturing") ? Text(record.at("manufacturing"))
-                                          : "이 출력에서 확인하지 않음 / 출처 확인") +
+                                          : "출처에서 확인") +
         "\n측정 조건: " +
-        (record.contains("measurement") ? Text(record.at("measurement")) : "이 출력에서 확인하지 않음 / 출처 확인") +
-        "\n제조 승인 / RF·실측 검증: 이 출력으로 확정하지 않음";
+        (record.contains("measurement") ? Text(record.at("measurement")) : "출처에서 확인") +
+        "\n제조 승인과 RF·실측은 별도로 검증해야 합니다.";
     const auto assumptions = Issues(record.value("assumptions", Json::array()));
     if (!assumptions.empty())
     {
@@ -254,7 +254,7 @@ std::string OutputUi::Conditions(const Json& record)
     }
     if (!omissions.empty())
     {
-        result += "\n\n제외 / 의미 손실\n" + omissions;
+        result += "\n\n제외 항목과 의미 손실\n" + omissions;
     }
     return result;
 }

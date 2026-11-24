@@ -302,8 +302,8 @@ LargeResultDialog::LargeResultDialog(wxWindow* parent, std::filesystem::path pro
             {
                 const auto scale = StudioFrequency::ForRange(frequency, frequency);
                 const auto label = m_record.at("details").at("curves").at(series).at("label").get<std::string>();
-                Status(label + " / " + StudioFrequency::Value(frequency, scale, 10) + " " + scale.unit +
-                       " / Re " + ResultUi::Number(point.at("real"), 10) + " / Im " + ResultUi::Number(point.at("imag"), 10));
+                Status(label + ", " + StudioFrequency::Value(frequency, scale, 10) + " " + scale.unit +
+                       ", 실수부 " + ResultUi::Number(point.at("real"), 10) + ", 허수부 " + ResultUi::Number(point.at("imag"), 10));
                 break;
             }
         }
@@ -570,8 +570,8 @@ void LargeResultDialog::ReadCurves()
              }
              const auto unit = details.at("unit");
              const auto metricLabel = metric == "real" ? "실수부 (Re)" : "허수부 (Im)";
-             weak->m_chart->SetMetric(metric, Display(std::string(metricLabel) + " / " +
-                                                        (unit.is_null() ? "단위 미정" : unit.get<std::string>())));
+             weak->m_chart->SetMetric(metric, Display(std::string(metricLabel) +
+                 (unit.is_null() ? " (단위 미정)" : " (" + unit.get<std::string>() + ")")));
              weak->m_chart->SetSeries(value.at("pages").get<std::vector<Json>>(), labels, true);
              weak->Status(exact ? "원본 표본을 각 곡선의 기록 순번과 주파수로 표시합니다."
                                 : "구간별 원본 극값을 표시합니다. 원본 표본 모드에서 전체 값을 조회할 수 있습니다.");

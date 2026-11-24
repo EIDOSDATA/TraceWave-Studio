@@ -63,7 +63,7 @@ def _describe(value):
     case = normalized["provenance"]["analysis_plan"]["case"] if normalized is not None else {}
     field = "loss_recording" in case or "field_recording" in case
     return {"profile": "rfad.result-view/0.1", **_identity(value), "label": value["label"],
-        "source_revision": deepcopy(value["source_revision"]), "current_revision_id": current,
+        "source_revision": {**value["source_revision"], "label": value["source_revision_label"]}, "current_revision_id": current,
         "source_document_role": value["source_document_role"], "is_current_design": current == source_revision,
         "stale_reasons": [] if current == source_revision else ["design_revision_differs"],
         "descriptor": deepcopy(value["descriptor"]), "states": deepcopy(value["states"]),

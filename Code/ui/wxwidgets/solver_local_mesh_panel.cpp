@@ -18,7 +18,7 @@ constexpr const char* AxisLabels[] = {"X", "Y", "Z"};
 wxString TargetLabel(const Json& target)
 {
     const auto kind = target.at("kind").get<std::string>();
-    const std::string prefix = kind == "port" ? "급전 / " : kind == "via" ? "비아 / " : "표면 개구 / ";
+    const std::string prefix = kind == "port" ? "급전: " : kind == "via" ? "비아: " : "표면 개구: ";
     return Display(prefix + target.at("name").get<std::string>());
 }
 
@@ -35,7 +35,7 @@ std::optional<Json> EditRule(wxWindow* parent, const Json& targets, const Json& 
     target->SetName("solver.local.target");
     root->Add(new wxStaticText(&dialog, wxID_ANY, Display("적용 대상")), 0, wxLEFT | wxTOP, gap);
     root->Add(target, 0, wxEXPAND | wxALL, gap);
-    target->Append(Display("좁은 간극 / 좌표 상자"));
+    target->Append(Display("좁은 간극과 좌표 상자"));
     Json options = Json::array({Json{{"kind", "gap"}}});
     int selected = 0;
     for (const auto& item : targets)
@@ -50,7 +50,7 @@ std::optional<Json> EditRule(wxWindow* parent, const Json& targets, const Json& 
     }
     if (rule.contains("object_id") && selected == 0)
     {
-        target->Append(Display("현재 개정에 대상 없음 / " + rule.at("object_id").get<std::string>()));
+        target->Append(Display("현재 개정에 대상 없음: " + rule.at("object_id").get<std::string>()));
         auto missing = Json{{"kind", rule.at("kind")}, {"id", rule.at("object_id")}};
         if (rule.contains("opening_sha256"))
         {
@@ -305,7 +305,7 @@ wxString SolverLocalMeshPanel::Label(const Json& rule) const
 {
     if (rule.at("kind") == "gap")
     {
-        return Display("간극 / " + rule.at("name").get<std::string>());
+        return Display("간극: " + rule.at("name").get<std::string>());
     }
     for (const auto& item : m_targets)
     {
@@ -315,7 +315,7 @@ wxString SolverLocalMeshPanel::Label(const Json& rule) const
             return TargetLabel(item);
         }
     }
-    return Display("대상 없음 / " + rule.at("object_id").get<std::string>());
+    return Display("대상 없음: " + rule.at("object_id").get<std::string>());
 }
 
 void SolverLocalMeshPanel::LoadRules(const Json& rules)

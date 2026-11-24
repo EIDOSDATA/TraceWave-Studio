@@ -327,7 +327,7 @@ void SmartDimensionDialog::ChangeInputs()
 
 void SmartDimensionDialog::ShowSelection()
 {
-    Present(Measure(Points()), m_mode->GetSelection() ? "현재 형상 / 구동 치수" : "현재 형상 / 참조 치수");
+    Present(Measure(Points()), m_mode->GetSelection() ? "현재 형상 (구동 치수)" : "현재 형상 (참조 치수)");
     SetStatus(m_kind->GetSelection() == 0 ? "2D에서 홀 중심을 차례대로 찍거나 목록에서 선택하세요."
                                          : "2D에서 같은 급전의 양단을 차례대로 찍거나 목록에서 선택하세요.");
     UpdateActions();
@@ -353,9 +353,9 @@ void SmartDimensionDialog::Present(const Json& measurement, const std::string& h
 
     const auto& delta = measurement.at("delta_mm");
     std::string text = heading + "\n거리  " + Format(measurement.at("distance_mm")) + " mm\n"
-        "A에서 B 방향  X " + Format(delta.at(0)) + " / Y " + Format(delta.at(1)) + " / Z " +
+        "A에서 B 방향  X " + Format(delta.at(0)) + ", Y " + Format(delta.at(1)) + ", Z " +
         Format(delta.at(2)) + " mm\nXY 방향각  " + Format(measurement.at("azimuth_deg")) +
-        " deg / 기울기 " + Format(measurement.at("elevation_deg")) + " deg\n";
+        " deg, 기울기 " + Format(measurement.at("elevation_deg")) + " deg\n";
     if (m_kind->GetSelection() == 1 && m_port->GetSelection() > 0)
     {
         const auto& port = m_context.at("ports").at(m_port->GetSelection() - 1);

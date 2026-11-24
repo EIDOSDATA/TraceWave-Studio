@@ -73,7 +73,7 @@ def _template(record, document, objects):
         current_name = "현재 개정에 없음"
         if current:
             current_name = current.get("name") or current.get("label") or label
-        items.append([label, "생성 객체 / 표시 이름", label, current_name])
+        items.append([label, "생성 객체의 표시 이름", label, current_name])
         for key, caption in dimensions.items():
             if key in original:
                 items.append([caption, label, _display(original[key]),
@@ -84,7 +84,7 @@ def _template(record, document, objects):
     notes = [source.get("scope", ""), *source.get("references", []),
              f"기준 개정 {record['base_revision']}", f"보존 사본 SHA-256 {record['source_document_hash']}",
              f"채택 기록 SHA-256 {record['record_hash']}", status["generation"]["summary"],
-             f"생성 뒤 수정 / 삭제 {len(status['changes'])}개"]
+             f"생성 후 수정 또는 삭제 {len(status['changes'])}개"]
     for key, caption in (("archive_path", "원문 경로"), ("archive_sha256", "원문 SHA-256"),
                          ("inner_member", "원문 내부 항목"), ("inner_sha256", "내부 항목 SHA-256")):
         if evidence.get(key):
@@ -105,11 +105,11 @@ def _target(record):
         limit = item["limit"]
         operator = {"le": "<=", "ge": ">="}.get(item["operator"], item["operator"])
         value = "미정" if limit["value"] is None else f"{operator} {limit['value']} {limit['unit']}"
-        rows.append(["성능 기준", item["metric"], "저장한 목표", f"{value} / {limit['status']}"])
+        rows.append(["성능 기준", item["metric"], "저장한 목표", f"{value} ({limit['status']})"])
     source = list(record.get("source_refs", []))
     for item in record.get("criteria", []):
         source.extend(item["limit"]["source_refs"])
-    return {"label": f"목표 / {record['name']}", "values": rows,
+    return {"label": f"목표: {record['name']}", "values": rows,
             "source": "\n".join(_display(item) for item in list(dict.fromkeys(source))[:15]),
             "assumptions": "목표 입력을 표시합니다. 목표 평가 결과는 결과 작업 영역에서 확인합니다."}
 
@@ -124,7 +124,7 @@ def _sweep(record, parameters):
     source = (f"원본 개정 {record['source_revision_id']}\n연구 {record['study_id']}\n"
               f"후보 순서 {record['calculated_ordinal']}\n채택 사유 {record['reason']}\n"
               f"채택 기록 SHA-256 {record['record_hash']}")
-    return {"label": f"설계 스윕 / 후보 {record['calculated_ordinal']}", "values": rows,
+    return {"label": f"설계 스윕의 후보 {record['calculated_ordinal']}", "values": rows,
             "source": source, "assumptions": "정해진 후보의 편집 사본입니다. 새 개정의 해석 및 측정은 별도입니다."}
 
 
@@ -270,7 +270,7 @@ def read(service, params):
     collections = {"geometry": "형상", "stackup": "적층", "ports": "급전", "targets": "목표"}
     for key, caption in collections.items():
         before, after = saved[key], document[key]
-        recovery.append([caption, str(len(before)), f"{len(after)} / {'동일' if before == after else '내용 변경'}"])
+        recovery.append([caption, str(len(before)), f"{len(after)} ({'동일' if before == after else '내용 변경'})"])
     details = []
     size = 0
     has_more = False

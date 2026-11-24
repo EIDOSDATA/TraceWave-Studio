@@ -160,7 +160,7 @@ void StudioFrame::BuildResultInterface()
                 }
             });
     };
-    m_views->SetPageText(6, Display("자료 / 정합"));
+    m_views->SetPageText(6, Display("자료 및 정합"));
 }
 void StudioFrame::UpdateResultViews()
 {

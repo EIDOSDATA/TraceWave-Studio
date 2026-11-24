@@ -17,10 +17,10 @@
 
 void MeasurementOperationDialog::BuildAlignment(wxWindow* parent, wxSizer* layout)
 {
-    auto* operations = new wxStaticBoxSizer(wxVERTICAL, parent, Display("명시 실행 순서 / 체크한 단계만 적용"));
+    auto* operations = new wxStaticBoxSizer(wxVERTICAL, parent, Display("정렬 순서 (체크한 단계만 적용)"));
     m_operations = new wxCheckListBox(operations->GetStaticBox(), wxID_ANY);
     m_order = {"permute_ports", "renormalize", "linear_ri"};
-    for (const auto* label : {"포트 순열 / 양쪽 행렬 축", "명시 실수 Z0 재정규화", "같은 복소 RI 선형 보간"})
+    for (const auto* label : {"포트 순열 (양쪽 행렬 축에 적용)", "명시 실수 Z0 재정규화", "같은 복소 RI 선형 보간"})
     {
         m_operations->Append(Display(label));
     }
@@ -52,7 +52,7 @@ void MeasurementOperationDialog::BuildAlignment(wxWindow* parent, wxSizer* layou
     auto* mapping = new wxFlexGridSizer(3, FromDIP(8), FromDIP(12));
     mapping->AddGrowableCol(1, 1);
     mapping->AddGrowableCol(2, 1);
-    for (const auto* label : {"출력 포트", "원래 포트 대응", "새 Z0 (ohm) / 자동값 없음"})
+    for (const auto* label : {"출력 포트", "원래 포트 대응", "새 Z0 (ohm, 직접 입력)"})
     {
         mapping->Add(new wxStaticText(parent, wxID_ANY, Display(label)));
     }
@@ -84,13 +84,13 @@ void MeasurementOperationDialog::BuildAlignment(wxWindow* parent, wxSizer* layou
                         });
     }
     layout->Add(mapping, 0, wxEXPAND | wxALL, FromDIP(12));
-    auto* frequencies = new wxStaticBoxSizer(wxVERTICAL, parent, Display("보간 주파수 / 외삽과 결측 건너뛰기 없음"));
+    auto* frequencies = new wxStaticBoxSizer(wxVERTICAL, parent, Display("보간 주파수 (외삽 및 결측 건너뛰기 없음)"));
     auto* frequencyParent = frequencies->GetStaticBox();
     auto* grid = new wxFlexGridSizer(4, FromDIP(8), FromDIP(12));
     grid->AddGrowableCol(1, 1);
     grid->AddGrowableCol(3, 1);
     m_frequencyMode = new wxChoice(frequencyParent, wxID_ANY);
-    m_frequencyMode->Append(Display("시작 / 끝 / 개수"));
+    m_frequencyMode->Append(Display("시작, 끝, 개수"));
     m_frequencyMode->Append(Display("명시 목록"));
     m_frequencyMode->SetSelection(0);
     m_frequencyUnit = new wxChoice(frequencyParent, wxID_ANY);
@@ -128,7 +128,7 @@ void MeasurementOperationDialog::BuildAlignment(wxWindow* parent, wxSizer* layou
     frequencies->Add(m_explicit, 0, wxEXPAND | wxALL, FromDIP(8));
     layout->Add(frequencies, 0, wxEXPAND | wxALL, FromDIP(8));
     m_sources = new wxTextCtrl(parent, wxID_ANY);
-    m_sources->SetHint(Display("정렬 근거 / 출처 (한 줄에 하나)"));
+    m_sources->SetHint(Display("정렬 근거와 출처 (한 줄에 하나)"));
     layout->Add(m_sources, 0, wxEXPAND | wxALL, FromDIP(12));
     m_frequencyInputs =
         MeasurementQuantityGroup::Create(this, m_frequencyUnit,

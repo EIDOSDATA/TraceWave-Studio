@@ -9,7 +9,7 @@
 
 RadiationDialog::RadiationDialog(wxWindow* parent, const Json& result, bool stale, RadiationGateway gateway,
                                  std::function<void(wxWindow*)> onEvidence)
-    : wxDialog(parent, wxID_ANY, Display("방사 패턴 / 계산 결과 / 물리 검증 전"), wxDefaultPosition,
+    : wxDialog(parent, wxID_ANY, Display("계산된 방사 패턴 (물리 검증 전)"), wxDefaultPosition,
                wxSize(980, 740), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
       m_gateway(std::move(gateway)), m_artifact(result.at("artifact_id").get<std::string>()), m_timeout(this)
 {
@@ -166,15 +166,15 @@ void RadiationDialog::ShowPattern()
     m_phi->Enable();
     m_metric->Enable();
     m_status->SetLabel(Display(metrics.at("power_balance_status") == "requires_review"
-        ? "전력 균형 검토 필요 / 효율을 100%로 보정하지 않음 / 제작 및 측정 검증 전"
-        : "theta 절단면 / 편광 합산 전력 / 1 m / 절대 출력 전력 미정 / 제작 및 측정 검증 전"));
+        ? "전력 균형을 검토하세요. 효율은 100%로 보정하지 않았습니다. 제작과 측정은 검증 전입니다."
+        : "1 m 거리의 극각 절단면에서 편파별 전력 합계를 표시합니다. 절대 출력 전력은 미정이며 제작과 측정은 검증 전입니다."));
     m_details->SetValue(Display("스냅샷 개정: " + data.at("snapshot").at("revision_id").get<std::string>() +
         "\n방사 효율: " + std::to_string(metrics.at("radiation_efficiency").get<double>() * 100) +
-        "% / 전력 균형: " + metrics.at("power_balance_status").get<std::string>() +
+        "%, 전력 균형: " + metrics.at("power_balance_status").get<std::string>() +
         "\nDmax: " + std::to_string(metrics.at("directivity_dbi").get<double>()) +
-        " dBi / 최대 이득: " + std::to_string(metrics.at("gain_dbi").get<double>()) +
-        " dBi / 최대 실현 이득: " + std::to_string(metrics.at("realized_gain_dbi").get<double>()) +
-        " dBi\n원시 복소 필드: V*s/m / 전력 스펙트럼: W*s^2 / 절대 W로 환산하지 않음"
+        " dBi, 최대 이득: " + std::to_string(metrics.at("gain_dbi").get<double>()) +
+        " dBi, 최대 실현 이득: " + std::to_string(metrics.at("realized_gain_dbi").get<double>()) +
+        " dBi\n원시 복소 필드는 V*s/m, 전력 스펙트럼은 W*s^2입니다. 절대 W로 환산하지 않았습니다."
         "\n각도 표본 사이 선은 시각적 연결입니다. 표시 하한은 -40 dB이며 원시 값은 보존합니다."));
     m_chart->Refresh(false);
     Layout();

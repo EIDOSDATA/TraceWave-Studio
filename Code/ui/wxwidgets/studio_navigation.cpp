@@ -109,7 +109,7 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
     layout->Add(m_objectSearch, 0, wxEXPAND | wxALL, FromDIP(8));
     m_objectFilter = new wxChoice(parent, wxID_ANY);
     for (const auto* name :
-         {"모든 객체", "패턴", "기판 / 적층", "재료", "급전 / 네트", "매개변수", "기계 형상", "풋프린트 / 제조 이미지"})
+         {"모든 객체", "패턴", "기판과 적층", "재료", "급전과 네트", "매개변수", "기계 형상", "풋프린트와 제조 이미지"})
     {
         m_objectFilter->Append(Display(name));
     }
@@ -145,7 +145,7 @@ void StudioFrame::BuildNavigation(wxWindow* parent, wxSizer* layout)
                      event.Skip();
                  });
     m_tree->SetName("navigation.objects");
-    m_tree->SetToolTip(Display("객체 선택: 속성 / F2: 이름 변경 / 그룹 Enter: 관련 설정"));
+    m_tree->SetToolTip(Display("객체를 선택해 속성을 봅니다. F2로 이름 변경, 그룹에서 Enter로 설정을 엽니다."));
     m_tree->AddRoot(Display("프로젝트 없음"));
     layout->Add(m_tree, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
     m_objectSearch->Bind(wxEVT_TEXT,
@@ -346,22 +346,22 @@ void StudioFrame::RebuildNavigation()
         return node;
     };
     group("targets", "설계 목표", IdTargets);
-    group("templates", "문헌 / 초기 후보", IdTemplates);
-    group("board", "PCB / 적층", IdPhysicalSetup);
+    group("templates", "문헌과 초기 후보", IdTemplates);
+    group("board", "PCB 적층", IdPhysicalSetup);
     groups["layer"] = groups["board"];
     group("geometry", "패턴", IdTemplates);
-    group("port", "급전 / 네트", IdNewPort);
+    group("port", "급전과 네트", IdNewPort);
     groups["net"] = groups["port"];
-    group("material", "재료 / 제조업체 자료", IdPcbSelection);
+    group("material", "재료와 제조업체 자료", IdPcbSelection);
     group("parameter", "매개변수", IdNewParameter);
     group("environment", "외부 환경", IdPhysicalSetup);
-    group("rules", "제약 / 연결 / DRC", IdDesignRules);
+    group("rules", "제약, 연결 및 DRC", IdDesignRules);
     if (m_pcbFeaturesSupported)
     {
-        group("hole", "기계 형상 / 홀과 절삭", IdPcbFeatures);
+        group("hole", "기계 형상 (홀과 절삭)", IdPcbFeatures);
         groups["cutout"] = groups["hole"];
         group("footprint", "풋프린트", IdPcbFeatures);
-        group("artwork_layer", "제조 이미지 / 개구", IdPcbFeatures);
+        group("artwork_layer", "제조 이미지와 개구", IdPcbFeatures);
         groups["aperture"] = groups["artwork_layer"];
         group("keepout", "금지 영역", IdPcbFeatures);
     }
@@ -478,7 +478,7 @@ void StudioFrame::RebuildNavigation()
     if (draft)
     {
         const auto groupKind = selectionKind.substr(4);
-        selected = m_tree->AppendItem(groups.count(groupKind) ? groups.at(groupKind) : root, Display("새 객체 / 미적용 입력"), 1,
+        selected = m_tree->AppendItem(groups.count(groupKind) ? groups.at(groupKind) : root, Display("새 객체 (미적용)"), 1,
                                       1, new SelectionData(m_selection));
     }
     m_tree->Expand(root);

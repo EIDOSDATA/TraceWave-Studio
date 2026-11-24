@@ -64,7 +64,7 @@ std::string PortSummary(const Json& assessment)
         }
         text << '\n';
     }
-    text << "공진 미확립은 내부 공진 표본/대응 여부를 연구 결과에서 확인해야 합니다.\n"
+    text << "공진 미확립은 내부 공진 표본 및 대응 여부를 연구 결과에서 확인해야 합니다.\n"
             "전체 대역 정합과 제조/실측 정확도는 별도 검증 항목입니다.";
     return text.str();
 }
@@ -83,7 +83,7 @@ std::string RadiationSummary(const Json& assessment)
     {
         const auto& result = stability.at("axes").at(axis);
         const auto& pair = result.at("comparisons").back();
-        text << Axis(axis) << ": " << Status(result.at("status")) << " / 마지막 인접 쌍\n";
+        text << Axis(axis) << ": " << Status(result.at("status")) << " (마지막 인접 쌍)\n";
         for (const auto& frequency : pair.at("frequencies"))
         {
             const auto& metrics = frequency.at("metrics");
@@ -92,7 +92,7 @@ std::string RadiationSummary(const Json& assessment)
                  << ", D " << Number(metrics.at("directivity_delta_db")) << " dB, G " << Number(metrics.at("gain_delta_db"))
                  << " dB, 효율 변화 " << Number(metrics.at("efficiency_delta")) << '\n';
         }
-        text << "  복소 S11 최대 변화: " << Number(pair.at("max_s11_complex_delta")) << " / 공통 각도 노드만 비교\n\n";
+        text << "  복소 S11 최대 변화: " << Number(pair.at("max_s11_complex_delta")) << " (공통 각도 표본만 비교)\n\n";
     }
     const auto& power = assessment.at("power_balance");
     text << "기준 계산 전력 예산: " << Status(power.at("status")) << '\n';
@@ -109,8 +109,8 @@ std::string RadiationSummary(const Json& assessment)
                  << ", 수동성 초과 " << Number(row.at("passivity_excess_fraction")) << '\n';
         }
     }
-    text << "\n전력 단위: W*s^2 / 절대 출력 전력 미정\n"
-            "전체 에너지 수지와 독립 체적/도체 흡수 손실 적분은 미평가입니다.\n"
+    text << "\n전력 단위는 W*s^2입니다. 절대 출력 전력은 미정입니다.\n"
+            "전체 에너지 수지와 독립 체적과 도체의 흡수 손실 적분은 미평가입니다.\n"
             "실제 납품 물성, 제작 및 측정 조건은 미정이며 실물 안테나 성능 합격이 아닙니다.";
     return text.str();
 }
@@ -135,7 +135,7 @@ Studio::StudyReportView Studio::PresentStudyReport(const Json& report)
         {
             const auto& fields = settings.at("radiation");
             row.push_back(fields.at("box_clearance_mm").dump());
-            row.push_back(fields.at("theta_step_deg").dump() + " / " + fields.at("phi_step_deg").dump());
+            row.push_back(fields.at("theta_step_deg").dump() + ", " + fields.at("phi_step_deg").dump());
             std::ostringstream frequencies;
             for (const auto& frequency : fields.at("frequency_hz"))
             {

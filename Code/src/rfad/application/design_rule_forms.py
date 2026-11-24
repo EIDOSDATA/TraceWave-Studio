@@ -72,7 +72,7 @@ def forms(document,selection):
     if section == "target":
         fields = [item for key,label in BOARD_LIMITS.items() for item in quantity_fields(record[key],key,label)]
         fields.append(field("manufacturing_profile_id","연결할 제조 규칙",record["manufacturing_profile_id"] or "",editor="choice",
-                            choices=[("","지정 안 함")]+[(row["id"],row["name"]+" / "+row["version"]) for row in document["manufacturing_profiles"]]))
+                            choices=[("","지정 안 함")]+[(row["id"],row["name"]+" ("+row["version"]+")") for row in document["manufacturing_profiles"]]))
     elif section == "parameter":
         fields = quantity_fields(record["minimum"],"minimum","하한") + quantity_fields(record["maximum"],"maximum","상한")
         fields.append(field("integer","무차원 정수 제약",record["integer"],editor="bool"))

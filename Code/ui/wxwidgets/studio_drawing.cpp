@@ -72,7 +72,7 @@ void StudioFrame::BindCanvas()
             return;
         }
         Json values = Json::object();
-        if (AskNumbers("전환 비아 치수 / mm", {{"pad_diameter_mm", "원형 랜드 지름", 0.8},
+        if (AskNumbers("전환 비아 치수 (mm)", {{"pad_diameter_mm", "원형 랜드 지름", 0.8},
                        {"finished_hole_diameter_mm", "완성 홀 지름", 0.3}, {"plating_thickness_mm", "도금 두께", 0.025},
                        {"tool_hole_diameter_mm", "공구 지름", 0.35}}, values))
         {
@@ -136,7 +136,7 @@ void StudioFrame::BindCanvas()
                       {
                           const bool enabled = m_snapCheck->GetValue();
                           m_canvas->SetSnapEnabled(enabled);
-                          SetStatusText(Display(enabled ? "mm / 스냅 켬" : "mm / 스냅 끔"), 2);
+                          SetStatusText(Display(enabled ? "mm, 스냅 켬" : "mm, 스냅 끔"), 2);
                           m_canvas->SetFocus();
                       });
     m_drawingRelations->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&)
@@ -234,7 +234,7 @@ void StudioFrame::BindCanvas()
             if (!m_busy && ConfirmDiscard())
             {
                 Json values{{"width_mm", 40.0}, {"height_mm", 60.0}};
-                if (AskNumbers("기판 외형 / mm", {{"width_mm", "폭 (mm)", 40}, {"height_mm", "길이 (mm)", 60}}, values))
+                if (AskNumbers("기판 외형 (mm)", {{"width_mm", "폭 (mm)", 40}, {"height_mm", "길이 (mm)", 60}}, values))
                 {
                     values["id"] = Uuid();
                     CanvasCommand("create_board", values);
@@ -249,7 +249,7 @@ void StudioFrame::BindCanvas()
             if (!m_busy && ConfirmDiscard())
             {
                 Json values{{"center_x_mm", 0.0}, {"center_y_mm", 0.0}, {"radius_mm", 30.0}};
-                if (AskNumbers("원형 기판 외형 / mm",
+                if (AskNumbers("원형 기판 외형 (mm)",
                                {{"center_x_mm", "중심 X (mm)", 0},
                                 {"center_y_mm", "중심 Y (mm)", 0},
                                 {"radius_mm", "반지름 (mm)", 30}},
@@ -281,7 +281,7 @@ void StudioFrame::BindCanvas()
         {
             if (!m_busy && ConfirmDiscard())
             {
-                const wxString name = wxGetTextFromUser(Display("도체층 이름. 위치/두께/재료는 미정으로 생성합니다."),
+                const wxString name = wxGetTextFromUser(Display("도체층 이름. 위치, 두께 및 재료는 미정으로 생성합니다."),
                                                         Display("도체층 추가"), "Top Copper", this);
                 if (!name.empty())
                 {
@@ -296,7 +296,7 @@ void StudioFrame::BindCanvas()
         {
             if (!m_busy && ConfirmDiscard())
             {
-                const wxString name = wxGetTextFromUser(Display("유전체층 이름. 위치/두께/물성은 직접 입력합니다."),
+                const wxString name = wxGetTextFromUser(Display("유전체층 이름. 위치, 두께 및 물성은 직접 입력합니다."),
                                                         Display("유전체층 추가"), Display("기판 유전체"), this);
                 if (!name.empty())
                 {

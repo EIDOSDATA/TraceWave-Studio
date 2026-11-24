@@ -256,7 +256,7 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
     fields = []
     if kind in ("board", "geometry") and "name" not in obj:
         field = _field("name", "이름", "")
-        field["help"] = "이름 미지정 / 임시 표시: " + object_label(document, obj, "board" if kind == "board" else "geometry") + ". 이름을 입력하고 적용하면 저장됩니다."
+        field["help"] = "이름을 지정하기 전까지 표시하는 임시 이름: " + object_label(document, obj, "board" if kind == "board" else "geometry") + ". 이름을 입력하고 적용하면 저장됩니다."
         fields.append(field)
 
     def walk(value, path: list[str], labels: list[str]) -> None:
@@ -270,7 +270,7 @@ def fields_for(document: dict, selection: dict) -> list[dict]:
                     walk(child, [*path, name], [*labels, LABELS.get(name, name)])
         elif type(value) is list:
             if kind == "board" and path == ["cutouts"]:
-                fields.append(_field(key, "기판 내부 절삭", f"{len(value)}개 / PCB 전용 편집", readonly=True))
+                fields.append(_field(key, "기판 내부 절삭", f"{len(value)}개 (PCB 도구에서 편집)", readonly=True))
                 return
             if path[-1] == "outer" or (len(path) >= 2 and path[-2] == "holes"):
                 fields.append(_field(key, label, _coordinate_table(document, value, key), editor="coordinate_table"))

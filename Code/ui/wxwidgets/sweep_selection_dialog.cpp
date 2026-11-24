@@ -27,7 +27,7 @@ SweepSelectionDialog::SweepSelectionDialog(wxWindow* parent, const Json& context
 {
     SetName("sweep.selection.dialog");
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* heading = new wxStaticText(this, wxID_ANY, Display("후보 검토 / 새 작업 사본"));
+    auto* heading = new wxStaticText(this, wxID_ANY, Display("새 작업 사본에 넣을 후보 검토"));
     StudioTheme::Title(*heading);
     layout->Add(heading, 0, wxALL, FromDIP(12));
     auto* notice = new wxStaticText(
@@ -81,7 +81,7 @@ SweepSelectionDialog::SweepSelectionDialog(wxWindow* parent, const Json& context
                                   wxTE_MULTILINE | wxTE_READONLY);
     m_conditions->SetName("sweep.selection.conditions");
     conditionsLayout->Add(m_conditions, 1, wxEXPAND | wxALL, FromDIP(12));
-    m_advanced = new wxCollapsiblePane(conditionPage, wxID_ANY, Display("고급 상세 / 원문과 봉인 식별"));
+    m_advanced = new wxCollapsiblePane(conditionPage, wxID_ANY, Display("고급 상세: 원문과 봉인 식별"));
     auto* advancedLayout = new wxBoxSizer(wxVERTICAL);
     m_source = new wxTextCtrl(m_advanced->GetPane(), wxID_ANY, wxEmptyString, wxDefaultPosition,
                               FromDIP(wxSize(-1, 190)), wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL);
@@ -116,7 +116,7 @@ SweepSelectionDialog::SweepSelectionDialog(wxWindow* parent, const Json& context
     const auto defaults = context.value("defaults", Json::object());
     m_name = field("새 사본 이름", "sweep.selection.name", defaults.value("name", ""), false);
     m_path = field("새 저장 위치 (작업공간 기준 경로)", "sweep.selection.path", defaults.value("path", ""), false);
-    m_reason = field("선택 사유 / 이력에 보존", "sweep.selection.reason", defaults.value("reason", ""), true);
+    m_reason = field("선택 사유 (이력에 보존)", "sweep.selection.reason", defaults.value("reason", ""), true);
     m_copySummary = new wxTextCtrl(copyPage, wxID_ANY, Display(SweepSelectionUi::CopySummary(Json::object())),
                                    wxDefaultPosition, FromDIP(wxSize(-1, 170)), wxTE_MULTILINE | wxTE_READONLY);
     copyLayout->Add(m_copySummary, 1, wxEXPAND | wxALL, FromDIP(12));
@@ -126,11 +126,11 @@ SweepSelectionDialog::SweepSelectionDialog(wxWindow* parent, const Json& context
     layout->Add(m_tabs, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     m_status = new wxStaticText(
         this, wxID_ANY,
-        Display("후보와 새 저장 위치를 검토하세요. 계산 완료와 수렴/실측 검증은 서로 다른 상태입니다."));
+        Display("후보와 새 저장 위치를 검토하세요. 계산 완료와 수렴과 실측 검증은 서로 다른 상태입니다."));
     layout->Add(m_status, 0, wxEXPAND | wxALL, FromDIP(12));
     auto* actions = new wxWrapSizer(wxHORIZONTAL);
     auto* close = new wxButton(this, wxID_CANCEL, Display("닫기"));
-    m_preview = new wxButton(this, wxID_ANY, Display("후보 / 저장 위치 검토"));
+    m_preview = new wxButton(this, wxID_ANY, Display("후보와 저장 위치 검토"));
     m_apply = new wxButton(this, wxID_APPLY, Display("검토한 새 사본 생성"));
     m_recover = new wxButton(this, wxID_ANY, Display("생성 결과 다시 확인"));
     m_open = new wxButton(this, wxID_ANY, Display("새 사본 열기"));
@@ -313,7 +313,7 @@ void SweepSelectionDialog::AcceptCopy(const Json& result)
 {
     if (!SweepSelectionUi::MatchesCopy(result, m_context))
     {
-        throw std::runtime_error("새 사본의 원본 프로젝트 / 후보 / 봉인 식별이 검토 내용과 다릅니다.");
+        throw std::runtime_error("새 사본의 원본 프로젝트, 후보 또는 봉인 식별이 검토 내용과 다릅니다.");
     }
     m_applied = result;
     m_dirty = false;
@@ -361,7 +361,7 @@ void SweepSelectionDialog::Recover()
                 }
                 catch (const std::exception& error)
                 {
-                    weak->SetStatus(std::string("생성 결과 검증 실패 / 중복 생성 잠금 유지\n") + error.what());
+                    weak->SetStatus(std::string("생성 결과를 검증하지 못했습니다. 중복 생성을 막기 위해 잠금을 유지합니다.\n") + error.what());
                 }
                 weak->UpdateActions();
             },
@@ -372,7 +372,7 @@ void SweepSelectionDialog::Recover()
                     return;
                 }
                 weak->m_recovering = false;
-                weak->SetStatus("생성 결과 조회 실패 / 중복 생성 잠금 유지\n" + DiagnosticMessage(error));
+                weak->SetStatus("생성 결과를 조회하지 못했습니다. 중복 생성을 막기 위해 잠금을 유지합니다.\n" + DiagnosticMessage(error));
                 weak->UpdateActions();
             });
     }

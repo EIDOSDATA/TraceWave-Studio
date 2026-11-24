@@ -31,7 +31,7 @@ SweepPanel::SweepPanel(wxWindow* parent, wxWindow* navigation, wxWindow* conditi
     m_studies->AppendColumn(Display("연구 이름"), wxLIST_FORMAT_LEFT, FromDIP(170));
     m_studies->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(90));
     navLayout->Add(m_studies, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
-    m_refresh = new wxButton(nav, wxID_ANY, Display("목록 / 현재 상태 새로 읽기"));
+    m_refresh = new wxButton(nav, wxID_ANY, Display("목록과 현재 상태 새로 읽기"));
     StudioTheme::Button(*m_refresh);
     m_refresh->SetName("sweep.refresh");
     navLayout->Add(m_refresh, 0, wxEXPAND | wxALL, FromDIP(8));
@@ -53,8 +53,7 @@ SweepPanel::SweepPanel(wxWindow* parent, wxWindow* navigation, wxWindow* conditi
     m_heading = new wxStaticText(this, wxID_ANY, Display("설계 스윕과 다축 연구"));
     StudioTheme::Title(*m_heading);
     layout->Add(m_heading, 0, wxALL, FromDIP(12));
-    m_notice = new wxStaticText(this, wxID_ANY,
-                                Display("연구 저장과 실행은 별도입니다. 완료는 수렴/실측 검증을 뜻하지 않습니다."));
+    m_notice = new wxStaticText(this, wxID_ANY, Display(m_noticeText));
     StudioTheme::BindSecondary(*m_notice);
     layout->Add(m_notice, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     auto* actions = new wxWrapSizer(wxHORIZONTAL);
@@ -91,7 +90,7 @@ SweepPanel::SweepPanel(wxWindow* parent, wxWindow* navigation, wxWindow* conditi
     m_candidates->SetMinSize(FromDIP(wxSize(-1, 210)));
     StudioTheme::Table(*m_candidates);
     for (const auto& column : std::vector<std::pair<std::string, int>>{
-             {"후보", 60}, {"변수 값", 280}, {"단계 / 상태", 140}, {"시도", 55}, {"완료 결과", 120}, {"이유", 350}})
+             {"후보", 60}, {"변수 값", 280}, {"단계와 상태", 140}, {"시도", 55}, {"완료 결과", 120}, {"이유", 350}})
     {
         m_candidates->AppendColumn(Display(column.first), wxLIST_FORMAT_LEFT, FromDIP(column.second));
     }
@@ -271,7 +270,7 @@ void SweepPanel::BeginRead(const std::string& id)
     m_offset = 0;
     m_nextOffset = -1;
     m_heading->SetLabel(Display("선택 연구 조회 중"));
-    m_notice->SetLabel(Display("선택한 연구의 입력 조건과 후보를 읽고 있습니다."));
+    m_noticeText = "선택한 연구의 입력 조건과 후보를 읽고 있습니다.";
     m_pageLabel->SetLabel(Display("후보 조회 중"));
     ClearSelection("이전 연구의 후보를 분리했습니다. 선택한 연구의 응답을 기다립니다.");
 }
@@ -295,19 +294,18 @@ void SweepPanel::SetStudy(const Json& study)
     m_rebuilding = false;
     m_heading->SetLabel(Display(study.value("name", "연구")));
     const auto spec = study.value("specification", Json::object());
-    m_notice->SetLabel(
-        Display(SweepUi::Type(spec.value("type", study.value("type", ""))) + " / " +
-                (study.value("source_revision_matches_current", false) ? "현재 원본 개정"
-                                                                       : "저장 당시 원본 개정 / 현재 편집과 구분") +
-                "\n계산 완료와 목표 충족, 수치 수렴, 실측 검증을 구분합니다."));
+    m_noticeText = SweepUi::Type(spec.value("type", study.value("type", ""))) + ", " +
+                   (study.value("source_revision_matches_current", false) ? "현재 원본 개정"
+                                                                          : "저장 당시 원본 개정 (현재 편집과 별개)") +
+                   "\n계산 완료와 목표 충족, 수치 수렴, 실측 검증을 구분합니다.";
     const auto counts = study.value("counts", Json::object());
     const int total = counts.value("total", study.value("candidate_count", 0));
     const int completed = counts.value("completed", 0);
     const int failed = counts.value("failed", 0);
     const int skipped = counts.value("skipped", 0);
-    m_progressText->SetLabel(Display(SweepUi::Status(study.value("state", "unknown")) + " / 완료 " +
-                                     std::to_string(completed) + " / 실패 " + std::to_string(failed) + " / 제외 " +
-                                     std::to_string(skipped) + " / 전체 " + std::to_string(total)));
+    m_progressText->SetLabel(Display(SweepUi::Status(study.value("state", "unknown")) + ", 완료 " +
+                                     std::to_string(completed) + ", 실패 " + std::to_string(failed) + ", 제외 " +
+                                     std::to_string(skipped) + ", 전체 " + std::to_string(total)));
     m_progress->SetRange(std::max(1, total));
     m_progress->SetValue(std::min(std::max(0, completed + failed + skipped), std::max(1, total)));
     std::string conditions =
@@ -329,7 +327,7 @@ void SweepPanel::SetStudy(const Json& study)
     {
         if (key == std::string("usage_display"))
         {
-            conditions += "\n누적 사용량 / RAM은 별도 추정\n";
+            conditions += "\n누적 사용량 (RAM은 별도 추정)\n";
         }
         const Json data = study.value(key, Json::object());
         for (auto item = data.begin(); item != data.end(); ++item)
@@ -339,12 +337,12 @@ void SweepPanel::SetStudy(const Json& study)
                           item.value().value("text", "미정") + " " + item.value().value("unit", "") + "\n";
         }
     }
-    conditions += "\n입력 출처 / 가정\n";
+    conditions += "\n입력 출처와 가정\n";
     for (const auto& source : original.value("source_refs", Json::array()))
     {
         conditions += SweepUi::Text(source) + "\n";
     }
-    conditions += "\n제작 / 측정 조건\n원본의 미정 상태를 유지합니다. 수렴/실측 검증은 별도입니다.\n\n재개\n완료 "
+    conditions += "\n제작 및 측정 조건\n원본의 미정 상태를 유지합니다. 수렴과 실측은 별도 검증이 필요합니다.\n\n재개\n완료 "
                   "후보와 이전 시도를 보존합니다. 해석 내부 시간 단계 재개 기능은 아닙니다.";
     m_conditionText->ChangeValue(Display(conditions));
     SetStatus(study.value("message", "") + (study.value("stop_reason", Json(nullptr)).is_null()
@@ -371,7 +369,7 @@ void SweepPanel::SetPage(const Json& page)
         m_candidates->SetItem(row, 1, Display(SweepUi::CandidateValues(candidate)));
         m_candidates->SetItem(
             row, 2,
-            Display(SweepUi::Status(candidate.value("state", "pending")) + " / " +
+            Display(SweepUi::Status(candidate.value("state", "pending")) + ", " +
                     SweepUi::Status(candidate.value("outcome", candidate.value("validation_status", "")))));
         m_candidates->SetItem(row, 3, Display(std::to_string(candidate.value("attempts", Json::array()).size())));
         m_candidates->SetItem(
@@ -380,7 +378,7 @@ void SweepPanel::SetPage(const Json& page)
                              SweepUi::Diagnostics(candidate.value("diagnostics", Json::array()));
         if (candidate.contains("cached_from_ordinal"))
         {
-            reason = "후보 " + std::to_string(candidate.at("cached_from_ordinal").get<int>() + 1) + "의 계산 재사용 / " + reason;
+            reason = "후보 " + std::to_string(candidate.at("cached_from_ordinal").get<int>() + 1) + "의 계산 재사용, " + reason;
         }
         m_candidates->SetItem(row, 5, Display(reason));
     }
@@ -391,8 +389,8 @@ void SweepPanel::SetPage(const Json& page)
                                    wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
     }
     m_pageLabel->SetLabel(Display(std::to_string(m_offset + (m_rows.empty() ? 0 : 1)) + "~" +
-                                  std::to_string(m_offset + m_rows.size()) + " / " +
-                                  std::to_string(page.value("total", 0))));
+                                  std::to_string(m_offset + m_rows.size()) + " (전체 " +
+                                  std::to_string(page.value("total", 0)) + "개)"));
     ShowCandidate();
     UpdateActions();
     RefreshLayout();
@@ -409,7 +407,7 @@ void SweepPanel::ShowCandidate()
     }
     const auto& candidate = m_rows.at(row);
     m_detail->ChangeValue(Display(
-        "후보 " + std::to_string(candidate.value("ordinal", m_offset + static_cast<int>(row)) + 1) + " / " +
+        "후보 " + std::to_string(candidate.value("ordinal", m_offset + static_cast<int>(row)) + 1) + ", " +
         SweepUi::Status(candidate.value("state", "pending")) + "\n" + SweepUi::CandidateValues(candidate) + "\n" +
         candidate.value("message", "") + "\n" + SweepUi::Diagnostics(candidate.value("diagnostics", Json::array()))));
     UpdateActions();
@@ -429,7 +427,7 @@ void SweepPanel::SetSelectionSupported(bool supported)
 }
 void SweepPanel::SetStatus(const std::string& text)
 {
-    m_status->SetLabel(Display(text));
+    m_statusText = text;
     RefreshLayout();
 }
 void SweepPanel::ClearSelection(const std::string& text)
@@ -478,7 +476,9 @@ void SweepPanel::UpdateActions()
 void SweepPanel::RefreshLayout()
 {
     const int width = std::max(180, GetClientSize().x - FromDIP(28));
+    m_notice->SetLabel(Display(m_noticeText));
     m_notice->Wrap(width);
+    m_status->SetLabel(Display(m_statusText));
     m_status->Wrap(width);
     Layout();
     FitInside();

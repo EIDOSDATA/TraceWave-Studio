@@ -217,8 +217,8 @@ void SmithView::SetPage(const Json& response)
     m_chart->SetPage(response);
     const auto points = response.value("points", Json::array());
     m_status->SetLabel(Display("실제 표본 " + std::to_string(response.value("offset", 0) + (points.empty() ? 0 : 1)) +
-                               "~" + std::to_string(response.value("offset", 0) + points.size()) + " / " +
-                               std::to_string(response.value("total", 0)) + " / 보간·자동 재정규화 없음"));
+                               "~" + std::to_string(response.value("offset", 0) + points.size()) + ", " +
+                               std::to_string(response.value("total", 0)) + " (보간 및 자동 재정규화 없음)"));
     SelectMarker(points.empty() ? -1 : points.front().value("index", -1));
     UpdateActions();
     Layout();
@@ -245,7 +245,7 @@ void SmithView::SelectMarker(int index)
         m_markerValues->SetItem(index, 1, Display(value));
     };
     const auto scale = StudioFrequency::ForDescriptor(m_description.at("descriptor"));
-    row("마커 / 표본", "M1 / " + std::to_string(index + 1));
+    row("마커와 표본", "마커 M1: " + std::to_string(index + 1));
     row("주파수", StudioFrequency::Value(point->value("frequency_hz", Json(nullptr)), scale, 8) + " " + scale.unit);
     row("Gamma", ResultUi::Complex(point->value("gamma_ri", Json(nullptr))));
     row("기준 Z0", ResultUi::Complex(point->value("z0_ohm", Json(nullptr))) + " ohm");

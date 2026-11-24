@@ -289,27 +289,27 @@ bool Studio::StudyActionAllowed(const Json& view, const std::string& action, boo
 std::string Studio::StudySummary(const Json& view)
 {
     std::ostringstream output;
-    output << "연구: " << view.at("name").get<std::string>() << " / " << StudyStatus(view.at("state")) << '\n'
+    output << "연구: " << view.at("name").get<std::string>() << ", " << StudyStatus(view.at("state")) << '\n'
            << (view.value("source_revision_matches_current", false) ? "현재 설계와 동일한 개정"
                                                                     : "이전 개정의 고정 결과")
            << '\n'
-           << view.value("message", std::string()) << "\n\n전력 단위: W*s^2 / 절대 W 값 미정\n";
+           << view.value("message", std::string()) << "\n\n전력 단위: W*s^2. 절대 W 값은 미정입니다.\n";
     if (!view.value("runtime_matches", false))
     {
         output
-            << "현재 해석 환경이 미연결이거나 원래 worker와 다릅니다. 결과 조회만 가능하며 실행/재개는 차단합니다.\n";
+            << "현재 해석 환경이 미연결이거나 원래 worker와 다릅니다. 결과 조회만 가능하며 실행과 재개는 차단합니다.\n";
     }
     if (view.contains("specification") && view.at("specification").contains("field_adaptive"))
     {
         const auto& config = view.at("specification").at("field_adaptive");
         const auto& region = config.at("physical_region");
-        output << "기록 전계 E" << region.at("component").get<std::string>() << " / " << Format(region.at("frequency_hz"))
-               << " Hz / " << region.at("normal_axis").get<std::string>() << " = " << Format(region.at("plane_mm"))
-               << " mm / 복소 S11 허용차 " << Format(config.at("limits").at("max_s11_complex_delta")) << '\n';
+        output << "기록 전계 E" << region.at("component").get<std::string>() << ", " << Format(region.at("frequency_hz"))
+               << " Hz, " << region.at("normal_axis").get<std::string>() << " = " << Format(region.at("plane_mm"))
+               << " mm, 복소 S11 허용차 " << Format(config.at("limits").at("max_s11_complex_delta")) << '\n';
     }
     for (const auto& row : view.at("cases"))
     {
-        output << "\n격자 " << Format(row.at("grid_mm")) << " mm / " << StudyStatus(row.at("phase")) << '\n';
+        output << "\n격자 " << Format(row.at("grid_mm")) << " mm, " << StudyStatus(row.at("phase")) << '\n';
         if (row.contains("refinement"))
         {
             output << "직전 기록 전계에서 추가한 국부 규칙 " << row.at("refinement").at("rules_added") << "개\n";
@@ -317,7 +317,7 @@ std::string Studio::StudySummary(const Json& view)
         if (row.contains("sample_evidence"))
         {
             const auto& pair = row.at("sample_evidence");
-            output << "공통 주파수 " << pair.at("sample_count") << "개 / 최대 복소 S11 변화 " << Format(pair.at("max_s11_complex_delta"))
+            output << "공통 주파수 " << pair.at("sample_count") << "개, 최대 복소 S11 변화 " << Format(pair.at("max_s11_complex_delta"))
                    << " (" << Format(pair.at("worst_frequency_hz")) << " Hz)\n";
         }
         if (row.contains("estimated_memory_bytes"))
@@ -348,7 +348,7 @@ std::string Studio::StudySummary(const Json& view)
             if (power.contains("via_loss_w_s2"))
             {
                 output << "  평면 도체: " << Format(power.at("sheet_loss_w_s2"))
-                       << " / PTH 비아: " << Format(power.at("via_loss_w_s2")) << '\n';
+                       << ", PTH 비아: " << Format(power.at("via_loss_w_s2")) << '\n';
             }
         }
     }
@@ -364,11 +364,11 @@ std::string Studio::StudySummary(const Json& view)
         {
             const auto& decision = value.at("adaptive_mesh_decision");
             output << "적응 격자 종료 사유 " << StudyStatus(decision.at("reason"))
-                   << " / 실행 수준 " << decision.at("completed_levels") << '\n';
+                   << ", 실행 수준 " << decision.at("completed_levels") << '\n';
         }
         if (value.contains("individual_loss_stability") && !value.at("individual_loss_stability").is_null())
         {
-            output << "개별 유전체 / 도체 / 비아 손실 안정성: "
+            output << "개별 유전체, 도체 및 비아 손실 안정성: "
                    << StudyStatus(value.at("individual_loss_stability").at("status")) << '\n';
         }
         if (!value.at("reference_radiation_budget").is_null())
@@ -378,6 +378,6 @@ std::string Studio::StudySummary(const Json& view)
         }
     }
     output << "\n격자 한 축의 설정 안정성입니다. 전체 세 축 수렴, skin depth 및 연속체 정확도는 별도입니다.\n"
-              "실제 납품 물성, 제작/측정 조건은 미정이며 실물 성능 합격이 아닙니다.";
+              "실제 납품 물성, 제작 및 측정 조건은 미정이며 실물 성능 합격이 아닙니다.";
     return output.str();
 }

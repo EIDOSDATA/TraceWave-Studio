@@ -43,14 +43,14 @@ Json DesignRulesDialog::InitialSelection()
 }
 
 DesignRulesDialog::DesignRulesDialog(wxWindow* parent, const Json& context, DialogGateway gateway)
-    : ProjectSetupDialog(parent, "목표 제약 / 연결 / 기본 DRC", context, std::move(gateway))
+    : ProjectSetupDialog(parent, "설계 제약, 연결 및 DRC", context, std::move(gateway))
 {
     SetName("design.rules.dialog");
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* top = new wxBoxSizer(wxHORIZONTAL);
     m_section = new wxChoice(this, wxID_ANY);
     m_section->SetName("rules.section");
-    for (const auto* label : {"기판 크기 / 제조 규칙 연결", "매개변수 범위 / 정수", "기대 연결 / 분리", "제조 규칙"})
+    for (const auto* label : {"기판 크기와 제조 규칙", "매개변수 범위와 정수 조건", "연결 및 분리 조건", "제조 규칙"})
     {
         m_section->Append(Display(label));
     }
@@ -73,7 +73,7 @@ DesignRulesDialog::DesignRulesDialog(wxWindow* parent, const Json& context, Dial
         return label;
     };
     addChoice(*m_section, "규칙 종류");
-    addChoice(*m_subject, "목표 / 규칙");
+    addChoice(*m_subject, "목표 또는 규칙");
     m_parameterLabel = addChoice(*m_parameter, "매개변수");
     addChoice(*m_inclusion, "검사 대상 도체");
     layout->Add(top, 0, wxEXPAND | wxALL, FromDIP(StudioTheme::PanelPadding));
@@ -128,7 +128,7 @@ DesignRulesDialog::DesignRulesDialog(wxWindow* parent, const Json& context, Dial
     m_issues->SetName(Display("설계 규칙 진단 결과"));
     m_issues->AppendColumn(Display("판정"), wxLIST_FORMAT_LEFT, FromDIP(75));
     m_issues->AppendColumn(Display("규칙"), wxLIST_FORMAT_LEFT, FromDIP(170));
-    m_issues->AppendColumn(Display("측정 / 한계"), wxLIST_FORMAT_LEFT, FromDIP(180));
+    m_issues->AppendColumn(Display("측정값과 한계"), wxLIST_FORMAT_LEFT, FromDIP(180));
     review->Add(m_issues, 0, wxEXPAND);
     m_detail = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 78)), wxTE_MULTILINE | wxTE_READONLY);
     review->Add(m_detail, 0, wxEXPAND);
@@ -137,7 +137,7 @@ DesignRulesDialog::DesignRulesDialog(wxWindow* parent, const Json& context, Dial
     m_status = new wxStaticText(this, wxID_ANY, wxEmptyString);
     layout->Add(m_status, 0, wxEXPAND | wxALL, FromDIP(8));
     auto* actions = new wxBoxSizer(wxHORIZONTAL);
-    actions->Add(new wxStaticText(this, wxID_ANY, Display("변경 사유 / 출처")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(8));
+    actions->Add(new wxStaticText(this, wxID_ANY, Display("변경 사유와 출처")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(8));
     m_reason = new wxTextCtrl(this, wxID_ANY);
     actions->Add(m_reason, 1, wxEXPAND | wxRIGHT, FromDIP(8));
     m_set = new wxButton(this, wxID_ANY, Display("적용"));

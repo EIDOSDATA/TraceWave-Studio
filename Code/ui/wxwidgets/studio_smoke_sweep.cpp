@@ -103,7 +103,7 @@ void StudioSmokeDriver::SweepSmokeTick()
                              heading.GetText().Find("GHz") != wxNOT_FOUND &&
                              resultDialog->m_samples->GetItemText(0, 0) == "1" && realText.length() <= 12 &&
                              realText.ToDouble(&displayed) && std::abs(displayed - 613.0 / 1513.0) < 1e-8 &&
-                             resultDialog->m_samples->GetItemText(0, 6) == Display("유효 / 파생"),
+                             resultDialog->m_samples->GetItemText(0, 6) == Display("유효, 파생"),
                          "후보 결과 표의 주파수/간결한 수치/유효 상태/출처 또는 실제 표시 높이가 잘못되었습니다.");
             m_setupStage = 22;
             resultDialog->m_tabs->SetSelection(2);

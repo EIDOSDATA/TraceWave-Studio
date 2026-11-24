@@ -175,9 +175,9 @@ NetworkPanel::NetworkPanel(wxWindow* centerParent, wxWindow* navigationParent, w
     m_samples = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 120)),
                                wxLC_REPORT | wxLC_SINGLE_SEL | wxLC_HRULES);
     StudioTheme::Table(*m_samples);
-    const std::vector<std::pair<const char*, int>> columns{{"표본", 64},    {"주파수 / Hz", 128}, {"실수부", 108},
-                                                           {"허수부", 108}, {"크기 / dB", 128},   {"위상 / deg", 108},
-                                                           {"VSWR", 110},   {"상태 / 출처", 200}};
+    const std::vector<std::pair<const char*, int>> columns{{"표본", 64},    {"주파수 (Hz)", 128}, {"실수부", 108},
+                                                           {"허수부", 108}, {"크기 (dB)", 128},   {"위상 (deg)", 108},
+                                                           {"VSWR", 110},   {"상태와 출처", 200}};
     for (const auto& column : columns)
     {
         m_samples->AppendColumn(Display(column.first), wxLIST_FORMAT_LEFT, FromDIP(column.second));
@@ -310,7 +310,7 @@ void NetworkPanel::BuildConditions(wxWindow* parent)
     layout->Add(pages, 1, wxEXPAND);
     auto* notice = new wxStaticText(
         conditions, wxID_ANY,
-        Display("계산 / 목표 평가 / 수렴 / 실측 검증은 별도 상태입니다. 미정 조건을 자동 확정하지 않습니다."));
+        Display("계산, 목표 평가, 수렴 및 실측을 따로 표시합니다. 미정 조건은 직접 확인하세요."));
     notice->Wrap(FromDIP(290));
     StudioTheme::BindSecondary(*notice);
     layout->Add(notice, 0, wxEXPAND | wxALL, FromDIP(12));
@@ -449,7 +449,7 @@ void NetworkPanel::SetResult(const Json& result)
     m_chart->SetPage(page, Display(result.at("entry").at("name")));
     UpdateFrequencyDisplay();
     UpdateMetric();
-    SetStatus("실제 표본 페이지입니다. 제작/측정 조건과 출처는 오른쪽에서 확인하세요.");
+    SetStatus("실제 표본 페이지입니다. 제작 및 측정 조건과 출처는 오른쪽에서 확인하세요.");
     UpdateActions();
 }
 
@@ -520,7 +520,7 @@ void NetworkPanel::ShowSamples()
     const auto& page = m_selection.at("page");
     const auto scale = StudioFrequency::ForDescriptor(m_selection.at("descriptor"), FrequencyUnit());
     wxListItem frequencyColumn;
-    frequencyColumn.SetText(Display("주파수 / " + scale.unit));
+    frequencyColumn.SetText(Display("주파수 (" + scale.unit + ")"));
     m_samples->SetColumn(1, frequencyColumn);
     for (const auto& sample : page.at("samples"))
     {
@@ -534,10 +534,10 @@ void NetworkPanel::ShowSamples()
                                           : Value(sample, keys[index]));
         }
         m_samples->SetItem(
-            row, 7, Display(SampleLabel(sample.at("status"), false) + " / " + SampleLabel(sample.at("origin"), true)));
+            row, 7, Display(SampleLabel(sample.at("status"), false) + ", " + SampleLabel(sample.at("origin"), true)));
     }
     const int offset = page.at("offset");
-    m_pageLabel->SetLabel(Display("표본 ") + wxString::Format("%d-%d / %d", offset + 1,
+    m_pageLabel->SetLabel(Display("표본 ") + wxString::Format(Display("%d~%d (전체 %d)"), offset + 1,
                                                               offset + static_cast<int>(page.at("samples").size()),
                                                               page.at("total").get<int>()));
 }
@@ -550,8 +550,9 @@ void NetworkPanel::UpdateMetric()
         return;
     }
     std::string unit = m_selection.is_object() ? m_selection.at("descriptor").value("unit", "") : "";
+    const auto unitSuffix = unit.empty() ? "" : " (" + unit + ")";
     const std::array<std::string, 6> labels{
-        {"크기 / dB", "크기 / " + unit, "위상 / deg", "실수부 / " + unit, "허수부 / " + unit, "VSWR"}};
+        {"크기 (dB)", "크기" + unitSuffix, "위상 (deg)", "실수부" + unitSuffix, "허수부" + unitSuffix, "VSWR"}};
     m_chart->SetMetric(Metrics[static_cast<std::size_t>(selected)],
                        Display(labels[static_cast<std::size_t>(selected)]));
 }
@@ -596,8 +597,8 @@ void NetworkPanel::SelectMarker(long row)
     m_markerRow = row;
     m_chart->SetMarker(sample.at("index").get<int>());
     const auto scale = StudioFrequency::ForDescriptor(m_selection.at("descriptor"), FrequencyUnit());
-    const wxString label = Display("M1 / " + StudioFrequency::WithUnit(sample.at("frequency_hz"), scale.unit)) +
-                           " / Re " + Value(sample, "real") + " / Im " + Value(sample, "imag") + " / dB " +
+    const wxString label = Display("마커 M1: " + StudioFrequency::WithUnit(sample.at("frequency_hz"), scale.unit)) +
+                           ", 실수부 " + Value(sample, "real") + ", 허수부 " + Value(sample, "imag") + ", 크기 (dB) " +
                            Value(sample, "magnitude_db");
     m_marker->SetLabel(label);
     m_marker->Wrap(std::max(FromDIP(280), GetClientSize().x - FromDIP(16)));
@@ -611,8 +612,8 @@ void NetworkPanel::ShowConditions()
     m_conditionHeading->SetLabel(Display(entry.at("name")));
     m_conditionHeading->SetToolTip(Display(entry.at("name")));
     std::string summary =
-        "자료: " + Kind(entry.at("kind")) + "\n행렬 / 단위: " + Text(descriptor.at("parameter_kind")) + " / " +
-        Text(descriptor.at("unit")) + "\n표본: " + Text(descriptor.at("sample_count")) + "개\n주파수: " +
+        "자료: " + Kind(entry.at("kind")) + "\n행렬: " + Text(descriptor.at("parameter_kind")) + " (단위: " +
+        Text(descriptor.at("unit")) + ")" + "\n표본: " + Text(descriptor.at("sample_count")) + "개\n주파수: " +
         StudioFrequency::Range(descriptor.at("frequency_min_hz"), descriptor.at("frequency_max_hz"), FrequencyUnit()) +
         "\n\n파 정의: " + ResultUi::State(descriptor.at("wave_definition")) +
         "\n시간 규약: " + Text(descriptor.at("phasor_convention"));

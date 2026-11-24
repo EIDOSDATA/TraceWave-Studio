@@ -92,7 +92,8 @@ void NetworkChart::ChooseDefaultMetric(const Json& page)
     }
     const bool scattering = page.value("parameter_kind", "S") == "S";
     m_metric = scattering ? "magnitude_db" : "magnitude";
-    m_axisLabel = scattering ? Display("크기 / dB") : Display("크기 / " + page.value("unit", ""));
+    const auto unit = page.value("unit", "");
+    m_axisLabel = Display(scattering ? "크기 (dB)" : unit.empty() ? "크기" : "크기 (" + unit + ")");
 }
 
 void NetworkChart::SetPage(const Json& page, const wxString& label)
@@ -384,11 +385,11 @@ void NetworkChart::Paint(wxPaintEvent&)
     }
     else
     {
-        dc.DrawText(Display("유한한 곡선값이 없습니다. 무한대/미정은 표에서 확인하세요."), margin,
+        dc.DrawText(Display("유한한 곡선값이 없습니다. 무한대와 미정값은 표에서 확인하세요."), margin,
                     plot.y + FromDIP(24));
     }
     dc.SetTextForeground(colours.secondary);
-    const wxString frequencyLabel = Display(m_angularAxis ? "theta / deg" : "주파수 / " + frequencyScale.unit);
+    const wxString frequencyLabel = Display(m_angularAxis ? "극각 (deg)" : "주파수 (" + frequencyScale.unit + ")");
     dc.DrawText(frequencyLabel, plot.GetRight() - dc.GetTextExtent(frequencyLabel).x,
                 plot.GetBottom() + lineHeight + FromDIP(4));
     int footerY = size.y - footerHeight;
@@ -397,8 +398,8 @@ void NetworkChart::Paint(wxPaintEvent&)
         const auto& series = m_series[index];
         const int offset = series.page.value("offset", 0);
         const int count = static_cast<int>(series.page.at("samples").size());
-        const wxString text = series.label + Display(" / 표본 ") +
-                              wxString::Format("%d-%d / %d", count == 0 ? 0 : offset + 1, offset + count,
+        const wxString text = series.label + Display(", 표본 ") +
+                              wxString::Format(Display("%d~%d (전체 %d)"), count == 0 ? 0 : offset + 1, offset + count,
                                                series.page.value("total", count));
         const bool original = m_series.size() > 1 && index == 0;
         const auto colour = m_multiStyle ? SeriesColour(index) : original ? colours.secondary : colours.accent;
@@ -426,5 +427,5 @@ void NetworkChart::Paint(wxPaintEvent&)
                     margin + FromDIP(32), footerY);
         footerY += lineHeight;
     }
-    dc.DrawText(Display("결측/무한대는 표에서 확인하세요."), margin, footerY);
+    dc.DrawText(Display("결측값과 무한대는 표에서 확인하세요."), margin, footerY);
 }

@@ -33,7 +33,7 @@ std::string SnapshotLabel(const Json& snapshot)
 {
     const auto description = OutputUi::Text(snapshot.value("description", Json(nullptr)), "고정 입력");
     const auto time = RfValidationUi::Time(snapshot.value("sealed_at", Json(nullptr)));
-    return description + " / " + time;
+    return description + ", " + time;
 }
 }
 
@@ -43,7 +43,7 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
     auto* layout = new wxBoxSizer(wxVERTICAL);
     auto* source = new wxWrapSizer(wxHORIZONTAL);
     m_source = source;
-    source->Add(new wxStaticText(this, wxID_ANY, Display("고정 입력 / 적용된 개정")), 0,
+    source->Add(new wxStaticText(this, wxID_ANY, Display("적용된 개정의 고정 입력")), 0,
                 wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(4));
     m_snapshots = new wxChoice(this, wxID_ANY);
     m_snapshots->SetMinSize(FromDIP(wxSize(250, -1)));
@@ -61,9 +61,9 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
     m_tabs->AddPage(m_drawing, Display("기술 도면"));
     m_tabs->AddPage(m_step, Display("STEP"));
     m_pcb = new PcbCamOutputView(m_tabs);
-    m_tabs->AddPage(m_pcb, Display("PCB / CAM"));
+    m_tabs->AddPage(m_pcb, Display("PCB 및 CAM"));
     m_handoff = new HandoffOutputView(m_tabs);
-    m_tabs->AddPage(m_handoff, Display("보고서 / 인계"));
+    m_tabs->AddPage(m_handoff, Display("보고서 및 인계"));
     m_handoff->onModeChanged = [this]()
     {
         m_source->ShowItems(Kind() != 3 || !m_handoff->ArchiveMode());
@@ -101,7 +101,7 @@ OutputWorkspace::OutputWorkspace(wxWindow* parent, wxWindow* conditions) : wxPan
             onOpenFile();
         }
     });
-    m_details = Button(this, history, "파일 목록 / 검수");
+    m_details = Button(this, history, "파일 및 검수");
     m_verify = Button(this, history, "다시 검수");
     m_folder = Button(this, history, "출력 폴더");
     layout->Add(history, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
@@ -481,9 +481,9 @@ void OutputWorkspace::SetCatalog(const Json& catalog, const std::string& preferr
         m_jobIds.push_back(item.at("job_id"));
         const auto snapshot = item.value("snapshot", Json(nullptr));
         const auto revision = snapshot.is_object() ? snapshot.value("revision_id", "") : "";
-        m_records->Append(Display(item.value("label", "출력") + " / " + OutputUi::State(item.value("state", "")) +
-                                  (revision.empty() ? "" : " / 개정 " + revision.substr(0, 8)) +
-                                  " / " + RfValidationUi::Time(item.value("created_at", Json(nullptr)))));
+        m_records->Append(Display(item.value("label", "출력") + ", " + OutputUi::State(item.value("state", "")) +
+                                  (revision.empty() ? "" : ", 개정 " + revision.substr(0, 8)) +
+                                  ", " + RfValidationUi::Time(item.value("created_at", Json(nullptr)))));
         if (m_jobIds.back() == m_selectedJob)
         {
             m_records->SetSelection(static_cast<int>(m_jobIds.size() - 1));
@@ -532,7 +532,7 @@ void OutputWorkspace::SetRecord(const Json& record, const wxString& workspace)
     if (result.is_object())
     {
         const auto combined = OutputUi::RecordForDisplay(record);
-        m_conditions->SetRecord(combined, "선택한 보존 출력 / 현재 편집과 별개");
+        m_conditions->SetRecord(combined, "보존된 출력 (현재 편집과 별개)");
         if (result.value("profile", "") == "rfad.step.mechanical/0.1")
         {
             m_refreshing = true;

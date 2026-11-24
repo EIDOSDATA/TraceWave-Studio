@@ -88,7 +88,7 @@ void StudioFrame::BindCad()
     };
     m_modelView->onTiming = [this](const std::string& operation, long long milliseconds)
     {
-        Log(operation + " / " + std::to_string(milliseconds) + " ms");
+        Log(operation + ": " + std::to_string(milliseconds) + " ms");
     };
     m_modelView->onSelectionCandidates = [this](const std::vector<std::string>& sources)
     {
@@ -201,18 +201,18 @@ void StudioFrame::UpdateModelState()
         const auto& snapshot = m_displayResult.at("snapshot");
         const std::string revision = snapshot.at("revision_id");
         const bool stale = revision != m_revision;
-        text = std::string(stale ? "이전 설계의 형상 - 3D 갱신 필요" : "현재 적용된 설계의 형상") + " / " +
-               std::to_string(m_modelView->TriangleCount()) + "개 삼각형 / 실제 두께";
+        text = std::string(stale ? "이전 설계의 형상 - 3D 갱신 필요" : "현재 적용된 설계의 형상") + ", " +
+               std::to_string(m_modelView->TriangleCount()) + "개 삼각형 (실제 두께)";
         m_modelState->SetToolTip(
             Display("입력 설계 버전: " + revision + "\n스냅샷: " + snapshot.at("snapshot_id").get<std::string>()));
     }
     if (m_modelView->IsLoading())
     {
-        text = "새 3D 파일 확인 중 / " + text;
+        text = "새 3D 파일 확인 중: " + text;
     }
     if (HasDraft())
     {
-        text += " / 미적용 입력은 아직 포함되지 않음";
+        text += ". 미적용 입력은 아직 포함되지 않음";
     }
     if (m_modelState->GetLabel() != Display(text))
     {
@@ -387,7 +387,7 @@ void StudioFrame::AcceptCad(const Json& result)
     }
     m_cadResult = result;
     const auto purpose = result.value("projection_purpose", "");
-    const std::string title = purpose == "geometry" ? "표시 범위 3D 생성 완료" : "STEP 생성 완료 / 제조 및 RF 검증 전";
+    const std::string title = purpose == "geometry" ? "표시 범위 3D 생성 완료" : "STEP 생성 완료. 제조 및 RF 검증 전";
     std::string listing = title + "\n입력 설계: " + result.at("snapshot").at("revision_id").get<std::string>();
     if (purpose != "geometry")
     {
@@ -400,9 +400,9 @@ void StudioFrame::AcceptCad(const Json& result)
     {
         const auto& clearance = item.at("clearance_mm");
         const std::string description = item.at("relation") == "touching" ? "형상 접촉" : "최소 간극";
-        listing += "\n" + item.at("id").get<std::string>() + " / " + description + " " +
-                   (clearance.is_null() ? "미평가" : clearance.dump() + " mm") + " / " +
-                   (item.at("material_id").is_null() ? "물성 미정 / " : "") + "전기 연결 미평가";
+        listing += "\n" + item.at("id").get<std::string>() + ", " + description + " " +
+                   (clearance.is_null() ? "미평가" : clearance.dump() + " mm") + ", " +
+                   (item.at("material_id").is_null() ? "물성 미정: " : "") + "전기 연결 미평가";
         const auto points = item.value("witness_points_mm", Json());
         if (points.is_array() && item.at("nearest_id").is_string())
         {
@@ -488,7 +488,7 @@ void StudioFrame::PollCad(Clock::time_point now)
                 CadStatus(state, state == "cancelled"
                                      ? "CAD 작업이 취소되었습니다. 기존 출력은 보존했습니다."
                                      : "CAD 작업 중단: " + error +
-                                           (terminal.value("outcome_unknown", false) ? " / 이전 실행 확인 필요" : ""));
+                                           (terminal.value("outcome_unknown", false) ? ". 이전 실행 확인 필요" : ""));
                 UpdateControls();
             }
             else if (state != m_cadState)

@@ -52,13 +52,13 @@ StudioShell::StudioShell(wxFrame& frame, wxAuiManager& manager, wxNotebook& navi
     }
     viewMenu.AppendSeparator();
     const std::array<const char*, 4> labels{
-        {"프로젝트 탐색 패널", "선택 속성 패널", "레이어 표시 패널", "문제 / 작업 / 로그 패널"}};
+        {"프로젝트 탐색 패널", "선택 속성 패널", "레이어 표시 패널", "문제, 작업 및 로그 패널"}};
     for (std::size_t index = 0; index < m_menuIds.size(); ++index)
     {
         m_menuIds[index] = wxWindow::NewControlId();
         viewMenu.AppendCheckItem(m_menuIds[index], Display(labels[index]),
                                  Display(index < 2 ? "작은 창에서는 탐색과 속성이 같은 패널의 탭입니다."
-                                                   : "F6 / Shift+F6으로 패널을 이동합니다."));
+                                                   : "F6으로 다음 패널, Shift+F6으로 이전 패널로 이동합니다."));
         m_frame.Bind(wxEVT_MENU, &StudioShell::OnMenu, this, m_menuIds[index]);
         m_frame.Bind(wxEVT_UPDATE_UI, &StudioShell::OnUpdateMenu, this, m_menuIds[index]);
     }

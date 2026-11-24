@@ -15,13 +15,13 @@
 
 SweepResultDialog::SweepResultDialog(wxWindow* parent, const Json& context, const std::string& studyId, int index,
                                      DialogGateway gateway)
-    : ProjectSetupDialog(parent, "연구 후보 / 실제 복소 결과", context, std::move(gateway)), m_studyId(studyId),
+    : ProjectSetupDialog(parent, "연구 후보의 복소 결과", context, std::move(gateway)), m_studyId(studyId),
       m_index(index)
 {
     SetName("sweep.result.dialog");
     auto* root = new wxBoxSizer(wxVERTICAL);
     auto* title =
-        new wxStaticText(this, wxID_ANY, Display("후보 " + std::to_string(index + 1) + " / 저장된 결과 읽기"));
+        new wxStaticText(this, wxID_ANY, Display("후보 " + std::to_string(index + 1) + ", 저장된 결과 읽기"));
     StudioTheme::Title(*title);
     root->Add(title, 0, wxALL, FromDIP(12));
     auto* choices = new wxWrapSizer(wxHORIZONTAL);
@@ -55,7 +55,7 @@ SweepResultDialog::SweepResultDialog(wxWindow* parent, const Json& context, cons
                                                                      {"크기 (dB)", 140},
                                                                      {"위상 (deg)", 140},
                                                                      {"VSWR", 140},
-                                                                     {"상태 / 출처", 220}})
+                                                                     {"상태와 출처", 220}})
     {
         m_samples->AppendColumn(Display(item.first), wxLIST_FORMAT_LEFT, FromDIP(item.second));
     }
@@ -68,7 +68,7 @@ SweepResultDialog::SweepResultDialog(wxWindow* parent, const Json& context, cons
                                   wxTE_MULTILINE | wxTE_READONLY | wxTE_WORDWRAP);
     m_conditions->SetMinSize(FromDIP(wxSize(-1, 240)));
     conditionsLayout->Add(m_conditions, 1, wxEXPAND | wxALL, FromDIP(8));
-    m_advanced = new wxCollapsiblePane(conditionsPage, wxID_ANY, Display("고급 상세 / 보존된 원문 (읽기 전용)"),
+    m_advanced = new wxCollapsiblePane(conditionsPage, wxID_ANY, Display("고급 상세: 보존된 원문 (읽기 전용)"),
                                        wxDefaultPosition, wxDefaultSize, wxCP_NO_TLW_RESIZE);
     auto* advancedLayout = new wxBoxSizer(wxVERTICAL);
     m_source = new wxTextCtrl(m_advanced->GetPane(), wxID_ANY, wxEmptyString, wxDefaultPosition,
@@ -91,7 +91,7 @@ SweepResultDialog::SweepResultDialog(wxWindow* parent, const Json& context, cons
                              conditionsPage->FitInside();
                              event.Skip();
                          });
-    tabs->AddPage(conditionsPage, Display("조건 / 목표 판정"));
+    tabs->AddPage(conditionsPage, Display("조건과 목표 판정"));
     root->Add(tabs, 1, wxEXPAND | wxALL, FromDIP(12));
     m_status = new wxStaticText(this, wxID_ANY, Display("저장된 후보 결과를 조회합니다. 새 계산은 실행하지 않습니다."));
     root->Add(m_status, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
@@ -211,7 +211,7 @@ void SweepResultDialog::Render(const Json& result)
             m_samples->SetItem(row, column++, Display(SweepUi::SampleValue(sample, key)));
         }
         m_samples->SetItem(row, 6,
-                           Display(SweepUi::Status(sample.value("status", "missing")) + " / " +
+                           Display(SweepUi::Status(sample.value("status", "missing")) + ", " +
                                    SweepUi::Status(sample.value("origin", "unknown"))));
     }
     m_offset = page.value("offset", 0);
@@ -224,7 +224,7 @@ void SweepResultDialog::Render(const Json& result)
                         {"결과 기록", result.at("entry")}};
     m_source->ChangeValue(Display(evidence.dump(2, ' ', false, Json::error_handler_t::replace)));
     SetStatus("실제 표본 " + std::to_string(m_offset + 1) + "~" + std::to_string(m_offset + page.at("samples").size()) +
-              " / 페이지 사이 보간·예측 없음");
+              " (페이지 사이 보간 및 예측 없음)");
 }
 
 void SweepResultDialog::ChangeMetric()
@@ -261,5 +261,5 @@ void SweepResultDialog::ShowRequestFailure(const Json& error)
         m_row->SetSelection(channel.at("row").get<int>());
         m_column->SetSelection(channel.at("column").get<int>());
     }
-    SetStatus("표본 조회 실패 / 마지막으로 확인한 채널과 표본을 유지합니다.\n" + DiagnosticMessage(error));
+    SetStatus("표본을 조회하지 못했습니다. 마지막으로 확인한 채널과 표본을 표시합니다.\n" + DiagnosticMessage(error));
 }

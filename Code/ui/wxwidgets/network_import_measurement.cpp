@@ -12,7 +12,7 @@ void NetworkImportDialog::BuildMeasurementPage(wxWindow* page, DialogGateway gat
 {
     auto* layout = new wxBoxSizer(wxVERTICAL);
     m_measurementEnabled =
-        new wxCheckBox(page, wxID_ANY, Display("시료 / 교정 기록을 원문 자료와 함께 한 명령으로 보존"));
+        new wxCheckBox(page, wxID_ANY, Display("시료 및 교정 기록을 원문 자료와 함께 보존"));
     m_measurementEnabled->SetName("network.import.measurement");
     m_measurementEnabled->SetValue(false);
     layout->Add(m_measurementEnabled, 0, wxALL, FromDIP(12));

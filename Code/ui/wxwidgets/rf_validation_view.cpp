@@ -69,7 +69,7 @@ RfValidationView::RfValidationView(wxWindow* parent, wxWindow* navigation, wxWin
     layout->Add(actions, 0, wxEXPAND | wxLEFT, FromDIP(4));
     m_cases = Table(
         this, layout,
-        {{"사례", 205}, {"비교 축", 95}, {"수준", 90}, {"실행 상태", 130}, {"결과", 135}, {"차단 / 미기록 사유", 310}},
+        {{"사례", 205}, {"비교 축", 95}, {"수준", 90}, {"실행 상태", 130}, {"결과", 135}, {"차단 또는 미기록 사유", 310}},
         170);
     m_states = Table(this, layout, {{"검증 축", 145}, {"판정", 180}, {"범위와 사유", 550}}, 190);
     auto* metricsTitle = new wxStaticText(this, wxID_ANY, Display("고정한 기준과 기록 값"));
@@ -89,8 +89,8 @@ RfValidationView::RfValidationView(wxWindow* parent, wxWindow* navigation, wxWin
                       185);
     auto* warning =
         new wxStaticText(this, wxID_ANY,
-                         Display("계산 종료, 격자/경계 안정성, 독립 모델 참조와 실측 검증은 각각 별도 판정입니다.\n"
-                                 "현재 프로젝트의 물성이나 제작/측정 미정값을 이 보고서로 자동 확정하지 않습니다."));
+                         Display("계산 종료, 격자 및 경계 안정성, 독립 모델 참조와 실측 검증은 각각 별도 판정입니다.\n"
+                                 "현재 프로젝트의 물성이나 제작 및 측정 미정값을 이 보고서로 자동 확정하지 않습니다."));
     layout->Add(warning, 0, wxEXPAND | wxALL, FromDIP(8));
     SetSizer(layout);
 
@@ -120,14 +120,14 @@ RfValidationView::RfValidationView(wxWindow* parent, wxWindow* navigation, wxWin
     StudioTheme::BindSurface(*m_conditions);
     m_conditions->SetScrollRate(0, FromDIP(16));
     m_conditions->SetSizer(new wxBoxSizer(wxVERTICAL));
-    auto* evidenceTitle = new wxStaticText(m_conditions, wxID_ANY, Display("판정 근거 / 원본 보존"));
+    auto* evidenceTitle = new wxStaticText(m_conditions, wxID_ANY, Display("판정 근거와 보존 원본"));
     StudioTheme::Heading(*evidenceTitle);
     m_conditions->GetSizer()->Add(evidenceTitle, 0, wxALL, FromDIP(8));
     m_original = AddGroup("원본과 실행 범위");
     m_basis = AddGroup("출처와 가정");
-    m_limits = AddGroup("미확립과 제작 / 측정");
-    m_metricDetail = AddGroup("선택 지표의 기준 / 사유");
-    m_raw = AddGroup("고급 / 보존 원문", true);
+    m_limits = AddGroup("미확립 항목과 제작·측정");
+    m_metricDetail = AddGroup("선택 지표의 기준과 사유");
+    m_raw = AddGroup("고급: 보존 원문", true);
     conditions->GetSizer()->Add(m_conditions, 1, wxEXPAND);
     m_navigation->Hide();
     m_conditions->Hide();

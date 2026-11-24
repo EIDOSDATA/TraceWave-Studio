@@ -98,7 +98,7 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
         }
         return m_smith;
     });
-    views->AddDeferredPage(Display("전력 / 손실"), [this, focus, validation](wxWindow* parent)
+    views->AddDeferredPage(Display("전력과 손실"), [this, focus, validation](wxWindow* parent)
     {
         m_metrics = new ResultMetricsView(parent);
         m_metrics->onSelectSource = focus;
@@ -110,7 +110,7 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
         }
         return m_metrics;
     });
-    views->AddDeferredPage(Display("방사 / 편파"), [this, focus](wxWindow* parent)
+    views->AddDeferredPage(Display("방사와 편파"), [this, focus](wxWindow* parent)
     {
         m_radiation = new RadiationResultView(parent);
         m_radiation->onSelectSource = focus;
@@ -209,7 +209,7 @@ ResultWorkspace::ResultWorkspace(StudioNotebook* views, wxWindow* navigation, wx
         }
         return m_field;
     });
-    views->AddDeferredPage(Display("결과 / 후보 비교"), [this](wxWindow* parent)
+    views->AddDeferredPage(Display("후보 결과 비교"), [this](wxWindow* parent)
     {
         m_compare = new ResultCompareView(parent);
         BindComparison(m_compare, 14);
@@ -595,7 +595,7 @@ void ResultWorkspace::Select(const Json& source, const Json& expectedPin)
                 m_measurement->SetSelectionAvailable(true);
                 if (source.value("kind", "") == "network" && !m_measurement->RecordRef().is_object())
                 {
-                    m_measurement->SetStatus("자료를 선택했습니다. 시료 / 교정 기록을 추가하거나 비교에 넣으세요.");
+                    m_measurement->SetStatus("자료를 선택했습니다. 시료 및 교정 기록을 추가하거나 비교에 넣으세요.");
                 }
             }
             if (m_catalog.is_object())
@@ -761,8 +761,8 @@ void ResultWorkspace::RadiationPage(const Json& options, std::uint64_t generatio
             }
             else
             {
-                m_radiation->SetBusy(true, "기록 각도 " + std::to_string(m_pattern.Next()) + " / " +
-                                               std::to_string(response.at("theta_count").get<int>()) + "행 조회됨");
+                m_radiation->SetBusy(true, "기록 각도 " + std::to_string(m_pattern.Next()) + "행 조회 (전체 " +
+                                               std::to_string(response.at("theta_count").get<int>()) + "행)");
                 RadiationPage(options, generation);
             }
         },

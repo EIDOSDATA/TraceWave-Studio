@@ -55,17 +55,17 @@ void DesignRulesDialog::Check()
                 const auto& components = result.at("connectivity").at("components");
                 for (std::size_t index = 0; index < components.size(); ++index)
                 {
-                    m_connections->Append(Display("묶음 " + std::to_string(index + 1) + " / 도체 " +
+                    m_connections->Append(Display("묶음 " + std::to_string(index + 1) + ", 도체 " +
                                                   std::to_string(components.at(index).size()) + "개"));
                 }
                 m_connections->SetSelection(0);
                 m_connections->Enable(!components.empty());
                 RenderFindings();
                 const auto& counts = result.at("counts");
-                SetStatus("만족 " + counts.at("passed").dump() + " / 위반 " + counts.at("failed").dump() +
-                          " / 미평가 " + counts.at("not_evaluated").dump() + " / 적용 안 함 " +
-                          counts.at("not_applicable").dump() + (result.at("issues_truncated") == true ? " / 일부 결과 표시" : "") +
-                          " / 연결 성분 " + std::to_string(result.at("connectivity").at("components").size()));
+                SetStatus("만족 " + counts.at("passed").dump() + ", 위반 " + counts.at("failed").dump() +
+                          ", 미평가 " + counts.at("not_evaluated").dump() + ", 적용 안 함 " +
+                          counts.at("not_applicable").dump() + (result.at("issues_truncated") == true ? ". 일부 결과가 표시됩니다." : "") +
+                          ", 연결 성분 " + std::to_string(result.at("connectivity").at("components").size()));
             });
 }
 
@@ -93,7 +93,7 @@ void DesignRulesDialog::RenderFindings()
         const auto status = filter > 0 ? labels[filter] : issue.at("status") == "failed" ? "위반" : "미평가";
         const auto row = m_issues->InsertItem(m_issues->GetItemCount(), Display(status));
         m_issues->SetItem(row, 1, Display(RuleLabel(issue)));
-        m_issues->SetItem(row, 2, Display(Number(issue.at("measured")) + " / " + Number(issue.at("limit")) +
+        m_issues->SetItem(row, 2, Display(Number(issue.at("measured")) + ", 한계 " + Number(issue.at("limit")) +
                                          " " + issue.at("unit").get<std::string>()));
     }
     m_detail->ChangeValue(Display(m_findings.empty() ? "선택한 판정의 표시 항목이 없습니다." : ""));

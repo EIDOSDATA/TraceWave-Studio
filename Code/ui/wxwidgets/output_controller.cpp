@@ -396,7 +396,7 @@ void OutputController::Record(const std::string& job, bool keepReview)
              }
              m_view->SetRecord(result, Display(m_workspace));
              Status(result.value("state", ""), keepReview
-                 ? "생성 완료. 방금 검토한 배치와 생성 파일을 확인하세요. 파일 목록 / 검수에서 원문을 열 수 있습니다."
+                 ? "생성 완료. 방금 검토한 배치를 확인하세요. 파일 및 검수 탭에서 원문을 열 수 있습니다."
                  : "선택한 보존 출력의 파일과 검수 기록을 읽었습니다.");
          });
 }

@@ -54,7 +54,7 @@ ResultNetworkView::ResultNetworkView(wxWindow* parent)
     m_metric->SetSelection(0);
     m_frequencyUnit->SetSelection(0);
     auto* source = new wxButton(this, wxID_ANY, Display("원본 선택"));
-    auto* library = new wxButton(this, wxID_ANY, Display("자료 / 정합 도구"));
+    auto* library = new wxButton(this, wxID_ANY, Display("자료 및 정합 도구"));
     auto* exportResult = new wxButton(this, wxID_ANY, Display("원본 결과 내보내기"));
     for (auto* port : {m_row, m_column})
     {
@@ -229,13 +229,13 @@ void ResultNetworkView::Present()
     m_chart->SetPage(page, title.length() > 38 ? title.Left(38) + "..." : title);
     const auto unit = page.value("unit", std::string());
     m_chart->SetMetric(Metrics.at(metric),
-                       Display(Labels.at(metric) + (metric >= 3 && metric <= 5 && !unit.empty() ? " / " + unit : "")));
+                       Display(Labels.at(metric) + (metric >= 3 && metric <= 5 && !unit.empty() ? " (" + unit + ")" : "")));
     m_chart->SetFrequencyUnit(scale.unit);
     m_samples->ClearAll();
     const bool diagnostic = metric >= 6;
     const std::array<std::string, 8> labels{
         "표본", "주파수 (" + scale.unit + ")", "실수부", "허수부", "크기 (dB)", "위상 (deg)",
-        diagnostic ? Labels.at(metric) : "VSWR", "상태 / 출처"};
+        diagnostic ? Labels.at(metric) : "VSWR", "상태와 출처"};
     for (std::size_t index = 0; index < labels.size(); ++index)
     {
         static constexpr std::array<int, 8> widths{48, 116, 90, 90, 95, 96, 90, 140};
@@ -257,7 +257,7 @@ void ResultNetworkView::Present()
                                                       diagnostic ? Metrics.at(metric) : "vswr"}[index])));
         }
         m_samples->SetItem(row, 7,
-                           Display(ResultUi::State(sample.value("status", Json(nullptr))) + " / " +
+                           Display(ResultUi::State(sample.value("status", Json(nullptr))) + ", " +
                                    ResultUi::State(sample.value("origin", Json(nullptr)))));
     }
     m_loading = false;
@@ -289,9 +289,9 @@ void ResultNetworkView::Marker(int index)
         m_markerIndex = index;
         m_chart->SetMarker(index);
         m_marker->SetLabel(Display(
-            "M1 / " + StudioFrequency::Value(sample.value("frequency_hz", Json(nullptr)), scale) + " " + scale.unit +
-            " / " + ResultUi::SampleValue(sample, Metrics.at(static_cast<std::size_t>(m_metric->GetSelection()))) +
-            " / " + ResultUi::State(sample.value("status", Json(nullptr)))));
+            "마커 M1: " + StudioFrequency::Value(sample.value("frequency_hz", Json(nullptr)), scale) + " " + scale.unit +
+            ", " + ResultUi::SampleValue(sample, Metrics.at(static_cast<std::size_t>(m_metric->GetSelection()))) +
+            ", " + ResultUi::State(sample.value("status", Json(nullptr)))));
         return;
     }
 }

@@ -148,12 +148,17 @@ class ResultMathTests(unittest.TestCase):
         ids = [str(uuid4()) for _ in range(3)]
         records = {identity: {"project_id": "owner", "snapshot": {"description": "같은 설명", "sealed_at": stamp},
                    "normalized": {"uri": identity}} for identity, stamp in zip(ids, (100, 200, None))}
+        records[ids[0]]["metadata"] = {"installation_name": "사용자 설치 / 기준"}
         state = {"solver_results": records, "jobs": {"job": {"context": {"project_id": "owner"}, "events": [{
             "state": "completed", "timestamp": 150, "operation_result": {"artifact_id": ids[0],
             "normalized_result": records[ids[0]]["normalized"], "snapshot": records[ids[0]]["snapshot"]}}]}}}
         before = deepcopy(state)
         labels = solver_labels(state, "owner")
         self.assertEqual(len({item["label"] for item in labels.values()}), 3)
+        self.assertEqual(len({item["short_label"] for item in labels.values()}), 3)
+        self.assertIn("(사용자 설치 / 기준)", labels[ids[0]]["label"])
+        self.assertNotIn(" / ", labels[ids[0]]["short_label"])
+        self.assertNotIn(" / ", labels[ids[1]]["label"])
         self.assertEqual(labels[ids[0]]["source_time"], 150)
         self.assertEqual(labels[ids[0]]["source_time_kind"], "calculation_completed")
         self.assertEqual(labels[ids[1]]["source_time_kind"], "snapshot_sealed")

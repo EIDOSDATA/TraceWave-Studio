@@ -96,8 +96,8 @@ bool FieldSliceCanvas::SetSlice(const Json& slice)
         }
         m_minimum = range[0].get<double>();
         m_maximum = range[1].get<double>();
-        m_uLabel = slice.value("u_axis", "u") + " / mm";
-        m_vLabel = slice.value("v_axis", "v") + " / mm";
+        m_uLabel = slice.value("u_axis", "u") + " (mm)";
+        m_vLabel = slice.value("v_axis", "v") + " (mm)";
         m_unit = slice.value("unit", "");
         m_colors.clear();
         m_colors.reserve(m_u.size() * m_v.size());

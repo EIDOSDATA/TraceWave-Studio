@@ -29,7 +29,7 @@ ResultCompareView::ResultCompareView(wxWindow* parent, bool measurementMode)
     SetScrollRate(0, FromDIP(16));
     StudioTheme::BindSurface(*this);
     auto* layout = new wxBoxSizer(wxVERTICAL);
-    auto* heading = new wxStaticText(this, wxID_ANY, Display(measurementMode ? "측정 비교" : "결과 / 후보 비교"));
+    auto* heading = new wxStaticText(this, wxID_ANY, Display(measurementMode ? "측정 비교" : "후보 결과 비교"));
     StudioTheme::Title(*heading);
     layout->Add(heading, 0, wxALL, FromDIP(8));
     auto* tools = new wxWrapSizer(wxHORIZONTAL);
@@ -37,7 +37,7 @@ ResultCompareView::ResultCompareView(wxWindow* parent, bool measurementMode)
     m_remove = new wxButton(this, wxID_ANY, Display("목록에서 제외"));
     m_map = new wxButton(this, wxID_ANY, Display("포트 대응 지정"));
     m_compare =
-        new wxButton(this, wxID_ANY, Display(measurementMode ? "측정 조건 / 차이 확인" : "조건 / 수학 차이 확인"));
+        new wxButton(this, wxID_ANY, Display(measurementMode ? "측정 조건과 차이 확인" : "조건과 수치 차이 확인"));
     for (wxButton* button : {m_add, m_remove, m_map, m_compare})
     {
         StudioTheme::Button(*button);
@@ -45,7 +45,7 @@ ResultCompareView::ResultCompareView(wxWindow* parent, bool measurementMode)
     }
     if (!measurementMode)
     {
-        m_installation = new wxButton(this, wxID_ANY, Display("설치 비교 / 효율·방사"));
+        m_installation = new wxButton(this, wxID_ANY, Display("설치 조건별 효율과 방사"));
         StudioTheme::Button(*m_installation);
         tools->Add(m_installation, 0, wxALL, FromDIP(4));
         m_installation->Bind(wxEVT_BUTTON, [this](wxCommandEvent&)
@@ -71,10 +71,10 @@ ResultCompareView::ResultCompareView(wxWindow* parent, bool measurementMode)
         event.Skip();
     });
     for (const auto& entry :
-         std::vector<std::pair<std::string, int>>{{"곡선 / 원본", 260},
-                                                  {measurementMode ? "시료 / 기록" : "당시 개정", 180},
+         std::vector<std::pair<std::string, int>>{{"곡선과 원본", 260},
+                                                  {measurementMode ? "시료 기록" : "당시 개정", 180},
                                                   {"표본 페이지", 120},
-                                                  {"포트 대응 / 비교", 270}})
+                                                  {"포트 대응 및 비교", 270}})
     {
         m_sources->AppendColumn(Display(entry.first), wxLIST_FORMAT_LEFT, FromDIP(entry.second));
     }
@@ -106,7 +106,7 @@ ResultCompareView::ResultCompareView(wxWindow* parent, bool measurementMode)
     m_markers = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 112)), wxLC_REPORT);
     m_markers->SetMinSize(FromDIP(wxSize(-1, 112)));
     for (const auto& entry : std::vector<std::pair<std::string, int>>{
-             {"M1 원본", 230}, {"주파수", 150}, {"실제 복소값", 220}, {"상태 / 출처", 240}})
+             {"M1 원본", 230}, {"주파수", 150}, {"실제 복소값", 220}, {"상태와 출처", 240}})
     {
         m_markers->AppendColumn(Display(entry.first), wxLIST_FORMAT_LEFT, FromDIP(entry.second));
     }
@@ -114,7 +114,7 @@ ResultCompareView::ResultCompareView(wxWindow* parent, bool measurementMode)
     m_differences = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 112)), wxLC_REPORT);
     m_differences->SetMinSize(FromDIP(wxSize(-1, 112)));
     for (const auto& entry :
-         std::vector<std::pair<std::string, int>>{{"주파수", 150}, {"차이 (비교 - 기준)", 250}, {"상태 / 사유", 430}})
+         std::vector<std::pair<std::string, int>>{{"주파수", 150}, {"차이 (비교 - 기준)", 250}, {"상태와 사유", 430}})
     {
         m_differences->AppendColumn(Display(entry.first), wxLIST_FORMAT_LEFT, FromDIP(entry.second));
     }
@@ -258,7 +258,7 @@ bool ResultCompareView::Add(const Json& description)
              m_descriptions.front().at("descriptor").at("parameter_kind") ||
          description.at("descriptor").at("unit") != m_descriptions.front().at("descriptor").at("unit")))
     {
-        m_status->SetLabel(Display("파라미터 종류와 단위가 다른 자료는 같은 곡선 축에 겹칠 수 없습니다. 자료 / 정합 "
+        m_status->SetLabel(Display("파라미터 종류와 단위가 다른 자료는 같은 축에 그릴 수 없습니다. 자료 및 정합 탭의 "
                                    "도구에서 변환 조건을 명시하거나 개별 결과를 확인하세요."));
         return false;
     }
@@ -343,8 +343,8 @@ void ResultCompareView::RefreshRows()
     {
         const auto& description = m_descriptions[index];
         const auto row = m_sources->InsertItem(static_cast<long>(index), Display(
-            std::to_string(index + 1) + (index == 0 ? " 기준 / " : " / ") +
-            ResultUi::Text(description.at("label")) + " / " + NetworkChart::SeriesStyleText(index)));
+            std::to_string(index + 1) + (index == 0 ? " 기준: " : ". ") +
+            ResultUi::Text(description.at("label")) + ", " + NetworkChart::SeriesStyleText(index)));
         m_sources->SetItemTextColour(row, NetworkChart::SeriesColour(index));
         m_sources->SetItem(
             row, 1,
@@ -359,12 +359,12 @@ void ResultCompareView::RefreshRows()
                                        : "조회 전"));
         m_sources->SetItem(row, 3,
                            Display(index == 0                  ? "기준 원본"
-                                   : m_orders[index].is_null() ? "자체 첫 채널 / 포트 대응 미지정"
+                                   : m_orders[index].is_null() ? "각 원본의 첫 채널 (포트 대응 미지정)"
                                    : m_comparisons[index].is_object()
                                        ? ResultUi::State(m_comparisons[index]
                                                              .value("math_comparability", Json::object())
                                                              .value("status", Json(nullptr)))
-                                       : "명시 포트 대응 / 차이 조회 전"));
+                                       : "명시 포트 대응 (차이 조회 전)"));
     }
     if (selected >= 0 && static_cast<std::size_t>(selected) < m_descriptions.size())
     {
@@ -384,7 +384,7 @@ void ResultCompareView::Present()
         pages.push_back(m_pages[index].is_object() ? m_pages[index]
                                                    : Json{{"samples", Json::array()}, {"parameter_type", "S"}});
         labels.push_back(
-            Display(std::to_string(index + 1) + " / " + ResultUi::Text(m_descriptions[index].at("label"))));
+            Display(std::to_string(index + 1) + ". " + ResultUi::Text(m_descriptions[index].at("label"))));
         const auto& descriptor = m_descriptions[index].at("descriptor");
         if (descriptor.value("frequency_max_hz", Json(nullptr)).is_number())
         {
@@ -408,7 +408,7 @@ void ResultCompareView::Present()
     }
     const auto metric = static_cast<std::size_t>(m_metric->GetSelection());
     const auto unit = m_descriptions.front().at("descriptor").value("unit", std::string());
-    m_chart->SetMetric(Metrics[metric], Display(Labels[metric] + (metric >= 3 && !unit.empty() ? " / " + unit : "")));
+    m_chart->SetMetric(Metrics[metric], Display(Labels[metric] + (metric >= 3 && !unit.empty() ? " (" + unit + ")" : "")));
     m_chart->SetFrequencyUnit(StudioFrequency::ForRange(minimum, maximum).unit);
     m_chart->SetMarkers(m_markerIndices);
     Layout();
@@ -508,11 +508,11 @@ void ResultCompareView::SetComparison(std::size_t index, const Json& response)
     SetNotice(
         "수학: " +
         ResultUi::State(response.value("math_comparability", Json::object()).value("status", Json(nullptr))) +
-        " / 물리: " +
+        ". 물리 조건: " +
         ResultUi::State(response.value("physical_comparability", Json::object()).value("status", Json(nullptr))) +
-        " / 차이가 설계 개선이나 합격을 뜻하지 않습니다.\n차이 표본 " +
+        ". 차이는 설계 개선이나 합격을 뜻하지 않습니다.\n차이 표본 " +
         std::to_string(response.value("offset", 0) + (response.value("points", Json::array()).empty() ? 0 : 1)) + "~" +
-        std::to_string(response.value("offset", 0) + response.value("points", Json::array()).size()) + " / " +
+        std::to_string(response.value("offset", 0) + response.value("points", Json::array()).size()) + ", " +
         std::to_string(response.value("total", 0)));
     m_differences->DeleteAllItems();
     const auto points = response.value("points", Json::array());
@@ -525,7 +525,7 @@ void ResultCompareView::SetComparison(std::size_t index, const Json& response)
             Display(StudioFrequency::Value(point.value("frequency_hz", Json(nullptr)), scale) + " " + scale.unit));
         m_differences->SetItem(row, 1, Display(ResultUi::Complex(point.value("difference_ri", Json(nullptr)))));
         m_differences->SetItem(row, 2,
-                               Display(ResultUi::State(point.value("status", Json(nullptr))) + " / " +
+                               Display(ResultUi::State(point.value("status", Json(nullptr))) + ", " +
                                        ResultUi::Text(point.value("reason", Json(nullptr)))));
     }
     if (onConditions)
@@ -558,7 +558,7 @@ void ResultCompareView::SetMarker(std::size_t index, const Json& response)
                            Display(ResultUi::Complex(
                                Json::array({point.value("real", Json(nullptr)), point.value("imag", Json(nullptr))}))));
         m_markers->SetItem(row, 3,
-                           Display(ResultUi::State(point.value("status", Json(nullptr))) + " / " +
+                           Display(ResultUi::State(point.value("status", Json(nullptr))) + ", " +
                                    ResultUi::State(point.value("origin", Json(nullptr)))));
     }
     m_chart->SetMarkers(m_markerIndices);
@@ -690,7 +690,7 @@ void ResultCompareView::Actions()
                 }
             }
             requirement = std::string("포트 ") + (mapped ? "대응 완료" : "포트 대응 버튼에서 지정") +
-                " / 기준면 " + planes + " / 주파수 " +
+                ", 기준면 " + planes + ", 주파수 " +
                 (disjoint ? "공통 범위 없음" : points.empty() ? "같은 실제 표본만 비교" :
                     std::to_string(matching) + "/" + std::to_string(points.size()) + "개 일치 (현재 차이 페이지)");
         }
@@ -730,7 +730,7 @@ void ResultCompareView::OpenInstallation(const Json& comparison)
         wxMessageBox(Display(comparison.at("reason")), Display("설치 비교"), wxOK | wxICON_INFORMATION, this);
         return;
     }
-    auto* dialog = new wxDialog(this, wxID_ANY, Display("설치 비교 / 효율과 방사"),
+    auto* dialog = new wxDialog(this, wxID_ANY, Display("설치 조건별 효율과 방사"),
                                 wxDefaultPosition, FromDIP(wxSize(780, 560)), wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
     dialog->SetName("installation-comparison");
     auto* layout = new wxBoxSizer(wxVERTICAL);
@@ -765,8 +765,8 @@ void ResultCompareView::OpenInstallation(const Json& comparison)
     layout->Add(controls, 0, wxEXPAND);
     auto* basis = new wxStaticText(dialog, wxID_ANY,
         Display("급전 기준면 " + comparison.at("reference_plane").get<std::string>() +
-                " / 방사 중심 " + comparison.at("center_m").dump() + " m / 반경 " + comparison.at("radius_m").dump() +
-                " m\n기저 Etheta/Ephi / 방사 효율 분모는 수용 전력, 총 효율 분모는 입사 전력"));
+                ", 방사 중심 " + comparison.at("center_m").dump() + " m, 반경 " + comparison.at("radius_m").dump() +
+                " m\n기저는 Etheta와 Ephi입니다. 방사 효율의 분모는 수용 전력, 총 효율의 분모는 입사 전력입니다."));
     basis->SetName("installation-basis");
     basis->Wrap(FromDIP(725));
     layout->Add(basis, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
@@ -785,8 +785,8 @@ void ResultCompareView::OpenInstallation(const Json& comparison)
         std::vector<wxString> seriesLabels;
         const auto index = static_cast<std::size_t>(observable->GetSelection());
         const std::string quantity = identifiers.at(index);
-        chart->SetMetric("gain_dbi", Display(std::string(labels.at(index)) + " / dBi"));
-        std::string text = "계산 결과 / 물리 정확도 미평가\n";
+        chart->SetMetric("gain_dbi", Display(std::string(labels.at(index)) + " (dBi)"));
+        std::string text = "계산 결과 (물리 정확도 미평가)\n";
         const auto number = [](const Json& value)
         {
             return value.is_number() ? Utf8(wxString::Format("%.6g", value.get<double>())) : std::string("미기록");
@@ -807,14 +807,14 @@ void ResultCompareView::OpenInstallation(const Json& comparison)
             const auto vswrState = reflection.value("vswr_state", "");
             const std::string vswr = vswrState == "positive_infinity" ? "+inf" :
                                      vswrState == "undefined_active" ? "정의 불가" : number(reflection.at("vswr"));
-            text += name + " / S11 " + s11 + " dB / VSWR " + vswr + " / Z0 " + reflection.at("z0_ohm").dump() + " ohm\n";
-            text += "  방사 효율 " + percent("radiation_efficiency") + " / 총 효율 " + percent("total_efficiency") +
-                    " / " + std::string(labels.at(index)) + " 최대 " + number(row.at("peaks_dbi").at(quantity)) + " dBi\n";
-            text += "  입사 " + number(power.at("incident")) + " / 수용 " + number(power.at("accepted")) +
-                    " / 방사 " + number(power.at("radiated")) + " " + comparison.at("power_unit").get<std::string>() +
-                    " / " + ResultUi::State(row.at("power_balance_status")) + "\n";
+            text += name + ", S11 " + s11 + " dB, VSWR " + vswr + ", Z0 " + reflection.at("z0_ohm").dump() + " ohm\n";
+            text += "  방사 효율 " + percent("radiation_efficiency") + ", 총 효율 " + percent("total_efficiency") +
+                    ", " + std::string(labels.at(index)) + " 최대 " + number(row.at("peaks_dbi").at(quantity)) + " dBi\n";
+            text += "  입사 " + number(power.at("incident")) + ", 수용 " + number(power.at("accepted")) +
+                    ", 방사 " + number(power.at("radiated")) + " " + comparison.at("power_unit").get<std::string>() +
+                    ", " + ResultUi::State(row.at("power_balance_status")) + "\n";
             text += "  같은 주파수의 필드 " + (fields.empty() ? "미기록" : fields.dump()) +
-                    " / 종료 " + ResultUi::State(row.at("termination")) + "\n";
+                    ", 종료 " + ResultUi::State(row.at("termination")) + "\n";
             const auto& values = row.at("cuts_dbi").at(quantity).at(phi->GetSelection());
             Json samples = Json::array();
             for (std::size_t j = 0; j < theta.size(); ++j)

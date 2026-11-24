@@ -18,9 +18,9 @@ OutputConditionsView::OutputConditionsView(wxWindow* parent)
     StudioTheme::Title(*heading);
     GetSizer()->Add(heading, 0, wxALL, FromDIP(12));
     m_input = Group("고정 입력과 파일");
-    m_limits = Group("범위 / 제작과 측정");
+    m_limits = Group("출력 범위와 제작 및 측정");
     m_verification = Group("생성과 검수");
-    m_source = Group("고급 / 보존 원문", true);
+    m_source = Group("고급: 보존 원문", true);
     Bind(wxEVT_SIZE,
          [this](wxSizeEvent& event)
          {
@@ -60,11 +60,11 @@ void OutputConditionsView::SetRecord(const Json& record, const std::string& sour
 {
     std::string input = sourceName.empty() ? "고정 입력 이름 미기록" : sourceName;
     input += "\n출력 형식: " + (record.value("format", "") == "verification"
-                                    ? std::string("재검수 / 원래 형식은 상세 확인")
+                                    ? std::string("재검수 (기존 형식은 상세에서 확인)")
                                     : OutputUi::Text(record.value("format", Json(nullptr))));
     const auto options = record.value("options", Json::object());
     input += "\n용도: " + OutputUi::Purpose(record);
-    input += "\n좌표 / 단위: 프로젝트 원점 / mm";
+    input += "\n기준 좌표는 프로젝트 원점이며 단위는 mm입니다.";
     if (options.contains("scale"))
     {
         input += "\n명시 출력 축척: " + OutputUi::Text(options.at("scale"));
@@ -101,14 +101,14 @@ void OutputConditionsView::SetHandoff(const Json& snapshot, const Json& review, 
     m_input->ChangeValue(Display(input));
     m_limits->ChangeValue(Display(
         archive
-            ? "포함: 개정, 실행 취소 이력, 스냅샷, 공유 범위의 원문\n외부 결과와 작업 재개 제외\n제작/실측 합격 미확립"
-            : "포함: 설계 사본, 보고서, 권한을 확인한 선택 파일\n제작/측정·물리 합격 미확립\n복원 및 작업 재개 범위 "
+            ? "포함: 개정, 실행 취소 이력, 스냅샷, 공유 범위의 원문\n외부 결과와 작업 재개 제외\n제작 및 실측 합격 미확립"
+            : "포함: 설계 사본, 보고서, 권한을 확인한 선택 파일\n제작 및 측정·물리 합격 미확립\n복원 및 작업 재개 범위 "
               "제외"));
     m_verification->ChangeValue(Display(
         review.is_object()
             ? "검토한 파일 " +
                   std::to_string(archive ? review.at("file_count").get<std::size_t>() : review.at("files").size() + 1) +
-                  "개 / 기록 SHA256 표시"
+                  "개 (기록 SHA256 표시)"
             : "인계 범위를 검토하면 파일과 해시를 확인할 수 있습니다."));
     m_source->ChangeValue(Display(review.is_object() ? review.dump(2) : ""));
     Layout();
@@ -119,8 +119,8 @@ void OutputConditionsView::Clear(const std::string& message)
 {
     m_input->ChangeValue(Display(message));
     m_limits->ChangeValue(
-        Display("제작/측정 조건: 이 출력에서 확인하지 않음 / 출처 확인\n화면 표시와 출력 포함은 별개입니다."));
-    m_verification->ChangeValue(Display("생성 / 독립 검수: 미실행"));
+        Display("제작과 측정 조건은 출처에서 확인하세요.\n화면 표시와 출력 포함 여부는 별개입니다."));
+    m_verification->ChangeValue(Display("생성과 독립 검수 모두 미실행"));
     m_source->Clear();
     Layout();
     FitInside();

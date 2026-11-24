@@ -192,7 +192,7 @@ void StudioFrame::UpdatePortLinks()
         std::string markerReason = marker.value("reason", std::string());
         if (markerReason.rfind("치수에 표시할 값이 없습니다", 0) == 0)
         {
-            markerReason = "급전 시작/끝 좌표가 미정입니다.";
+            markerReason = "급전 시작과 끝 좌표가 미정입니다.";
         }
         if (markerReason.empty() && !m_canvas->PortMarkerVisible(port->at("id").get<std::string>()))
         {
@@ -238,7 +238,7 @@ void StudioFrame::UpdatePortLinks()
         const auto sourceCount = port->value("source_ref_count", std::size_t(0));
         std::string summary = "적용 Z0: " + (impedance.is_number() ? impedance.dump() + " ohm" : "미정") +
             "\n유효 대역: " + (low.is_number() && high.is_number() ? StudioFrequency::Range(low, high) : "미정") +
-            "\n저항 / 대역 출처: " + (sourceCount > 0 ? std::to_string(sourceCount) + "개" : "미정");
+            "\n저항과 대역의 출처: " + (sourceCount > 0 ? std::to_string(sourceCount) + "개" : "미정");
         status = summary + "\n" + connections + status;
     }
     else
@@ -292,7 +292,7 @@ void StudioFrame::EndPortPick(bool restoreFocus)
     }
     m_canvas->onPickConductor = {};
     m_portPickField.clear();
-    m_canvasHint->SetLabel(Display("선택: 객체 속성 / 휠: 확대/축소 / 가운데 버튼: 이동 / Esc: 취소"));
+    m_canvasHint->SetLabel(Display("객체 선택, 휠로 확대·축소, 가운데 버튼으로 이동, Esc로 취소"));
     if (restoreFocus)
     {
         m_shell->ShowProperties(false);

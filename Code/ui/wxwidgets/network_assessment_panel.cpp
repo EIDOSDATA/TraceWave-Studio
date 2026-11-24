@@ -37,7 +37,7 @@ std::string Metric(const std::string& value)
 
 std::string Status(const std::string& value)
 {
-    return value == "conditional" ? "표본 통과 / 조건부"
+    return value == "conditional" ? "표본 통과 (조건부)"
            : value == "pass"      ? "표본 통과"
            : value == "fail"      ? "실패"
                                   : "미평가";
@@ -98,7 +98,7 @@ NetworkAssessmentPanel::NetworkAssessmentPanel(wxWindow* centerParent, wxWindow*
     m_criteria->SetName("network.assessment.panel.criteria");
     m_criteria->SetMinSize(FromDIP(wxSize(-1, 136)));
     const std::array<std::pair<const char*, int>, 5> columns{
-        {{"목표 / 지표", 175}, {"기준", 125}, {"평가 표본", 125}, {"상태", 180}, {"이유", 360}}};
+        {{"목표와 지표", 175}, {"기준", 125}, {"평가 표본", 125}, {"상태", 180}, {"이유", 360}}};
     for (const auto& column : columns)
     {
         m_criteria->AppendColumn(Display(column.first), wxLIST_FORMAT_LEFT, FromDIP(column.second));
@@ -106,7 +106,7 @@ NetworkAssessmentPanel::NetworkAssessmentPanel(wxWindow* centerParent, wxWindow*
     StudioTheme::Table(*m_criteria);
     layout->Add(m_criteria, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     m_validation = new wxStaticText(
-        this, wxID_ANY, Display("표본 판정: 미평가 | 연속 대역: 미확립 | 수치 수렴 / 실측 검증: 별도 확인"));
+        this, wxID_ANY, Display("표본은 미평가, 연속 대역은 미확립 상태입니다. 수치 수렴과 실측은 별도 검증이 필요합니다."));
     layout->AddSpacer(FromDIP(8));
     layout->Add(m_validation, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     m_reason = new wxStaticText(this, wxID_ANY, wxEmptyString);
@@ -130,7 +130,7 @@ NetworkAssessmentPanel::NetworkAssessmentPanel(wxWindow* centerParent, wxWindow*
     StudioTheme::Table(*m_points);
     layout->Add(m_points, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     auto* paging = new wxWrapSizer(wxHORIZONTAL);
-    m_pageLabel = new wxStaticText(this, wxID_ANY, Display("표본 없음 / 미평가"));
+    m_pageLabel = new wxStaticText(this, wxID_ANY, Display("표본 없음 (미평가)"));
     paging->Add(m_pageLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(4));
     m_allPoints = new wxButton(this, wxID_ANY, Display("전체 표본 보기"));
     m_previous = new wxButton(this, wxID_ANY, Display("이전 표본"));
@@ -142,8 +142,8 @@ NetworkAssessmentPanel::NetworkAssessmentPanel(wxWindow* centerParent, wxWindow*
     }
     layout->Add(paging, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     auto* actions = new wxWrapSizer(wxHORIZONTAL);
-    m_original = new wxButton(this, wxID_ANY, Display("목표 원문 / 출처 보기"));
-    m_evaluate = new wxButton(this, wxID_ANY, Display("새 평가 / 재평가"));
+    m_original = new wxButton(this, wxID_ANY, Display("목표 원문과 출처 보기"));
+    m_evaluate = new wxButton(this, wxID_ANY, Display("평가 또는 재평가"));
     m_evaluate->SetName("network.assessment.panel.evaluate");
     StudioTheme::Button(*m_original);
     StudioTheme::Button(*m_evaluate, true);
@@ -278,11 +278,11 @@ void NetworkAssessmentPanel::BuildConditions(wxWindow* parent)
     m_source = new wxTextCtrl(m_conditionTabs, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
                               wxTE_MULTILINE | wxTE_READONLY);
     m_source->SetName("network.assessment.panel.source");
-    m_conditionTabs->AddPage(m_source, Display("목표 원문 / 출처"));
+    m_conditionTabs->AddPage(m_source, Display("목표 원문과 출처"));
     layout->Add(m_conditionTabs, 1, wxEXPAND);
     auto* notice = new wxStaticText(
         panel, wxID_ANY,
-        Display("표본 통과와 연속 대역, 수렴, 실측 검증은 별도입니다. 제작/측정 미정값을 확정하지 않습니다."));
+        Display("표본 통과와 연속 대역, 수렴, 실측 검증은 별도입니다. 제작 및 측정 미정값을 확정하지 않습니다."));
     notice->Wrap(FromDIP(278));
     StudioTheme::BindSecondary(*notice);
     layout->Add(notice, 0, wxEXPAND | wxALL, FromDIP(12));
@@ -374,10 +374,10 @@ void NetworkAssessmentPanel::ClearSelection(const std::string& message)
     m_points->DeleteAllItems();
     m_contextLabel->SetLabel(Display("목표와 자료가 연결된 저장 기록을 선택하세요."));
     m_notice->SetLabel(Display("목표 개정과 결과 입력이 일치하는지 먼저 확인합니다."));
-    m_validation->SetLabel(Display("표본 판정: 미평가 | 연속 대역: 미확립 | 수치 수렴 / 실측 검증: 별도 확인"));
+    m_validation->SetLabel(Display("표본은 미평가, 연속 대역은 미확립 상태입니다. 수치 수렴과 실측은 별도 검증이 필요합니다."));
     m_reason->SetLabel(wxEmptyString);
     m_pointHeading->SetLabel(Display("선택한 기준의 실제 표본"));
-    m_pageLabel->SetLabel(Display("표본 없음 / 미평가"));
+    m_pageLabel->SetLabel(Display("표본 없음 (미평가)"));
     m_conditionSummary->SetLabel(Display("저장된 평가의 조건을 조회해야 합니다."));
     m_source->Clear();
     SetStatus(message);
@@ -433,14 +433,14 @@ void NetworkAssessmentPanel::SetAssessment(const Json& result)
                                             " " + Text(limit.at("unit"));
         m_criteria->SetItem(row, 1, Display(bound));
         m_criteria->SetItem(row, 2,
-                            Display(Text(criterion.at("coverage").at("available")) + " / " +
-                                    Text(criterion.at("coverage").at("required"))));
+                            Display(Text(criterion.at("coverage").at("available")) + "개 (필요 " +
+                                    Text(criterion.at("coverage").at("required")) + "개)"));
         m_criteria->SetItem(row, 3, Display(Status(criterion.at("status"))));
         m_criteria->SetItem(row, 4, Display(criterion.value("reason", "")));
     }
     m_rebuilding = false;
     m_validation->SetLabel(Display("표본 판정: " + Status(assessment.at("status")) +
-                                   " | 연속 대역: 미확립 | 수치 수렴 / 실측 검증: 별도 확인"));
+                                   ". 연속 대역은 미확립 상태입니다. 수치 수렴과 실측은 별도 검증이 필요합니다."));
     m_criterion = assessment.at("criteria").empty() ? -1 : 0;
     if (m_criterion >= 0)
     {
@@ -455,7 +455,7 @@ void NetworkAssessmentPanel::SetAssessment(const Json& result)
         m_reason->SetLabel(Display("평가 당시 목표에 성능 기준이 없어 미평가입니다."));
     }
     ShowConditions();
-    SetStatus("재평가는 새 판정 기록을 만듭니다. 과거 목표/결과와 제작·측정 미정 조건은 유지됩니다.");
+    SetStatus("재평가는 새 판정 기록을 만듭니다. 과거 목표와 결과와 제작·측정 미정 조건은 유지됩니다.");
     UpdateActions();
 }
 
@@ -484,7 +484,7 @@ void NetworkAssessmentPanel::ShowConditions()
                                                : m_selection.value("target_changed", true) ? "평가 당시와 개정 다름"
                                                                                            : "평가 당시와 같은 개정");
     summary += "\n평가 기준면: " + Text(assessment.at("context").at("reference_plane"));
-    summary += "\n표본 정책: 정확히 같은 주파수만\n보간 / 기준면 자동 보정: 없음";
+    summary += "\n주파수가 정확히 같은 표본을 평가합니다. 보간과 자동 기준면 보정은 적용하지 않습니다.";
     if (target.contains("reference_impedance"))
     {
         summary += "\n목표 Z0: " + Text(target.at("reference_impedance").at("value_si")) + " ohm";
@@ -495,7 +495,7 @@ void NetworkAssessmentPanel::ShowConditions()
     }
     if (m_dataset.is_null())
     {
-        summary += "\n\n원본 자료 조건: 조회 대기 / 확인 전";
+        summary += "\n\n원본 자료 조건을 조회하고 있습니다.";
     }
     else
     {
@@ -526,7 +526,7 @@ void NetworkAssessmentPanel::ShowConditions()
                 "\n" + std::string(entry.second) + ": " +
                 (conditions.is_null() || !conditions.contains(entry.first) || conditions.at(entry.first).is_null()
                      ? "미정"
-                     : "원문 있음 / 확정 여부는 출처 확인");
+                     : "원문 있음 (확정 여부는 출처 확인)");
         }
     }
     const auto& evidence = assessment.at("evidence");
@@ -537,7 +537,7 @@ void NetworkAssessmentPanel::ShowConditions()
                    "\n정합 후 입력 기준면: " + Text(matching.at("input_reference_plane")) +
                    "\n이상 RLC 손실: 입사전력 대비. 표본별 회로 진단을 참조하세요.";
     }
-    summary += "\n\n연속 대역 / 수치 수렴 / 실측 검증: 이 표본 평가로 확립하지 않음";
+    summary += "\n\n연속 대역, 수치 수렴 및 실측은 별도 검증이 필요합니다.";
     m_conditionSummary->SetLabel(Display(summary));
     m_conditionSummary->Wrap(FromDIP(278));
     auto* scrolled = static_cast<wxScrolledWindow*>(m_conditionSummary->GetParent());
@@ -564,7 +564,7 @@ void NetworkAssessmentPanel::SelectCriterion(int index, bool request)
     }
     m_criterion = index;
     const auto& criterion = m_selection.at("assessment").at("criteria").at(index);
-    m_pointHeading->SetLabel(Display(Metric(criterion.at("metric")) + " / 실제 표본"));
+    m_pointHeading->SetLabel(Display(Metric(criterion.at("metric")) + ", 실제 표본"));
     std::string reason = criterion.value("reason", "");
     if (criterion.contains("sampled_estimate") && !criterion.at("sampled_estimate").is_null())
     {
@@ -619,7 +619,7 @@ void NetworkAssessmentPanel::ShowPoints(const Json& points, int offset, int tota
     }
     m_pageLabel->SetLabel(Display(std::string(preview ? "요약 미리보기 " : "저장된 실제 표본 ") +
                                   std::to_string(points.empty() ? 0 : offset + 1) + "-" +
-                                  std::to_string(offset + points.size()) + " / " + std::to_string(total) + "개"));
+                                  std::to_string(offset + points.size()) + " (전체 " + std::to_string(total) + "개)"));
     UpdateActions();
 }
 

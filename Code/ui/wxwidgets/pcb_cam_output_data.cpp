@@ -131,11 +131,11 @@ void PcbCamOutputView::RenderFiles(const Json& record)
         Row(m_files,
             {name, OutputUi::Text(artifact.value("role", Json(nullptr))),
              OutputUi::Text(artifact.value("bytes", Json(nullptr))),
-             artifact.value("sha256", Json(nullptr)).is_string() ? "해시 보존 / 검수 별도" : "파일 해시 미기록"});
+             artifact.value("sha256", Json(nullptr)).is_string() ? "해시 보존 (별도 검수)" : "파일 해시 미기록"});
     }
     if (artifacts.empty())
     {
-        Row(m_files, {"생성된 파일 없음", "Gerber / 드릴 / Job은 한 패키지", "", "생성 후 별도 읽기 검수"});
+        Row(m_files, {"생성된 파일 없음", "Gerber, 드릴, Job을 한 패키지로 출력", "", "생성 후 별도 읽기 검수"});
     }
 }
 
@@ -145,8 +145,8 @@ void PcbCamOutputView::SetPreview(const Json& review)
     m_review = review;
     const auto pcb = review.value("pcb_preview", Json::object());
     m_coordinates->SetLabel(Display(pcb.value("coordinate_policy", "") == "footprint_local_mm_y_up_no_mirror"
-                                        ? "선택 부품의 로컬 좌표 / 배치 원점·회전 제거 / 1:1 / 추가 미러 없음"
-                                        : "원본 XY / 위에서 본 좌표 / 1:1 / 임의 미러 없음"));
+                                        ? "선택 부품의 로컬 좌표로 1:1 출력합니다. 배치 원점과 회전을 제거하며 추가 미러링은 적용하지 않습니다."
+                                        : "위에서 본 원본 XY 좌표로 1:1 출력합니다. 임의 미러링은 적용하지 않습니다."));
     RenderLayers(pcb.value("layers", Json::array()));
     const auto selected = pcb.value("view_layer_id", Json(nullptr));
     for (std::size_t index = 0; index < m_layers.size(); ++index)
@@ -169,7 +169,7 @@ void PcbCamOutputView::SetPreview(const Json& review)
     }
     std::string note =
         "고정 원본의 실제 형상 미리보기입니다. 일부 층만 빠뜨린 Job은 생성하지 않습니다.\nGerber/드릴/Job은 함께 "
-        "생성하며, 제작/측정 조건과 수신 도구 재채움은 별도 확인합니다.";
+        "생성하며, 제작 및 측정 조건과 수신 도구 재채움은 별도 확인합니다.";
     const auto issues = OutputUi::Issues(review.value("issues", Json::array()));
     if (!issues.empty())
     {
@@ -189,9 +189,9 @@ void PcbCamOutputView::SetRecord(const Json& record)
     m_gerber->DeleteAllItems();
     m_drills->DeleteAllItems();
     m_layer->SetSelection(wxNOT_FOUND);
-    Row(m_kicad, {"보존 출력의 대응은 파일 / 검수에서 확인", "", "", "", "현재 입력과 별개"});
-    Row(m_gerber, {"보존 출력의 대응은 파일 / 검수에서 확인", "", "", "", "현재 입력과 별개"});
-    m_coordinates->SetLabel(Display("보존 파일의 좌표 기준은 해당 파일 / 검수 기록에서 확인하세요."));
+    Row(m_kicad, {"보존 출력의 대응은 파일 및 검수 탭에서 확인", "", "", "", "현재 입력과 별개"});
+    Row(m_gerber, {"보존 출력의 대응은 파일 및 검수 탭에서 확인", "", "", "", "현재 입력과 별개"});
+    m_coordinates->SetLabel(Display("보존 파일의 좌표 기준은 해당 파일의 검수 기록에서 확인하세요."));
     const auto format = record.value("format", "");
     m_tabs->SetSelection(format == "gerber_job" ? 3 : 0);
     if (format != "gerber_job")
@@ -202,7 +202,7 @@ void PcbCamOutputView::SetRecord(const Json& record)
     RenderFiles(record);
     m_canvas->Clear("선택한 출력 파일과 검수 기록입니다. 다른 원본의 미리보기를 대신 표시하지 않습니다.");
     m_notice->SetLabel(Display(
-        "보존된 출력과 새 읽기 검수의 결과는 파일 / 검수에서 확인하세요. 원문과 제조/측정 미정값은 함께 보존됩니다."));
+        "보존된 출력과 새 읽기 검수 결과는 파일 및 검수 탭에서 확인하세요. 원문과 제조·측정 미정값은 함께 보존됩니다."));
     m_refreshing = false;
     Layout();
     FitInside();

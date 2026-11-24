@@ -11,7 +11,7 @@
 #include <stdexcept>
 
 TemplateDialog::TemplateDialog(wxWindow* parent, const Json& context, DialogGateway gateway)
-    : ProjectSetupDialog(parent, "패턴 템플릿 / 직접 입력과 문헌 형상", context, std::move(gateway))
+    : ProjectSetupDialog(parent, "패턴 템플릿 (직접 입력과 문헌 형상)", context, std::move(gateway))
 {
     SetName("template.dialog");
     BuildInterface();
@@ -36,7 +36,9 @@ void TemplateDialog::RenderContext(const Json& context)
     m_cards->Clear();
     for (const auto& card : context.at("cards"))
     {
-        m_cards->Append(Display(card.at("name").get<std::string>()));
+        wxString label = Display(card.at("name").get<std::string>());
+        label.Replace(" / ", ": ", false);
+        m_cards->Append(label);
     }
     m_binding->Clear();
     for (const auto& binding : context.at("bindings"))
@@ -75,7 +77,7 @@ void TemplateDialog::SelectCard(int index)
     m_mode->Clear();
     for (const auto& mode : m_card.value("modes", Json::array({"explicit_geometry"})))
     {
-        m_mode->Append(Display(mode == "initial_estimate" ? "근거가 있는 초기 길이 추정" : "원문 / 명시 치수"));
+        m_mode->Append(Display(mode == "initial_estimate" ? "근거가 있는 초기 길이 추정" : "원문과 명시 치수"));
     }
     m_activeMode = m_cardModes.value(m_card.at("template_id").get<std::string>(), 0);
     if (m_activeMode >= static_cast<int>(m_mode->GetCount()))
@@ -99,7 +101,7 @@ void TemplateDialog::RenderCardInputs()
         fields.push_back(Json{
             {"key", field.at("key")},
             {"label", field.at("label").get<std::string>() + " (" + field.at("display_unit").get<std::string>() + ")" +
-                          (reference ? " / 원문" : "")},
+                          (reference ? " (원문)" : "")},
             {"editor", "text"},
             {"value", estimatedLength ? "초기식에서 계산" : (reference ? references.at(key).at("display_value").get<std::string>() : "")},
             {"readonly", estimatedLength}});
@@ -132,7 +134,7 @@ std::string TemplateDialog::CardDescription() const
     }
     text += "\n생성 범위: 도체 형상. 급전, 물성과 RF 검증은 별도 확인 대상입니다.";
     text += "\n출처 범위: " + m_card.at("source").at("scope").get<std::string>();
-    const auto section = [&text](const char* heading, const Json& values)
+    const auto section = [&text](const char* heading, const Json& values, bool wrapItems = false)
     {
         if (values.empty())
         {
@@ -142,7 +144,14 @@ std::string TemplateDialog::CardDescription() const
         text += heading;
         for (const auto& value : values)
         {
-            text += "\n- " + value.get<std::string>();
+            wxString label = Display(value.get<std::string>());
+            if (wrapItems)
+            {
+                label.Replace(" / ", "\n- ");
+                label.Replace(Display("전력/손실"), Display("전력과 손실"));
+                label.Replace(Display("합성/검증"), Display("합성과 검증"));
+            }
+            text += "\n- " + Utf8(label);
         }
     };
     if (m_card.contains("evidence"))
@@ -153,8 +162,8 @@ std::string TemplateDialog::CardDescription() const
         section("미정 조건", evidence.at("unknown"));
         section("문헌에 보고된 값", evidence.at("source_reported"));
     }
-    section("형상 생성 가정", m_card.value("assumptions", Json::array()));
-    section("적용 범위와 한계", m_card.value("limitations", Json::array()));
+    section("형상 생성 가정", m_card.value("assumptions", Json::array()), true);
+    section("적용 범위와 한계", m_card.value("limitations", Json::array()), true);
     section("출처 원문", m_card.at("source").at("references"));
     return text + SeedDescription();
 }
@@ -264,7 +273,9 @@ void TemplateDialog::Preview()
                     std::string notes = result.value("can_apply", false) ? "형상 미리보기 완료" : "적용 전에 확인할 내용";
                     if (result.contains("generation"))
                     {
-                        notes += "\n" + result.at("generation").at("summary").get<std::string>();
+                        wxString summary = Display(result.at("generation").at("summary").get<std::string>());
+                        summary.Replace(" / ", "\n- ");
+                        notes += "\n- " + Utf8(summary);
                     }
                     for (const auto& issue : result.value("issues", Json::array()))
                     {
@@ -298,7 +309,7 @@ void TemplateDialog::Preview()
                         m_canvas->Show();
                     }
                     SetStatus(result.value("can_apply", false)
-                                  ? "형상 미리보기 완료 / 적용하면 한 명령으로 추가합니다. 제조/RF 성능 검증은 "
+                                  ? "형상 미리보기 완료. 적용하면 한 명령으로 추가합니다. 제조 및 RF 성능 검증은 "
                                     "수행하지 않았습니다."
                                   : "적용할 수 없습니다. 카드 조건과 입력 문제를 확인하세요.");
                     Layout();

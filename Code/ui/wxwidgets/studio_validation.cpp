@@ -38,7 +38,7 @@ void StudioFrame::ValidateInput(std::function<void()> completed)
                                  m_diagnosticsTruncated = result.at("diagnostics_truncated").get<bool>();
                                  ShowProblems();
                                  m_bottom->SetSelection(0);
-                                 Ready("입력 검사를 완료했습니다. 해석 실행/정확도 검증 결과와 구분합니다.");
+                                 Ready("입력 검사를 완료했습니다. 해석 실행과 정확도 검증 결과와 구분합니다.");
                                  if (completed)
                                  {
                                      completed();

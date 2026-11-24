@@ -101,8 +101,8 @@ void OutputController::Start(const std::string& method, const Json& input)
                 }
             }
             Status(m_uncertain ? "unresolved" : "failed",
-                   DiagnosticMessage(error) + (m_uncertain ? " / 새 생성은 잠겼습니다. 같은 요청의 결과를 조회하세요."
-                                                           : " / 입력을 수정한 뒤 다시 검토하세요."));
+                   DiagnosticMessage(error) + (m_uncertain ? ". 새 생성은 잠겼습니다. 같은 요청의 결과를 조회하세요."
+                                                           : ". 입력을 수정한 뒤 다시 검토하세요."));
             Actions();
             if (onStateChanged)
             {
@@ -178,13 +178,13 @@ void OutputController::Poll(Clock::time_point now)
                     m_pending = nullptr;
                 }
                 Status(state,
-                       OutputUi::State(state) + " / " +
+                       OutputUi::State(state) + ". " +
                            OutputUi::Issues(Json::array({terminal.value("error", "기존 출력은 보존했습니다.")})));
                 Catalog(0, job);
             }
             else
             {
-                Status(state, "출력 작업: " + OutputUi::State(state) + (m_cancelRequested ? " / 취소 확인 대기" : ""));
+                Status(state, "출력 작업: " + OutputUi::State(state) + (m_cancelRequested ? " (취소 확인 대기)" : ""));
             }
             if (onStateChanged)
             {
@@ -199,7 +199,7 @@ void OutputController::Poll(Clock::time_point now)
             }
             m_task.Reset();
             m_uncertain = true;
-            Status("unresolved", DiagnosticMessage(error) + " / 같은 요청의 결과를 다시 조회하세요.");
+            Status("unresolved", DiagnosticMessage(error) + ". 같은 요청의 결과를 다시 조회하세요.");
             if (onStateChanged)
             {
                 onStateChanged();
@@ -265,7 +265,7 @@ void OutputController::Complete(const Json& result)
     }
     else if (method == "export.preview")
     {
-        Status("completed", "포함/제외와 종이 배치를 검토하세요. 생성과 다시 읽기 검수는 별도 단계입니다.");
+        Status("completed", "포함 및 제외와 종이 배치를 검토하세요. 생성과 다시 읽기 검수는 별도 단계입니다.");
     }
     else
     {
@@ -306,7 +306,7 @@ void OutputController::Recover()
              else
              {
                  Status("unresolved", OutputUi::Text(value.value("reason", Json(nullptr))) +
-                                          " / 생성되지 않았다는 뜻이 아닙니다. 새 요청 잠금을 유지합니다.");
+                                          ". 생성 여부를 확인하는 동안 새 요청을 잠급니다.");
              }
              if (onStateChanged)
              {
@@ -355,7 +355,7 @@ void OutputController::Cancel()
                 return;
             }
             m_cancelRequested = false;
-            Status("failed", DiagnosticMessage(error) + " / 작업 상태를 계속 조회합니다.");
+            Status("failed", DiagnosticMessage(error) + ". 작업 상태를 계속 확인합니다.");
             Actions();
         },
         "", "");

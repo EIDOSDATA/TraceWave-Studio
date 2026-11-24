@@ -294,7 +294,7 @@ void RadiationResultSlice::Paint(wxPaintEvent&)
         plane.oppositePhi >= 0
             ? "왼쪽 점선: phi " +
                   ResultUi::Number(m_data.at("phi_deg").at(static_cast<std::size_t>(plane.oppositePhi))) +
-                  " deg / 실제 기록"
-            : "반대 방위각 미기록 / 임의 미러 또는 보간 없음";
+                  " deg (실제 기록)"
+            : "반대 방위각이 기록되지 않았습니다. 미러링과 보간은 적용하지 않았습니다.";
     gc->DrawText(Display(caption), FromDIP(12), size.y - FromDIP(24));
 }

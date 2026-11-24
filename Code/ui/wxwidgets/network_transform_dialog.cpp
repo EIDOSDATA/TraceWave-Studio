@@ -31,8 +31,8 @@ void Field(wxWindow* parent, wxSizer* layout, const std::string& label, wxWindow
 /** @brief 서로 다른 복소 종류와 기준면을 한 축의 같은 값으로 오해하지 않도록 표시한다. */
 std::string Conditions(const Json& descriptor)
 {
-    std::string text = "자료: " + Value(descriptor.at("parameter_kind")) + " / 단위 " + Value(descriptor.at("unit"));
-    text += "\n포트 " + std::to_string(descriptor.at("port_ids").size()) + "개 / 표본 " +
+    std::string text = "자료: " + Value(descriptor.at("parameter_kind")) + ", 단위 " + Value(descriptor.at("unit"));
+    text += "\n포트 " + std::to_string(descriptor.at("port_ids").size()) + "개, 표본 " +
             Value(descriptor.at("sample_count")) + "개";
     text += "\n주파수: " + StudioFrequency::Range(descriptor.at("frequency_min_hz"), descriptor.at("frequency_max_hz"));
     text += "\n기준면: " + Value(descriptor.at("reference_planes"));
@@ -41,16 +41,16 @@ std::string Conditions(const Json& descriptor)
                                                               : "\nZ0는 주파수별 동일 또는 미정입니다.";
     text += "\n파 정의: " + Value(descriptor.at("wave_definition")) +
             "\n시간 규약: " + Value(descriptor.at("phasor_convention"));
-    text += "\n미정/무효 값: " + Value(descriptor.at("invalid_value_count")) + "개";
+    text += "\n미정이거나 무효인 값: " + Value(descriptor.at("invalid_value_count")) + "개";
     text += "\n출처: " + Value(descriptor.at("source_refs"));
-    text += "\n제작 / 측정 등 원문 조건: " + Value(descriptor.at("conditions"));
+    text += "\n원문의 제작 및 측정 조건: " + Value(descriptor.at("conditions"));
     return text;
 }
 }
 
 NetworkTransformDialog::NetworkTransformDialog(wxWindow* parent, const Json& context, const Json& selection,
                                                DialogGateway gateway)
-    : ProjectSetupDialog(parent, "네트워크 변환 / 별도 결과 저장", context, std::move(gateway)), m_context(context),
+    : ProjectSetupDialog(parent, "네트워크 변환 및 결과 저장", context, std::move(gateway)), m_context(context),
       m_selection(selection)
 {
     SetName("network.transform.dialog");
@@ -75,7 +75,7 @@ NetworkTransformDialog::NetworkTransformDialog(wxWindow* parent, const Json& con
     }
     m_loading = false;
     RenderSource();
-    SetStatus("변환 종류와 입력 조건을 확인한 뒤 검토하세요. 원본과 제작/측정 조건은 보존됩니다.");
+    SetStatus("변환 종류와 입력 조건을 확인한 뒤 검토하세요. 원본과 제작 및 측정 조건은 보존됩니다.");
     UpdateActions();
     if (!m_selection.is_null())
     {
@@ -115,7 +115,7 @@ void NetworkTransformDialog::BuildInterface()
     Field(options, fields, "별도로 저장할 결과 이름", m_name);
     m_mode = new wxChoice(options, wxID_ANY);
     m_mode->SetName("network.transform.mode");
-    m_mode->Append(Display("S / Z / Y 종류 변환"));
+    m_mode->Append(Display("S, Z, Y 행렬 변환"));
     m_mode->Append(Display("S 기준 임피던스 재정규화"));
     m_mode->Append(Display("S 기준면 이동 (정합 선로)"));
     m_mode->Append(Display("양쪽 2포트 치구 제거"));
@@ -132,8 +132,8 @@ void NetworkTransformDialog::BuildInterface()
     Field(options, fields, "변환할 복소 종류", m_kind);
     m_reference = new wxTextCtrl(options, wxID_ANY);
     m_reference->SetName("network.transform.reference");
-    m_reference->SetHint(Display("양의 실수 입력 / 빈칸은 미정"));
-    Field(options, fields, "새 Z0 (ohm, 모든 포트 / 주파수에 동일 적용)", m_reference);
+    m_reference->SetHint(Display("양의 실수를 입력하세요. 빈칸은 미정입니다."));
+    Field(options, fields, "새 Z0 (ohm, 모든 포트와 주파수에 적용)", m_reference);
     m_lineFields = new wxBoxSizer(wxVERTICAL);
     m_lines = new wxTextCtrl(options, wxID_ANY, wxEmptyString, wxDefaultPosition,
                              FromDIP(wxSize(400, 72)), wxTE_MULTILINE);
@@ -154,7 +154,7 @@ void NetworkTransformDialog::BuildInterface()
                                   FromDIP(wxSize(400, 108)), wxTE_MULTILINE);
     m_modalTable->SetName("network.transform.modal-table");
     m_modalTable->SetMaxLength(512 * 1024);
-    Field(options, m_modalFields, "분산표 / 포트 | 파 정의 | 시간 부호(+/-) | 출처", m_modalTable);
+    Field(options, m_modalFields, "분산표: 포트 | 파 정의 | 시간 부호(+/-) | 출처", m_modalTable);
     auto* modalHelp = new wxStaticText(options, wxID_ANY, Display(
         "출처 예시 1 | power | + | 균일 단면 모드 해석 A\n"
         "다음 행부터 포트 | Hz | 감쇠(Np/m) | 위상(rad/m) | 모드 임피던스(ohm)\n"
@@ -192,7 +192,7 @@ void NetworkTransformDialog::BuildInterface()
     m_gateVelocity = new wxTextCtrl(options, wxID_ANY);
     m_gateVelocity->SetName("network.transform.gate.velocity");
     m_gateVelocity->SetHint(Display("거리 환산에 사용할 때 입력"));
-    Field(options, m_timeGateFields, "군속도 / 광속 (선택)", m_gateVelocity);
+    Field(options, m_timeGateFields, "광속 대비 군속도 (선택)", m_gateVelocity);
     auto* gateHelp = new wxStaticText(
         options, wxID_ANY, Display("균일 주파수 표본의 복소 대역에서 입력한 지연 구간을 남깁니다.\n"
                                   "시간 간격과 주기는 원본 주파수 간격과 표본 수로 결정됩니다."));
@@ -202,7 +202,7 @@ void NetworkTransformDialog::BuildInterface()
     fields->Add(m_timeGateFields, 0, wxEXPAND);
     auto* scope = new wxStaticText(
         options, wxID_ANY,
-        Display("기준면, 파 정의와 포트/전류 규약을 확인해야 합니다.\n복소 Z0는 보존하되 현재 변환에서는 지원하지 "
+        Display("기준면, 파 정의, 포트와 전류 규약을 확인하세요.\n복소 Z0는 보존하되 현재 변환에서는 지원하지 "
                 "않습니다.\n계산 완료는 수렴 또는 실물 검증 완료를 뜻하지 않습니다."));
     scope->Wrap(FromDIP(410));
     StudioTheme::BindSecondary(*scope);
@@ -221,7 +221,7 @@ void NetworkTransformDialog::BuildInterface()
     auto* result = new wxScrolledWindow(m_tabs, wxID_ANY);
     result->SetScrollRate(FromDIP(16), FromDIP(16));
     auto* resultLayout = new wxBoxSizer(wxVERTICAL);
-    m_pageLabel = new wxStaticText(result, wxID_ANY, Display("검토 전 / 표시할 후보가 없습니다."));
+    m_pageLabel = new wxStaticText(result, wxID_ANY, Display("검토 전입니다. 후보가 아직 없습니다."));
     m_pageLabel->Wrap(FromDIP(980));
     resultLayout->Add(m_pageLabel, 0, wxEXPAND | wxBOTTOM, FromDIP(8));
     auto* graphs = new wxBoxSizer(wxHORIZONTAL);
@@ -258,7 +258,7 @@ void NetworkTransformDialog::BuildInterface()
     Field(diagnostics, diagnosticLayout, "변환 후 조건과 원문 보존", m_resultConditions);
     m_diagnostics = new wxTextCtrl(diagnostics, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 190)),
                                    wxTE_MULTILINE | wxTE_READONLY);
-    diagnosticLayout->Add(new wxStaticText(diagnostics, wxID_ANY, Display("계산 진단 / 미리보기 최대 8개")), 0,
+    diagnosticLayout->Add(new wxStaticText(diagnostics, wxID_ANY, Display("계산 진단 (최대 8개 미리보기)")), 0,
                           wxBOTTOM, FromDIP(4));
     diagnosticLayout->Add(m_diagnostics, 1, wxEXPAND);
     auto* diagnosticOuter = new wxBoxSizer(wxVERTICAL);
@@ -322,7 +322,7 @@ void NetworkTransformDialog::ClearReview()
     m_reviewInput = nullptr;
     m_resultGraph->Clear();
     m_samples->DeleteAllItems();
-    m_pageLabel->SetLabel(Display("검토 전 / 입력이 바뀌면 변환 후보를 다시 확인해야 합니다."));
+    m_pageLabel->SetLabel(Display("입력을 변경했습니다. 변환 후보를 다시 검토하세요."));
     m_resultConditions->ChangeValue(wxEmptyString);
     m_diagnostics->ChangeValue(wxEmptyString);
 }
@@ -367,7 +367,7 @@ void NetworkTransformDialog::SelectDataset()
                 if (result.at("entry").at("id") != id || result.at("page").at("offset") != 0 ||
                     result.at("page").at("channel").at("row") != 0 || result.at("page").at("channel").at("column") != 0)
                 {
-                    throw std::runtime_error("선택한 원본 자료와 응답의 채널/표본 범위가 다릅니다.");
+                    throw std::runtime_error("선택한 원본 자료와 응답의 채널 또는 표본 범위가 다릅니다.");
                 }
                 m_selection = result;
                 RenderSource();
@@ -513,19 +513,19 @@ void NetworkTransformDialog::RenderResult(const Json& result)
         m_samples->SetItem(row, 4, Display(Value(sample.at("imag"))));
         m_samples->SetItem(row, 5, Display(Value(sample.at("status"))));
     }
-    m_pageLabel->SetLabel(Display("읽기 전용 후보 / 11 채널의 앞 " + std::to_string(page.at("samples").size()) + " / " +
-                                  Value(page.at("total")) + "개 표본. 두 그래프는 각 자료의 단위/축으로 표시합니다."));
+    m_pageLabel->SetLabel(Display("읽기 전용 후보. 11 채널의 첫 " + std::to_string(page.at("samples").size()) + "개 표본 (전체 " +
+                                  Value(page.at("total")) + "개). 각 자료의 단위에 맞춰 그래프를 표시합니다."));
     m_pageLabel->Wrap(FromDIP(980));
     m_resultConditions->ChangeValue(Display(Conditions(result.at("descriptor"))));
-    std::string diagnostics = "표시 " + std::to_string(result.at("diagnostics").size()) + " / 전체 " +
+    std::string diagnostics = "표시 " + std::to_string(result.at("diagnostics").size()) + ", 전체 " +
                               Value(result.at("diagnostic_count")) + "개. 저장하면 전체 계산 진단을 함께 보존합니다.\n";
     const auto& rows = result.at("diagnostics");
     if (!rows.empty() && rows.front().contains("retained_bins"))
     {
         const auto& gate = rows.front();
         const auto& interval = gate.at("selected_bin_range_ns");
-        diagnostics += "\n시간 게이트 " + Value(gate.at("retained_bins")) + " / " + Value(gate.at("total_bins")) +
-            "개 지연 표본 | 지연 간격 " + Value(gate.at("time_step_ns")) + " ns | 주기 " +
+        diagnostics += "\n시간 게이트: 지연 표본 " + Value(gate.at("retained_bins")) + "개 (전체 " + Value(gate.at("total_bins")) +
+            "개), 지연 간격 " + Value(gate.at("time_step_ns")) + " ns, 주기 " +
             Value(gate.at("period_ns")) + " ns\n남긴 지연 " + Value(interval.at(0)) +
             "~" + Value(interval.at(1)) + " ns\n";
         if (gate.contains("nonzero_bins"))
@@ -548,37 +548,37 @@ void NetworkTransformDialog::RenderResult(const Json& result)
                        frequencyScale.unit + ": " + Value(item.at("status"));
         if (item.contains("valid_channels"))
         {
-            diagnostics += " / 유효 복소 채널 " + Value(item.at("valid_channels")) + "개";
+            diagnostics += ", 유효 복소 채널 " + Value(item.at("valid_channels")) + "개";
         }
         else if (item.contains("fixture_condition_numbers"))
         {
             const auto& fixtures = item.at("fixture_condition_numbers");
-            diagnostics += " / 치구 조건수 왼쪽 " + Value(fixtures.at(0)) + " / 오른쪽 " + Value(fixtures.at(1)) +
-                " / 재결합 상대 잔차 " + Value(item.at("relative_residual"));
+            diagnostics += ", 왼쪽 치구 조건수 " + Value(fixtures.at(0)) + ", 오른쪽 " + Value(fixtures.at(1)) +
+                ", 재결합 상대 잔차 " + Value(item.at("relative_residual"));
         }
         else if (!item.contains("retained_bins"))
         {
-            diagnostics += " / 조건수 " + Value(item.value("condition_number", Json(nullptr))) + " / 상대 잔차 " +
+            diagnostics += ", 조건수 " + Value(item.value("condition_number", Json(nullptr))) + ", 상대 잔차 " +
                            Value(item.value("relative_residual", Json(nullptr)));
         }
         if (item.contains("modal_samples"))
         {
             for (const auto& sample : item.at("modal_samples"))
             {
-                diagnostics += "\n  " + Value(sample.at("mode")) + " / " + Value(sample.at("alpha_np_per_m")) +
-                    " Np/m / " + Value(sample.at("beta_rad_per_m")) + " rad/m / " +
+                diagnostics += "\n  " + Value(sample.at("mode")) + ", " + Value(sample.at("alpha_np_per_m")) +
+                    " Np/m, " + Value(sample.at("beta_rad_per_m")) + " rad/m, " +
                     Value(sample.at("mode_impedance_ohm")) + " ohm";
             }
         }
         if (item.contains("first_conversion"))
         {
             const auto& first = item.at("first_conversion");
-            diagnostics += "\n  첫 변환: " + Value(first.at("status")) + " / 조건수 " +
-                           Value(first.value("condition_number", Json(nullptr))) + " / 상대 잔차 " +
+            diagnostics += "\n  첫 변환: " + Value(first.at("status")) + ", 조건수 " +
+                           Value(first.value("condition_number", Json(nullptr))) + ", 상대 잔차 " +
                            Value(first.value("relative_residual", Json(nullptr)));
         }
     }
-    diagnostics += "\n\n전체 표본/진단은 저장 후 결과 화면에서 조회합니다. 계산 진단은 실물 정확도 검증이 아닙니다.";
+    diagnostics += "\n\n전체 표본과 진단은 저장 후 결과 화면에서 조회합니다. 계산 진단은 실물 정확도 검증이 아닙니다.";
     m_diagnostics->ChangeValue(Display(diagnostics));
 }
 

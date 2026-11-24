@@ -103,7 +103,7 @@ std::string RoleLabel(const Json& row)
 {
     static const std::map<std::string, std::string> names{
         {"dielectric", "기판 유전체"}, {"environment", "설치 부품"}, {"surface", "표면층"},
-        {"void", "기계 절삭 / 공기"}, {"conductor", "시트 도체"}, {"via", "도금 비아"}, {"port", "급전"}};
+        {"void", "기계 절삭 공간 (공기)"}, {"conductor", "시트 도체"}, {"via", "도금 비아"}, {"port", "급전"}};
     const auto role = row.at("role").get<std::string>();
     const auto found = names.find(role);
     return found == names.end() ? role : found->second;
@@ -241,7 +241,7 @@ public:
         BuildMeshPage();
         BuildModelPage();
         BuildConditions();
-        auto* output = Page("종료 / 기록 출력");
+        auto* output = Page("종료 및 기록");
         m_output = new wxTextCtrl(output, wxID_ANY, OutputHint(), wxDefaultPosition,
                                   wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY | wxTE_WORDWRAP);
         m_output->SetName("solver.review.output");
@@ -265,7 +265,7 @@ public:
             {
                 SetGridRepair({});
                 LocateBand(axis, bounds, firstLine, applied);
-                const auto status = wxString::Format(Display("국부 격자 %s축 %.8g ~ %.8g mm / %s"),
+                const auto status = wxString::Format(Display("국부 격자 %s축 %.8g ~ %.8g mm (%s)"),
                     Display(std::string(1, "XYZ"[axis])), bounds[0], bounds[1],
                     Display(applied ? "적용 경계" : "상위 규칙이 적용된 경계"));
                 SetStatus(Utf8(status));
@@ -417,7 +417,7 @@ private:
         };
         auto* unitRow = new wxBoxSizer(wxHORIZONTAL);
         auto* unitParent = frequency->GetStaticBox();
-        unitRow->Add(new wxStaticText(unitParent, wxID_ANY, Display("시작 / 끝 단위")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, pad);
+        unitRow->Add(new wxStaticText(unitParent, wxID_ANY, Display("시작과 끝의 단위")), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, pad);
         m_frequencyUnit = new wxChoice(unitParent, wxID_ANY);
         m_frequencyUnit->SetName("solver.frequency_unit");
         for (const auto* unit : {"Hz", "MHz", "GHz"})
@@ -432,7 +432,7 @@ private:
         Field(*frequency, "stop_hz", "끝 주파수");
         Field(*frequency, "count", "주파수 표본 수 (3~201)");
         Field(*frequency, "sample_points_hz", "직접 주파수 표본 (쉼표, 선택)");
-        m_fields.at("sample_points_hz")->SetHint(Display("예: 8 GHz, 9 GHz, 10 GHz / 비우면 대역에서 생성"));
+        m_fields.at("sample_points_hz")->SetHint(Display("예: 8 GHz, 9 GHz, 10 GHz. 비우면 설정 대역에서 생성합니다."));
         Field(*frequency, "max_timesteps", "최대 시간 단계");
         Field(*frequency, "end_criterion", "종료 에너지 비율");
         m_nf = new wxCheckBox(frequency->GetStaticBox(), wxID_ANY, Display("원거리 방사 패턴 기록 (NF2FF)"));
@@ -443,7 +443,7 @@ private:
         Field(*frequency, "phi_step_deg", "방위각 간격 (phi, 5/10/15/30도)");
         Field(*frequency, "field_probe", "전기장 기록 영역 (선택)");
         auto* probeOrder = new wxStaticText(frequency->GetStaticBox(), wxID_ANY,
-            Display("주파수, X 최소/최대, Y 최소/최대, Z 최소/최대 (mm). 주파수 단위를 생략하면 Hz입니다. 단면은 법선축의 두 값을 같게 입력하세요."));
+            Display("주파수, X 최소와 최대, Y 최소와 최대, Z 최소와 최대 (mm). 주파수 단위를 생략하면 Hz입니다. 단면은 법선축의 두 값을 같게 입력하세요."));
         StudioTheme::BindSecondary(*probeOrder);
         probeOrder->Wrap(FromDIP(260));
         frequency->Add(probeOrder, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
@@ -554,7 +554,7 @@ private:
     /** @brief 과거 조건 비교와 새 이름 저장을 같은 검토 창에서 수행한다. */
     void BuildConditions()
     {
-        auto* page = Page("조건 저장 / 재사용");
+        auto* page = Page("저장한 해석 조건");
         const int gap = FromDIP(StudioTheme::InputGap);
         auto* layout = page->GetSizer();
         m_source = new wxChoice(page, wxID_ANY);
@@ -563,14 +563,14 @@ private:
         for (const auto& row : m_catalog.at("saved"))
         {
             m_sources.push_back(row);
-            m_source->Append(Display("저장 조건 / " + row.at("name").get<std::string>()));
+            m_source->Append(Display("저장 조건: " + row.at("name").get<std::string>()));
         }
         for (const auto& row : m_catalog.at("results"))
         {
             m_sources.push_back(row);
             const wxDateTime time(static_cast<time_t>(row.at("snapshot_time").get<double>()));
-            const auto label = "과거 결과 / " + row.at("name").get<std::string>() + " / " +
-                Utf8(time.Format("%Y-%m-%d %H:%M:%S")) + " / " + row.at("id").get<std::string>().substr(0, 8);
+            const auto label = "과거 결과: " + row.at("name").get<std::string>() + ", " +
+                Utf8(time.Format("%Y-%m-%d %H:%M:%S")) + ", " + row.at("id").get<std::string>().substr(0, 8);
             m_source->Append(Display(label));
         }
         m_source->SetSelection(0);
@@ -747,7 +747,7 @@ private:
         };
         for (const auto& item : configuration.value("items", Json::array()))
         {
-            const auto label = item.at("name").get<std::string>() + " / " + item.at("label").get<std::string>();
+            const auto label = item.at("name").get<std::string>() + ", " + item.at("label").get<std::string>();
             const auto row = m_comparison->InsertItem(m_comparison->GetItemCount(), Display(label));
             m_comparison->SetItem(row, 1, valueText(item.at("current"), item.at("current_exists")));
             m_comparison->SetItem(row, 2, valueText(item.at("source"), item.at("source_exists")));
@@ -757,7 +757,7 @@ private:
         m_comparison->Thaw();
         std::string note = valid ? "달라진 설정 " + std::to_string(numeric) + "개"
                                  : "현재 입력을 읽을 수 없습니다. 선택한 조건은 불러올 수 있습니다.";
-        note += " / 급전·설치·정합 차이 " + std::to_string(configuration.value("total", 0)) + "개";
+        note += ", 급전·설치·정합 차이 " + std::to_string(configuration.value("total", 0)) + "개";
         if (configuration.contains("unavailable"))
         {
             note += "\n" + configuration.at("unavailable").get<std::string>();
@@ -765,7 +765,7 @@ private:
         const auto& own = m_catalog.at("design");
         const auto& prior = m_selected.at("design");
         const auto revision = m_selected.at("revision_id").get<std::string>();
-        note += revision == m_revision ? " / 같은 설계 개정" : " / 다른 설계 개정 " + revision.substr(0, 8);
+        note += revision == m_revision ? ", 같은 설계 개정" : ", 다른 설계 개정 " + revision.substr(0, 8);
         for (const auto* kind : {"ports", "installation"})
         {
             const std::string path = kind;
@@ -774,7 +774,7 @@ private:
             note += "\n" + std::string(path == "ports" ? "급전  " : "설치  ") + own.at(key).get<std::string>();
             if (own.at(hash) != prior.at(hash))
             {
-                note += " / 선택 조건 " + prior.at(key).get<std::string>() + " (입력 다름)";
+                note += "\n선택 조건: " + prior.at(key).get<std::string>() + " (입력 다름)";
             }
         }
         m_summary->SetLabel(Display(note));
@@ -935,7 +935,7 @@ private:
         StudioTheme::Table(*m_model);
         m_model->AppendColumn(Display("개체"), wxLIST_FORMAT_LEFT, FromDIP(245));
         m_model->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(100));
-        m_model->AppendColumn(Display("해석 역할 / 제외 사유"), wxLIST_FORMAT_LEFT, FromDIP(230));
+        m_model->AppendColumn(Display("해석 포함 여부와 사유"), wxLIST_FORMAT_LEFT, FromDIP(230));
         m_model->AppendColumn(Display("계산 형상 수"), wxLIST_FORMAT_RIGHT, FromDIP(125));
         page->GetSizer()->Add(m_model, 1, wxEXPAND | wxLEFT | wxRIGHT, gap);
         m_modelDetails = new wxTextCtrl(page, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 80)),
@@ -965,7 +965,7 @@ private:
             m_modelDetails->ChangeValue(Display(row.at("name").get<std::string>() + "\nID " +
                 row.at("id").get<std::string>() + "\n" +
                 (available ? "native 속성 " + row.at("native_property").get<std::string>()
-                           : "해석 제외 / " + Exclusion(row))));
+                           : "해석 제외: " + Exclusion(row))));
         });
         m_model->Bind(wxEVT_LIST_ITEM_DESELECTED, [this, locate](wxListEvent&)
         {
@@ -980,7 +980,7 @@ private:
         const auto reason = row.at("reason").get<std::string>();
         if (reason == "symmetry_image")
         {
-            return "PEC 대칭으로 대응하는 도체 / " + row.at("represented_by").get<std::string>();
+            return "PEC 대칭으로 대응하는 도체: " + row.at("represented_by").get<std::string>();
         }
         return reason == "unsupported_in_profile" ? "현재 해석 범위 밖" : "해석 포함 설정이 꺼져 있음";
     }
@@ -1009,11 +1009,11 @@ private:
     {
         const auto state = row.at("grid_state").get<std::string>();
         const auto names = row.at("object_names").get<std::array<std::string, 2>>();
-        std::string label = "CAD 기계 간극 / EM 미포함 / " + names[0] + " - " + names[1];
+        std::string label = "해석에서 제외된 CAD 기계 간극: " + names[0] + " - " + names[1];
         if (row.contains("witness_points_mm"))
         {
             const auto witness = row.at("witness_points_mm").get<std::array<std::array<double, 3>, 2>>();
-            label += Utf8(wxString::Format(Display(" / %.6g mm / (%.6g, %.6g, %.6g) ~ (%.6g, %.6g, %.6g) mm"),
+            label += Utf8(wxString::Format(Display(", 거리 %.6g mm, (%.6g, %.6g, %.6g) ~ (%.6g, %.6g, %.6g) mm"),
                 row.at("distance_mm").get<double>(), witness[0][0], witness[0][1], witness[0][2],
                 witness[1][0], witness[1][1], witness[1][2]));
         }
@@ -1022,7 +1022,7 @@ private:
         {
             m_plot->Highlight({});
             SetGridRepair({});
-            SetStatus(label + (state == "outside" ? " / 증거점 선분 전체가 격자 밖에 있습니다." : " / 거리 증거점이 없습니다."));
+            SetStatus(label + (state == "outside" ? ". 증거점 선분 전체가 격자 밖에 있습니다." : ". 거리 증거점이 없습니다."));
             return;
         }
         const auto pts = locate->get<std::array<std::array<double, 3>, 2>>();
@@ -1053,8 +1053,8 @@ private:
         }
         m_plot->HighlightClearance(std::move(drawing));
         SetGridRepair({});
-        SetStatus(label + (state == "partial" ? " / 격자 안쪽 구간만 표시" :
-                           state == "boundary_point" ? " / 격자 경계에 닿는 점" : " / 격자 안"));
+        SetStatus(label + (state == "partial" ? ", 격자 안쪽 구간만 표시" :
+                           state == "boundary_point" ? ", 격자 경계에 닿는 점" : ", 격자 안"));
     }
 
     /** @brief 간극이 동일 높이인지 층간인지에 따라 실제 격자 투영을 선택한다. */
@@ -1106,7 +1106,7 @@ private:
                                static_cast<unsigned long long>(row.at("cells_xyz").size()))
             : wxString::Format(Display("Z %.6g mm | 간극 %.6g mm, XY %llu셀"), height, distance,
                                static_cast<unsigned long long>(row.at("cells_xy").size()));
-        SetStatus(Utf8(Display(names[0] + " / " + names[1] + " | ") + details));
+        SetStatus(Utf8(Display(names[0] + ", " + names[1] + " | ") + details));
         SetGridRepair("settings.local_mesh");
     }
 
@@ -1149,13 +1149,13 @@ private:
         if (modes[0] != "PML_8" || modes[1] != "PML_8")
         {
             m_axisSummary->SetLabel(wxString::Format(
-                Display("셀 간격 %.8g~%.8g mm | %s %.8g / %s %.8g mm | 모델과 경계 사이 %.8g / %.8g mm"),
+                Display("셀 간격 %.8g~%.8g mm, 경계 %s %.8g와 %s %.8g mm, 모델과 경계 사이 %.8g와 %.8g mm"),
                 values.at("min_cell_mm").get<double>(), values.at("max_cell_mm").get<double>(),
                 Display(modes[0]), pml[0], Display(modes[1]), pml[1], air[0], air[1]));
             return;
         }
         m_axisSummary->SetLabel(wxString::Format(
-            Display("셀 간격 %.8g~%.8g mm | PML 안쪽 %.8g / %.8g mm | 모델과 PML 사이 %.8g / %.8g mm"),
+            Display("셀 간격 %.8g~%.8g mm, PML 안쪽 %.8g와 %.8g mm, 모델과 PML 사이 %.8g와 %.8g mm"),
             values.at("min_cell_mm").get<double>(), values.at("max_cell_mm").get<double>(),
             pml[0], pml[1], air[0], air[1]));
     }
@@ -1334,7 +1334,7 @@ private:
         const auto profile = settings.value("compute_profile", Json::object());
         m_singleThread->SetValue(profile.value("num_threads", 0) == 1 && profile.value("kind", "") == "tuning_refinement/0.1");
         m_singleThread->Enable(!useBudget || profile.value("kind", "") == "tuning_refinement/0.1");
-        m_advanced->SetLabel(Display(useBudget && useLoss ? "불러온 계산 예산 / 독립 손실 기록 사용"
+        m_advanced->SetLabel(Display(useBudget && useLoss ? "저장한 계산 예산과 독립 손실 기록 설정 사용"
             : useBudget ? "불러온 계산 예산 사용" : useLoss ? "불러온 독립 손실 기록 사용" : ""));
         m_advanced->Show(useBudget || useLoss);
         m_input->Layout();
@@ -1410,7 +1410,7 @@ private:
         {
             if (report)
             {
-                SetStatus(Utf8(m_fields.at(key)->GetToolTipText()) + " / " + message);
+                SetStatus(Utf8(m_fields.at(key)->GetToolTipText()) + ", " + message);
                 FocusInput(key);
             }
             return false;
@@ -1713,7 +1713,7 @@ private:
         {
             const auto path = row.value("details", Json::object()).value("field_path", std::string());
             const auto label = IssueMessage(row);
-            const std::string section = path == "board" ? "기판 / " : path == "ports" ? "급전 / " : "";
+            const std::string section = path == "board" ? "기판: " : path == "ports" ? "급전: " : "";
             m_issueList->Append(Display(std::to_string(++index) + ". " + section + label));
         }
         m_issueList->SetSelection(0);
@@ -1730,7 +1730,7 @@ private:
         }
         const auto& diagnostic = m_issues.at(static_cast<std::size_t>(index));
         const auto details = diagnostic.value("details", Json::object());
-        auto problem = "차단 문제 " + std::to_string(index + 1) + " / " + std::to_string(m_issueTotal) +
+        auto problem = "차단 문제 " + std::to_string(index + 1) + ", " + std::to_string(m_issueTotal) +
                        "\n" + IssueMessage(diagnostic);
         if (m_issues.size() < m_issueTotal)
         {
@@ -1799,10 +1799,10 @@ private:
         const auto& settings = m_result.at("settings");
         const auto policy = settings.value("mesh_policy", Json::object());
         const auto grid = policy.empty() ? Display("외부 공기 가변 격자 끔")
-            : wxString::Format(Display("가변 공기 격자 %.8g mm / 성장률 %.8g"),
+            : wxString::Format(Display("가변 공기 격자 %.8g mm (성장률 %.8g)"),
                                policy.at("air_cell_mm").get<double>(), policy.at("growth_ratio").get<double>());
         m_meshSummary->SetLabel(wxString::Format(
-            Display("격자선 X %llu / Y %llu / Z %llu  |  격자점 %s  |  Yee 셀 %s  |  예상 메모리 %.1f MiB"),
+            Display("격자선 X %llu, Y %llu, Z %llu. 격자점 %s, Yee 셀 %s, 예상 메모리 %.1f MiB."),
             x, y, z, GridCount(x * y * z),
             GridCount((x - 1) * (y - 1) * (z - 1)), memory));
         m_meshSettings->SetLabel(wxString::Format(
@@ -1830,7 +1830,7 @@ private:
                 const auto kind = row.at("kind").get<std::string>();
                 const char* label = kind == "minimum_cell" ? "최소 셀" : kind == "feed_gap" ? "급전 간극" :
                     kind == "surface_opening" ? "표면 개구" : kind == "via_bore" ? "비아 내경" : "국부 간극";
-                m_intervals->Append(wxString::Format(Display("%s %s / %.6g mm / 교차 %d셀, 완전 %d셀"),
+                m_intervals->Append(wxString::Format(Display("%s %s, 간격 %.6g mm (교차 %d셀, 완전 %d셀)"),
                     Display(label), Display(row.at("axis").get<std::string>()), row.at("width_mm").get<double>(),
                     row.at("cells").get<int>(), row.at("full_cells").get<int>()));
             }
@@ -1871,13 +1871,13 @@ private:
                     }
                     if (row.contains("other_z_mm"))
                     {
-                        m_intervals->Append(wxString::Format(Display("%s %.6g mm / XYZ %llu셀"),
+                        m_intervals->Append(wxString::Format(Display("%s %.6g mm (XYZ %llu셀)"),
                             Display(label), row.at("distance_mm").get<double>(),
                             static_cast<unsigned long long>(row.at("cells_xyz").size())));
                     }
                     else
                     {
-                        m_intervals->Append(wxString::Format(Display("%s %.6g mm / Z %.6g mm / XY %llu셀"),
+                        m_intervals->Append(wxString::Format(Display("%s %.6g mm, Z %.6g mm (XY %llu셀)"),
                             Display(label), row.at("distance_mm").get<double>(), row.at("z_mm").get<double>(),
                             static_cast<unsigned long long>(row.at("cells_xy").size())));
                     }
@@ -1898,7 +1898,7 @@ private:
                                          static_cast<unsigned long long>(row.at("cells_xyz").size()));
                     const auto distance = row.at("distance_mm").is_number() ?
                         wxString::Format("%.6g mm", row.at("distance_mm").get<double>()) : Display("미정");
-                    m_intervals->Append(wxString::Format(Display("CAD 기계 간극 / EM 미포함 / %s / %s / %s"), name, distance, detail));
+                    m_intervals->Append(wxString::Format(Display("해석에서 제외된 CAD 기계 간극: %s, %s, %s"), name, distance, detail));
                 }
             }
             m_intervals->SetSelection(0);
@@ -1919,7 +1919,7 @@ private:
             {
                 const auto start = region.at("start_mm").get<std::array<double, 3>>();
                 const auto stop = region.at("stop_mm").get<std::array<double, 3>>();
-                return wxString::Format(Display("%s / %.10g Hz / X %.6g~%.6g / Y %.6g~%.6g / Z %.6g~%.6g mm / %d점"),
+                return wxString::Format(Display("%s (%.10g Hz), X %.6g~%.6g, Y %.6g~%.6g, Z %.6g~%.6g mm (%d점)"),
                     name, region.at("frequency_hz").at(0).get<double>(), start[0], stop[0],
                     start[1], stop[1], start[2], stop[2], region.at("point_count").get<int>());
             };
@@ -1931,7 +1931,7 @@ private:
         }
         const auto cost = Studio::SolverEstimateText(m_result.value("execution_estimate", Json::object()));
         m_output->ChangeValue(wxString::Format(
-            Display("최대 %d 시간 단계 / 종료 에너지 비율 %.8g\n\n복소 표본, 사용한 개정과 해석 조건을 보존합니다.\n"),
+            Display("최대 %d 시간 단계, 종료 에너지 비율 %.8g\n\n복소 표본, 사용한 개정과 해석 조건을 보존합니다.\n"),
             settings.at("max_timesteps").get<int>(), settings.at("end_criterion").get<double>()) +
             cost + "\n\n" + Display(radiation + "\n" + loss + "\n") + fieldSummary);
         m_outputIdentity = "격자 SHA-256\n" + mesh.at("lines_sha256").get<std::string>() +
@@ -1941,11 +1941,11 @@ private:
         if (m_result.contains("multiport"))
         {
             const auto& ports = m_result.at("multiport");
-            wxString listing = wxString::Format(Display("\n\n전체 S 행렬 / %llu개 포트 독립 여기\n"),
+            wxString listing = wxString::Format(Display("\n\n전체 S 행렬 (%llu개 포트를 독립적으로 여기)\n"),
                 static_cast<unsigned long long>(ports.size()));
             for (const auto& port : ports)
             {
-                listing += wxString::Format(Display("P%d  %s / %.8g ohm / %s\n"), port.at("number").get<int>(),
+                listing += wxString::Format(Display("P%d  %s, %.8g ohm, %s\n"), port.at("number").get<int>(),
                     Display(port.at("name").get<std::string>()), port.at("resistance_ohm").get<double>(),
                     Display(port.at("reference_plane").get<std::string>()));
             }
@@ -1954,7 +1954,7 @@ private:
         }
         m_book->SetSelection(1);
         m_meshSummary->GetParent()->Layout();
-        SetStatus("격자와 포함 형상 확인을 완료했습니다. 종료 / 기록 출력에서 예상 실행 비용을 확인할 수 있습니다.");
+        SetStatus("격자와 포함 형상 확인을 완료했습니다. 종료 및 기록 탭에서 예상 실행 비용을 확인할 수 있습니다.");
         m_checkpoint->Enable(!m_result.contains("multiport") && !settings.contains("radiation") &&
             !settings.contains("power_balance") && !settings.contains("field_probe") &&
             settings.value("compute_profile", Json::object()).value("num_threads", 2) == 1);
@@ -1968,7 +1968,7 @@ private:
         const auto& included = model.at("included");
         const auto& excluded = model.at("excluded");
         m_modelSummary->SetLabel(Display("해석 포함 " + std::to_string(included.size()) +
-                                        "개 / 제외 " + std::to_string(excluded.size()) + "개"));
+                                        "개, 제외 " + std::to_string(excluded.size()) + "개"));
         m_model->Freeze();
         for (const auto& row : included)
         {

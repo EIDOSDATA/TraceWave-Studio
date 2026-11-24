@@ -150,7 +150,7 @@ void SmithChart::Paint(wxPaintEvent&)
     }
     const bool admittance = m_result.is_object() && m_result.value("chart", "impedance") == "admittance";
     const double orientation = admittance ? -1.0 : 1.0;
-    dc.DrawText(Display(admittance ? "정규화 어드미턴스 격자 / 실제 Gamma" : "정규화 임피던스 격자 / 실제 Gamma"),
+    dc.DrawText(Display(admittance ? "실제 Gamma와 정규화 어드미턴스 격자" : "실제 Gamma와 정규화 임피던스 격자"),
                 margin, FromDIP(10));
     const wxColour gridColour((colours.border.Red() + colours.secondary.Red()) / 2,
                               (colours.border.Green() + colours.secondary.Green()) / 2,
@@ -257,8 +257,8 @@ void SmithChart::Paint(wxPaintEvent&)
     dc.SetTextForeground(colours.secondary);
     const std::string notice = points.empty()
                                    ? (m_reason.empty() ? "표시할 실제 반사 표본이 없습니다." : m_reason)
-                                   : "실제 " + std::to_string(points.size()) + "표본 / 단위원 밖 " +
-                                         std::to_string(outside) + " / 결측·표시 범위 제외 " + std::to_string(omitted);
+                                   : "실제 " + std::to_string(points.size()) + "표본, 단위원 밖 " +
+                                         std::to_string(outside) + ", 결측 또는 표시 범위 밖 " + std::to_string(omitted);
     dc.DrawText(Display(notice), margin, size.y - FromDIP(45));
     dc.DrawText(Display("선은 인접 표본의 시각적 연결이며 중간 RF 값을 만들지 않습니다."), margin,
                 size.y - FromDIP(25));
