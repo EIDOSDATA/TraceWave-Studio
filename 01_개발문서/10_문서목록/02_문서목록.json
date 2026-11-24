@@ -28768,7 +28768,7 @@
       "category": "current_traceability",
       "review_scope": "기계 생성/구조 대조; AC 합격 아님",
       "bytes": 646637,
-      "working_tree_sha256": "5c7d8b2e653fa641ea1e99515f255e7df8f29ecdf6b841ed3f7c6740714b2cb1"
+      "working_tree_sha256": "f53cf17f2ebc4e7e5a6c9ec28725150ea8bb95204cad394ec85c2cd10ac8ceb0"
     },
     {
       "path": "01_개발문서/07_검증/01_구현감사/04_기능구현대조.md",
@@ -32694,8 +32694,8 @@
       "path": "01_개발문서/07_검증/426_알원_알시십_후보_생성과_인계.md",
       "category": "verification_record",
       "review_scope": "해당 개정의 실행 근거와 판정 조건",
-      "bytes": 4557,
-      "working_tree_sha256": "0247102758d17256a9744556c8c15f81e968fab8db6c0016c805ffc5367c3192",
+      "bytes": 4835,
+      "working_tree_sha256": "c7733fc2b91a659e4bee249a7814b6f9ef0b68ccfcb66edb83f85fc19bde5be2",
       "text_lines": 30,
       "text_status": "utf8_read"
     },
@@ -33210,8 +33210,8 @@
       "path": "01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md",
       "category": "current_08_운영환경",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 9408,
-      "working_tree_sha256": "f304c4a9a85b3d7afcb7b22d5296a9c825ff2f895cfa9cf876119a705beb3a0b",
+      "bytes": 9409,
+      "working_tree_sha256": "80bed430fed06e983cf282be294438600e09dddac3d654dcd19c4bf76fc01f1c",
       "text_lines": 99,
       "text_status": "utf8_read"
     },
@@ -33264,8 +33264,8 @@
       "path": "01_개발문서/09_개발계획/04_현행버전_남은작업.md",
       "category": "current_09_개발계획",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 7321,
-      "working_tree_sha256": "f835b743160b0cf017020ec6a641924107e0206ba4a906ba9fe1a8afecef60bd",
+      "bytes": 7445,
+      "working_tree_sha256": "7dab764599fba46f55a65b4abdac79ddc18a5bbfe50ed0b610805756ce4a0ae6",
       "text_lines": 38,
       "text_status": "utf8_read"
     },
@@ -33300,8 +33300,8 @@
       "path": "01_개발문서/09_개발계획/08_새채팅_개발인계.md",
       "category": "current_09_개발계획",
       "review_scope": "본문과 담당 기능 및 이력의 관계 검토",
-      "bytes": 7037,
-      "working_tree_sha256": "bdbcb69f4dbe33904624e7db7a82abbbde2fa8300caa193c49854e8fe76da6fd",
+      "bytes": 7075,
+      "working_tree_sha256": "e3ff6613d4ca7ec66996f7000b7081d96f05f542f3aadb02701439d7fc390134",
       "text_lines": 59,
       "text_status": "utf8_read"
     },
@@ -34166,8 +34166,8 @@
       "path": "README.md",
       "category": "repository_guide",
       "review_scope": "개발 문서 진입/현재 상태 검토",
-      "bytes": 3964,
-      "working_tree_sha256": "91444dc0d1d721e2d8175a74e2218caa6a53698ac71a21ada5ddec567b98387e",
+      "bytes": 4047,
+      "working_tree_sha256": "640800013b0639c4ee3a3c2e7e3bf8c3a6869e4e1074162e163e03104bb11b3a",
       "text_lines": 26,
       "text_status": "utf8_read"
     }
