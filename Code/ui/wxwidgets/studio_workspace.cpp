@@ -113,6 +113,7 @@ void StudioFrame::BuildWorkspaceJobs()
                                : page == 4 || page == 14 || page == 15 || page == 16 ? WorkspaceArea::Comparison
                                : page == 5                                           ? WorkspaceArea::Output
                                                                                      : WorkspaceArea::Results);
+        UpdatePortLinks();
         UpdateNetworkViews();
         UpdateSweepViews();
         UpdateResultViews();

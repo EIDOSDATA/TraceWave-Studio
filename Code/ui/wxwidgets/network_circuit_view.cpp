@@ -370,8 +370,8 @@ void NetworkCircuitDialog::BuildInterface()
     m_results =
         new wxListCtrl(result, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 150)), wxLC_REPORT | wxLC_SINGLE_SEL);
     const std::array<std::pair<const char*, int>, 6> resultColumns{
-        {{"주파수 (Hz)", 115}, {"부하 S11 (dB)", 122}, {"결합 S11 (dB)", 125}, {"VSWR", 85},
-         {"표본 상태", 110}, {"회로 손실 (%)", 130}}};
+        {{"주파수 (Hz)", 104}, {"부하 S11 (dB)", 122}, {"결합 S11 (dB)", 125}, {"VSWR", 151},
+         {"표본 상태", 100}, {"회로 손실 (%)", 120}}};
     for (std::size_t index = 0; index < resultColumns.size(); ++index)
     {
         m_results->InsertColumn(static_cast<int>(index), Display(resultColumns[index].first),
@@ -580,14 +580,17 @@ void NetworkCircuitDialog::RenderData()
                std::to_string(descriptor.at("port_ids").size()) + "포트\n";
     details += "표본: " + Number(descriptor.at("sample_count")) + "개 / " +
                StudioFrequency::Range(descriptor.at("frequency_min_hz"), descriptor.at("frequency_max_hz")) + "\n";
-    details += "부하 기준면: " + Number(descriptor.at("reference_planes").at(0)) + "\n";
-    details += "파 정의: " + descriptor.at("wave_definition").get<std::string>() +
-               "\n시간 규약: " + descriptor.at("phasor_convention").get<std::string>() + "\n";
-    details += "기준 임피던스 (실수, 허수): " + Number(descriptor.at("z0_ohm")) + " ohm\n";
-    details +=
-        "주파수별 Z0: " + std::string(descriptor.value("z0_frequency_dependent", false) ? "변함" : "동일 또는 미정") +
-        "\n";
-    details += "EM 외부 이상 RLC만 결합합니다. 원본, 제작/측정 조건과 전자기장 결과는 그대로 보존합니다.";
+    details += "\n부하 기준면: " + ResultUi::Text(descriptor.at("reference_planes").at(0)) + "\n";
+    const auto& impedance = descriptor.at("z0_ohm");
+    details += "부하 포트 1 기준 임피던스 (ohm): " +
+               ResultUi::Complex(impedance.is_array() && !impedance.empty() ? impedance.front() : Json(nullptr));
+    if (descriptor.value("z0_frequency_dependent", false))
+    {
+        details += " (첫 표본, 주파수별 적용)";
+    }
+    details += "\n파 정의: " + ResultUi::State(descriptor.at("wave_definition")) +
+               "\n시간 규약: " + ResultUi::Text(descriptor.at("phasor_convention")) + "\n\n";
+    details += "전자기장 해석 결과와 별도로 외부 이상 RLC 회로를 계산합니다.";
     m_dataDetails->ChangeValue(Display(details));
 }
 
@@ -638,10 +641,10 @@ void NetworkCircuitDialog::RenderResult(const Json& result)
             Display(sample.value("zero_magnitude", false) ? "-inf (완전 정합)" : Number(sample.at("magnitude_db"))));
         const std::string vswrState = sample.value("vswr_state", "");
         m_results->SetItem(row, 3,
-                           Display(vswrState == "positive_infinity"  ? "+inf"
-                                   : vswrState == "undefined_active" ? "정의 불가"
+                           Display(vswrState == "positive_infinity"  ? "무한대"
+                                   : vswrState == "undefined_active" ? "정의 불가 (능동)"
                                                                      : Number(sample.at("vswr"))));
-        m_results->SetItem(row, 4, Display(sample.at("status").get<std::string>()));
+        m_results->SetItem(row, 4, Display(ResultUi::State(sample.at("status"))));
         const auto& power = result.at("power_budget_preview").at(row);
         const auto loss = power.is_null() ? Json(nullptr) : power.at("ideal_circuit_loss_fraction");
         m_results->SetItem(row, 5, loss.is_null() ? Display("미평가") : wxString::Format("%.5g", 100 * loss.get<double>()));
@@ -649,11 +652,14 @@ void NetworkCircuitDialog::RenderResult(const Json& result)
     m_pageLabel->SetLabel(Display("읽기 전용 후보 / 앞 " + std::to_string(page.at("samples").size()) + " / " +
                                   Number(page.at("total")) + "개 표본. 저장 후 결과 화면에서 전체 표본을 조회합니다."));
     const auto& conditions = result.at("matching_conditions");
+    const auto& descriptor = result.at("descriptor");
+    const auto& impedance = descriptor.at("z0_ohm");
     m_resultDetails->ChangeValue(Display(
-        "부하 기준면: " + Number(conditions.at("load_reference_plane")) +
-        "\n정합 후 입력 기준면: " + Number(conditions.at("input_reference_plane")) +
-        "\nZ0 (실수, 허수): " + Number(result.at("descriptor").at("z0_ohm")) + " ohm" +
-        (result.at("descriptor").value("z0_frequency_dependent", false) ? " (첫 표본, 주파수별 적용)" : "") +
+        "부하 기준면: " + ResultUi::Text(conditions.at("load_reference_plane")) +
+        "\n정합 후 입력 기준면: " + ResultUi::Text(conditions.at("input_reference_plane")) +
+        "\n정합 후 기준 임피던스 (ohm): " +
+        ResultUi::Complex(impedance.is_array() && !impedance.empty() ? impedance.front() : Json(nullptr)) +
+        (descriptor.value("z0_frequency_dependent", false) ? " (첫 표본, 주파수별 적용)" : "") +
         "\n같은 주파수 표본을 각 기준면에서 표시합니다. 회로 손실은 입사전력 대비 이상 RLC 소산입니다. "
         "부품 Q/ESR/ESL/SRF 및 방사 성능은 미평가입니다."));
 }

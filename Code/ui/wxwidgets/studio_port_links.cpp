@@ -148,8 +148,10 @@ void StudioFrame::UpdatePortLinks()
     }
     m_canvas->SetInspection(terminals, std::nullopt);
     m_modelView->SetRelatedSelection(modelSources, visible && !CurrentDisplayMesh());
-    const bool visibilityChanged = m_portLinks->Show(visible);
-    if (!visible)
+    const int page = m_views->GetSelection();
+    const bool showLinks = visible && (page == 0 || page == 1);
+    const bool visibilityChanged = m_portLinks->Show(showLinks);
+    if (!showLinks)
     {
         if (visibilityChanged)
         {

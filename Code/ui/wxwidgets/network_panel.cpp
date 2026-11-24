@@ -1,6 +1,7 @@
 /** @file @brief 현재 결과의 이름/실제 표본과 미정 조건을 같은 선택에 맞춰 표시한다. */
 #include "network_panel.h"
 #include "network_chart.h"
+#include "result_presentation.h"
 #include "studio_notebook.h"
 #include "studio_theme.h"
 #include "frequency_display.h"
@@ -610,20 +611,21 @@ void NetworkPanel::ShowConditions()
     m_conditionHeading->SetLabel(Display(entry.at("name")));
     m_conditionHeading->SetToolTip(Display(entry.at("name")));
     std::string summary =
-        "자료: " + Kind(entry.at("kind")) + "\n행렬: " + Text(descriptor.at("parameter_kind")) + " / " +
-        Text(descriptor.at("unit")) + "\n표본: " + Text(descriptor.at("sample_count")) + "\n주파수\n" +
+        "자료: " + Kind(entry.at("kind")) + "\n행렬 / 단위: " + Text(descriptor.at("parameter_kind")) + " / " +
+        Text(descriptor.at("unit")) + "\n표본: " + Text(descriptor.at("sample_count")) + "개\n주파수: " +
         StudioFrequency::Range(descriptor.at("frequency_min_hz"), descriptor.at("frequency_max_hz"), FrequencyUnit()) +
-        "\n\n파 정의: " + Text(descriptor.at("wave_definition")) +
+        "\n\n파 정의: " + ResultUi::State(descriptor.at("wave_definition")) +
         "\n시간 규약: " + Text(descriptor.at("phasor_convention"));
     const auto& names = descriptor.at("port_names");
+    const auto& impedance = descriptor.at("z0_ohm");
     for (std::size_t index = 0; index < names.size(); ++index)
     {
         summary += "\n\n포트 " + std::to_string(index + 1) + ": " + Text(names[index]) +
                    "\n기준면: " + Text(descriptor.at("reference_planes")[index]) +
-                   "\n모드: " + Text(descriptor.at("port_modes")[index]) +
-                   "\n전류 방향: " + Text(descriptor.at("current_orientation")[index]);
-        summary += "\nZ0 / ohm: " +
-                   (descriptor.at("z0_ohm").is_null() ? std::string("미정") : Text(descriptor.at("z0_ohm")[index]));
+                   "\n모드: " + ResultUi::State(descriptor.at("port_modes")[index]) +
+                   "\n전류 방향: " + ResultUi::State(descriptor.at("current_orientation")[index]);
+        summary += "\n기준 임피던스 (ohm): " +
+                   ResultUi::Complex(impedance.is_array() && index < impedance.size() ? impedance[index] : Json(nullptr));
     }
     if (descriptor.value("z0_frequency_dependent", false))
     {
