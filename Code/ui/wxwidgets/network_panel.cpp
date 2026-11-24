@@ -375,7 +375,10 @@ void NetworkPanel::ClearSelection(const std::string& message)
     m_selection = nullptr;
     m_markerRow = -1;
     m_chart->Clear();
+    m_chart->Hide();
     m_samples->DeleteAllItems();
+    m_samples->Hide();
+    m_marker->Hide();
     m_pageLabel->SetLabel(wxEmptyString);
     m_marker->SetLabel(Display("표본을 선택하면 같은 실제 값을 확인합니다."));
     m_heading->SetLabel(Display("네트워크 결과"));
@@ -439,6 +442,9 @@ void NetworkPanel::SetResult(const Json& result)
     {
         m_metric->SetSelection(1);
     }
+    m_chart->Show();
+    m_samples->Show();
+    m_marker->Show();
     m_chart->SetPage(page, Display(result.at("entry").at("name")));
     UpdateFrequencyDisplay();
     UpdateMetric();
@@ -523,7 +529,7 @@ void NetworkPanel::ShowSamples()
         for (std::size_t index = 0; index < keys.size(); ++index)
         {
             m_samples->SetItem(row, static_cast<int>(index + 1),
-                               index == 0 ? Display(StudioFrequency::Value(sample.at("frequency_hz"), scale))
+                               index == 0 ? Display(StudioFrequency::Value(sample.at("frequency_hz"), scale, 9))
                                           : Value(sample, keys[index]));
         }
         m_samples->SetItem(

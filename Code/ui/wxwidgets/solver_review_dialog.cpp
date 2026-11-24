@@ -138,9 +138,9 @@ void CompareValues(wxListCtrl& table, const Json& current, const Json& source, c
         {"feature_subdivisions", "임계 구간 최소 분할"}, {"mesh_policy.kind", "외부 공기 격자 방식"},
         {"mesh_policy.air_cell_mm", "바깥 공기 격자 간격 (mm)"}, {"mesh_policy.growth_ratio", "공기 격자 성장률"},
         {"max_timesteps", "최대 시간 단계"}, {"end_criterion", "종료 에너지 비율"},
-        {"field_probe.frequency_hz", "필드 기록 주파수 (Hz)"}, {"field_probe.x_mm", "필드 기록 X 범위 (mm)"},
+        {"field_probe.frequency_hz", "필드 기록 주파수"}, {"field_probe.x_mm", "필드 기록 X 범위 (mm)"},
         {"field_probe.magnetic", "자기장 H 기록"}, {"field_probe.y_mm", "필드 기록 Y 범위 (mm)"}, {"field_probe.z_mm", "필드 기록 Z (mm)"},
-        {"radiation.frequency_hz", "NF2FF 기록 주파수 (Hz)"}, {"radiation.theta_step_deg", "NF2FF theta 간격 (deg)"},
+        {"radiation.frequency_hz", "방사 기록 주파수"}, {"radiation.theta_step_deg", "NF2FF theta 간격 (deg)"},
         {"radiation.phi_step_deg", "NF2FF phi 간격 (deg)"},
         {"compute_profile.kind", "계산 예산 프로필"}, {"compute_profile.num_threads", "계산 스레드"},
         {"power_balance.kind", "독립 손실 기록 방식"}, {"local_mesh", "객체별 국부 격자"}};
@@ -170,9 +170,14 @@ void CompareValues(wxListCtrl& table, const Json& current, const Json& source, c
     }
     const auto value = [&path](const Json& item)
     {
-        if (item.is_number() && (path == "frequency_hz.start" || path == "frequency_hz.stop"))
+        if (item.is_number() && (path == "frequency_hz.start" || path == "frequency_hz.stop" ||
+                                 path == "field_probe.frequency_hz"))
         {
-            return Display(StudioFrequency::WithUnit(item));
+            return Display(StudioFrequency::Input(item));
+        }
+        if (item.is_array() && (path == "frequency_hz.points" || path == "radiation.frequency_hz"))
+        {
+            return Display(StudioFrequency::InputList(item));
         }
         return Display(item.is_null() ? "사용 안 함" : item.is_string() ? item.get<std::string>() : item.dump());
     };
@@ -426,23 +431,23 @@ private:
         Field(*frequency, "start_hz", "시작 주파수");
         Field(*frequency, "stop_hz", "끝 주파수");
         Field(*frequency, "count", "주파수 표본 수 (3~201)");
-        Field(*frequency, "sample_points_hz", "직접 주파수 표본 (Hz, 쉼표, 선택)");
-        m_fields.at("sample_points_hz")->SetHint(Display("비우면 시작/끝/표본 수 사용"));
+        Field(*frequency, "sample_points_hz", "직접 주파수 표본 (쉼표, 선택)");
+        m_fields.at("sample_points_hz")->SetHint(Display("예: 8 GHz, 9 GHz, 10 GHz / 비우면 대역에서 생성"));
         Field(*frequency, "max_timesteps", "최대 시간 단계");
         Field(*frequency, "end_criterion", "종료 에너지 비율");
-        m_nf = new wxCheckBox(frequency->GetStaticBox(), wxID_ANY, Display("NF2FF 기록"));
+        m_nf = new wxCheckBox(frequency->GetStaticBox(), wxID_ANY, Display("원거리 방사 패턴 기록 (NF2FF)"));
         m_nf->SetName("solver.radiation.enabled");
         frequency->Add(m_nf, 0, wxEXPAND | wxALL, FromDIP(8));
-        Field(*frequency, "frequency_hz", "방사 기록 주파수 (Hz, 쉼표로 구분)");
-        Field(*frequency, "theta_step_deg", "theta 간격 (5/10/15/30 deg)");
-        Field(*frequency, "phi_step_deg", "phi 간격 (5/10/15/30 deg)");
+        Field(*frequency, "frequency_hz", "방사 기록 주파수 (1~3개, 쉼표)");
+        Field(*frequency, "theta_step_deg", "극각 간격 (theta, 5/10/15/30도)");
+        Field(*frequency, "phi_step_deg", "방위각 간격 (phi, 5/10/15/30도)");
         Field(*frequency, "field_probe", "전기장 기록 영역 (선택)");
         auto* probeOrder = new wxStaticText(frequency->GetStaticBox(), wxID_ANY,
-            Display("주파수 (Hz), X 최소/최대, Y 최소/최대, Z 최소/최대 (mm). 단면은 법선축의 두 값을 같게 입력하세요. XY 단면은 Z 한 값도 가능합니다."));
+            Display("주파수, X 최소/최대, Y 최소/최대, Z 최소/최대 (mm). 주파수 단위를 생략하면 Hz입니다. 단면은 법선축의 두 값을 같게 입력하세요."));
         StudioTheme::BindSecondary(*probeOrder);
         probeOrder->Wrap(FromDIP(260));
         frequency->Add(probeOrder, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(8));
-        m_fields.at("field_probe")->SetHint(Display("2450000000, 2, 5, 2, 5, 2"));
+        m_fields.at("field_probe")->SetHint(Display("예: 2.45 GHz, 2, 5, 2, 5, 2 (XY 단면)"));
         m_magnetic = new wxCheckBox(frequency->GetStaticBox(), wxID_ANY, Display("같은 급전에서 자기장 H도 기록"));
         m_magnetic->SetName("solver.field_probe.magnetic");
         frequency->Add(m_magnetic, 0, wxEXPAND | wxALL, FromDIP(8));
@@ -1262,12 +1267,7 @@ private:
     void LoadFields(const Json& settings)
     {
         const auto band = settings.value("frequency_hz", Json{{"start", 2.4e9}, {"stop", 2.4835e9}, {"count", 101}});
-        wxArrayString pointLabels;
-        for (const auto& point : band.value("points", Json::array()))
-        {
-            pointLabels.Add(wxString::Format("%.17g", point.get<double>()));
-        }
-        m_fields.at("sample_points_hz")->ChangeValue(wxJoin(pointLabels, ','));
+        m_fields.at("sample_points_hz")->ChangeValue(Display(StudioFrequency::InputList(band.value("points", Json::array()))));
         const auto mesh = settings.value("mesh_policy", Json::object());
         const auto radiation = settings.value("radiation", Json::object());
         const std::array<double, 2> limits{band.at("start").get<double>(), band.at("stop").get<double>()};
@@ -1284,19 +1284,15 @@ private:
         {
             m_fields.at(value.key())->ChangeValue(Display(value.value().dump()));
         }
-        wxArrayString frequencies;
-        for (const auto& value : radiation.value("frequency_hz", Json::array({
-                (band.at("start").get<double>() + band.at("stop").get<double>()) / 2})))
-        {
-            frequencies.Add(Display(value.dump()));
-        }
-        m_fields.at("frequency_hz")->ChangeValue(wxJoin(frequencies, ','));
+        const auto midpoint = (band.at("start").get<double>() + band.at("stop").get<double>()) / 2;
+        m_fields.at("frequency_hz")->ChangeValue(Display(
+            StudioFrequency::InputList(radiation.value("frequency_hz", Json::array({midpoint})))));
         wxArrayString probeValues;
         m_magnetic->SetValue(false);
         if (settings.contains("field_probe"))
         {
             const auto& probe = settings.at("field_probe");
-            probeValues.Add(Display(probe.at("frequency_hz").dump()));
+            probeValues.Add(Display(StudioFrequency::Input(probe.at("frequency_hz"))));
             for (const auto* key : {"x_mm", "y_mm"})
             {
                 const auto& span = probe.at(key);
@@ -1457,10 +1453,17 @@ private:
             while (tokens.HasMoreTokens())
             {
                 double number = 0;
-                if (!tokens.GetNextToken().Strip(wxString::both).ToDouble(&number) || !std::isfinite(number) ||
-                    (!points.empty() && number <= points.back().get<double>()) || points.size() >= 201)
+                try
                 {
-                    return fail("sample_points_hz", "서로 다른 유한 주파수를 오름차순으로 최대 201개 입력하세요.");
+                    number = StudioFrequency::ReadInput(Utf8(tokens.GetNextToken()));
+                }
+                catch (const std::runtime_error& error)
+                {
+                    return fail("sample_points_hz", error.what());
+                }
+                if ((!points.empty() && number <= points.back().get<double>()) || points.size() >= 201)
+                {
+                    return fail("sample_points_hz", "서로 다른 주파수를 낮은 값부터 최대 201개 입력하세요.");
                 }
                 points.push_back(number);
             }
@@ -1529,12 +1532,14 @@ private:
             wxStringTokenizer tokens(m_fields.at("frequency_hz")->GetValue(), ",", wxTOKEN_RET_EMPTY_ALL);
             while (tokens.HasMoreTokens())
             {
-                double number = 0;
-                if (!tokens.GetNextToken().Strip(wxString::both).ToDouble(&number) || !std::isfinite(number))
+                try
                 {
-                    return fail("frequency_hz", "주파수는 유한한 수를 쉼표로 구분해 입력하세요.");
+                    frequencies.push_back(StudioFrequency::ReadInput(Utf8(tokens.GetNextToken())));
                 }
-                frequencies.push_back(number);
+                catch (const std::runtime_error& error)
+                {
+                    return fail("frequency_hz", error.what());
+                }
             }
             if (frequencies.empty() || frequencies.size() > 3)
             {
@@ -1565,8 +1570,20 @@ private:
             while (tokens.HasMoreTokens())
             {
                 double value = 0;
-                if (coordinates.size() >= 7 || !tokens.GetNextToken().Strip(wxString::both).ToDouble(&value) ||
-                    !std::isfinite(value))
+                const auto token = tokens.GetNextToken().Strip(wxString::both);
+                if (coordinates.empty())
+                {
+                    try
+                    {
+                        coordinates.push_back(StudioFrequency::ReadInput(Utf8(token)));
+                    }
+                    catch (const std::runtime_error& error)
+                    {
+                        return fail("field_probe", error.what());
+                    }
+                    continue;
+                }
+                if (coordinates.size() >= 7 || !token.ToDouble(&value) || !std::isfinite(value))
                 {
                     return fail("field_probe", "주파수와 좌표를 입력하세요. 단면은 6개, 체적은 7개 값입니다.");
                 }

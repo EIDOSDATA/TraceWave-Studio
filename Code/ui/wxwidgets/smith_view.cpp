@@ -47,14 +47,21 @@ SmithView::SmithView(wxWindow* parent)
     layout->Add(m_notice, 0, wxEXPAND | wxALL, FromDIP(12));
     auto* content = new wxBoxSizer(wxHORIZONTAL);
     m_chart = new SmithChart(this);
-    content->Add(m_chart, 2, wxEXPAND | wxRIGHT, FromDIP(12));
+    content->Add(m_chart, 3, wxEXPAND | wxRIGHT, FromDIP(12));
     auto* values = new wxBoxSizer(wxVERTICAL);
     m_markerValues =
-        new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(310, 310)), wxLC_REPORT | wxLC_HRULES);
+        new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(360, 310)), wxLC_REPORT | wxLC_HRULES);
+    m_markerValues->SetMinSize(FromDIP(wxSize(360, 310)));
     m_markerValues->SetName("result.smith.marker-values");
     StudioTheme::Table(*m_markerValues);
-    m_markerValues->AppendColumn(Display("항목"), wxLIST_FORMAT_LEFT, FromDIP(132));
-    m_markerValues->AppendColumn(Display("M1 실제 값"), wxLIST_FORMAT_LEFT, FromDIP(180));
+    m_markerValues->AppendColumn(Display("항목"), wxLIST_FORMAT_LEFT, FromDIP(130));
+    m_markerValues->AppendColumn(Display("M1 값"), wxLIST_FORMAT_LEFT, FromDIP(210));
+    m_markerValues->Bind(wxEVT_SIZE, [this](wxSizeEvent& event)
+    {
+        const int available = m_markerValues->GetClientSize().x - m_markerValues->GetColumnWidth(0) - FromDIP(4);
+        m_markerValues->SetColumnWidth(1, std::max(FromDIP(170), available));
+        event.Skip();
+    });
     values->Add(m_markerValues, 1, wxEXPAND);
     auto* markers = new wxWrapSizer(wxHORIZONTAL);
     m_markerPrevious = new wxButton(this, wxID_ANY, Display("이전 표본"));
@@ -85,7 +92,7 @@ SmithView::SmithView(wxWindow* parent)
     notice->Wrap(FromDIP(290));
     StudioTheme::BindSecondary(*notice);
     values->Add(notice, 0, wxEXPAND | wxALL, FromDIP(8));
-    content->Add(values, 1, wxEXPAND);
+    content->Add(values, 2, wxEXPAND);
     layout->Add(content, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(12));
     auto* paging = new wxWrapSizer(wxHORIZONTAL);
     m_previous = new wxButton(this, wxID_ANY, Display("이전 201개"));

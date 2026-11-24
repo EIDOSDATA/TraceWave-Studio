@@ -39,37 +39,6 @@ int Integer(const std::string& text)
     return static_cast<int>(value);
 }
 
-/** @brief 공학 단위 입력을 저장 계약의 Hz로 변환한다. 단위를 생략하면 Hz로 읽는다. */
-double Frequency(const std::string& text)
-{
-    std::istringstream input(text);
-    input.imbue(std::locale::classic());
-    double value = 0;
-    std::string unit;
-    if (!(input >> value))
-    {
-        throw std::runtime_error("주파수를 숫자로 입력하세요. 예: 2.4 GHz");
-    }
-    if (input >> unit)
-    {
-        if (unit != "Hz" && unit != "kHz" && unit != "MHz" && unit != "GHz")
-        {
-            throw std::runtime_error("주파수 단위는 Hz, kHz, MHz, GHz를 사용하세요.");
-        }
-        value *= StudioFrequency::ForRange(0.0, 0.0, unit).divisor;
-        input >> std::ws;
-        if (!input.eof())
-        {
-            throw std::runtime_error("한 주파수에 단위 하나만 입력하세요.");
-        }
-    }
-    if (!std::isfinite(value) || value <= 0)
-    {
-        throw std::runtime_error("0보다 큰 유한 주파수를 입력하세요.");
-    }
-    return value;
-}
-
 /** @brief 쉼표 목록의 빈 항목과 잘못된 수치를 거절한다. */
 Json Numbers(const std::string& text, double (*parse)(const std::string&))
 {
@@ -107,20 +76,6 @@ std::string InputFormat(const Json& value)
     return value.dump();
 }
 
-/** @brief 간결한 단위로 왕복할 수 없으면 원래 Hz 정밀도를 그대로 표시한다. */
-std::string FrequencyInput(const Json& value)
-{
-    const auto original = InputFormat(value);
-    const double hz = value.get<double>();
-    const auto scale = StudioFrequency::ForRange(hz, hz);
-    const auto compact = StudioFrequency::WithUnit(value);
-    if (scale.unit != "Hz" && hz > 0 && Frequency(compact) == hz)
-    {
-        return compact;
-    }
-    return original + " Hz";
-}
-
 /** @brief 목록의 항목과 순서를 그대로 표시한다. */
 std::string List(const Json& values, std::string (*format)(const Json&))
 {
@@ -145,8 +100,8 @@ Studio::StudyFields Studio::StudyDraft(const Json& specification)
     fields["adaptive_memory_limit_mib"] = specification.contains("adaptive_mesh")
         ? InputFormat(specification.at("adaptive_mesh").at("memory_limit_mib"))
         : "";
-    fields["start"] = FrequencyInput(frequency.at("start"));
-    fields["stop"] = FrequencyInput(frequency.at("stop"));
+    fields["start"] = StudioFrequency::Input(frequency.at("start"));
+    fields["stop"] = StudioFrequency::Input(frequency.at("stop"));
     fields["count"] = InputFormat(frequency.at("count"));
     for (const auto* key : {"air_padding_mm", "curve_tolerance_mm", "max_timesteps", "end_criterion"})
     {
@@ -163,7 +118,7 @@ Studio::StudyFields Studio::StudyDraft(const Json& specification)
                           {"theta_step_deg", 15},
                           {"phi_step_deg", 15},
                           {"box_clearance_mm", 30}});
-    fields["frequencies"] = List(radiation.at("frequency_hz"), FrequencyInput);
+    fields["frequencies"] = StudioFrequency::InputList(radiation.at("frequency_hz"));
     for (const auto* key : {"theta_step_deg", "phi_step_deg", "box_clearance_mm"})
     {
         fields[key] = InputFormat(radiation.at(key));
@@ -219,8 +174,8 @@ Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bo
     }
     auto& settings = result["settings"];
     settings["grid_mm"] = result.at("grid_levels_mm").back();
-    settings["frequency_hz"] = Json{{"start", parse("start", Frequency)},
-                                    {"stop", parse("stop", Frequency)},
+    settings["frequency_hz"] = Json{{"start", parse("start", StudioFrequency::ReadInput)},
+                                    {"stop", parse("stop", StudioFrequency::ReadInput)},
                                     {"count", parse("count", Integer)}};
     for (const auto* key : {"air_padding_mm", "curve_tolerance_mm", "end_criterion"})
     {
@@ -243,7 +198,7 @@ Json Studio::StudySpecification(const Json& basis, const StudyFields& fields, bo
     }
     if (radiation)
     {
-        settings["radiation"] = Json{{"frequency_hz", parse("frequencies", [](const std::string& text) { return Numbers(text, Frequency); })},
+        settings["radiation"] = Json{{"frequency_hz", parse("frequencies", [](const std::string& text) { return Numbers(text, StudioFrequency::ReadInput); })},
                                      {"theta_step_deg", parse("theta_step_deg", Integer)},
                                      {"phi_step_deg", parse("phi_step_deg", Integer)},
                                      {"box_clearance_mm", parse("box_clearance_mm", Number)}};

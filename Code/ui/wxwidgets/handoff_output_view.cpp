@@ -94,6 +94,7 @@ HandoffOutputView::HandoffOutputView(wxWindow* parent) : wxPanel(parent)
 
     m_list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 150)),
                             wxLC_REPORT | wxLC_SINGLE_SEL | wxBORDER_SIMPLE);
+    StudioTheme::Table(*m_list);
     m_list->SetName(Display("인계 근거 목록"));
     m_list->AppendColumn(Display("항목"), wxLIST_FORMAT_LEFT, FromDIP(135));
     m_list->AppendColumn(Display("자료"), wxLIST_FORMAT_LEFT, FromDIP(285));

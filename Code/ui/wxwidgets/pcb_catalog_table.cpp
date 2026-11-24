@@ -1,6 +1,7 @@
 /** @file @brief 작은 페이지 캐시와 PCB 자료의 표기를 구현한다. */
 #include "pcb_catalog_table.h"
 #include "pcb_selection_view_support.h"
+#include "studio_theme.h"
 #include <algorithm>
 #include <iterator>
 #include <utility>
@@ -9,6 +10,7 @@ PcbCatalogTable::PcbCatalogTable(wxWindow* parent, std::function<void(long)> req
     : wxListCtrl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL | wxLC_VIRTUAL),
       m_requestRow(std::move(requestRow))
 {
+    StudioTheme::Table(*this);
 }
 
 /** @brief 새 검색에서 이전 행 데이터와 선택이 함께 사라지게 한다. */

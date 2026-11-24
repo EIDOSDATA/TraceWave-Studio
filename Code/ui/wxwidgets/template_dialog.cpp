@@ -130,34 +130,33 @@ std::string TemplateDialog::CardDescription() const
     {
         text += kind == "circle" ? "원형 " : "직사각형 ";
     }
+    text += "\n생성 범위: 도체 형상. 급전, 물성과 RF 검증은 별도 확인 대상입니다.";
     text += "\n출처 범위: " + m_card.at("source").at("scope").get<std::string>();
-    for (const auto& reference : m_card.at("source").at("references"))
+    const auto section = [&text](const char* heading, const Json& values)
     {
-        text += "\n- " + reference.get<std::string>();
-    }
-    for (const auto& assumption : m_card.value("assumptions", Json::array()))
-    {
-        text += "\n- " + assumption.get<std::string>();
-    }
-    for (const auto& limitation : m_card.value("limitations", Json::array()))
-    {
-        text += "\n- " + limitation.get<std::string>();
-    }
+        if (values.empty())
+        {
+            return;
+        }
+        text += "\n\n";
+        text += heading;
+        for (const auto& value : values)
+        {
+            text += "\n- " + value.get<std::string>();
+        }
+    };
     if (m_card.contains("evidence"))
     {
-        for (const auto& key : {"omitted", "unknown", "source_reported"})
-        {
-            for (const auto& note : m_card.at("evidence").at(key))
-            {
-                text += "\n- " + note.get<std::string>();
-            }
-        }
-        for (const auto& conflict : m_card.at("evidence").value("source_conflicts", Json::array()))
-        {
-            text += "\n원문 불일치: " + conflict.get<std::string>();
-        }
+        const auto& evidence = m_card.at("evidence");
+        section("원문 사이의 차이", evidence.value("source_conflicts", Json::array()));
+        section("생략한 형상과 조건", evidence.at("omitted"));
+        section("미정 조건", evidence.at("unknown"));
+        section("문헌에 보고된 값", evidence.at("source_reported"));
     }
-    return text + SeedDescription() + "\n\n형상만 생성합니다. 급전 포트와 실제 물성, 정합/방사 성능은 자동 확정하지 않습니다.";
+    section("형상 생성 가정", m_card.value("assumptions", Json::array()));
+    section("적용 범위와 한계", m_card.value("limitations", Json::array()));
+    section("출처 원문", m_card.at("source").at("references"));
+    return text + SeedDescription();
 }
 
 void TemplateDialog::Changed()
@@ -262,10 +261,10 @@ void TemplateDialog::Preview()
                 {
                     m_preview = result;
                     m_reviewedInput = input;
-                    std::string notes = CardDescription();
+                    std::string notes = result.value("can_apply", false) ? "형상 미리보기 완료" : "적용 전에 확인할 내용";
                     if (result.contains("generation"))
                     {
-                        notes = result.at("generation").at("summary").get<std::string>() + "\n\n" + notes;
+                        notes += "\n" + result.at("generation").at("summary").get<std::string>();
                     }
                     for (const auto& issue : result.value("issues", Json::array()))
                     {
@@ -274,7 +273,9 @@ void TemplateDialog::Preview()
                     const Json checks = result.value("input_checks", Json(nullptr));
                     if (checks.is_object())
                     {
-                        notes += "\n\n해석 입력 검사: " + checks.value("input_status", std::string("미확인"));
+                        const auto state = checks.value("input_status", std::string());
+                        notes += "\n\n해석 입력 검사\n";
+                        notes += state == "blocked" ? "입력 확인 필요" : state == "valid" ? "입력 검사 통과" : "미확인";
                         for (const auto& diagnostic : checks.value("diagnostics", Json::array()))
                         {
                             notes += "\n- " + DiagnosticMessage(diagnostic);
@@ -286,7 +287,8 @@ void TemplateDialog::Preview()
                                      "개 중 일부를 표시합니다. 전체 검사는 프로젝트 입력 점검을 사용하세요.";
                         }
                     }
-                    m_notes->ChangeValue(Display("검토 기준 개정 " + m_revision + "\n\n" + notes));
+                    m_notes->ChangeValue(Display(notes + "\n\n" + CardDescription() + "\n\n검토 기준 개정\n" + m_revision));
+                    m_notes->ShowPosition(0);
                     const bool hasScene = result.contains("scene") && !result.at("scene").is_null();
                     if (hasScene)
                     {

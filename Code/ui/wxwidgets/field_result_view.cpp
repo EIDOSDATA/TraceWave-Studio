@@ -352,8 +352,9 @@ void FieldResultView::SetDescription(const Json& description)
         }
         if (m_monitor->GetCount() == 0)
         {
-            ClearSlice("선택한 결과에는 표시할 내부 필드가 기록되지 않았습니다.");
-            m_canvas->Clear(onConfigure ? "새 해석의 필드 기록 설정에서 성분과 기록 영역을 지정하세요." : "");
+            ClearSlice(onConfigure
+                ? "내부 필드 미기록. 새 해석의 필드 기록 설정에서 성분과 영역을 지정하세요."
+                : "선택한 결과에는 내부 필드 기록이 없습니다.");
             SetBusy(false);
             return;
         }
@@ -559,6 +560,8 @@ void FieldResultView::SetSlice(const Json& slice)
         }
         m_slice = slice;
         m_point->SetRange(0, static_cast<int>(rows * columns) - 1);
+        m_point->GetContainingSizer()->ShowItems(true);
+        m_marker->Show();
         m_point->Enable(true);
         ShowMarker(0);
         SetStatus("기록한 " + std::to_string(rows * columns) + "개 성분 표본. 색 범위는 현재 반환 단면의 크기이며 공간/주파수 보간은 없습니다.");
@@ -614,6 +617,8 @@ void FieldResultView::ClearSlice(const std::string& message)
     m_request = nullptr;
     m_canvas->Clear(message);
     m_marker->Clear();
+    m_marker->Hide();
+    m_point->GetContainingSizer()->ShowItems(false);
     m_point->Enable(false);
     m_refine->Disable();
     m_study->Disable();
@@ -654,10 +659,12 @@ void FieldResultView::SetBusy(bool busy)
     const bool component = Component() != nullptr;
     const bool configure = onConfigure && m_description.is_object() &&
         m_description.value("status", "") == "unavailable" && !busy;
-    if (m_configure->IsShown() != configure || m_controls->IsShown() != available)
+    if (m_configure->IsShown() != configure || m_controls->IsShown() != available || m_canvas->IsShown() != available)
     {
         m_configure->Show(configure);
         m_controls->Show(available);
+        m_canvas->Show(available);
+        m_load->Show(available);
         Layout();
     }
     for (auto* choice : {m_monitor, m_component, m_frequency, m_normal})

@@ -229,34 +229,41 @@ void NetworkImportDialog::UpdateActions()
     m_browse->Enable(available);
     const bool csv = Format() == "csv";
     m_csv->Enable(available && csv);
-    if (m_csv->Show(csv))
-    {
-        auto* mapping = static_cast<wxScrolledWindow*>(m_csv->GetParent());
-        mapping->Layout();
-        mapping->FitInside();
-    }
+    bool reflow = m_csv->Show(csv);
     const std::size_t count = m_sourceDescriptor.is_null() ? 0 : m_sourceDescriptor.at("port_ids").size();
+    reflow = m_conditions->Show(count > 0) || reflow;
     m_conditions->Enable(available && count > 0);
     for (std::size_t index = 0; index < m_ports.size(); ++index)
     {
         auto& port = m_ports[index];
-        const bool named = index < count && port.mode->GetSelection() == 4;
-        if (port.modeName->IsShown() != named)
+        const bool visible = index < count;
+        reflow = port.panel->Show(visible) || reflow;
+        if (port.modeName->Show(visible && port.mode->GetSelection() == 4))
         {
-            port.modeName->Show(named);
             port.panel->Layout();
-            m_conditions->Layout();
-            m_conditions->GetParent()->Layout();
+            reflow = true;
         }
-        port.panel->Enable(available && index < count);
+        port.panel->Enable(available && visible);
         m_ports[index].plane->Enable(available && index < count && m_ports[index].planeChanged->GetValue());
         m_z0[index]->Enable(available && Format() == "csv" && m_z0Known->GetValue() &&
                             index < static_cast<std::size_t>(m_portCount->GetSelection() + 1));
     }
+    if (reflow)
+    {
+        auto* mapping = static_cast<wxScrolledWindow*>(m_csv->GetParent());
+        m_conditions->Layout();
+        mapping->Layout();
+        mapping->FitInside();
+    }
     m_preview->Enable(available && !m_encoded.empty());
     m_apply->Enable(available && !m_review.is_null() && m_review.value("can_apply", false));
     m_measurementEnabled->Enable(available && m_context.value("measurement", Json(nullptr)).is_object());
-    m_measurementForm->Enable(available && MeasurementSelected());
+    const bool measurement = MeasurementSelected();
+    m_measurementForm->Enable(available && measurement);
+    if (m_measurementForm->Show(measurement))
+    {
+        m_measurementForm->GetParent()->Layout();
+    }
     m_recoverMeasurement->Show(MeasurementUncertain());
     m_recoverMeasurement->Enable(MeasurementUncertain() && !m_pending && !m_recovering && !m_mutating);
 }

@@ -673,7 +673,24 @@ void NetworkAssessmentPanel::UpdateActions()
         return;
     }
     const bool ready = m_available && !m_busy;
-    const bool selected = ready && m_selection.is_object();
+    const bool hasAssessment = m_selection.is_object();
+    const bool hasPoints = hasAssessment && m_criterion >= 0;
+    const bool selected = ready && hasAssessment;
+    const std::array<wxWindow*, 4> summary{m_contextLabel, m_notice->GetParent(), m_validation, m_reason};
+    const std::array<wxWindow*, 6> samples{m_pointHeading, m_points, m_pageLabel, m_allPoints, m_previous, m_next};
+    bool reflow = m_criteria->Show(hasAssessment && m_criteria->GetItemCount() > 0);
+    for (auto* control : summary)
+    {
+        reflow = control->Show(hasAssessment) || reflow;
+    }
+    for (auto* control : samples)
+    {
+        reflow = control->Show(hasPoints) || reflow;
+    }
+    if (reflow)
+    {
+        UpdateLayout();
+    }
     m_records->Enable(ready);
     m_refresh->Enable(ready);
     m_criteria->Enable(selected);

@@ -100,6 +100,25 @@ void FrequencyChecks()
           "descriptor fixes frequency units across sample pages");
     Check(WithUnit(1e9) == "1 GHz" && Range(1e9, 2e9).find("GHz") != std::string::npos,
           "frequency summary includes engineering unit");
+    Check(ReadInput("2441750 kHz") == 2441750000.0 && ReadInput("2.44175GHz") == 2441750000.0 &&
+              ReadInput("2441750000") == 2441750000.0,
+          "editable engineering units and legacy unitless Hz produce the same SI value");
+    const double precise = 2400123456.7890124;
+    Check(ReadInput(Input(precise)) == precise && InputList(Json::array({8e9, 12e9})) == "8 GHz, 12 GHz",
+          "compact input formatting preserves exact old values and sample order");
+    for (const auto* invalid : {"8 mm", "8 GHz Hz", "NaN", "0 GHz", "1e308 GHz"})
+    {
+        bool rejected = false;
+        try
+        {
+            ReadInput(invalid);
+        }
+        catch (const std::runtime_error&)
+        {
+            rejected = true;
+        }
+        Check(rejected, "invalid or overflowing frequency input is rejected");
+    }
     Check(Value(1e9, automatic) != Value(1e9 + 1.0, automatic),
           "nearby representable samples remain distinct in frequency tables");
     Check(Value(std::numeric_limits<double>::denorm_min(), automatic) == "표시 범위 미만" &&

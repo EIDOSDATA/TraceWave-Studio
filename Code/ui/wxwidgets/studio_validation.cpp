@@ -53,7 +53,10 @@ void StudioFrame::ShowProblems()
     m_problems->DeleteAllItems();
     for (const auto& diagnostic : m_diagnostics)
     {
-        const long row = m_problems->InsertItem(m_problems->GetItemCount(), Display("확인 필요"));
+        const auto severity = diagnostic.value("severity", "");
+        const auto state = severity == "blocking" ? "차단" :
+                           severity == "warning" ? "주의" : severity == "info" ? "안내" : "확인 필요";
+        const long row = m_problems->InsertItem(m_problems->GetItemCount(), Display(state));
         m_problems->SetItem(row, 1, Display(DiagnosticMessage(diagnostic)));
     }
     const bool stale = !m_problemRevision.empty() && m_problemRevision != m_revision;
@@ -62,8 +65,7 @@ void StudioFrame::ShowProblems()
     m_problemSummary->SetLabel(
         Display(m_problemRevision.empty()
                     ? "입력 검사를 실행하지 않았습니다."
-                    : (stale ? "이전 설계의 검사 결과입니다. 다시 검사하세요."
-                             : "해석 입력 문제 " + count + " / 해석 메뉴에서 준비와 실행을 별도로 요청하세요.")));
+                    : (stale ? "이전 개정의 검사입니다. 다시 검사하세요." : "해석 입력 문제 " + count)));
     m_bottom->SetPageText(0, Display("문제 " + std::to_string(m_diagnosticCount)));
 }
 

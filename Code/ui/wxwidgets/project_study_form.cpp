@@ -1,9 +1,13 @@
 /** @file @brief 연구 조건과 결과 화면의 위젯 배치를 담당한다. */
 #include "project_study_dialog.h"
 #include "studio_support.h"
+#include "studio_theme.h"
 #include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
+#include <wx/display.h>
+#include <algorithm>
+#include <initializer_list>
 #include <wx/listctrl.h>
 #include <wx/notebook.h>
 #include <wx/panel.h>
@@ -44,6 +48,7 @@ void ProjectStudyDialog::Build()
     for (const auto* title : {"격자 / 해석 조건", "방사 / 독립 손실", "초기 판정 기준"})
     {
         auto* page = new wxScrolledWindow(m_pages);
+        StudioTheme::BindSurface(*page);
         page->SetScrollRate(0, FromDIP(12));
         auto* outer = new wxBoxSizer(wxVERTICAL);
         auto* fields = new wxFlexGridSizer(2, FromDIP(7), FromDIP(12));
@@ -97,23 +102,34 @@ void ProjectStudyDialog::Build()
         }
         else
         {
-            for (const auto& field : std::vector<std::pair<std::string, std::string>>{
-                     {"port_max_s11_complex_delta", "포트 복소 S11 최대 변화"},
-                     {"port_max_resonance_relative_shift", "표본 공진 상대 이동 한계"},
-                     {"max_pattern_delta", "정규화 패턴 최대 변화"},
+            const auto section = [this, page, fields](
+                                     const char* label, std::initializer_list<std::pair<const char*, const char*>> inputs)
+            {
+                auto* heading = new wxStaticText(page, wxID_ANY, Display(label));
+                StudioTheme::Heading(*heading);
+                fields->Add(heading, 0, wxTOP, FromDIP(8));
+                fields->AddSpacer(0);
+                for (const auto& [key, caption] : inputs)
+                {
+                    AddField(page, fields, key, caption);
+                }
+            };
+            section("포트 응답과 공진",
+                    {{"port_max_s11_complex_delta", "포트 복소 S11 최대 변화"},
+                     {"port_max_resonance_relative_shift", "표본 공진 상대 이동 한계"}});
+            section("방사 결과 변화",
+                    {{"max_pattern_delta", "정규화 패턴 최대 변화"},
                      {"max_radiated_relative_delta", "방사 전력 상대 변화"},
                      {"max_directivity_delta_db", "최대 지향성 변화 (dB)"},
                      {"max_gain_delta_db", "이득 / 실현 이득 변화 (dB)"},
                      {"max_efficiency_delta", "효율 변화 (0.02 = 2%p)"},
-                     {"max_s11_complex_delta", "방사 비교의 복소 S11 최대 변화"},
-                     {"max_sphere_relative_error", "원방 구면 적분 상대 오차"},
+                     {"max_s11_complex_delta", "방사 비교의 복소 S11 최대 변화"}});
+            section("수치 검증과 손실",
+                    {{"max_sphere_relative_error", "원방 구면 적분 상대 오차"},
                      {"max_passivity_excess", "수동성 초과 수치 예산"},
                      {"max_port_balance_relative_error", "포트 파동 항등식 상대 잔차"},
                      {"loss_max_relative_delta", "개별 손실 상대 변화 (0.02 = 2%, 최소 3수준)"},
-                     {"loss_absolute_fraction_floor", "개별 손실 절대 바닥 (수용 전력 비율, 0.00001 = 0.001%p)"}})
-            {
-                AddField(page, fields, field.first, field.second);
-            }
+                     {"loss_absolute_fraction_floor", "개별 손실 절대 바닥 (수용 전력 비율, 0.00001 = 0.001%p)"}});
         }
         outer->Add(fields, 0, wxEXPAND | wxALL, 10);
         page->SetSizer(outer);
@@ -124,6 +140,7 @@ void ProjectStudyDialog::Build()
     auto* resultLayout = new wxBoxSizer(wxVERTICAL);
     m_cases =
         new wxListCtrl(results, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 140)), wxLC_REPORT | wxLC_SINGLE_SEL);
+    StudioTheme::Table(*m_cases);
     int column = 0;
     for (const auto* title : {"사례", "기준 격자 (mm)", "단계", "시도 수", "완료 결과", "실제 격자점"})
     {
@@ -138,6 +155,7 @@ void ProjectStudyDialog::Build()
     resultLayout->Add(m_samples, 0, wxBOTTOM, FromDIP(6));
     m_details = new wxTextCtrl(results, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
                                wxTE_MULTILINE | wxTE_READONLY);
+    m_details->SetHint(Display("저장된 연구를 선택하면 사례별 진행 상태와 전력 수지를 표시합니다."));
     resultLayout->Add(m_details, 1, wxEXPAND);
     results->SetSizer(resultLayout);
     m_pages->AddPage(results, Display("진행 / 전력 수지"));
@@ -162,8 +180,11 @@ void ProjectStudyDialog::Build()
     actions->Add(close);
     root->Add(actions, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 10);
     SetSizer(root);
-    SetMinSize(FromDIP(wxSize(820, 580)));
-    SetSize(FromDIP(wxSize(1020, 740)));
+    const auto available = wxDisplay(GetParent()).GetClientArea().Deflate(FromDIP(16));
+    const auto minimum = FromDIP(wxSize(820, 580));
+    const auto preferred = FromDIP(wxSize(1020, 740));
+    SetMinSize(wxSize(std::min(minimum.x, available.width), std::min(minimum.y, available.height)));
+    SetSize(wxSize(std::min(preferred.x, available.width), std::min(preferred.y, available.height)));
     CentreOnParent();
     m_create->Bind(wxEVT_BUTTON,
                    [this](wxCommandEvent&)

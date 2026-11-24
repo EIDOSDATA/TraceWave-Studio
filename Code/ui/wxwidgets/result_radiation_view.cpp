@@ -199,10 +199,10 @@ RadiationResultView::RadiationResultView(wxWindow* parent)
                                wxLC_REPORT | wxLC_SINGLE_SEL);
     m_samples->SetMinSize(FromDIP(wxSize(-1, 210)));
     StudioTheme::Table(*m_samples);
-    const std::array<std::string, 10> columns{"theta (deg)", "phi (deg)", "축비 (dB)", "관측량 값", "상태",
+    const std::array<std::string, 10> columns{"극각 (deg)", "방위각 (deg)", "축비 (dB)", "관측량 값", "상태",
                                              "상대 위상 (deg)", "Etheta (V*s/m)", "Ephi (V*s/m)",
                                              "RHCP (V*s/m)", "LHCP (V*s/m)"};
-    const std::array<int, 10> columnWidths{82, 72, 90, 112, 120, 110, 156, 156, 156, 156};
+    const std::array<int, 10> columnWidths{105, 110, 90, 112, 120, 145, 156, 156, 156, 156};
     for (std::size_t index = 0; index < columns.size(); ++index)
     {
         m_samples->AppendColumn(Display(columns[index]), index != 0 && index != 4 ? wxLIST_FORMAT_RIGHT : wxLIST_FORMAT_LEFT,
@@ -443,8 +443,14 @@ void RadiationResultView::SetBusy(bool busy, const std::string& message)
     {
         m_status->SetLabel(Display(message));
     }
-    m_previous->Enable(!busy && m_data.is_object() && m_sampleOffset > 0);
-    m_next->Enable(!busy && m_data.is_object() &&
+    const bool hasPattern = m_data.is_object();
+    if (m_tabs->Show(hasPattern))
+    {
+        Layout();
+        FitInside();
+    }
+    m_previous->Enable(!busy && hasPattern && m_sampleOffset > 0);
+    m_next->Enable(!busy && hasPattern &&
                    m_sampleOffset + 201 <
                        static_cast<int>(m_data.at("theta_deg").size() * m_data.at("phi_deg").size()));
 }

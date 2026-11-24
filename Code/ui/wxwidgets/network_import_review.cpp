@@ -60,6 +60,7 @@ void NetworkImportDialog::BuildReviewPage(wxWindow* page)
     m_summary =
         new wxTextCtrl(page, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
     m_summary->SetName("network.import.review");
+    m_summary->SetHint(Display("가져오기 검토를 실행하면 파일 정보와 표본이 표시됩니다."));
     m_summary->SetMinSize(wxSize(-1, FromDIP(130)));
     layout->Add(m_summary, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, pad);
     auto* views = new wxNotebook(page, wxID_ANY);

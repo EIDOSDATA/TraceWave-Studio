@@ -93,6 +93,71 @@ Scale ForDescriptor(const Json& descriptor, const std::string& requested)
                     Number(descriptor.value("frequency_max_hz", Json(nullptr))), requested);
 }
 
+double ReadInput(const std::string& text)
+{
+    std::istringstream input(text);
+    input.imbue(std::locale::classic());
+    double value = 0;
+    std::string unit;
+    if (!(input >> value))
+    {
+        throw std::runtime_error("주파수를 숫자로 입력하세요. 예: 2.4 GHz");
+    }
+    if (input >> unit)
+    {
+        if (unit != "Hz" && unit != "kHz" && unit != "MHz" && unit != "GHz")
+        {
+            throw std::runtime_error("주파수 단위는 Hz, kHz, MHz, GHz를 사용하세요.");
+        }
+        value *= ForRange(0.0, 0.0, unit).divisor;
+        input >> std::ws;
+        if (!input.eof())
+        {
+            throw std::runtime_error("한 주파수에 단위 하나만 입력하세요.");
+        }
+    }
+    if (!std::isfinite(value) || value <= 0)
+    {
+        throw std::runtime_error("0보다 큰 유한 주파수를 입력하세요.");
+    }
+    return value;
+}
+
+std::string Input(const Json& frequencyHz)
+{
+    const double hz = Number(frequencyHz);
+    const auto scale = ForRange(hz, hz);
+    if (std::isfinite(hz) && hz > 0 && scale.unit != "Hz")
+    {
+        const auto candidate = Value(frequencyHz, scale, 15) + " " + scale.unit;
+        try
+        {
+            if (ReadInput(candidate) == hz)
+            {
+                return candidate;
+            }
+        }
+        catch (const std::runtime_error&)
+        {
+        }
+    }
+    return frequencyHz.dump() + " Hz";
+}
+
+std::string InputList(const Json& frequencies)
+{
+    std::string result;
+    for (const auto& frequency : frequencies)
+    {
+        if (!result.empty())
+        {
+            result += ", ";
+        }
+        result += Input(frequency);
+    }
+    return result;
+}
+
 std::string Value(const Json& frequencyHz, const Scale& scale, int precision)
 {
     if (frequencyHz.is_null())

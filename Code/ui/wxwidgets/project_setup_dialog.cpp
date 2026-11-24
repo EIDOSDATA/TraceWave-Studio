@@ -38,6 +38,7 @@ ProjectSetupDialog::ProjectSetupDialog(wxWindow* parent, const std::string& titl
       m_revision(context.value("revision_id", context.value("expected_revision", std::string()))),
       m_gateway(std::move(gateway))
 {
+    StudioTheme::ApplyTypography(*this);
     StudioTheme::BindSurface(*this);
     const int index = wxDisplay::GetFromWindow(parent);
     const auto area = wxDisplay(index == wxNOT_FOUND ? 0U : static_cast<unsigned int>(index)).GetClientArea();

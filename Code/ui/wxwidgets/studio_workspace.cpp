@@ -43,15 +43,14 @@ void StudioFrame::BuildWorkspacePages()
     };
     auto* analysis = page(
         "해석 준비",
-        "현재 설계의 재료/급전/수치 조건을 확인합니다.\n목표나 초기 길이를 저장해도 해석은 자동 실행되지 않습니다.");
+        "먼저 현재 설계의 재료와 급전을 검사하세요. 해석 조건은 검토한 뒤 직접 실행합니다.");
+    const auto summary = m_solverConfigured ? "해석 환경 연결됨" : "새 해석에 실행 환경 연결이 필요합니다.";
+    m_analysisSummary = new wxStaticText(analysis, wxID_ANY, Display(summary));
+    StudioTheme::Heading(*m_analysisSummary);
+    analysis->GetSizer()->Add(m_analysisSummary, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
     action(analysis, analysis->GetSizer(), IdValidate, "현재 설계 입력 검사");
     action(analysis, analysis->GetSizer(), IdRunSolver, "해석 조건 확인 및 실행");
     action(analysis, analysis->GetSizer(), IdProjectStudy, "수치 연구 설정");
-    const auto summary = m_solverConfigured ? "해석 환경 구성됨 / 입력 검사와 해석 실행은 별도입니다."
-                                            : "해석 환경이 구성되지 않았습니다. 편집/저장은 계속 사용할 수 있습니다.";
-    m_analysisSummary = new wxStaticText(analysis, wxID_ANY, Display(summary));
-    m_analysisSummary->Wrap(FromDIP(440));
-    analysis->GetSizer()->Add(m_analysisSummary, 0, wxALL, FromDIP(StudioTheme::PanelPadding));
     auto* environment = new wxButton(analysis, wxID_ANY, Display("실행 환경 / 진단"));
     StudioTheme::Button(*environment);
     analysis->GetSizer()->Add(environment, 0, wxLEFT | wxRIGHT | wxBOTTOM, FromDIP(StudioTheme::PanelPadding));
@@ -80,7 +79,7 @@ void StudioFrame::BuildWorkspaceJobs()
     StudioTheme::Table(*m_workspaceJobs);
     m_workspaceJobs->SetName("workspace.jobs");
     m_workspaceJobs->AppendColumn(Display("작업"), wxLIST_FORMAT_LEFT, FromDIP(120));
-    m_workspaceJobs->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(110));
+    m_workspaceJobs->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(125));
     m_workspaceJobs->AppendColumn(Display("내용"), wxLIST_FORMAT_LEFT, FromDIP(500));
     m_workspaceJobs->InsertItem(0, Display("CAD / STEP"));
     m_workspaceJobs->InsertItem(1, Display("해석"));
@@ -90,7 +89,8 @@ void StudioFrame::BuildWorkspaceJobs()
                           [this](wxSizeEvent& event)
                           {
                               m_workspaceJobs->SetColumnWidth(
-                                  2, std::max(FromDIP(240), m_workspaceJobs->GetClientSize().x - FromDIP(236)));
+                                  2, std::max(FromDIP(240), m_workspaceJobs->GetClientSize().x -
+                                      m_workspaceJobs->GetColumnWidth(0) - m_workspaceJobs->GetColumnWidth(1) - FromDIP(4)));
                               event.Skip();
                           });
     ShowWorkspaceJob(0, "idle", "아직 작업을 실행하지 않았습니다.");
@@ -283,7 +283,7 @@ void StudioFrame::ShowWorkspaceJob(long row, const std::string& state, const std
             {"idle", "대기"},         {"unavailable", "환경 필요"}, {"queued", "대기열"},
             {"preparing", "준비 중"}, {"running", "실행 중"},       {"postprocessing", "후처리 중"},
             {"completed", "완료"},    {"failed", "실패"},           {"cancel_requested", "취소 요청 중"},
-            {"cancelled", "취소됨"},  {"interrupted", "중단됨"}};
+            {"cancelled", "취소됨"},  {"interrupted", "중단됨"}, {"restored", "보존 결과 열림"}};
         const auto found = labels.find(state);
         const bool needsCad = row == 0 && !m_cadConfigured && (state == "idle" || state == "unavailable");
         m_workspaceJobs->SetItem(row, 1,
@@ -311,10 +311,7 @@ void StudioFrame::UpdateWorkspace()
     m_workspaceBoard->Enable(m_connected && !m_busy && !m_project.empty());
     if (m_analysisSummary != nullptr)
     {
-        const auto summary = m_solverConfigured ? "해석 환경 구성됨 / 입력 검사와 해석 실행은 별도입니다."
-                                                : "해석 환경이 구성되지 않았습니다. 편집/저장은 계속 사용할 수 있습니다.";
-        m_analysisSummary->SetLabel(Display(summary));
-        m_analysisSummary->Wrap(FromDIP(440));
+        m_analysisSummary->SetLabel(Display(m_solverConfigured ? "해석 환경 연결됨" : "새 해석에 실행 환경 연결이 필요합니다."));
     }
     UpdateNetworkViews();
     UpdateSweepViews();

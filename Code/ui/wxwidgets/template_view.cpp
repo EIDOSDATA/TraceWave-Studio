@@ -79,12 +79,12 @@ void TemplateDialog::BuildInterface()
     m_canvas = new DesignCanvas(this);
     m_canvas->SetEditingEnabled(false);
     m_canvas->SetMinSize(FromDIP(wxSize(260, 200)));
-    review->Add(m_canvas, 1, wxEXPAND | wxBOTTOM, FromDIP(StudioTheme::InputGap));
+    review->Add(m_canvas, 2, wxEXPAND | wxBOTTOM, FromDIP(StudioTheme::InputGap));
     m_canvas->Hide();
     m_notes = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(-1, 160)),
                              wxTE_MULTILINE | wxTE_READONLY);
     m_notes->SetName("template.review");
-    review->Add(m_notes, 0, wxEXPAND);
+    review->Add(m_notes, 1, wxEXPAND);
     content->Add(review, 1, wxEXPAND);
     layout->Add(content, 1, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(StudioTheme::PanelPadding));
     m_status = new wxStaticText(this, wxID_ANY, wxEmptyString);

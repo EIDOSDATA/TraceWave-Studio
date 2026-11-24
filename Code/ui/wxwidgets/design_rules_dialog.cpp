@@ -124,6 +124,8 @@ DesignRulesDialog::DesignRulesDialog(wxWindow* parent, const Json& context, Dial
         }
     });
     m_issues = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 125)), wxLC_REPORT | wxLC_SINGLE_SEL);
+    StudioTheme::Table(*m_issues);
+    m_issues->SetName(Display("설계 규칙 진단 결과"));
     m_issues->AppendColumn(Display("판정"), wxLIST_FORMAT_LEFT, FromDIP(75));
     m_issues->AppendColumn(Display("규칙"), wxLIST_FORMAT_LEFT, FromDIP(170));
     m_issues->AppendColumn(Display("측정 / 한계"), wxLIST_FORMAT_LEFT, FromDIP(180));

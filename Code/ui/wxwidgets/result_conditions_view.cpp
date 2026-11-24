@@ -212,11 +212,10 @@ void ResultConditionsView::SetDescription(const Json& description)
     const auto states = description.value("states", Json::object());
     const auto references = description.value("source_refs", Json::array());
     SetText(m_summary,
-            "자료\n" + ResultUi::Text(description.value("label", Json(nullptr))) + "\n" +
-                ResultUi::SourceKind(description.value("source", Json::object()).value("kind", Json(nullptr))) +
-                "\n\n입력 개정\n" + ResultUi::Text(revision.value("label", revision.value("name", Json(nullptr)))) +
-                (description.value("is_current_design", false) ? "\n현재 설계 개정"
-                                                               : "\n저장 당시 개정 / 현재 편집과 구분") +
+            ResultUi::SourceKind(description.value("source", Json::object()).value("kind", Json(nullptr))) + "\n" +
+                ResultUi::Text(description.value("label", Json(nullptr))) +
+                (description.value("is_current_design", false) ? "\n\n현재 설계 개정\n" : "\n\n보존된 이전 개정\n") +
+                ResultUi::Text(revision.value("label", revision.value("name", Json(nullptr)))) +
                 "\n\n보존 출처 " + std::to_string(references.is_array() ? references.size() : 0) + "개",
             164);
     std::string basis = "주파수\n" +

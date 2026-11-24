@@ -2,6 +2,7 @@
 #include "pcb_selection_dialog.h"
 #include "pcb_selection_view_support.h"
 #include "pcb_suggestion_model.h"
+#include "studio_theme.h"
 #include <wx/button.h>
 #include <wx/grid.h>
 #include <wx/listbox.h>
@@ -72,6 +73,7 @@ void PcbSelectionDialog::BuildSuggestions(wxPanel* panel, wxBoxSizer* layout)
     auto* box = new wxStaticBoxSizer(wxVERTICAL, panel, Display("선택 적층의 두께와 물성 제안"));
     m_suggestions =
         new wxListCtrl(panel, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 110)), wxLC_REPORT | wxLC_SINGLE_SEL);
+    StudioTheme::Table(*m_suggestions);
     m_suggestions->SetName("pcb.suggestions");
     const char* columns[] = {"층", "두께 mm / 상태", "Dk / 상태", "Df / 상태"};
     const int widths[] = {180, 215, 230, 230};

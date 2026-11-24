@@ -1,6 +1,7 @@
 /** @file @brief 연구 화면의 서비스 요청과 수명/지연 응답을 관리한다. */
 #include "project_study_dialog.h"
 #include "studio_support.h"
+#include "studio_theme.h"
 #include "frequency_display.h"
 #include <wx/button.h>
 #include <wx/checkbox.h>
@@ -31,6 +32,8 @@ ProjectStudyDialog::ProjectStudyDialog(wxWindow* parent, const Json& context, St
       m_gateway(std::move(gateway)), m_closed(std::move(closed)), m_context(context),
       m_basis(context.at("initial_specification")), m_timer(this)
 {
+    StudioTheme::ApplyTypography(*this);
+    StudioTheme::BindSurface(*this);
     Build();
     SetSpecification(m_basis);
     Bind(wxEVT_CLOSE_WINDOW,
@@ -400,15 +403,16 @@ void ProjectStudyDialog::ShowPortSamples()
                  result.at("max_s11_complex_delta").dump() + " / 선택한 두 격자에서 직접 계산한 주파수 표본"));
              layout->Add(label, 0, wxALL, FromDIP(8));
              auto* samples = new wxListCtrl(&dialog, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
-             int column = 0;
-             for (const char* title : {"주파수 (GHz)", "복소 S11 변화량", "임피던스 변화 (옴)", "표본 기준"})
-             {
-                 samples->InsertColumn(column++, Display(title), wxLIST_FORMAT_LEFT, FromDIP(155));
-             }
+             StudioTheme::Table(*samples);
+             const auto scale = StudioFrequency::ForSamples(result.at("rows"));
+             samples->AppendColumn(Display("주파수 (" + scale.unit + ")"), wxLIST_FORMAT_RIGHT, FromDIP(155));
+             samples->AppendColumn(Display("복소 S11 변화량"), wxLIST_FORMAT_RIGHT, FromDIP(155));
+             samples->AppendColumn(Display("임피던스 변화 (ohm)"), wxLIST_FORMAT_RIGHT, FromDIP(165));
+             samples->AppendColumn(Display("표본 기준"), wxLIST_FORMAT_LEFT, FromDIP(125));
              for (const auto& row : result.at("rows"))
              {
                  const long item = samples->InsertItem(samples->GetItemCount(),
-                     wxString::Format("%.12g", row.at("frequency_hz").get<double>() / 1e9));
+                     Display(StudioFrequency::Value(row.at("frequency_hz"), scale, 9)));
                  samples->SetItem(item, 1, wxString::Format("%.8g", row.at("complex_s11_delta").get<double>()));
                  samples->SetItem(item, 2, wxString::Format("%.8g", row.at("impedance_delta_ohm").get<double>()));
                  samples->SetItem(item, 3, Display(row.at("within_threshold").get<bool>() ? "이내" : "초과"));

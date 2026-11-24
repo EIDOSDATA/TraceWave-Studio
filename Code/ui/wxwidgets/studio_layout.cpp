@@ -510,7 +510,15 @@ void StudioFrame::BuildInterface()
         new wxListCtrl(problemPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_SINGLE_SEL);
     StudioTheme::Table(*m_problems);
     m_problems->AppendColumn(Display("상태"), wxLIST_FORMAT_LEFT, FromDIP(110));
-    m_problems->AppendColumn(Display("내용 / 두 번 눌러 위치로 이동"), wxLIST_FORMAT_LEFT, FromDIP(650));
+    m_problems->AppendColumn(Display("문제 내용"), wxLIST_FORMAT_LEFT, FromDIP(460));
+    m_problems->SetName(Display("입력 문제 목록"));
+    m_problems->SetToolTip(Display("두 번 눌러 관련 위치로 이동합니다. 우클릭하면 문제 전체를 읽을 수 있습니다."));
+    m_problems->Bind(wxEVT_SIZE, [this](wxSizeEvent& event)
+    {
+        m_problems->SetColumnWidth(1, std::max(FromDIP(230),
+            m_problems->GetClientSize().x - m_problems->GetColumnWidth(0) - FromDIP(4)));
+        event.Skip();
+    });
     problemSizer->Add(m_problems, 1, wxEXPAND);
     problemPanel->SetSizer(problemSizer);
     m_bottom->AddPage(problemPanel, Display("문제"));

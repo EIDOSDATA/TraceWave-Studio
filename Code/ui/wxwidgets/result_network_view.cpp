@@ -34,9 +34,15 @@ ResultNetworkView::ResultNetworkView(wxWindow* parent)
     auto* tools = new wxWrapSizer(wxHORIZONTAL);
     m_row = new wxChoice(this, wxID_ANY);
     m_column = new wxChoice(this, wxID_ANY);
+    m_row->SetName(Display("응답 포트"));
+    m_column->SetName(Display("입력 포트"));
+    m_row->SetToolTip(Display("S 행렬에서 응답을 읽는 포트입니다."));
+    m_column->SetToolTip(Display("S 행렬에서 신호를 넣는 포트입니다."));
     m_metric = new wxChoice(this, wxID_ANY);
+    m_metric->SetName(Display("표시 지표"));
     m_metric->SetToolTip(Display("군지연은 원본의 시간 위상 규약과 인접 S 표본을 사용합니다. 표본 사이 위상 변화가 180도를 넘으면 복원할 수 없습니다."));
     m_frequencyUnit = new wxChoice(this, wxID_ANY);
+    m_frequencyUnit->SetName(Display("주파수 표시 단위"));
     for (const auto& label : Labels)
     {
         m_metric->Append(Display(label));
@@ -50,8 +56,14 @@ ResultNetworkView::ResultNetworkView(wxWindow* parent)
     auto* source = new wxButton(this, wxID_ANY, Display("원본 선택"));
     auto* library = new wxButton(this, wxID_ANY, Display("자료 / 정합 도구"));
     auto* exportResult = new wxButton(this, wxID_ANY, Display("원본 결과 내보내기"));
-    for (wxWindow* control :
-         std::array<wxWindow*, 7>{m_row, m_column, m_metric, m_frequencyUnit, source, library, exportResult})
+    for (auto* port : {m_row, m_column})
+    {
+        auto* field = new wxBoxSizer(wxHORIZONTAL);
+        field->Add(new wxStaticText(this, wxID_ANY, port->GetName()), 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(4));
+        field->Add(port, 0, wxALIGN_CENTER_VERTICAL);
+        tools->Add(field, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(4));
+    }
+    for (auto* control : std::array<wxWindow*, 5>{m_metric, m_frequencyUnit, source, library, exportResult})
     {
         tools->Add(control, 0, wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(4));
     }
@@ -66,7 +78,10 @@ ResultNetworkView::ResultNetworkView(wxWindow* parent)
     layout->Add(m_marker, 0, wxEXPAND | wxALL, FromDIP(8));
     m_samples =
         new wxListCtrl(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 128)), wxLC_REPORT | wxLC_SINGLE_SEL);
-    m_samples->SetMinSize(FromDIP(wxSize(-1, 128)));
+    m_samples->SetMinSize(FromDIP(wxSize(-1, 155)));
+    StudioTheme::Table(*m_samples);
+    m_samples->SetName(Display("선택 채널의 주파수 표본"));
+    m_samples->SetToolTip(Display("행을 선택하면 그래프에 해당 표본을 표시합니다. 우클릭으로 표의 전체 행을 읽을 수 있습니다."));
     layout->Add(m_samples, 0, wxEXPAND | wxLEFT | wxRIGHT, FromDIP(8));
     auto* paging = new wxBoxSizer(wxHORIZONTAL);
     m_previous = new wxButton(this, wxID_ANY, Display("이전 201표본"));
@@ -303,9 +318,18 @@ void ResultNetworkView::SetBusy(bool busy)
     const bool available = m_description.is_object() && !busy;
     m_row->Enable(available);
     m_column->Enable(available);
-    m_previous->Enable(available && m_response.is_object() && m_response.at("page").value("offset", 0) > 0);
-    m_next->Enable(available && m_response.is_object() &&
-                   !m_response.at("page").value("next_offset", Json(nullptr)).is_null());
+    const bool hasPage = available && m_response.is_object();
+    const bool previous = hasPage && m_response.at("page").value("offset", 0) > 0;
+    const bool next = hasPage && !m_response.at("page").value("next_offset", Json(nullptr)).is_null();
+    m_previous->Enable(previous);
+    m_next->Enable(next);
+    m_previous->Show(previous || next);
+    m_next->Show(previous || next);
+    m_chart->Show(hasPage);
+    m_samples->Show(hasPage);
+    m_marker->Show(hasPage || busy);
+    Layout();
+    FitInside();
 }
 void ResultNetworkView::Clear(const std::string& message)
 {

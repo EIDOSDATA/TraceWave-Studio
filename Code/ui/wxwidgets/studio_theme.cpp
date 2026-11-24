@@ -3,6 +3,10 @@
 #include "system_appearance.h"
 
 #include <wx/aui/aui.h>
+#include <wx/clipbrd.h>
+#include <wx/dialog.h>
+#include <wx/menu.h>
+#include <wx/sizer.h>
 #include <wx/settings.h>
 #include <wx/stattext.h>
 #include <wx/button.h>
@@ -32,6 +36,88 @@ void ApplySurface(wxWindow& window, Surface surface)
     window.SetBackgroundColour(surface == Surface::Workspace ? colours.workspace : colours.panel);
     window.SetForegroundColour(colours.text);
     window.Refresh(false);
+}
+
+/** @brief 표에 저장된 각 열의 값을 줄바꿈과 함께 읽고 복사할 수 있게 한다. */
+wxString TableRowText(wxListCtrl& list, long row)
+{
+    wxString result;
+    for (int column = 0; column < list.GetColumnCount(); ++column)
+    {
+        wxListItem header;
+        header.SetMask(wxLIST_MASK_TEXT);
+        if (!list.GetColumn(column, header))
+        {
+            continue;
+        }
+        if (!result.empty())
+        {
+            result += "\n\n";
+        }
+        result += header.GetText() + "\n" + list.GetItemText(row, column);
+    }
+    return result;
+}
+
+/** @brief 기존 행 선택과 활성화 동작을 유지하며 표의 모든 열을 확인한다. */
+void BindTableDetails(wxListCtrl& list)
+{
+    list.Bind(wxEVT_CONTEXT_MENU, [&list](wxContextMenuEvent& event)
+    {
+        long row = wxNOT_FOUND;
+        if (event.GetPosition() == wxDefaultPosition)
+        {
+            row = list.GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_FOCUSED);
+            if (row == wxNOT_FOUND)
+            {
+                row = list.GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+            }
+        }
+        else
+        {
+            int flags = 0;
+            row = list.HitTest(list.ScreenToClient(event.GetPosition()), flags);
+        }
+        if (row < 0 || row >= list.GetItemCount())
+        {
+            event.Skip();
+            return;
+        }
+        const auto text = TableRowText(list, row);
+        wxMenu menu;
+        menu.Append(wxID_PROPERTIES, wxString::FromUTF8("행 자세히 보기"));
+        menu.Append(wxID_COPY, wxString::FromUTF8("행 복사"));
+        const int action = list.GetPopupMenuSelectionFromUser(menu);
+        if (action == wxID_COPY)
+        {
+            if (wxTheClipboard->Open())
+            {
+                wxTheClipboard->SetData(new wxTextDataObject(text));
+                wxTheClipboard->Close();
+            }
+        }
+        else if (action == wxID_PROPERTIES)
+        {
+            wxDialog dialog(wxGetTopLevelParent(&list), wxID_ANY, wxString::FromUTF8("표의 행 상세"), wxDefaultPosition,
+                            wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+            StudioTheme::ApplyTypography(dialog);
+            StudioTheme::BindSurface(dialog);
+            auto* layout = new wxBoxSizer(wxVERTICAL);
+            const int margin = dialog.FromDIP(StudioTheme::PanelPadding);
+            auto* content = new wxTextCtrl(&dialog, wxID_ANY, text, wxDefaultPosition, wxDefaultSize,
+                                           wxTE_MULTILINE | wxTE_READONLY);
+            content->SetName(wxString::FromUTF8("선택 행의 전체 내용"));
+            layout->Add(content, 1, wxALL | wxEXPAND, margin);
+            auto* close = new wxButton(&dialog, wxID_OK, wxString::FromUTF8("닫기"));
+            close->SetDefault();
+            layout->Add(close, 0, wxRIGHT | wxBOTTOM | wxALIGN_RIGHT, margin);
+            dialog.SetSizer(layout);
+            dialog.SetMinSize(dialog.FromDIP(wxSize(340, 270)));
+            dialog.SetSize(dialog.FromDIP(wxSize(575, 420)));
+            dialog.CentreOnParent();
+            dialog.ShowModal();
+        }
+    });
 }
 
 /** @brief Studio가 관리하는 글자와 읽기 전용 본문의 시스템 대비 변경을 연결한다. */
@@ -175,6 +261,10 @@ void Table(wxListCtrl& list)
     list.AssignImageList(images, wxIMAGE_LIST_SMALL);
     list.SetBackgroundColour(Colours().content);
     list.SetTextColour(Colours().text);
+    if (list.HasFlag(wxLC_REPORT) && !list.HasFlag(wxLC_EDIT_LABELS))
+    {
+        BindTableDetails(list);
+    }
     list.Bind(wxEVT_SYS_COLOUR_CHANGED, [&list](wxSysColourChangedEvent& event)
     {
         const auto colours = Colours();

@@ -86,7 +86,8 @@ void NetworkImportDialog::BuildFilePage(wxWindow* page)
     auto* title = new wxStaticText(page, wxID_ANY, Display("원문 미리보기"));
     StudioTheme::Heading(*title);
     layout->Add(title, 0, wxLEFT | wxRIGHT | wxTOP, pad);
-    m_raw = new wxTextCtrl(page, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize,
+    m_raw = new wxTextCtrl(page, wxID_ANY, Display("파일을 선택하면 읽기 전용 원문이 여기에 표시됩니다."),
+                           wxDefaultPosition, wxDefaultSize,
                            wxTE_MULTILINE | wxTE_READONLY | wxTE_DONTWRAP);
     m_raw->SetName("network.import.raw");
     layout->Add(m_raw, 1, wxEXPAND | wxALL, pad);

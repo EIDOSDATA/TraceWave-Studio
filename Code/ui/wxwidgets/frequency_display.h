@@ -24,6 +24,12 @@ bool AssessmentMatchesDataset(const Json& assessment, const Json& selection);
 /** @brief 저장된 평가 전체 범위를 읽고 입력 표현식은 계산하지 않는다. */
 Scale ForAssessment(const Json& assessment, const Json& descriptor = Json(nullptr),
                     const std::string& requested = "auto");
+/** @brief Hz, kHz, MHz, GHz의 입력을 계산 계약의 유한한 양수 Hz로 변환한다. 단위 생략 시 Hz다. */
+double ReadInput(const std::string& text);
+/** @brief 공학 단위로 정확히 왕복할 수 있는 값을 편집 문자열로 표시한다. */
+std::string Input(const Json& frequencyHz);
+/** @brief 다중 입력의 순서와 모든 주파수 원본을 유지한다. */
+std::string InputList(const Json& frequencies);
 /** @brief 물리 계산이나 DTO 변경 없이 표시 숫자만 서식화한다. */
 std::string Value(const Json& frequencyHz, const Scale& scale, int precision = 15);
 std::string WithUnit(const Json& frequencyHz, const std::string& requested = "auto");
