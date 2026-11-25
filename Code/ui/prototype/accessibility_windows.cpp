@@ -128,9 +128,37 @@ constexpr Description descriptions[] =
     {L"", L"recovery-summary", UIA_TextControlTypeId},
     {L"", L"recovery-field", UIA_TextControlTypeId},
     {L"", L"recovery-before", UIA_TextControlTypeId},
-    {L"", L"recovery-after", UIA_TextControlTypeId}
+    {L"", L"recovery-after", UIA_TextControlTypeId},
+    {L"이전 최근 프로젝트", L"recent-previous", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 최근 프로젝트", L"recent-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"선택한 최근 프로젝트 열기", L"recent-open", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"recent-path", UIA_TextControlTypeId},
+    {L"보존 묶음 복원 도구", L"archive-toggle", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"복원할 보존 ZIP 선택", L"archive-pick", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"검토한 보존 ZIP 복원 승인", L"archive-apply", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"보존 ZIP 검토 취소", L"archive-cancel", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"복원한 프로젝트 열기", L"archive-open", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"archive-review", UIA_TextControlTypeId},
+    {L"", L"archive-status", UIA_TextControlTypeId},
+    {L"끝점 편집", L"endpoint-toggle", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"시작점 선택", L"endpoint-start", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"끝점 선택", L"endpoint-end", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"끝점 스냅", L"endpoint-snap", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"캔버스에서 끝점 지정", L"endpoint-pick", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"끝점 X 밀리미터", L"endpoint-x", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"끝점 Y 밀리미터", L"endpoint-y", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"선택한 끝점 적용", L"endpoint-apply", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"끝점 초안 좌표 되돌리기", L"endpoint-reset", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"endpoint-snap-status", UIA_TextControlTypeId},
+    {L"3D 단면 도구", L"section-toggle", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"3D 단면 축 변경", L"section-axis", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"큰 좌표 쪽 보존", L"section-side", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"단면의 위치 밀리미터", L"section-position", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"단면 적용", L"section-apply", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"section-axis-value", UIA_TextControlTypeId},
+    {L"", L"section-status", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::recoveryAfter) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::sectionStatus) + 1);
 
 struct Node
 {

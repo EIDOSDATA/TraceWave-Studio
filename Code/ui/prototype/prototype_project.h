@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../wxwidgets/canvas_scene.h"
+#include "../wxwidgets/canvas_precision.h"
 #include "prototype_analysis.h"
 #include "prototype_cad_job.h"
 #include "prototype_exchange.h"
@@ -30,6 +30,8 @@ public:
     void reopen();
     void save();
     void translate(double dx, double dy);
+    bool canMoveEndpoint(CanvasPrecision::Endpoint endpoint) const;
+    void moveEndpoint(CanvasPrecision::Endpoint endpoint, CanvasScene::Point point);
     void undo();
     void readCad();
     void readRecovery();
@@ -86,7 +88,7 @@ public:
 private:
     enum class Step
     {
-        idle, open, save, translate, undo, edited, accepted, job, canvas, editor, cad,
+        idle, open, save, canvasEdit, undo, edited, accepted, job, canvas, editor, cad,
         solverLatest, resultHistory, resultDescribe, resultPage, resultArtifact, resultMatrixLoad, resultExport,
         solverConditions, recovery, finished, failed
     };
@@ -122,9 +124,7 @@ private:
     bool saving_ = false;
     bool awaiting_ = false;
     std::string job_;
-    std::string movedId_;
-    double dx_ = 0;
-    double dy_ = 0;
+    nlohmann::json canvasEdit_;
     View loading_;
     std::optional<View> view_;
     nlohmann::json pages_;

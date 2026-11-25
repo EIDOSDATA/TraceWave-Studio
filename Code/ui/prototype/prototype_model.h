@@ -2,6 +2,7 @@
 #pragma once
 
 #include "prototype_cad.h"
+#include "prototype_section.h"
 
 #include <bgfx/bgfx.h>
 
@@ -15,6 +16,11 @@ public:
 
     void setScene(const PrototypeCad::Scene& scene);
     void resetView();
+    void setSection(std::optional<PrototypeSection::Plane> plane);
+    void pollSection();
+    bool sectionPending() const { return pendingSection_.valid(); }
+    std::size_t visibleTriangles() const;
+    const PrototypeSection::Plane* sectionPlane() const { return section_ ? &section_->plane : nullptr; }
     void submit(std::uint16_t width, std::uint16_t height, const std::string& source);
     void rotate(float dx, float dy);
     void pan(float dx, float dy, float height);
@@ -30,7 +36,17 @@ private:
     bool resize(std::uint16_t width, std::uint16_t height);
     void clearBuffers();
 
+    struct Cut
+    {
+        PrototypeCad::Scene source;
+        PrototypeSection::Plane plane;
+        std::vector<std::vector<float>> positions;
+        std::size_t triangles = 0;
+    };
     PrototypeCad::Scene scene_;
+    std::optional<Cut> section_;
+    std::future<Cut> pendingSection_;
+    bool buffersReady_ = false;
     DisplayMesh::Camera camera_;
     std::vector<bgfx::VertexBufferHandle> buffers_;
     bgfx::FrameBufferHandle target_ = BGFX_INVALID_HANDLE;

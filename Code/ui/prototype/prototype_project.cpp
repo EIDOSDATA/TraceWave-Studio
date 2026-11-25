@@ -75,11 +75,39 @@ void PrototypeProject::translate(double dx, double dy)
 {
     if (canTranslate())
     {
-        movedId_ = view_->selection;
-        dx_ = dx;
-        dy_ = dy;
-        step_ = Step::translate;
+        canvasEdit_ = {{"operation", "translate"}, {"values", {{"id", view_->selection}, {"dx_mm", dx}, {"dy_mm", dy}}}};
+        step_ = Step::canvasEdit;
         message_ = "도체를 이동하는 중";
+    }
+}
+
+/** @brief 서비스가 편집을 허용한 같은 개정의 선이나 원호 끝점만 대상으로 삼는다. */
+bool PrototypeProject::canMoveEndpoint(CanvasPrecision::Endpoint endpoint) const
+{
+    if (!view_ || !writable())
+    {
+        return false;
+    }
+    const auto* shape = view_->canvas.Find(view_->selection);
+    return shape && shape->selectionKind == "geometry" && CanvasPrecision::HasEndpoints(*shape) &&
+        CanvasPrecision::Editable(*shape, endpoint);
+}
+
+void PrototypeProject::moveEndpoint(CanvasPrecision::Endpoint endpoint, CanvasScene::Point point)
+{
+    if (canMoveEndpoint(endpoint) && CanvasGeometry::Valid(point))
+    {
+        const auto* shape = view_->canvas.Find(view_->selection);
+        auto preview = *shape;
+        if (CanvasPrecision::EndpointUnchanged(*shape, endpoint, point) ||
+            !CanvasPrecision::Preview(preview, endpoint, point))
+        {
+            return;
+        }
+        canvasEdit_ = {{"operation", "move_endpoint"}, {"values", {{"id", shape->id},
+            {"endpoint", endpoint == CanvasPrecision::Endpoint::Start ? "start" : "end"}, {"point", {point.x, point.y}}}}};
+        step_ = Step::canvasEdit;
+        message_ = "선택한 끝점을 적용하는 중";
     }
 }
 
@@ -419,10 +447,10 @@ void PrototypeProject::update(PrototypeService& service)
                     {{"expected_revision", view_->revision}}, true);
                 step_ = Step::accepted;
                 break;
-            case Step::translate:
+            case Step::canvasEdit:
             case Step::undo:
             {
-                const bool move = step_ == Step::translate;
+                const bool move = step_ == Step::canvasEdit;
                 const auto id = PrototypeService::newCommandId();
                 if (id.empty())
                 {
@@ -432,8 +460,7 @@ void PrototypeProject::update(PrototypeService& service)
                 Json input{{"expected_revision", view_->revision}, {"command_id", id}};
                 if (move)
                 {
-                    input["operation"] = "translate";
-                    input["values"] = {{"id", movedId_}, {"dx_mm", dx_}, {"dy_mm", dy_}};
+                    input.update(canvasEdit_);
                 }
                 awaiting_ = service.request(move ? "canvas.apply" : "project.undo",
                     {{"project_id", view_->id}}, input, true);
@@ -617,6 +644,7 @@ void PrototypeProject::receive(const Json& reply)
             loading_ = {};
             loading_.id = view_->id;
             loading_.revision = result.at("new_revision").get<std::string>();
+            loading_.selection = view_->selection;
             offset_ = 0;
             pages_ = nullptr;
             step_ = Step::canvas;
@@ -746,6 +774,10 @@ void PrototypeProject::finishView(const Json& editor)
     }
     loading_.savedRevision = saved;
     loading_.canUndo = editor.at("history").at("can_undo").get<bool>();
+    if (!loading_.canvas.Find(loading_.selection))
+    {
+        loading_.selection.clear();
+    }
     std::printf("project opened: %s current=%s saved=%s shapes=%zu\n", loading_.id.c_str(),
         loading_.revision.c_str(), loading_.savedRevision.c_str(), loading_.canvas.shapes.size());
     view_ = std::move(loading_);

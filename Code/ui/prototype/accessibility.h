@@ -29,7 +29,11 @@ enum class Control
     matrixTable, matrixAxes, matrixSample, manufacturingFormat, buildManufacturing, manufacturingChoice, manufacturingStatus,
     showProjectChooser, createProjectMode, projectName, submitProject, projectChooserStatus,
     showRecovery, readRecovery, priorRecoveryField, nextRecoveryField, recoverySummary, recoveryField,
-    recoveryBefore, recoveryAfter
+    recoveryBefore, recoveryAfter, recentPrevious, recentNext, recentOpen, recentPath,
+    archiveToggle, archivePick, archiveApply, archiveCancel, archiveOpen, archiveReview, archiveStatus,
+    endpointToggle, endpointStart, endpointEnd, endpointSnap, endpointPick, endpointX, endpointY,
+    endpointApply, endpointReset, endpointSnapStatus, sectionToggle, sectionAxis, sectionSide, sectionPosition,
+    sectionApply, sectionAxisValue, sectionStatus
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };

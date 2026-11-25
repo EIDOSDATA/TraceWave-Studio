@@ -377,7 +377,11 @@ inline std::string ReadVerifiedArtifact(const std::filesystem::path& workspace, 
     const std::string uri = artifact.at("uri").get<std::string>();
     Require(!uri.empty() && uri.size() <= 2048 && uri.find_first_of("\\:\0", 0, 3) == std::string::npos && uri.front() != '/',
         "게시 파일 경로는 workspace 기준 상대 경로여야 합니다.");
+#if defined(__cpp_char8_t)
     const auto relative = std::filesystem::path(std::u8string(uri.begin(), uri.end()));
+#else
+    const auto relative = std::filesystem::u8path(uri);
+#endif
     Require(!relative.is_absolute() && !relative.has_root_name() && !relative.has_root_directory(), "잘못된 게시 파일 경로입니다.");
     for (const auto& component : relative)
     {

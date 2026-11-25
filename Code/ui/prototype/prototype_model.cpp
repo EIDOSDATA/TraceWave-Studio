@@ -4,6 +4,9 @@
 
 #include <algorithm>
 #include <array>
+#include <chrono>
+#include <exception>
+#include <utility>
 
 #include <bgfx/embedded_shader.h>
 #include <bx/math.h>
@@ -67,6 +70,7 @@ void PrototypeModel::setScene(const PrototypeCad::Scene& scene)
     {
         clearBuffers();
         scene_ = scene;
+        section_.reset();
         error_.clear();
         resetView();
     }
@@ -76,6 +80,65 @@ void PrototypeModel::resetView()
 {
     camera_ = {};
     selected_ = -1;
+}
+
+/** @brief 같은 봉인 메시의 잘린 표시 사본을 작업 스레드에서 계산한다. */
+void PrototypeModel::setSection(std::optional<PrototypeSection::Plane> plane)
+{
+    if (pendingSection_.valid())
+    {
+        return;
+    }
+    if (!plane)
+    {
+        section_.reset();
+        clearBuffers();
+        return;
+    }
+    if (!scene_ || (section_ && section_->plane == *plane))
+    {
+        return;
+    }
+    pendingSection_ = std::async(std::launch::async, [source = scene_, plane = *plane]
+    {
+        Cut result{source, plane, {}, 0};
+        result.positions.reserve(source->bodies.size());
+        for (const auto& body : source->bodies)
+        {
+            auto clipped = PrototypeSection::Clip(body.positions, plane);
+            result.triangles += clipped.size() / 9;
+            result.positions.push_back(std::move(clipped));
+        }
+        return result;
+    });
+}
+
+void PrototypeModel::pollSection()
+{
+    if (!pendingSection_.valid() ||
+        pendingSection_.wait_for(std::chrono::seconds(0)) != std::future_status::ready)
+    {
+        return;
+    }
+    try
+    {
+        auto cut = pendingSection_.get();
+        if (cut.source == scene_)
+        {
+            section_ = std::move(cut);
+            selected_ = -1;
+            clearBuffers();
+        }
+    }
+    catch (const std::exception& error)
+    {
+        error_ = std::string("3D 표시 단면을 준비하지 못했습니다. ") + error.what();
+    }
+}
+
+std::size_t PrototypeModel::visibleTriangles() const
+{
+    return section_ ? section_->triangles : scene_ ? scene_->triangles : 0;
 }
 
 void PrototypeModel::rotate(float dx, float dy)
@@ -104,7 +167,7 @@ void PrototypeModel::pick(float x, float y, float width, float height)
     {
         const double units = 2.0 * camera_.HalfHeight(scene_->radius) / height;
         selected_ = DisplayMesh::PickIndexed(*scene_, camera_,
-            (x - width / 2.0) * units, (height / 2.0 - y) * units);
+            (x - width / 2.0) * units, (height / 2.0 - y) * units, {}, section_ ? &section_->plane : nullptr);
     }
 }
 
@@ -122,9 +185,13 @@ void PrototypeModel::clearBuffers()
 {
     for (const auto buffer : buffers_)
     {
-        bgfx::destroy(buffer);
+        if (bgfx::isValid(buffer))
+        {
+            bgfx::destroy(buffer);
+        }
     }
     buffers_.clear();
+    buffersReady_ = false;
 }
 
 /** @brief 검증된 삼각형을 장면 교체 때만 GPU에 올린다. */
@@ -154,14 +221,20 @@ bool PrototypeModel::prepare()
     {
         return false;
     }
-    if (buffers_.empty())
+    if (!buffersReady_)
     {
         bgfx::VertexLayout layout;
         layout.begin().add(bgfx::Attrib::Position, 3, bgfx::AttribType::Float).end();
-        for (const auto& body : scene_->bodies)
+        for (std::size_t index = 0; index < scene_->bodies.size(); ++index)
         {
-            const auto bytes = static_cast<std::uint32_t>(body.positions.size() * sizeof(float));
-            const auto buffer = bgfx::createVertexBuffer(bgfx::copy(body.positions.data(), bytes), layout);
+            const auto& positions = section_ ? section_->positions[index] : scene_->bodies[index].positions;
+            if (positions.empty())
+            {
+                buffers_.push_back(bgfx::VertexBufferHandle BGFX_INVALID_HANDLE);
+                continue;
+            }
+            const auto bytes = static_cast<std::uint32_t>(positions.size() * sizeof(float));
+            const auto buffer = bgfx::createVertexBuffer(bgfx::copy(positions.data(), bytes), layout);
             if (!bgfx::isValid(buffer))
             {
                 clearBuffers();
@@ -169,6 +242,7 @@ bool PrototypeModel::prepare()
             }
             buffers_.push_back(buffer);
         }
+        buffersReady_ = true;
     }
     return true;
 }
@@ -263,7 +337,7 @@ void PrototypeModel::submit(std::uint16_t width, std::uint16_t height, const std
     for (std::size_t index = 0; index < buffers_.size(); ++index)
     {
         const auto& body = scene_->bodies[index];
-        if (!DisplayMesh::MayIntersectView(*scene_, index, camera_, halfWidth, halfHeight))
+        if (!bgfx::isValid(buffers_[index]) || !DisplayMesh::MayIntersectView(*scene_, index, camera_, halfWidth, halfHeight))
         {
             continue;
         }

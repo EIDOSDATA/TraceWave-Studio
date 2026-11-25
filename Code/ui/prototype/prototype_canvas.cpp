@@ -102,7 +102,7 @@ void drawShape(ImDrawList& draw, const Projection& map, const CanvasScene::Shape
 }
 }
 
-bool drawProjectCanvas(PrototypeProject::View& view, float& zoom, ImVec2& pan)
+bool drawProjectCanvas(PrototypeProject::View& view, float& zoom, ImVec2& pan, PrototypeEndpoint* endpoint)
 {
     const auto origin = ImGui::GetCursorScreenPos();
     const auto size = ImGui::GetContentRegionAvail();
@@ -128,16 +128,54 @@ bool drawProjectCanvas(PrototypeProject::View& view, float& zoom, ImVec2& pan)
             size.y / std::max(0.01, bounds.top - bounds.bottom))};
     if (clicked && !ImGui::IsMouseDragPastThreshold(ImGuiMouseButton_Left))
     {
-        double closest = 6.0 / map.scale;
-        view.selection.clear();
         const auto world = map.world(io.MousePos);
-        for (auto shape = view.canvas.shapes.rbegin(); shape != view.canvas.shapes.rend(); ++shape)
+        if (endpoint && endpoint->picking)
         {
-            const double distance = CanvasScene::DistanceTo(*shape, world);
-            if (distance < closest)
+            endpoint->point = world;
+            endpoint->picking = false;
+            endpoint->snapLabel.clear();
+            const auto* selected = view.canvas.Find(view.selection);
+            if (endpoint->snap && selected)
             {
-                closest = distance;
-                view.selection = shape->id;
+                using namespace CanvasPrecision;
+                std::optional<Circle> circle;
+                if (selected->kind == "arc_path")
+                {
+                    circle = Circle{selected->center, selected->radius};
+                }
+                Nearest nearest(world, 8.0 / map.scale, circle);
+                for (auto other = view.canvas.shapes.rbegin(); other != view.canvas.shapes.rend(); ++other)
+                {
+                    if (other->id != selected->id && selected->layer == other->layer && HasEndpoints(*other))
+                    {
+                        nearest.Consider(At(*other, Endpoint::End), SnapKind::Endpoint, other->id);
+                        nearest.Consider(At(*other, Endpoint::Start), SnapKind::Endpoint, other->id);
+                    }
+                }
+                if (!nearest.Result())
+                {
+                    nearest.Consider(GridPoint(world, 1.0), SnapKind::Grid);
+                }
+                if (const auto candidate = nearest.Result())
+                {
+                    endpoint->point = candidate->point;
+                    const auto* target = view.canvas.Find(candidate->target);
+                    endpoint->snapLabel = target ? "스냅 " + target->label : "1 mm 격자 스냅";
+                }
+            }
+        }
+        else
+        {
+            double closest = 6.0 / map.scale;
+            view.selection.clear();
+            for (auto shape = view.canvas.shapes.rbegin(); shape != view.canvas.shapes.rend(); ++shape)
+            {
+                const double distance = CanvasScene::DistanceTo(*shape, world);
+                if (distance < closest)
+                {
+                    closest = distance;
+                    view.selection = shape->id;
+                }
             }
         }
     }
@@ -149,6 +187,20 @@ bool drawProjectCanvas(PrototypeProject::View& view, float& zoom, ImVec2& pan)
     for (const auto& shape : view.canvas.shapes)
     {
         drawShape(draw, map, shape, shape.id == view.selection);
+    }
+    if (endpoint && endpoint->id == view.selection && endpoint->revision == view.revision)
+    {
+        if (const auto* selected = view.canvas.Find(view.selection))
+        {
+            auto preview = *selected;
+            if (CanvasPrecision::Preview(preview, endpoint->side, endpoint->point))
+            {
+                const auto target = CanvasPrecision::At(preview, endpoint->side);
+                draw.AddLine(map.screen(CanvasPrecision::At(*selected, endpoint->side)), map.screen(target),
+                    IM_COL32(115, 226, 233, 255), 2.0f);
+                draw.AddCircle(map.screen(target), 4.0f, IM_COL32(115, 226, 233, 255), 12, 2.0f);
+            }
+        }
     }
     for (const auto& port : view.canvas.portMarkers)
     {

@@ -3,8 +3,10 @@
 #include "renderer.h"
 
 #if defined(_WIN32)
+#include "prototype_archive.h"
 #include "prototype_canvas.h"
 #include "prototype_manufacturing.h"
+#include "prototype_recent.h"
 #include "prototype_model.h"
 #include "../wxwidgets/network_export_files.h"
 
@@ -14,6 +16,7 @@
 
 #include <algorithm>
 #include <array>
+#include <charconv>
 #include <cmath>
 #include <cstdio>
 #include <cstring>
@@ -85,7 +88,24 @@ struct Shell
 #if defined(_WIN32)
     PrototypeProject* project = nullptr;
     PrototypeModel model;
+    bool sectionOpen = false;
+    bool sectionUpper = true;
+    std::size_t sectionAxis = 2;
+    double sectionPosition = 0.0;
+    std::string sectionModel;
+    void drawSection(const DisplayMesh::Scene& scene);
     PrototypeManufacturing manufacturing;
+    PrototypeRecent recent;
+    PrototypeArchive archive;
+    bool archiveOpen = false;
+    bool endpointOpen = false;
+    PrototypeEndpoint endpoint;
+    void drawEndpoint();
+    void selectEndpoint(CanvasPrecision::Endpoint side);
+    bool canSwitchProject() const;
+    void drawArchive();
+    std::size_t recentIndex = 0;
+    std::string recordedProject;
     bool modelOpen = false;
     bool analysisOpen = false;
     bool resultHistoryOpen = false;
@@ -111,7 +131,7 @@ struct Shell
     std::size_t recoveryIndex = 0;
     void drawRecovery();
     void submitProject();
-    void updateProjects(std::unique_ptr<PrototypeProject>& current, PrototypeService& service);
+    void updateProjects(SDL_Window* window, std::unique_ptr<PrototypeProject>& current, PrototypeService& service);
     void setProjectName(std::string_view value);
     void drawProjectChooser();
     std::future<std::string> rfDelivery;
@@ -369,6 +389,13 @@ bool Shell::processEvent(const SDL_Event& event)
 }
 
 /** @brief 바로 가기, 메뉴 및 UI Automation에서 같은 명령을 사용한다. */
+#if defined(_WIN32)
+double sectionCenter(const DisplayMesh::Scene& scene, std::size_t axis)
+{
+    return std::array{scene.center.x, scene.center.y, scene.center.z}[axis];
+}
+#endif
+
 void Shell::activate(Control control)
 {
     switch (control)
@@ -405,6 +432,26 @@ void Shell::activate(Control control)
             }
             break;
         case Control::submitProject: submitProject(); break;
+        case Control::recentPrevious:
+            if (recentIndex > 0)
+            {
+                --recentIndex;
+            }
+            break;
+        case Control::recentNext:
+            if (recentIndex + 1 < recent.paths().size())
+            {
+                ++recentIndex;
+            }
+            break;
+        case Control::recentOpen:
+            if (recentIndex < recent.paths().size() && project->canSwitch() && !nextProject)
+            {
+                createProject = false;
+                setProjectName(std::string_view(recent.paths()[recentIndex]).substr(9));
+                submitProject();
+            }
+            break;
         case Control::showRecovery:
             recoveryOpen = !recoveryOpen;
             if (recoveryOpen)
@@ -427,6 +474,54 @@ void Shell::activate(Control control)
                 ++recoveryIndex;
             }
             break;
+        case Control::archiveToggle: archiveOpen = !archiveOpen; break;
+        case Control::archivePick:
+            if (serviceReady && canSwitchProject())
+            {
+                archive.choose();
+            }
+            break;
+        case Control::archiveApply:
+            if (serviceReady && canSwitchProject())
+            {
+                archive.approve();
+            }
+            break;
+        case Control::archiveCancel:
+            if (archive.busy() || canSwitchProject())
+            {
+                archive.cancel();
+            }
+            break;
+        case Control::archiveOpen:
+            if (archive.restoredPath().starts_with("projects/") && canSwitchProject())
+            {
+                createProject = false;
+                setProjectName(std::string_view(archive.restoredPath()).substr(9));
+                submitProject();
+            }
+            break;
+        case Control::endpointToggle:
+            endpointOpen = !endpointOpen;
+            endpoint.picking = false;
+            break;
+        case Control::endpointStart: selectEndpoint(CanvasPrecision::Endpoint::Start); break;
+        case Control::endpointEnd: selectEndpoint(CanvasPrecision::Endpoint::End); break;
+        case Control::endpointReset: selectEndpoint(endpoint.side); break;
+        case Control::endpointSnap: endpoint.snap = !endpoint.snap; break;
+        case Control::endpointPick:
+            if (project->canMoveEndpoint(endpoint.side))
+            {
+                endpoint.picking = !endpoint.picking;
+            }
+            break;
+        case Control::endpointApply:
+            if (const auto* view = project->view(); view && view->revision == endpoint.revision &&
+                view->selection == endpoint.id)
+            {
+                project->moveEndpoint(endpoint.side, endpoint.point);
+            }
+            break;
         case Control::reloadProject: project->reopen(); break;
         case Control::saveProject: project->save(); break;
         case Control::undoProject: project->undo(); break;
@@ -439,6 +534,38 @@ void Shell::activate(Control control)
             if (modelOpen && !project->cad().scene())
             {
                 project->readCad();
+            }
+            break;
+        case Control::sectionToggle:
+            if (!model.sectionPending())
+            {
+                sectionOpen = !sectionOpen;
+                if (!sectionOpen)
+                {
+                    model.setSection(std::nullopt);
+                }
+            }
+            break;
+        case Control::sectionAxis:
+            if (const auto& scene = project->cad().scene(); scene && !model.sectionPending())
+            {
+                sectionAxis = (sectionAxis + 1) % 3;
+                sectionPosition = sectionCenter(*scene, sectionAxis);
+            }
+            break;
+        case Control::sectionSide:
+            if (!model.sectionPending())
+            {
+                sectionUpper = !sectionUpper;
+            }
+            break;
+        case Control::sectionApply:
+            if (const auto& scene = project->cad().scene(); scene && std::isfinite(sectionPosition))
+            {
+                const auto side = sectionUpper ? 1.0 : -1.0;
+                PrototypeSection::Plane plane{0, 0, 0, side * (sectionCenter(*scene, sectionAxis) - sectionPosition)};
+                plane[sectionAxis] = side;
+                model.setSection(plane);
             }
             break;
         case Control::reloadModel: project->readCad(); break;
@@ -580,6 +707,35 @@ void Shell::applyActions()
                     setProjectName(action.value);
                     break;
                 }
+                if (action.control == Control::sectionPosition)
+                {
+                    double candidate = 0.0;
+                    const auto* end = action.value.data() + action.value.size();
+                    const auto result = std::from_chars(action.value.data(), end, candidate);
+                    if (result.ec == std::errc{} && result.ptr == end && std::isfinite(candidate))
+                    {
+                        sectionPosition = candidate;
+                    }
+                    break;
+                }
+                if (action.control == Control::endpointX || action.control == Control::endpointY)
+                {
+                    const auto* view = project->view();
+                    if (view && view->revision == endpoint.revision && view->selection == endpoint.id &&
+                        project->canMoveEndpoint(endpoint.side))
+                    {
+                        auto candidate = endpoint.point;
+                        auto& value = action.control == Control::endpointX ? candidate.x : candidate.y;
+                        const auto* end = action.value.data() + action.value.size();
+                        const auto number = std::from_chars(action.value.data(), end, value);
+                        if (number.ec == std::errc{} && number.ptr == end && CanvasGeometry::Valid(candidate))
+                        {
+                            endpoint.point = candidate;
+                            endpoint.snapLabel.clear();
+                        }
+                    }
+                    break;
+                }
 #endif
                 setNote(action.value);
                 break;
@@ -614,15 +770,19 @@ void Shell::focusItem(Control control)
 void Shell::drawMenus(bool hasViewports)
 {
 #if defined(_WIN32)
-    if (workspacePath && !nextProject && ImGui::GetIO().KeyCtrl &&
+    if (workspacePath && !nextProject && !archive.busy() && ImGui::GetIO().KeyCtrl &&
         (ImGui::IsKeyPressed(ImGuiKey_O, false) || ImGui::IsKeyPressed(ImGuiKey_N, false)))
     {
         boardOpen = chooserOpen = true;
         createProject = ImGui::IsKeyPressed(ImGuiKey_N, false);
         requestedFocus = Control::projectName;
     }
-    if (project && project->configured() && !nextProject)
+    if (project && project->configured() && !nextProject && !archive.busy())
     {
+        if (endpoint.picking && ImGui::IsKeyPressed(ImGuiKey_Escape, false))
+        {
+            endpoint.picking = false;
+        }
         if (ImGui::IsKeyPressed(ImGuiKey_F5, false))
         {
             project->reopen();
@@ -738,6 +898,7 @@ void Shell::draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFo
     plotDrawn = boardDrawn = false;
 #if defined(_WIN32)
     projectTextActive = false;
+    model.pollSection();
 #endif
     drawBoard();
     drawResult(hasViewports);
@@ -786,7 +947,11 @@ void Shell::drawBoard()
         (requestedFocus >= Control::showExchange && requestedFocus <= Control::reloadExchange) ||
         requestedFocus == Control::manufacturingFormat || requestedFocus == Control::buildManufacturing ||
         (requestedFocus >= Control::showProjectChooser && requestedFocus <= Control::submitProject) ||
-        (requestedFocus >= Control::showRecovery && requestedFocus <= Control::nextRecoveryField))
+        (requestedFocus >= Control::showRecovery && requestedFocus <= Control::nextRecoveryField) ||
+        (requestedFocus >= Control::recentPrevious && requestedFocus <= Control::recentOpen) ||
+        (requestedFocus >= Control::archiveToggle && requestedFocus <= Control::archiveOpen) ||
+        (requestedFocus >= Control::endpointToggle && requestedFocus <= Control::endpointReset) ||
+        (requestedFocus >= Control::sectionToggle && requestedFocus <= Control::sectionApply))
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::board)
@@ -804,7 +969,7 @@ void Shell::drawBoard()
             {
                 drawProjectChooser();
             }
-            if (project->configured() && !nextProject)
+            if (project->configured() && !nextProject && !archive.busy())
             {
                 drawLiveBoard();
             }
@@ -867,11 +1032,15 @@ void Shell::drawBoard()
 }
 
 #if defined(_WIN32)
+bool Shell::canSwitchProject() const
+{
+    return !nextProject && !archive.busy() && !manufacturing.active() && !rfDelivery.valid() && project->canSwitch();
+}
+
 /** @brief 이전 프로젝트가 저장된 상태에서만 같은 서비스로 다른 프로젝트를 요청한다. */
 void Shell::submitProject()
 {
-    if (!serviceReady || nextProject || manufacturing.active() || rfDelivery.valid() ||
-        !project->canSwitch() || projectName.front() == '\0')
+    if (!serviceReady || !canSwitchProject() || projectName.front() == '\0')
     {
         return;
     }
@@ -882,9 +1051,20 @@ void Shell::submitProject()
 }
 
 /** @brief 다음 프로젝트의 개정과 장면이 확인된 뒤 현재 프로젝트를 한 번에 교체한다. */
-void Shell::updateProjects(std::unique_ptr<PrototypeProject>& current, PrototypeService& service)
+void Shell::updateProjects(SDL_Window* window, std::unique_ptr<PrototypeProject>& current, PrototypeService& service)
 {
     serviceReady = service.state() == PrototypeService::State::connected;
+    if (archive.busy())
+    {
+        archive.update(window, service);
+        return;
+    }
+    if (serviceReady && project->view() && project->path() != recordedProject)
+    {
+        recordedProject = project->path();
+        recent.remember(recordedProject);
+        recentIndex = 0;
+    }
     if (!nextProject)
     {
         project->update(service);
@@ -895,9 +1075,13 @@ void Shell::updateProjects(std::unique_ptr<PrototypeProject>& current, Prototype
     {
         current = std::move(nextProject);
         project = current.get();
-        chooserOpen = createProject = recoveryOpen = false;
+        chooserOpen = createProject = recoveryOpen = endpointOpen = false;
+        endpoint = {};
         recoveryIndex = 0;
         modelOpen = analysisOpen = resultHistoryOpen = exchangeOpen = rfExportOpen = false;
+        sectionOpen = false;
+        sectionModel.clear();
+        model.setScene({});
         rfFormatIndex = 0;
         rfDeliveryStatus.clear();
         zoom = 1.0f;
@@ -939,7 +1123,18 @@ void Shell::drawProjectChooser()
         ImGui::TextUnformatted("프로젝트를 열려면 Python 서비스에 연결해야 합니다.");
         return;
     }
-    const bool ready = !nextProject && !manufacturing.active() && !rfDelivery.valid() && project->canSwitch();
+    const bool ready = canSwitchProject();
+    if (!recent.paths().empty())
+    {
+        panelButton(Control::recentPrevious, "이전 최근 프로젝트", ready && recentIndex > 0);
+        ImGui::SameLine();
+        panelButton(Control::recentNext, "다음", ready && recentIndex + 1 < recent.paths().size());
+        ImGui::SameLine();
+        panelButton(Control::recentOpen, "최근 프로젝트 열기", ready);
+        const auto& path = recent.paths()[recentIndex];
+        ImGui::TextWrapped("%s", path.c_str());
+        access.text(Control::recentPath, Control::board, path);
+    }
     panelButton(Control::createProjectMode, "새 프로젝트", !nextProject, createProject);
     ImGui::AlignTextToFramePadding();
     ImGui::TextUnformatted("projects/");
@@ -969,6 +1164,11 @@ void Shell::drawProjectChooser()
     {
         ImGui::Text("조합 중  %s", preedit.c_str());
     }
+    panelButton(Control::archiveToggle, "보존 묶음 복원", !archive.busy(), archiveOpen);
+    if (archiveOpen)
+    {
+        drawArchive();
+    }
     const char* status = chooserStatus.c_str();
     if (nextProject)
     {
@@ -986,6 +1186,47 @@ void Shell::drawProjectChooser()
     {
         ImGui::TextWrapped("%s", status);
         access.text(Control::projectChooserStatus, Control::board, status);
+    }
+}
+
+/** @brief 목적지, 개정과 누락 원문을 확인한 뒤 별도 승인으로 복원한다. */
+void Shell::drawArchive()
+{
+    const bool ready = serviceReady && canSwitchProject();
+    panelButton(Control::archivePick, "보존 ZIP 검토", ready && archive.canChoose());
+    ImGui::SameLine();
+    panelButton(Control::archiveApply, "승인 후 복원", ready && archive.canApprove());
+    ImGui::SameLine();
+    panelButton(Control::archiveCancel, "복원 검토 취소", archive.canCancel());
+    const auto& review = archive.review();
+    if (review.is_object())
+    {
+        const auto summary = review.at("path").get<std::string>() + " | 저장본 " +
+            review.at("saved_revision").get<std::string>() + " | 복원 개정 " + review.at("revision_id").get<std::string>() +
+            " | 파일 " + std::to_string(review.at("files").get<std::size_t>()) +
+            "개 | 누락 또는 제외 " + std::to_string(review.at("missing_count").get<std::size_t>()) + "개";
+        ImGui::TextWrapped("%s", summary.c_str());
+        access.text(Control::archiveReview, Control::board, summary);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::BeginTooltip();
+            ImGui::Text("원문 SHA-256 %s", review.at("archive_sha256").get_ref<const std::string&>().c_str());
+            for (const auto& omission : review.at("omitted_preview"))
+            {
+                ImGui::TextWrapped("%s | %s", omission.at("reference").at("uri").get_ref<const std::string&>().c_str(),
+                    omission.at("reason").get_ref<const std::string&>().c_str());
+            }
+            ImGui::EndTooltip();
+        }
+    }
+    if (!archive.restoredPath().empty())
+    {
+        panelButton(Control::archiveOpen, "복원한 프로젝트 열기", ready);
+    }
+    if (!archive.status().empty())
+    {
+        ImGui::TextWrapped("%s", archive.status().c_str());
+        access.text(Control::archiveStatus, Control::board, archive.status());
     }
 }
 
@@ -1042,6 +1283,100 @@ void Shell::drawRecovery()
     }
 }
 
+/** @brief 선택한 경로의 두 끝점을 읽고 미리보기, 스냅 및 명시 적용을 제공한다. */
+void Shell::drawEndpoint()
+{
+    auto* view = project->view();
+    const auto* shape = view ? view->canvas.Find(view->selection) : nullptr;
+    const bool path = shape && shape->selectionKind == "geometry" && CanvasPrecision::HasEndpoints(*shape);
+    panelButton(Control::endpointToggle, "끝점 편집", endpointOpen || path, endpointOpen);
+    if (!endpointOpen || !path)
+    {
+        endpoint.picking = false;
+        return;
+    }
+    if (endpoint.id != shape->id || endpoint.revision != view->revision)
+    {
+        endpoint.id = shape->id;
+        endpoint.revision = view->revision;
+        endpoint.point = CanvasPrecision::At(*shape, endpoint.side);
+        endpoint.picking = false;
+        endpoint.snapLabel.clear();
+    }
+    const auto start = CanvasPrecision::Endpoint::Start;
+    const auto end = CanvasPrecision::Endpoint::End;
+    const bool editable = project->canMoveEndpoint(endpoint.side);
+    panelButton(Control::endpointStart, "시작점", true, endpoint.side == start);
+    ImGui::SameLine();
+    panelButton(Control::endpointEnd, "끝점", true, endpoint.side == end);
+    ImGui::SameLine();
+    panelButton(Control::endpointSnap, "스냅", editable, endpoint.snap);
+    ImGui::SameLine();
+    panelButton(Control::endpointPick, "캔버스에서 지정", editable, endpoint.picking);
+    if (endpoint.picking)
+    {
+        ImGui::TextUnformatted("캔버스에서 위치를 선택하세요. Esc로 취소합니다.");
+    }
+    if (!editable)
+    {
+        ImGui::TextUnformatted("현재 작업 또는 원본 구속을 확인하세요.");
+    }
+    const auto setCoordinate = [&](Control control, const char* label, double& value)
+    {
+        ImGui::SetNextItemWidth(115.0f);
+        ImGui::BeginDisabled(!editable);
+        if (requestedFocus == control)
+        {
+            ImGui::SetKeyboardFocusHere();
+        }
+        if (ImGui::InputDouble(label, &value, 0.0, 0.0, "%.12g"))
+        {
+            endpoint.snapLabel.clear();
+        }
+        if (ImGui::IsItemActive())
+        {
+            projectTextActive = true;
+            projectTextWindow = windowId(ImGui::GetWindowViewport());
+        }
+        focusItem(control);
+        char number[40];
+        std::snprintf(number, sizeof(number), "%.17g", value);
+        access.item(control, Control::board, editable, false, nullptr, number);
+        ImGui::EndDisabled();
+    };
+    setCoordinate(Control::endpointX, "X (mm)", endpoint.point.x);
+    ImGui::SameLine();
+    setCoordinate(Control::endpointY, "Y (mm)", endpoint.point.y);
+    auto preview = *shape;
+    const bool changed = !CanvasPrecision::EndpointUnchanged(*shape, endpoint.side, endpoint.point) &&
+        CanvasPrecision::Preview(preview, endpoint.side, endpoint.point);
+    panelButton(Control::endpointApply, "끝점 적용", editable && changed);
+    ImGui::SameLine();
+    panelButton(Control::endpointReset, "좌표 되돌리기", editable);
+    if (!endpoint.snapLabel.empty())
+    {
+        ImGui::SameLine();
+        ImGui::TextUnformatted(endpoint.snapLabel.c_str());
+        access.text(Control::endpointSnapStatus, Control::board, endpoint.snapLabel);
+    }
+}
+
+void Shell::selectEndpoint(CanvasPrecision::Endpoint side)
+{
+    if (auto* view = project->view())
+    {
+        if (const auto* shape = view->canvas.Find(view->selection); shape && CanvasPrecision::HasEndpoints(*shape))
+        {
+            endpoint.id = shape->id;
+            endpoint.revision = view->revision;
+            endpoint.side = side;
+            endpoint.point = CanvasPrecision::At(*shape, side);
+            endpoint.picking = false;
+            endpoint.snapLabel.clear();
+        }
+    }
+}
+
 /** @brief 실제 프로젝트와 권위 있는 개정, 기판 장면 및 저장 동작을 같은 패널에 제공한다. */
 void Shell::drawLiveBoard()
 {
@@ -1088,6 +1423,7 @@ void Shell::drawLiveBoard()
     panelButton(Control::moveDown, "-Y", movable);
     ImGui::SameLine();
     panelButton(Control::moveUp, "+Y", movable);
+    drawEndpoint();
 
     if (!project->message().empty())
     {
@@ -1121,7 +1457,7 @@ void Shell::drawLiveBoard()
         {
             ImGui::Text("표시 생략 %zu건", omissions);
         }
-        boardDrawn = drawProjectCanvas(*view, zoom, pan);
+        boardDrawn = drawProjectCanvas(*view, zoom, pan, endpointOpen ? &endpoint : nullptr);
     }
 }
 
@@ -1253,6 +1589,70 @@ void Shell::drawExchange()
 }
 
 /** @brief 검증한 표시 장면으로만 카메라를 그리고 같은 개정의 원본 선택을 연결한다. */
+/** @brief 실제 모델 좌표의 축, 위치, 보존 방향을 선택하고 단면을 확정한다. */
+void Shell::drawSection(const DisplayMesh::Scene& scene)
+{
+    if (sectionModel != scene.runId)
+    {
+        sectionModel = scene.runId;
+        sectionOpen = false;
+        sectionAxis = 2;
+        sectionUpper = true;
+        sectionPosition = sectionCenter(scene, sectionAxis);
+    }
+    const bool ready = !model.sectionPending();
+    panelButton(Control::sectionToggle, "단면 도구", ready, sectionOpen);
+    if (!sectionOpen)
+    {
+        return;
+    }
+    constexpr std::array names{"X", "Y", "Z"};
+    panelButton(Control::sectionAxis, "축 변경", ready);
+    ImGui::SameLine();
+    ImGui::TextUnformatted(names[sectionAxis]);
+    access.text(Control::sectionAxisValue, Control::board, names[sectionAxis]);
+    ImGui::SameLine();
+    panelButton(Control::sectionSide, "큰 좌표 쪽 보존", ready, sectionUpper);
+    ImGui::BeginDisabled(!ready);
+    ImGui::SetNextItemWidth(143.0f);
+    if (requestedFocus == Control::sectionPosition)
+    {
+        ImGui::SetKeyboardFocusHere();
+    }
+    ImGui::InputDouble("단면 위치 (mm)", &sectionPosition, 0.0, 0.0, "%.12g");
+    if (ImGui::IsItemActive())
+    {
+        projectTextActive = true;
+        projectTextWindow = windowId(ImGui::GetWindowViewport());
+    }
+    focusItem(Control::sectionPosition);
+    char position[48];
+    std::snprintf(position, sizeof(position), "%.17g", sectionPosition);
+    access.item(Control::sectionPosition, Control::board, ready, false, nullptr, position);
+    ImGui::EndDisabled();
+    ImGui::SameLine();
+    panelButton(Control::sectionApply, "단면 적용", ready && std::isfinite(sectionPosition));
+    auto summary = std::string("표시 삼각형 ") + std::to_string(model.visibleTriangles()) + "개";
+    if (model.sectionPending())
+    {
+        summary = "단면을 계산하는 중";
+    }
+    else if (const auto* plane = model.sectionPlane())
+    {
+        const auto normal = std::find_if(plane->begin(), plane->begin() + 3, [](double value)
+        {
+            return value != 0.0;
+        });
+        const auto axis = static_cast<std::size_t>(normal - plane->begin());
+        char applied[89];
+        std::snprintf(applied, sizeof(applied), "%s %s %.12g mm | ", names[axis], *normal > 0.0 ? ">=" : "<=",
+            sectionCenter(scene, axis) - plane->back() / *normal);
+        summary = applied + summary;
+    }
+    ImGui::TextUnformatted(summary.c_str());
+    access.text(Control::sectionStatus, Control::board, summary);
+}
+
 void Shell::drawLiveModel()
 {
     const auto& cad = project->cad();
@@ -1295,6 +1695,7 @@ void Shell::drawLiveModel()
         }
         return;
     }
+    drawSection(*scene);
     auto* view = project->view();
     const bool current = view && view->revision == scene->revisionId;
     ImGui::Text("3D 개정 %.12s  |  %s", scene->revisionId.c_str(),
@@ -1419,7 +1820,7 @@ void Shell::drawResult(bool hasViewports)
 #if defined(_WIN32)
         if (workspacePath && project)
         {
-            if (project->view() && !nextProject)
+            if (project->view() && !nextProject && !archive.busy())
             {
                 drawLiveResult();
             }
@@ -2409,6 +2810,7 @@ int run(SDL_Window* window, const Options& options)
             auto project = std::make_unique<PrototypeProject>(options.openProject, options.service.workspace);
             shell.project = project.get();
             shell.workspacePath = options.service.workspace;
+            shell.recent.load(settingsPath, options.service.workspace);
             shell.chooserOpen = options.service.workspace && !options.openProject;
             if (options.service.python)
             {
@@ -2456,7 +2858,7 @@ int run(SDL_Window* window, const Options& options)
                     const char* serviceStatus = nullptr;
 #if defined(_WIN32)
                     service.poll();
-                    shell.updateProjects(project, service);
+                    shell.updateProjects(window, project, service);
                     shell.deliverRfExport(window);
                     shell.manufacturing.update(window, options.service);
                     serviceStatus = service.status().c_str();
