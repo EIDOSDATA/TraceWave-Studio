@@ -6,6 +6,7 @@
 #include "prototype_exchange.h"
 #include "prototype_evidence.h"
 #include "prototype_target.h"
+#include "prototype_template.h"
 #include "prototype_result.h"
 #include "prototype_service.h"
 
@@ -48,6 +49,10 @@ public:
     const std::string& targetPreset() const { return targetPreset_; }
     const std::string& targetStatus() const { return targetStatus_; }
     const std::optional<PrototypeEvidence>& targetEvidence() const { return targetEvidence_; }
+    void readTemplate();
+    void previewTemplate();
+    void applyTemplate();
+    PrototypeTemplate& literature() { return literature_; }
     void readCad();
     void readRecovery();
     const nlohmann::json& recovery() const { return recovery_; }
@@ -106,7 +111,8 @@ private:
     {
         idle, open, save, canvasEdit, undo, readRename, rename, renamed, edited, accepted, job, canvas, editor, cad,
         solverLatest, resultHistory, resultDescribe, resultPage, resultArtifact, resultMatrixLoad, resultExport,
-        solverConditions, recovery, targetRead, targetApply, targetEdited, targetEvidence, finished, failed
+        solverConditions, recovery, targetRead, targetApply, targetEdited, targetEvidence, templateContext, templatePreview, templateApply, templateEdited,
+        finished, failed
     };
     bool sendBackground(PrototypeService& service);
     void receive(const nlohmann::json& reply);
@@ -153,6 +159,8 @@ private:
     std::string targetStatus_;
     nlohmann::json targetInput_;
     std::optional<PrototypeEvidence> targetEvidence_;
+    PrototypeTemplate literature_;
+    nlohmann::json templateInput_;
     View loading_;
     std::optional<View> view_;
     nlohmann::json pages_;

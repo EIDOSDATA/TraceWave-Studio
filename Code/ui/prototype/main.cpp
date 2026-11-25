@@ -8,6 +8,7 @@
 #include "prototype_manufacturing.h"
 #include "prototype_recent.h"
 #include "prototype_model.h"
+#include "prototype_template_panel.h"
 #include "../wxwidgets/network_export_files.h"
 
 #include <commdlg.h>
@@ -162,6 +163,8 @@ struct Shell
     void drawTargetSources();
     void setTargetText(Control control, const std::string& value);
     void targetAction(Control control);
+    bool templateOpen = false;
+    PrototypeTemplatePanel templatePanel;
     void submitProject();
     void updateProjects(SDL_Window* window, std::unique_ptr<PrototypeProject>& current, PrototypeService& service);
     void setProjectName(std::string_view value);
@@ -473,7 +476,7 @@ void Shell::activate(Control control)
             break;
         case Control::submitProject: submitProject(); break;
         case Control::renameToggle:
-            if (project && !modelOpen && !evidenceOpen && !targetOpen && !nextProject && !archive.busy() && project->canRename())
+            if (project && !modelOpen && !evidenceOpen && !targetOpen && !templateOpen && !nextProject && !archive.busy() && project->canRename())
             {
                 const auto* view = project->view();
                 const auto* shape = view->canvas.Find(view->selection);
@@ -528,6 +531,27 @@ void Shell::activate(Control control)
                 createProject = false;
                 setProjectName(std::string_view(recent.paths()[recentIndex]).substr(9));
                 submitProject();
+            }
+            break;
+        case Control::templateToggle:
+            if (project && project->view() && !project->busy())
+            {
+                templateOpen = !templateOpen;
+                if (templateOpen && !project->literature().hasContext())
+                {
+                    project->readTemplate();
+                }
+            }
+            break;
+        case Control::templateRead:
+        case Control::templateInput:
+        case Control::templateReview:
+        case Control::templatePreview:
+        case Control::templateApply:
+        case Control::templateDiscard:
+            if (templateOpen)
+            {
+                templatePanel.action(*project, control);
             }
             break;
         case Control::targetToggle:
@@ -1104,7 +1128,8 @@ void Shell::drawBoard()
         (requestedFocus >= Control::sectionToggle && requestedFocus <= Control::sectionApply) ||
         requestedFocus == Control::renameToggle ||
         (requestedFocus >= Control::evidenceToggle && requestedFocus <= Control::evidenceNextValue) ||
-        (requestedFocus >= Control::targetToggle && requestedFocus <= Control::targetReason))
+        (requestedFocus >= Control::targetToggle && requestedFocus <= Control::targetReason) ||
+        (requestedFocus >= Control::templateToggle && requestedFocus <= Control::templateDiscard))
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::board)
@@ -1187,7 +1212,7 @@ void Shell::drawBoard()
 #if defined(_WIN32)
 bool Shell::canSwitchProject() const
 {
-    return !renameOpen && !project->target().dirty() && !nextProject && !archive.busy() && !manufacturing.active() && !rfDelivery.valid() && project->canSwitch();
+    return !renameOpen && !project->target().dirty() && !project->literature().dirty() && !nextProject && !archive.busy() && !manufacturing.active() && !rfDelivery.valid() && project->canSwitch();
 }
 
 /** @brief 이전 프로젝트가 저장된 상태에서만 같은 서비스로 다른 프로젝트를 요청한다. */
@@ -1231,7 +1256,8 @@ void Shell::updateProjects(SDL_Window* window, std::unique_ptr<PrototypeProject>
         chooserOpen = createProject = recoveryOpen = endpointOpen = false;
         endpoint = {};
         recoveryIndex = 0;
-        evidenceOpen = targetOpen = targetRemove = false;
+        evidenceOpen = targetOpen = targetRemove = templateOpen = false;
+        templatePanel = {};
         targetPage = PrototypeTarget::Page::band;
         targetChange = 0;
         evidencePage = EvidencePage::records;
@@ -2080,6 +2106,21 @@ void Shell::drawLiveBoard()
     if (targetOpen)
     {
         drawTarget();
+        return;
+    }
+    ImGui::SameLine();
+    panelButton(Control::templateToggle, "문헌 후보", project->view() && !project->busy(), templateOpen);
+    if (templateOpen)
+    {
+        if (templatePanel.draw(*project, access, requestedFocus))
+        {
+            projectTextActive = true;
+            projectTextWindow = windowId(ImGui::GetWindowViewport());
+            if (!preedit.empty() && preeditWindow == projectTextWindow)
+            {
+                ImGui::Text("조합 중  %s", preedit.c_str());
+            }
+        }
         return;
     }
     ImGui::SameLine();

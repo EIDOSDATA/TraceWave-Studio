@@ -201,9 +201,19 @@ constexpr Description descriptions[] =
     {L"목표 변경 사유", L"target-reason", UIA_EditControlTypeId, UIA_ValuePatternId},
     {L"", L"target-status", UIA_TextControlTypeId},
     {L"", L"target-summary", UIA_TextControlTypeId},
-    {L"", L"target-history", UIA_TextControlTypeId}
+    {L"", L"target-history", UIA_TextControlTypeId},
+    {L"문헌 후보", L"template-toggle", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"문헌 카드와 적용 대상 다시 읽기", L"template-read", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"문헌 카드와 입력", L"template-input", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"문헌 후보 검토", L"template-review", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"후보 형상 미리보기", L"template-preview", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"검토한 후보 형상 적용", L"template-apply", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"문헌 후보 초안 취소", L"template-discard", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"template-card", UIA_TextControlTypeId},
+    {L"", L"template-status", UIA_TextControlTypeId},
+    {L"", L"template-summary", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::targetHistory) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::templateSummary) + 1);
 
 struct Node
 {

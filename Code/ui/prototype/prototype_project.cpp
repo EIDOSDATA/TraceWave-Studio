@@ -222,6 +222,55 @@ void PrototypeProject::readTargetEvidence()
     }
 }
 
+void PrototypeProject::readTemplate()
+{
+    if (view_ && writable())
+    {
+        literature_.status = "현재 개정의 문헌 카드와 적용 대상을 읽는 중";
+        step_ = Step::templateContext;
+    }
+}
+
+/** @brief 미리보기 요청에만 초안을 전달하고 편집 개정은 그대로 둔다. */
+void PrototypeProject::previewTemplate()
+{
+    if (!view_ || !writable() || !literature_.ready())
+    {
+        return;
+    }
+    literature_.clearReview();
+    try
+    {
+        templateInput_ = literature_.specification();
+        literature_.status = "후보 형상을 검토하는 중";
+        step_ = Step::templatePreview;
+    }
+    catch (const std::exception& error)
+    {
+        literature_.status = error.what();
+    }
+}
+
+/** @brief 검토한 입력과 해시로만 한 개의 문헌 적용 명령을 만든다. */
+void PrototypeProject::applyTemplate()
+{
+    if (!view_ || !writable() || !literature_.canApply())
+    {
+        return;
+    }
+    try
+    {
+        templateInput_ = literature_.application(PrototypeService::newCommandId());
+        literature_.status = "검토한 형상을 적용하는 중";
+        step_ = Step::templateApply;
+    }
+    catch (const std::exception& error)
+    {
+        literature_.clearReview();
+        literature_.status = error.what();
+    }
+}
+
 void PrototypeProject::readCad()
 {
     if (view_ && writable() && !cad_.loading() && !cadJob_.active())
@@ -616,6 +665,20 @@ void PrototypeProject::update(PrototypeService& service)
                 awaiting_ = service.request("project.evidence", {{"project_id", view_->id}},
                     {{"expected_revision", view_->revision}});
                 break;
+            case Step::templateContext:
+                awaiting_ = service.request("template.context", {{"project_id", view_->id}},
+                    {{"expected_revision", view_->revision}});
+                break;
+            case Step::templatePreview:
+                awaiting_ = service.request("template.synthesize", {{"project_id", view_->id}}, templateInput_);
+                break;
+            case Step::templateApply:
+                awaiting_ = service.request("template.apply", {{"project_id", view_->id}}, templateInput_, true);
+                if (awaiting_)
+                {
+                    step_ = Step::templateEdited;
+                }
+                break;
             case Step::targetRead:
                 awaiting_ = service.request("target.editor.get", {{"project_id", view_->id}}, targetInput_);
                 break;
@@ -687,6 +750,13 @@ void PrototypeProject::receive(const Json& reply)
             step_ = Step::finished;
             return;
         }
+        if (step_ == Step::templateEdited && (code == "E_SCHEMA" || code == "E_CONFLICT" || code == "E_RESOURCE"))
+        {
+            literature_.clearReview();
+            literature_.status = errorMessage(error);
+            step_ = Step::finished;
+            return;
+        }
         if (step_ == Step::targetEdited && (code == "E_SCHEMA" || code == "E_CONFLICT" ||
             code == "E_UNIT" || code == "E_RESOURCE" || code == "E_UNSUPPORTED"))
         {
@@ -752,6 +822,14 @@ void PrototypeProject::receive(const Json& reply)
             step_ = Step::finished;
             break;
         }
+        case Step::templateContext:
+            literature_.acceptContext(result, view_->id, view_->revision);
+            step_ = Step::finished;
+            break;
+        case Step::templatePreview:
+            literature_.acceptPreview(result, view_->id, templateInput_);
+            step_ = Step::finished;
+            break;
         case Step::targetRead:
         {
             const auto& selection = targetInput_.at("target_id");
@@ -856,6 +934,9 @@ void PrototypeProject::receive(const Json& reply)
             targetStatus_.clear();
         }
         [[fallthrough]];
+        case Step::templateEdited:
+            literature_.acceptApply(result, view_->id, templateInput_);
+            [[fallthrough]];
         case Step::renamed:
         case Step::edited:
             if (result.at("project_id") != view_->id || result.at("new_revision") == view_->revision)
@@ -1005,6 +1086,7 @@ void PrototypeProject::finishView(const Json& editor)
     clearRecovery();
     target_.loaded = false;
     targetEvidence_.reset();
+    literature_.invalidate(view_->revision);
     createName_.clear();
     message_.clear();
     step_ = Step::finished;
@@ -1022,6 +1104,14 @@ void PrototypeProject::finishResult(const char* status)
 
 void PrototypeProject::fail(std::string message)
 {
+    if (step_ == Step::templateContext || step_ == Step::templatePreview || step_ == Step::templateApply)
+    {
+        literature_.clearReview();
+        literature_.status = "문헌 요청 실패. " + message;
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
     if (step_ == Step::targetRead || step_ == Step::targetApply || step_ == Step::targetEvidence)
     {
         targetStatus_ = "목표 요청 실패. " + message;

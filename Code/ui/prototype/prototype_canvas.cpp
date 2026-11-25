@@ -209,3 +209,30 @@ bool drawProjectCanvas(PrototypeProject::View& view, float& zoom, ImVec2& pan, P
     draw.PopClipRect();
     return true;
 }
+
+/** @brief 서비스가 생성한 후보 장면만 표시하며 편집 입력을 받지 않는다. */
+void drawCandidateCanvas(const CanvasScene::Model& scene, const std::vector<std::string>& highlighted, float height)
+{
+    const auto origin = ImGui::GetCursorScreenPos();
+    const ImVec2 size{ImGui::GetContentRegionAvail().x, height};
+    if (size.x < 24.0f || size.y < 24.0f)
+    {
+        return;
+    }
+    ImGui::Dummy(size);
+    const auto bounds = scene.VisibleBounds({});
+    const Projection map{{origin.x + size.x * 0.5f, origin.y + size.y * 0.5f},
+        {(bounds.left + bounds.right) / 2, (bounds.bottom + bounds.top) / 2},
+        0.82 * std::min(size.x / std::max(0.01, bounds.right - bounds.left),
+            size.y / std::max(0.01, bounds.top - bounds.bottom))};
+    auto& draw = *ImGui::GetWindowDrawList();
+    const ImVec2 end(origin.x + size.x, origin.y + size.y);
+    draw.PushClipRect(origin, end, true);
+    draw.AddRectFilled(origin, end, IM_COL32(17, 26, 35, 255));
+    drawOutline(draw, map, scene);
+    for (const auto& shape : scene.shapes)
+    {
+        drawShape(draw, map, shape, std::ranges::find(highlighted, shape.id) != highlighted.end());
+    }
+    draw.PopClipRect();
+}

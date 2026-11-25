@@ -41,7 +41,9 @@ enum class Control
     evidenceStatus, evidenceSummary, evidenceTitle, evidenceSource, evidenceValues,
     targetToggle, targetNew, targetBand, targetCriteria, targetSources, targetApply, targetApplyRemoval, targetRemove, targetDiscard,
     targetRead, targetPrevChange, targetNextChange, targetName, targetStart, targetEnd, targetSamples,
-    targetS11, targetReason, targetStatus, targetSummary, targetHistory
+    targetS11, targetReason, targetStatus, targetSummary, targetHistory,
+    templateToggle, templateRead, templateInput, templateReview, templatePreview, templateApply, templateDiscard,
+    templateCard, templateStatus, templateSummary
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };
