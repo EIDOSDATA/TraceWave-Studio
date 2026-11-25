@@ -6,6 +6,7 @@
 
 #include <array>
 #include <optional>
+#include <vector>
 
 class PrototypeExchange
 {
@@ -20,7 +21,14 @@ public:
         nlohmann::json snapshot;
     };
 
+    struct Footprint
+    {
+        std::string id;
+        std::string name;
+    };
+
     void moveFormat(int direction);
+    void moveFootprint(int direction);
     void startReview(const std::string& project, const std::string& revision);
     void approve(const std::string& revision);
     void startVerify(const std::string& project);
@@ -35,6 +43,9 @@ public:
     bool sealing() const { return phase_ == Phase::seal || phase_ == Phase::context; }
     bool urgent() const { return sealing() || (cancelRequested_ && !cancelSent_); }
     bool canMove(int direction) const;
+    bool canMoveFootprint(int direction) const;
+    bool choosingFootprint() const { return phase_ == Phase::chooseFootprint; }
+    const Footprint* footprint() const;
     bool canApprove(const std::string& revision) const;
     bool canCancel() const;
     const char* name() const;
@@ -43,11 +54,12 @@ public:
     const std::optional<Published>& published() const { return published_[format_]; }
 
 private:
-    enum class Phase { idle, seal, context, preview, approval, build, verify, list, record };
+    enum class Phase { idle, seal, context, chooseFootprint, preview, approval, build, verify, list, record };
     enum class Request { none, acceptJob, poll, context, cancel, list, record };
 
     nlohmann::json snapshotInput() const;
     void acceptContext(const nlohmann::json& result);
+    void beginPreview(nlohmann::json options);
     void acceptStatus(const nlohmann::json& result);
     void complete(const nlohmann::json& result);
     void acceptList(const nlohmann::json& result);
@@ -58,7 +70,9 @@ private:
     Request pending_ = Request::none;
     Studio::JobTracker job_;
     std::size_t format_ = 0;
-    std::array<std::optional<Published>, 3> published_;
+    std::array<std::optional<Published>, 6> published_;
+    std::vector<Footprint> footprints_;
+    std::size_t footprintIndex_ = 0;
     std::string project_;
     std::string revision_;
     std::string status_;

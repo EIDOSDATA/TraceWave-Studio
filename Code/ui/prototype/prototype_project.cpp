@@ -135,9 +135,14 @@ nlohmann::json PrototypeProject::takeRfExport()
     return std::exchange(rfExportResult_, {});
 }
 
-bool PrototypeProject::canReviewExchange() const
+bool PrototypeProject::canReadExchange() const
 {
     return exchangeSupported_ && view_ && writable() && !exchange_.active();
+}
+
+bool PrototypeProject::canReviewExchange() const
+{
+    return canReadExchange() || (view_ && writable() && exchange_.choosingFootprint());
 }
 
 bool PrototypeProject::canApproveExchange() const
@@ -147,7 +152,7 @@ bool PrototypeProject::canApproveExchange() const
 
 bool PrototypeProject::canVerifyExchange() const
 {
-    return exchangeReady_ && canReviewExchange() && exchange_.published();
+    return exchangeReady_ && canReadExchange() && exchange_.published();
 }
 
 void PrototypeProject::reviewExchange()
@@ -176,7 +181,7 @@ void PrototypeProject::verifyExchange()
 
 void PrototypeProject::reloadExchange()
 {
-    if (canReviewExchange())
+    if (canReadExchange())
     {
         exchange_.reload(view_->id);
     }
@@ -187,6 +192,14 @@ void PrototypeProject::moveExchangeFormat(int direction)
     if (writable())
     {
         exchange_.moveFormat(direction);
+    }
+}
+
+void PrototypeProject::moveExchangeFootprint(int direction)
+{
+    if (writable())
+    {
+        exchange_.moveFootprint(direction);
     }
 }
 
@@ -325,10 +338,14 @@ void PrototypeProject::update(PrototypeService& service)
         }
         if (!busy())
         {
-            auto artifact = analysis_.takeResult();
-            if (view_ && !artifact.empty())
+            const auto publication = analysis_.takeResult();
+            if (view_ && publication && publication->multiport)
             {
-                result_.selectArtifact(artifact);
+                result_.showMultiportNotice();
+            }
+            if (view_ && publication && !publication->multiport)
+            {
+                result_.selectArtifact(publication->artifact);
                 result_.setStatus("완료한 해석의 봉인 표본을 조회하는 중");
                 showingCompletedAnalysis_ = true;
                 step_ = Step::resultDescribe;

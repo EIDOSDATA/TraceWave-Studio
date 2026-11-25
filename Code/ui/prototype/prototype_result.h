@@ -41,6 +41,7 @@ public:
     const std::string& historyStatus() const { return historyStatus_; }
 
     bool acceptLatest(const nlohmann::json& reply);
+    void showMultiportNotice();
     void selectArtifact(const std::string& artifact, const std::string& revision = {});
     void acceptDescription(const nlohmann::json& reply, const std::string& project, const std::string& revision);
     bool acceptPage(const nlohmann::json& reply);

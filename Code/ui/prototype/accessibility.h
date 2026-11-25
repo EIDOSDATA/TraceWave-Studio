@@ -21,8 +21,8 @@ enum class Control
     solverCondition, solverStatus, solverPlan,
     showResultHistory, reloadResultHistory, priorResult, nextResult, openHistoryResult,
     historyChoice, historyStatus, resultReadStatus, resultSummary,
-    showExchange, priorExchange, nextExchange, reviewExchange, buildExchange, verifyExchange, cancelExchange, reloadExchange,
-    exchangeFormat, exchangeStatus, exchangeReview, exchangePublication,
+    showExchange, priorExchange, nextExchange, priorFootprint, nextFootprint, reviewFootprint, reviewExchange, buildExchange, verifyExchange, cancelExchange, reloadExchange,
+    exchangeFormat, exchangeFootprint, exchangeStatus, exchangeReview, exchangePublication,
     showRfExport, previousRfExport, nextRfExport, saveRfExport, rfExportFormat, rfExportStatus
 };
 

@@ -46,7 +46,9 @@ public:
     void verifyExchange();
     void reloadExchange();
     void moveExchangeFormat(int direction);
+    void moveExchangeFootprint(int direction);
     void cancelExchange() { exchange_.cancel(); }
+    bool canReadExchange() const;
     bool canReviewExchange() const;
     bool canApproveExchange() const;
     bool canVerifyExchange() const;

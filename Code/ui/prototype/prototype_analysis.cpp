@@ -423,15 +423,9 @@ void PrototypeAnalysis::complete(const json& result)
     }
     else if (phase == Phase::Analysis)
     {
-        if (multiport_)
-        {
-            finish("해석 완료. RC10의 네트워크 보기에서 저장된 전체 S 행렬을 확인하세요.");
-        }
-        else
-        {
-            completedResult_ = result.at("artifact_id").get<std::string>();
-            finish("해석 완료. 봉인된 결과를 읽는 중");
-        }
+        completedResult_ = PublishedResult{result.at("artifact_id").get<std::string>(), multiport_};
+        finish(multiport_ ? "다중 포트 해석 완료. 전체 S 행렬을 저장했습니다."
+                          : "해석 완료. 봉인된 결과를 읽는 중");
     }
 }
 
@@ -443,9 +437,9 @@ void PrototypeAnalysis::disconnected()
     }
 }
 
-std::string PrototypeAnalysis::takeResult()
+std::optional<PrototypeAnalysis::PublishedResult> PrototypeAnalysis::takeResult()
 {
-    return std::exchange(completedResult_, {});
+    return std::exchange(completedResult_, std::nullopt);
 }
 
 void PrototypeAnalysis::finish(std::string status)

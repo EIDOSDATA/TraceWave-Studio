@@ -147,11 +147,16 @@ bool PrototypeResult::acceptLatest(const json& reply)
     }
     if (latest.value("profile", "") == "rfad.openems.pcb-multiport/0.1")
     {
-        setStatus("최신 해석은 다중 포트 결과입니다. RC10의 네트워크 보기에서 전체 S 행렬을 확인하세요.");
+        showMultiportNotice();
         return false;
     }
     selectArtifact(latest.at("artifact_id").get<std::string>());
     return true;
+}
+
+void PrototypeResult::showMultiportNotice()
+{
+    setStatus("최신 해석은 다중 포트 결과입니다. RC10의 네트워크 보기에서 전체 S 행렬을 확인하세요.");
 }
 
 void PrototypeResult::selectArtifact(const std::string& artifact, const std::string& revision)

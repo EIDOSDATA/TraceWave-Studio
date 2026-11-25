@@ -43,7 +43,13 @@ public:
     void disconnected();
     bool send(PrototypeService& service);
     bool readReply(PrototypeService& service);
-    std::string takeResult();
+    struct PublishedResult
+    {
+        std::string artifact;
+        bool multiport = false;
+    };
+
+    std::optional<PublishedResult> takeResult();
 
     bool active() const { return previewing_ || workflow_.Active(); }
     bool sealing() const;
@@ -81,7 +87,7 @@ private:
     std::string project_;
     std::string revision_;
     std::string snapshot_;
-    std::string completedResult_;
+    std::optional<PublishedResult> completedResult_;
     nlohmann::json settings_;
     nlohmann::json estimate_;
     std::vector<Condition> conditions_;

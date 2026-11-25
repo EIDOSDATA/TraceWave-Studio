@@ -9,19 +9,25 @@ namespace
 {
 using nlohmann::json;
 
+enum class Kind { drawing, board, footprint, cam };
+
 struct Format
 {
     const char* label;
     const char* key;
     const char* profile;
     const char* suffix;
+    Kind kind;
 };
 
 constexpr Format formats[] =
 {
-    {"PDF 도면", "pdf", "rfad.exchange.drawing/0.1", ".pdf"},
-    {"KiCad 보드", "kicad_pcb", "rfad.exchange.kicad-board/0.1", ".kicad_pcb"},
-    {"Gerber / XNC / Job", "gerber_job", "rfad.exchange.cam/0.1", ".gbrjob"}
+    {"PDF 도면", "pdf", "rfad.exchange.drawing/0.1", ".pdf", Kind::drawing},
+    {"SVG 도면", "svg", "rfad.exchange.drawing/0.1", ".svg", Kind::drawing},
+    {"DXF 도면", "dxf", "rfad.exchange.drawing/0.1", ".dxf", Kind::drawing},
+    {"KiCad 보드", "kicad_pcb", "rfad.exchange.kicad-board/0.1", ".kicad_pcb", Kind::board},
+    {"KiCad 풋프린트", "kicad_mod", "rfad.exchange.kicad-footprint/0.1", ".kicad_mod", Kind::footprint},
+    {"Gerber / XNC / Job", "gerber_job", "rfad.exchange.cam/0.1", ".gbrjob", Kind::cam}
 };
 
 bool isHash(const json& value)
@@ -52,6 +58,7 @@ const char* PrototypeExchange::name() const
 
 bool PrototypeExchange::canMove(int direction) const
 {
+    static_assert(std::tuple_size_v<decltype(published_)> == std::size(formats));
     return !active() && (direction < 0 ? format_ > 0 : format_ + 1 < std::size(formats));
 }
 
@@ -61,6 +68,25 @@ void PrototypeExchange::moveFormat(int direction)
     {
         format_ = direction < 0 ? format_ - 1 : format_ + 1;
         status_.clear();
+    }
+}
+
+const PrototypeExchange::Footprint* PrototypeExchange::footprint() const
+{
+    return footprints_.empty() ? nullptr : &footprints_[footprintIndex_];
+}
+
+bool PrototypeExchange::canMoveFootprint(int direction) const
+{
+    return choosingFootprint() && footprint() &&
+        (direction < 0 ? footprintIndex_ > 0 : footprintIndex_ + 1 < footprints_.size());
+}
+
+void PrototypeExchange::moveFootprint(int direction)
+{
+    if (canMoveFootprint(direction))
+    {
+        footprintIndex_ = direction < 0 ? footprintIndex_ - 1 : footprintIndex_ + 1;
     }
 }
 
@@ -82,6 +108,10 @@ void PrototypeExchange::startReview(const std::string& project, const std::strin
         revision_ = revision;
         phase_ = Phase::seal;
         status_ = "출력 입력 개정을 봉인하는 중";
+    }
+    else if (choosingFootprint() && footprint() && project_ == project && revision_ == revision)
+    {
+        beginPreview({{"footprint_id", footprint()->id}});
     }
 }
 
@@ -135,7 +165,7 @@ void PrototypeExchange::cancel()
 
 void PrototypeExchange::checkRevision(const std::string& revision)
 {
-    if (phase_ == Phase::approval && revision_ != revision)
+    if ((choosingFootprint() || phase_ == Phase::approval) && revision_ != revision)
     {
         finish("개정이 바뀌었습니다. 새 출력 입력을 검토하세요.");
     }
@@ -150,7 +180,7 @@ json PrototypeExchange::snapshotInput() const
 bool PrototypeExchange::send(PrototypeService& service)
 {
     using namespace std::chrono_literals;
-    if (!active() || pending_ != Request::none || phase_ == Phase::approval)
+    if (!active() || pending_ != Request::none || choosingFootprint() || phase_ == Phase::approval)
     {
         return false;
     }
@@ -318,7 +348,8 @@ void PrototypeExchange::acceptContext(const json& result)
         throw std::runtime_error("출력 문맥이 봉인한 개정과 다릅니다.");
     }
     auto options = json::object();
-    if (format_ == 0)
+    const auto kind = formats[format_].kind;
+    if (kind == Kind::drawing)
     {
         options = result.at("default_options");
         const auto& annotations = result.at("drawing_annotations").at("saved");
@@ -337,12 +368,48 @@ void PrototypeExchange::acceptContext(const json& result)
             options["annotations"] = annotations;
         }
     }
-    else if (format_ == 2)
+    else if (kind == Kind::cam)
     {
         options["layer_ids"] = result.at("pcb").at("default_cam_layer_ids");
     }
+    else if (kind == Kind::footprint)
+    {
+        const auto& choices = result.at("pcb").at("footprints");
+        if (!choices.is_array())
+        {
+            throw std::runtime_error("봉인 입력의 풋프린트 목록을 확인할 수 없습니다.");
+        }
+        std::vector<Footprint> footprints;
+        footprints.reserve(choices.size());
+        for (const auto& row : choices)
+        {
+            Footprint item{row.at("id").get<std::string>(), row.at("name").get<std::string>()};
+            if (item.id.empty() || item.name.empty() ||
+                std::ranges::find(footprints, item.id, &Footprint::id) != footprints.end())
+            {
+                throw std::runtime_error("봉인 입력의 풋프린트 이름 또는 식별자가 올바르지 않습니다.");
+            }
+            footprints.push_back(std::move(item));
+        }
+        if (footprints.empty())
+        {
+            finish("이 개정에 저장된 풋프린트가 없습니다.");
+            return;
+        }
+        footprints_ = std::move(footprints);
+        phase_ = Phase::chooseFootprint;
+        status_ = "봉인한 목록에서 출력할 풋프린트를 고르고 선택 검토를 누르세요.";
+        return;
+    }
+    beginPreview(std::move(options));
+}
+
+/** @brief 도면 옵션이나 선택한 풋프린트의 UUID를 같은 승인 경로로 전달한다. */
+void PrototypeExchange::beginPreview(json options)
+{
     const auto& format = formats[format_];
-    input_ = {{"profile", format.profile}, {"format", format.key}, {"snapshot", snapshotInput()}, {"options", options}};
+    input_ = {{"profile", format.profile}, {"format", format.key}, {"snapshot", snapshotInput()},
+        {"options", std::move(options)}};
     phase_ = Phase::preview;
     status_ = "봉인한 출력의 포함 범위와 제외 항목을 검토하는 중";
 }
@@ -553,6 +620,8 @@ void PrototypeExchange::finish(std::string status)
     snapshot_ = nullptr;
     input_ = nullptr;
     review_ = nullptr;
+    footprints_.clear();
+    footprintIndex_ = 0;
     cancelRequested_ = false;
     cancelSent_ = false;
     observedState_.clear();

@@ -378,6 +378,9 @@ void Shell::activate(Control control)
         case Control::showExchange: exchangeOpen = !exchangeOpen; break;
         case Control::priorExchange: project->moveExchangeFormat(-1); break;
         case Control::nextExchange: project->moveExchangeFormat(1); break;
+        case Control::priorFootprint: project->moveExchangeFootprint(-1); break;
+        case Control::nextFootprint: project->moveExchangeFootprint(1); break;
+        case Control::reviewFootprint:
         case Control::reviewExchange: project->reviewExchange(); break;
         case Control::buildExchange: project->approveExchange(); break;
         case Control::verifyExchange: project->verifyExchange(); break;
@@ -814,7 +817,30 @@ void Shell::drawExchange()
     ImGui::SameLine();
     ImGui::TextUnformatted(job.name());
     access.text(Control::exchangeFormat, Control::board, job.name());
-    panelButton(Control::reviewExchange, "출력 검토", project->canReviewExchange());
+    if (const auto* choice = job.footprint())
+    {
+        if (job.choosingFootprint())
+        {
+            panelButton(Control::priorFootprint, "이전 풋프린트", ready && job.canMoveFootprint(-1));
+            ImGui::SameLine();
+            panelButton(Control::nextFootprint, "다음 풋프린트", ready && job.canMoveFootprint(1));
+            ImGui::SameLine();
+        }
+        ImGui::TextUnformatted(choice->name.c_str());
+        access.text(Control::exchangeFootprint, Control::board, choice->name);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("풋프린트 ID %s", choice->id.c_str());
+        }
+    }
+    if (job.choosingFootprint())
+    {
+        panelButton(Control::reviewFootprint, "선택 검토", project->canReviewExchange());
+    }
+    else
+    {
+        panelButton(Control::reviewExchange, "출력 검토", project->canReviewExchange());
+    }
     ImGui::SameLine();
     panelButton(Control::buildExchange, "승인 후 생성", project->canApproveExchange());
     ImGui::SameLine();
@@ -822,7 +848,7 @@ void Shell::drawExchange()
     ImGui::SameLine();
     panelButton(Control::verifyExchange, "재검수", project->canVerifyExchange());
     ImGui::SameLine();
-    panelButton(Control::reloadExchange, "기록 다시 읽기", project->canReviewExchange());
+    panelButton(Control::reloadExchange, "기록 다시 읽기", project->canReadExchange());
 
     const auto& info = job.review();
     if (info.is_object())
