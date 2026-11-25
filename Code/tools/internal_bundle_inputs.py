@@ -28,9 +28,9 @@ BIN = "Code/build/windows-release/bin/"
 NOTICE = "third-party-notices/"
 SHELL = BIN + "tracewave_shell_prototype.exe"
 SHELL_NOTICE = NOTICE + "shell/"
-SHELL_WINDOWS_DLLS = frozenset({"crypt32.dll", "imm32.dll", "setupapi.dll", "uiautomationcore.dll"})
+SHELL_WINDOWS_DLLS = frozenset({"imm32.dll", "setupapi.dll", "uiautomationcore.dll"})
 WINDOWS_DLLS = frozenset(name.lower() for name in (
-    "ADVAPI32.dll", "bcrypt.dll", "COMCTL32.dll", "comdlg32.dll", "GDI32.dll", "KERNEL32.dll",
+    "ADVAPI32.dll", "bcrypt.dll", "COMCTL32.dll", "comdlg32.dll", "crypt32.dll", "GDI32.dll", "KERNEL32.dll",
     "ntdll.dll", "ole32.dll", "OLEACC.dll", "OLEAUT32.dll", "OPENGL32.dll", "SHELL32.dll", "SHLWAPI.dll",
     "USER32.dll", "UxTheme.dll", "VERSION.dll", "WINMM.dll", "WINSPOOL.DRV", "ucrtbase.dll",
 ))
