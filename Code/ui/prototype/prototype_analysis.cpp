@@ -10,6 +10,19 @@ namespace
 using nlohmann::json;
 using Phase = Studio::AnalysisWorkflow::Phase;
 
+constexpr std::array frequencyKeys{"start", "stop", "count"};
+constexpr std::array settingKeys{"grid_mm", "air_padding_mm", "curve_tolerance_mm", "feature_subdivisions", "max_timesteps", "end_criterion"};
+
+json conditionNumber(const std::string& text, bool integer, const char* key)
+{
+    auto value = json::parse(text, nullptr, false);
+    if (integer ? !value.is_number_integer() : !value.is_number())
+    {
+        throw std::runtime_error(std::string("숫자 형식을 확인하세요. (") + key + ")");
+    }
+    return value;
+}
+
 std::string diagnostic(const json& error)
 {
     const auto data = error.value("data", json::object());
@@ -30,6 +43,83 @@ const char* phaseLabel(Phase phase)
         default: return "openEMS 해석";
     }
 }
+}
+
+PrototypeAnalysis::ConditionDraft::ConditionDraft(std::string selectedRevision, const Condition* source)
+    : revision(std::move(selectedRevision)),
+      original_(source ? source->settings : json{{"frequency_hz", {{"start", 2.4e9}, {"stop", 2.4835e9}, {"count", 101}}},
+          {"grid_mm", 1.0}, {"air_padding_mm", 30.0}, {"curve_tolerance_mm", 0.05}, {"max_timesteps", 30000}, {"end_criterion", 1e-5}})
+{
+    const auto& band = original_.at("frequency_hz");
+    for (std::size_t index = 0; index < frequencyKeys.size(); ++index)
+    {
+        values[index] = band.at(frequencyKeys[index]).dump();
+    }
+    for (std::size_t index = 0; index < settingKeys.size(); ++index)
+    {
+        values[grid + index] = grid + index == subdivisions ? original_.value(settingKeys[index], json(1)).dump() :
+            original_.at(settingKeys[index]).dump();
+    }
+    if (original_.contains("boundary_conditions"))
+    {
+        const auto& modes = original_.at("boundary_conditions");
+        if (!modes.is_array() || modes.size() != boundaries.size())
+        {
+            throw std::runtime_error("저장된 외벽 조건을 읽을 수 없습니다.");
+        }
+        for (std::size_t index = 0; index < boundaries.size(); ++index)
+        {
+            const auto selected = std::ranges::find(boundaryModes, modes.at(index).get_ref<const std::string&>());
+            if (selected == boundaryModes.end())
+            {
+                throw std::runtime_error("저장된 외벽 종류를 읽을 수 없습니다.");
+            }
+            boundaries[index] = static_cast<int>(selected - boundaryModes.begin());
+        }
+    }
+}
+
+bool PrototypeAnalysis::ConditionDraft::hasDirectPoints() const
+{
+    return original_.at("frequency_hz").contains("points");
+}
+
+/** @brief 편집한 값만 원본 사본에 반영해 선택 설정과 직접 표본을 보존한다. */
+json PrototypeAnalysis::ConditionDraft::settings() const
+{
+    auto result = original_;
+    if (!hasDirectPoints())
+    {
+        auto& band = result.at("frequency_hz");
+        for (std::size_t index = 0; index < frequencyKeys.size(); ++index)
+        {
+            const auto* key = frequencyKeys[index];
+            if (values[index] != band.at(key).dump())
+            {
+                band[key] = conditionNumber(values[index], index == samples, key);
+            }
+        }
+    }
+    for (std::size_t index = 0; index < settingKeys.size(); ++index)
+    {
+        const auto* key = settingKeys[index];
+        const auto field = grid + index;
+        const auto existing = field == subdivisions ? result.value(key, json(1)) : result.at(key);
+        if (values[field] != existing.dump())
+        {
+            result[key] = conditionNumber(values[field], field == subdivisions || field == timesteps, key);
+        }
+    }
+    if (result.contains("boundary_conditions") || std::ranges::any_of(boundaries, [](int mode) { return mode != 0; }))
+    {
+        auto modes = json::array();
+        for (const int mode : boundaries)
+        {
+            modes.push_back(boundaryModes.at(static_cast<std::size_t>(mode)));
+        }
+        result["boundary_conditions"] = std::move(modes);
+    }
+    return result;
 }
 
 void PrototypeAnalysis::setStatus(std::string status)
@@ -57,6 +147,15 @@ void PrototypeAnalysis::moveChoice(int direction)
     }
 }
 
+void PrototypeAnalysis::selectCondition(const std::string& id)
+{
+    const auto selected = std::ranges::find(conditions_, id, &Condition::id);
+    if (selected != conditions_.end())
+    {
+        choice_ = static_cast<std::size_t>(selected - conditions_.begin());
+    }
+}
+
 void PrototypeAnalysis::acceptConditions(const json& result, const std::string& revision)
 {
     const auto& saved = result.at("saved");
@@ -76,10 +175,10 @@ void PrototypeAnalysis::acceptConditions(const json& result, const std::string& 
         conditions.push_back(std::move(row));
     }
     conditions_ = std::move(conditions);
-    const auto selected = std::ranges::find(conditions_, previous, &Condition::id);
-    choice_ = selected == conditions_.end() ? 0 : static_cast<std::size_t>(selected - conditions_.begin());
+    choice_ = 0;
+    selectCondition(previous);
     conditionsRevision_ = revision;
-    setStatus(conditions_.empty() ? "저장된 해석 조건이 없습니다. RC10에서 조건을 저장하세요." : "");
+    setStatus(conditions_.empty() ? "저장된 해석 조건이 없습니다. 새 조건을 추가하세요." : "");
 }
 
 bool PrototypeAnalysis::sealing() const

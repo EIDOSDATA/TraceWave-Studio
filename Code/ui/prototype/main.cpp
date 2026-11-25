@@ -125,6 +125,8 @@ struct Shell
     std::string recordedProject;
     bool modelOpen = false;
     bool analysisOpen = false;
+    Control conditionPage = Control::solverDraftFrequency;
+    std::array<ImGuiID, PrototypeAnalysis::ConditionDraft::fieldCount + 1> solverInputIds{};
     bool resultHistoryOpen = false;
     bool exchangeOpen = false;
     bool rfExportOpen = false;
@@ -184,6 +186,8 @@ struct Shell
     void drawRfExport();
     void deliverRfExport(SDL_Window* mainWindow);
     void drawAnalysis();
+    void drawSolverCondition(PrototypeAnalysis::ConditionDraft& draft);
+    void setSolverConditionText(Control control, const std::string& value);
     void panelButton(Control control, const char* label, bool enabled, bool checked = false,
         Control parent = Control::board);
 #endif
@@ -763,6 +767,15 @@ void Shell::activate(Control control)
         case Control::readSolverConditions: project->readSolverConditions(); break;
         case Control::priorSolverCondition: project->moveSolverCondition(-1); break;
         case Control::nextSolverCondition: project->moveSolverCondition(1); break;
+        case Control::solverDraftOpen:
+            project->beginSolverCondition();
+            conditionPage = Control::solverDraftFrequency;
+            break;
+        case Control::solverDraftFrequency:
+        case Control::solverDraftMesh:
+        case Control::solverDraftOutput: conditionPage = control; break;
+        case Control::solverDraftSave: project->saveSolverCondition(); break;
+        case Control::solverDraftDiscard: project->discardSolverCondition(); break;
         case Control::reviewSolver: project->reviewSolver(); break;
         case Control::approveSolver: project->approveSolver(); break;
         case Control::cancelSolver: project->cancelSolver(); break;
@@ -888,6 +901,11 @@ void Shell::applyActions()
                     setTargetText(action.control, action.value);
                     break;
                 }
+                if (action.control >= Control::solverDraftName && action.control <= Control::solverDraftEnd)
+                {
+                    setSolverConditionText(action.control, action.value);
+                    break;
+                }
                 if (action.control == Control::projectName)
                 {
                     setProjectName(action.value);
@@ -984,7 +1002,8 @@ void Shell::handleShortcuts(bool hasViewports)
         {
             activate(Control::renameToggle);
         }
-        if (ImGui::IsKeyPressed(ImGuiKey_F5, false) && !project->target().dirty() && !project->setup().dirty())
+        if (ImGui::IsKeyPressed(ImGuiKey_F5, false) && !project->solverDraft() &&
+            !project->target().dirty() && !project->setup().dirty())
         {
             project->reopen();
         }
@@ -2609,6 +2628,7 @@ void Shell::drawResult(bool hasViewports)
     }
     if (requestedFocus == Control::result || requestedFocus == Control::reloadResult ||
         (requestedFocus >= Control::showSolver && requestedFocus <= Control::cancelSolver) ||
+        (requestedFocus >= Control::solverDraftOpen && requestedFocus <= Control::solverDraftEnd) ||
         (requestedFocus >= Control::showResultHistory && requestedFocus <= Control::openHistoryResult) ||
         (requestedFocus >= Control::showRfExport && requestedFocus <= Control::saveRfExport) ||
         (requestedFocus >= Control::matrixPriorRow && requestedFocus <= Control::matrixTable))
@@ -2991,8 +3011,120 @@ void Shell::drawResultHistory()
 }
 
 /** @brief 조건 선택, 계획 승인과 실제 작업 상태를 같은 결과 패널에 표시한다. */
+void Shell::setSolverConditionText(Control control, const std::string& value)
+{
+    if (!analysisOpen || !project->canEditSolverCondition() || value.size() > 256)
+    {
+        return;
+    }
+    auto& draft = *project->solverDraft();
+    const auto input = static_cast<std::size_t>(control) - static_cast<std::size_t>(Control::solverDraftName);
+    if (input > 0 && input <= 3 && draft.hasDirectPoints())
+    {
+        return;
+    }
+    if (solverInputIds.at(input) == ImGui::GetActiveID())
+    {
+        ImGui::ClearActiveID();
+    }
+    (input == 0 ? draft.name : draft.values.at(input - 1)) = value;
+}
+
+/** @brief 현재 개정에 추가할 조건 초안의 주파수, 격자 및 종료 값을 편집한다. */
+void Shell::drawSolverCondition(PrototypeAnalysis::ConditionDraft& draft)
+{
+    using Draft = PrototypeAnalysis::ConditionDraft;
+    constexpr std::array labels{"시작 (Hz)", "끝 (Hz)", "등간격 표본 수", "최대 격자 간격 (mm)", "공기 여유 (mm)",
+        "곡선 근사 오차 (mm)", "임계 구간 최소 분할", "최대 계산 단계", "에너지 종료 기준"};
+    const bool enabled = project->canEditSolverCondition();
+    const auto textInput = [&](Control control, const char* label, std::string& value, bool writable)
+    {
+        ImGui::BeginDisabled(!writable);
+        if (requestedFocus == control)
+        {
+            ImGui::SetKeyboardFocusHere();
+        }
+        ImGui::InputText(label, &value);
+        const auto index = static_cast<std::size_t>(control) - static_cast<std::size_t>(Control::solverDraftName);
+        solverInputIds.at(index) = ImGui::GetItemID();
+        if (ImGui::IsItemActive())
+        {
+            projectTextActive = true;
+            projectTextWindow = windowId(ImGui::GetWindowViewport());
+        }
+        focusItem(control);
+        access.item(control, Control::result, writable, false, nullptr, value);
+        ImGui::EndDisabled();
+    };
+    panelButton(Control::solverDraftSave, "조건 추가", enabled && !draft.name.empty(), false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::solverDraftDiscard, "초안 취소", !project->busy(), false, Control::result);
+    if (!project->solverDraft())
+    {
+        return;
+    }
+    const auto& status = project->analysis().status();
+    if (!status.empty())
+    {
+        ImGui::TextWrapped("%s", status.c_str());
+        access.text(Control::solverStatus, Control::result, status);
+    }
+    else if (!project->busy() && !enabled)
+    {
+        ImGui::TextWrapped("기준 개정이 바뀌었습니다. 초안을 취소하고 조건을 다시 여세요.");
+    }
+    textInput(Control::solverDraftName, "새 조건 이름", draft.name, enabled);
+    if (projectTextActive && !preedit.empty() && preeditWindow == projectTextWindow)
+    {
+        ImGui::Text("조합 중  %s", preedit.c_str());
+    }
+    panelButton(Control::solverDraftFrequency, "주파수와 표본", enabled, conditionPage == Control::solverDraftFrequency, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::solverDraftMesh, "격자와 경계", enabled, conditionPage == Control::solverDraftMesh, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::solverDraftOutput, "종료와 기록", enabled, conditionPage == Control::solverDraftOutput, Control::result);
+    const auto inputFields = [&](std::size_t first, std::size_t last, bool writable)
+    {
+        for (auto index = first; index <= last; ++index)
+        {
+            const auto control = static_cast<Control>(static_cast<std::size_t>(Control::solverDraftStart) + index);
+            textInput(control, labels.at(index), draft.values.at(index), writable);
+        }
+    };
+    if (conditionPage == Control::solverDraftFrequency)
+    {
+        inputFields(Draft::start, Draft::samples, enabled && !draft.hasDirectPoints());
+        if (draft.hasDirectPoints())
+        {
+            ImGui::TextWrapped("선택 조건에 저장된 직접 표본은 그대로 사용합니다.");
+        }
+    }
+    else if (conditionPage == Control::solverDraftMesh)
+    {
+        inputFields(Draft::grid, Draft::subdivisions, enabled);
+        constexpr std::array axes{"X 최소", "X 최대", "Y 최소", "Y 최대", "Z 최소", "Z 최대"};
+        ImGui::BeginDisabled(!enabled);
+        for (std::size_t index = 0; index < axes.size(); ++index)
+        {
+            ImGui::Combo(axes[index], &draft.boundaries[index], Draft::boundaryModes.data(),
+                static_cast<int>(Draft::boundaryModes.size()));
+        }
+        ImGui::EndDisabled();
+    }
+    else
+    {
+        inputFields(Draft::timesteps, Draft::end, enabled);
+        ImGui::TextWrapped("기존 방사 및 손실 기록 설정은 새 조건에 복사합니다.");
+    }
+}
+
 void Shell::drawAnalysis()
 {
+    if (auto* draft = project->solverDraft())
+    {
+        drawSolverCondition(*draft);
+        return;
+    }
     const auto& analysis = project->analysis();
     panelButton(Control::readSolverConditions, "조건 읽기", project->canReadSolverConditions(), false, Control::result);
     ImGui::SameLine();
@@ -3012,6 +3144,8 @@ void Shell::drawAnalysis()
             ImGui::EndTooltip();
         }
     }
+    panelButton(Control::solverDraftOpen, "새 조건", project->canReadSolverConditions(), false, Control::result);
+    ImGui::SameLine();
     panelButton(Control::reviewSolver, "계획 검토", project->canReviewSolver(), false, Control::result);
     ImGui::SameLine();
     panelButton(Control::approveSolver, "해석 실행", project->canApproveSolver(), false, Control::result);

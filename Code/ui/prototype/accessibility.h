@@ -46,7 +46,10 @@ enum class Control
     templateCard, templateStatus, templateSummary,
     setupToggle, setupBoard, setupPhysical, setupRules, setupRead, setupReview, setupApply, setupRemove,
     setupDiscard, setupCheck, setupPrevious, setupNext, setupJump, catalogConnect, catalogSearch, catalogNext,
-    catalogDetail, setupStatus, setupSummary, setupFinding, catalogSummary
+    catalogDetail, setupStatus, setupSummary, setupFinding, catalogSummary,
+    solverDraftOpen, solverDraftSave, solverDraftDiscard, solverDraftFrequency, solverDraftMesh, solverDraftOutput,
+    solverDraftName, solverDraftStart, solverDraftStop, solverDraftCount, solverDraftGrid,
+    solverDraftPadding, solverDraftTolerance, solverDraftSubdivisions, solverDraftTimesteps, solverDraftEnd
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };

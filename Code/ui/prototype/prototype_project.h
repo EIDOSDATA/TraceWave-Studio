@@ -92,6 +92,11 @@ public:
     void openHistoryResult();
     void readSolverConditions();
     void moveSolverCondition(int direction);
+    void beginSolverCondition();
+    void discardSolverCondition();
+    void saveSolverCondition();
+    PrototypeAnalysis::ConditionDraft* solverDraft() { return solverDraft_ ? &*solverDraft_ : nullptr; }
+    bool canEditSolverCondition() const;
     void reviewSolver();
     void approveSolver();
     void cancelSolver() { analysis_.cancel(); }
@@ -118,7 +123,7 @@ private:
     {
         idle, open, save, canvasEdit, undo, readRename, rename, renamed, edited, accepted, job, canvas, editor, cad,
         solverLatest, resultHistory, resultDescribe, resultPage, resultArtifact, resultMatrixLoad, resultExport,
-        solverConditions, recovery, targetRead, targetApply, targetEdited, targetEvidence, templateContext, templatePreview, templateApply, templateEdited,
+        solverConditions, solverConditionSave, recovery, targetRead, targetApply, targetEdited, targetEvidence, templateContext, templatePreview, templateApply, templateEdited,
         setupRequest, finished, failed
     };
     bool sendBackground(PrototypeService& service);
@@ -135,6 +140,9 @@ private:
     PrototypeCad cad_;
     PrototypeCadJob cadJob_;
     PrototypeAnalysis analysis_;
+    std::optional<PrototypeAnalysis::ConditionDraft> solverDraft_;
+    nlohmann::json solverConditionInput_;
+    std::string newSolverCondition_;
     PrototypeExchange exchange_;
     bool exchangeSupported_ = false;
     bool exchangeReady_ = false;

@@ -4,6 +4,7 @@
 #include "../wxwidgets/analysis_workflow.h"
 #include "prototype_service.h"
 
+#include <array>
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -17,6 +18,25 @@ public:
         std::string id;
         std::string name;
         nlohmann::json settings;
+    };
+
+    /** @brief 현재 개정에서 편집할 새 해석 조건과 복사한 원본 값을 보관한다. */
+    struct ConditionDraft
+    {
+        enum Field { start, stop, samples, grid, padding, tolerance, subdivisions, timesteps, end, fieldCount };
+        inline static constexpr std::array boundaryModes{"PML_8", "MUR", "PEC", "PMC"};
+
+        ConditionDraft(std::string revision, const Condition* source);
+        nlohmann::json settings() const;
+        bool hasDirectPoints() const;
+
+        std::string revision;
+        std::string name;
+        std::array<std::string, fieldCount> values;
+        std::array<int, 6> boundaries{};
+
+    private:
+        nlohmann::json original_;
     };
 
     struct Review
@@ -36,6 +56,7 @@ public:
 
     void acceptConditions(const nlohmann::json& result, const std::string& revision);
     void moveChoice(int direction);
+    void selectCondition(const std::string& id);
     void review(const std::string& project, const std::string& revision);
     void approve(const std::string& revision);
     void cancel();

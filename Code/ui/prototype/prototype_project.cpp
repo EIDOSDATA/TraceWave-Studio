@@ -38,7 +38,7 @@ bool PrototypeProject::busy() const
 
 bool PrototypeProject::canSwitch() const
 {
-    return !busy() && !cadJob_.active() && !cad_.loading() && !analysis_.active() && !exchange_.active() &&
+    return !busy() && !solverDraft_ && !cadJob_.active() && !cad_.loading() && !analysis_.active() && !exchange_.active() &&
         (!view_ || view_->revision == view_->savedRevision);
 }
 
@@ -533,12 +533,12 @@ void PrototypeProject::openHistoryResult()
 
 bool PrototypeProject::canReadSolverConditions() const
 {
-    return solverReady_ && view_ && writable() && !analysis_.active();
+    return view_ && writable() && !analysis_.active() && !solverDraft_;
 }
 
 bool PrototypeProject::canReviewSolver() const
 {
-    return canReadSolverConditions() && analysis_.canReview(view_->revision);
+    return solverReady_ && canReadSolverConditions() && analysis_.canReview(view_->revision);
 }
 
 bool PrototypeProject::canApproveSolver() const
@@ -560,6 +560,65 @@ void PrototypeProject::moveSolverCondition(int direction)
     if (writable())
     {
         analysis_.moveChoice(direction);
+    }
+}
+
+bool PrototypeProject::canEditSolverCondition() const
+{
+    return solverDraft_ && view_ && writable() && !analysis_.active() && solverDraft_->revision == view_->revision;
+}
+
+void PrototypeProject::beginSolverCondition()
+{
+    if (!canReadSolverConditions())
+    {
+        return;
+    }
+    try
+    {
+        const auto* source = analysis_.canReview(view_->revision) ? analysis_.condition() : nullptr;
+        solverDraft_.emplace(view_->revision, source);
+        solverConditionInput_ = nullptr;
+        analysis_.setStatus("");
+    }
+    catch (const std::exception& error)
+    {
+        analysis_.setStatus(std::string("조건 초안을 열지 못했습니다. ") + error.what());
+    }
+}
+
+void PrototypeProject::discardSolverCondition()
+{
+    if (solverDraft_ && !busy())
+    {
+        solverDraft_.reset();
+        solverConditionInput_ = nullptr;
+        analysis_.setStatus("");
+    }
+}
+
+/** @brief 새로운 이름의 해석 조건을 공개 변경 계약으로 보내며 해석은 실행하지 않는다. */
+void PrototypeProject::saveSolverCondition()
+{
+    if (!canEditSolverCondition() || solverDraft_->name.empty())
+    {
+        return;
+    }
+    try
+    {
+        const auto settings = solverDraft_->settings();
+        if (!solverConditionInput_.is_object() || solverConditionInput_.at("name") != solverDraft_->name ||
+            solverConditionInput_.at("settings") != settings)
+        {
+            solverConditionInput_ = {{"expected_revision", view_->revision}, {"command_id", PrototypeService::newCommandId()},
+                {"name", solverDraft_->name}, {"settings", settings}};
+        }
+        step_ = Step::solverConditionSave;
+        analysis_.setStatus("현재 개정에 해석 조건을 추가하는 중");
+    }
+    catch (const std::exception& error)
+    {
+        analysis_.setStatus(error.what());
     }
 }
 
@@ -792,6 +851,9 @@ void PrototypeProject::update(PrototypeService& service)
                 awaiting_ = service.request("solver.conditions", {{"project_id", view_->id}},
                     {{"expected_revision", view_->revision}});
                 break;
+            case Step::solverConditionSave:
+                awaiting_ = service.request("solver.conditions.save", {{"project_id", view_->id}}, solverConditionInput_, true);
+                break;
             case Step::solverLatest:
                 awaiting_ = service.request("solver.latest", {{"project_id", view_->id}}, Json::object());
                 break;
@@ -965,7 +1027,19 @@ void PrototypeProject::receive(const Json& reply)
             break;
         case Step::solverConditions:
             analysis_.acceptConditions(result, view_->revision);
+            if (!newSolverCondition_.empty())
+            {
+                analysis_.selectCondition(newSolverCondition_);
+                newSolverCondition_.clear();
+                analysis_.setStatus("해석 조건을 추가했습니다. 프로젝트를 저장하세요.");
+            }
             step_ = Step::finished;
+            break;
+        case Step::solverConditionSave:
+            finishEdit(result);
+            newSolverCondition_ = solverConditionInput_.at("command_id").get<std::string>();
+            solverConditionInput_ = nullptr;
+            solverDraft_.reset();
             break;
         case Step::solverLatest:
             switch (result_.acceptLatest(result))
@@ -1207,6 +1281,10 @@ void PrototypeProject::finishView(const Json& editor)
     createName_.clear();
     message_.clear();
     step_ = Step::finished;
+    if (!newSolverCondition_.empty())
+    {
+        readSolverConditions();
+    }
 }
 
 void PrototypeProject::finishResult(const char* status)
@@ -1267,9 +1345,10 @@ void PrototypeProject::fail(std::string message)
         step_ = Step::finished;
         return;
     }
-    if (step_ == Step::solverConditions)
+    if (step_ == Step::solverConditionSave || step_ == Step::solverConditions)
     {
-        analysis_.setStatus("해석 조건 조회 실패. " + message);
+        const char* prefix = step_ == Step::solverConditionSave ? "해석 조건 추가 실패. " : "해석 조건 조회 실패. ";
+        analysis_.setStatus(prefix + message);
         awaiting_ = false;
         step_ = Step::finished;
         return;

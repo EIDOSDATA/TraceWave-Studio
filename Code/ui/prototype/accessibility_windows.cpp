@@ -232,9 +232,25 @@ constexpr Description descriptions[] =
     {L"", L"setup-status", UIA_TextControlTypeId},
     {L"", L"setup-summary", UIA_TextControlTypeId},
     {L"", L"setup-finding", UIA_TextControlTypeId},
-    {L"", L"catalog-summary", UIA_TextControlTypeId}
+    {L"", L"catalog-summary", UIA_TextControlTypeId},
+    {L"새 해석 조건", L"solver-draft-open", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"해석 조건 추가", L"solver-draft-save", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"해석 조건 초안 취소", L"solver-draft-discard", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"주파수와 표본", L"solver-draft-frequency", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"격자와 경계", L"solver-draft-mesh", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"종료와 기록", L"solver-draft-output", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"새 해석 조건 이름", L"solver-draft-name", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"해석 시작 주파수 Hz", L"solver-draft-start", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"해석 끝 주파수 Hz", L"solver-draft-stop", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"해석 표본 수", L"solver-draft-count", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"격자 최대 간격 mm", L"solver-draft-grid", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"공기 여유 mm", L"solver-draft-padding", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"곡선 근사 오차 mm", L"solver-draft-tolerance", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"임계 구간 최소 분할", L"solver-draft-subdivisions", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"최대 계산 단계", L"solver-draft-timesteps", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"에너지 종료 기준", L"solver-draft-end", UIA_EditControlTypeId, UIA_ValuePatternId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::catalogSummary) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::solverDraftEnd) + 1);
 
 struct Node
 {
