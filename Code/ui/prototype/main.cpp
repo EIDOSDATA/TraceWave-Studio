@@ -139,6 +139,14 @@ bool parseOptions(int argc, char** argv, Options& options)
         {
             options.service.source = argv[++index];
         }
+        else if (argument == "--cad-python" && index + 1 < argc)
+        {
+            options.service.cadPython = argv[++index];
+            if (!*options.service.cadPython)
+            {
+                return false;
+            }
+        }
         else if (argument == "--workspace" && index + 1 < argc)
         {
             options.service.workspace = argv[++index];
@@ -151,7 +159,7 @@ bool parseOptions(int argc, char** argv, Options& options)
     }
 #if defined(_WIN32)
     const bool requested = options.serviceCheck || options.serviceReplay || options.service.python ||
-        options.service.source || options.service.workspace || options.openProject;
+        options.service.source || options.service.workspace || options.service.cadPython || options.openProject;
     if (requested && (!options.service.python || !options.service.source || !options.service.workspace ||
         ((options.serviceCheck || options.serviceReplay) && options.smoke) ||
         (options.serviceCheck && options.serviceReplay) ||
@@ -337,6 +345,9 @@ void Shell::activate(Control control)
             }
             break;
         case Control::reloadModel: project->readCad(); break;
+        case Control::buildModel: project->startCad(PrototypeCadJob::Output::geometry); break;
+        case Control::exportStep: project->startCad(PrototypeCadJob::Output::step); break;
+        case Control::cancelCad: project->cancelCad(); break;
         case Control::reloadResult: project->readResult(); break;
 #endif
         default: break;
@@ -552,7 +563,8 @@ void Shell::drawBoard()
         requestedFocus == Control::undoProject || requestedFocus == Control::moveLeft ||
         requestedFocus == Control::moveRight || requestedFocus == Control::moveDown ||
         requestedFocus == Control::moveUp || requestedFocus == Control::toggleModel ||
-        requestedFocus == Control::reloadModel)
+        requestedFocus == Control::reloadModel || requestedFocus == Control::buildModel ||
+        requestedFocus == Control::exportStep || requestedFocus == Control::cancelCad)
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::board)
@@ -637,7 +649,7 @@ void Shell::drawLiveBoard()
         drawLiveModel();
         return;
     }
-    boardButton(Control::reloadProject, "다시 열기", !project->busy());
+    boardButton(Control::reloadProject, "다시 열기", project->canReopen());
     ImGui::SameLine();
     auto* view = project->view();
     boardButton(Control::saveProject, "저장", view && project->writable() && view->revision != view->savedRevision);
@@ -711,10 +723,32 @@ void Shell::drawLiveModel()
 {
     const auto& cad = project->cad();
     const auto& scene = cad.scene();
-    boardButton(Control::reloadModel, "3D 다시 읽기", project->writable() && !cad.loading());
+    const auto& job = project->cadJob();
+    boardButton(Control::reloadModel, "3D 다시 읽기", project->writable() && !cad.loading() && !job.active());
     ImGui::SameLine();
     boardButton(Control::resetBoard, "보기 초기화", scene != nullptr);
+    boardButton(Control::buildModel, "3D 생성", project->canStartCad());
+    if (!project->cadReady() && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+    {
+        ImGui::SetTooltip("--cad-python으로 설치한 CAD 환경을 연결하세요.");
+    }
+    ImGui::SameLine();
+    boardButton(Control::exportStep, "STEP 출력", project->canStartCad());
+    ImGui::SameLine();
+    boardButton(Control::cancelCad, "CAD 취소", job.canCancel());
     model.setScene(scene);
+    if (!job.status().empty())
+    {
+        ImGui::TextWrapped("%s", job.status().c_str());
+    }
+    if (const auto& step = job.step())
+    {
+        ImGui::Text("STEP 개정 %.12s", step->revision.c_str());
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("작업 영역 파일 %s\nSHA-256 %s", step->uri.c_str(), step->sha256.c_str());
+        }
+    }
     if (!cad.status().empty())
     {
         ImGui::TextWrapped("%s", cad.status().c_str());
@@ -1600,7 +1634,7 @@ int runShell(int argc, char** argv)
         std::fputs("Usage: tracewave_shell_prototype [--smoke] [--font <font-file>]\n", stderr);
 #if defined(_WIN32)
         std::fputs("       [--service-check | --service-replay | --open-project <projects/name>] "
-                   "--python <python.exe> --source <Code/src> --workspace <path>\n", stderr);
+                   "--python <python.exe> --source <Code/src> --workspace <path> [--cad-python <python.exe>]\n", stderr);
 #endif
         return 2;
     }

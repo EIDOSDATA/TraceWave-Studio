@@ -36,7 +36,7 @@ bool PrototypeProject::busy() const
 
 void PrototypeProject::reopen()
 {
-    if (configured() && !busy())
+    if (canReopen())
     {
         step_ = Step::open;
         message_ = "프로젝트를 여는 중";
@@ -86,10 +86,23 @@ void PrototypeProject::undo()
 
 void PrototypeProject::readCad()
 {
-    if (view_ && writable() && !cad_.loading())
+    if (view_ && writable() && !cad_.loading() && !cadJob_.active())
     {
         step_ = Step::cad;
         cad_.setStatus("게시된 3D 형상을 조회하는 중");
+    }
+}
+
+bool PrototypeProject::canStartCad() const
+{
+    return cadReady_ && view_ && writable() && !cad_.loading() && !cadJob_.active();
+}
+
+void PrototypeProject::startCad(PrototypeCadJob::Output output)
+{
+    if (canStartCad())
+    {
+        cadJob_.start(view_->id, view_->revision, output);
     }
 }
 
@@ -110,12 +123,17 @@ void PrototypeProject::update(PrototypeService& service)
     {
         return;
     }
-    if (service.state() == PrototypeService::State::failed && busy())
+    cadReady_ = service.cadReady();
+    if (service.state() == PrototypeService::State::failed)
     {
-        fail(service.status());
+        cadJob_.disconnected();
+        if (busy())
+        {
+            fail(service.status());
+        }
         return;
     }
-    if (service.state() != PrototypeService::State::connected || !busy())
+    if (service.state() != PrototypeService::State::connected || !cadJob_.readReply(service, cad_))
     {
         return;
     }
@@ -130,6 +148,17 @@ void PrototypeProject::update(PrototypeService& service)
             }
             awaiting_ = false;
             receive(reply);
+        }
+
+        // @brief GUI 전경 요청은 보존하면서 입력 봉인과 사용자 취소는 먼저 전송한다.
+        if (cadJob_.urgent() && cadJob_.send(service))
+        {
+            return;
+        }
+        if (!busy())
+        {
+            cadJob_.send(service);
+            return;
         }
 
         switch (step_)
@@ -178,6 +207,7 @@ void PrototypeProject::update(PrototypeService& service)
                 }
                 if (Clock::now() < nextPoll_)
                 {
+                    cadJob_.send(service);
                     return;
                 }
                 awaiting_ = service.request("job.status", Json::object(), {{"job_id", job_}});

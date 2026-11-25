@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../wxwidgets/canvas_scene.h"
-#include "prototype_cad.h"
+#include "prototype_cad_job.h"
 #include "prototype_result.h"
 #include "prototype_service.h"
 
@@ -30,6 +30,11 @@ public:
     void translate(double dx, double dy);
     void undo();
     void readCad();
+    void startCad(PrototypeCadJob::Output output);
+    void cancelCad() { cadJob_.cancel(); }
+    bool cadReady() const { return cadReady_; }
+    bool canStartCad() const;
+    const PrototypeCadJob& cadJob() const { return cadJob_; }
     void readResult();
     const PrototypeCad& cad() const { return cad_; }
     const PrototypeResult& result() const { return result_; }
@@ -37,7 +42,8 @@ public:
     bool configured() const { return !path_.empty(); }
     bool busy() const;
     bool canTranslate() const;
-    bool writable() const { return step_ == Step::finished; }
+    bool writable() const { return step_ == Step::finished && !cadJob_.sealing(); }
+    bool canReopen() const { return configured() && !busy() && !cadJob_.sealing(); }
     const std::string& path() const { return path_; }
     const std::string& message() const { return message_; }
     View* view() { return view_ ? &*view_ : nullptr; }
@@ -55,6 +61,8 @@ private:
     void fail(std::string message);
 
     PrototypeCad cad_;
+    PrototypeCadJob cadJob_;
+    bool cadReady_ = false;
     PrototypeResult result_;
     std::string path_;
     std::string message_;

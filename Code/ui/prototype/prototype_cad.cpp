@@ -53,10 +53,22 @@ void PrototypeCad::accept(const json& reply, const std::string& project)
         setStatus("표시용 3D 형상이 아직 게시되지 않았습니다.");
         return;
     }
-    const auto& snapshot = display->at("snapshot");
-    Require(snapshot.at("project_id") == project && display->at("status") == "generated_unverified",
+    if (!load(*display, project))
+    {
+        scene_.reset();
+        setStatus("게시된 결과에 표시용 3D 파일이 없습니다.");
+    }
+}
+
+/** @brief 새 게시의 검증을 시작하고 기존 장면은 확인이 끝날 때까지 유지한다. */
+bool PrototypeCad::load(const json& result, const std::string& project)
+{
+    using DisplayMesh::Require;
+    Require(!loading(), "이전 3D 파일 검증이 끝나지 않았습니다.");
+    const auto& snapshot = result.at("snapshot");
+    Require(snapshot.at("project_id") == project && result.at("status") == "generated_unverified",
         "3D 표시 자료가 현재 프로젝트 또는 게시 상태와 다릅니다.");
-    const auto& artifacts = display->at("artifacts");
+    const auto& artifacts = result.at("artifacts");
     Require(artifacts.is_array(), "3D 자료의 게시 파일 목록이 올바르지 않습니다.");
     const json* reference = nullptr;
     for (const auto& artifact : artifacts)
@@ -69,9 +81,7 @@ void PrototypeCad::accept(const json& reply, const std::string& project)
     }
     if (!reference)
     {
-        scene_.reset();
-        setStatus("게시된 결과에 표시용 3D 파일이 없습니다.");
-        return;
+        return false;
     }
     const auto run = DisplayMesh::Identity(reference->at("run_id"));
     pending_ = std::async(std::launch::async, [this, artifact = *reference, snapshot, run]() -> Scene
@@ -81,6 +91,7 @@ void PrototypeCad::accept(const json& reply, const std::string& project)
         return std::make_shared<DisplayMesh::Scene>(std::move(scene));
     });
     setStatus("3D 형상 파일을 확인하는 중");
+    return true;
 }
 
 void PrototypeCad::poll()

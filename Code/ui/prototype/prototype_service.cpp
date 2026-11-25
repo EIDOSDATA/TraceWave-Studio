@@ -39,12 +39,13 @@ bool startTransport(ServiceClient& transport, const PrototypeServiceOptions& opt
     const auto python = widePath(options.python);
     const auto source = widePath(options.source);
     const auto workspace = widePath(options.workspace);
-    if (python.empty() || source.empty() || workspace.empty())
+    const auto cad = options.cadPython ? widePath(options.cadPython) : std::wstring{};
+    if (python.empty() || source.empty() || workspace.empty() || (options.cadPython && cad.empty()))
     {
         error = "Python 서비스 경로를 읽을 수 없습니다.";
         return false;
     }
-    return transport.Start(python, source, workspace, error);
+    return transport.Start(python, source, workspace, error, cad);
 }
 
 /** @brief 서비스가 수용하는 소문자 UUID 요청 키를 만든다. */
@@ -169,6 +170,10 @@ void PrototypeService::poll()
         {
             requestKeyEpoch_ = (*policy)["request_key_epoch"].get<std::string>();
         }
+        const auto cad = result.find("cad_profile");
+        cadReady_ = cad != result.end() && cad->is_object() &&
+            cad->value("profile", nlohmann::json(nullptr)) == "rfad.step.mechanical/0.1" &&
+            cad->value("runtime_configured", nlohmann::json(nullptr)) == true;
         state_ = State::connected;
         status_ = "Python 서비스 연결됨";
         std::printf("%s (%s, %zu개 메서드)\n", status_.c_str(), contractVersion, result["methods"].size());

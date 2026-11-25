@@ -58,9 +58,12 @@ constexpr Description descriptions[] =
     {L"위로 1 mm 이동", L"move-up", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"3D 형상 보기", L"toggle-model", UIA_ButtonControlTypeId, UIA_TogglePatternId},
     {L"3D 형상 다시 읽기", L"reload-model", UIA_ButtonControlTypeId, UIA_InvokePatternId},
-    {L"S11 결과 다시 읽기", L"reload-result", UIA_ButtonControlTypeId, UIA_InvokePatternId}
+    {L"S11 결과 다시 읽기", L"reload-result", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"3D 생성", L"build-model", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"STEP 출력", L"export-step", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"CAD 취소", L"cancel-cad", UIA_ButtonControlTypeId, UIA_InvokePatternId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::reloadResult) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::cancelCad) + 1);
 
 struct Node
 {
@@ -578,6 +581,17 @@ void Host::update(Snapshot next, bool foreground)
         if (!prior)
         {
             continue;
+        }
+        if (prior->enabled != node.enabled)
+        {
+            VARIANT oldEnabled{};
+            VARIANT newEnabled{};
+            oldEnabled.vt = newEnabled.vt = VT_BOOL;
+            oldEnabled.boolVal = prior->enabled ? VARIANT_TRUE : VARIANT_FALSE;
+            newEnabled.boolVal = node.enabled ? VARIANT_TRUE : VARIANT_FALSE;
+            auto* provider = new Provider(window, node.control);
+            UiaRaiseAutomationPropertyChangedEvent(provider, UIA_IsEnabledPropertyId, oldEnabled, newEnabled);
+            provider->Release();
         }
         const PATTERNID pattern = descriptions[static_cast<int>(node.control)].pattern;
         VARIANT before{};

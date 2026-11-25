@@ -14,6 +14,7 @@ public:
     ~PrototypeCad();
 
     void accept(const nlohmann::json& reply, const std::string& project);
+    bool load(const nlohmann::json& result, const std::string& project);
     void poll();
     void setStatus(std::string status);
 

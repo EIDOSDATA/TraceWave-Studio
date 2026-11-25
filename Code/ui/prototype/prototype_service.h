@@ -13,6 +13,7 @@ struct PrototypeServiceOptions
     const char* python = nullptr;
     const char* source = nullptr;
     const char* workspace = nullptr;
+    const char* cadPython = nullptr;
 };
 
 /** @brief 기존 Windows 서비스 전송을 사용하고 공개 계약 응답을 검증한다. */
@@ -31,6 +32,7 @@ public:
     enum class State { inactive, connecting, connected, failed };
     State state() const { return state_; }
     const std::string& status() const { return status_; }
+    bool cadReady() const { return state_ == State::connected && cadReady_; }
 
 private:
     void fail(std::string message);
@@ -42,6 +44,7 @@ private:
     unsigned nextId_ = 2;
     unsigned inFlight_ = 0;
     nlohmann::json reply_;
+    bool cadReady_ = false;
 };
 
 /** @brief 한 줄씩 공개 요청을 재생하고 같은 ID의 응답을 표준 출력으로 보낸다. */
