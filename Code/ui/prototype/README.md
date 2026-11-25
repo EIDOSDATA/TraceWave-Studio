@@ -36,6 +36,8 @@ UI Automation에서 메모의 편집 역할과 값, 창 메뉴의 펼치기와 �
 
 내레이터는 화면 읽기 호환성을 검수할 때 켠다. 시제품과 CTest는 내레이터를 끈 상태에서도 실행할 수 있다. 실제 발화는 내레이터의 음성 요약 창에서도 확인할 수 있다. [Windows 내레이터 키 명령](https://support.microsoft.com/en-gb/accessibility/windows/narrator/appendix-b-narrator-keyboard-commands-and-touch-gestures)
 
+Windows의 `--smoke`는 분리 입력 창을 같은 모니터에서 옮기고, 이동 전후와 본창 초점 복귀 뒤 메모 캐럿의 SDL IME 위치를 대조한다. 실제 한자 후보창의 화면 위치는 위 절차로 검수한다. [자동 시험 관찰값](../../../01_개발문서/07_검증/432_창과_렌더러_시제품_검증.md#windows-분리-입력-창-이동과-ime-좌표-자동-시험)
+
 ## 표시 데이터와 의존성
 
 PCB는 확대·이동을 시험하는 원형 예제다. S11은 B0 보존본 `B0-public-api.json`의 `result.page` 응답에서 확보한 8–12 GHz 주파수와 `magnitude_db` 31개를 사용한다. 데이터셋 SHA-256은 `ffdb9e19f126f8a0d4f17a584f88601bf2ad031f41f68689c642d7edb819dd42`다. [B0 고정 기록](../../../01_개발문서/07_검증/430_알원_비제로_기준선_확정.md)
