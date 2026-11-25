@@ -101,6 +101,16 @@ struct Shell
     bool endpointOpen = false;
     PrototypeEndpoint endpoint;
     void drawEndpoint();
+    bool renameOpen = false;
+    bool renameLoaded = false;
+    bool renameDetails = false;
+    ImGuiID renameNameId = 0;
+    std::array<char, accessibility::projectNameCapacity> renameName{};
+    std::string renameTarget;
+    std::string renamedObjectId;
+    void drawRename();
+    void closeRename();
+    void setRenameName(std::string_view value);
     void selectEndpoint(CanvasPrecision::Endpoint side);
     bool canSwitchProject() const;
     void drawArchive();
@@ -130,6 +140,13 @@ struct Shell
     bool recoveryOpen = false;
     std::size_t recoveryIndex = 0;
     void drawRecovery();
+    enum class EvidencePage { records, assumptions, history };
+    bool evidenceOpen = false;
+    EvidencePage evidencePage = EvidencePage::records;
+    std::size_t evidenceIndex = 0;
+    std::size_t evidenceValue = 0;
+    void drawEvidence();
+    void moveEvidence(Control control);
     void submitProject();
     void updateProjects(SDL_Window* window, std::unique_ptr<PrototypeProject>& current, PrototypeService& service);
     void setProjectName(std::string_view value);
@@ -153,6 +170,7 @@ struct Shell
     bool processEvent(const SDL_Event& event);
     void draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFont, const char* serviceStatus);
     void finishFrame(SDL_Window* mainWindow);
+    void handleShortcuts(bool hasViewports);
     void drawMenus(bool hasViewports);
     void drawBoard();
     void drawResult(bool hasViewports);
@@ -398,6 +416,13 @@ double sectionCenter(const DisplayMesh::Scene& scene, std::size_t axis)
 
 void Shell::activate(Control control)
 {
+#if defined(_WIN32)
+    if (renameOpen && control != Control::renameApply && control != Control::renameCancel &&
+        control != Control::renameDetails && control != Control::renameCopy)
+    {
+        return;
+    }
+#endif
     switch (control)
     {
         case Control::showBoard: boardOpen = !boardOpen; break;
@@ -432,6 +457,44 @@ void Shell::activate(Control control)
             }
             break;
         case Control::submitProject: submitProject(); break;
+        case Control::renameToggle:
+            if (project && !modelOpen && !evidenceOpen && !nextProject && !archive.busy() && project->canRename())
+            {
+                const auto* view = project->view();
+                const auto* shape = view->canvas.Find(view->selection);
+                renameTarget = shape ? shape->label : "프로젝트";
+                renamedObjectId = shape ? shape->id : view->id;
+                boardOpen = renameOpen = true;
+                renameDetails = renameLoaded = false;
+                renameName.fill('\0');
+                renameNameId = 0;
+                project->readRename();
+            }
+            break;
+        case Control::renameApply:
+            if (renameOpen && renameLoaded)
+            {
+                project->renameObject(renameName.data());
+            }
+            break;
+        case Control::renameDetails:
+            if (renameOpen)
+            {
+                renameDetails = !renameDetails;
+            }
+            break;
+        case Control::renameCopy:
+            if (renameOpen && renameDetails)
+            {
+                ImGui::SetClipboardText(renamedObjectId.c_str());
+            }
+            break;
+        case Control::renameCancel:
+            if (renameOpen && !project->busy())
+            {
+                closeRename();
+            }
+            break;
         case Control::recentPrevious:
             if (recentIndex > 0)
             {
@@ -452,6 +515,25 @@ void Shell::activate(Control control)
                 submitProject();
             }
             break;
+        case Control::evidenceToggle:
+            evidenceOpen = !evidenceOpen;
+            if (evidenceOpen && !project->evidence())
+            {
+                project->readRecovery();
+            }
+            break;
+        case Control::evidenceReload: project->readRecovery(); break;
+        case Control::evidenceRecords:
+        case Control::evidenceAssumptions:
+        case Control::evidenceHistory:
+            evidencePage = control == Control::evidenceHistory ? EvidencePage::history :
+                control == Control::evidenceAssumptions ? EvidencePage::assumptions : EvidencePage::records;
+            evidenceIndex = evidenceValue = 0;
+            break;
+        case Control::evidencePrevious:
+        case Control::evidenceNext:
+        case Control::evidencePreviousValue:
+        case Control::evidenceNextValue: moveEvidence(control); break;
         case Control::showRecovery:
             recoveryOpen = !recoveryOpen;
             if (recoveryOpen)
@@ -694,6 +776,12 @@ void Shell::applyActions()
 {
     for (const auto& action : access.takeActions())
     {
+#if defined(_WIN32)
+        if (renameOpen && (action.control < Control::renameDialog || action.control > Control::renameCopy))
+        {
+            continue;
+        }
+#endif
         switch (action.operation)
         {
             case Operation::invoke:
@@ -702,6 +790,14 @@ void Shell::applyActions()
             case Operation::collapse: closeMenu = true; break;
             case Operation::setValue:
 #if defined(_WIN32)
+                if (action.control == Control::renameName)
+                {
+                    if (renameOpen && renameLoaded && project->writable() && project->renameName())
+                    {
+                        setRenameName(action.value);
+                    }
+                    break;
+                }
                 if (action.control == Control::projectName)
                 {
                     setProjectName(action.value);
@@ -737,7 +833,10 @@ void Shell::applyActions()
                     break;
                 }
 #endif
-                setNote(action.value);
+                if (action.control == Control::note)
+                {
+                    setNote(action.value);
+                }
                 break;
             case Operation::focus:
                 if (action.control == Control::note)
@@ -767,9 +866,17 @@ void Shell::focusItem(Control control)
     }
 }
 
-void Shell::drawMenus(bool hasViewports)
+void Shell::handleShortcuts(bool hasViewports)
 {
 #if defined(_WIN32)
+    if (renameOpen)
+    {
+        if (!project->busy() && ImGui::IsKeyPressed(ImGuiKey_Escape, false))
+        {
+            closeRename();
+        }
+        return;
+    }
     if (workspacePath && !nextProject && !archive.busy() && ImGui::GetIO().KeyCtrl &&
         (ImGui::IsKeyPressed(ImGuiKey_O, false) || ImGui::IsKeyPressed(ImGuiKey_N, false)))
     {
@@ -782,6 +889,10 @@ void Shell::drawMenus(bool hasViewports)
         if (endpoint.picking && ImGui::IsKeyPressed(ImGuiKey_Escape, false))
         {
             endpoint.picking = false;
+        }
+        if (ImGui::IsKeyPressed(ImGuiKey_F2, false) && !ImGui::GetIO().WantTextInput)
+        {
+            activate(Control::renameToggle);
         }
         if (ImGui::IsKeyPressed(ImGuiKey_F5, false))
         {
@@ -813,7 +924,11 @@ void Shell::drawMenus(bool hasViewports)
     {
         openMenu = true;
     }
+}
 
+void Shell::drawMenus(bool hasViewports)
+{
+    handleShortcuts(hasViewports);
     if (ImGui::BeginMainMenuBar())
     {
         const ImGuiViewport* viewport = ImGui::GetWindowViewport();
@@ -951,7 +1066,9 @@ void Shell::drawBoard()
         (requestedFocus >= Control::recentPrevious && requestedFocus <= Control::recentOpen) ||
         (requestedFocus >= Control::archiveToggle && requestedFocus <= Control::archiveOpen) ||
         (requestedFocus >= Control::endpointToggle && requestedFocus <= Control::endpointReset) ||
-        (requestedFocus >= Control::sectionToggle && requestedFocus <= Control::sectionApply))
+        (requestedFocus >= Control::sectionToggle && requestedFocus <= Control::sectionApply) ||
+        requestedFocus == Control::renameToggle ||
+        (requestedFocus >= Control::evidenceToggle && requestedFocus <= Control::evidenceNextValue))
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::board)
@@ -1034,7 +1151,7 @@ void Shell::drawBoard()
 #if defined(_WIN32)
 bool Shell::canSwitchProject() const
 {
-    return !nextProject && !archive.busy() && !manufacturing.active() && !rfDelivery.valid() && project->canSwitch();
+    return !renameOpen && !nextProject && !archive.busy() && !manufacturing.active() && !rfDelivery.valid() && project->canSwitch();
 }
 
 /** @brief 이전 프로젝트가 저장된 상태에서만 같은 서비스로 다른 프로젝트를 요청한다. */
@@ -1078,6 +1195,9 @@ void Shell::updateProjects(SDL_Window* window, std::unique_ptr<PrototypeProject>
         chooserOpen = createProject = recoveryOpen = endpointOpen = false;
         endpoint = {};
         recoveryIndex = 0;
+        evidenceOpen = false;
+        evidencePage = EvidencePage::records;
+        evidenceIndex = evidenceValue = 0;
         modelOpen = analysisOpen = resultHistoryOpen = exchangeOpen = rfExportOpen = false;
         sectionOpen = false;
         sectionModel.clear();
@@ -1283,6 +1403,113 @@ void Shell::drawRecovery()
     }
 }
 
+void Shell::moveEvidence(Control control)
+{
+    const auto& evidence = project->evidence();
+    if (!evidence)
+    {
+        return;
+    }
+    if (control == Control::evidencePreviousValue || control == Control::evidenceNextValue)
+    {
+        if (evidencePage == EvidencePage::records && evidenceIndex < evidence->records.size())
+        {
+            const auto size = evidence->records[evidenceIndex].values.size();
+            if (control == Control::evidencePreviousValue && evidenceValue > 0)
+            {
+                --evidenceValue;
+            }
+            else if (control == Control::evidenceNextValue && evidenceValue + 1 < size)
+            {
+                ++evidenceValue;
+            }
+        }
+        return;
+    }
+    const auto size = evidencePage == EvidencePage::history ? evidence->changes.size() : evidence->records.size();
+    if (control == Control::evidencePrevious && evidenceIndex > 0)
+    {
+        --evidenceIndex;
+    }
+    else if (control == Control::evidenceNext && evidenceIndex + 1 < size)
+    {
+        ++evidenceIndex;
+    }
+    evidenceValue = 0;
+}
+
+/** @brief 현재 개정의 문헌, 채택 값, 가정과 적용 이력을 읽기 전용으로 탐색한다. */
+void Shell::drawEvidence()
+{
+    const auto& evidence = project->evidence();
+    panelButton(Control::evidenceReload, "출처 다시 읽기", project->view() && project->writable());
+    ImGui::SameLine();
+    panelButton(Control::evidenceRecords, "채택 이력", true, evidencePage == EvidencePage::records);
+    ImGui::SameLine();
+    panelButton(Control::evidenceAssumptions, "가정과 생략", true, evidencePage == EvidencePage::assumptions);
+    ImGui::SameLine();
+    panelButton(Control::evidenceHistory, "변경 이력", true, evidencePage == EvidencePage::history);
+    const auto display = [&](Control control, const std::string& value)
+    {
+        ImGui::TextWrapped("%s", value.c_str());
+        access.text(control, Control::board, value);
+    };
+    if (!project->recoveryStatus().empty())
+    {
+        display(Control::evidenceStatus, project->recoveryStatus());
+    }
+    if (!evidence)
+    {
+        evidenceIndex = evidenceValue = 0;
+        return;
+    }
+    const bool changes = evidencePage == EvidencePage::history;
+    const auto size = changes ? evidence->changes.size() : evidence->records.size();
+    if (evidenceIndex >= size)
+    {
+        evidenceIndex = evidenceValue = 0;
+    }
+    if (!size)
+    {
+        display(Control::evidenceSummary, changes ? "표시할 변경 이력이 없습니다." : "표시할 채택 기록이 없습니다.");
+        return;
+    }
+    const auto page = std::to_string(evidenceIndex + 1) + " / " + std::to_string(size);
+    display(Control::evidenceSummary, changes ? page + "건 표시 / 전체 " + std::to_string(evidence->changeCount) +
+        "건 / 다시 실행 가능 " + std::to_string(evidence->redoCount) + "건" : page + " 기록");
+    panelButton(Control::evidencePrevious, "이전 기록", evidenceIndex > 0);
+    ImGui::SameLine();
+    panelButton(Control::evidenceNext, "다음 기록", evidenceIndex + 1 < size);
+    if (changes)
+    {
+        const auto& row = evidence->changes[evidenceIndex];
+        display(Control::evidenceTitle, row.target.empty() ? row.command : row.target + " / " + row.command);
+        display(Control::evidenceSource, "변경 전 " + row.before + "\n변경 후 " + row.after +
+            (row.targetId.empty() ? "" : "\n대상 ID " + row.targetId));
+        display(Control::evidenceValues, "접수 시각 " + (row.time.empty() ? "미기록" : row.time) +
+            "\n변경 사유 " + (row.reason.empty() ? "미기록" : row.reason));
+        return;
+    }
+    const auto& row = evidence->records[evidenceIndex];
+    display(Control::evidenceTitle, row.label);
+    if (evidencePage == EvidencePage::assumptions)
+    {
+        display(Control::evidenceSource, row.assumptions.empty() ? "기록된 가정과 생략이 없습니다." : row.assumptions);
+        return;
+    }
+    display(Control::evidenceSource, row.source.empty() ? "기록된 원본 출처가 없습니다." : row.source);
+    if (!row.values.empty())
+    {
+        evidenceValue = std::min(evidenceValue, row.values.size() - 1);
+        panelButton(Control::evidencePreviousValue, "이전 값", evidenceValue > 0);
+        ImGui::SameLine();
+        panelButton(Control::evidenceNextValue, "다음 값", evidenceValue + 1 < row.values.size());
+        const auto& values = row.values[evidenceValue];
+        display(Control::evidenceValues, std::to_string(evidenceValue + 1) + " / " + std::to_string(row.values.size()) +
+            " " + values[0] + "\n원본 자료 " + values[1] + "\n채택 시 " + values[2] + "\n현재 값 " + values[3]);
+    }
+}
+
 /** @brief 선택한 경로의 두 끝점을 읽고 미리보기, 스냅 및 명시 적용을 제공한다. */
 void Shell::drawEndpoint()
 {
@@ -1377,6 +1604,110 @@ void Shell::selectEndpoint(CanvasPrecision::Endpoint side)
     }
 }
 
+void Shell::setRenameName(std::string_view value)
+{
+    if (value.size() >= renameName.size())
+    {
+        return;
+    }
+    renameName.fill('\0');
+    std::copy(value.begin(), value.end(), renameName.begin());
+    if (auto* field = ImGui::GetInputTextState(renameNameId))
+    {
+        field->ReloadUserBufAndMoveToEnd();
+    }
+}
+
+void Shell::closeRename()
+{
+    renameOpen = false;
+    requestedFocus = Control::renameToggle;
+}
+
+/** @brief 이름 초안을 편집하고 기존 이름, 오류 및 적용 여부를 같은 대화 상자에 표시한다. */
+void Shell::drawRename()
+{
+    constexpr char title[] = "이름 바꾸기###rename-object";
+    if (renameOpen && !ImGui::IsPopupOpen(title))
+    {
+        ImGui::OpenPopup(title);
+    }
+    ImGui::SetNextWindowSize(ImVec2(ImGui::GetFontSize() * 27.0f, 0.0f), ImGuiCond_Appearing);
+    if (!ImGui::BeginPopupModal(title, nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        return;
+    }
+    const auto* original = project->renameName();
+    if (!renameOpen || (renameLoaded && !original && !project->busy() && project->message().empty()))
+    {
+        closeRename();
+        ImGui::CloseCurrentPopup();
+        ImGui::EndPopup();
+        return;
+    }
+    access.panel(Control::renameDialog);
+    const auto target = "대상: " + renameTarget;
+    ImGui::TextWrapped("%s", target.c_str());
+    access.text(Control::renameTarget, Control::renameDialog, target);
+    if (original && !renameLoaded)
+    {
+        setRenameName(*original);
+        renameLoaded = true;
+        requestedFocus = Control::renameName;
+    }
+    const bool editable = original && project->writable();
+    ImGui::SetNextItemWidth(-ImGui::GetFontSize());
+    ImGui::BeginDisabled(!editable);
+    if (requestedFocus == Control::renameName)
+    {
+        ImGui::SetKeyboardFocusHere();
+    }
+    const bool enter = ImGui::InputTextWithHint("##rename-name", "새 표시 이름", renameName.data(),
+        renameName.size(), ImGuiInputTextFlags_AutoSelectAll | ImGuiInputTextFlags_EnterReturnsTrue);
+    renameNameId = ImGui::GetItemID();
+    const bool active = ImGui::IsItemActive();
+    if (active)
+    {
+        projectTextActive = true;
+        projectTextWindow = windowId(ImGui::GetWindowViewport());
+    }
+    focusItem(Control::renameName);
+    access.item(Control::renameName, Control::renameDialog, editable, false, nullptr, renameName.data());
+    ImGui::EndDisabled();
+    if (active && !preedit.empty() && preeditWindow == projectTextWindow)
+    {
+        ImGui::Text("조합 중  %s", preedit.c_str());
+    }
+    ImGui::TextWrapped("같은 종류의 객체에는 서로 다른 이름을 사용하세요.");
+    ImGui::TextWrapped("형상과 물리값, 연결, 원본 출처와 과거 결과는 그대로 유지됩니다.");
+    panelButton(Control::renameDetails, "고급 정보", true, renameDetails, Control::renameDialog);
+    if (renameDetails)
+    {
+        const auto id = "고유 ID: " + renamedObjectId;
+        ImGui::TextWrapped("%s", id.c_str());
+        access.text(Control::renameId, Control::renameDialog, id);
+        panelButton(Control::renameCopy, "고유 ID 복사", true, false, Control::renameDialog);
+    }
+    const auto& error = project->renameStatus();
+    const auto& status = project->message();
+    const char* feedback = !error.empty() ? error.c_str() : !status.empty() ? status.c_str() :
+        !original && project->busy() ? "현재 이름을 읽는 중" : nullptr;
+    if (feedback)
+    {
+        ImGui::TextWrapped("%s", feedback);
+        access.text(Control::renameStatus, Control::renameDialog, feedback);
+    }
+    panelButton(Control::renameCancel, "취소", !project->busy(), false, Control::renameDialog);
+    ImGui::SameLine();
+    panelButton(Control::renameApply, "이름 변경", editable && renameName.front() != '\0' && *original != renameName.data(),
+        false, Control::renameDialog);
+    if (enter)
+    {
+        activate(Control::renameApply);
+    }
+    ImGui::EndPopup();
+}
+
 /** @brief 실제 프로젝트와 권위 있는 개정, 기판 장면 및 저장 동작을 같은 패널에 제공한다. */
 void Shell::drawLiveBoard()
 {
@@ -1386,6 +1717,16 @@ void Shell::drawLiveBoard()
     if (recoveryOpen)
     {
         drawRecovery();
+    }
+    else
+    {
+        ImGui::SameLine();
+    }
+    panelButton(Control::evidenceToggle, "출처와 변경 이력", evidenceOpen || project->view(), evidenceOpen);
+    if (evidenceOpen)
+    {
+        drawEvidence();
+        return;
     }
     panelButton(Control::toggleModel, modelOpen ? "2D 편집" : "3D 형상", project->view() != nullptr, modelOpen);
     ImGui::SameLine();
@@ -1411,6 +1752,9 @@ void Shell::drawLiveBoard()
     panelButton(Control::undoProject, "되돌리기", view && project->writable() && view->canUndo);
     ImGui::SameLine();
     panelButton(Control::resetBoard, "보기 초기화", view != nullptr);
+    ImGui::SameLine();
+    panelButton(Control::renameToggle, "이름 바꾸기 (F2)", project->canRename());
+    drawRename();
 
     ImGui::AlignTextToFramePadding();
     ImGui::TextUnformatted("도체 이동 (1 mm)");

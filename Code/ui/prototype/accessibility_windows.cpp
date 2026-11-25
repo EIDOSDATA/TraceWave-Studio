@@ -156,9 +156,33 @@ constexpr Description descriptions[] =
     {L"단면의 위치 밀리미터", L"section-position", UIA_EditControlTypeId, UIA_ValuePatternId},
     {L"단면 적용", L"section-apply", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"", L"section-axis-value", UIA_TextControlTypeId},
-    {L"", L"section-status", UIA_TextControlTypeId}
+    {L"", L"section-status", UIA_TextControlTypeId},
+    {L"이름 바꾸기", L"rename-toggle", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"이름 바꾸기", L"rename-dialog", UIA_WindowControlTypeId},
+    {L"", L"rename-target", UIA_TextControlTypeId},
+    {L"새 표시 이름", L"rename-name", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"이름 변경 적용", L"rename-apply", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"이름 변경 취소", L"rename-cancel", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"rename-status", UIA_TextControlTypeId},
+    {L"고급 정보", L"rename-details", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"", L"rename-id", UIA_TextControlTypeId},
+    {L"고유 ID 복사", L"rename-copy", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"출처와 변경 이력", L"evidence-toggle", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"현재 개정의 출처 읽기", L"evidence-reload", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"채택 이력", L"evidence-records", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"가정과 생략", L"evidence-assumptions", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"변경 이력", L"evidence-history", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"이전 기록", L"evidence-previous", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 기록", L"evidence-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"이전 출처 값", L"evidence-previous-value", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 출처 값", L"evidence-next-value", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"evidence-status", UIA_TextControlTypeId},
+    {L"", L"evidence-summary", UIA_TextControlTypeId},
+    {L"", L"evidence-title", UIA_TextControlTypeId},
+    {L"", L"evidence-source", UIA_TextControlTypeId},
+    {L"", L"evidence-values", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::sectionStatus) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::evidenceValues) + 1);
 
 struct Node
 {
@@ -846,13 +870,22 @@ void Bridge::publish(const char* value)
                 snapshot.nodes.push_back(node);
             }
         }
+        if (snapshot.find(Control::renameDialog))
+        {
+            std::erase_if(snapshot.nodes, [](const Node& node)
+            {
+                return node.control != Control::root && node.control != Control::renameDialog &&
+                    node.parent != Control::renameDialog;
+            });
+        }
         for (Node& node : snapshot.nodes)
         {
             if (!snapshot.find(node.parent))
             {
                 node.parent = Control::root;
             }
-            if (node.focused && descriptions[static_cast<int>(node.control)].role == UIA_PaneControlTypeId
+            if (node.focused && (descriptions[static_cast<int>(node.control)].role == UIA_PaneControlTypeId ||
+                node.control == Control::renameDialog)
                 && std::ranges::any_of(snapshot.nodes, [&node](const Node& child)
                 {
                     return child.parent == node.control && child.focused;

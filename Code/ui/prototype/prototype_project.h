@@ -4,6 +4,7 @@
 #include "prototype_analysis.h"
 #include "prototype_cad_job.h"
 #include "prototype_exchange.h"
+#include "prototype_evidence.h"
 #include "prototype_result.h"
 #include "prototype_service.h"
 
@@ -33,9 +34,15 @@ public:
     bool canMoveEndpoint(CanvasPrecision::Endpoint endpoint) const;
     void moveEndpoint(CanvasPrecision::Endpoint endpoint, CanvasScene::Point point);
     void undo();
+    void readRename();
+    void renameObject(const std::string& name);
+    bool canRename() const;
+    const std::string& renameStatus() const { return renameStatus_; }
+    const std::string* renameName() const;
     void readCad();
     void readRecovery();
     const nlohmann::json& recovery() const { return recovery_; }
+    const std::optional<PrototypeEvidence>& evidence() const { return evidence_; }
     const std::string& recoveryStatus() const { return recoveryStatus_; }
     void startCad(PrototypeCadJob::Output output);
     void cancelCad() { cadJob_.cancel(); }
@@ -88,7 +95,7 @@ public:
 private:
     enum class Step
     {
-        idle, open, save, canvasEdit, undo, edited, accepted, job, canvas, editor, cad,
+        idle, open, save, canvasEdit, undo, readRename, rename, renamed, edited, accepted, job, canvas, editor, cad,
         solverLatest, resultHistory, resultDescribe, resultPage, resultArtifact, resultMatrixLoad, resultExport,
         solverConditions, recovery, finished, failed
     };
@@ -112,6 +119,7 @@ private:
     bool showingCompletedAnalysis_ = false;
     PrototypeResult result_;
     nlohmann::json recovery_;
+    std::optional<PrototypeEvidence> evidence_;
     std::string recoveryStatus_;
     nlohmann::json rfExportInput_;
     nlohmann::json rfExportResult_;
@@ -125,6 +133,11 @@ private:
     bool awaiting_ = false;
     std::string job_;
     nlohmann::json canvasEdit_;
+    nlohmann::json renameSelection_;
+    std::string renameRevision_;
+    std::optional<std::string> renameName_;
+    std::string renameDraft_;
+    std::string renameStatus_;
     View loading_;
     std::optional<View> view_;
     nlohmann::json pages_;

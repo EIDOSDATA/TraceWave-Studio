@@ -120,6 +120,55 @@ void PrototypeProject::undo()
     }
 }
 
+/** @brief 캔버스 도체 또는 선택이 없는 프로젝트의 이름 편집 정보를 조회한다. */
+bool PrototypeProject::canRename() const
+{
+    if (!view_ || !writable())
+    {
+        return false;
+    }
+    const auto* shape = view_->canvas.Find(view_->selection);
+    return view_->selection.empty() || (shape && shape->selectionKind == "geometry");
+}
+
+void PrototypeProject::readRename()
+{
+    if (!canRename())
+    {
+        return;
+    }
+    const bool project = view_->selection.empty();
+    renameSelection_ = {{"kind", project ? "project" : "geometry"},
+        {"id", project ? view_->id : view_->selection}};
+    renameRevision_ = view_->revision;
+    renameName_.reset();
+    renameStatus_.clear();
+    step_ = Step::readRename;
+}
+
+/** @brief 이름은 조회한 개정 및 안정 ID에만 적용한다. */
+const std::string* PrototypeProject::renameName() const
+{
+    if (!view_ || !renameName_ || view_->revision != renameRevision_)
+    {
+        return nullptr;
+    }
+    const auto& id = view_->selection.empty() ? view_->id : view_->selection;
+    return renameSelection_.at("id") == id ? &*renameName_ : nullptr;
+}
+
+void PrototypeProject::renameObject(const std::string& name)
+{
+    const auto* original = renameName();
+    if (canRename() && original && !name.empty() && name != *original)
+    {
+        renameDraft_ = name;
+        renameStatus_.clear();
+        message_ = "이름 변경을 적용하는 중";
+        step_ = Step::rename;
+    }
+}
+
 void PrototypeProject::readCad()
 {
     if (view_ && writable() && !cad_.loading() && !cadJob_.active())
@@ -148,7 +197,7 @@ void PrototypeProject::readRecovery()
     if (view_ && writable())
     {
         step_ = Step::recovery;
-        recoveryStatus_ = "저장본과 현재 개정을 비교하는 중";
+        recoveryStatus_ = "출처와 저장본을 조회하는 중";
     }
 }
 
@@ -157,7 +206,8 @@ void PrototypeProject::clearRecovery()
     if (recovery_.is_object())
     {
         recovery_ = nullptr;
-        recoveryStatus_ = "개정이 변경됐습니다. 저장본 비교를 다시 읽으세요.";
+        evidence_.reset();
+        recoveryStatus_ = "개정이 변경됐습니다. 출처 또는 저장본 비교를 다시 읽으세요.";
     }
 }
 
@@ -447,10 +497,17 @@ void PrototypeProject::update(PrototypeService& service)
                     {{"expected_revision", view_->revision}}, true);
                 step_ = Step::accepted;
                 break;
+            case Step::readRename:
+                awaiting_ = service.request("editor.page", {{"project_id", view_->id}},
+                    {{"expected_revision", renameRevision_}, {"offset", 0}, {"include_items", false},
+                     {"selection", renameSelection_}});
+                break;
             case Step::canvasEdit:
+            case Step::rename:
             case Step::undo:
             {
-                const bool move = step_ == Step::canvasEdit;
+                const bool canvas = step_ == Step::canvasEdit;
+                const bool rename = step_ == Step::rename;
                 const auto id = PrototypeService::newCommandId();
                 if (id.empty())
                 {
@@ -458,13 +515,23 @@ void PrototypeProject::update(PrototypeService& service)
                     return;
                 }
                 Json input{{"expected_revision", view_->revision}, {"command_id", id}};
-                if (move)
+                const char* method = "project.undo";
+                if (canvas)
                 {
                     input.update(canvasEdit_);
+                    method = "canvas.apply";
                 }
-                awaiting_ = service.request(move ? "canvas.apply" : "project.undo",
-                    {{"project_id", view_->id}}, input, true);
-                step_ = Step::edited;
+                if (rename)
+                {
+                    input["selection"] = renameSelection_;
+                    input["values"] = {{"name", renameDraft_}};
+                    method = "editor.apply";
+                }
+                awaiting_ = service.request(method, {{"project_id", view_->id}}, input, true);
+                if (awaiting_)
+                {
+                    step_ = rename ? Step::renamed : Step::edited;
+                }
                 break;
             }
             case Step::job:
@@ -543,7 +610,17 @@ void PrototypeProject::receive(const Json& reply)
 {
     if (reply.contains("error"))
     {
-        fail(errorMessage(reply.at("error")));
+        const auto& error = reply.at("error");
+        const auto data = error.value("data", Json::object());
+        const auto code = data.value("domain_code", "");
+        if (step_ == Step::renamed && (code == "E_SCHEMA" || code == "E_CONFLICT"))
+        {
+            renameStatus_ = errorMessage(error);
+            message_.clear();
+            step_ = Step::finished;
+            return;
+        }
+        fail(errorMessage(error));
         return;
     }
     const auto& result = reply.at("result");
@@ -585,8 +662,10 @@ void PrototypeProject::receive(const Json& reply)
             {
                 throw std::runtime_error("저장본 비교의 프로젝트, 개정 또는 변경 목록이 다릅니다.");
             }
+            auto evidence = PrototypeEvidence::read(result);
             recovery_ = {{"revision_id", result.at("revision_id")}, {"saved_revision", result.at("saved_revision")},
                 {"recovery_details", details}};
+            evidence_ = std::move(evidence);
             recoveryStatus_.clear();
             step_ = Step::finished;
             break;
@@ -636,6 +715,28 @@ void PrototypeProject::receive(const Json& reply)
             step_ = Step::finished;
             break;
         }
+        case Step::readRename:
+        {
+            const auto& selection = result.at("selection");
+            if (!Studio::MatchesEditor(result, view_->id, renameRevision_) ||
+                selection.at("id") != renameSelection_.at("id") || selection.at("kind") != renameSelection_.at("kind"))
+            {
+                throw std::runtime_error("이름 조회 응답의 개정 또는 객체가 다릅니다.");
+            }
+            const auto& fields = selection.at("fields");
+            const auto field = std::ranges::find_if(fields, [](const Json& entry)
+            {
+                return entry.at("key") == "name" && !entry.at("readonly").get<bool>();
+            });
+            if (field == fields.end())
+            {
+                throw std::runtime_error("이름을 변경할 수 없는 객체입니다.");
+            }
+            renameName_ = field->at("value").get<std::string>();
+            step_ = Step::finished;
+            break;
+        }
+        case Step::renamed:
         case Step::edited:
             if (result.at("project_id") != view_->id || result.at("new_revision") == view_->revision)
             {
@@ -799,6 +900,14 @@ void PrototypeProject::finishResult(const char* status)
 
 void PrototypeProject::fail(std::string message)
 {
+    if (step_ == Step::readRename || step_ == Step::rename)
+    {
+        renameStatus_ = "이름 편집 요청 실패. " + message;
+        message_.clear();
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
     if (step_ == Step::cad)
     {
         const auto failure = "3D 형상 조회 실패: " + message;
@@ -810,7 +919,7 @@ void PrototypeProject::fail(std::string message)
     }
     if (step_ == Step::recovery)
     {
-        recoveryStatus_ = "저장본 비교 실패. " + message;
+        recoveryStatus_ = "출처와 저장본 조회 실패. " + message;
         awaiting_ = false;
         step_ = Step::finished;
         return;

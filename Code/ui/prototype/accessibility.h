@@ -33,7 +33,12 @@ enum class Control
     archiveToggle, archivePick, archiveApply, archiveCancel, archiveOpen, archiveReview, archiveStatus,
     endpointToggle, endpointStart, endpointEnd, endpointSnap, endpointPick, endpointX, endpointY,
     endpointApply, endpointReset, endpointSnapStatus, sectionToggle, sectionAxis, sectionSide, sectionPosition,
-    sectionApply, sectionAxisValue, sectionStatus
+    sectionApply, sectionAxisValue, sectionStatus,
+    renameToggle, renameDialog, renameTarget, renameName, renameApply, renameCancel, renameStatus,
+    renameDetails, renameId, renameCopy,
+    evidenceToggle, evidenceReload, evidenceRecords, evidenceAssumptions, evidenceHistory,
+    evidencePrevious, evidenceNext, evidencePreviousValue, evidenceNextValue,
+    evidenceStatus, evidenceSummary, evidenceTitle, evidenceSource, evidenceValues
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };
