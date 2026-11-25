@@ -22,7 +22,8 @@ std::string errorMessage(const Json& error)
 }
 }
 
-PrototypeProject::PrototypeProject(const char* path, const char* workspace) : cad_(workspace), result_(workspace), path_(path ? path : "")
+PrototypeProject::PrototypeProject(const char* path, const char* workspace, std::string createName)
+    : cad_(workspace), result_(workspace), path_(path ? path : ""), createName_(std::move(createName))
 {
     if (configured())
     {
@@ -33,6 +34,12 @@ PrototypeProject::PrototypeProject(const char* path, const char* workspace) : ca
 bool PrototypeProject::busy() const
 {
     return step_ != Step::idle && step_ != Step::finished && step_ != Step::failed;
+}
+
+bool PrototypeProject::canSwitch() const
+{
+    return !busy() && !cadJob_.active() && !cad_.loading() && !analysis_.active() && !exchange_.active() &&
+        (!view_ || view_->revision == view_->savedRevision);
 }
 
 void PrototypeProject::reopen()
@@ -104,6 +111,25 @@ void PrototypeProject::startCad(PrototypeCadJob::Output output)
     if (canStartCad())
     {
         cadJob_.start(view_->id, view_->revision, output);
+    }
+}
+
+/** @brief 현재 개정의 정상 저장본과 영속 편집 상태를 기존 읽기 명령으로 비교한다. */
+void PrototypeProject::readRecovery()
+{
+    if (view_ && writable())
+    {
+        step_ = Step::recovery;
+        recoveryStatus_ = "저장본과 현재 개정을 비교하는 중";
+    }
+}
+
+void PrototypeProject::clearRecovery()
+{
+    if (recovery_.is_object())
+    {
+        recovery_ = nullptr;
+        recoveryStatus_ = "개정이 변경됐습니다. 저장본 비교를 다시 읽으세요.";
     }
 }
 
@@ -372,14 +398,21 @@ void PrototypeProject::update(PrototypeService& service)
         switch (step_)
         {
             case Step::open:
+            {
                 saving_ = false;
                 loading_ = {};
                 pages_ = nullptr;
                 offset_ = 0;
-                awaiting_ = service.request("project.open", Json::object(),
-                    {{"path", path_}, {"open_mode", "open"}, {"result_mode", "summary"}}, true);
+                Json input{{"path", path_}, {"open_mode", createName_.empty() ? "open" : "create"},
+                    {"result_mode", "summary"}};
+                if (!createName_.empty())
+                {
+                    input["name"] = createName_;
+                }
+                awaiting_ = service.request("project.open", Json::object(), input, true);
                 step_ = Step::accepted;
                 break;
+            }
             case Step::save:
                 saving_ = true;
                 awaiting_ = service.request("project.save", {{"project_id", view_->id}},
@@ -431,6 +464,10 @@ void PrototypeProject::update(PrototypeService& service)
                 break;
             case Step::cad:
                 awaiting_ = service.request("cad.latest", {{"project_id", view_->id}}, Json::object());
+                break;
+            case Step::recovery:
+                awaiting_ = service.request("project.evidence", {{"project_id", view_->id}},
+                    {{"expected_revision", view_->revision}});
                 break;
             case Step::solverConditions:
                 awaiting_ = service.request("solver.conditions", {{"project_id", view_->id}},
@@ -504,6 +541,29 @@ void PrototypeProject::receive(const Json& reply)
             cad_.accept(result, view_->id);
             step_ = Step::finished;
             break;
+        case Step::recovery:
+        {
+            const auto& details = result.at("recovery_details");
+            const auto& rows = details.at("rows");
+            if (result.at("project_id") != view_->id || result.at("revision_id") != view_->revision ||
+                result.at("saved_revision") != view_->savedRevision || !rows.is_array() || rows.size() > 96 ||
+                !details.at("has_more").is_boolean() ||
+                std::ranges::any_of(rows, [](const Json& row)
+                {
+                    return !row.is_array() || row.size() != 5 || std::ranges::any_of(row, [](const Json& value)
+                    {
+                        return !value.is_string();
+                    });
+                }))
+            {
+                throw std::runtime_error("저장본 비교의 프로젝트, 개정 또는 변경 목록이 다릅니다.");
+            }
+            recovery_ = {{"revision_id", result.at("revision_id")}, {"saved_revision", result.at("saved_revision")},
+                {"recovery_details", details}};
+            recoveryStatus_.clear();
+            step_ = Step::finished;
+            break;
+        }
         case Step::solverConditions:
             analysis_.acceptConditions(result, view_->revision);
             step_ = Step::finished;
@@ -580,9 +640,10 @@ void PrototypeProject::receiveJob(const Json& result)
     }
     if (state == "failed" || state == "cancelled" || state == "interrupted" || state == "timeout")
     {
-        const auto errors = events.empty() ? Json::array() : events.back().value("diagnostics", Json::array());
-        const auto message = errors.empty() ? state : errors.front().value("message_ko", state);
-        fail("프로젝트 작업 종료: " + message);
+        const auto diagnostic = events.empty() ? Json::object() : events.back().value("error", Json::object());
+        const auto code = diagnostic.value("code", "");
+        const auto message = diagnostic.value("message_ko", state);
+        fail("프로젝트 작업 종료: " + (code.empty() ? message : code + " " + message));
         return;
     }
     if (state != "completed")
@@ -602,6 +663,7 @@ void PrototypeProject::receiveJob(const Json& result)
             throw std::runtime_error("저장한 개정이 요청 개정과 다릅니다.");
         }
         view_->savedRevision = view_->revision;
+        clearRecovery();
         message_ = "저장 완료";
         std::printf("project saved: %s\n", view_->savedRevision.c_str());
         step_ = Step::finished;
@@ -687,6 +749,8 @@ void PrototypeProject::finishView(const Json& editor)
     std::printf("project opened: %s current=%s saved=%s shapes=%zu\n", loading_.id.c_str(),
         loading_.revision.c_str(), loading_.savedRevision.c_str(), loading_.canvas.shapes.size());
     view_ = std::move(loading_);
+    clearRecovery();
+    createName_.clear();
     message_.clear();
     step_ = Step::finished;
 }
@@ -708,6 +772,13 @@ void PrototypeProject::fail(std::string message)
         const auto failure = "3D 형상 조회 실패: " + message;
         std::fprintf(stderr, "%s\n", failure.c_str());
         cad_.setStatus(failure);
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
+    if (step_ == Step::recovery)
+    {
+        recoveryStatus_ = "저장본 비교 실패. " + message;
         awaiting_ = false;
         step_ = Step::finished;
         return;

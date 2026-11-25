@@ -25,13 +25,16 @@ public:
         bool canUndo = false;
     };
 
-    explicit PrototypeProject(const char* path, const char* workspace);
+    explicit PrototypeProject(const char* path, const char* workspace, std::string createName = {});
     void update(PrototypeService& service);
     void reopen();
     void save();
     void translate(double dx, double dy);
     void undo();
     void readCad();
+    void readRecovery();
+    const nlohmann::json& recovery() const { return recovery_; }
+    const std::string& recoveryStatus() const { return recoveryStatus_; }
     void startCad(PrototypeCadJob::Output output);
     void cancelCad() { cadJob_.cancel(); }
     bool cadReady() const { return cadReady_; }
@@ -72,6 +75,7 @@ public:
 
     bool configured() const { return !path_.empty(); }
     bool busy() const;
+    bool canSwitch() const;
     bool canTranslate() const;
     bool writable() const { return step_ == Step::finished && !cadJob_.sealing() && !analysis_.sealing() && !exchange_.sealing(); }
     bool canReopen() const { return configured() && !busy() && !cadJob_.sealing() && !analysis_.sealing() && !exchange_.sealing(); }
@@ -84,12 +88,13 @@ private:
     {
         idle, open, save, translate, undo, edited, accepted, job, canvas, editor, cad,
         solverLatest, resultHistory, resultDescribe, resultPage, resultArtifact, resultMatrixLoad, resultExport,
-        solverConditions, finished, failed
+        solverConditions, recovery, finished, failed
     };
     bool sendBackground(PrototypeService& service);
     void receive(const nlohmann::json& reply);
     void receiveJob(const nlohmann::json& result);
     void finishResult(const char* status);
+    void clearRecovery();
     void receiveCanvas(const nlohmann::json& result);
     void finishView(const nlohmann::json& editor);
     void fail(std::string message);
@@ -104,11 +109,14 @@ private:
     bool solverReady_ = false;
     bool showingCompletedAnalysis_ = false;
     PrototypeResult result_;
+    nlohmann::json recovery_;
+    std::string recoveryStatus_;
     nlohmann::json rfExportInput_;
     nlohmann::json rfExportResult_;
     std::string rfExportRevision_;
     std::string rfExportStatus_;
     std::string path_;
+    std::string createName_;
     std::string message_;
     Step step_ = Step::idle;
     bool saving_ = false;

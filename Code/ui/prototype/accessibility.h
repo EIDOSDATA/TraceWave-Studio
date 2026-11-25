@@ -11,6 +11,7 @@
 namespace accessibility
 {
 constexpr std::size_t noteCapacity = 256;
+constexpr std::size_t projectNameCapacity = 1025;
 
 enum class Control
 {
@@ -25,7 +26,10 @@ enum class Control
     exchangeFormat, exchangeFootprint, exchangeStatus, exchangeReview, exchangePublication,
     showRfExport, previousRfExport, nextRfExport, saveRfExport, rfExportFormat, rfExportStatus,
     matrixPriorRow, matrixNextRow, matrixPriorColumn, matrixNextColumn, matrixPriorSample, matrixNextSample,
-    matrixTable, matrixAxes, matrixSample, manufacturingFormat, buildManufacturing, manufacturingChoice, manufacturingStatus
+    matrixTable, matrixAxes, matrixSample, manufacturingFormat, buildManufacturing, manufacturingChoice, manufacturingStatus,
+    showProjectChooser, createProjectMode, projectName, submitProject, projectChooserStatus,
+    showRecovery, readRecovery, priorRecoveryField, nextRecoveryField, recoverySummary, recoveryField,
+    recoveryBefore, recoveryAfter
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };
@@ -48,7 +52,7 @@ public:
     Bridge& operator=(const Bridge&) = delete;
 
     void item(Control control, Control parent, bool enabled = true, bool checked = false,
-        const ImGuiViewport* viewport = nullptr);
+        const ImGuiViewport* viewport = nullptr, std::string_view value = {});
     void panel(Control control);
     void text(Control control, Control parent, std::string_view name);
     void publish(const char* value);
@@ -62,7 +66,7 @@ private:
 class Bridge
 {
 public:
-    void item(Control, Control, bool = true, bool = false, const ImGuiViewport* = nullptr) {}
+    void item(Control, Control, bool = true, bool = false, const ImGuiViewport* = nullptr, std::string_view = {}) {}
     void panel(Control) {}
     void text(Control, Control, std::string_view) {}
     void publish(const char*) {}

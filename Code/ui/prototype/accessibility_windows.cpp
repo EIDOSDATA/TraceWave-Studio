@@ -115,9 +115,22 @@ constexpr Description descriptions[] =
     {L"제조 교환 형식 변경", L"manufacturing-format", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"제조 교환 후보 ZIP 저장", L"manufacturing-build", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"", L"manufacturing-choice", UIA_TextControlTypeId},
-    {L"", L"manufacturing-status", UIA_TextControlTypeId}
+    {L"", L"manufacturing-status", UIA_TextControlTypeId},
+    {L"프로젝트 선택", L"project-chooser", UIA_ButtonControlTypeId, UIA_TogglePatternId, L"Ctrl+O"},
+    {L"새 프로젝트 모드", L"project-create-mode", UIA_ButtonControlTypeId, UIA_TogglePatternId, L"Ctrl+N"},
+    {L"프로젝트 폴더 이름", L"project-name", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"프로젝트 선택 또는 생성 실행", L"project-submit", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"project-chooser-status", UIA_TextControlTypeId},
+    {L"저장본과 현재 개정 비교", L"show-recovery", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"저장본 비교 다시 읽기", L"read-recovery", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"이전 변경 항목", L"recovery-prior", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 변경 항목", L"recovery-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"recovery-summary", UIA_TextControlTypeId},
+    {L"", L"recovery-field", UIA_TextControlTypeId},
+    {L"", L"recovery-before", UIA_TextControlTypeId},
+    {L"", L"recovery-after", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::manufacturingStatus) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::recoveryAfter) + 1);
 
 struct Node
 {
@@ -128,6 +141,7 @@ struct Node
     bool focused = false;
     bool checked = false;
     std::string name{};
+    std::string value{};
 };
 
 struct Snapshot
@@ -477,7 +491,8 @@ public:
             return E_INVALIDARG;
         }
         const int size = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, value, -1, nullptr, 0, nullptr, nullptr);
-        if (size <= 0 || size > static_cast<int>(noteCapacity))
+        const auto capacity = control == Control::note ? noteCapacity : projectNameCapacity;
+        if (size <= 0 || size > static_cast<int>(capacity))
         {
             return E_INVALIDARG;
         }
@@ -491,18 +506,21 @@ public:
     {
         *output = nullptr;
         std::lock_guard lock(window->mutex);
-        if (!current())
+        const auto* node = current();
+        if (!node)
         {
             return UIA_E_ELEMENTNOTAVAILABLE;
         }
-        *output = utf8Value(window->snapshot.value);
+        *output = utf8Value(control == Control::note ? window->snapshot.value : node->value);
         return *output ? S_OK : E_OUTOFMEMORY;
     }
 
     HRESULT STDMETHODCALLTYPE get_IsReadOnly(BOOL* output) override
     {
-        *output = FALSE;
-        return S_OK;
+        std::lock_guard lock(window->mutex);
+        const auto* node = current();
+        *output = node && node->enabled ? FALSE : TRUE;
+        return node ? S_OK : UIA_E_ELEMENTNOTAVAILABLE;
     }
 
 private:
@@ -657,6 +675,8 @@ void Host::update(Snapshot next, bool foreground)
             provider->Release();
         }
         const PATTERNID pattern = descriptions[static_cast<int>(node.control)].pattern;
+        const auto& previousValue = node.control == Control::note ? previous.value : prior->value;
+        const auto& nextValue = node.control == Control::note ? next.value : node.value;
         VARIANT before{};
         VARIANT after{};
         PROPERTYID property = 0;
@@ -667,12 +687,12 @@ void Host::update(Snapshot next, bool foreground)
             before.bstrVal = utf8Value(prior->name);
             after.bstrVal = utf8Value(node.name);
         }
-        else if (pattern == UIA_ValuePatternId && previous.value != next.value)
+        else if (pattern == UIA_ValuePatternId && previousValue != nextValue)
         {
             property = UIA_ValueValuePropertyId;
             before.vt = after.vt = VT_BSTR;
-            before.bstrVal = utf8Value(previous.value);
-            after.bstrVal = utf8Value(next.value);
+            before.bstrVal = utf8Value(previousValue);
+            after.bstrVal = utf8Value(nextValue);
         }
         else if (prior->checked != node.checked && (pattern == UIA_TogglePatternId || pattern == UIA_ExpandCollapsePatternId))
         {
@@ -737,13 +757,15 @@ struct Bridge::State
 Bridge::Bridge() : state(std::make_unique<State>()) {}
 Bridge::~Bridge() = default;
 
-void Bridge::item(Control control, Control parent, bool enabled, bool checked, const ImGuiViewport* viewport)
+void Bridge::item(Control control, Control parent, bool enabled, bool checked, const ImGuiViewport* viewport,
+    std::string_view value)
 {
     ImGuiWindow* window = ImGui::GetCurrentWindowRead();
     const ImRect area(ImGui::GetItemRectMin(), ImGui::GetItemRectMax());
     state->frame.push_back({viewport ? viewport->ID : window->Viewport->ID, area,
-        {control, parent, {}, enabled, ImGui::IsItemFocused() || (control == Control::note && ImGui::IsItemActive()),
-            checked}});
+        {control, parent, {}, enabled, ImGui::IsItemFocused() ||
+            (descriptions[static_cast<int>(control)].pattern == UIA_ValuePatternId && ImGui::IsItemActive()),
+            checked, {}, std::string(value)}});
 }
 
 void Bridge::text(Control control, Control parent, std::string_view name)

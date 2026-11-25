@@ -98,6 +98,22 @@ struct Shell
     std::size_t matrixSample = 0;
     bool showMatrixTable = false;
     const char* workspacePath = nullptr;
+    std::unique_ptr<PrototypeProject> nextProject;
+    std::array<char, accessibility::projectNameCapacity> projectName{};
+    std::string chooserStatus;
+    ImGuiID projectNameId = 0;
+    SDL_WindowID projectTextWindow = 0;
+    bool projectTextActive = false;
+    bool serviceReady = false;
+    bool chooserOpen = false;
+    bool createProject = false;
+    bool recoveryOpen = false;
+    std::size_t recoveryIndex = 0;
+    void drawRecovery();
+    void submitProject();
+    void updateProjects(std::unique_ptr<PrototypeProject>& current, PrototypeService& service);
+    void setProjectName(std::string_view value);
+    void drawProjectChooser();
     std::future<std::string> rfDelivery;
     std::string rfDeliveryStatus;
     void drawLiveBoard();
@@ -292,7 +308,7 @@ float windowDpiScale(ImGuiViewport* viewport)
     return 1.0f;
 }
 
-/** @brief 조합과 확정 이벤트를 현재 메모가 속한 SDL 창으로 제한한다. */
+/** @brief 조합과 확정 이벤트를 현재 편집란이 속한 SDL 창으로 제한한다. */
 bool Shell::processEvent(const SDL_Event& event)
 {
     if (event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED
@@ -313,9 +329,19 @@ bool Shell::processEvent(const SDL_Event& event)
         }
         restoreMainFocus = true;
     }
+    const auto textWindow = [this](SDL_WindowID id)
+    {
+#if defined(_WIN32)
+        if (projectTextActive)
+        {
+            return id == projectTextWindow;
+        }
+#endif
+        return noteActive && id == noteWindow;
+    };
     if (event.type == SDL_EVENT_TEXT_EDITING)
     {
-        if (!noteActive || event.edit.windowID != noteWindow)
+        if (!textWindow(event.edit.windowID))
         {
             return false;
         }
@@ -339,7 +365,7 @@ bool Shell::processEvent(const SDL_Event& event)
         preeditWindow = 0;
         return false;
     }
-    return event.type != SDL_EVENT_TEXT_INPUT || (noteActive && event.text.windowID == noteWindow);
+    return event.type != SDL_EVENT_TEXT_INPUT || textWindow(event.text.windowID);
 }
 
 /** @brief 바로 가기, 메뉴 및 UI Automation에서 같은 명령을 사용한다. */
@@ -366,6 +392,41 @@ void Shell::activate(Control control)
             break;
         case Control::clearNote: setNote({}); break;
 #if defined(_WIN32)
+        case Control::showProjectChooser:
+            if (!nextProject && (project->view() || !chooserOpen))
+            {
+                chooserOpen = !chooserOpen;
+            }
+            break;
+        case Control::createProjectMode:
+            if (!nextProject)
+            {
+                createProject = !createProject;
+            }
+            break;
+        case Control::submitProject: submitProject(); break;
+        case Control::showRecovery:
+            recoveryOpen = !recoveryOpen;
+            if (recoveryOpen)
+            {
+                recoveryIndex = 0;
+                project->readRecovery();
+            }
+            break;
+        case Control::readRecovery: project->readRecovery(); break;
+        case Control::priorRecoveryField:
+            if (recoveryIndex > 0)
+            {
+                --recoveryIndex;
+            }
+            break;
+        case Control::nextRecoveryField:
+            if (const auto& data = project->recovery(); data.is_object() &&
+                recoveryIndex + 1 < data.at("recovery_details").at("rows").size())
+            {
+                ++recoveryIndex;
+            }
+            break;
         case Control::reloadProject: project->reopen(); break;
         case Control::saveProject: project->save(); break;
         case Control::undoProject: project->undo(); break;
@@ -512,7 +573,16 @@ void Shell::applyActions()
             case Operation::toggle: activate(action.control); break;
             case Operation::expand: openMenu = true; break;
             case Operation::collapse: closeMenu = true; break;
-            case Operation::setValue: setNote(action.value); break;
+            case Operation::setValue:
+#if defined(_WIN32)
+                if (action.control == Control::projectName)
+                {
+                    setProjectName(action.value);
+                    break;
+                }
+#endif
+                setNote(action.value);
+                break;
             case Operation::focus:
                 if (action.control == Control::note)
                 {
@@ -544,7 +614,14 @@ void Shell::focusItem(Control control)
 void Shell::drawMenus(bool hasViewports)
 {
 #if defined(_WIN32)
-    if (project && project->configured())
+    if (workspacePath && !nextProject && ImGui::GetIO().KeyCtrl &&
+        (ImGui::IsKeyPressed(ImGuiKey_O, false) || ImGui::IsKeyPressed(ImGuiKey_N, false)))
+    {
+        boardOpen = chooserOpen = true;
+        createProject = ImGui::IsKeyPressed(ImGuiKey_N, false);
+        requestedFocus = Control::projectName;
+    }
+    if (project && project->configured() && !nextProject)
     {
         if (ImGui::IsKeyPressed(ImGuiKey_F5, false))
         {
@@ -659,6 +736,9 @@ void Shell::draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFo
     }
     ImGui::DockSpaceOverViewport(dockspace);
     plotDrawn = boardDrawn = false;
+#if defined(_WIN32)
+    projectTextActive = false;
+#endif
     drawBoard();
     drawResult(hasViewports);
     drawInput(mainWindow);
@@ -704,7 +784,9 @@ void Shell::drawBoard()
         requestedFocus == Control::reloadModel || requestedFocus == Control::buildModel ||
         requestedFocus == Control::exportStep || requestedFocus == Control::cancelCad ||
         (requestedFocus >= Control::showExchange && requestedFocus <= Control::reloadExchange) ||
-        requestedFocus == Control::manufacturingFormat || requestedFocus == Control::buildManufacturing)
+        requestedFocus == Control::manufacturingFormat || requestedFocus == Control::buildManufacturing ||
+        (requestedFocus >= Control::showProjectChooser && requestedFocus <= Control::submitProject) ||
+        (requestedFocus >= Control::showRecovery && requestedFocus <= Control::nextRecoveryField))
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::board)
@@ -716,9 +798,16 @@ void Shell::drawBoard()
     {
         access.panel(Control::board);
 #if defined(_WIN32)
-        if (project && project->configured())
+        if (workspacePath && project)
         {
-            drawLiveBoard();
+            if (project->view() || !project->busy())
+            {
+                drawProjectChooser();
+            }
+            if (project->configured() && !nextProject)
+            {
+                drawLiveBoard();
+            }
             ImGui::End();
             return;
         }
@@ -778,10 +867,191 @@ void Shell::drawBoard()
 }
 
 #if defined(_WIN32)
+/** @brief 이전 프로젝트가 저장된 상태에서만 같은 서비스로 다른 프로젝트를 요청한다. */
+void Shell::submitProject()
+{
+    if (!serviceReady || nextProject || manufacturing.active() || rfDelivery.valid() ||
+        !project->canSwitch() || projectName.front() == '\0')
+    {
+        return;
+    }
+    const std::string name(projectName.data());
+    const std::string path = "projects/" + name;
+    nextProject = std::make_unique<PrototypeProject>(path.c_str(), workspacePath, createProject ? name : std::string{});
+    chooserStatus.clear();
+}
+
+/** @brief 다음 프로젝트의 개정과 장면이 확인된 뒤 현재 프로젝트를 한 번에 교체한다. */
+void Shell::updateProjects(std::unique_ptr<PrototypeProject>& current, PrototypeService& service)
+{
+    serviceReady = service.state() == PrototypeService::State::connected;
+    if (!nextProject)
+    {
+        project->update(service);
+        return;
+    }
+    nextProject->update(service);
+    if (nextProject->view())
+    {
+        current = std::move(nextProject);
+        project = current.get();
+        chooserOpen = createProject = recoveryOpen = false;
+        recoveryIndex = 0;
+        modelOpen = analysisOpen = resultHistoryOpen = exchangeOpen = rfExportOpen = false;
+        rfFormatIndex = 0;
+        rfDeliveryStatus.clear();
+        zoom = 1.0f;
+        pan = {};
+    }
+    else if (!nextProject->busy())
+    {
+        chooserStatus = nextProject->message();
+        nextProject.reset();
+    }
+}
+
+void Shell::setProjectName(std::string_view value)
+{
+    if (nextProject || value.size() >= projectName.size())
+    {
+        return;
+    }
+    projectName.fill('\0');
+    std::copy(value.begin(), value.end(), projectName.begin());
+    if (auto* field = ImGui::GetInputTextState(projectNameId))
+    {
+        field->ReloadUserBufAndMoveToEnd();
+    }
+}
+
+void Shell::drawProjectChooser()
+{
+    if (project->view() || !chooserOpen)
+    {
+        panelButton(Control::showProjectChooser, "프로젝트 선택", !nextProject, chooserOpen);
+    }
+    if (!chooserOpen)
+    {
+        return;
+    }
+    if (!serviceReady)
+    {
+        ImGui::TextUnformatted("프로젝트를 열려면 Python 서비스에 연결해야 합니다.");
+        return;
+    }
+    const bool ready = !nextProject && !manufacturing.active() && !rfDelivery.valid() && project->canSwitch();
+    panelButton(Control::createProjectMode, "새 프로젝트", !nextProject, createProject);
+    ImGui::AlignTextToFramePadding();
+    ImGui::TextUnformatted("projects/");
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 17.0f);
+    ImGui::BeginDisabled(!ready);
+    if (requestedFocus == Control::projectName)
+    {
+        ImGui::SetKeyboardFocusHere();
+    }
+    const bool enter = ImGui::InputTextWithHint("##project-name", "프로젝트 폴더 이름",
+        projectName.data(), projectName.size(), ImGuiInputTextFlags_EnterReturnsTrue);
+    projectNameId = ImGui::GetItemID();
+    projectTextActive = ImGui::IsItemActive();
+    projectTextWindow = windowId(ImGui::GetWindowViewport());
+    focusItem(Control::projectName);
+    access.item(Control::projectName, Control::board, ready, false, nullptr, projectName.data());
+    ImGui::EndDisabled();
+    ImGui::SameLine();
+    panelButton(Control::submitProject, createProject ? "프로젝트 만들기" : "프로젝트 열기",
+        ready && projectName.front() != '\0');
+    if (enter)
+    {
+        submitProject();
+    }
+    if (projectTextActive && !preedit.empty() && preeditWindow == projectTextWindow)
+    {
+        ImGui::Text("조합 중  %s", preedit.c_str());
+    }
+    const char* status = chooserStatus.c_str();
+    if (nextProject)
+    {
+        status = createProject ? "새 프로젝트를 만드는 중" : "프로젝트를 여는 중";
+    }
+    else if (auto* view = project->view(); view && view->revision != view->savedRevision)
+    {
+        status = "현재 개정을 저장한 뒤 다른 프로젝트를 선택하세요.";
+    }
+    else if (!ready)
+    {
+        status = "현재 프로젝트 작업이 끝나면 열 수 있습니다.";
+    }
+    if (*status)
+    {
+        ImGui::TextWrapped("%s", status);
+        access.text(Control::projectChooserStatus, Control::board, status);
+    }
+}
+
+/** @brief 정상 저장본과 영속 편집 개정의 변경 값만 읽기 전용으로 표시한다. */
+void Shell::drawRecovery()
+{
+    panelButton(Control::readRecovery, "비교 다시 읽기", project->writable());
+    const auto& message = project->recoveryStatus();
+    if (!message.empty())
+    {
+        ImGui::TextWrapped("%s", message.c_str());
+        access.text(Control::recoverySummary, Control::board, message);
+        return;
+    }
+    const auto& data = project->recovery();
+    if (!data.is_object())
+    {
+        return;
+    }
+    const auto saved = data.at("saved_revision").get<std::string>();
+    const auto current = data.at("revision_id").get<std::string>();
+    const auto& details = data.at("recovery_details");
+    const auto& rows = details.at("rows");
+    const auto summary = "저장본 " + saved.substr(0, 12) + " | 현재 개정 " + current.substr(0, 12) +
+        " | 변경 " + std::to_string(rows.size()) + (details.at("has_more") == true ? "건 이상" : "건");
+    ImGui::TextWrapped("%s", summary.c_str());
+    access.text(Control::recoverySummary, Control::board, summary);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("저장본 %s\n현재 개정 %s", saved.c_str(), current.c_str());
+    }
+    if (rows.empty())
+    {
+        return;
+    }
+    if (recoveryIndex >= rows.size())
+    {
+        recoveryIndex = 0;
+    }
+    panelButton(Control::priorRecoveryField, "이전 변경", recoveryIndex > 0);
+    ImGui::SameLine();
+    panelButton(Control::nextRecoveryField, "다음 변경", recoveryIndex + 1 < rows.size());
+    const auto& row = rows.at(recoveryIndex);
+    const std::array fields{
+        std::pair{Control::recoveryField, std::to_string(recoveryIndex + 1) + " / " + std::to_string(rows.size()) + " | " +
+            row.at(0).get<std::string>() + " | " + row.at(1).get<std::string>() + " | " + row.at(2).get<std::string>()},
+        std::pair{Control::recoveryBefore, "저장본 " + row.at(3).get<std::string>()},
+        std::pair{Control::recoveryAfter, "현재 개정 " + row.at(4).get<std::string>()}
+    };
+    for (const auto& [control, text] : fields)
+    {
+        ImGui::TextWrapped("%s", text.c_str());
+        access.text(control, Control::board, text);
+    }
+}
+
 /** @brief 실제 프로젝트와 권위 있는 개정, 기판 장면 및 저장 동작을 같은 패널에 제공한다. */
 void Shell::drawLiveBoard()
 {
     ImGui::TextUnformatted(project->path().c_str());
+    ImGui::SameLine();
+    panelButton(Control::showRecovery, "저장본 비교", recoveryOpen || (project->view() && project->writable()), recoveryOpen);
+    if (recoveryOpen)
+    {
+        drawRecovery();
+    }
     panelButton(Control::toggleModel, modelOpen ? "2D 편집" : "3D 형상", project->view() != nullptr, modelOpen);
     ImGui::SameLine();
     panelButton(Control::showExchange, "출력 도구", project->view() != nullptr, exchangeOpen);
@@ -1147,9 +1417,12 @@ void Shell::drawResult(bool hasViewports)
             detachResult = false;
         }
 #if defined(_WIN32)
-        if (project && project->configured())
+        if (workspacePath && project)
         {
-            drawLiveResult();
+            if (project->view() && !nextProject)
+            {
+                drawLiveResult();
+            }
             ImGui::End();
             return;
         }
@@ -2133,9 +2406,10 @@ int run(SDL_Window* window, const Options& options)
             Smoke smoke(window, renderer.hasViewports());
 #if defined(_WIN32)
             PrototypeService service;
-            PrototypeProject project(options.openProject, options.service.workspace);
-            shell.project = &project;
+            auto project = std::make_unique<PrototypeProject>(options.openProject, options.service.workspace);
+            shell.project = project.get();
             shell.workspacePath = options.service.workspace;
+            shell.chooserOpen = options.service.workspace && !options.openProject;
             if (options.service.python)
             {
                 service.start(options.service);
@@ -2182,7 +2456,7 @@ int run(SDL_Window* window, const Options& options)
                     const char* serviceStatus = nullptr;
 #if defined(_WIN32)
                     service.poll();
-                    project.update(service);
+                    shell.updateProjects(project, service);
                     shell.deliverRfExport(window);
                     shell.manufacturing.update(window, options.service);
                     serviceStatus = service.status().c_str();
