@@ -49,7 +49,10 @@ enum class Control
     catalogDetail, setupStatus, setupSummary, setupFinding, catalogSummary,
     solverDraftOpen, solverDraftSave, solverDraftDiscard, solverDraftFrequency, solverDraftMesh, solverDraftOutput,
     solverDraftName, solverDraftStart, solverDraftStop, solverDraftCount, solverDraftGrid,
-    solverDraftPadding, solverDraftTolerance, solverDraftSubdivisions, solverDraftTimesteps, solverDraftEnd
+    solverDraftPadding, solverDraftTolerance, solverDraftSubdivisions, solverDraftTimesteps, solverDraftEnd,
+    solverDraftPoints, solverReadTargets, solverAdoptSource,
+    studyOpen, studyRead, studyList, studyRefresh, studyCreate, studyRun, studyCancel, studyResume,
+    studySetup, studyRadiation, studyCriteria, studyProgress, studyName, studyGrids, studyStatus, studySummary
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };

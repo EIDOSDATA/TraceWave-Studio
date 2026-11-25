@@ -248,9 +248,28 @@ constexpr Description descriptions[] =
     {L"곡선 근사 오차 mm", L"solver-draft-tolerance", UIA_EditControlTypeId, UIA_ValuePatternId},
     {L"임계 구간 최소 분할", L"solver-draft-subdivisions", UIA_EditControlTypeId, UIA_ValuePatternId},
     {L"최대 계산 단계", L"solver-draft-timesteps", UIA_EditControlTypeId, UIA_ValuePatternId},
-    {L"에너지 종료 기준", L"solver-draft-end", UIA_EditControlTypeId, UIA_ValuePatternId}
+    {L"에너지 종료 기준", L"solver-draft-end", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"직접 주파수 표본", L"solver-draft-points", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"현재 개정의 목표 목록", L"solver-source-targets", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"검토한 해석 출처 채택", L"solver-source-adopt", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"프로젝트 연구", L"show-study", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"현재 개정의 연구 조건 읽기", L"study-context", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"프로젝트 연구 목록 읽기", L"study-list", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"선택 연구의 진행 다시 읽기", L"study-refresh", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"연구 계획 생성", L"study-create", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"선택 연구 실행", L"study-run", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"선택 연구 취소", L"study-cancel", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"선택 연구 재개", L"study-resume", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"연구 조건 편집", L"study-setup", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"연구 방사와 손실 편집", L"study-radiation", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"연구 판정 기준 편집", L"study-criteria", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"연구 진행과 결과", L"study-progress", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"프로젝트 연구 이름", L"study-name", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"연구 격자 수준", L"study-grids", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"", L"study-status", UIA_TextControlTypeId},
+    {L"", L"study-summary", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::solverDraftEnd) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::studySummary) + 1);
 
 struct Node
 {

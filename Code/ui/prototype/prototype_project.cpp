@@ -1,6 +1,7 @@
 #include "prototype_project.h"
 
 #include "../wxwidgets/editor_sync.h"
+#include "../wxwidgets/frequency_display.h"
 
 #include <algorithm>
 #include <array>
@@ -12,6 +13,46 @@ namespace
 {
 using Json = nlohmann::json;
 using Clock = std::chrono::steady_clock;
+
+/** @brief 표시 단위가 있는 목표 편집 조회를 해석용 Hz 초안으로 변환한다. */
+Json solverTargetBand(const Json& fields)
+{
+    Json values = Json::object();
+    for (const auto& field : fields)
+    {
+        values[field.at("key").get<std::string>()] = field.at("value");
+    }
+    const auto frequency = [&values](const std::string& key)
+    {
+        if (values.at(key + ".mode") != "value")
+        {
+            throw std::runtime_error("대역 시작과 끝을 지정한 목표를 선택하세요.");
+        }
+        return StudioFrequency::ReadInput(values.at(key + ".value").get<std::string>() + " " +
+            values.at(key + ".unit").get<std::string>());
+    };
+    const auto start = frequency("band.start");
+    const auto stop = frequency("band.end");
+    if (values.at("sampling.kind") == "explicit")
+    {
+        Json points = Json::array();
+        for (const auto& line : values.at("sampling.explicit"))
+        {
+            points.push_back(StudioFrequency::ReadInput(line.get<std::string>()));
+        }
+        if (points.size() < 3 || points.size() > 201)
+        {
+            throw std::runtime_error("해석에 채택할 명시 표본은 3~201개여야 합니다.");
+        }
+        return {{"start", points.front()}, {"stop", points.back()}, {"count", points.size()}, {"points", points}};
+    }
+    const auto count = Json::parse(values.at("sampling.count").get<std::string>(), nullptr, false);
+    if (!count.is_number_integer() || count < 3 || count > 201)
+    {
+        throw std::runtime_error("해석에 채택할 등간격 표본 수는 3~201개여야 합니다.");
+    }
+    return {{"start", start}, {"stop", stop}, {"count", count}};
+}
 
 std::string errorMessage(const Json& error)
 {
@@ -622,6 +663,54 @@ void PrototypeProject::saveSolverCondition()
     }
 }
 
+/** @brief 기존 공개 읽기 경로로 출처를 검토하며 초안에는 적용하지 않는다. */
+void PrototypeProject::readSolverSource(bool result, const std::string& id)
+{
+    if (!canEditSolverCondition() || (result && id.empty()))
+    {
+        return;
+    }
+    solverDraft_->sourceReview = nullptr;
+    solverSourceInput_ = {{"expected_revision", view_->revision}};
+    if (result)
+    {
+        solverSourceInput_["artifact_id"] = id;
+    }
+    else
+    {
+        solverSourceInput_["target_id"] = id.empty() ? Json(nullptr) : Json(id);
+    }
+    step_ = Step::solverSource;
+    analysis_.setStatus("해석 조건에 채택할 출처를 확인하는 중");
+}
+
+void PrototypeProject::adoptSolverSource()
+{
+    if (!canEditSolverCondition() || !solverDraft_->sourceReview.is_object())
+    {
+        return;
+    }
+    try
+    {
+        auto& draft = *solverDraft_;
+        const auto review = draft.sourceReview;
+        if (review.contains("settings"))
+        {
+            draft.adoptSettings(review.at("settings"));
+        }
+        else
+        {
+            draft.adoptBand(review.at("band"));
+            draft.sourceReview = nullptr;
+        }
+        analysis_.setStatus("검토한 출처의 값을 초안에 채택했습니다.");
+    }
+    catch (const std::exception& error)
+    {
+        analysis_.setStatus(error.what());
+    }
+}
+
 void PrototypeProject::reviewSolver()
 {
     if (canReviewSolver())
@@ -635,6 +724,14 @@ void PrototypeProject::approveSolver()
     if (canApproveSolver())
     {
         analysis_.approve(view_->revision);
+    }
+}
+
+void PrototypeProject::requestStudy(PrototypeStudy::Request request, const std::string& identity)
+{
+    if (view_ && writable() && study_.request(request, view_->id, view_->revision, identity))
+    {
+        step_ = Step::studyRequest;
     }
 }
 
@@ -851,6 +948,14 @@ void PrototypeProject::update(PrototypeService& service)
                 awaiting_ = service.request("solver.conditions", {{"project_id", view_->id}},
                     {{"expected_revision", view_->revision}});
                 break;
+            case Step::studyRequest:
+                awaiting_ = service.request(PrototypeStudy::method(study_.pending), {{"project_id", view_->id}},
+                    study_.input, PrototypeStudy::mutation(study_.pending));
+                break;
+            case Step::solverSource:
+                awaiting_ = service.request(solverSourceInput_.contains("artifact_id") ? "solver.conditions" : "target.editor.get",
+                    {{"project_id", view_->id}}, solverSourceInput_);
+                break;
             case Step::solverConditionSave:
                 awaiting_ = service.request("solver.conditions.save", {{"project_id", view_->id}}, solverConditionInput_, true);
                 break;
@@ -1033,6 +1138,49 @@ void PrototypeProject::receive(const Json& reply)
                 newSolverCondition_.clear();
                 analysis_.setStatus("해석 조건을 현재 편집 개정에 추가했습니다.");
             }
+            step_ = Step::finished;
+            break;
+        case Step::studyRequest:
+        {
+            const bool mutated = PrototypeStudy::mutation(study_.pending);
+            study_.accept(result);
+            step_ = Step::finished;
+            if (mutated)
+            {
+                requestStudy(PrototypeStudy::Request::detail);
+            }
+            break;
+        }
+        case Step::solverSource:
+            if (solverSourceInput_.contains("artifact_id"))
+            {
+                const auto& identity = solverSourceInput_.at("artifact_id");
+                const auto& sources = analysis_.sources();
+                const auto selected = std::ranges::find_if(sources, [&](const Json& row) { return row.at("id") == identity; });
+                if (selected == sources.end() || result.at("id") != identity ||
+                    result.at("revision_id") != selected->at("revision_id") || !result.at("settings").is_object())
+                {
+                    throw std::runtime_error("과거 결과의 식별자, 개정 또는 해석 조건이 다릅니다.");
+                }
+                solverDraft_->sourceReview = result;
+            }
+            else
+            {
+                const auto& id = solverSourceInput_.at("target_id");
+                const auto& selection = result.at("selection");
+                if (result.at("project_id") != view_->id || result.at("revision_id") != view_->revision ||
+                    selection.at("id") != id || !result.at("items").is_array())
+                {
+                    throw std::runtime_error("목표 조회의 프로젝트, 개정 또는 선택 값이 다릅니다.");
+                }
+                solverDraft_->targetChoices = result.at("items");
+                if (!id.is_null())
+                {
+                    const auto& fields = selection.at("fields");
+                    solverDraft_->sourceReview = {{"id", id}, {"revision_id", view_->revision}, {"band", solverTargetBand(fields)}};
+                }
+            }
+            analysis_.setStatus("");
             step_ = Step::finished;
             break;
         case Step::solverConditionSave:
@@ -1341,6 +1489,20 @@ void PrototypeProject::fail(std::string message)
     if (step_ == Step::recovery)
     {
         recoveryStatus_ = "출처와 저장본 조회 실패. " + message;
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
+    if (step_ == Step::studyRequest)
+    {
+        study_.failed("연구 요청 실패. " + message);
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
+    if (step_ == Step::solverSource)
+    {
+        analysis_.setStatus("해석 조건 출처 조회 실패. " + message);
         awaiting_ = false;
         step_ = Step::finished;
         return;

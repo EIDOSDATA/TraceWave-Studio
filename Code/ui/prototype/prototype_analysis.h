@@ -26,12 +26,41 @@ public:
         enum Field { start, stop, samples, grid, padding, tolerance, subdivisions, timesteps, end, fieldCount };
         inline static constexpr std::array boundaryModes{"PML_8", "MUR", "PEC", "PMC"};
 
+        /** @brief 국부 격자 대상과 사용자 입력의 원래 단위를 보관한다. */
+        struct LocalRule
+        {
+            nlohmann::json target;
+            std::string priority;
+            std::array<std::string, 3> widths;
+            std::string name;
+            std::array<std::string, 6> bounds;
+
+            explicit LocalRule(const nlohmann::json& row);
+            nlohmann::json value() const;
+        };
+
         ConditionDraft(std::string revision, const Condition* source);
         nlohmann::json settings() const;
-        bool hasDirectPoints() const;
+        bool hasDirectPoints() const { return !directPoints.empty(); }
+        void adoptBand(const nlohmann::json& band);
+        void adoptSettings(const nlohmann::json& settings);
 
         std::string revision;
         std::string name;
+        std::string directPoints;
+        nlohmann::json targetChoices;
+        nlohmann::json sourceReview;
+        std::vector<LocalRule> localRules;
+        bool symmetry = false;
+        int symmetryAxis = 0;
+        std::string symmetryPosition;
+        bool radiation = false;
+        bool losses = false;
+        bool probe = false;
+        bool magnetic = false;
+        std::array<std::string, 4> radiationInputs;
+        std::string maxResidual;
+        std::array<std::string, 4> probeInputs;
         std::array<std::string, fieldCount> values;
         std::array<int, 6> boundaries{};
 
@@ -82,6 +111,8 @@ public:
     bool canApprove(const std::string& revision) const;
     bool canMove(int direction) const;
     const Condition* condition() const;
+    const nlohmann::json& sources() const { return sources_; }
+    const nlohmann::json& localTargets() const { return localTargets_; }
     const std::optional<Review>& plan() const { return plan_; }
     const std::string& status() const { return status_; }
     void setStatus(std::string status);
@@ -114,5 +145,7 @@ private:
     nlohmann::json settings_;
     nlohmann::json estimate_;
     std::vector<Condition> conditions_;
+    nlohmann::json sources_ = nlohmann::json::array();
+    nlohmann::json localTargets_ = nlohmann::json::array();
     std::size_t choice_ = 0;
 };

@@ -8,6 +8,7 @@
 #include "prototype_target.h"
 #include "prototype_template.h"
 #include "prototype_setup.h"
+#include "prototype_study.h"
 #include "prototype_result.h"
 #include "prototype_service.h"
 
@@ -95,8 +96,12 @@ public:
     void beginSolverCondition();
     void discardSolverCondition();
     void saveSolverCondition();
+    void readSolverSource(bool result, const std::string& id = {});
+    void adoptSolverSource();
     PrototypeAnalysis::ConditionDraft* solverDraft() { return solverDraft_ ? &*solverDraft_ : nullptr; }
     bool canEditSolverCondition() const;
+    PrototypeStudy& study() { return study_; }
+    void requestStudy(PrototypeStudy::Request request, const std::string& identity = {});
     void reviewSolver();
     void approveSolver();
     void cancelSolver() { analysis_.cancel(); }
@@ -123,8 +128,8 @@ private:
     {
         idle, open, save, canvasEdit, undo, readRename, rename, renamed, edited, accepted, job, canvas, editor, cad,
         solverLatest, resultHistory, resultDescribe, resultPage, resultArtifact, resultMatrixLoad, resultExport,
-        solverConditions, solverConditionSave, recovery, targetRead, targetApply, targetEdited, targetEvidence, templateContext, templatePreview, templateApply, templateEdited,
-        setupRequest, finished, failed
+        solverConditions, solverConditionSave, solverSource, recovery, targetRead, targetApply, targetEdited, targetEvidence, templateContext, templatePreview, templateApply, templateEdited,
+        setupRequest, studyRequest, finished, failed
     };
     bool sendBackground(PrototypeService& service);
     void receive(const nlohmann::json& reply);
@@ -142,6 +147,7 @@ private:
     PrototypeAnalysis analysis_;
     std::optional<PrototypeAnalysis::ConditionDraft> solverDraft_;
     nlohmann::json solverConditionInput_;
+    nlohmann::json solverSourceInput_;
     std::string newSolverCondition_;
     PrototypeExchange exchange_;
     bool exchangeSupported_ = false;
@@ -179,6 +185,7 @@ private:
     PrototypeTemplate literature_;
     nlohmann::json templateInput_;
     PrototypeSetup setup_;
+    PrototypeStudy study_;
     PrototypeSetup::Request setupRequest_ = PrototypeSetup::Request::board;
     nlohmann::json setupInput_;
     bool setupSent_ = false;

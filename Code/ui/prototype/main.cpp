@@ -125,8 +125,11 @@ struct Shell
     std::string recordedProject;
     bool modelOpen = false;
     bool analysisOpen = false;
+    bool studyOpen = false;
+    Control studyPage = Control::studySetup;
+    std::array<ImGuiID, 2> studyInputIds{};
     Control conditionPage = Control::solverDraftFrequency;
-    std::array<ImGuiID, PrototypeAnalysis::ConditionDraft::fieldCount + 1> solverInputIds{};
+    std::array<ImGuiID, PrototypeAnalysis::ConditionDraft::fieldCount + 2> solverInputIds{};
     bool resultHistoryOpen = false;
     bool exchangeOpen = false;
     bool rfExportOpen = false;
@@ -186,7 +189,11 @@ struct Shell
     void drawRfExport();
     void deliverRfExport(SDL_Window* mainWindow);
     void drawAnalysis();
+    void drawStudy();
     void drawSolverCondition(PrototypeAnalysis::ConditionDraft& draft);
+    void drawSolverMesh(PrototypeAnalysis::ConditionDraft& draft, bool enabled);
+    void drawSolverOutputs(PrototypeAnalysis::ConditionDraft& draft, bool enabled);
+    void solverText(const char* label, std::string& value);
     void setSolverConditionText(Control control, const std::string& value);
     void panelButton(Control control, const char* label, bool enabled, bool checked = false,
         Control parent = Control::board);
@@ -763,7 +770,31 @@ void Shell::activate(Control control)
             }
             break;
         case Control::reloadResult: project->readResult(); break;
-        case Control::showSolver: analysisOpen = !analysisOpen; break;
+        case Control::showSolver:
+            analysisOpen = !analysisOpen;
+            if (analysisOpen)
+            {
+                studyOpen = false;
+            }
+            break;
+        case Control::studyOpen:
+            studyOpen = !studyOpen;
+            if (studyOpen)
+            {
+                analysisOpen = false;
+            }
+            break;
+        case Control::studyRead: project->requestStudy(PrototypeStudy::Request::context); break;
+        case Control::studyList: project->requestStudy(PrototypeStudy::Request::list); break;
+        case Control::studyRefresh: project->requestStudy(PrototypeStudy::Request::detail); break;
+        case Control::studyCreate: project->requestStudy(PrototypeStudy::Request::create); break;
+        case Control::studyRun: project->requestStudy(PrototypeStudy::Request::start); break;
+        case Control::studyCancel: project->requestStudy(PrototypeStudy::Request::cancel); break;
+        case Control::studyResume: project->requestStudy(PrototypeStudy::Request::resume); break;
+        case Control::studySetup:
+        case Control::studyRadiation:
+        case Control::studyCriteria:
+        case Control::studyProgress: studyPage = control; break;
         case Control::readSolverConditions: project->readSolverConditions(); break;
         case Control::priorSolverCondition: project->moveSolverCondition(-1); break;
         case Control::nextSolverCondition: project->moveSolverCondition(1); break;
@@ -774,6 +805,8 @@ void Shell::activate(Control control)
         case Control::solverDraftFrequency:
         case Control::solverDraftMesh:
         case Control::solverDraftOutput: conditionPage = control; break;
+        case Control::solverReadTargets: project->readSolverSource(false); break;
+        case Control::solverAdoptSource: project->adoptSolverSource(); break;
         case Control::solverDraftSave: project->saveSolverCondition(); break;
         case Control::solverDraftDiscard: project->discardSolverCondition(); break;
         case Control::reviewSolver: project->reviewSolver(); break;
@@ -901,9 +934,24 @@ void Shell::applyActions()
                     setTargetText(action.control, action.value);
                     break;
                 }
-                if (action.control >= Control::solverDraftName && action.control <= Control::solverDraftEnd)
+                if (action.control >= Control::solverDraftName && action.control <= Control::solverDraftPoints)
                 {
                     setSolverConditionText(action.control, action.value);
+                    break;
+                }
+                if (action.control == Control::studyName || action.control == Control::studyGrids)
+                {
+                    auto& study = project->study();
+                    if (studyOpen && studyPage == Control::studySetup && project->view() && project->writable() &&
+                        study.canCreate(project->view()->revision) && action.value.size() <= 512)
+                    {
+                        const bool name = action.control == Control::studyName;
+                        if (studyInputIds[name ? 0 : 1] == ImGui::GetActiveID())
+                        {
+                            ImGui::ClearActiveID();
+                        }
+                        study.fields.at(name ? "name" : "grids") = action.value;
+                    }
                     break;
                 }
                 if (action.control == Control::projectName)
@@ -2628,7 +2676,8 @@ void Shell::drawResult(bool hasViewports)
     }
     if (requestedFocus == Control::result || requestedFocus == Control::reloadResult ||
         (requestedFocus >= Control::showSolver && requestedFocus <= Control::cancelSolver) ||
-        (requestedFocus >= Control::solverDraftOpen && requestedFocus <= Control::solverDraftEnd) ||
+        (requestedFocus >= Control::solverDraftOpen && requestedFocus <= Control::solverAdoptSource) ||
+        (requestedFocus >= Control::studyOpen && requestedFocus <= Control::studyGrids) ||
         (requestedFocus >= Control::showResultHistory && requestedFocus <= Control::openHistoryResult) ||
         (requestedFocus >= Control::showRfExport && requestedFocus <= Control::saveRfExport) ||
         (requestedFocus >= Control::matrixPriorRow && requestedFocus <= Control::matrixTable))
@@ -2685,12 +2734,19 @@ void Shell::drawLiveResult()
     }
     panelButton(Control::showSolver, "해석 도구", project->view() != nullptr, analysisOpen, Control::result);
     ImGui::SameLine();
+    panelButton(Control::studyOpen, "프로젝트 연구", project->view() != nullptr, studyOpen, Control::result);
+    ImGui::SameLine();
     panelButton(Control::reloadResult, "결과 다시 읽기", project->writable(), false, Control::result);
     ImGui::SameLine();
     panelButton(Control::showResultHistory, "과거 결과",
         resultHistoryOpen || (project->view() && project->writable()), resultHistoryOpen, Control::result);
     ImGui::SameLine();
     panelButton(Control::showRfExport, "RF 내보내기", series || rfExportOpen, rfExportOpen, Control::result);
+    if (studyOpen)
+    {
+        drawStudy();
+        return;
+    }
     if (resultHistoryOpen)
     {
         drawResultHistory();
@@ -3013,7 +3069,8 @@ void Shell::drawResultHistory()
 /** @brief 조건 선택, 계획 승인과 실제 작업 상태를 같은 결과 패널에 표시한다. */
 void Shell::setSolverConditionText(Control control, const std::string& value)
 {
-    if (!analysisOpen || !project->canEditSolverCondition() || value.size() > 256)
+    if (!analysisOpen || !project->canEditSolverCondition() ||
+        value.size() > (control == Control::solverDraftPoints ? accessibility::projectNameCapacity : 256))
     {
         return;
     }
@@ -3027,7 +3084,14 @@ void Shell::setSolverConditionText(Control control, const std::string& value)
     {
         ImGui::ClearActiveID();
     }
-    (input == 0 ? draft.name : draft.values.at(input - 1)) = value;
+    if (control == Control::solverDraftPoints)
+    {
+        draft.directPoints = value;
+    }
+    else
+    {
+        (input == 0 ? draft.name : draft.values.at(input - 1)) = value;
+    }
 }
 
 /** @brief 현재 개정에 추가할 조건 초안의 주파수, 격자 및 종료 값을 편집한다. */
@@ -3093,10 +3157,56 @@ void Shell::drawSolverCondition(PrototypeAnalysis::ConditionDraft& draft)
     };
     if (conditionPage == Control::solverDraftFrequency)
     {
-        inputFields(Draft::start, Draft::samples, enabled && !draft.hasDirectPoints());
-        if (draft.hasDirectPoints())
+        if (!draft.hasDirectPoints())
         {
-            ImGui::TextWrapped("선택 조건에 저장된 직접 표본은 그대로 사용합니다.");
+            inputFields(Draft::start, Draft::samples, enabled);
+        }
+        textInput(Control::solverDraftPoints, "직접 표본 (쉼표, 선택)", draft.directPoints, enabled);
+        panelButton(Control::solverReadTargets, "목표 읽기", enabled, false, Control::result);
+        ImGui::BeginDisabled(!enabled);
+        const auto sources = [&](const char* caption, const nlohmann::json& rows, const char* nameKey, bool result)
+        {
+            if (rows.is_array() && ImGui::BeginCombo(caption, rows.empty() ? "선택 가능 항목 없음" : "출처 검토"))
+            {
+                for (const auto& row : rows)
+                {
+                    const auto& id = row.at("id").get_ref<const std::string&>();
+                    auto label = row.at(nameKey).get<std::string>();
+                    if (result)
+                    {
+                        label += " / " + row.at("revision_id").get<std::string>().substr(0, 12);
+                    }
+                    ImGui::PushID(id.c_str());
+                    if (ImGui::Selectable(label.c_str()))
+                    {
+                        project->readSolverSource(result, id);
+                    }
+                    ImGui::PopID();
+                }
+                ImGui::EndCombo();
+            }
+        };
+        sources("목표", draft.targetChoices, "label", false);
+        sources("과거 결과###solver-source-results", project->analysis().sources(), "name", true);
+        ImGui::EndDisabled();
+        if (draft.sourceReview.is_object())
+        {
+            const auto& review = draft.sourceReview;
+            const bool past = review.contains("settings");
+            const auto& band = past ? review.at("settings").at("frequency_hz") : review.at("band");
+            std::string summary = "출처 개정 " + review.at("revision_id").get<std::string>() + " / " +
+                band.at("start").dump() + "~" + band.at("stop").dump() + " Hz / " + band.at("count").dump() + "개";
+            if (past)
+            {
+                const auto& configuration = review.at("configuration");
+                summary += " / 급전, 설치, 정합 차이 " + std::to_string(configuration.value("total", 0)) + "개";
+                if (configuration.contains("unavailable"))
+                {
+                    summary += " / " + configuration.at("unavailable").get<std::string>();
+                }
+            }
+            ImGui::TextWrapped("%s", summary.c_str());
+            panelButton(Control::solverAdoptSource, past ? "과거 설정 전체 채택" : "목표 대역과 표본 채택", enabled, false, Control::result);
         }
     }
     else if (conditionPage == Control::solverDraftMesh)
@@ -3110,11 +3220,298 @@ void Shell::drawSolverCondition(PrototypeAnalysis::ConditionDraft& draft)
                 static_cast<int>(Draft::boundaryModes.size()));
         }
         ImGui::EndDisabled();
+        drawSolverMesh(draft, enabled);
     }
     else
     {
         inputFields(Draft::timesteps, Draft::end, enabled);
-        ImGui::TextWrapped("기존 방사 및 손실 기록 설정은 새 조건에 복사합니다.");
+        drawSolverOutputs(draft, enabled);
+    }
+}
+
+void Shell::solverText(const char* label, std::string& value)
+{
+    ImGui::InputText(label, &value);
+    if (ImGui::IsItemActive())
+    {
+        projectTextActive = true;
+        projectTextWindow = windowId(ImGui::GetWindowViewport());
+    }
+}
+
+/** @brief 해석 대상의 안정 ID나 사용자가 지정한 범위에 국부 격자를 결합한다. */
+void Shell::drawSolverMesh(PrototypeAnalysis::ConditionDraft& draft, bool enabled)
+{
+    constexpr std::array widths{"X 최대 셀 폭 (mm)", "Y 최대 셀 폭 (mm)", "Z 최대 셀 폭 (mm)"};
+    constexpr std::array bounds{"X 시작 (mm)", "X 끝 (mm)", "Y 시작 (mm)", "Y 끝 (mm)", "Z 시작 (mm)", "Z 끝 (mm)"};
+    const auto& targets = project->analysis().localTargets();
+    ImGui::BeginDisabled(!enabled);
+    if (ImGui::CollapsingHeader("국부 격자"))
+    {
+        ImGui::BeginDisabled(draft.localRules.size() >= 16);
+        if (ImGui::BeginCombo("국부 격자 추가", "대상 선택"))
+        {
+            for (const auto& row : targets)
+            {
+                const auto label = row.at("name").get<std::string>();
+                const auto identity = row.at("id").get<std::string>() + row.value("opening_sha256", "");
+                ImGui::PushID(identity.c_str());
+                if (ImGui::Selectable(label.c_str()))
+                {
+                    auto target = row;
+                    target["object_id"] = row.at("id");
+                    draft.localRules.emplace_back(target);
+                }
+                ImGui::PopID();
+            }
+            if (ImGui::Selectable("좌표로 간극 지정"))
+            {
+                draft.localRules.emplace_back(nlohmann::json{{"kind", "gap"}});
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::EndDisabled();
+        std::optional<std::size_t> remove;
+        for (std::size_t index = 0; index < draft.localRules.size(); ++index)
+        {
+            ImGui::PushID(static_cast<int>(index));
+            auto& rule = draft.localRules[index];
+            const bool gap = rule.target.at("kind") == "gap";
+            std::string label = gap ? "간극" : rule.target.at("kind").get<std::string>();
+            if (!gap)
+            {
+                const auto target = std::ranges::find_if(targets, [&](const nlohmann::json& row)
+                {
+                    return row.at("id") == rule.target.at("object_id") &&
+                        row.value("opening_sha256", "") == rule.target.value("opening_sha256", "");
+                });
+                label += target == targets.end() ? " / " + rule.target.at("object_id").get<std::string>() :
+                    " / " + target->at("name").get<std::string>();
+            }
+            if (ImGui::TreeNode((std::to_string(index + 1) + ". " + label + "###local-mesh-rule").c_str()))
+            {
+                solverText("우선순위", rule.priority);
+                for (std::size_t axis = 0; axis < widths.size(); ++axis)
+                {
+                    solverText(widths[axis], rule.widths[axis]);
+                }
+                if (gap)
+                {
+                    solverText("간극 이름", rule.name);
+                    for (std::size_t pos = 0; pos < bounds.size(); ++pos)
+                    {
+                        solverText(bounds[pos], rule.bounds[pos]);
+                    }
+                }
+                if (ImGui::SmallButton("초안에서 규칙 제거"))
+                {
+                    remove = index;
+                }
+                ImGui::TreePop();
+            }
+            ImGui::PopID();
+        }
+        if (remove)
+        {
+            draft.localRules.erase(draft.localRules.begin() + static_cast<std::ptrdiff_t>(*remove));
+        }
+    }
+    ImGui::Checkbox("급전 PEC 대칭면", &draft.symmetry);
+    if (draft.symmetry)
+    {
+        ImGui::Combo("대칭면 법선축", &draft.symmetryAxis, "X\0Y\0");
+        solverText("대칭면 좌표 (mm)", draft.symmetryPosition);
+    }
+    ImGui::EndDisabled();
+}
+
+/** @brief 기존 계약을 사용하는 방사, 독립 전력 손실 및 E/H 기록 범위를 편집한다. */
+void Shell::drawSolverOutputs(PrototypeAnalysis::ConditionDraft& draft, bool enabled)
+{
+    ImGui::BeginDisabled(!enabled);
+    if (ImGui::Checkbox("NF2FF 방사 기록", &draft.radiation) && !draft.radiation)
+    {
+        draft.losses = false;
+    }
+    if (draft.radiation)
+    {
+        solverText("방사 주파수 (쉼표)", draft.radiationInputs[0]);
+        solverText("Theta 간격 (deg)", draft.radiationInputs[1]);
+        solverText("Phi 간격 (deg)", draft.radiationInputs[2]);
+        solverText("방사 상자 여유 (mm, 선택)", draft.radiationInputs[3]);
+        ImGui::Checkbox("독립 손실 적분", &draft.losses);
+        if (draft.losses)
+        {
+            solverText("최대 상대 잔차", draft.maxResidual);
+        }
+    }
+    ImGui::Checkbox("전기장 기록", &draft.probe);
+    if (draft.probe)
+    {
+        ImGui::Checkbox("자기장도 기록", &draft.magnetic);
+        solverText("기록 주파수", draft.probeInputs[0]);
+        solverText("X 좌표 또는 범위 (mm)", draft.probeInputs[1]);
+        solverText("Y 좌표 또는 범위 (mm)", draft.probeInputs[2]);
+        solverText("Z 좌표 또는 범위 (mm)", draft.probeInputs[3]);
+    }
+    ImGui::EndDisabled();
+}
+
+/** @brief 고정할 연구 조건을 쓰고 기존 연구의 원본, 상태와 판정을 함께 표시한다. */
+void Shell::drawStudy()
+{
+    auto& study = project->study();
+    using Request = PrototypeStudy::Request;
+    const bool ready = project->view() && project->writable();
+    panelButton(Control::studyRead, "연구 조건 읽기", ready, false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::studyList, "연구 목록", ready, false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::studyRefresh, "진행 다시 읽기", ready && !study.chosen.empty(), false, Control::result);
+    if (ready && study.shouldPoll())
+    {
+        project->requestStudy(Request::detail);
+    }
+    const auto tab = [&](Control control, const char* text)
+    {
+        panelButton(control, text, true, studyPage == control, Control::result);
+    };
+    tab(Control::studySetup, "연구 조건");
+    ImGui::SameLine();
+    tab(Control::studyRadiation, "방사와 손실");
+    ImGui::SameLine();
+    tab(Control::studyCriteria, "판정 기준");
+    ImGui::SameLine();
+    tab(Control::studyProgress, "연구 진행");
+    if (!study.status.empty())
+    {
+        ImGui::TextWrapped("%s", study.status.c_str());
+        access.text(Control::studyStatus, Control::result, study.status);
+    }
+    if (studyPage == Control::studyProgress)
+    {
+        ImGui::BeginDisabled(!ready);
+        if (study.rows.is_array() && ImGui::BeginCombo("연구 선택", study.rows.empty() ? "저장된 연구 없음" : "저장된 연구"))
+        {
+            for (const auto& row : study.rows)
+            {
+                const auto& id = row.at("study_id").get_ref<const std::string&>();
+                const auto text = row.at("name").get<std::string>() + " / " + Studio::StudyStatus(row.at("state"));
+                ImGui::PushID(id.c_str());
+                if (ImGui::Selectable(text.c_str(), id == study.chosen))
+                {
+                    project->requestStudy(Request::detail, id);
+                }
+                ImGui::PopID();
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::EndDisabled();
+        panelButton(Control::studyRun, "연구 실행", ready && study.canControl(Request::start), false, Control::result);
+        ImGui::SameLine();
+        panelButton(Control::studyCancel, "연구 취소", ready && study.canControl(Request::cancel), false, Control::result);
+        ImGui::SameLine();
+        panelButton(Control::studyResume, "연구 재개", ready && study.canControl(Request::resume), false, Control::result);
+        if (study.detail.is_object())
+        {
+            const auto origin = "봉인 개정 " + study.detail.at("snapshot").at("revision_id").get<std::string>() +
+                "\n" + study.summary;
+            ImGui::TextWrapped("%s", origin.c_str());
+            access.text(Control::studySummary, Control::result, origin);
+        }
+        return;
+    }
+    if (!study.context.is_object())
+    {
+        return;
+    }
+    const bool editable = ready && study.canCreate(project->view()->revision);
+    if (study.context.at("revision_id") != project->view()->revision)
+    {
+        ImGui::TextWrapped("현재 개정에서 연구 조건을 다시 읽으세요.");
+    }
+    else if (study.context.at("runtime_configured") != true)
+    {
+        ImGui::TextWrapped("연구 생성에 검증된 Windows openEMS가 필요합니다.");
+    }
+    panelButton(Control::studyCreate, "계획 고정", editable, false, Control::result);
+    const auto field = [&](const char* key, const char* label, Control control = Control::root)
+    {
+        auto& value = study.fields.at(key);
+        ImGui::BeginDisabled(!editable);
+        if (control != Control::root && requestedFocus == control)
+        {
+            ImGui::SetKeyboardFocusHere();
+        }
+        ImGui::InputText(label, &value);
+        if (ImGui::IsItemActive())
+        {
+            projectTextActive = true;
+            projectTextWindow = windowId(ImGui::GetWindowViewport());
+        }
+        if (control != Control::root)
+        {
+            studyInputIds[control == Control::studyName ? 0 : 1] = ImGui::GetItemID();
+            focusItem(control);
+            access.item(control, Control::result, editable, false, nullptr, value);
+        }
+        ImGui::EndDisabled();
+    };
+    if (studyPage == Control::studySetup)
+    {
+        field("name", "연구 이름", Control::studyName);
+        field("grids", "격자 수준 (mm, 쉼표)", Control::studyGrids);
+        field("start", "대역 시작");
+        field("stop", "대역 끝");
+        field("count", "표본 수");
+        field("adaptive_memory_limit_mib", "적응 격자 메모리 상한 (MiB, 선택)");
+        field("air_padding_mm", "공기 여유 (mm)");
+        field("curve_tolerance_mm", "곡선 오차 (mm)");
+        field("max_timesteps", "최대 계산 단계");
+        field("end_criterion", "에너지 종료 기준");
+        field("air_cell_mm", "공기 격자 폭 (mm)");
+        field("growth_ratio", "격자 성장률");
+        field("feature_subdivisions", "임계 구간 최소 분할");
+    }
+    else if (studyPage == Control::studyRadiation)
+    {
+        ImGui::BeginDisabled(!editable);
+        ImGui::Checkbox("방사 기록", &study.radiation);
+        if (!study.radiation)
+        {
+            study.losses = false;
+        }
+        ImGui::BeginDisabled(!study.radiation);
+        ImGui::Checkbox("독립 손실 적분", &study.losses);
+        ImGui::EndDisabled();
+        ImGui::EndDisabled();
+        if (study.radiation)
+        {
+            field("frequencies", "방사 주파수 (쉼표)");
+            field("theta_step_deg", "Theta 간격 (deg)");
+            field("phi_step_deg", "Phi 간격 (deg)");
+            field("box_clearance_mm", "방사 상자 여유 (mm)");
+        }
+        if (study.losses)
+        {
+            field("max_relative_residual", "최대 전력 잔차 비율");
+        }
+    }
+    else
+    {
+        field("port_max_s11_complex_delta", "복소 S11 변화 한계");
+        field("port_max_resonance_relative_shift", "공진 상대 이동 한계");
+        field("max_pattern_delta", "방사 패턴 변화 한계");
+        field("max_radiated_relative_delta", "방사 전력 상대 변화 한계");
+        field("max_directivity_delta_db", "지향성 변화 한계 (dB)");
+        field("max_gain_delta_db", "이득 변화 한계 (dB)");
+        field("max_efficiency_delta", "효율 변화 한계");
+        field("max_s11_complex_delta", "방사 연구 복소 S11 변화 한계");
+        field("max_sphere_relative_error", "구면 적분 상대 오차 한계");
+        field("max_passivity_excess", "수동성 초과 한계");
+        field("max_port_balance_relative_error", "급전 전력 수지 오차 한계");
+        field("loss_max_relative_delta", "독립 손실 상대 변화 한계");
+        field("loss_absolute_fraction_floor", "독립 손실 절대 비율 하한");
     }
 }
 

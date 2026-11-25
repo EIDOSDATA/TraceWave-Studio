@@ -1,7 +1,11 @@
 #include "prototype_analysis.h"
+#include "../wxwidgets/frequency_display.h"
+
+#include <sstream>
 
 #include <algorithm>
 #include <cstdio>
+#include <functional>
 #include <stdexcept>
 #include <utility>
 
@@ -21,6 +25,34 @@ json conditionNumber(const std::string& text, bool integer, const char* key)
         throw std::runtime_error(std::string("숫자 형식을 확인하세요. (") + key + ")");
     }
     return value;
+}
+
+/** @brief 표본 목록을 순서대로 읽고 계산 계약의 동일 대역 표현을 만든다. */
+json numberList(const std::string& text, double (*read)(const std::string&))
+{
+    json numbers = json::array();
+    std::istringstream input(text);
+    std::string token;
+    while (std::getline(input, token, ','))
+    {
+        numbers.push_back(read(token));
+    }
+    if (numbers.empty() || text.back() == ',')
+    {
+        throw std::runtime_error("쉼표로 구분한 숫자 목록을 입력하세요.");
+    }
+    return numbers;
+}
+
+json directBand(const std::string& text)
+{
+    const auto points = numberList(text, StudioFrequency::ReadInput);
+    if (points.size() < 3 || points.size() > 201 ||
+        std::adjacent_find(points.begin(), points.end(), std::greater_equal<>()) != points.end())
+    {
+        throw std::runtime_error("직접 표본은 서로 다른 주파수 3~201개를 오름차순으로 입력하세요.");
+    }
+    return {{"start", points.front()}, {"stop", points.back()}, {"count", points.size()}, {"points", points}};
 }
 
 std::string diagnostic(const json& error)
@@ -45,20 +77,127 @@ const char* phaseLabel(Phase phase)
 }
 }
 
+namespace
+{
+constexpr std::array axes{"x", "y", "z"};
+constexpr std::array probeAxes{"x_mm", "y_mm", "z_mm"};
+
+std::string axisInput(const json& row)
+{
+    return row.is_array() ? row.at(0).dump() + ", " + row.at(1).dump() : row.dump();
+}
+
+json probeAxis(const std::string& text)
+{
+    const auto values = numberList(text, [](const std::string& item)
+    {
+        return conditionNumber(item, false, "field_probe").get<double>();
+    });
+    if (values.size() == 1)
+    {
+        return values.front();
+    }
+    return values;
+}
+}
+
+PrototypeAnalysis::ConditionDraft::LocalRule::LocalRule(const json& row)
+    : target{{"kind", row.at("kind")}}, priority(row.value("priority", json(50)).dump())
+{
+    const auto widthsByAxis = row.value("max_cell_mm", json::object());
+    for (std::size_t index = 0; index < axes.size(); ++index)
+    {
+        if (widthsByAxis.contains(axes[index]))
+        {
+            widths[index] = widthsByAxis.at(axes[index]).dump();
+        }
+    }
+    if (target.at("kind") == "gap")
+    {
+        name = row.value("name", "");
+        if (row.contains("bounds_mm"))
+        {
+            for (std::size_t index = 0; index < axes.size(); ++index)
+            {
+                bounds[index * 2] = row.at("bounds_mm").at(index).at(0).dump();
+                bounds[index * 2 + 1] = row.at("bounds_mm").at(index).at(1).dump();
+            }
+        }
+    }
+    else
+    {
+        target["object_id"] = row.at("object_id");
+        if (target.at("kind") == "surface_opening")
+        {
+            target["opening_sha256"] = row.at("opening_sha256");
+        }
+    }
+}
+
+json PrototypeAnalysis::ConditionDraft::LocalRule::value() const
+{
+    auto rule = target;
+    rule["priority"] = conditionNumber(priority, true, "local_mesh.priority");
+    auto widthsByAxis = json::object();
+    for (std::size_t index = 0; index < axes.size(); ++index)
+    {
+        if (!widths[index].empty())
+        {
+            widthsByAxis[axes[index]] = conditionNumber(widths[index], false, "local_mesh.max_cell_mm");
+        }
+    }
+    rule["max_cell_mm"] = std::move(widthsByAxis);
+    if (rule.at("kind") == "gap")
+    {
+        rule["name"] = name;
+        auto ranges = json::array();
+        for (std::size_t index = 0; index < axes.size(); ++index)
+        {
+            ranges.push_back({conditionNumber(bounds[index * 2], false, "local_mesh.bounds_mm"),
+                              conditionNumber(bounds[index * 2 + 1], false, "local_mesh.bounds_mm")});
+        }
+        rule["bounds_mm"] = std::move(ranges);
+    }
+    return rule;
+}
+
 PrototypeAnalysis::ConditionDraft::ConditionDraft(std::string selectedRevision, const Condition* source)
     : revision(std::move(selectedRevision)),
       original_(source ? source->settings : json{{"frequency_hz", {{"start", 2.4e9}, {"stop", 2.4835e9}, {"count", 101}}},
           {"grid_mm", 1.0}, {"air_padding_mm", 30.0}, {"curve_tolerance_mm", 0.05}, {"max_timesteps", 30000}, {"end_criterion", 1e-5}})
 {
-    const auto& band = original_.at("frequency_hz");
-    for (std::size_t index = 0; index < frequencyKeys.size(); ++index)
-    {
-        values[index] = band.at(frequencyKeys[index]).dump();
-    }
+    adoptBand(original_.at("frequency_hz"));
     for (std::size_t index = 0; index < settingKeys.size(); ++index)
     {
         values[grid + index] = grid + index == subdivisions ? original_.value(settingKeys[index], json(1)).dump() :
             original_.at(settingKeys[index]).dump();
+    }
+    for (const auto& rule : original_.value("local_mesh", json::array()))
+    {
+        localRules.emplace_back(rule);
+    }
+    const auto plane = original_.value("symmetry_plane", json::object());
+    symmetry = !plane.empty();
+    symmetryAxis = plane.value("axis", "x") == "y" ? 1 : 0;
+    symmetryPosition = plane.value("position_mm", json(0)).dump();
+    const auto farField = original_.value("radiation", json::object());
+    radiation = !farField.empty();
+    radiationInputs = {StudioFrequency::InputList(farField.value("frequency_hz", json::array())),
+        farField.value("theta_step_deg", json(15)).dump(), farField.value("phi_step_deg", json(15)).dump(),
+        farField.contains("box_clearance_mm") ? farField.at("box_clearance_mm").dump() : ""};
+    const auto power = original_.value("power_balance", json::object());
+    losses = !power.empty();
+    maxResidual = power.value("max_relative_residual", json(0.03)).dump();
+    const auto field = original_.value("field_probe", json::object());
+    probe = !field.empty();
+    if (probe)
+    {
+        magnetic = field.value("magnetic", false);
+        probeInputs[0] = StudioFrequency::Input(field.at("frequency_hz"));
+        for (std::size_t index = 0; index < probeAxes.size(); ++index)
+        {
+            probeInputs[index + 1] = axisInput(field.at(probeAxes[index]));
+        }
     }
     if (original_.contains("boundary_conditions"))
     {
@@ -79,18 +218,40 @@ PrototypeAnalysis::ConditionDraft::ConditionDraft(std::string selectedRevision, 
     }
 }
 
-bool PrototypeAnalysis::ConditionDraft::hasDirectPoints() const
+void PrototypeAnalysis::ConditionDraft::adoptBand(const json& band)
 {
-    return original_.at("frequency_hz").contains("points");
+    for (std::size_t index = 0; index < frequencyKeys.size(); ++index)
+    {
+        values[index] = band.at(frequencyKeys[index]).dump();
+    }
+    directPoints = StudioFrequency::InputList(band.value("points", json::array()));
+    original_["frequency_hz"] = band;
+}
+
+void PrototypeAnalysis::ConditionDraft::adoptSettings(const json& settings)
+{
+    const Condition source{"", "", settings};
+    ConditionDraft replacement(revision, &source);
+    replacement.name = name;
+    replacement.targetChoices = std::move(targetChoices);
+    *this = std::move(replacement);
 }
 
 /** @brief 편집한 값만 원본 사본에 반영해 선택 설정과 직접 표본을 보존한다. */
 json PrototypeAnalysis::ConditionDraft::settings() const
 {
     auto result = original_;
-    if (!hasDirectPoints())
+    auto& band = result.at("frequency_hz");
+    if (hasDirectPoints())
     {
-        auto& band = result.at("frequency_hz");
+        if (directPoints != StudioFrequency::InputList(band.value("points", json::array())))
+        {
+            band = directBand(directPoints);
+        }
+    }
+    else
+    {
+        band.erase("points");
         for (std::size_t index = 0; index < frequencyKeys.size(); ++index)
         {
             const auto* key = frequencyKeys[index];
@@ -118,6 +279,60 @@ json PrototypeAnalysis::ConditionDraft::settings() const
             modes.push_back(boundaryModes.at(static_cast<std::size_t>(mode)));
         }
         result["boundary_conditions"] = std::move(modes);
+    }
+    result.erase("local_mesh");
+    if (!localRules.empty())
+    {
+        auto rules = json::array();
+        for (const auto& rule : localRules)
+        {
+            rules.push_back(rule.value());
+        }
+        result["local_mesh"] = std::move(rules);
+    }
+    result.erase("symmetry_plane");
+    if (symmetry)
+    {
+        result["symmetry_plane"] = {{"axis", symmetryAxis == 0 ? "x" : "y"}, {"wall", "PEC"},
+            {"position_mm", conditionNumber(symmetryPosition, false, "symmetry_plane.position_mm")}};
+    }
+    result.erase("radiation");
+    if (radiation)
+    {
+        auto farField = json{{"frequency_hz", numberList(radiationInputs[0], StudioFrequency::ReadInput)},
+            {"theta_step_deg", conditionNumber(radiationInputs[1], true, "radiation.theta_step_deg")},
+            {"phi_step_deg", conditionNumber(radiationInputs[2], true, "radiation.phi_step_deg")}};
+        if (!radiationInputs[3].empty())
+        {
+            farField["box_clearance_mm"] = conditionNumber(radiationInputs[3], false, "radiation.box_clearance_mm");
+        }
+        result["radiation"] = std::move(farField);
+    }
+    result.erase("power_balance");
+    if (losses)
+    {
+        result["power_balance"] = {{"max_relative_residual", conditionNumber(maxResidual, false, "power_balance.max_relative_residual")}};
+    }
+    result.erase("field_probe");
+    if (probe)
+    {
+        json field{{"frequency_hz", StudioFrequency::ReadInput(probeInputs[0])}};
+        for (std::size_t index = 0; index < probeAxes.size(); ++index)
+        {
+            field[probeAxes[index]] = probeAxis(probeInputs[index + 1]);
+        }
+        if (magnetic || original_.value("field_probe", json::object()).contains("magnetic"))
+        {
+            field["magnetic"] = magnetic;
+        }
+        result["field_probe"] = std::move(field);
+    }
+    for (const auto* key : {"local_mesh", "symmetry_plane", "radiation", "power_balance", "field_probe"})
+    {
+        if (original_.contains(key) && result.contains(key) && original_.at(key) == result.at(key))
+        {
+            result[key] = original_.at(key);
+        }
     }
     return result;
 }
@@ -174,6 +389,14 @@ void PrototypeAnalysis::acceptConditions(const json& result, const std::string& 
         }
         conditions.push_back(std::move(row));
     }
+    const auto& sources = result.at("results");
+    const auto& localTargets = result.at("local_mesh_targets");
+    if (!sources.is_array() || !localTargets.is_array())
+    {
+        throw std::runtime_error("해석 결과 또는 격자 대상 목록을 읽을 수 없습니다.");
+    }
+    sources_ = sources;
+    localTargets_ = localTargets;
     conditions_ = std::move(conditions);
     choice_ = 0;
     selectCondition(previous);
@@ -261,6 +484,8 @@ void PrototypeAnalysis::checkRevision(const std::string& revision)
     {
         conditionsRevision_.clear();
         conditions_.clear();
+        sources_.clear();
+        localTargets_.clear();
         choice_ = 0;
     }
 }
