@@ -180,9 +180,30 @@ constexpr Description descriptions[] =
     {L"", L"evidence-summary", UIA_TextControlTypeId},
     {L"", L"evidence-title", UIA_TextControlTypeId},
     {L"", L"evidence-source", UIA_TextControlTypeId},
-    {L"", L"evidence-values", UIA_TextControlTypeId}
+    {L"", L"evidence-values", UIA_TextControlTypeId},
+    {L"목표 편집", L"target-toggle", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"새 목표", L"target-new", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"대역과 표본", L"target-band", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"성능 기준", L"target-criteria", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"목표 출처와 변경 이력", L"target-sources", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"목표 변경 적용", L"target-apply", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"선택한 목표 삭제 적용", L"target-apply-removal", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"목표 삭제", L"target-remove", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"목표 초안 취소", L"target-discard", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"목표 데이터 다시 읽기", L"target-read", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"이전 목표 변경 기록", L"target-prev-change", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 목표 변경 기록", L"target-next-change", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"목표 이름", L"target-name", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"대역 시작", L"target-start", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"대역 끝", L"target-end", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"등간격 표본 수", L"target-samples", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"S11 한계", L"target-s11", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"목표 변경 사유", L"target-reason", UIA_EditControlTypeId, UIA_ValuePatternId},
+    {L"", L"target-status", UIA_TextControlTypeId},
+    {L"", L"target-summary", UIA_TextControlTypeId},
+    {L"", L"target-history", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::evidenceValues) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::targetHistory) + 1);
 
 struct Node
 {

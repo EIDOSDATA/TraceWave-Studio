@@ -38,7 +38,10 @@ enum class Control
     renameDetails, renameId, renameCopy,
     evidenceToggle, evidenceReload, evidenceRecords, evidenceAssumptions, evidenceHistory,
     evidencePrevious, evidenceNext, evidencePreviousValue, evidenceNextValue,
-    evidenceStatus, evidenceSummary, evidenceTitle, evidenceSource, evidenceValues
+    evidenceStatus, evidenceSummary, evidenceTitle, evidenceSource, evidenceValues,
+    targetToggle, targetNew, targetBand, targetCriteria, targetSources, targetApply, targetApplyRemoval, targetRemove, targetDiscard,
+    targetRead, targetPrevChange, targetNextChange, targetName, targetStart, targetEnd, targetSamples,
+    targetS11, targetReason, targetStatus, targetSummary, targetHistory
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };

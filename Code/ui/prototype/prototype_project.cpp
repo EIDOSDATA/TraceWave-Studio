@@ -169,6 +169,59 @@ void PrototypeProject::renameObject(const std::string& name)
     }
 }
 
+/** @brief 조회와 초안 전환은 같은 프로젝트의 현재 개정에서만 수행한다. */
+void PrototypeProject::readTarget(const std::string& id, const std::string& preset)
+{
+    if (view_ && writable() && !target_.dirty())
+    {
+        targetInput_ = {{"expected_revision", view_->revision}, {"target_id", id.empty() ? Json(nullptr) : Json(id)}};
+        if (!preset.empty())
+        {
+            targetInput_["preset_id"] = preset;
+        }
+        targetStatus_ = "목표 입력을 읽는 중";
+        step_ = Step::targetRead;
+    }
+}
+
+/** @brief 활성 필드의 변경값과 명시한 이유만 기존 목표 명령으로 보낸다. */
+void PrototypeProject::applyTarget(bool remove)
+{
+    if (!view_ || !writable() || !target_.loaded || target_.reason.empty() || (remove && targetId_.empty()))
+    {
+        return;
+    }
+    auto values = remove ? Json::object() : target_.changes();
+    if (!remove && values.empty() && targetPreset_.empty())
+    {
+        return;
+    }
+    const auto id = PrototypeService::newCommandId();
+    if (id.empty())
+    {
+        targetStatus_ = "목표 편집 명령 ID를 만들지 못했습니다.";
+        return;
+    }
+    targetInput_ = {{"expected_revision", view_->revision}, {"command_id", id},
+        {"operation", remove ? "remove" : "set"}, {"target_id", targetId_.empty() ? Json(nullptr) : Json(targetId_)},
+        {"values", std::move(values)}, {"reason", target_.reason}};
+    if (!targetPreset_.empty())
+    {
+        targetInput_["preset_id"] = targetPreset_;
+    }
+    targetStatus_ = "목표 변경을 적용하는 중";
+    step_ = Step::targetApply;
+}
+
+void PrototypeProject::readTargetEvidence()
+{
+    if (view_ && writable() && !targetId_.empty())
+    {
+        targetStatus_ = "목표의 출처와 이력을 읽는 중";
+        step_ = Step::targetEvidence;
+    }
+}
+
 void PrototypeProject::readCad()
 {
     if (view_ && writable() && !cad_.loading() && !cadJob_.active())
@@ -563,6 +616,20 @@ void PrototypeProject::update(PrototypeService& service)
                 awaiting_ = service.request("project.evidence", {{"project_id", view_->id}},
                     {{"expected_revision", view_->revision}});
                 break;
+            case Step::targetRead:
+                awaiting_ = service.request("target.editor.get", {{"project_id", view_->id}}, targetInput_);
+                break;
+            case Step::targetApply:
+                awaiting_ = service.request("target.editor.apply", {{"project_id", view_->id}}, targetInput_, true);
+                if (awaiting_)
+                {
+                    step_ = Step::targetEdited;
+                }
+                break;
+            case Step::targetEvidence:
+                awaiting_ = service.request("project.evidence", {{"project_id", view_->id}},
+                    {{"expected_revision", view_->revision}, {"target_id", targetId_}});
+                break;
             case Step::solverConditions:
                 awaiting_ = service.request("solver.conditions", {{"project_id", view_->id}},
                     {{"expected_revision", view_->revision}});
@@ -620,6 +687,21 @@ void PrototypeProject::receive(const Json& reply)
             step_ = Step::finished;
             return;
         }
+        if (step_ == Step::targetEdited && (code == "E_SCHEMA" || code == "E_CONFLICT" ||
+            code == "E_UNIT" || code == "E_RESOURCE" || code == "E_UNSUPPORTED"))
+        {
+            targetStatus_ = errorMessage(error);
+            if (const auto diagnostics = data.value("diagnostics", Json::array()); !diagnostics.empty())
+            {
+                const auto field = diagnostics.front().value("details", Json::object()).value("field_path", "");
+                if (!field.empty())
+                {
+                    targetStatus_ += " (" + field + ")";
+                }
+            }
+            step_ = Step::finished;
+            return;
+        }
         fail(errorMessage(error));
         return;
     }
@@ -670,6 +752,29 @@ void PrototypeProject::receive(const Json& reply)
             step_ = Step::finished;
             break;
         }
+        case Step::targetRead:
+        {
+            const auto& selection = targetInput_.at("target_id");
+            const auto id = selection.is_null() ? std::string{} : selection.get<std::string>();
+            const auto preset = targetInput_.value("preset_id", "");
+            target_.accept(result, view_->id, view_->revision, view_->savedRevision, id, preset);
+            targetId_ = id;
+            targetPreset_ = preset;
+            targetEvidence_.reset();
+            targetStatus_.clear();
+            step_ = Step::finished;
+            break;
+        }
+        case Step::targetEvidence:
+            if (result.at("project_id") != view_->id || result.at("revision_id") != view_->revision ||
+                result.at("saved_revision") != view_->savedRevision)
+            {
+                throw std::runtime_error("목표 출처 응답의 프로젝트 또는 개정이 다릅니다.");
+            }
+            targetEvidence_ = PrototypeEvidence::read(result);
+            targetStatus_.clear();
+            step_ = Step::finished;
+            break;
         case Step::solverConditions:
             analysis_.acceptConditions(result, view_->revision);
             step_ = Step::finished;
@@ -736,6 +841,21 @@ void PrototypeProject::receive(const Json& reply)
             step_ = Step::finished;
             break;
         }
+        case Step::targetEdited:
+        {
+            const auto id = result.at("target_id").get<std::string>();
+            if (id.empty() || (!targetId_.empty() && id != targetId_) ||
+                result.at("project_id") != view_->id || result.at("new_revision") == view_->revision)
+            {
+                throw std::runtime_error("목표 편집 응답의 프로젝트, 개정 또는 목표가 다릅니다.");
+            }
+            targetId_ = targetInput_.at("operation") == "remove" ? "" : id;
+            targetPreset_.clear();
+            target_.discard();
+            target_.loaded = false;
+            targetStatus_.clear();
+        }
+        [[fallthrough]];
         case Step::renamed:
         case Step::edited:
             if (result.at("project_id") != view_->id || result.at("new_revision") == view_->revision)
@@ -883,6 +1003,8 @@ void PrototypeProject::finishView(const Json& editor)
         loading_.revision.c_str(), loading_.savedRevision.c_str(), loading_.canvas.shapes.size());
     view_ = std::move(loading_);
     clearRecovery();
+    target_.loaded = false;
+    targetEvidence_.reset();
     createName_.clear();
     message_.clear();
     step_ = Step::finished;
@@ -900,6 +1022,13 @@ void PrototypeProject::finishResult(const char* status)
 
 void PrototypeProject::fail(std::string message)
 {
+    if (step_ == Step::targetRead || step_ == Step::targetApply || step_ == Step::targetEvidence)
+    {
+        targetStatus_ = "목표 요청 실패. " + message;
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
     if (step_ == Step::readRename || step_ == Step::rename)
     {
         renameStatus_ = "이름 편집 요청 실패. " + message;

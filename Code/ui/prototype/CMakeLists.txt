@@ -51,6 +51,7 @@ add_library(prototype_widgets STATIC
     "${imgui_SOURCE_DIR}/imgui_draw.cpp"
     "${imgui_SOURCE_DIR}/imgui_tables.cpp"
     "${imgui_SOURCE_DIR}/imgui_widgets.cpp"
+    "${imgui_SOURCE_DIR}/misc/cpp/imgui_stdlib.cpp"
     "${imgui_SOURCE_DIR}/backends/imgui_impl_sdl3.cpp"
     "${implot_SOURCE_DIR}/implot.cpp"
     "${implot_SOURCE_DIR}/implot_items.cpp"
@@ -86,7 +87,7 @@ if(WIN32)
     target_sources(tracewave_shell_prototype PRIVATE accessibility_windows.cpp prototype_service.cpp
         prototype_project.cpp prototype_canvas.cpp prototype_cad.cpp prototype_cad_job.cpp
         prototype_model.cpp prototype_result.cpp prototype_matrix.cpp prototype_analysis.cpp prototype_exchange.cpp
-        prototype_manufacturing.cpp prototype_recent.cpp prototype_archive.cpp prototype_evidence.cpp
+        prototype_manufacturing.cpp prototype_recent.cpp prototype_archive.cpp prototype_evidence.cpp prototype_target.cpp
         ../wxwidgets/async_state.cpp ../wxwidgets/analysis_workflow.cpp
         ../wxwidgets/service_client.cpp ../wxwidgets/canvas_scene.cpp
         ../wxwidgets/canvas_pcb_features.cpp ../wxwidgets/display_mesh_picking.cpp ../wxwidgets/network_export_files.cpp)

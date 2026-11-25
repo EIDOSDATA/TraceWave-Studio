@@ -30,6 +30,7 @@
 #include <imgui.h>
 #include <imgui_impl_sdl3.h>
 #include <imgui_internal.h>
+#include <misc/cpp/imgui_stdlib.h>
 #include <implot.h>
 
 namespace
@@ -38,6 +39,10 @@ constexpr char boardTitle[] = "기판###board";
 constexpr char resultTitle[] = "RF 결과###results";
 constexpr char inputTitle[] = "입력###input";
 constexpr char detachedInputTitle[] = "입력###detached-input";
+#if defined(_WIN32)
+constexpr std::array<std::string_view, 5> targetFieldKeys{
+    "name", "band.start.value", "band.end.value", "sampling.count", "criteria.s11_db.value"};
+#endif
 constexpr char committedText[] = "한글 검수";
 constexpr char editingText[] = "한";
 constexpr int initialWidth = 1120;
@@ -147,6 +152,16 @@ struct Shell
     std::size_t evidenceValue = 0;
     void drawEvidence();
     void moveEvidence(Control control);
+    bool targetOpen = false;
+    PrototypeTarget::Page targetPage = PrototypeTarget::Page::band;
+    bool targetRemove = false;
+    std::size_t targetChange = 0;
+    int targetInputGeneration = 0;
+    std::array<ImGuiID, targetFieldKeys.size() + 1> targetInputIds{};
+    void drawTarget();
+    void drawTargetSources();
+    void setTargetText(Control control, const std::string& value);
+    void targetAction(Control control);
     void submitProject();
     void updateProjects(SDL_Window* window, std::unique_ptr<PrototypeProject>& current, PrototypeService& service);
     void setProjectName(std::string_view value);
@@ -458,7 +473,7 @@ void Shell::activate(Control control)
             break;
         case Control::submitProject: submitProject(); break;
         case Control::renameToggle:
-            if (project && !modelOpen && !evidenceOpen && !nextProject && !archive.busy() && project->canRename())
+            if (project && !modelOpen && !evidenceOpen && !targetOpen && !nextProject && !archive.busy() && project->canRename())
             {
                 const auto* view = project->view();
                 const auto* shape = view->canvas.Find(view->selection);
@@ -515,6 +530,18 @@ void Shell::activate(Control control)
                 submitProject();
             }
             break;
+        case Control::targetToggle:
+        case Control::targetNew:
+        case Control::targetBand:
+        case Control::targetCriteria:
+        case Control::targetSources:
+        case Control::targetApply:
+        case Control::targetApplyRemoval:
+        case Control::targetRemove:
+        case Control::targetDiscard:
+        case Control::targetRead:
+        case Control::targetPrevChange:
+        case Control::targetNextChange: targetAction(control); break;
         case Control::evidenceToggle:
             evidenceOpen = !evidenceOpen;
             if (evidenceOpen && !project->evidence())
@@ -798,6 +825,11 @@ void Shell::applyActions()
                     }
                     break;
                 }
+                if (action.control >= Control::targetName && action.control <= Control::targetReason)
+                {
+                    setTargetText(action.control, action.value);
+                    break;
+                }
                 if (action.control == Control::projectName)
                 {
                     setProjectName(action.value);
@@ -894,13 +926,16 @@ void Shell::handleShortcuts(bool hasViewports)
         {
             activate(Control::renameToggle);
         }
-        if (ImGui::IsKeyPressed(ImGuiKey_F5, false))
+        if (ImGui::IsKeyPressed(ImGuiKey_F5, false) && !project->target().dirty())
         {
             project->reopen();
         }
         if (ImGui::GetIO().KeyCtrl && ImGui::IsKeyPressed(ImGuiKey_S, false))
         {
-            project->save();
+            if (!project->target().dirty())
+            {
+                project->save();
+            }
         }
     }
 #endif
@@ -1068,7 +1103,8 @@ void Shell::drawBoard()
         (requestedFocus >= Control::endpointToggle && requestedFocus <= Control::endpointReset) ||
         (requestedFocus >= Control::sectionToggle && requestedFocus <= Control::sectionApply) ||
         requestedFocus == Control::renameToggle ||
-        (requestedFocus >= Control::evidenceToggle && requestedFocus <= Control::evidenceNextValue))
+        (requestedFocus >= Control::evidenceToggle && requestedFocus <= Control::evidenceNextValue) ||
+        (requestedFocus >= Control::targetToggle && requestedFocus <= Control::targetReason))
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::board)
@@ -1151,7 +1187,7 @@ void Shell::drawBoard()
 #if defined(_WIN32)
 bool Shell::canSwitchProject() const
 {
-    return !renameOpen && !nextProject && !archive.busy() && !manufacturing.active() && !rfDelivery.valid() && project->canSwitch();
+    return !renameOpen && !project->target().dirty() && !nextProject && !archive.busy() && !manufacturing.active() && !rfDelivery.valid() && project->canSwitch();
 }
 
 /** @brief 이전 프로젝트가 저장된 상태에서만 같은 서비스로 다른 프로젝트를 요청한다. */
@@ -1195,7 +1231,9 @@ void Shell::updateProjects(SDL_Window* window, std::unique_ptr<PrototypeProject>
         chooserOpen = createProject = recoveryOpen = endpointOpen = false;
         endpoint = {};
         recoveryIndex = 0;
-        evidenceOpen = false;
+        evidenceOpen = targetOpen = targetRemove = false;
+        targetPage = PrototypeTarget::Page::band;
+        targetChange = 0;
         evidencePage = EvidencePage::records;
         evidenceIndex = evidenceValue = 0;
         modelOpen = analysisOpen = resultHistoryOpen = exchangeOpen = rfExportOpen = false;
@@ -1510,6 +1548,322 @@ void Shell::drawEvidence()
     }
 }
 
+void Shell::targetAction(Control control)
+{
+    auto& target = project->target();
+    if (control == Control::targetToggle)
+    {
+        if (project->view() && !target.dirty() && !project->busy())
+        {
+            targetOpen = !targetOpen;
+            targetRemove = false;
+        }
+        return;
+    }
+    if (!targetOpen)
+    {
+        return;
+    }
+    switch (control)
+    {
+        case Control::targetNew:
+            project->readTarget({});
+            targetRemove = false;
+            break;
+        case Control::targetBand: targetPage = PrototypeTarget::Page::band; break;
+        case Control::targetCriteria: targetPage = PrototypeTarget::Page::criteria; break;
+        case Control::targetSources:
+            targetPage = PrototypeTarget::Page::sources;
+            targetChange = 0;
+            if (!project->targetEvidence())
+            {
+                project->readTargetEvidence();
+            }
+            break;
+        case Control::targetApply:
+        case Control::targetApplyRemoval:
+            if (targetRemove == (control == Control::targetApplyRemoval))
+            {
+                project->applyTarget(targetRemove);
+                targetRemove = false;
+            }
+            break;
+        case Control::targetRemove:
+            if (project->writable() && !project->targetId().empty())
+            {
+                targetRemove = !targetRemove;
+            }
+            break;
+        case Control::targetDiscard:
+            if (!project->busy())
+            {
+                target.discard();
+                targetRemove = false;
+                ++targetInputGeneration;
+            }
+            break;
+        case Control::targetRead:
+            if (targetPage == PrototypeTarget::Page::sources && target.loaded)
+            {
+                project->readTargetEvidence();
+            }
+            else
+            {
+                project->readTarget(project->targetId(), project->targetPreset());
+            }
+            break;
+        case Control::targetPrevChange:
+            if (targetChange)
+            {
+                --targetChange;
+            }
+            break;
+        case Control::targetNextChange:
+            if (const auto& evidence = project->targetEvidence(); evidence && targetChange + 1 < evidence->changes.size())
+            {
+                ++targetChange;
+            }
+            break;
+        default: break;
+    }
+}
+
+/** @brief 자동화가 요청한 값도 현재 탭의 활성 입력에만 반영한다. */
+void Shell::setTargetText(Control control, const std::string& value)
+{
+    if (!targetOpen || !project->writable() || !project->target().loaded)
+    {
+        return;
+    }
+    auto& target = project->target();
+    const auto index = static_cast<std::size_t>(control) - static_cast<std::size_t>(Control::targetName);
+    if (control == Control::targetReason)
+    {
+        target.reason = value;
+    }
+    else
+    {
+        const auto field = std::ranges::find(target.fields, targetFieldKeys.at(index), &PrototypeTarget::Field::key);
+        if (field == target.fields.end() || field->page != targetPage || targetRemove || !target.available(*field))
+        {
+            return;
+        }
+        field->draft = value;
+    }
+    if (auto* input = ImGui::GetInputTextState(targetInputIds.at(index)))
+    {
+        input->ReloadUserBufAndMoveToEnd();
+    }
+}
+
+void Shell::drawTargetSources()
+{
+    const auto& target = project->target();
+    const auto& evidence = project->targetEvidence();
+    if (evidence && !evidence->changes.empty())
+    {
+        targetChange = std::min(targetChange, evidence->changes.size() - 1);
+        const auto& row = evidence->changes[targetChange];
+        panelButton(Control::targetPrevChange, "이전 변경", targetChange > 0);
+        ImGui::SameLine();
+        panelButton(Control::targetNextChange, "다음 변경", targetChange + 1 < evidence->changes.size());
+        const auto text = std::to_string(targetChange + 1) + " / " + std::to_string(evidence->changes.size()) +
+            " 표시, 전체 " + std::to_string(evidence->changeCount) + "건\n변경 전 " + row.before +
+            "\n변경 후 " + row.after + "\n접수 시각 " + row.time + "\n변경 사유 " + row.reason;
+        ImGui::TextWrapped("%s", text.c_str());
+        access.text(Control::targetHistory, Control::board, text);
+    }
+    else if (project->targetId().empty())
+    {
+        ImGui::TextUnformatted("목표 적용 후 변경 이력을 확인할 수 있습니다.");
+    }
+    else if (evidence)
+    {
+        ImGui::TextUnformatted("표시할 목표 변경 이력이 없습니다.");
+    }
+    for (const auto& field : target.fields)
+    {
+        if (field.readonly && !field.original.empty())
+        {
+            ImGui::SeparatorText(field.label.c_str());
+            ImGui::TextWrapped("%s", field.original.c_str());
+        }
+    }
+}
+
+/** @brief 대역, 표본과 성능 기준의 초안을 해당 서비스 입력 형식으로 표시한다. */
+void Shell::drawTarget()
+{
+    using Page = PrototypeTarget::Page;
+    auto& target = project->target();
+    if (!target.loaded && project->writable() && project->targetStatus().empty())
+    {
+        project->readTarget(project->targetId(), project->targetPreset());
+    }
+    const bool idle = project->writable();
+    const bool editable = idle && target.loaded;
+    panelButton(Control::targetNew, "새 목표", idle && !target.dirty());
+    ImGui::SameLine();
+    panelButton(Control::targetRead, "목표 다시 읽기",
+        idle && (targetPage != Page::sources ? !target.dirty() : !project->targetId().empty()));
+    if (target.loaded)
+    {
+        const auto selected = std::ranges::find(target.items, project->targetId(), &PrototypeTarget::Option::value);
+        const auto preset = std::ranges::find(target.presets, project->targetPreset(), &PrototypeTarget::Preset::id);
+        const char* label = selected != target.items.end() ? selected->label.c_str() :
+            preset != target.presets.end() ? preset->name.c_str() : "새 목표";
+        ImGui::BeginDisabled(!editable || target.dirty());
+        if (ImGui::BeginCombo("목표 목록", label))
+        {
+            for (const auto& item : target.items)
+            {
+                ImGui::PushID(item.value.c_str());
+                if (ImGui::Selectable(item.label.c_str(), item.value == project->targetId()))
+                {
+                    targetRemove = false;
+                    project->readTarget(item.value);
+                }
+                ImGui::PopID();
+            }
+            ImGui::EndCombo();
+        }
+        if (ImGui::BeginCombo("대역 프리셋", preset != target.presets.end() ? preset->name.c_str() : "선택"))
+        {
+            for (const auto& item : target.presets)
+            {
+                ImGui::PushID(item.id.c_str());
+                const auto label = item.name + " / " + item.version + " / " + item.scope;
+                if (ImGui::Selectable(label.c_str(), item.id == project->targetPreset()))
+                {
+                    targetRemove = false;
+                    project->readTarget({}, item.id);
+                }
+                ImGui::PopID();
+            }
+            ImGui::EndCombo();
+        }
+        ImGui::EndDisabled();
+    }
+    panelButton(Control::targetBand, "대역과 표본", true, targetPage == Page::band);
+    ImGui::SameLine();
+    panelButton(Control::targetCriteria, "성능 기준", true, targetPage == Page::criteria);
+    ImGui::SameLine();
+    panelButton(Control::targetSources, "출처와 이력", true, targetPage == Page::sources);
+    const auto& status = project->targetStatus().empty() ? project->message() : project->targetStatus();
+    if (!status.empty())
+    {
+        ImGui::TextWrapped("%s", status.c_str());
+        access.text(Control::targetStatus, Control::board, status);
+    }
+    if (!target.loaded)
+    {
+        return;
+    }
+    ImGui::TextWrapped("%s", target.summary.c_str());
+    access.text(Control::targetSummary, Control::board, target.summary);
+    const auto drawText = [&](Control id, const char* caption, std::string& value, bool enabled, bool multiline)
+    {
+        ImGui::BeginDisabled(!enabled);
+        if (requestedFocus == id && id != Control::root)
+        {
+            ImGui::SetKeyboardFocusHere();
+        }
+        if (multiline)
+        {
+            ImGui::InputTextMultiline(caption, &value, ImVec2(ImGui::CalcItemWidth(), ImGui::GetTextLineHeight() * 5.0f));
+        }
+        else
+        {
+            ImGui::InputText(caption, &value);
+        }
+        const bool active = ImGui::IsItemActive();
+        if (active)
+        {
+            projectTextActive = true;
+            projectTextWindow = windowId(ImGui::GetWindowViewport());
+        }
+        if (id != Control::root)
+        {
+            const auto index = static_cast<std::size_t>(id) - static_cast<std::size_t>(Control::targetName);
+            targetInputIds.at(index) = ImGui::GetItemID();
+            focusItem(id);
+            access.item(id, Control::board, enabled, false, nullptr, value);
+        }
+        ImGui::EndDisabled();
+        if (active && !preedit.empty() && preeditWindow == projectTextWindow)
+        {
+            ImGui::Text("조합 중  %s", preedit.c_str());
+        }
+    };
+    ImGui::PushID(targetInputGeneration);
+    drawText(Control::targetReason, "변경 사유", target.reason, editable, false);
+    panelButton(targetRemove ? Control::targetApplyRemoval : Control::targetApply,
+        targetRemove ? "삭제 적용" : "목표 적용", editable && !target.reason.empty() &&
+        (targetRemove || !project->targetPreset().empty() || target.hasChanges()));
+    ImGui::SameLine();
+    panelButton(Control::targetRemove, "목표 삭제", editable && !project->targetId().empty(), targetRemove);
+    ImGui::SameLine();
+    panelButton(Control::targetDiscard, "초안 취소", !project->busy() && (target.dirty() || targetRemove));
+    if (targetRemove)
+    {
+        ImGui::TextUnformatted("선택 목표를 삭제하려면 사유를 입력하고 삭제 적용을 누르세요.");
+    }
+    const auto height = std::max(ImGui::GetContentRegionAvail().y, ImGui::GetTextLineHeightWithSpacing() * 8.0f);
+    if (ImGui::BeginChild("###target-fields", {0.0f, height}, ImGuiChildFlags_Borders))
+    {
+        if (targetPage == Page::sources)
+        {
+            drawTargetSources();
+        }
+        else
+        {
+            for (auto& field : target.fields)
+            {
+                if (field.page != targetPage)
+                {
+                    continue;
+                }
+                ImGui::PushID(field.key.c_str());
+                const bool enabled = editable && !targetRemove && target.available(field);
+                if (field.choices.empty())
+                {
+                    const auto found = std::ranges::find(targetFieldKeys, field.key);
+                    const auto index = static_cast<int>(found - targetFieldKeys.begin());
+                    const auto id = found == targetFieldKeys.end() ? Control::root :
+                        static_cast<Control>(static_cast<int>(Control::targetName) + index);
+                    drawText(id, field.label.c_str(), field.draft, enabled, field.multiline);
+                }
+                else
+                {
+                    ImGui::BeginDisabled(!enabled);
+                    const auto choice = std::ranges::find(field.choices, field.draft, &PrototypeTarget::Option::value);
+                    if (ImGui::BeginCombo(field.label.c_str(), choice == field.choices.end() ? "" : choice->label.c_str()))
+                    {
+                        for (const auto& option : field.choices)
+                        {
+                            ImGui::PushID(option.value.c_str());
+                            if (ImGui::Selectable(option.label.c_str(), option.value == field.draft))
+                            {
+                                field.draft = option.value;
+                            }
+                            ImGui::PopID();
+                        }
+                        ImGui::EndCombo();
+                    }
+                    ImGui::EndDisabled();
+                }
+                if (!field.help.empty() && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+                {
+                    ImGui::SetTooltip("%s", field.help.c_str());
+                }
+                ImGui::PopID();
+            }
+        }
+    }
+    ImGui::EndChild();
+    ImGui::PopID();
+}
+
 /** @brief 선택한 경로의 두 끝점을 읽고 미리보기, 스냅 및 명시 적용을 제공한다. */
 void Shell::drawEndpoint()
 {
@@ -1722,6 +2076,13 @@ void Shell::drawLiveBoard()
     {
         ImGui::SameLine();
     }
+    panelButton(Control::targetToggle, "목표 편집", project->view() && !project->target().dirty() && !project->busy(), targetOpen);
+    if (targetOpen)
+    {
+        drawTarget();
+        return;
+    }
+    ImGui::SameLine();
     panelButton(Control::evidenceToggle, "출처와 변경 이력", evidenceOpen || project->view(), evidenceOpen);
     if (evidenceOpen)
     {

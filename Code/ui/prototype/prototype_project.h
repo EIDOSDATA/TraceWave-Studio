@@ -5,6 +5,7 @@
 #include "prototype_cad_job.h"
 #include "prototype_exchange.h"
 #include "prototype_evidence.h"
+#include "prototype_target.h"
 #include "prototype_result.h"
 #include "prototype_service.h"
 
@@ -39,6 +40,14 @@ public:
     bool canRename() const;
     const std::string& renameStatus() const { return renameStatus_; }
     const std::string* renameName() const;
+    void readTarget(const std::string& id, const std::string& preset = {});
+    void applyTarget(bool remove);
+    void readTargetEvidence();
+    PrototypeTarget& target() { return target_; }
+    const std::string& targetId() const { return targetId_; }
+    const std::string& targetPreset() const { return targetPreset_; }
+    const std::string& targetStatus() const { return targetStatus_; }
+    const std::optional<PrototypeEvidence>& targetEvidence() const { return targetEvidence_; }
     void readCad();
     void readRecovery();
     const nlohmann::json& recovery() const { return recovery_; }
@@ -97,7 +106,7 @@ private:
     {
         idle, open, save, canvasEdit, undo, readRename, rename, renamed, edited, accepted, job, canvas, editor, cad,
         solverLatest, resultHistory, resultDescribe, resultPage, resultArtifact, resultMatrixLoad, resultExport,
-        solverConditions, recovery, finished, failed
+        solverConditions, recovery, targetRead, targetApply, targetEdited, targetEvidence, finished, failed
     };
     bool sendBackground(PrototypeService& service);
     void receive(const nlohmann::json& reply);
@@ -138,6 +147,12 @@ private:
     std::optional<std::string> renameName_;
     std::string renameDraft_;
     std::string renameStatus_;
+    PrototypeTarget target_;
+    std::string targetId_;
+    std::string targetPreset_;
+    std::string targetStatus_;
+    nlohmann::json targetInput_;
+    std::optional<PrototypeEvidence> targetEvidence_;
     View loading_;
     std::optional<View> view_;
     nlohmann::json pages_;
