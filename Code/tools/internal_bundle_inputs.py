@@ -26,6 +26,9 @@ LOCK_FILES = re.compile(r"Code/runtime_profiles/python-[a-z0-9-]+\.(txt|json)\Z"
 PROFILE = "Code/runtime_profiles/windows-internal-bundle-x64.json"
 BIN = "Code/build/windows-release/bin/"
 NOTICE = "third-party-notices/"
+SHELL = BIN + "tracewave_shell_prototype.exe"
+SHELL_NOTICE = NOTICE + "shell/"
+SHELL_WINDOWS_DLLS = frozenset({"crypt32.dll", "imm32.dll", "setupapi.dll", "uiautomationcore.dll"})
 WINDOWS_DLLS = frozenset(name.lower() for name in (
     "ADVAPI32.dll", "bcrypt.dll", "COMCTL32.dll", "comdlg32.dll", "GDI32.dll", "KERNEL32.dll",
     "ntdll.dll", "ole32.dll", "OLEACC.dll", "OLEAUT32.dll", "OPENGL32.dll", "SHELL32.dll", "SHLWAPI.dll",
@@ -124,6 +127,34 @@ def native_files(executable, runtime, profile, objdump):
         raise ValueError("실행 파일의 실제 런타임 조합이 고정 profile과 다릅니다.")
     return {BIN + name: data for name, data in records.items()}, {
         name: sorted(values) for name, values in sorted(imports.items())}
+
+
+SHELL_LICENSES = {
+    "sdl3": ("LICENSE.txt", "1c040b8271b37e5076359f8fd54240e371114112924d2df81ef87c7d6a1dfdfd"),
+    "imgui": ("LICENSE.txt", "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf"),
+    "implot": ("LICENSE", "38bd30c2111fe7e3d8fb86d8607491239659eff1df1b1004b9a8349e20a91967"),
+    "bgfx": ("LICENSE", "ac2e0d253b1584316a36a0fae1d4407fa3ebcb15f27021ab479b23d27f0c9c08"),
+    "bimg": ("LICENSE", "ac2e0d253b1584316a36a0fae1d4407fa3ebcb15f27021ab479b23d27f0c9c08"),
+    "bx": ("LICENSE", "ac2e0d253b1584316a36a0fae1d4407fa3ebcb15f27021ab479b23d27f0c9c08"),
+    "bgfx_wrapper": ("LICENSE", "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"),
+}
+
+
+def shell_files(executable, dependencies, objdump):
+    """! @brief 정적 연결 시제품과 고정 엔진 고지를 별도 항목으로 봉인한다."""
+    image = read_bytes(executable)
+    with TemporaryDirectory(prefix="TraceWave shell import ") as directory:
+        checked = Path(directory) / "tracewave_shell_prototype.exe"
+        checked.write_bytes(image)
+        imports = _imports(checked, objdump)
+    unknown = imports - WINDOWS_DLLS - SHELL_WINDOWS_DLLS
+    if any(not name.startswith("api-ms-win-crt-") for name in unknown):
+        raise ValueError("시제품의 정적 Windows 의존 목록을 확인하십시오. " + ", ".join(sorted(unknown)))
+    files = {SHELL: image}
+    for source, (name, digest) in SHELL_LICENSES.items():
+        file = Path(dependencies) / f"{source}-src" / name
+        files[SHELL_NOTICE + source + ".txt"] = confirmed(read_bytes(file, 256 * 1024), digest, source)
+    return files, sorted(imports)
 
 
 def notices(wx_archive, notice_dir, profile):

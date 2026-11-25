@@ -9,6 +9,7 @@
 @param WithWsl 기존 WSL2 해석 환경을 재현할 때 선택한다.
 @param NoShortcut 검증 시 시작 메뉴 등록을 생략한다.
 @param NoLaunch 검증 시 설치 후 앱 실행을 생략한다.
+@param ShellPrototype 별도 설치 경로와 바로 가기로 새 Windows 화면을 실행한다.
 #>
 [CmdletBinding()]
 param
@@ -16,11 +17,12 @@ param
     [Parameter(Mandatory)][string]$Bundle,
     [Parameter(Mandatory)][string]$Identity,
     [Parameter(Mandatory)][string]$DisplayVersion,
-    [string]$InstallRoot = (Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'TraceWaveStudio'),
+    [string]$InstallRoot,
     [switch]$WithoutSimulation,
     [switch]$WithWsl,
     [switch]$NoShortcut,
-    [switch]$NoLaunch
+    [switch]$NoLaunch,
+    [switch]$ShellPrototype
 )
 
 $ErrorActionPreference = 'Stop'
@@ -149,7 +151,7 @@ function Register-StudioShortcut
     {
         $folder = [Environment]::GetFolderPath('Programs')
         New-Item -ItemType Directory -Force -Path $folder | Out-Null
-        $link = Join-Path $folder 'TraceWave Studio.lnk'
+        $link = Join-Path $folder ($appName + '.lnk')
         if ($NewOnly -and (Test-Path -LiteralPath $link))
         {
             return
@@ -175,7 +177,7 @@ function Register-StudioRemoval
         throw "제거 스크립트 위치가 연결된 경로입니다. $script"
     }
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'uninstall.ps1') -Destination $script -Force
-    & $script -DisplayVersion $DisplayVersion -StudioExe $gui -KeepExisting:$KeepExisting
+    & $script -DisplayVersion $DisplayVersion -StudioExe $gui -KeepExisting:$KeepExisting -ApplicationName $appName
 }
 
 $windowsVersion = Get-ItemProperty -LiteralPath 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
@@ -187,7 +189,30 @@ if (-not [Environment]::Is64BitProcess -or [int]$windowsVersion.CurrentBuildNumb
 {
     throw 'Windows 11 x64에서 Setup.exe를 실행하세요.'
 }
-$root = [IO.Path]::GetFullPath($InstallRoot)
+$local = [Environment]::GetFolderPath('LocalApplicationData')
+$publicRoot = Join-Path $local 'TraceWaveStudio'
+$appName = 'TraceWave Studio'
+if ($ShellPrototype)
+{
+    if ($WithWsl)
+    {
+        throw '새 화면 설치 후보의 해석 환경은 Windows openEMS를 사용합니다.'
+    }
+    $appName = 'TraceWave Studio Preview'
+    if (-not $InstallRoot)
+    {
+        $InstallRoot = Join-Path $local 'TraceWaveStudioPreview'
+    }
+}
+elseif (-not $InstallRoot)
+{
+    $InstallRoot = $publicRoot
+}
+$root = [IO.Path]::GetFullPath($InstallRoot).TrimEnd('\')
+if ($ShellPrototype -and [String]::Equals($root, $publicRoot, [StringComparison]::OrdinalIgnoreCase))
+{
+    throw '새 화면 후보의 설치 경로를 공개 설치와 분리하세요.'
+}
 $cache = Join-Path $root 'Cache'
 $versions = Join-Path $root 'Versions'
 $workspace = Join-Path $root 'Workspace'
@@ -244,6 +269,15 @@ try
     $codeRoot = Join-Path $app 'Code'
     $bin = Join-Path $codeRoot 'build/windows-release/bin'
     $gui = Join-Path $bin 'tracewave_gui.exe'
+    if ($ShellPrototype)
+    {
+        if ($manifest.prototype_application -ne 'Code/build/windows-release/bin/tracewave_shell_prototype.exe')
+        {
+            throw '이 ZIP에 봉인된 새 화면 실행 파일이 없습니다.'
+        }
+        $gui = Join-Path $bin 'tracewave_shell_prototype.exe'
+        $status.application = 'shell_prototype'
+    }
     Register-StudioRemoval -KeepExisting
 
     Write-Host '[1/3] Windows 런타임을 준비합니다.'

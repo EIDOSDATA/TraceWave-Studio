@@ -11,9 +11,11 @@ import zipfile
 import zlib
 
 if __package__:
-    from .internal_bundle_inputs import BIN, FILE_LIMIT, NOTICE, PROFILE, TOTAL_LIMIT, git_sources, native_files, notices
+    from .internal_bundle_inputs import (BIN, FILE_LIMIT, NOTICE, PROFILE, SHELL, SHELL_LICENSES, SHELL_NOTICE,
+                                         TOTAL_LIMIT, git_sources, native_files, notices, shell_files)
 else:
-    from internal_bundle_inputs import BIN, FILE_LIMIT, NOTICE, PROFILE, TOTAL_LIMIT, git_sources, native_files, notices
+    from internal_bundle_inputs import (BIN, FILE_LIMIT, NOTICE, PROFILE, SHELL, SHELL_LICENSES, SHELL_NOTICE,
+                                        TOTAL_LIMIT, git_sources, native_files, notices, shell_files)
 
 
 SCHEMA = "rfad.internal-bundle/0.2"
@@ -88,6 +90,15 @@ def verify(archive_path):
                 raise ValueError(f"묶음 파일의 SHA256이 다릅니다. {name}")
         if paths:
             raise ValueError("manifest에 없는 파일이 묶음에 있습니다.")
+        entries = {item.filename for item in members}
+        shell = manifest.get("prototype_application")
+        if shell is not None or SHELL in entries:
+            required = {SHELL_NOTICE + source + ".txt" for source in SHELL_LICENSES}
+            if shell != SHELL or SHELL not in entries or not required <= entries:
+                raise ValueError("시제품과 엔진 고지는 같은 후보 ZIP에 있어야 합니다.")
+            for source, (_, expected) in SHELL_LICENSES.items():
+                if hashlib.sha256(archive.read(SHELL_NOTICE + source + ".txt")).hexdigest() != expected:
+                    raise ValueError(f"시제품 고지 SHA256이 다릅니다. {source}")
         runtime = manifest.get("external_compiler_runtime")
         if (manifest["distribution"] == PUBLIC_CANDIDATE) != (runtime is not None):
             raise ValueError("공개 검증 후보에는 외부 컴파일러 DLL 계약이 필요합니다.")
@@ -108,7 +119,7 @@ def verify(archive_path):
 
 
 def build(repository, output, reference, executable, runtime, wx_archive, notice_dir, objdump,
-          *, external_compiler_runtime=False):
+          *, external_compiler_runtime=False, shell_executable=None, shell_dependencies=None):
     """! @brief 검증된 임시 묶음만 새 이름에 게시하며 기존 ZIP은 덮지 않는다."""
     repository, output = Path(repository), Path(output)
     if output.exists():
@@ -126,6 +137,12 @@ def build(repository, output, reference, executable, runtime, wx_archive, notice
         for dll in required_dlls:
             del native[BIN + dll]
     files = {**sources, **native, **notices(Path(wx_archive), Path(notice_dir), profile)}
+    if shell_executable is not None:
+        if shell_dependencies is None or not external_compiler_runtime:
+            raise ValueError("시제품 설치 후보에는 엔진 의존 원문과 공개 후보 profile이 필요합니다.")
+        binaries, shell_imports = shell_files(shell_executable, shell_dependencies, objdump)
+        files.update(binaries)
+        imports["tracewave_shell_prototype.exe"] = shell_imports
     casefolded = {name.casefold() for name in files}
     if (len(casefolded) != len(files) or MANIFEST in casefolded or
             sum(len(data) for data in files.values()) > TOTAL_LIMIT):
@@ -141,6 +158,8 @@ def build(repository, output, reference, executable, runtime, wx_archive, notice
                 "optional_external_prerequisites": ["OCCT Python runtime", "engineering export runtime",
                     "WSL2 openEMS", "material catalog import", "pinned Python wheels by feature"],
                 "turnkey_installation": False, "r1_acceptance_established": False, "physics_validated": False}
+    if shell_executable is not None:
+        manifest["prototype_application"] = SHELL
     if external_compiler_runtime:
         manifest["external_compiler_runtime"] = required_dlls
         manifest["external_prerequisites"].append("Pinned WinLibs compiler runtime DLLs")
@@ -165,6 +184,8 @@ def main():
     parser.add_argument("--source-ref", default="HEAD")
     parser.add_argument("--gui", type=Path)
     parser.add_argument("--runtime-dir", type=Path)
+    parser.add_argument("--shell-exe", type=Path, help="후보에 넣을 정적 Windows 시제품 실행 파일")
+    parser.add_argument("--shell-deps", type=Path, help="고정 고지 원문을 담은 시제품 빌드의 _deps 폴더")
     parser.add_argument("--wx-archive", type=Path)
     parser.add_argument("--notice-dir", type=Path)
     parser.add_argument("--objdump", default="objdump")
@@ -183,7 +204,8 @@ def main():
         runtime = args.runtime_dir or executable.parent
         wx_archive = args.wx_archive or repository / "Code/.local/deps/wxWidgets-3.2.12.tar.bz2"
         result = build(repository, args.output, args.source_ref, executable, runtime, wx_archive,
-                       args.notice_dir, args.objdump, external_compiler_runtime=args.external_compiler_runtime)
+                       args.notice_dir, args.objdump, external_compiler_runtime=args.external_compiler_runtime,
+                       shell_executable=args.shell_exe, shell_dependencies=args.shell_deps)
     print(json.dumps(result, ensure_ascii=False))
 
 

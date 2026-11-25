@@ -4,6 +4,7 @@
 @param DisplayVersion 설치 시 표시할 배포 버전.
 @param StudioExe 현재 설치의 아이콘을 가진 Studio 실행 파일.
 @param KeepExisting 갱신을 마칠 때까지 기존 등록을 유지한다.
+@param ApplicationName Windows 제거 목록에서 공개 설치와 시제품을 구분한다.
 @param Quiet 확인 창 없이 동일한 제거 범위를 적용한다.
 #>
 [CmdletBinding(DefaultParameterSetName = 'Remove')]
@@ -12,6 +13,7 @@ param
     [Parameter(Mandatory, ParameterSetName = 'Register')][string]$DisplayVersion,
     [Parameter(Mandatory, ParameterSetName = 'Register')][string]$StudioExe,
     [Parameter(ParameterSetName = 'Register')][switch]$KeepExisting,
+    [Parameter(ParameterSetName = 'Register')][ValidateSet('TraceWave Studio', 'TraceWave Studio Preview')][string]$ApplicationName = 'TraceWave Studio',
     [Parameter(ParameterSetName = 'Remove')][switch]$Quiet
 )
 
@@ -112,7 +114,7 @@ if ($PSCmdlet.ParameterSetName -eq 'Register')
     $windowsPowerShell = Join-Path ([Environment]::SystemDirectory) 'WindowsPowerShell\v1.0\powershell.exe'
     $command = '"{0}" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass' -f $windowsPowerShell
     $values = @{
-        DisplayName = 'TraceWave Studio'
+        DisplayName = $ApplicationName
         DisplayVersion = $DisplayVersion
         Publisher = 'EIDOSDATA'
         DisplayIcon = "$StudioExe,0"
@@ -188,7 +190,7 @@ try
             Assert-PlainPath $resolved
         }
     }
-    $active = @(Get-Process -Name tracewave_gui, python, pythonw, openEMS -ErrorAction SilentlyContinue | Where-Object {
+    $active = @(Get-Process -Name tracewave_gui, tracewave_shell_prototype, python, pythonw, openEMS -ErrorAction SilentlyContinue | Where-Object {
         $path = $_.Path
         $path -and @($targets | Where-Object {
             $path.StartsWith($_ + '\', $pathComparison)
@@ -206,14 +208,17 @@ try
             Remove-InstalledDirectory $target
         }
     }
-    $shortcutPath = Join-Path ([Environment]::GetFolderPath('Programs')) 'TraceWave Studio.lnk'
-    if (Test-Path -LiteralPath $shortcutPath -PathType Leaf)
+    foreach ($name in @('TraceWave Studio.lnk', 'TraceWave Studio Preview.lnk'))
     {
-        $shell = New-Object -ComObject WScript.Shell
-        $shortcut = $shell.CreateShortcut($shortcutPath)
-        if ($shortcut.TargetPath.StartsWith($versionsPrefix, $pathComparison))
+        $shortcutPath = Join-Path ([Environment]::GetFolderPath('Programs')) $name
+        if (Test-Path -LiteralPath $shortcutPath -PathType Leaf)
         {
-            [IO.File]::Delete($shortcutPath)
+            $shell = New-Object -ComObject WScript.Shell
+            $shortcut = $shell.CreateShortcut($shortcutPath)
+            if ($shortcut.TargetPath.StartsWith($versionsPrefix, $pathComparison))
+            {
+                [IO.File]::Delete($shortcutPath)
+            }
         }
     }
     foreach ($name in @('Setup-status.json', 'Setup.log'))
