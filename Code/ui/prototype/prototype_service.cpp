@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <io.h>
 #include <iostream>
+#include <objbase.h>
 #include <utility>
 #include <vector>
 
@@ -44,6 +45,23 @@ bool startTransport(ServiceClient& transport, const PrototypeServiceOptions& opt
         return false;
     }
     return transport.Start(python, source, workspace, error);
+}
+
+/** @brief 서비스가 수용하는 소문자 UUID 요청 키를 만든다. */
+std::string requestKey()
+{
+    GUID guid{};
+    wchar_t buffer[39]{};
+    if (FAILED(CoCreateGuid(&guid)) || StringFromGUID2(guid, buffer, 39) != 39)
+    {
+        return {};
+    }
+    std::string key;
+    for (int index = 1; index < 37; ++index)
+    {
+        key += static_cast<char>(SDL_tolower(static_cast<int>(buffer[index])));
+    }
+    return key;
 }
 
 /** @brief 도메인 오류 응답을 포함한 원래 JSON-RPC 프레임을 전달한다. */
@@ -116,13 +134,24 @@ void PrototypeService::poll()
             std::fprintf(stderr, "rfad: %s\n", message.text.c_str());
             continue;
         }
-        const auto response = nlohmann::json::parse(message.text, nullptr, false);
-        if (state_ != State::connecting || !response.is_object() ||
-            !response.contains("jsonrpc") || response["jsonrpc"] != "2.0" ||
-            !response.contains("id") || !response["id"].is_number_integer() || response["id"] != 1 ||
-            !response.contains("result") || response.contains("error"))
+        auto response = nlohmann::json::parse(message.text, nullptr, false);
+        const unsigned expected = state_ == State::connecting ? 1 : inFlight_;
+        if (!expected || !response.is_object() || response.value("jsonrpc", nlohmann::json(nullptr)) != "2.0" ||
+            !response.contains("id") || !response["id"].is_number_integer() || response["id"] != expected ||
+            response.contains("result") == response.contains("error"))
         {
-            fail("서비스의 JSON-RPC 연결 응답이 올바르지 않습니다.");
+            fail("서비스의 JSON-RPC 응답이 올바르지 않습니다.");
+            return;
+        }
+        if (state_ == State::connected)
+        {
+            inFlight_ = 0;
+            reply_ = std::move(response);
+            continue;
+        }
+        if (!response.contains("result"))
+        {
+            fail("서비스 공개 계약 요청에 실패했습니다.");
             return;
         }
         const auto& result = response["result"];
@@ -134,6 +163,12 @@ void PrototypeService::poll()
             fail("서비스 공개 계약이 rfad.api/2.0과 일치하지 않습니다.");
             return;
         }
+        const auto policy = result.find("idempotency_policy");
+        if (policy != result.end() && policy->is_object() && policy->contains("request_key_epoch") &&
+            (*policy)["request_key_epoch"].is_string())
+        {
+            requestKeyEpoch_ = (*policy)["request_key_epoch"].get<std::string>();
+        }
         state_ = State::connected;
         status_ = "Python 서비스 연결됨";
         std::printf("%s (%s, %zu개 메서드)\n", status_.c_str(), contractVersion, result["methods"].size());
@@ -143,10 +178,50 @@ void PrototypeService::poll()
     {
         fail(error);
     }
-    else if (state_ == State::connecting && std::chrono::steady_clock::now() >= deadline_)
+    else if ((state_ == State::connecting || inFlight_) && std::chrono::steady_clock::now() >= deadline_)
     {
         fail("서비스 계약 응답 시간이 초과됐습니다.");
     }
+}
+
+/** @brief 호출별 요청 키와 초기화 시 수신한 epoch를 그대로 사용한다. */
+bool PrototypeService::request(const char* method, const nlohmann::json& context,
+    const nlohmann::json& input, bool mutation)
+{
+    if (state_ != State::connected || inFlight_ || !reply_.is_null())
+    {
+        return false;
+    }
+    nlohmann::json params{{"contract_version", contractVersion}, {"context", context}, {"input", input}};
+    if (mutation)
+    {
+        const auto key = requestKey();
+        if (key.empty() || requestKeyEpoch_.empty())
+        {
+            return false;
+        }
+        params["request_key"] = key;
+        params["request_key_epoch"] = requestKeyEpoch_;
+    }
+    const auto id = nextId_++;
+    const nlohmann::json frame{{"jsonrpc", "2.0"}, {"id", id}, {"method", method}, {"params", params}};
+    if (!transport_.Send(frame.dump()))
+    {
+        return false;
+    }
+    inFlight_ = id;
+    deadline_ = std::chrono::steady_clock::now() + std::chrono::seconds(15);
+    return true;
+}
+
+std::string PrototypeService::newCommandId()
+{
+    return requestKey();
+}
+
+nlohmann::json PrototypeService::takeReply()
+{
+    return std::exchange(reply_, nlohmann::json());
 }
 
 /** @brief 연결 실패의 진단을 계속 표시하고 명령행에도 같은 결과를 남긴다. */

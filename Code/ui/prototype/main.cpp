@@ -3,7 +3,7 @@
 #include "renderer.h"
 
 #if defined(_WIN32)
-#include "prototype_service.h"
+#include "prototype_canvas.h"
 #endif
 
 #include <algorithm>
@@ -44,6 +44,7 @@ struct Options
     PrototypeServiceOptions service;
     bool serviceCheck = false;
     bool serviceReplay = false;
+    const char* openProject = nullptr;
 #endif
 };
 
@@ -75,6 +76,10 @@ struct Shell
     bool openMenu = false;
     bool closeMenu = false;
     accessibility::Bridge access;
+#if defined(_WIN32)
+    PrototypeProject* project = nullptr;
+    void drawLiveBoard();
+#endif
 
     bool processEvent(const SDL_Event& event);
     void draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFont, const char* serviceStatus);
@@ -112,6 +117,14 @@ bool parseOptions(int argc, char** argv, Options& options)
         {
             options.serviceReplay = true;
         }
+        else if (argument == "--open-project" && index + 1 < argc)
+        {
+            options.openProject = argv[++index];
+            if (!*options.openProject)
+            {
+                return false;
+            }
+        }
         else if (argument == "--python" && index + 1 < argc)
         {
             options.service.python = argv[++index];
@@ -132,10 +145,11 @@ bool parseOptions(int argc, char** argv, Options& options)
     }
 #if defined(_WIN32)
     const bool requested = options.serviceCheck || options.serviceReplay || options.service.python ||
-        options.service.source || options.service.workspace;
+        options.service.source || options.service.workspace || options.openProject;
     if (requested && (!options.service.python || !options.service.source || !options.service.workspace ||
         ((options.serviceCheck || options.serviceReplay) && options.smoke) ||
-        (options.serviceCheck && options.serviceReplay)))
+        (options.serviceCheck && options.serviceReplay) ||
+        (options.openProject && (options.serviceCheck || options.serviceReplay || options.smoke))))
     {
         return false;
     }
@@ -291,6 +305,15 @@ void Shell::activate(Control control)
         case Control::resetLayout: resetLayout = true; break;
         case Control::resetBoard: zoom = 1.0f; pan = {}; break;
         case Control::clearNote: setNote({}); break;
+#if defined(_WIN32)
+        case Control::reloadProject: project->reopen(); break;
+        case Control::saveProject: project->save(); break;
+        case Control::undoProject: project->undo(); break;
+        case Control::moveLeft: project->translate(-1.0, 0.0); break;
+        case Control::moveRight: project->translate(1.0, 0.0); break;
+        case Control::moveDown: project->translate(0.0, -1.0); break;
+        case Control::moveUp: project->translate(0.0, 1.0); break;
+#endif
         default: break;
     }
 }
@@ -346,6 +369,19 @@ void Shell::focusItem(Control control)
 
 void Shell::drawMenus(bool hasViewports)
 {
+#if defined(_WIN32)
+    if (project && project->configured())
+    {
+        if (ImGui::IsKeyPressed(ImGuiKey_F5, false))
+        {
+            project->reopen();
+        }
+        if (ImGui::GetIO().KeyCtrl && ImGui::IsKeyPressed(ImGuiKey_S, false))
+        {
+            project->save();
+        }
+    }
+#endif
     if (ImGui::IsKeyPressed(ImGuiKey_F6, false))
     {
         activate(Control::focusNote);
@@ -486,7 +522,11 @@ void Shell::drawBoard()
     {
         return;
     }
-    if (requestedFocus == Control::board || requestedFocus == Control::resetBoard)
+    if (requestedFocus == Control::board || requestedFocus == Control::resetBoard ||
+        requestedFocus == Control::reloadProject || requestedFocus == Control::saveProject ||
+        requestedFocus == Control::undoProject || requestedFocus == Control::moveLeft ||
+        requestedFocus == Control::moveRight || requestedFocus == Control::moveDown ||
+        requestedFocus == Control::moveUp)
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::board)
@@ -497,6 +537,14 @@ void Shell::drawBoard()
     if (ImGui::Begin(boardTitle, &boardOpen))
     {
         access.panel(Control::board);
+#if defined(_WIN32)
+        if (project && project->configured())
+        {
+            drawLiveBoard();
+            ImGui::End();
+            return;
+        }
+#endif
         ImGui::TextUnformatted("원형 PCB 표시 예제");
         ImGui::SameLine();
         if (ImGui::SmallButton("보기 초기화"))
@@ -551,6 +599,80 @@ void Shell::drawBoard()
     ImGui::End();
 }
 
+#if defined(_WIN32)
+/** @brief 실제 프로젝트와 권위 있는 개정, 기판 장면 및 저장 동작을 같은 패널에 제공한다. */
+void Shell::drawLiveBoard()
+{
+    ImGui::TextUnformatted(project->path().c_str());
+    const auto button = [this](Control control, const char* label, bool enabled)
+    {
+        ImGui::BeginDisabled(!enabled);
+        if (ImGui::SmallButton(label))
+        {
+            activate(control);
+        }
+        focusItem(control);
+        access.item(control, Control::board, enabled);
+        ImGui::EndDisabled();
+    };
+    button(Control::reloadProject, "다시 열기", !project->busy());
+    ImGui::SameLine();
+    auto* view = project->view();
+    button(Control::saveProject, "저장", view && project->writable() && view->revision != view->savedRevision);
+    ImGui::SameLine();
+    button(Control::undoProject, "되돌리기", view && project->writable() && view->canUndo);
+    ImGui::SameLine();
+    button(Control::resetBoard, "보기 초기화", view != nullptr);
+
+    ImGui::AlignTextToFramePadding();
+    ImGui::TextUnformatted("도체 이동 (1 mm)");
+    const bool movable = project->canTranslate();
+    ImGui::SameLine();
+    button(Control::moveLeft, "-X", movable);
+    ImGui::SameLine();
+    button(Control::moveRight, "+X", movable);
+    ImGui::SameLine();
+    button(Control::moveDown, "-Y", movable);
+    ImGui::SameLine();
+    button(Control::moveUp, "+Y", movable);
+
+    if (!project->message().empty())
+    {
+        ImGui::TextWrapped("%s", project->message().c_str());
+    }
+    else
+    {
+        ImGui::Dummy({0.0f, ImGui::GetTextLineHeight()});
+    }
+    if (view)
+    {
+        ImGui::Text("저장 개정 %.12s%s", view->savedRevision.c_str(),
+            view->revision != view->savedRevision ? "  |  저장되지 않은 변경" : "");
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("현재 %s\n저장 %s", view->revision.c_str(), view->savedRevision.c_str());
+        }
+        if (const auto* selected = view->canvas.Find(view->selection))
+        {
+            ImGui::Text("선택: %s", selected->label.c_str());
+            if (ImGui::IsItemHovered())
+            {
+                ImGui::SetTooltip("%s", selected->id.c_str());
+            }
+        }
+        else
+        {
+            ImGui::Dummy({0.0f, ImGui::GetTextLineHeight()});
+        }
+        if (const auto omissions = view->canvas.omissionCount + view->canvas.rangeOmissionCount; omissions)
+        {
+            ImGui::Text("표시 생략 %zu건", omissions);
+        }
+        boardDrawn = drawProjectCanvas(*view, zoom, pan);
+    }
+}
+#endif
+
 void Shell::drawResult(bool hasViewports)
 {
     if (!resultOpen)
@@ -583,6 +705,14 @@ void Shell::drawResult(bool hasViewports)
         {
             detachResult = false;
         }
+#if defined(_WIN32)
+        if (project && project->configured())
+        {
+            ImGui::TextUnformatted("프로젝트의 해석 결과 조회는 이식 중입니다.");
+            ImGui::End();
+            return;
+        }
+#endif
         ImGui::Text("B0 · S11 · %zu개 표본", b0::magnitudeDb.size());
         if (ImPlot::BeginPlot("###s11", {-1.0f, -1.0f}, ImPlotFlags_NoLegend))
         {
@@ -1164,6 +1294,8 @@ int run(SDL_Window* window, const Options& options)
             Smoke smoke(window, renderer.hasViewports());
 #if defined(_WIN32)
             PrototypeService service;
+            PrototypeProject project(options.openProject);
+            shell.project = &project;
             if (options.service.python)
             {
                 service.start(options.service);
@@ -1210,6 +1342,7 @@ int run(SDL_Window* window, const Options& options)
                     const char* serviceStatus = nullptr;
 #if defined(_WIN32)
                     service.poll();
+                    project.update(service);
                     serviceStatus = service.status().c_str();
 #endif
                     shell.draw(renderer, window, korean, serviceStatus);
@@ -1260,7 +1393,8 @@ int runShell(int argc, char** argv)
     {
         std::fputs("Usage: tracewave_shell_prototype [--smoke] [--font <font-file>]\n", stderr);
 #if defined(_WIN32)
-        std::fputs("       [--service-check | --service-replay] --python <python.exe> --source <Code/src> --workspace <path>\n", stderr);
+        std::fputs("       [--service-check | --service-replay | --open-project <projects/name>] "
+                   "--python <python.exe> --source <Code/src> --workspace <path>\n", stderr);
 #endif
         return 2;
     }

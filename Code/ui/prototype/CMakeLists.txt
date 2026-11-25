@@ -84,7 +84,8 @@ if(WIN32)
             EXPECTED_HASH "SHA256=${prototype_json_sha256}" TLS_VERIFY ON TIMEOUT 60)
     endif()
     target_sources(tracewave_shell_prototype PRIVATE accessibility_windows.cpp prototype_service.cpp
-        ../wxwidgets/service_client.cpp)
+        prototype_project.cpp prototype_canvas.cpp ../wxwidgets/service_client.cpp
+        ../wxwidgets/canvas_scene.cpp ../wxwidgets/canvas_pcb_features.cpp)
     target_compile_definitions(tracewave_shell_prototype PRIVATE NOMINMAX)
     target_include_directories(tracewave_shell_prototype SYSTEM PRIVATE "${prototype_json_dir}")
     target_link_libraries(tracewave_shell_prototype PRIVATE comctl32 ole32 oleaut32 uiautomationcore)

@@ -48,9 +48,16 @@ constexpr Description descriptions[] =
     {L"S11 결과", L"result", UIA_PaneControlTypeId},
     {L"입력", L"input", UIA_PaneControlTypeId},
     {L"검수 메모", L"note", UIA_EditControlTypeId, UIA_ValuePatternId, L"F6"},
-    {L"메모 지우기", L"clear-note", UIA_ButtonControlTypeId, UIA_InvokePatternId}
+    {L"메모 지우기", L"clear-note", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다시 열기", L"reload-project", UIA_ButtonControlTypeId, UIA_InvokePatternId, L"F5"},
+    {L"저장", L"save-project", UIA_ButtonControlTypeId, UIA_InvokePatternId, L"Ctrl+S"},
+    {L"되돌리기", L"undo-project", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"왼쪽으로 1 mm 이동", L"move-left", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"오른쪽으로 1 mm 이동", L"move-right", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"아래로 1 mm 이동", L"move-down", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"위로 1 mm 이동", L"move-up", UIA_ButtonControlTypeId, UIA_InvokePatternId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::clearNote) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::moveUp) + 1);
 
 struct Node
 {

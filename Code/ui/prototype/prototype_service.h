@@ -5,6 +5,8 @@
 #include <chrono>
 #include <string>
 
+#include <nlohmann/json.hpp>
+
 /** @brief 시제품이 연결할 기존 Python 서비스의 실행 경로다. */
 struct PrototypeServiceOptions
 {
@@ -19,6 +21,11 @@ class PrototypeService
 public:
     void start(const PrototypeServiceOptions& options);
     void poll();
+    /** @brief 한 번에 한 요청을 공개 API에 보내고 응답 ID를 추적한다. */
+    bool request(const char* method, const nlohmann::json& context, const nlohmann::json& input,
+        bool mutation = false);
+    nlohmann::json takeReply();
+    static std::string newCommandId();
 
     /** @brief 시작 상태를 GUI와 명령행 검수에서 함께 사용한다. */
     enum class State { inactive, connecting, connected, failed };
@@ -31,6 +38,10 @@ private:
     State state_ = State::inactive;
     std::chrono::steady_clock::time_point deadline_;
     std::string status_;
+    std::string requestKeyEpoch_;
+    unsigned nextId_ = 2;
+    unsigned inFlight_ = 0;
+    nlohmann::json reply_;
 };
 
 /** @brief 한 줄씩 공개 요청을 재생하고 같은 ID의 응답을 표준 출력으로 보낸다. */
