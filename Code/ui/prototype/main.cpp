@@ -2128,25 +2128,34 @@ void Shell::drawRename()
 /** @brief 실제 프로젝트와 권위 있는 개정, 기판 장면 및 저장 동작을 같은 패널에 제공한다. */
 void Shell::drawLiveBoard()
 {
+    const auto navigationButton = [this](Control control, const char* label, bool enabled, bool open, bool allowSameLine)
+    {
+        const auto& style = ImGui::GetStyle();
+        const float contentRight = ImGui::GetCursorScreenPos().x + ImGui::GetContentRegionAvail().x;
+        const float buttonRight = ImGui::GetItemRectMax().x + style.ItemSpacing.x
+            + ImGui::CalcTextSize(label).x + style.FramePadding.x * 2.0f;
+        if (allowSameLine && buttonRight <= contentRight)
+        {
+            ImGui::SameLine();
+        }
+        panelButton(control, label, enabled, open);
+    };
+
     ImGui::TextUnformatted(project->path().c_str());
-    ImGui::SameLine();
-    panelButton(Control::showRecovery, "저장본 비교", recoveryOpen || (project->view() && project->writable()), recoveryOpen);
+    navigationButton(Control::showRecovery, "저장본 비교",
+        recoveryOpen || (project->view() && project->writable()), recoveryOpen, true);
     if (recoveryOpen)
     {
         drawRecovery();
     }
-    else
-    {
-        ImGui::SameLine();
-    }
-    panelButton(Control::targetToggle, "목표 편집", project->view() && !project->target().dirty() && !project->busy(), targetOpen);
+    navigationButton(Control::targetToggle, "목표 편집",
+        project->view() && !project->target().dirty() && !project->busy(), targetOpen, !recoveryOpen);
     if (targetOpen)
     {
         drawTarget();
         return;
     }
-    ImGui::SameLine();
-    panelButton(Control::setupToggle, "기판과 설계 규칙", project->view() && !project->busy(), setupOpen);
+    navigationButton(Control::setupToggle, "기판과 설계 규칙", project->view() && !project->busy(), setupOpen, true);
     if (setupOpen)
     {
         if (setupPanel.draw(*project, access, requestedFocus))
@@ -2164,8 +2173,7 @@ void Shell::drawLiveBoard()
         }
         return;
     }
-    ImGui::SameLine();
-    panelButton(Control::templateToggle, "문헌 후보", project->view() && !project->busy(), templateOpen);
+    navigationButton(Control::templateToggle, "문헌 후보", project->view() && !project->busy(), templateOpen, true);
     if (templateOpen)
     {
         if (templatePanel.draw(*project, access, requestedFocus))
@@ -2179,8 +2187,7 @@ void Shell::drawLiveBoard()
         }
         return;
     }
-    ImGui::SameLine();
-    panelButton(Control::evidenceToggle, "출처와 변경 이력", evidenceOpen || project->view(), evidenceOpen);
+    navigationButton(Control::evidenceToggle, "출처와 변경 이력", evidenceOpen || project->view(), evidenceOpen, true);
     if (evidenceOpen)
     {
         drawEvidence();
