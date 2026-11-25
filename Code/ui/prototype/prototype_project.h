@@ -7,6 +7,7 @@
 #include "prototype_evidence.h"
 #include "prototype_target.h"
 #include "prototype_template.h"
+#include "prototype_setup.h"
 #include "prototype_result.h"
 #include "prototype_service.h"
 
@@ -53,6 +54,12 @@ public:
     void previewTemplate();
     void applyTemplate();
     PrototypeTemplate& literature() { return literature_; }
+    PrototypeSetup& setup() { return setup_; }
+    void readSetup();
+    void reviewBoardSetup();
+    void applySetup(bool remove = false);
+    void checkRules(const char* inclusion);
+    void readCatalog(PrototypeSetup::Request request);
     void readCad();
     void readRecovery();
     const nlohmann::json& recovery() const { return recovery_; }
@@ -112,11 +119,13 @@ private:
         idle, open, save, canvasEdit, undo, readRename, rename, renamed, edited, accepted, job, canvas, editor, cad,
         solverLatest, resultHistory, resultDescribe, resultPage, resultArtifact, resultMatrixLoad, resultExport,
         solverConditions, recovery, targetRead, targetApply, targetEdited, targetEvidence, templateContext, templatePreview, templateApply, templateEdited,
-        finished, failed
+        setupRequest, finished, failed
     };
     bool sendBackground(PrototypeService& service);
     void receive(const nlohmann::json& reply);
     void receiveJob(const nlohmann::json& result);
+    void finishEdit(const nlohmann::json& result);
+    void requestSetup(PrototypeSetup::Request request, nlohmann::json input);
     void finishResult(const char* status);
     void clearRecovery();
     void receiveCanvas(const nlohmann::json& result);
@@ -161,6 +170,10 @@ private:
     std::optional<PrototypeEvidence> targetEvidence_;
     PrototypeTemplate literature_;
     nlohmann::json templateInput_;
+    PrototypeSetup setup_;
+    PrototypeSetup::Request setupRequest_ = PrototypeSetup::Request::board;
+    nlohmann::json setupInput_;
+    bool setupSent_ = false;
     View loading_;
     std::optional<View> view_;
     nlohmann::json pages_;

@@ -271,6 +271,92 @@ void PrototypeProject::applyTemplate()
     }
 }
 
+void PrototypeProject::requestSetup(PrototypeSetup::Request request, Json input)
+{
+    using Request = PrototypeSetup::Request;
+    if (request != Request::board && !PrototypeSetup::catalogRequest(request))
+    {
+        input["expected_revision"] = view_->revision;
+    }
+    setupRequest_ = request;
+    setupInput_ = std::move(input);
+    setupSent_ = false;
+    setup_.status = PrototypeSetup::mutation(request) ? "검토한 설정을 적용하는 중" : "현재 개정의 설정을 확인하는 중";
+    step_ = Step::setupRequest;
+}
+
+void PrototypeProject::readSetup()
+{
+    using Page = PrototypeSetup::Page;
+    using Request = PrototypeSetup::Request;
+    if (view_ && writable() && !setup_.dirty())
+    {
+        const auto request = setup_.page == Page::board ? Request::board :
+            setup_.page == Page::physical ? Request::physical : Request::rules;
+        requestSetup(request, setup_.readInput());
+    }
+}
+
+void PrototypeProject::reviewBoardSetup()
+{
+    if (view_ && writable() && setup_.board && setup_.dirty())
+    {
+        try
+        {
+            requestSetup(PrototypeSetup::Request::boardPreview, setup_.boardPreview());
+        }
+        catch (const std::exception& error)
+        {
+            setup_.status = error.what();
+        }
+    }
+}
+
+void PrototypeProject::applySetup(bool remove)
+{
+    using Page = PrototypeSetup::Page;
+    using Request = PrototypeSetup::Request;
+    if (!view_ || !writable())
+    {
+        return;
+    }
+    try
+    {
+        const auto command = PrototypeService::newCommandId();
+        if (setup_.page == Page::board && setup_.board && setup_.board->CanApply() && !remove)
+        {
+            requestSetup(Request::boardApply, setup_.boardApply(command));
+        }
+        if (setup_.page == Page::physical || setup_.page == Page::rules)
+        {
+            requestSetup(setup_.page == Page::physical ? Request::physicalApply : Request::rulesApply,
+                setup_.formInput(command, remove));
+        }
+    }
+    catch (const std::exception& error)
+    {
+        setup_.status = error.what();
+    }
+}
+
+void PrototypeProject::checkRules(const char* inclusion)
+{
+    if (view_ && writable() && setup_.page == PrototypeSetup::Page::rules && !setup_.dirty())
+    {
+        setup_.report = nullptr;
+        requestSetup(PrototypeSetup::Request::check, setup_.checkInput(inclusion));
+    }
+}
+
+/** @brief 제조업체 자료는 프로젝트와 독립된 읽기 전용 서비스에서 조회한다. */
+void PrototypeProject::readCatalog(PrototypeSetup::Request request)
+{
+    if (view_ && writable() && setup_.page == PrototypeSetup::Page::board && PrototypeSetup::catalogRequest(request))
+    {
+        requestSetup(request, setup_.catalogInput(request));
+    }
+}
+
 void PrototypeProject::readCad()
 {
     if (view_ && writable() && !cad_.loading() && !cadJob_.active())
@@ -665,6 +751,15 @@ void PrototypeProject::update(PrototypeService& service)
                 awaiting_ = service.request("project.evidence", {{"project_id", view_->id}},
                     {{"expected_revision", view_->revision}});
                 break;
+            case Step::setupRequest:
+            {
+                const auto context = PrototypeSetup::catalogRequest(setupRequest_) ?
+                    Json::object() : Json{{"project_id", view_->id}};
+                awaiting_ = service.request(PrototypeSetup::method(setupRequest_), context,
+                    setupInput_, PrototypeSetup::mutation(setupRequest_));
+                setupSent_ = awaiting_;
+                break;
+            }
             case Step::templateContext:
                 awaiting_ = service.request("template.context", {{"project_id", view_->id}},
                     {{"expected_revision", view_->revision}});
@@ -750,6 +845,11 @@ void PrototypeProject::receive(const Json& reply)
             step_ = Step::finished;
             return;
         }
+        if (step_ == Step::setupRequest && (code == "E_SCHEMA" || code == "E_CONFLICT" ||
+            code == "E_UNIT" || code == "E_RESOURCE" || code == "E_UNSUPPORTED" || code == "E_DESIGN_CONSTRAINT"))
+        {
+            setupSent_ = false;
+        }
         if (step_ == Step::templateEdited && (code == "E_SCHEMA" || code == "E_CONFLICT" || code == "E_RESOURCE"))
         {
             literature_.clearReview();
@@ -822,6 +922,16 @@ void PrototypeProject::receive(const Json& reply)
             step_ = Step::finished;
             break;
         }
+        case Step::setupRequest:
+            setup_.accept(setupRequest_, result, setupInput_, view_->id, view_->revision,
+                setupRequest_ == PrototypeSetup::Request::board ? PrototypeService::newCommandId() : "");
+            if (!PrototypeSetup::mutation(setupRequest_))
+            {
+                step_ = Step::finished;
+                break;
+            }
+            finishEdit(result);
+            break;
         case Step::templateContext:
             literature_.acceptContext(result, view_->id, view_->revision);
             step_ = Step::finished;
@@ -939,21 +1049,27 @@ void PrototypeProject::receive(const Json& reply)
             [[fallthrough]];
         case Step::renamed:
         case Step::edited:
-            if (result.at("project_id") != view_->id || result.at("new_revision") == view_->revision)
-            {
-                throw std::runtime_error("편집 응답의 프로젝트 또는 개정이 올바르지 않습니다.");
-            }
-            loading_ = {};
-            loading_.id = view_->id;
-            loading_.revision = result.at("new_revision").get<std::string>();
-            loading_.selection = view_->selection;
-            offset_ = 0;
-            pages_ = nullptr;
-            step_ = Step::canvas;
+            finishEdit(result);
             break;
         default:
             throw std::runtime_error("프로젝트 응답 순서가 올바르지 않습니다.");
     }
+}
+
+/** @brief 확인된 새 개정으로 장면과 저장 상태를 함께 다시 읽는다. */
+void PrototypeProject::finishEdit(const Json& result)
+{
+    if (result.at("project_id") != view_->id || result.at("new_revision") == view_->revision)
+    {
+        throw std::runtime_error("편집 응답의 프로젝트 또는 개정이 올바르지 않습니다.");
+    }
+    loading_ = {};
+    loading_.id = view_->id;
+    loading_.revision = result.at("new_revision").get<std::string>();
+    loading_.selection = view_->selection;
+    offset_ = 0;
+    pages_ = nullptr;
+    step_ = Step::canvas;
 }
 
 void PrototypeProject::receiveJob(const Json& result)
@@ -1087,6 +1203,7 @@ void PrototypeProject::finishView(const Json& editor)
     target_.loaded = false;
     targetEvidence_.reset();
     literature_.invalidate(view_->revision);
+    setup_.invalidate(view_->revision);
     createName_.clear();
     message_.clear();
     step_ = Step::finished;
@@ -1104,6 +1221,13 @@ void PrototypeProject::finishResult(const char* status)
 
 void PrototypeProject::fail(std::string message)
 {
+    if (step_ == Step::setupRequest && (!PrototypeSetup::mutation(setupRequest_) || !setupSent_))
+    {
+        setup_.failed(setupRequest_, "설정 요청 실패. " + message);
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
     if (step_ == Step::templateContext || step_ == Step::templatePreview || step_ == Step::templateApply)
     {
         literature_.clearReview();

@@ -43,7 +43,10 @@ enum class Control
     targetRead, targetPrevChange, targetNextChange, targetName, targetStart, targetEnd, targetSamples,
     targetS11, targetReason, targetStatus, targetSummary, targetHistory,
     templateToggle, templateRead, templateInput, templateReview, templatePreview, templateApply, templateDiscard,
-    templateCard, templateStatus, templateSummary
+    templateCard, templateStatus, templateSummary,
+    setupToggle, setupBoard, setupPhysical, setupRules, setupRead, setupReview, setupApply, setupRemove,
+    setupDiscard, setupCheck, setupPrevious, setupNext, setupJump, catalogConnect, catalogSearch, catalogNext,
+    catalogDetail, setupStatus, setupSummary, setupFinding, catalogSummary
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };

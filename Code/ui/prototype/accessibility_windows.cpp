@@ -211,9 +211,30 @@ constexpr Description descriptions[] =
     {L"문헌 후보 초안 취소", L"template-discard", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"", L"template-card", UIA_TextControlTypeId},
     {L"", L"template-status", UIA_TextControlTypeId},
-    {L"", L"template-summary", UIA_TextControlTypeId}
+    {L"", L"template-summary", UIA_TextControlTypeId},
+    {L"기판과 설계 규칙", L"setup-toggle", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"기판 설정", L"setup-board", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"적층과 설치 조건", L"setup-physical", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"설계 규칙", L"setup-rules", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"현재 설정 다시 읽기", L"setup-read", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"기판 변경 미리보기", L"setup-review", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"설정 변경 적용", L"setup-apply", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"삭제 확인 열기", L"setup-remove", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"설정 초안 취소", L"setup-discard", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"현재 개정의 설계 규칙 검사", L"setup-check", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"이전 검사 항목", L"setup-previous", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 검사 항목", L"setup-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"검사 위치로 이동", L"setup-jump", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"제조업체 카탈로그 연결", L"catalog-connect", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"제조업체 자료 검색", L"catalog-search", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"제조업체 자료 다음 페이지", L"catalog-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"선택한 제조업체 자료 상세", L"catalog-detail", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"setup-status", UIA_TextControlTypeId},
+    {L"", L"setup-summary", UIA_TextControlTypeId},
+    {L"", L"setup-finding", UIA_TextControlTypeId},
+    {L"", L"catalog-summary", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::templateSummary) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::catalogSummary) + 1);
 
 struct Node
 {

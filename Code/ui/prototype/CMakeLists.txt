@@ -88,6 +88,8 @@ if(WIN32)
         prototype_project.cpp prototype_canvas.cpp prototype_cad.cpp prototype_cad_job.cpp
         prototype_model.cpp prototype_result.cpp prototype_matrix.cpp prototype_analysis.cpp prototype_exchange.cpp
         prototype_manufacturing.cpp prototype_recent.cpp prototype_archive.cpp prototype_evidence.cpp prototype_target.cpp prototype_template.cpp prototype_template_panel.cpp
+        prototype_setup.cpp prototype_setup_panel.cpp
+        ../wxwidgets/pcb_selection_model.cpp ../wxwidgets/pcb_selection_model_data.cpp
         ../wxwidgets/async_state.cpp ../wxwidgets/analysis_workflow.cpp
         ../wxwidgets/service_client.cpp ../wxwidgets/canvas_scene.cpp
         ../wxwidgets/canvas_pcb_features.cpp ../wxwidgets/display_mesh_picking.cpp ../wxwidgets/network_export_files.cpp)
