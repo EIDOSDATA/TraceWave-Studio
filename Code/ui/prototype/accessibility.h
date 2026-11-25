@@ -18,7 +18,9 @@ enum class Control
     board, resetBoard, result, input, note, clearNote, reloadProject, saveProject, undoProject, moveLeft, moveRight, moveDown, moveUp, toggleModel, reloadModel, reloadResult,
     buildModel, exportStep, cancelCad,
     showSolver, readSolverConditions, priorSolverCondition, nextSolverCondition, reviewSolver, approveSolver, cancelSolver,
-    solverCondition, solverStatus, solverPlan
+    solverCondition, solverStatus, solverPlan,
+    showResultHistory, reloadResultHistory, priorResult, nextResult, openHistoryResult,
+    historyChoice, historyStatus, resultReadStatus, resultSummary
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };

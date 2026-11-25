@@ -37,6 +37,9 @@ public:
     bool canStartCad() const;
     const PrototypeCadJob& cadJob() const { return cadJob_; }
     void readResult();
+    void readResultHistory();
+    void browseResultHistory(int direction);
+    void openHistoryResult();
     void readSolverConditions();
     void moveSolverCondition(int direction);
     void reviewSolver();
@@ -63,7 +66,7 @@ private:
     enum class Step
     {
         idle, open, save, translate, undo, edited, accepted, job, canvas, editor, cad,
-        solverLatest, resultDescribe, resultPage, solverConditions, finished, failed
+        solverLatest, resultHistory, resultDescribe, resultPage, solverConditions, finished, failed
     };
     bool sendBackground(PrototypeService& service);
     void receive(const nlohmann::json& reply);

@@ -27,6 +27,109 @@ void PrototypeResult::setStatus(std::string status)
     status_ = std::move(status);
 }
 
+/** @brief 다음 목록 요청의 순번과 현재 목록의 식별자를 함께 유지한다. */
+void PrototypeResult::requestHistory(int direction)
+{
+    requestedDirection_ = direction;
+    if (direction < 0)
+    {
+        requestedOffset_ = historyOffset_ - historyLimit;
+    }
+    else if (direction > 0)
+    {
+        requestedOffset_ = historyOffset_ + history_.size();
+    }
+    else
+    {
+        requestedOffset_ = 0;
+    }
+    setHistoryStatus("완료된 해석 목록을 읽는 중");
+}
+
+json PrototypeResult::historyInput() const
+{
+    return {{"kind", "solver"}, {"revision_id", nullptr}, {"snapshot_id", nullptr}, {"study_id", nullptr},
+        {"offset", requestedOffset_}, {"limit", historyLimit},
+        {"catalog_hash", requestedDirection_ ? json(historyHash_) : json(nullptr)}};
+}
+
+/** @brief 목록이 바뀌거나 행의 출처가 명확하지 않으면 현재 조회 상태를 유지한다. */
+void PrototypeResult::acceptHistory(const json& reply, const std::string& project)
+{
+    const auto& rows = reply.at("items");
+    const auto& hash = reply.at("catalog_hash");
+    const auto& next = reply.at("next_offset");
+    const auto total = reply.at("total").get<std::size_t>();
+    if (reply.at("profile") != "rfad.result-source-list/0.1" || reply.at("project_id") != project ||
+        !reply.at("resolved_revision_id").is_null() || reply.at("offset") != requestedOffset_ ||
+        !hashMatchesFormat(hash) || (requestedDirection_ && (hash != historyHash_ || total != historyTotal_)) ||
+        !rows.is_array() || requestedOffset_ > total || rows.size() > historyLimit ||
+        rows.size() != std::min(historyLimit, total - requestedOffset_) ||
+        (next.is_null() ? requestedOffset_ + rows.size() != total
+                        : next != requestedOffset_ + rows.size() || requestedOffset_ + rows.size() >= total))
+    {
+        throw std::runtime_error("해석 목록의 프로젝트, 식별자 또는 범위가 올바르지 않습니다.");
+    }
+    std::vector<SavedResult> page;
+    page.reserve(rows.size());
+    for (const auto& row : rows)
+    {
+        const auto& source = row.at("source");
+        SavedResult item{source.at("artifact_id").get<std::string>(), row.at("label").get<std::string>(),
+            row.at("source_revision_id").get<std::string>(), row.at("has_dataset").get<bool>()};
+        if (source.at("kind") != "solver" || row.at("result_state") != "completed" ||
+            item.artifact.empty() || item.label.empty() || item.revision.empty() ||
+            std::ranges::find(page, item.artifact, &SavedResult::artifact) != page.end())
+        {
+            throw std::runtime_error("완료된 해석 목록의 출처가 올바르지 않습니다.");
+        }
+        page.push_back(std::move(item));
+    }
+    history_ = std::move(page);
+    historyHash_ = hash.get<std::string>();
+    historyOffset_ = requestedOffset_;
+    historyTotal_ = total;
+    historyIndex_ = requestedDirection_ < 0 && !history_.empty() ? history_.size() - 1 : 0;
+    setHistoryStatus(history_.empty() ? "완료된 해석 결과가 없습니다." : "");
+}
+
+void PrototypeResult::setHistoryStatus(std::string status)
+{
+    historyStatus_ = std::move(status);
+}
+
+bool PrototypeResult::canBrowseHistory(int direction) const
+{
+    if (!historyChoice())
+    {
+        return false;
+    }
+    const auto current = historyOffset_ + historyIndex_;
+    return direction < 0 ? current > 0 : current + 1 < historyTotal_;
+}
+
+/** @brief 인접 항목이 현재 페이지에 없으면 동일한 해시로 다음 페이지를 요청한다. */
+bool PrototypeResult::browseHistory(int direction)
+{
+    if (!canBrowseHistory(direction))
+    {
+        return false;
+    }
+    if ((direction < 0 && historyIndex_ == 0) ||
+        (direction > 0 && historyIndex_ + 1 == history_.size()))
+    {
+        requestHistory(direction);
+        return true;
+    }
+    historyIndex_ = direction < 0 ? historyIndex_ - 1 : historyIndex_ + 1;
+    return false;
+}
+
+const PrototypeResult::SavedResult* PrototypeResult::historyChoice() const
+{
+    return history_.empty() ? nullptr : &history_[historyIndex_];
+}
+
 /** @brief 완료된 해석의 아티팩트만 사용한다. */
 bool PrototypeResult::acceptLatest(const json& reply)
 {
@@ -42,14 +145,20 @@ bool PrototypeResult::acceptLatest(const json& reply)
         setStatus("완료된 해석 결과가 없습니다.");
         return false;
     }
+    if (latest.value("profile", "") == "rfad.openems.pcb-multiport/0.1")
+    {
+        setStatus("최신 해석은 다중 포트 결과입니다. RC10의 네트워크 보기에서 전체 S 행렬을 확인하세요.");
+        return false;
+    }
     selectArtifact(latest.at("artifact_id").get<std::string>());
     return true;
 }
 
-void PrototypeResult::selectArtifact(const std::string& artifact)
+void PrototypeResult::selectArtifact(const std::string& artifact, const std::string& revision)
 {
     pending_ = {};
     pending_.source = {{"kind", "solver"}, {"artifact_id", artifact}};
+    pending_.revision = revision;
 }
 
 json PrototypeResult::descriptionInput() const
@@ -75,6 +184,7 @@ void PrototypeResult::acceptDescription(const json& reply, const std::string& pr
     if (reply.at("profile") != "rfad.result-view/0.1" || reply.at("source") != pending_.source ||
         reply.at("current_revision_id") != revision || descriptor.at("parameter_kind") != "S" ||
         snapshot.at("project_id") != project || snapshot.at("revision_id") != source ||
+        (!pending_.revision.empty() && pending_.revision != source) ||
         !hashMatchesFormat(pin.at("identity_hash")) || !hashMatchesFormat(pin.at("dataset_sha256")) ||
         count == 0 || count > maxSamples || !validReferences)
     {

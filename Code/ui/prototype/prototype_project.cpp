@@ -115,6 +115,34 @@ void PrototypeProject::readResult()
     }
 }
 
+void PrototypeProject::readResultHistory()
+{
+    if (view_ && writable())
+    {
+        result_.requestHistory(0);
+        step_ = Step::resultHistory;
+    }
+}
+
+void PrototypeProject::browseResultHistory(int direction)
+{
+    if (view_ && writable() && result_.browseHistory(direction))
+    {
+        step_ = Step::resultHistory;
+    }
+}
+
+void PrototypeProject::openHistoryResult()
+{
+    const auto* selected = result_.historyChoice();
+    if (view_ && writable() && selected && selected->available)
+    {
+        result_.selectArtifact(selected->artifact, selected->revision);
+        result_.setStatus("선택한 해석의 봉인 표본을 조회하는 중");
+        step_ = Step::resultDescribe;
+    }
+}
+
 bool PrototypeProject::canReadSolverConditions() const
 {
     return solverReady_ && view_ && writable() && !analysis_.active();
@@ -302,6 +330,9 @@ void PrototypeProject::update(PrototypeService& service)
             case Step::solverLatest:
                 awaiting_ = service.request("solver.latest", {{"project_id", view_->id}}, Json::object());
                 break;
+            case Step::resultHistory:
+                awaiting_ = service.request("result.sources", {{"project_id", view_->id}}, result_.historyInput());
+                break;
             case Step::resultDescribe:
                 awaiting_ = service.request("result.describe", {{"project_id", view_->id}}, result_.descriptionInput());
                 break;
@@ -357,6 +388,10 @@ void PrototypeProject::receive(const Json& reply)
             break;
         case Step::solverLatest:
             step_ = result_.acceptLatest(result) ? Step::resultDescribe : Step::finished;
+            break;
+        case Step::resultHistory:
+            result_.acceptHistory(result, view_->id);
+            step_ = Step::finished;
             break;
         case Step::resultDescribe:
             result_.acceptDescription(result, view_->id, view_->revision);
@@ -529,6 +564,13 @@ void PrototypeProject::fail(std::string message)
     if (step_ == Step::solverConditions)
     {
         analysis_.setStatus("해석 조건 조회 실패. " + message);
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
+    if (step_ == Step::resultHistory)
+    {
+        result_.setHistoryStatus("해석 목록 조회 실패. " + message);
         awaiting_ = false;
         step_ = Step::finished;
         return;

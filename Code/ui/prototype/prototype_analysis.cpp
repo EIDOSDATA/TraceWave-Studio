@@ -423,8 +423,15 @@ void PrototypeAnalysis::complete(const json& result)
     }
     else if (phase == Phase::Analysis)
     {
-        completedResult_ = result.at("artifact_id").get<std::string>();
-        finish("해석 완료. 봉인된 결과를 읽는 중");
+        if (multiport_)
+        {
+            finish("해석 완료. RC10의 네트워크 보기에서 저장된 전체 S 행렬을 확인하세요.");
+        }
+        else
+        {
+            completedResult_ = result.at("artifact_id").get<std::string>();
+            finish("해석 완료. 봉인된 결과를 읽는 중");
+        }
     }
 }
 

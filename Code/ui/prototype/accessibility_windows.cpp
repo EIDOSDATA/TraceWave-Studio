@@ -71,9 +71,18 @@ constexpr Description descriptions[] =
     {L"해석 취소", L"solver-cancel", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"", L"solver-selected-condition", UIA_TextControlTypeId},
     {L"", L"solver-status", UIA_TextControlTypeId},
-    {L"", L"solver-plan-summary", UIA_TextControlTypeId}
+    {L"", L"solver-plan-summary", UIA_TextControlTypeId},
+    {L"과거 RF 결과", L"show-rf-history", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"과거 RF 결과 목록 다시 읽기", L"reload-rf-history", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"이전 RF 결과", L"prior-rf-history", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 RF 결과", L"next-rf-history", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"선택한 RF 결과 열기", L"open-rf-history", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"selected-rf-history", UIA_TextControlTypeId},
+    {L"", L"rf-history-status", UIA_TextControlTypeId},
+    {L"", L"rf-result-read-status", UIA_TextControlTypeId},
+    {L"", L"rf-result-summary", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::solverPlan) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::resultSummary) + 1);
 
 struct Node
 {

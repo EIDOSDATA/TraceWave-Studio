@@ -82,9 +82,11 @@ struct Shell
     PrototypeModel model;
     bool modelOpen = false;
     bool analysisOpen = false;
+    bool resultHistoryOpen = false;
     void drawLiveBoard();
     void drawLiveModel();
     void drawLiveResult();
+    void drawResultHistory();
     void drawAnalysis();
     void panelButton(Control control, const char* label, bool enabled, bool checked = false,
         Control parent = Control::board);
@@ -359,6 +361,17 @@ void Shell::activate(Control control)
         case Control::reviewSolver: project->reviewSolver(); break;
         case Control::approveSolver: project->approveSolver(); break;
         case Control::cancelSolver: project->cancelSolver(); break;
+        case Control::showResultHistory:
+            resultHistoryOpen = !resultHistoryOpen;
+            if (resultHistoryOpen && !project->result().historyChoice())
+            {
+                project->readResultHistory();
+            }
+            break;
+        case Control::reloadResultHistory: project->readResultHistory(); break;
+        case Control::priorResult: project->browseResultHistory(-1); break;
+        case Control::nextResult: project->browseResultHistory(1); break;
+        case Control::openHistoryResult: project->openHistoryResult(); break;
 #endif
         default: break;
     }
@@ -874,7 +887,8 @@ void Shell::drawResult(bool hasViewports)
         undockNextFrame = false;
     }
     if (requestedFocus == Control::result || requestedFocus == Control::reloadResult ||
-        (requestedFocus >= Control::showSolver && requestedFocus <= Control::cancelSolver))
+        (requestedFocus >= Control::showSolver && requestedFocus <= Control::cancelSolver) ||
+        (requestedFocus >= Control::showResultHistory && requestedFocus <= Control::openHistoryResult))
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::result)
@@ -914,7 +928,7 @@ void Shell::drawResult(bool hasViewports)
 }
 
 #if defined(_WIN32)
-/** @brief 현재 프로젝트의 최신 완료 실행에서 고정한 S11 표본과 출처를 표시한다. */
+/** @brief 현재 프로젝트에서 선택한 완료 실행의 고정 S11 표본과 출처를 표시한다. */
 void Shell::drawLiveResult()
 {
     const auto& result = project->result();
@@ -926,27 +940,34 @@ void Shell::drawLiveResult()
     panelButton(Control::showSolver, "해석 도구", project->view() != nullptr, analysisOpen, Control::result);
     ImGui::SameLine();
     panelButton(Control::reloadResult, "결과 다시 읽기", project->writable(), false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::showResultHistory, "과거 결과",
+        resultHistoryOpen || (project->view() && project->writable()), resultHistoryOpen, Control::result);
+    if (resultHistoryOpen)
+    {
+        drawResultHistory();
+    }
     if (analysisOpen)
     {
         drawAnalysis();
     }
+    if (!result.status().empty())
+    {
+        ImGui::TextWrapped("%s", result.status().c_str());
+        access.text(Control::resultReadStatus, Control::result, result.status());
+    }
     if (!series)
     {
-        if (!result.status().empty())
-        {
-            ImGui::TextWrapped("%s", result.status().c_str());
-        }
         return;
     }
 
     const auto* view = project->view();
     const bool current = view && view->revision == series->revision;
-    if (!analysisOpen)
-    {
-        ImGui::SameLine();
-    }
-    ImGui::Text("결과 개정 %.12s  |  %s  |  %zu개 표본", series->revision.c_str(),
-        current ? "현재 설계" : "이전 설계", series->total);
+    char summary[160];
+    std::snprintf(summary, sizeof(summary), "결과 개정 %.12s  |  %s  |  %zu개 표본",
+        series->revision.c_str(), current ? "현재 설계" : "이전 설계", series->total);
+    ImGui::TextUnformatted(summary);
+    access.text(Control::resultSummary, Control::result, summary);
     if (ImGui::IsItemHovered())
     {
         ImGui::BeginTooltip();
@@ -958,10 +979,6 @@ void Shell::drawLiveResult()
             ImGui::TextUnformatted(reference.get_ref<const std::string&>().c_str());
         }
         ImGui::EndTooltip();
-    }
-    if (!result.status().empty())
-    {
-        ImGui::TextWrapped("%s", result.status().c_str());
     }
     ImGui::PushID(series->source.at("artifact_id").get_ref<const std::string&>().c_str());
     if (ImPlot::BeginPlot("###project-s11", {-1.0f, -1.0f}, ImPlotFlags_NoLegend))
@@ -975,6 +992,36 @@ void Shell::drawLiveResult()
         plotDrawn = true;
     }
     ImGui::PopID();
+}
+
+/** @brief 완료된 목록에서 열 항목을 고르고 곡선의 교체를 명시적으로 요청한다. */
+void Shell::drawResultHistory()
+{
+    const auto& result = project->result();
+    const auto* choice = result.historyChoice();
+    const bool ready = project->writable();
+    panelButton(Control::reloadResultHistory, "목록 다시 읽기", ready, false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::priorResult, "이전 결과", ready && result.canBrowseHistory(-1), false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::nextResult, "다음 결과", ready && result.canBrowseHistory(1), false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::openHistoryResult, "결과 열기", ready && choice && choice->available, false, Control::result);
+    if (choice)
+    {
+        const auto* view = project->view();
+        const auto state = view && choice->revision == view->revision ? "현재 설계" : "이전 설계";
+        const auto summary = choice->label + " | 개정 " + choice->revision.substr(0, 12) + " | " + state;
+        ImGui::TextWrapped("%s", summary.c_str());
+        access.text(Control::historyChoice, Control::result, summary);
+    }
+    const auto status = !result.historyStatus().empty() ? result.historyStatus() :
+        (choice && !choice->available ? "이 결과는 RC10의 원래 해석 결과 보기에서 열 수 있습니다." : "");
+    if (!status.empty())
+    {
+        ImGui::TextWrapped("%s", status.c_str());
+        access.text(Control::historyStatus, Control::result, status);
+    }
 }
 
 /** @brief 조건 선택, 계획 승인과 실제 작업 상태를 같은 결과 패널에 표시한다. */
