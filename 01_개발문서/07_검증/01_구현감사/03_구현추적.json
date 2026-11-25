@@ -7869,8 +7869,8 @@
   "design_sources": [
     {
       "path": "01_개발문서/01_요구사항/01_사용자_요구사항.md",
-      "text_sha256": "4701afebdef368feddd11201b34b3fd8214ec2fee32900eaa67999ffbb31d8a3",
-      "utf8_bytes": 321816
+      "text_sha256": "2f66d117beb347fc5f8141ea30b73feedeb838f9a1cc04b4889f9c3355ea2f01",
+      "utf8_bytes": 321965
     },
     {
       "path": "01_개발문서/05_기능설계/01_기능_설계.md",
@@ -7884,8 +7884,8 @@
     },
     {
       "path": "01_개발문서/07_검증/01_검증과_수용_기준.md",
-      "text_sha256": "b4a0ed2555fc96e6e05e2066f2fb26a2c2de1770681da13ec5758b841b7d4235",
-      "utf8_bytes": 92509
+      "text_sha256": "5c19aeca281214ce681c6fe25b47dff9bfa61afbe4557da05fb61ac61b709337",
+      "utf8_bytes": 92558
     },
     {
       "path": "01_개발문서/07_검증/03_요구사항_추적표.md",
@@ -7894,8 +7894,8 @@
     },
     {
       "path": "01_개발문서/04_화면설계/02_화면_선정과_성능_설계.md",
-      "text_sha256": "071179053f39ba0221ef1e1563fcd4f668dc37fa5a9457488c05ee6d7de0cb68",
-      "utf8_bytes": 13352
+      "text_sha256": "004de130c53ede68dd099d863234c0f99f9faf628b932c3c1efae9816d8a9ccd",
+      "utf8_bytes": 13574
     }
   ],
   "extension_methods": {
@@ -14753,8 +14753,8 @@
     },
     {
       "path": "01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md",
-      "text_sha256": "6a0dcf0c9a67ab4619f726c9bbf3c86e5de74fe495de910fade5bb78e4f842ae",
-      "utf8_bytes": 9475
+      "text_sha256": "aa6cb3e9a01a32ee23658a6039e06e6dd894f22d96685eb2368571f4d686d552",
+      "utf8_bytes": 9476
     },
     {
       "path": "Code/runtime_profiles/cad-worker-windows-x64.json",
@@ -16881,7 +16881,7 @@
     {
       "acceptance_status": "open",
       "id": "GUI-SPIKE-001",
-      "specified_row": "| GUI-SPIKE-001 | R1 wxMSW Studio의 시작, Windows 해석 연결 및 배포 의존성 확인. WSL2를 선택한 경우 해당 연결도 확인. wxGTK GUI는 후속 출시 범위 | 01, 07, 15 |"
+      "specified_row": "| GUI-SPIKE-001 | R1 wxMSW Studio의 시작, Windows 해석 연결 및 배포 의존성 확인. WSL2를 선택한 경우 해당 연결도 확인. Linux 데스크톱은 R1 수용 범위 밖 | 01, 07, 15 |"
     },
     {
       "acceptance_status": "open",

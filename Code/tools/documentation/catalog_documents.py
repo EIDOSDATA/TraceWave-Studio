@@ -100,7 +100,8 @@ def build(catalog_date=None):
         if name.startswith(("00_참고자료/", "Code/runtime_profiles/")) and path.is_file():
             paths.add(path)
     paths.update(path for path in DOCS.rglob("*") if path.is_file() and path.name not in EXCLUDED)
-    paths.update({ROOT / "README.md", CODE / "README.md", CODE / "ui/wxwidgets/README.md"})
+    paths.update({ROOT / "README.md", CODE / "README.md"})
+    paths.update((CODE / "ui").glob("*/README.md"))
     records = []
     for path in sorted(paths):
         role, review = category(path)

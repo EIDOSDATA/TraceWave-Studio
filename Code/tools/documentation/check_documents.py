@@ -48,7 +48,8 @@ def main():
     documents = sorted(path for path in base.rglob("*.md")
                        if not path.is_relative_to(BASELINE) or path.name == "README.md")
     if not args.screen_only:
-        documents += [CODE / "README.md", CODE / "ui/wxwidgets/README.md", ROOT / "README.md"]
+        documents.extend([ROOT / "README.md", CODE / "README.md"])
+        documents.extend(sorted((CODE / "ui").glob("*/README.md")))
     failures = []
     links = 0
     for document in documents:

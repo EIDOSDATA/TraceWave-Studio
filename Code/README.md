@@ -1,12 +1,13 @@
 # TraceWave Studio 개발 영역
 
-Code는 개발 코드 영역이다. 제품 소스, 빌드 설정, 시험, fixtures와 실행/검증 도구를 이 아래에서 관리하며 상세 경로와 이름 규칙, 승인 원문과 과거 실행 보존은 [문서 관리 규칙](../01_개발문서/02_문서관리와_변경규칙.md)을 따른다.
+이 폴더에는 기존 Studio와 리팩토링 시제품의 소스, 빌드 설정, 시험과 재현용 입력이 있다. Windows에서 새 UI를 개발할 때는 독립 시제품을 빌드한다. 기존 편집기와 서비스의 실행 절차는 아래에 있다. [시제품 빌드와 실행](ui/prototype/README.md) [새 채팅 개발 인계](../01_개발문서/09_개발계획/08_새채팅_개발인계.md)
 
 ## 시스템 구성
 
 | 구성 | 담당 기능과 코드 위치 |
 | --- | --- |
-| wxWidgets + wxAUI | native 입력/트리/표/메뉴와 도킹, View + 표시 상태 + service 연결. `ui/wxwidgets/` |
+| R1 편집기 (wxWidgets, wxAUI) | 입력, 트리, 표, 메뉴, 도킹과 서비스 연결을 담당한다. `ui/wxwidgets/` |
+| 리팩토링 시제품 (SDL3, Dear ImGui, bgfx, ImPlot) | 독립 창에서 예제 기판과 B0의 S11 표본을 표시한다. `ui/prototype/` |
 | 사용자 정의 DesignCanvas | wxGraphicsContext 기반 2D 표시/편집. 원본 계산/명령은 서비스 소유 |
 | wxGLCanvas/OpenGL ModelView | OCCT의 표시 mesh를 읽는 3D 보기. CAD B-rep나 일반 3D 안테나 RF 원본이 아님 |
 | Python application service | 원본/단위/표현식/명령/undo/저장/snapshot/작업. `src/rfad/domain/`, `application/`, `storage/` |
@@ -14,7 +15,7 @@ Code는 개발 코드 영역이다. 제품 소스, 빌드 설정, 시험, fixtur
 | 별도 출력 worker | 같은 snapshot의 PDF/SVG/DXF 및 PCB/CAM 출력, 파일 재입력과 봉인 원문 parser. `adapters/exchange/`, `tools/exchange_worker.py` |
 | 별도 openEMS worker | Windows 기본 해석의 계획, 준비, 실행, 취소 및 후처리. 기존 WSL2 환경은 명시적으로 선택한다. `adapters/solvers/openems/`, `tools/openems_worker.py` |
 
-Windows 11이 주 개발 환경이다. 한글 IME, 스크린리더 오류 안내와 혼합 DPI 창 이동을 실제 Windows에서 확인했다. Linux GUI와 비평면 3차원 안테나 해석은 후속 범위다. [Windows 사용성 검수](../01_개발문서/07_검증/309_윈도우_한글입력과_접근성_검수.md)
+기존 편집기에서는 Windows 11의 실제 한글 IME, 내레이터 오류 안내와 혼합 DPI 창 이동을 확인했다. 새 시제품에서 확인한 창 동작과 남은 입력 및 접근성 검수는 432에 기록한다. [R1 Windows 사용성 검수](../01_개발문서/07_검증/309_윈도우_한글입력과_접근성_검수.md) [시제품 검수](../01_개발문서/07_검증/432_창과_렌더러_시제품_검증.md)
 
 ## 현재 기능과 범위
 
@@ -43,9 +44,7 @@ Windows 11이 주 개발 환경이다. 한글 IME, 스크린리더 오류 안내
 
 ## 실행
 
-리팩토링 1단계의 창·렌더러 시제품은 별도 CMake 진입점에서 빌드한다. [시제품 실행과 검증](ui/prototype/README.md)
-
-앱 설치는 [Windows Setup.exe 안내](../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md)를 따른다. 아래 명령은 소스에서 개발할 때 저장소의 `Code` 폴더에서 실행한다. Windows 11 x64, CPython 3.12 x64와 PATH에서 찾을 수 있는 CMake, Ninja, MinGW-w64 GCC 및 tar가 필요하다. 검증한 도구 버전과 원본 해시는 [네이티브 빌드 프로필](runtime_profiles/native-windows-x64.json)에 있다.
+아래 명령은 기존 편집기와 서비스를 소스에서 실행하는 절차다. 저장소의 `Code` 폴더에서 시작한다. Windows 11 x64, CPython 3.12 x64와 PATH에서 찾을 수 있는 CMake, Ninja, MinGW-w64 GCC 및 tar가 필요하다. [설치 파일 사용법](../01_개발문서/08_운영환경/05_윈도우_내부검증_배포.md) [네이티브 빌드 프로필](runtime_profiles/native-windows-x64.json)
 
 ### 편집기 빌드와 첫 실행
 
@@ -97,7 +96,7 @@ GUI는 준비된 CAD 및 출력 환경을 자동으로 찾는다. 다른 위치�
 
 ## 시험과 기록
 
-전체 서비스 시험은 위에서 만든 `.venv`의 Python으로 실행한다. 결과 출처와 프로젝트 보존 묶음 시험은 Touchstone을 가져와 정규 HDF5 파일을 실제로 저장한다. 첫 실행에는 서비스 Python에 [네트워크 패키지 목록](runtime_profiles/python-network-windows-x64.txt)을 설치한다. 실행 예제에서 만든 별도 `.local/rf-check`에만 설치한 패키지는 이 환경에서 사용할 수 없다.
+전체 서비스 시험은 위에서 만든 `.venv`의 Python으로 실행한다. 결과 출처와 프로젝트 보존 묶음 시험은 Touchstone을 가져와 정규 HDF5 파일을 저장하므로 같은 환경에 수치 패키지를 설치한다. [네트워크 패키지 목록](runtime_profiles/python-network-windows-x64.txt)
 
 ```powershell
 .venv/Scripts/python.exe -m pip install --only-binary=:all: --require-hashes -r runtime_profiles/python-network-windows-x64.txt
@@ -108,6 +107,6 @@ ctest --preset windows-release
 .venv/Scripts/python.exe -X utf8 tools/documentation/check_documents.py
 ```
 
-실제 GUI 시험은 `RFAD_GUI_EXE`, OCCT 시험은 `RFAD_CAD_PYTHON`, WSL 계산은 시험별 실행 조건을 사용한다. 통과와 조건부 제외 건수는 [검증 안내](../01_개발문서/07_검증/README.md)에서 확인한다. [새 채팅 인계](../01_개발문서/09_개발계획/08_새채팅_개발인계.md)에는 새 PC에서 첫 수치 예제를 실행하는 절차가 있다.
+실제 GUI 시험은 `RFAD_GUI_EXE`, OCCT 시험은 `RFAD_CAD_PYTHON`, WSL 계산은 시험별 실행 조건을 사용한다. 통과와 조건부 제외 건수는 [검증 안내](../01_개발문서/07_검증/README.md)에서 확인한다.
 
 문서 변경 시 계약/화면/현재 상태/요구 연결을 함께 갱신한다. 기능별로 한국어 Doxygen, C++ Allman/4칸/중괄호 필수 규칙을 적용하고 주 창에 계산/영구 명령 로직을 몰지 않는다.
