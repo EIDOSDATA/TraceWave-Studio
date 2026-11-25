@@ -21,7 +21,9 @@ public:
     bool initialize(SDL_Window* window);
     bool attachWidgets();
     void detachWidgets();
-    void renderFrame();
+    static constexpr std::uint64_t modelTextureId = 2;
+
+    void renderFrame(bgfx::TextureHandle modelTexture = BGFX_INVALID_HANDLE);
 
     const char* name() const;
     bool hasViewports() const;
@@ -47,6 +49,7 @@ private:
     bgfx::ProgramHandle program_ = BGFX_INVALID_HANDLE;
     bgfx::UniformHandle sampler_ = BGFX_INVALID_HANDLE;
     bgfx::TextureHandle font_ = BGFX_INVALID_HANDLE;
+    bgfx::TextureHandle modelTexture_ = BGFX_INVALID_HANDLE;
     bool initialized_ = false;
     bool failed_ = false;
     unsigned secondaryFrames_ = 0;

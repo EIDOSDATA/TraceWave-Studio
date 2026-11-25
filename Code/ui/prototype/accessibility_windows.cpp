@@ -55,9 +55,12 @@ constexpr Description descriptions[] =
     {L"왼쪽으로 1 mm 이동", L"move-left", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"오른쪽으로 1 mm 이동", L"move-right", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"아래로 1 mm 이동", L"move-down", UIA_ButtonControlTypeId, UIA_InvokePatternId},
-    {L"위로 1 mm 이동", L"move-up", UIA_ButtonControlTypeId, UIA_InvokePatternId}
+    {L"위로 1 mm 이동", L"move-up", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"3D 형상 보기", L"toggle-model", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"3D 형상 다시 읽기", L"reload-model", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"S11 결과 다시 읽기", L"reload-result", UIA_ButtonControlTypeId, UIA_InvokePatternId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::moveUp) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::reloadResult) + 1);
 
 struct Node
 {

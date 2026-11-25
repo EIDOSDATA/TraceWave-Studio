@@ -4,6 +4,7 @@
 
 #if defined(_WIN32)
 #include "prototype_canvas.h"
+#include "prototype_model.h"
 #endif
 
 #include <algorithm>
@@ -78,7 +79,12 @@ struct Shell
     accessibility::Bridge access;
 #if defined(_WIN32)
     PrototypeProject* project = nullptr;
+    PrototypeModel model;
+    bool modelOpen = false;
     void drawLiveBoard();
+    void drawLiveModel();
+    void drawLiveResult();
+    void boardButton(Control control, const char* label, bool enabled, bool checked = false);
 #endif
 
     bool processEvent(const SDL_Event& event);
@@ -303,7 +309,17 @@ void Shell::activate(Control control)
         case Control::detachResult: resultOpen = detachResult = undockNextFrame = true; break;
         case Control::detachNote: detachInput = placeInput = focusInput = true; break;
         case Control::resetLayout: resetLayout = true; break;
-        case Control::resetBoard: zoom = 1.0f; pan = {}; break;
+        case Control::resetBoard:
+#if defined(_WIN32)
+            if (modelOpen)
+            {
+                model.resetView();
+                break;
+            }
+#endif
+            zoom = 1.0f;
+            pan = {};
+            break;
         case Control::clearNote: setNote({}); break;
 #if defined(_WIN32)
         case Control::reloadProject: project->reopen(); break;
@@ -313,6 +329,15 @@ void Shell::activate(Control control)
         case Control::moveRight: project->translate(1.0, 0.0); break;
         case Control::moveDown: project->translate(0.0, -1.0); break;
         case Control::moveUp: project->translate(0.0, 1.0); break;
+        case Control::toggleModel:
+            modelOpen = !modelOpen;
+            if (modelOpen && !project->cad().scene())
+            {
+                project->readCad();
+            }
+            break;
+        case Control::reloadModel: project->readCad(); break;
+        case Control::reloadResult: project->readResult(); break;
 #endif
         default: break;
     }
@@ -526,7 +551,8 @@ void Shell::drawBoard()
         requestedFocus == Control::reloadProject || requestedFocus == Control::saveProject ||
         requestedFocus == Control::undoProject || requestedFocus == Control::moveLeft ||
         requestedFocus == Control::moveRight || requestedFocus == Control::moveDown ||
-        requestedFocus == Control::moveUp)
+        requestedFocus == Control::moveUp || requestedFocus == Control::toggleModel ||
+        requestedFocus == Control::reloadModel)
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::board)
@@ -604,37 +630,33 @@ void Shell::drawBoard()
 void Shell::drawLiveBoard()
 {
     ImGui::TextUnformatted(project->path().c_str());
-    const auto button = [this](Control control, const char* label, bool enabled)
+    boardButton(Control::toggleModel, modelOpen ? "2D 편집" : "3D 형상", project->view() != nullptr, modelOpen);
+    ImGui::SameLine();
+    if (modelOpen)
     {
-        ImGui::BeginDisabled(!enabled);
-        if (ImGui::SmallButton(label))
-        {
-            activate(control);
-        }
-        focusItem(control);
-        access.item(control, Control::board, enabled);
-        ImGui::EndDisabled();
-    };
-    button(Control::reloadProject, "다시 열기", !project->busy());
+        drawLiveModel();
+        return;
+    }
+    boardButton(Control::reloadProject, "다시 열기", !project->busy());
     ImGui::SameLine();
     auto* view = project->view();
-    button(Control::saveProject, "저장", view && project->writable() && view->revision != view->savedRevision);
+    boardButton(Control::saveProject, "저장", view && project->writable() && view->revision != view->savedRevision);
     ImGui::SameLine();
-    button(Control::undoProject, "되돌리기", view && project->writable() && view->canUndo);
+    boardButton(Control::undoProject, "되돌리기", view && project->writable() && view->canUndo);
     ImGui::SameLine();
-    button(Control::resetBoard, "보기 초기화", view != nullptr);
+    boardButton(Control::resetBoard, "보기 초기화", view != nullptr);
 
     ImGui::AlignTextToFramePadding();
     ImGui::TextUnformatted("도체 이동 (1 mm)");
     const bool movable = project->canTranslate();
     ImGui::SameLine();
-    button(Control::moveLeft, "-X", movable);
+    boardButton(Control::moveLeft, "-X", movable);
     ImGui::SameLine();
-    button(Control::moveRight, "+X", movable);
+    boardButton(Control::moveRight, "+X", movable);
     ImGui::SameLine();
-    button(Control::moveDown, "-Y", movable);
+    boardButton(Control::moveDown, "-Y", movable);
     ImGui::SameLine();
-    button(Control::moveUp, "+Y", movable);
+    boardButton(Control::moveUp, "+Y", movable);
 
     if (!project->message().empty())
     {
@@ -671,6 +693,120 @@ void Shell::drawLiveBoard()
         boardDrawn = drawProjectCanvas(*view, zoom, pan);
     }
 }
+
+void Shell::boardButton(Control control, const char* label, bool enabled, bool checked)
+{
+    ImGui::BeginDisabled(!enabled);
+    if (ImGui::SmallButton(label))
+    {
+        activate(control);
+    }
+    focusItem(control);
+    access.item(control, Control::board, enabled, checked);
+    ImGui::EndDisabled();
+}
+
+/** @brief 검증한 표시 장면으로만 카메라를 그리고 같은 개정의 원본 선택을 연결한다. */
+void Shell::drawLiveModel()
+{
+    const auto& cad = project->cad();
+    const auto& scene = cad.scene();
+    boardButton(Control::reloadModel, "3D 다시 읽기", project->writable() && !cad.loading());
+    ImGui::SameLine();
+    boardButton(Control::resetBoard, "보기 초기화", scene != nullptr);
+    model.setScene(scene);
+    if (!cad.status().empty())
+    {
+        ImGui::TextWrapped("%s", cad.status().c_str());
+    }
+    if (!scene)
+    {
+        if (cad.status().empty())
+        {
+            ImGui::TextUnformatted("게시된 3D 형상이 없습니다.");
+        }
+        return;
+    }
+    auto* view = project->view();
+    const bool current = view && view->revision == scene->revisionId;
+    ImGui::Text("3D 개정 %.12s  |  %s", scene->revisionId.c_str(),
+        current ? "현재 설계" : "이전 설계");
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("개정 %s\n스냅샷 %s\n실행 %s", scene->revisionId.c_str(),
+            scene->snapshotId.c_str(), scene->runId.c_str());
+    }
+    if (const auto* body = model.selected())
+    {
+        const std::string& id = body->sources.front();
+        const auto* shape = current ? view->canvas.Find(id) : nullptr;
+        ImGui::Text("선택: %s", shape && body->sources.size() == 1 ? shape->label.c_str() : body->id.c_str());
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::BeginTooltip();
+            for (const auto& source : body->sources)
+            {
+                ImGui::TextUnformatted(source.c_str());
+            }
+            ImGui::EndTooltip();
+        }
+    }
+    else
+    {
+        ImGui::Dummy({0.0f, ImGui::GetTextLineHeight()});
+    }
+
+    const auto origin = ImGui::GetCursorScreenPos();
+    const auto size = ImGui::GetContentRegionAvail();
+    if (size.x < 24.0f || size.y < 24.0f)
+    {
+        return;
+    }
+    const bool clicked = ImGui::InvisibleButton("###cad-model", size,
+        ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonMiddle);
+    const auto& io = ImGui::GetIO();
+    if (ImGui::IsItemHovered() && io.MouseWheel != 0.0f)
+    {
+        model.zoom(io.MouseWheel);
+    }
+    if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Left))
+    {
+        model.rotate(io.MouseDelta.x, io.MouseDelta.y);
+    }
+    if (ImGui::IsItemActive() && ImGui::IsMouseDragging(ImGuiMouseButton_Middle))
+    {
+        model.pan(io.MouseDelta.x, io.MouseDelta.y, size.y);
+    }
+    if (clicked && ImGui::IsMouseReleased(ImGuiMouseButton_Left) &&
+        !ImGui::IsMouseDragPastThreshold(ImGuiMouseButton_Left))
+    {
+        model.pick(io.MousePos.x - origin.x, io.MousePos.y - origin.y, size.x, size.y);
+        const auto* body = model.selected();
+        if (current)
+        {
+            view->selection.clear();
+            if (body && body->sources.size() == 1 && view->canvas.Find(body->sources.front()))
+            {
+                view->selection = body->sources.front();
+            }
+        }
+    }
+    const float maxSize = static_cast<float>(std::min(2048u, bgfx::getCaps()->limits.maxTextureSize));
+    const float scale = std::min(ImGui::GetWindowViewport()->DpiScale, maxSize / std::max(size.x, size.y));
+    const auto pixelsWide = static_cast<std::uint16_t>(std::max(1.0f, std::round(size.x * scale)));
+    const auto pixelsHigh = static_cast<std::uint16_t>(std::max(1.0f, std::round(size.y * scale)));
+    model.submit(pixelsWide, pixelsHigh, current ? view->selection : std::string{});
+    if (!model.error().empty())
+    {
+        ImGui::SetCursorScreenPos(origin);
+        ImGui::TextUnformatted(model.error().c_str());
+        return;
+    }
+    const bool flip = bgfx::getCaps()->originBottomLeft;
+    ImGui::GetWindowDrawList()->AddImage(Renderer::modelTextureId, origin,
+        {origin.x + size.x, origin.y + size.y}, {0.0f, flip ? 1.0f : 0.0f},
+        {1.0f, flip ? 0.0f : 1.0f});
+}
 #endif
 
 void Shell::drawResult(bool hasViewports)
@@ -693,10 +829,13 @@ void Shell::drawResult(bool hasViewports)
         ImGui::SetNextWindowSize({640.0f, 385.0f}, ImGuiCond_Always);
         undockNextFrame = false;
     }
-    if (requestedFocus == Control::result)
+    if (requestedFocus == Control::result || requestedFocus == Control::reloadResult)
     {
         ImGui::SetNextWindowFocus();
-        requestedFocus = Control::root;
+        if (requestedFocus == Control::result)
+        {
+            requestedFocus = Control::root;
+        }
     }
     if (ImGui::Begin(resultTitle, &resultOpen))
     {
@@ -708,7 +847,7 @@ void Shell::drawResult(bool hasViewports)
 #if defined(_WIN32)
         if (project && project->configured())
         {
-            ImGui::TextUnformatted("프로젝트의 해석 결과 조회는 이식 중입니다.");
+            drawLiveResult();
             ImGui::End();
             return;
         }
@@ -728,6 +867,69 @@ void Shell::drawResult(bool hasViewports)
     }
     ImGui::End();
 }
+
+#if defined(_WIN32)
+/** @brief 현재 프로젝트의 최신 완료 실행에서 고정한 S11 표본과 출처를 표시한다. */
+void Shell::drawLiveResult()
+{
+    const auto& result = project->result();
+    const auto& series = result.series();
+    if (!series && result.status().empty())
+    {
+        project->readResult();
+    }
+    ImGui::BeginDisabled(!project->writable());
+    if (ImGui::SmallButton("결과 다시 읽기"))
+    {
+        activate(Control::reloadResult);
+    }
+    focusItem(Control::reloadResult);
+    access.item(Control::reloadResult, Control::result, project->writable());
+    ImGui::EndDisabled();
+    if (!series)
+    {
+        if (!result.status().empty())
+        {
+            ImGui::TextWrapped("%s", result.status().c_str());
+        }
+        return;
+    }
+
+    const auto* view = project->view();
+    const bool current = view && view->revision == series->revision;
+    ImGui::SameLine();
+    ImGui::Text("결과 개정 %.12s  |  %s  |  %zu개 표본", series->revision.c_str(),
+        current ? "현재 설계" : "이전 설계", series->total);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::TextUnformatted(series->label.c_str());
+        ImGui::Text("개정 %s", series->revision.c_str());
+        ImGui::Text("자료 SHA-256 %s", series->pin.at("dataset_sha256").get_ref<const std::string&>().c_str());
+        for (const auto& reference : series->references)
+        {
+            ImGui::TextUnformatted(reference.get_ref<const std::string&>().c_str());
+        }
+        ImGui::EndTooltip();
+    }
+    if (!result.status().empty())
+    {
+        ImGui::TextWrapped("%s", result.status().c_str());
+    }
+    ImGui::PushID(series->source.at("artifact_id").get_ref<const std::string&>().c_str());
+    if (ImPlot::BeginPlot("###project-s11", {-1.0f, -1.0f}, ImPlotFlags_NoLegend))
+    {
+        ImPlot::SetupAxes("주파수 (GHz)", "|S11| (dB)");
+        ImPlot::SetNextLineStyle(ImVec4(0.32f, 0.82f, 0.78f, 1.0f), 2.0f);
+        ImPlot::SetNextMarkerStyle(ImPlotMarker_Circle, 2.5f);
+        ImPlot::PlotLine("S11", series->frequenciesGhz.data(), series->magnitudeDb.data(),
+            static_cast<int>(series->total));
+        ImPlot::EndPlot();
+        plotDrawn = true;
+    }
+    ImGui::PopID();
+}
+#endif
 
 void Shell::drawInput(SDL_Window* mainWindow)
 {
@@ -1294,7 +1496,7 @@ int run(SDL_Window* window, const Options& options)
             Smoke smoke(window, renderer.hasViewports());
 #if defined(_WIN32)
             PrototypeService service;
-            PrototypeProject project(options.openProject);
+            PrototypeProject project(options.openProject, options.service.workspace);
             shell.project = &project;
             if (options.service.python)
             {
@@ -1347,7 +1549,11 @@ int run(SDL_Window* window, const Options& options)
 #endif
                     shell.draw(renderer, window, korean, serviceStatus);
                     ImGui::Render();
+#if defined(_WIN32)
+                    renderer.renderFrame(shell.model.texture());
+#else
                     renderer.renderFrame();
+#endif
                     shell.finishFrame(window);
                     if (options.smoke)
                     {

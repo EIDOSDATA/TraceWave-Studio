@@ -15,6 +15,7 @@
 namespace
 {
 constexpr ImTextureID fontTextureId = 1;
+constexpr bgfx::ViewId mainView = 1;
 constexpr auto resetFlags = BGFX_RESET_VSYNC;
 constexpr auto viewClear = 0x141b24ff;
 
@@ -218,8 +219,9 @@ bool Renderer::hasViewports() const
         && (ImGui::GetIO().BackendFlags & ImGuiBackendFlags_PlatformHasViewports);
 }
 
-void Renderer::renderFrame()
+void Renderer::renderFrame(bgfx::TextureHandle modelTexture)
 {
+    modelTexture_ = modelTexture;
     const ImGuiIO& io = ImGui::GetIO();
     const bool viewports = (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) != 0;
     if (viewports)
@@ -235,7 +237,7 @@ void Renderer::renderFrame()
             bgfx::reset(resetFlags, &chain);
             main_.chain = chain;
         }
-        renderDrawData(*ImGui::GetDrawData(), 0, main_);
+        renderDrawData(*ImGui::GetDrawData(), mainView, main_);
     }
     if (viewports)
     {
@@ -277,7 +279,7 @@ void Renderer::destroyViewport(ImGuiViewport* viewport)
     if (surface)
     {
         auto& renderer = currentRenderer();
-        const auto id = static_cast<bgfx::ViewId>(surface - renderer.secondary_.data() + 1);
+        const auto id = static_cast<bgfx::ViewId>(surface - renderer.secondary_.data() + mainView + 1);
         bgfx::resetView(id);
         bgfx::destroy(surface->buffer);
         bgfx::frame();
@@ -304,7 +306,7 @@ void Renderer::renderViewport(ImGuiViewport* viewport, void*)
         bgfx::updateSwapChain(surface->buffer, chain);
         surface->chain = chain;
     }
-    const auto id = static_cast<bgfx::ViewId>(surface - renderer.secondary_.data() + 1);
+    const auto id = static_cast<bgfx::ViewId>(surface - renderer.secondary_.data() + mainView + 1);
     if (renderer.renderDrawData(*viewport->DrawData, id, *surface))
     {
         ++renderer.secondaryFrames_;
@@ -365,7 +367,16 @@ bool Renderer::renderDrawData(const ImDrawData& data, bgfx::ViewId id, const Sur
                 }
                 continue;
             }
-            if (command.GetTexID() != fontTextureId || !command.ElemCount)
+            bgfx::TextureHandle texture = BGFX_INVALID_HANDLE;
+            if (command.GetTexID() == fontTextureId)
+            {
+                texture = font_;
+            }
+            else if (command.GetTexID() == modelTextureId)
+            {
+                texture = modelTexture_;
+            }
+            if (!bgfx::isValid(texture) || !command.ElemCount)
             {
                 continue;
             }
@@ -384,7 +395,7 @@ bool Renderer::renderDrawData(const ImDrawData& data, bgfx::ViewId id, const Sur
             bgfx::setScissor(x, y, static_cast<std::uint16_t>(clipWidth), static_cast<std::uint16_t>(clipHeight));
             bgfx::setState(BGFX_STATE_WRITE_RGB | BGFX_STATE_WRITE_A | BGFX_STATE_MSAA
                 | BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA));
-            bgfx::setTexture(0, sampler_, font_);
+            bgfx::setTexture(0, sampler_, texture);
             bgfx::setVertexBuffer(0, &vertices, command.VtxOffset, vertexCount - command.VtxOffset);
             bgfx::setIndexBuffer(&indices, command.IdxOffset, command.ElemCount);
             bgfx::submit(id, program_);

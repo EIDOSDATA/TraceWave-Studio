@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../wxwidgets/canvas_scene.h"
+#include "prototype_cad.h"
+#include "prototype_result.h"
 #include "prototype_service.h"
 
 #include <chrono>
@@ -21,12 +23,16 @@ public:
         bool canUndo = false;
     };
 
-    explicit PrototypeProject(const char* path);
+    explicit PrototypeProject(const char* path, const char* workspace);
     void update(PrototypeService& service);
     void reopen();
     void save();
     void translate(double dx, double dy);
     void undo();
+    void readCad();
+    void readResult();
+    const PrototypeCad& cad() const { return cad_; }
+    const PrototypeResult& result() const { return result_; }
 
     bool configured() const { return !path_.empty(); }
     bool busy() const;
@@ -37,13 +43,19 @@ public:
     View* view() { return view_ ? &*view_ : nullptr; }
 
 private:
-    enum class Step { idle, open, save, translate, undo, edited, accepted, job, canvas, editor, finished, failed };
+    enum class Step
+    {
+        idle, open, save, translate, undo, edited, accepted, job, canvas, editor, cad,
+        solverLatest, resultDescribe, resultPage, finished, failed
+    };
     void receive(const nlohmann::json& reply);
     void receiveJob(const nlohmann::json& result);
     void receiveCanvas(const nlohmann::json& result);
     void finishView(const nlohmann::json& editor);
     void fail(std::string message);
 
+    PrototypeCad cad_;
+    PrototypeResult result_;
     std::string path_;
     std::string message_;
     Step step_ = Step::idle;

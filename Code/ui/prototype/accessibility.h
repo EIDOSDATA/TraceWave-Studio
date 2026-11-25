@@ -14,7 +14,7 @@ constexpr std::size_t noteCapacity = 256;
 enum class Control
 {
     root, menuBar, windowMenu, showBoard, showResult, focusNote, detachResult, detachNote, resetLayout,
-    board, resetBoard, result, input, note, clearNote, reloadProject, saveProject, undoProject, moveLeft, moveRight, moveDown, moveUp
+    board, resetBoard, result, input, note, clearNote, reloadProject, saveProject, undoProject, moveLeft, moveRight, moveDown, moveUp, toggleModel, reloadModel, reloadResult
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };

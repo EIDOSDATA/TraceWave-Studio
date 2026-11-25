@@ -21,7 +21,7 @@ std::string errorMessage(const Json& error)
 }
 }
 
-PrototypeProject::PrototypeProject(const char* path) : path_(path ? path : "")
+PrototypeProject::PrototypeProject(const char* path, const char* workspace) : cad_(workspace), path_(path ? path : "")
 {
     if (configured())
     {
@@ -84,9 +84,28 @@ void PrototypeProject::undo()
     }
 }
 
+void PrototypeProject::readCad()
+{
+    if (view_ && writable() && !cad_.loading())
+    {
+        step_ = Step::cad;
+        cad_.setStatus("게시된 3D 형상을 조회하는 중");
+    }
+}
+
+void PrototypeProject::readResult()
+{
+    if (view_ && writable())
+    {
+        step_ = Step::solverLatest;
+        result_.setStatus("완료된 해석과 S11 표본을 조회하는 중");
+    }
+}
+
 /** @brief 프레임마다 응답과 작업을 진행하며 UI 스레드에서 외부 프로세스를 기다리지 않는다. */
 void PrototypeProject::update(PrototypeService& service)
 {
+    cad_.poll();
     if (!configured())
     {
         return;
@@ -172,6 +191,18 @@ void PrototypeProject::update(PrototypeService& service)
                     {{"expected_revision", loading_.revision}, {"offset", 0}, {"include_items", false},
                      {"selection", {{"kind", "project"}, {"id", loading_.id}}}});
                 break;
+            case Step::cad:
+                awaiting_ = service.request("cad.latest", {{"project_id", view_->id}}, Json::object());
+                break;
+            case Step::solverLatest:
+                awaiting_ = service.request("solver.latest", {{"project_id", view_->id}}, Json::object());
+                break;
+            case Step::resultDescribe:
+                awaiting_ = service.request("result.describe", {{"project_id", view_->id}}, result_.descriptionInput());
+                break;
+            case Step::resultPage:
+                awaiting_ = service.request("result.page", {{"project_id", view_->id}}, result_.pageInput());
+                break;
             default:
                 return;
         }
@@ -210,6 +241,23 @@ void PrototypeProject::receive(const Json& reply)
             break;
         case Step::editor:
             finishView(result);
+            break;
+        case Step::cad:
+            cad_.accept(result, view_->id);
+            step_ = Step::finished;
+            break;
+        case Step::solverLatest:
+            step_ = result_.acceptLatest(result) ? Step::resultDescribe : Step::finished;
+            break;
+        case Step::resultDescribe:
+            result_.acceptDescription(result, view_->id, view_->revision);
+            step_ = Step::resultPage;
+            break;
+        case Step::resultPage:
+            if (result_.acceptPage(result))
+            {
+                step_ = Step::finished;
+            }
             break;
         case Step::edited:
             if (result.at("project_id") != view_->id || result.at("new_revision") == view_->revision)
@@ -355,6 +403,24 @@ void PrototypeProject::finishView(const Json& editor)
 
 void PrototypeProject::fail(std::string message)
 {
+    if (step_ == Step::cad)
+    {
+        const auto failure = "3D 형상 조회 실패: " + message;
+        std::fprintf(stderr, "%s\n", failure.c_str());
+        cad_.setStatus(failure);
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
+    if (step_ == Step::solverLatest || step_ == Step::resultDescribe || step_ == Step::resultPage)
+    {
+        const auto failure = "S11 결과 조회 실패: " + message;
+        std::fprintf(stderr, "%s\n", failure.c_str());
+        result_.setStatus(failure);
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
     message_ = std::move(message);
     std::fprintf(stderr, "%s\n", message_.c_str());
     pages_ = nullptr;

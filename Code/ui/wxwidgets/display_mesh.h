@@ -383,8 +383,8 @@ inline Scene Load(const std::filesystem::path& workspace, const Json& artifact, 
     Require(!relative.is_absolute() && !relative.has_root_name() && !relative.has_root_directory(), "잘못된 3D 파일 경로입니다.");
     for (const auto& component : relative)
     {
-        const auto name = component.u8string();
-        Require(!name.empty() && name != "." && name != ".." && name.back() != '.' && name.back() != ' ',
+        const auto& name = component.native();
+        Require(!name.empty() && component != "." && component != ".." && name.back() != '.' && name.back() != ' ',
             "3D 파일 경로에 허용하지 않는 요소가 있습니다.");
     }
     Handles handles;
