@@ -32,3 +32,6 @@ private:
     std::chrono::steady_clock::time_point deadline_;
     std::string status_;
 };
+
+/** @brief 한 줄씩 공개 요청을 재생하고 같은 ID의 응답을 표준 출력으로 보낸다. */
+int runPrototypeServiceReplay(const PrototypeServiceOptions& options);

@@ -43,6 +43,7 @@ struct Options
 #if defined(_WIN32)
     PrototypeServiceOptions service;
     bool serviceCheck = false;
+    bool serviceReplay = false;
 #endif
 };
 
@@ -107,6 +108,10 @@ bool parseOptions(int argc, char** argv, Options& options)
         {
             options.serviceCheck = true;
         }
+        else if (argument == "--service-replay")
+        {
+            options.serviceReplay = true;
+        }
         else if (argument == "--python" && index + 1 < argc)
         {
             options.service.python = argv[++index];
@@ -126,10 +131,11 @@ bool parseOptions(int argc, char** argv, Options& options)
         }
     }
 #if defined(_WIN32)
-    const bool requested = options.serviceCheck || options.service.python || options.service.source ||
-        options.service.workspace;
+    const bool requested = options.serviceCheck || options.serviceReplay || options.service.python ||
+        options.service.source || options.service.workspace;
     if (requested && (!options.service.python || !options.service.source || !options.service.workspace ||
-        (options.serviceCheck && options.smoke)))
+        ((options.serviceCheck || options.serviceReplay) && options.smoke) ||
+        (options.serviceCheck && options.serviceReplay)))
     {
         return false;
     }
@@ -1254,12 +1260,16 @@ int runShell(int argc, char** argv)
     {
         std::fputs("Usage: tracewave_shell_prototype [--smoke] [--font <font-file>]\n", stderr);
 #if defined(_WIN32)
-        std::fputs("       [--service-check] --python <python.exe> --source <Code/src> --workspace <path>\n", stderr);
+        std::fputs("       [--service-check | --service-replay] --python <python.exe> --source <Code/src> --workspace <path>\n", stderr);
 #endif
         return 2;
     }
     SDL_SetMainReady();
 #if defined(_WIN32)
+    if (options.serviceReplay)
+    {
+        return runPrototypeServiceReplay(options.service);
+    }
     if (options.serviceCheck)
     {
         PrototypeService service;

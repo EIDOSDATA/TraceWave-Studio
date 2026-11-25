@@ -27,11 +27,15 @@ def request(method, params, identity=None):
     return frame
 
 
-def stdio(code, workspace, entry, requests):
+def stdio(code, workspace, entry, requests, *, client=None):
     """! @brief 한 작업 사본에 실제 한 줄 JSON 서버를 띄워 응답과 ID를 대조한다."""
     payload = "".join(json.dumps(frame, ensure_ascii=False) + "\n" for frame in requests).encode("utf-8")
     env = {**os.environ, "PYTHONPATH": str(code / "src"), "PYTHONDONTWRITEBYTECODE": "1"}
-    child = subprocess.run([sys.executable, "-X", "utf8", *entry, "--workspace", str(workspace)],
+    arguments = [sys.executable, "-X", "utf8", *entry, "--workspace", str(workspace)]
+    if client is not None:
+        arguments = [str(client), "--service-replay", "--python", sys.executable,
+                     "--source", str(code / "src"), "--workspace", str(workspace)]
+    child = subprocess.run(arguments,
                            input=payload, cwd=code, env=env, capture_output=True, timeout=90, check=False)
     if child.returncode:
         detail = child.stderr.decode("utf-8", errors="replace").strip()
@@ -60,7 +64,7 @@ def saved_revision(workspace, expected):
         raise ValueError(f"{workspace.name} 저장 개정 또는 문서 SHA256이 다릅니다.")
 
 
-def measure(code, workspace, expected):
+def measure(code, workspace, expected, *, client=None):
     """! @brief 원래 결과의 설명과 S11 페이지를 변경 요청 없이 두 프로토콜로 읽는다."""
     saved_revision(workspace, expected)
     contract = expected["public_api_contract"]
@@ -75,7 +79,7 @@ def measure(code, workspace, expected):
         request("capabilities.get", {"contract_version": contract, "context": {}, "input": {}}, 1),
         *(request(method, {"contract_version": contract, **params}, identity)
           for identity, (method, params) in enumerate(reads, 3)),
-    ])
+    ], client=client)
     init, catalog, *mcp = stdio(code, workspace, ["tools/mcp_stdio.py"], [
         request("initialize", {"protocolVersion": protocol}, 1),
         request("notifications/initialized", {}),
@@ -110,7 +114,7 @@ def verify_samples(page, expected, header):
             raise ValueError(f"B0 S11 표본이 다릅니다. {field}")
 
 
-def replay(manifest, restored, b0_code, main_code):
+def replay(manifest, restored, b0_code, main_code, *, client=None):
     """! @brief 검증된 작업 사본에서 읽기 전후 파일과 두 배포본의 결과를 대조한다."""
     if b0_code.samefile(main_code):
         raise ValueError("RC10과 main에 서로 다른 Code 경로가 필요합니다.")
@@ -133,7 +137,7 @@ def replay(manifest, restored, b0_code, main_code):
         if before != hashes:
             raise ValueError(f"{workspace.name} 복원 직후 파일 해시가 다릅니다.")
         try:
-            results.append(measure(code, workspace, manifest["replay"]))
+            results.append(measure(code, workspace, manifest["replay"], client=client))
         finally:
             after = tree_hash(workspace)
             after.pop(".writer.lock", None)
@@ -156,11 +160,13 @@ def main():
     parser.add_argument("manifest", type=Path)
     parser.add_argument("restored", type=Path)
     parser.add_argument("b0_code", type=Path)
+    parser.add_argument("--client", type=Path, help="공개 API에 사용할 Windows 시제품 실행 파일")
     args = parser.parse_args()
     main_code = Path(__file__).resolve().parents[1]
     try:
+        client = args.client.resolve(strict=True) if args.client is not None else None
         result = replay(load_json(args.manifest), args.restored.resolve(strict=True),
-                        args.b0_code.resolve(strict=True), main_code)
+                        args.b0_code.resolve(strict=True), main_code, client=client)
     except (OSError, ValueError, KeyError, TypeError, subprocess.TimeoutExpired) as error:
         parser.exit(1, f"B0 결과 재생 실패: {error}\n")
     print(json.dumps(result, ensure_ascii=False, allow_nan=False, indent=2))

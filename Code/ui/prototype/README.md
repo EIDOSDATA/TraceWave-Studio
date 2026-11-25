@@ -39,7 +39,9 @@ $workspace = 'C:\검수자료\시제품 시험 작업 영역'
 .\Code\build\shell-prototype\tracewave_shell_prototype.exe --python $python --source $source --workspace $workspace
 ```
 
-현재 연결은 `capabilities.get`의 공개 계약을 확인한다. 동결 B0 작업 사본의 개정 및 과거 결과 비교는 430의 복원 절차에서 이어간다. [B0 복원과 결과 재생](../../../01_개발문서/07_검증/430_알원_비제로_기준선_확정.md#저장-개정과-결과-재생)
+일반 실행에서는 `capabilities.get`으로 공개 계약을 확인한다. `--service-replay`는 검수용 작업 사본에 표준 입력의 UTF-8 JSON-RPC 요청을 한 줄씩 보낸다. 각 줄에는 요청 ID가 필요하다. 표준 출력은 같은 ID의 응답만 전달하며 서비스 진단은 표준 오류에 기록한다. 응답은 공개 오류를 포함하며 한 요청의 대기 시간은 최대 30초다.
+
+동결 B0 작업 사본의 조회는 430의 `replay_b0_result.py --client` 명령에서 실행한다. [B0 복원과 결과 재생](../../../01_개발문서/07_검증/430_알원_비제로_기준선_확정.md#저장-개정과-결과-재생)
 
 ## Windows 한글 입력과 화면 읽기
 
