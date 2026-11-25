@@ -1031,7 +1031,7 @@ void PrototypeProject::receive(const Json& reply)
             {
                 analysis_.selectCondition(newSolverCondition_);
                 newSolverCondition_.clear();
-                analysis_.setStatus("해석 조건을 추가했습니다. 프로젝트를 저장하세요.");
+                analysis_.setStatus("해석 조건을 현재 편집 개정에 추가했습니다.");
             }
             step_ = Step::finished;
             break;
