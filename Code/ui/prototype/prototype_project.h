@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../wxwidgets/canvas_scene.h"
+#include "prototype_analysis.h"
 #include "prototype_cad_job.h"
 #include "prototype_result.h"
 #include "prototype_service.h"
@@ -36,14 +37,24 @@ public:
     bool canStartCad() const;
     const PrototypeCadJob& cadJob() const { return cadJob_; }
     void readResult();
+    void readSolverConditions();
+    void moveSolverCondition(int direction);
+    void reviewSolver();
+    void approveSolver();
+    void cancelSolver() { analysis_.cancel(); }
+    bool solverReady() const { return solverReady_; }
+    bool canReadSolverConditions() const;
+    bool canReviewSolver() const;
+    bool canApproveSolver() const;
+    const PrototypeAnalysis& analysis() const { return analysis_; }
     const PrototypeCad& cad() const { return cad_; }
     const PrototypeResult& result() const { return result_; }
 
     bool configured() const { return !path_.empty(); }
     bool busy() const;
     bool canTranslate() const;
-    bool writable() const { return step_ == Step::finished && !cadJob_.sealing(); }
-    bool canReopen() const { return configured() && !busy() && !cadJob_.sealing(); }
+    bool writable() const { return step_ == Step::finished && !cadJob_.sealing() && !analysis_.sealing(); }
+    bool canReopen() const { return configured() && !busy() && !cadJob_.sealing() && !analysis_.sealing(); }
     const std::string& path() const { return path_; }
     const std::string& message() const { return message_; }
     View* view() { return view_ ? &*view_ : nullptr; }
@@ -52,8 +63,9 @@ private:
     enum class Step
     {
         idle, open, save, translate, undo, edited, accepted, job, canvas, editor, cad,
-        solverLatest, resultDescribe, resultPage, finished, failed
+        solverLatest, resultDescribe, resultPage, solverConditions, finished, failed
     };
+    bool sendBackground(PrototypeService& service);
     void receive(const nlohmann::json& reply);
     void receiveJob(const nlohmann::json& result);
     void receiveCanvas(const nlohmann::json& result);
@@ -62,7 +74,10 @@ private:
 
     PrototypeCad cad_;
     PrototypeCadJob cadJob_;
+    PrototypeAnalysis analysis_;
     bool cadReady_ = false;
+    bool solverReady_ = false;
+    bool showingCompletedAnalysis_ = false;
     PrototypeResult result_;
     std::string path_;
     std::string message_;

@@ -23,6 +23,7 @@ public:
     };
 
     bool acceptLatest(const nlohmann::json& reply);
+    void selectArtifact(const std::string& artifact);
     void acceptDescription(const nlohmann::json& reply, const std::string& project, const std::string& revision);
     bool acceptPage(const nlohmann::json& reply);
     nlohmann::json descriptionInput() const;

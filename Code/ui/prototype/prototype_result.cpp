@@ -42,8 +42,14 @@ bool PrototypeResult::acceptLatest(const json& reply)
         setStatus("완료된 해석 결과가 없습니다.");
         return false;
     }
-    pending_.source = {{"kind", "solver"}, {"artifact_id", latest.at("artifact_id").get<std::string>()}};
+    selectArtifact(latest.at("artifact_id").get<std::string>());
     return true;
+}
+
+void PrototypeResult::selectArtifact(const std::string& artifact)
+{
+    pending_ = {};
+    pending_.source = {{"kind", "solver"}, {"artifact_id", artifact}};
 }
 
 json PrototypeResult::descriptionInput() const

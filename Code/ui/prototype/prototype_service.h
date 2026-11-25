@@ -33,6 +33,7 @@ public:
     State state() const { return state_; }
     const std::string& status() const { return status_; }
     bool cadReady() const { return state_ == State::connected && cadReady_; }
+    bool solverReady() const { return state_ == State::connected && solverReady_; }
 
 private:
     void fail(std::string message);
@@ -45,6 +46,7 @@ private:
     unsigned inFlight_ = 0;
     nlohmann::json reply_;
     bool cadReady_ = false;
+    bool solverReady_ = false;
 };
 
 /** @brief 한 줄씩 공개 요청을 재생하고 같은 ID의 응답을 표준 출력으로 보낸다. */

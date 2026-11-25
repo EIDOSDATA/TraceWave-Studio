@@ -115,6 +115,59 @@ void PrototypeProject::readResult()
     }
 }
 
+bool PrototypeProject::canReadSolverConditions() const
+{
+    return solverReady_ && view_ && writable() && !analysis_.active();
+}
+
+bool PrototypeProject::canReviewSolver() const
+{
+    return canReadSolverConditions() && analysis_.canReview(view_->revision);
+}
+
+bool PrototypeProject::canApproveSolver() const
+{
+    return solverReady_ && view_ && writable() && analysis_.canApprove(view_->revision);
+}
+
+void PrototypeProject::readSolverConditions()
+{
+    if (canReadSolverConditions())
+    {
+        step_ = Step::solverConditions;
+        analysis_.setStatus("저장된 해석 조건을 읽는 중");
+    }
+}
+
+void PrototypeProject::moveSolverCondition(int direction)
+{
+    if (writable())
+    {
+        analysis_.moveChoice(direction);
+    }
+}
+
+void PrototypeProject::reviewSolver()
+{
+    if (canReviewSolver())
+    {
+        analysis_.review(view_->id, view_->revision);
+    }
+}
+
+void PrototypeProject::approveSolver()
+{
+    if (canApproveSolver())
+    {
+        analysis_.approve(view_->revision);
+    }
+}
+
+bool PrototypeProject::sendBackground(PrototypeService& service)
+{
+    return analysis_.send(service) || cadJob_.send(service);
+}
+
 /** @brief 프레임마다 응답과 작업을 진행하며 UI 스레드에서 외부 프로세스를 기다리지 않는다. */
 void PrototypeProject::update(PrototypeService& service)
 {
@@ -124,16 +177,19 @@ void PrototypeProject::update(PrototypeService& service)
         return;
     }
     cadReady_ = service.cadReady();
+    solverReady_ = service.solverReady();
     if (service.state() == PrototypeService::State::failed)
     {
         cadJob_.disconnected();
+        analysis_.disconnected();
         if (busy())
         {
             fail(service.status());
         }
         return;
     }
-    if (service.state() != PrototypeService::State::connected || !cadJob_.readReply(service, cad_))
+    if (service.state() != PrototypeService::State::connected ||
+        !cadJob_.readReply(service, cad_) || !analysis_.readReply(service))
     {
         return;
     }
@@ -150,15 +206,30 @@ void PrototypeProject::update(PrototypeService& service)
             receive(reply);
         }
 
-        // @brief GUI 전경 요청은 보존하면서 입력 봉인과 사용자 취소는 먼저 전송한다.
-        if (cadJob_.urgent() && cadJob_.send(service))
+        if (view_)
+        {
+            analysis_.checkRevision(view_->revision);
+        }
+        // @brief 입력 봉인과 사용자 취소를 먼저 보내고 전경 편집은 이전 응답 뒤 이어간다.
+        if ((analysis_.urgent() && analysis_.send(service)) || (cadJob_.urgent() && cadJob_.send(service)))
         {
             return;
         }
         if (!busy())
         {
-            cadJob_.send(service);
-            return;
+            auto artifact = analysis_.takeResult();
+            if (view_ && !artifact.empty())
+            {
+                result_.selectArtifact(artifact);
+                result_.setStatus("완료한 해석의 봉인 표본을 조회하는 중");
+                showingCompletedAnalysis_ = true;
+                step_ = Step::resultDescribe;
+            }
+            else
+            {
+                sendBackground(service);
+                return;
+            }
         }
 
         switch (step_)
@@ -207,7 +278,7 @@ void PrototypeProject::update(PrototypeService& service)
                 }
                 if (Clock::now() < nextPoll_)
                 {
-                    cadJob_.send(service);
+                    sendBackground(service);
                     return;
                 }
                 awaiting_ = service.request("job.status", Json::object(), {{"job_id", job_}});
@@ -223,6 +294,10 @@ void PrototypeProject::update(PrototypeService& service)
                 break;
             case Step::cad:
                 awaiting_ = service.request("cad.latest", {{"project_id", view_->id}}, Json::object());
+                break;
+            case Step::solverConditions:
+                awaiting_ = service.request("solver.conditions", {{"project_id", view_->id}},
+                    {{"expected_revision", view_->revision}});
                 break;
             case Step::solverLatest:
                 awaiting_ = service.request("solver.latest", {{"project_id", view_->id}}, Json::object());
@@ -276,6 +351,10 @@ void PrototypeProject::receive(const Json& reply)
             cad_.accept(result, view_->id);
             step_ = Step::finished;
             break;
+        case Step::solverConditions:
+            analysis_.acceptConditions(result, view_->revision);
+            step_ = Step::finished;
+            break;
         case Step::solverLatest:
             step_ = result_.acceptLatest(result) ? Step::resultDescribe : Step::finished;
             break;
@@ -286,6 +365,11 @@ void PrototypeProject::receive(const Json& reply)
         case Step::resultPage:
             if (result_.acceptPage(result))
             {
+                if (showingCompletedAnalysis_)
+                {
+                    analysis_.setStatus("해석 완료. 봉인된 S11 결과를 읽었습니다.");
+                    showingCompletedAnalysis_ = false;
+                }
                 step_ = Step::finished;
             }
             break;
@@ -442,8 +526,20 @@ void PrototypeProject::fail(std::string message)
         step_ = Step::finished;
         return;
     }
+    if (step_ == Step::solverConditions)
+    {
+        analysis_.setStatus("해석 조건 조회 실패. " + message);
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
     if (step_ == Step::solverLatest || step_ == Step::resultDescribe || step_ == Step::resultPage)
     {
+        if (showingCompletedAnalysis_)
+        {
+            analysis_.setStatus("해석을 완료했습니다. 결과 조회 상태를 확인하세요.");
+            showingCompletedAnalysis_ = false;
+        }
         const auto failure = "S11 결과 조회 실패: " + message;
         std::fprintf(stderr, "%s\n", failure.c_str());
         result_.setStatus(failure);

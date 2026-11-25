@@ -61,9 +61,19 @@ constexpr Description descriptions[] =
     {L"S11 결과 다시 읽기", L"reload-result", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"3D 생성", L"build-model", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"STEP 출력", L"export-step", UIA_ButtonControlTypeId, UIA_InvokePatternId},
-    {L"CAD 취소", L"cancel-cad", UIA_ButtonControlTypeId, UIA_InvokePatternId}
+    {L"CAD 취소", L"cancel-cad", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"해석 도구", L"show-solver", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"저장된 해석 조건 읽기", L"solver-conditions", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"이전 해석 조건", L"solver-condition-previous", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 해석 조건", L"solver-condition-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"해석 계획 검토", L"solver-review", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"검토한 해석 계획 실행", L"solver-run", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"해석 취소", L"solver-cancel", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"solver-selected-condition", UIA_TextControlTypeId},
+    {L"", L"solver-status", UIA_TextControlTypeId},
+    {L"", L"solver-plan-summary", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::cancelCad) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::solverPlan) + 1);
 
 struct Node
 {
@@ -73,6 +83,7 @@ struct Node
     bool enabled = true;
     bool focused = false;
     bool checked = false;
+    std::string name{};
 };
 
 struct Snapshot
@@ -240,7 +251,14 @@ public:
         }
         switch (property)
         {
-            case UIA_NamePropertyId: return setString(output, description.name);
+            case UIA_NamePropertyId:
+                if (node->name.empty())
+                {
+                    return setString(output, description.name);
+                }
+                output->vt = VT_BSTR;
+                output->bstrVal = utf8Value(node->name);
+                return output->bstrVal ? S_OK : E_OUTOFMEMORY;
             case UIA_AutomationIdPropertyId: return setString(output, description.id);
             case UIA_AcceleratorKeyPropertyId: return setString(output, description.shortcut);
             case UIA_ControlTypePropertyId:
@@ -448,7 +466,8 @@ private:
 
     bool canFocus(const Node& node) const
     {
-        return node.enabled && control != Control::menuBar;
+        return node.enabled && control != Control::menuBar &&
+            descriptions[static_cast<int>(control)].role != UIA_TextControlTypeId;
     }
 
     HRESULT fragment(Control target, IRawElementProviderFragment** output) const
@@ -597,7 +616,14 @@ void Host::update(Snapshot next, bool foreground)
         VARIANT before{};
         VARIANT after{};
         PROPERTYID property = 0;
-        if (pattern == UIA_ValuePatternId && previous.value != next.value)
+        if (prior->name != node.name)
+        {
+            property = UIA_NamePropertyId;
+            before.vt = after.vt = VT_BSTR;
+            before.bstrVal = utf8Value(prior->name);
+            after.bstrVal = utf8Value(node.name);
+        }
+        else if (pattern == UIA_ValuePatternId && previous.value != next.value)
         {
             property = UIA_ValueValuePropertyId;
             before.vt = after.vt = VT_BSTR;
@@ -674,6 +700,13 @@ void Bridge::item(Control control, Control parent, bool enabled, bool checked, c
     state->frame.push_back({viewport ? viewport->ID : window->Viewport->ID, area,
         {control, parent, {}, enabled, ImGui::IsItemFocused() || (control == Control::note && ImGui::IsItemActive()),
             checked}});
+}
+
+void Bridge::text(Control control, Control parent, std::string_view name)
+{
+    const ImRect area(ImGui::GetItemRectMin(), ImGui::GetItemRectMax());
+    state->frame.push_back({ImGui::GetWindowViewport()->ID, area,
+        {control, parent, {}, true, false, false, std::string(name)}});
 }
 
 void Bridge::panel(Control control)

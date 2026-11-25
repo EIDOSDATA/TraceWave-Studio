@@ -81,10 +81,13 @@ struct Shell
     PrototypeProject* project = nullptr;
     PrototypeModel model;
     bool modelOpen = false;
+    bool analysisOpen = false;
     void drawLiveBoard();
     void drawLiveModel();
     void drawLiveResult();
-    void boardButton(Control control, const char* label, bool enabled, bool checked = false);
+    void drawAnalysis();
+    void panelButton(Control control, const char* label, bool enabled, bool checked = false,
+        Control parent = Control::board);
 #endif
 
     bool processEvent(const SDL_Event& event);
@@ -349,6 +352,13 @@ void Shell::activate(Control control)
         case Control::exportStep: project->startCad(PrototypeCadJob::Output::step); break;
         case Control::cancelCad: project->cancelCad(); break;
         case Control::reloadResult: project->readResult(); break;
+        case Control::showSolver: analysisOpen = !analysisOpen; break;
+        case Control::readSolverConditions: project->readSolverConditions(); break;
+        case Control::priorSolverCondition: project->moveSolverCondition(-1); break;
+        case Control::nextSolverCondition: project->moveSolverCondition(1); break;
+        case Control::reviewSolver: project->reviewSolver(); break;
+        case Control::approveSolver: project->approveSolver(); break;
+        case Control::cancelSolver: project->cancelSolver(); break;
 #endif
         default: break;
     }
@@ -642,33 +652,33 @@ void Shell::drawBoard()
 void Shell::drawLiveBoard()
 {
     ImGui::TextUnformatted(project->path().c_str());
-    boardButton(Control::toggleModel, modelOpen ? "2D 편집" : "3D 형상", project->view() != nullptr, modelOpen);
+    panelButton(Control::toggleModel, modelOpen ? "2D 편집" : "3D 형상", project->view() != nullptr, modelOpen);
     ImGui::SameLine();
     if (modelOpen)
     {
         drawLiveModel();
         return;
     }
-    boardButton(Control::reloadProject, "다시 열기", project->canReopen());
+    panelButton(Control::reloadProject, "다시 열기", project->canReopen());
     ImGui::SameLine();
     auto* view = project->view();
-    boardButton(Control::saveProject, "저장", view && project->writable() && view->revision != view->savedRevision);
+    panelButton(Control::saveProject, "저장", view && project->writable() && view->revision != view->savedRevision);
     ImGui::SameLine();
-    boardButton(Control::undoProject, "되돌리기", view && project->writable() && view->canUndo);
+    panelButton(Control::undoProject, "되돌리기", view && project->writable() && view->canUndo);
     ImGui::SameLine();
-    boardButton(Control::resetBoard, "보기 초기화", view != nullptr);
+    panelButton(Control::resetBoard, "보기 초기화", view != nullptr);
 
     ImGui::AlignTextToFramePadding();
     ImGui::TextUnformatted("도체 이동 (1 mm)");
     const bool movable = project->canTranslate();
     ImGui::SameLine();
-    boardButton(Control::moveLeft, "-X", movable);
+    panelButton(Control::moveLeft, "-X", movable);
     ImGui::SameLine();
-    boardButton(Control::moveRight, "+X", movable);
+    panelButton(Control::moveRight, "+X", movable);
     ImGui::SameLine();
-    boardButton(Control::moveDown, "-Y", movable);
+    panelButton(Control::moveDown, "-Y", movable);
     ImGui::SameLine();
-    boardButton(Control::moveUp, "+Y", movable);
+    panelButton(Control::moveUp, "+Y", movable);
 
     if (!project->message().empty())
     {
@@ -706,7 +716,7 @@ void Shell::drawLiveBoard()
     }
 }
 
-void Shell::boardButton(Control control, const char* label, bool enabled, bool checked)
+void Shell::panelButton(Control control, const char* label, bool enabled, bool checked, Control parent)
 {
     ImGui::BeginDisabled(!enabled);
     if (ImGui::SmallButton(label))
@@ -714,7 +724,7 @@ void Shell::boardButton(Control control, const char* label, bool enabled, bool c
         activate(control);
     }
     focusItem(control);
-    access.item(control, Control::board, enabled, checked);
+    access.item(control, parent, enabled, checked);
     ImGui::EndDisabled();
 }
 
@@ -724,18 +734,18 @@ void Shell::drawLiveModel()
     const auto& cad = project->cad();
     const auto& scene = cad.scene();
     const auto& job = project->cadJob();
-    boardButton(Control::reloadModel, "3D 다시 읽기", project->writable() && !cad.loading() && !job.active());
+    panelButton(Control::reloadModel, "3D 다시 읽기", project->writable() && !cad.loading() && !job.active());
     ImGui::SameLine();
-    boardButton(Control::resetBoard, "보기 초기화", scene != nullptr);
-    boardButton(Control::buildModel, "3D 생성", project->canStartCad());
+    panelButton(Control::resetBoard, "보기 초기화", scene != nullptr);
+    panelButton(Control::buildModel, "3D 생성", project->canStartCad());
     if (!project->cadReady() && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
     {
         ImGui::SetTooltip("--cad-python으로 설치한 CAD 환경을 연결하세요.");
     }
     ImGui::SameLine();
-    boardButton(Control::exportStep, "STEP 출력", project->canStartCad());
+    panelButton(Control::exportStep, "STEP 출력", project->canStartCad());
     ImGui::SameLine();
-    boardButton(Control::cancelCad, "CAD 취소", job.canCancel());
+    panelButton(Control::cancelCad, "CAD 취소", job.canCancel());
     model.setScene(scene);
     if (!job.status().empty())
     {
@@ -863,7 +873,8 @@ void Shell::drawResult(bool hasViewports)
         ImGui::SetNextWindowSize({640.0f, 385.0f}, ImGuiCond_Always);
         undockNextFrame = false;
     }
-    if (requestedFocus == Control::result || requestedFocus == Control::reloadResult)
+    if (requestedFocus == Control::result || requestedFocus == Control::reloadResult ||
+        (requestedFocus >= Control::showSolver && requestedFocus <= Control::cancelSolver))
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::result)
@@ -912,14 +923,13 @@ void Shell::drawLiveResult()
     {
         project->readResult();
     }
-    ImGui::BeginDisabled(!project->writable());
-    if (ImGui::SmallButton("결과 다시 읽기"))
+    panelButton(Control::showSolver, "해석 도구", project->view() != nullptr, analysisOpen, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::reloadResult, "결과 다시 읽기", project->writable(), false, Control::result);
+    if (analysisOpen)
     {
-        activate(Control::reloadResult);
+        drawAnalysis();
     }
-    focusItem(Control::reloadResult);
-    access.item(Control::reloadResult, Control::result, project->writable());
-    ImGui::EndDisabled();
     if (!series)
     {
         if (!result.status().empty())
@@ -931,7 +941,10 @@ void Shell::drawLiveResult()
 
     const auto* view = project->view();
     const bool current = view && view->revision == series->revision;
-    ImGui::SameLine();
+    if (!analysisOpen)
+    {
+        ImGui::SameLine();
+    }
     ImGui::Text("결과 개정 %.12s  |  %s  |  %zu개 표본", series->revision.c_str(),
         current ? "현재 설계" : "이전 설계", series->total);
     if (ImGui::IsItemHovered())
@@ -962,6 +975,66 @@ void Shell::drawLiveResult()
         plotDrawn = true;
     }
     ImGui::PopID();
+}
+
+/** @brief 조건 선택, 계획 승인과 실제 작업 상태를 같은 결과 패널에 표시한다. */
+void Shell::drawAnalysis()
+{
+    const auto& analysis = project->analysis();
+    panelButton(Control::readSolverConditions, "조건 읽기", project->canReadSolverConditions(), false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::priorSolverCondition, "이전 조건", project->writable() && analysis.canMove(-1), false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::nextSolverCondition, "다음 조건", project->writable() && analysis.canMove(1), false, Control::result);
+    if (const auto* condition = analysis.condition())
+    {
+        ImGui::SameLine();
+        ImGui::TextUnformatted(condition->name.c_str());
+        access.text(Control::solverCondition, Control::result, condition->name);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::BeginTooltip();
+            const auto settings = condition->settings.dump(2);
+            ImGui::TextUnformatted(settings.c_str());
+            ImGui::EndTooltip();
+        }
+    }
+    panelButton(Control::reviewSolver, "계획 검토", project->canReviewSolver(), false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::approveSolver, "해석 실행", project->canApproveSolver(), false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::cancelSolver, "해석 취소", analysis.canCancel(), false, Control::result);
+
+    const auto& status = analysis.status();
+    if (!status.empty())
+    {
+        ImGui::TextWrapped("%s", status.c_str());
+        access.text(Control::solverStatus, Control::result, status);
+    }
+    else if (!project->solverReady())
+    {
+        constexpr char missing[] = "설치 및 감사가 완료된 Windows openEMS가 필요합니다.";
+        ImGui::TextUnformatted(missing);
+        access.text(Control::solverStatus, Control::result, missing);
+    }
+    if (const auto& plan = analysis.plan())
+    {
+        char summary[256];
+        std::snprintf(summary, sizeof(summary),
+            "계획 %.12s / 개정 %.12s / %.6g~%.6g GHz %zu개 / 격자 %llu / 예상 %.1f MiB / 최대 %d초",
+            plan->plan.c_str(), plan->revision.c_str(), plan->startGhz, plan->stopGhz, plan->samples,
+            static_cast<unsigned long long>(plan->cells), static_cast<double>(plan->bytes) / (1024.0 * 1024.0), plan->timeout);
+        ImGui::TextWrapped("%s", summary);
+        access.text(Control::solverPlan, Control::result, summary);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::BeginTooltip();
+            ImGui::TextUnformatted(plan->condition.c_str());
+            ImGui::TextUnformatted(plan->settings.c_str());
+            ImGui::TextUnformatted(plan->model.c_str());
+            ImGui::EndTooltip();
+        }
+    }
 }
 #endif
 

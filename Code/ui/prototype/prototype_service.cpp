@@ -174,6 +174,10 @@ void PrototypeService::poll()
         cadReady_ = cad != result.end() && cad->is_object() &&
             cad->value("profile", nlohmann::json(nullptr)) == "rfad.step.mechanical/0.1" &&
             cad->value("runtime_configured", nlohmann::json(nullptr)) == true;
+        const auto solver = result.find("solver_profile");
+        solverReady_ = solver != result.end() && solver->is_object() &&
+            solver->value("runtime_configured", nlohmann::json(nullptr)) == true &&
+            solver->value("runtime_profile", nlohmann::json(nullptr)) == "openems-windows-x64/0.1";
         state_ = State::connected;
         status_ = "Python 서비스 연결됨";
         std::printf("%s (%s, %zu개 메서드)\n", status_.c_str(), contractVersion, result["methods"].size());

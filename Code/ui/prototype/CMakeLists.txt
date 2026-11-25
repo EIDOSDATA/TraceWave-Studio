@@ -85,7 +85,8 @@ if(WIN32)
     endif()
     target_sources(tracewave_shell_prototype PRIVATE accessibility_windows.cpp prototype_service.cpp
         prototype_project.cpp prototype_canvas.cpp prototype_cad.cpp prototype_cad_job.cpp
-        prototype_model.cpp prototype_result.cpp ../wxwidgets/async_state.cpp
+        prototype_model.cpp prototype_result.cpp prototype_analysis.cpp
+        ../wxwidgets/async_state.cpp ../wxwidgets/analysis_workflow.cpp
         ../wxwidgets/service_client.cpp ../wxwidgets/canvas_scene.cpp
         ../wxwidgets/canvas_pcb_features.cpp ../wxwidgets/display_mesh_picking.cpp)
     target_compile_definitions(tracewave_shell_prototype PRIVATE NOMINMAX)
