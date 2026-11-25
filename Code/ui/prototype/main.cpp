@@ -728,6 +728,51 @@ struct Smoke
         }
     }
 
+    /** @brief 활성 IME에 전달한 위치를 메모가 속한 창의 캐럿 좌표와 대조한다. */
+    void checkImeArea(SDL_Window* host, const char* label)
+    {
+        const ImGuiContext& context = *ImGui::GetCurrentContext();
+        const ImGuiPlatformImeData& ime = context.PlatformImeData;
+        const ImGuiViewport* viewport = ImGui::FindViewportByID(context.PlatformImeViewport);
+        SDL_Rect area{};
+        int width = 0;
+        int height = 0;
+        const bool matchesHost = host && ime.WantVisible && viewport && windowId(viewport) == SDL_GetWindowID(host)
+            && SDL_TextInputActive(host) && SDL_GetWindowSize(host, &width, &height)
+            && SDL_GetTextInputArea(host, &area, nullptr);
+        if (matchesHost)
+        {
+            std::printf("IME window=%u area=(%d,%d %dx%d) client=%dx%d\n", SDL_GetWindowID(host),
+                area.x, area.y, area.w, area.h, width, height);
+        }
+        check(matchesHost && area.x >= 0 && area.y >= 0 && area.x < width && area.y < height
+            && area.w > 0 && area.h > 0 && std::abs(area.x + viewport->Pos.x - ime.InputPos.x) <= 1.0f
+            && std::abs(area.y + viewport->Pos.y - ime.InputPos.y - ime.InputLineHeight) <= 1.0f, label);
+    }
+
+    /** @brief 혼합 배율 장비가 없어도 분리 입력 창을 같은 디스플레이에서 옮긴다. */
+    void moveDetachedNote()
+    {
+        SDL_Window* host = SDL_GetWindowFromID(detachedNoteID);
+        SDL_Rect workArea{};
+        int width = 0;
+        const bool readPosition = host && SDL_GetWindowPosition(host, &noteStart.x, &noteStart.y)
+            && SDL_GetWindowSize(host, &width, nullptr)
+            && SDL_GetDisplayUsableBounds(SDL_GetDisplayForWindow(host), &workArea);
+        check(readPosition, "secondary note starting position available");
+        if (!readPosition)
+        {
+            return;
+        }
+        constexpr int distance = 64;
+        noteTargetX = noteStart.x + distance;
+        if (noteTargetX + width > workArea.x + workArea.w)
+        {
+            noteTargetX = noteStart.x - distance;
+        }
+        check(SDL_SetWindowPosition(host, noteTargetX, noteStart.y), "same-display secondary note move requested");
+    }
+
     void beforeEvents()
     {
         switch (frame)
@@ -796,6 +841,12 @@ struct Smoke
                     check(queueKey(SDL_EVENT_KEY_UP, windowID, SDL_SCANCODE_F8), "detach input shortcut released");
                 }
                 break;
+            case 58:
+                if (checkWindowsIme && hasViewports)
+                {
+                    moveDetachedNote();
+                }
+                break;
             case 59:
                 if (hasViewports)
                 {
@@ -849,6 +900,10 @@ struct Smoke
                     "resized GPU framebuffer matches SDL pixels");
                 check(shell.noteActive && shell.preedit == editingText && shell.note[0] == '\0',
                     "keyboard focus and separate IME preedit");
+                if (checkWindowsIme)
+                {
+                    checkImeArea(window, "main IME area follows its note caret");
+                }
                 break;
             }
             case 14:
@@ -896,6 +951,10 @@ struct Smoke
                     detachedNoteID = shell.detachedNoteWindow;
                     check(detachedNoteID && shell.noteActive && shell.noteWindow == detachedNoteID,
                         "secondary input is active in its own SDL window");
+                    if (checkWindowsIme)
+                    {
+                        checkImeArea(SDL_GetWindowFromID(detachedNoteID), "secondary IME area follows its note caret");
+                    }
                 }
                 break;
             case 59:
@@ -912,6 +971,20 @@ struct Smoke
                         "cancelled secondary composition did not change the note");
                 }
                 break;
+            case 62:
+                if (checkWindowsIme && hasViewports)
+                {
+                    SDL_Window* host = SDL_GetWindowFromID(detachedNoteID);
+                    int x = 0;
+                    int y = 0;
+                    const bool positionAvailable = host && SDL_GetWindowPosition(host, &x, &y);
+                    std::printf("Secondary note position (%d,%d) -> (%d,%d) expected x=%d\n",
+                        noteStart.x, noteStart.y, x, y, noteTargetX);
+                    check(positionAvailable && x == noteTargetX && y == noteStart.y && x != noteStart.x,
+                        "secondary input moved to the requested position");
+                    checkImeArea(host, "secondary IME area still follows its note caret after moving");
+                }
+                break;
             case 65:
                 if (hasViewports)
                 {
@@ -923,8 +996,19 @@ struct Smoke
             case 71:
                 if (hasViewports)
                 {
-                    check(!SDL_GetWindowFromID(detachedNoteID) && SDL_GetKeyboardFocus() == window
-                        && shell.noteActive && shell.noteWindow == windowID, "input focus returned to the main window");
+                    const bool closed = !SDL_GetWindowFromID(detachedNoteID);
+                    const bool mainFocused = SDL_GetKeyboardFocus() == window;
+                    const bool noteFocused = shell.noteActive && shell.noteWindow == windowID;
+                    if (!closed || !mainFocused || !noteFocused)
+                    {
+                        std::printf("Focus return: secondary closed=%d SDL main focus=%d main note active=%d\n",
+                            closed, mainFocused, noteFocused);
+                    }
+                    check(closed && mainFocused && noteFocused, "input focus returned to the main window");
+                    if (checkWindowsIme)
+                    {
+                        checkImeArea(window, "main IME area follows its note caret after focus returns");
+                    }
                 }
                 break;
             default:
@@ -937,11 +1021,18 @@ struct Smoke
     SDL_WindowID windowID;
     SDL_WindowID secondaryID = 0;
     SDL_WindowID detachedNoteID = 0;
+    SDL_Point noteStart{};
+    int noteTargetX = 0;
     SDL_DisplayID movedDisplay = 0;
     float secondaryScale = 0.0f;
     unsigned secondaryFrames = 0;
     int frame = 0;
     bool hasViewports;
+#if defined(_WIN32)
+    static constexpr bool checkWindowsIme = true;
+#else
+    static constexpr bool checkWindowsIme = false;
+#endif
     bool passed = true;
 };
 
