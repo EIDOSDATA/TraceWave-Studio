@@ -2,6 +2,7 @@
 
 #include "../wxwidgets/editor_sync.h"
 
+#include <algorithm>
 #include <array>
 #include <cstdio>
 #include <stdexcept>
@@ -115,6 +116,80 @@ void PrototypeProject::readResult()
     }
 }
 
+/** @brief 화면에서 확인한 결과의 출처와 pin만 내보내기 요청에 사용한다. */
+void PrototypeProject::prepareRfExport(const std::string& format)
+{
+    const auto& series = result_.series();
+    if (view_ && writable() && series &&
+        std::ranges::find(series->exportFormats, format) != series->exportFormats.end())
+    {
+        rfExportInput_ = {{"source", series->source}, {"pin", series->pin}, {"format", format}};
+        rfExportRevision_ = series->revision;
+        rfExportStatus_ = "선택한 RF 원본과 조건 데이터를 읽는 중";
+        step_ = Step::resultExport;
+    }
+}
+
+nlohmann::json PrototypeProject::takeRfExport()
+{
+    return std::exchange(rfExportResult_, {});
+}
+
+bool PrototypeProject::canReviewExchange() const
+{
+    return exchangeSupported_ && view_ && writable() && !exchange_.active();
+}
+
+bool PrototypeProject::canApproveExchange() const
+{
+    return exchangeReady_ && view_ && writable() && exchange_.canApprove(view_->revision);
+}
+
+bool PrototypeProject::canVerifyExchange() const
+{
+    return exchangeReady_ && canReviewExchange() && exchange_.published();
+}
+
+void PrototypeProject::reviewExchange()
+{
+    if (canReviewExchange())
+    {
+        exchange_.startReview(view_->id, view_->revision);
+    }
+}
+
+void PrototypeProject::approveExchange()
+{
+    if (canApproveExchange())
+    {
+        exchange_.approve(view_->revision);
+    }
+}
+
+void PrototypeProject::verifyExchange()
+{
+    if (canVerifyExchange())
+    {
+        exchange_.startVerify(view_->id);
+    }
+}
+
+void PrototypeProject::reloadExchange()
+{
+    if (canReviewExchange())
+    {
+        exchange_.reload(view_->id);
+    }
+}
+
+void PrototypeProject::moveExchangeFormat(int direction)
+{
+    if (writable())
+    {
+        exchange_.moveFormat(direction);
+    }
+}
+
 void PrototypeProject::readResultHistory()
 {
     if (view_ && writable())
@@ -193,7 +268,7 @@ void PrototypeProject::approveSolver()
 
 bool PrototypeProject::sendBackground(PrototypeService& service)
 {
-    return analysis_.send(service) || cadJob_.send(service);
+    return analysis_.send(service) || cadJob_.send(service) || exchange_.send(service);
 }
 
 /** @brief 프레임마다 응답과 작업을 진행하며 UI 스레드에서 외부 프로세스를 기다리지 않는다. */
@@ -206,10 +281,13 @@ void PrototypeProject::update(PrototypeService& service)
     }
     cadReady_ = service.cadReady();
     solverReady_ = service.solverReady();
+    exchangeSupported_ = service.exchangeSupported();
+    exchangeReady_ = service.exchangeReady();
     if (service.state() == PrototypeService::State::failed)
     {
         cadJob_.disconnected();
         analysis_.disconnected();
+        exchange_.disconnected();
         if (busy())
         {
             fail(service.status());
@@ -217,7 +295,7 @@ void PrototypeProject::update(PrototypeService& service)
         return;
     }
     if (service.state() != PrototypeService::State::connected ||
-        !cadJob_.readReply(service, cad_) || !analysis_.readReply(service))
+        !cadJob_.readReply(service, cad_) || !analysis_.readReply(service) || !exchange_.readReply(service))
     {
         return;
     }
@@ -237,9 +315,11 @@ void PrototypeProject::update(PrototypeService& service)
         if (view_)
         {
             analysis_.checkRevision(view_->revision);
+            exchange_.checkRevision(view_->revision);
         }
         // @brief 입력 봉인과 사용자 취소를 먼저 보내고 전경 편집은 이전 응답 뒤 이어간다.
-        if ((analysis_.urgent() && analysis_.send(service)) || (cadJob_.urgent() && cadJob_.send(service)))
+        if ((exchange_.urgent() && exchange_.send(service)) ||
+            (analysis_.urgent() && analysis_.send(service)) || (cadJob_.urgent() && cadJob_.send(service)))
         {
             return;
         }
@@ -339,6 +419,9 @@ void PrototypeProject::update(PrototypeService& service)
             case Step::resultPage:
                 awaiting_ = service.request("result.page", {{"project_id", view_->id}}, result_.pageInput());
                 break;
+            case Step::resultExport:
+                awaiting_ = service.request("result.export", {{"project_id", view_->id}}, rfExportInput_);
+                break;
             default:
                 return;
         }
@@ -408,6 +491,21 @@ void PrototypeProject::receive(const Json& reply)
                 step_ = Step::finished;
             }
             break;
+        case Step::resultExport:
+        {
+            const auto& conditions = result.at("sidecar");
+            if (result.at("source") != rfExportInput_.at("source") || result.at("pin") != rfExportInput_.at("pin") ||
+                conditions.at("source") != result.at("source") || conditions.at("pin") != result.at("pin") ||
+                conditions.at("source_revision").at("id") != rfExportRevision_ ||
+                conditions.at("source_unmodified") != true)
+            {
+                throw std::runtime_error("내보내기 응답의 출처, 고정 해시 또는 개정이 선택한 결과와 다릅니다.");
+            }
+            rfExportResult_ = result;
+            rfExportStatus_.clear();
+            step_ = Step::finished;
+            break;
+        }
         case Step::edited:
             if (result.at("project_id") != view_->id || result.at("new_revision") == view_->revision)
             {
@@ -564,6 +662,13 @@ void PrototypeProject::fail(std::string message)
     if (step_ == Step::solverConditions)
     {
         analysis_.setStatus("해석 조건 조회 실패. " + message);
+        awaiting_ = false;
+        step_ = Step::finished;
+        return;
+    }
+    if (step_ == Step::resultExport)
+    {
+        rfExportStatus_ = "RF 내보내기 요청 실패. " + message;
         awaiting_ = false;
         step_ = Step::finished;
         return;

@@ -194,6 +194,13 @@ void PrototypeResult::acceptDescription(const json& reply, const std::string& pr
     pending_.revision = source;
     pending_.pin = pin;
     pending_.references = references;
+    for (const auto& format : reply.value("available_exports", json::array()))
+    {
+        if (format == "csv" || format == "touchstone" || format == "hdf5" || format == "source")
+        {
+            pending_.exportFormats.push_back(format.get<std::string>());
+        }
+    }
     pending_.total = count;
     pending_.frequenciesGhz.reserve(count);
     pending_.magnitudeDb.reserve(count);

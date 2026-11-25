@@ -204,6 +204,7 @@ add_executable(tracewave_gui WIN32
     ui/wxwidgets/network_transform_dialog.cpp
     ui/wxwidgets/network_source_dialog.cpp
     ui/wxwidgets/network_export.cpp
+    ui/wxwidgets/network_export_files.cpp
     ui/wxwidgets/studio_smoke_network.cpp
     ui/wxwidgets/studio_smoke_network_safety.cpp
     ui/wxwidgets/sweep_model.cpp
@@ -304,7 +305,7 @@ add_executable(tracewave_gui WIN32
 )
 target_include_directories(tracewave_gui PRIVATE "${RFAD_JSON_INCLUDE_DIR}")
 target_compile_definitions(tracewave_gui PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
-target_link_libraries(tracewave_gui PRIVATE ${RFAD_WX_LIBRARIES} ole32 opengl32 bcrypt psapi dxguid winmm)
+target_link_libraries(tracewave_gui PRIVATE ${RFAD_WX_LIBRARIES} ole32 opengl32 bcrypt crypt32 psapi dxguid winmm)
 
 add_executable(tracewave_canvas_benchmark EXCLUDE_FROM_ALL tools/canvas_render_benchmark.cpp
     ui/wxwidgets/canvas_renderer.cpp ui/wxwidgets/canvas_scene.cpp ui/wxwidgets/canvas_pcb_features.cpp ui/wxwidgets/canvas_viewport.cpp)
@@ -437,10 +438,10 @@ if(BUILD_TESTING)
     set_target_properties(tracewave_pcb_feature_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
     add_test(NAME pcb_features COMMAND tracewave_pcb_feature_tests)
     add_executable(tracewave_network_export_tests tests/network_export_test.cpp
-        ui/wxwidgets/network_export.cpp ui/wxwidgets/studio_support.cpp)
+        ui/wxwidgets/network_export.cpp ui/wxwidgets/network_export_files.cpp ui/wxwidgets/studio_support.cpp)
     target_include_directories(tracewave_network_export_tests PRIVATE ui/wxwidgets "${RFAD_JSON_INCLUDE_DIR}")
     target_compile_definitions(tracewave_network_export_tests PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
-    target_link_libraries(tracewave_network_export_tests PRIVATE ${RFAD_WX_LIBRARIES} ole32 bcrypt)
+    target_link_libraries(tracewave_network_export_tests PRIVATE ${RFAD_WX_LIBRARIES} ole32 bcrypt crypt32)
     if(MSVC)
         target_compile_options(tracewave_network_export_tests PRIVATE /W4 /utf-8)
     else()

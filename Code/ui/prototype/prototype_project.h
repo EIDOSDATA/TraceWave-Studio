@@ -3,6 +3,7 @@
 #include "../wxwidgets/canvas_scene.h"
 #include "prototype_analysis.h"
 #include "prototype_cad_job.h"
+#include "prototype_exchange.h"
 #include "prototype_result.h"
 #include "prototype_service.h"
 
@@ -37,6 +38,20 @@ public:
     bool canStartCad() const;
     const PrototypeCadJob& cadJob() const { return cadJob_; }
     void readResult();
+    void prepareRfExport(const std::string& format);
+    nlohmann::json takeRfExport();
+    const std::string& rfExportStatus() const { return rfExportStatus_; }
+    void reviewExchange();
+    void approveExchange();
+    void verifyExchange();
+    void reloadExchange();
+    void moveExchangeFormat(int direction);
+    void cancelExchange() { exchange_.cancel(); }
+    bool canReviewExchange() const;
+    bool canApproveExchange() const;
+    bool canVerifyExchange() const;
+    bool exchangeReady() const { return exchangeReady_; }
+    const PrototypeExchange& exchange() const { return exchange_; }
     void readResultHistory();
     void browseResultHistory(int direction);
     void openHistoryResult();
@@ -56,8 +71,8 @@ public:
     bool configured() const { return !path_.empty(); }
     bool busy() const;
     bool canTranslate() const;
-    bool writable() const { return step_ == Step::finished && !cadJob_.sealing() && !analysis_.sealing(); }
-    bool canReopen() const { return configured() && !busy() && !cadJob_.sealing() && !analysis_.sealing(); }
+    bool writable() const { return step_ == Step::finished && !cadJob_.sealing() && !analysis_.sealing() && !exchange_.sealing(); }
+    bool canReopen() const { return configured() && !busy() && !cadJob_.sealing() && !analysis_.sealing() && !exchange_.sealing(); }
     const std::string& path() const { return path_; }
     const std::string& message() const { return message_; }
     View* view() { return view_ ? &*view_ : nullptr; }
@@ -66,7 +81,7 @@ private:
     enum class Step
     {
         idle, open, save, translate, undo, edited, accepted, job, canvas, editor, cad,
-        solverLatest, resultHistory, resultDescribe, resultPage, solverConditions, finished, failed
+        solverLatest, resultHistory, resultDescribe, resultPage, resultExport, solverConditions, finished, failed
     };
     bool sendBackground(PrototypeService& service);
     void receive(const nlohmann::json& reply);
@@ -78,10 +93,17 @@ private:
     PrototypeCad cad_;
     PrototypeCadJob cadJob_;
     PrototypeAnalysis analysis_;
+    PrototypeExchange exchange_;
+    bool exchangeSupported_ = false;
+    bool exchangeReady_ = false;
     bool cadReady_ = false;
     bool solverReady_ = false;
     bool showingCompletedAnalysis_ = false;
     PrototypeResult result_;
+    nlohmann::json rfExportInput_;
+    nlohmann::json rfExportResult_;
+    std::string rfExportRevision_;
+    std::string rfExportStatus_;
     std::string path_;
     std::string message_;
     Step step_ = Step::idle;

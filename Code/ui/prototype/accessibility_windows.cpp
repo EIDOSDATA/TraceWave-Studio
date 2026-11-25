@@ -80,9 +80,27 @@ constexpr Description descriptions[] =
     {L"", L"selected-rf-history", UIA_TextControlTypeId},
     {L"", L"rf-history-status", UIA_TextControlTypeId},
     {L"", L"rf-result-read-status", UIA_TextControlTypeId},
-    {L"", L"rf-result-summary", UIA_TextControlTypeId}
+    {L"", L"rf-result-summary", UIA_TextControlTypeId},
+    {L"도면 및 PCB 출력 도구", L"show-exchange", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"이전 출력 형식", L"exchange-previous", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 출력 형식", L"exchange-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"출력 검토", L"exchange-review", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"승인한 출력 생성", L"exchange-build", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"게시한 출력 재검수", L"exchange-verify", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"출력 취소", L"exchange-cancel", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"출력 기록 다시 읽기", L"exchange-reload", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"exchange-format", UIA_TextControlTypeId},
+    {L"", L"exchange-status", UIA_TextControlTypeId},
+    {L"", L"exchange-review-summary", UIA_TextControlTypeId},
+    {L"", L"exchange-publication", UIA_TextControlTypeId},
+    {L"RF 내보내기 도구", L"show-rf-export", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"이전 RF 내보내기 형식", L"rf-export-previous", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 RF 내보내기 형식", L"rf-export-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"선택한 RF 결과와 조건 저장", L"rf-export-save", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"rf-export-format", UIA_TextControlTypeId},
+    {L"", L"rf-export-status", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::resultSummary) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::rfExportStatus) + 1);
 
 struct Node
 {

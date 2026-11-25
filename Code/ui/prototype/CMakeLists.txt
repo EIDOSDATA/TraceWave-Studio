@@ -85,13 +85,13 @@ if(WIN32)
     endif()
     target_sources(tracewave_shell_prototype PRIVATE accessibility_windows.cpp prototype_service.cpp
         prototype_project.cpp prototype_canvas.cpp prototype_cad.cpp prototype_cad_job.cpp
-        prototype_model.cpp prototype_result.cpp prototype_analysis.cpp
+        prototype_model.cpp prototype_result.cpp prototype_analysis.cpp prototype_exchange.cpp
         ../wxwidgets/async_state.cpp ../wxwidgets/analysis_workflow.cpp
         ../wxwidgets/service_client.cpp ../wxwidgets/canvas_scene.cpp
-        ../wxwidgets/canvas_pcb_features.cpp ../wxwidgets/display_mesh_picking.cpp)
+        ../wxwidgets/canvas_pcb_features.cpp ../wxwidgets/display_mesh_picking.cpp ../wxwidgets/network_export_files.cpp)
     target_compile_definitions(tracewave_shell_prototype PRIVATE NOMINMAX)
     target_include_directories(tracewave_shell_prototype SYSTEM PRIVATE "${prototype_json_dir}")
-    target_link_libraries(tracewave_shell_prototype PRIVATE bcrypt comctl32 ole32 oleaut32 uiautomationcore)
+    target_link_libraries(tracewave_shell_prototype PRIVATE bcrypt comctl32 comdlg32 crypt32 ole32 oleaut32 uiautomationcore)
 endif()
 
 if(MSVC)

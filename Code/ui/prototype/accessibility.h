@@ -20,7 +20,10 @@ enum class Control
     showSolver, readSolverConditions, priorSolverCondition, nextSolverCondition, reviewSolver, approveSolver, cancelSolver,
     solverCondition, solverStatus, solverPlan,
     showResultHistory, reloadResultHistory, priorResult, nextResult, openHistoryResult,
-    historyChoice, historyStatus, resultReadStatus, resultSummary
+    historyChoice, historyStatus, resultReadStatus, resultSummary,
+    showExchange, priorExchange, nextExchange, reviewExchange, buildExchange, verifyExchange, cancelExchange, reloadExchange,
+    exchangeFormat, exchangeStatus, exchangeReview, exchangePublication,
+    showRfExport, previousRfExport, nextRfExport, saveRfExport, rfExportFormat, rfExportStatus
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };

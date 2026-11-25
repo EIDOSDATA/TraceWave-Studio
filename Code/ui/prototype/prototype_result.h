@@ -17,6 +17,7 @@ public:
         nlohmann::json source;
         nlohmann::json pin;
         nlohmann::json references;
+        std::vector<std::string> exportFormats;
         std::size_t total = 0;
         std::vector<double> frequenciesGhz;
         std::vector<double> magnitudeDb;

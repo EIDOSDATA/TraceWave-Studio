@@ -5,6 +5,10 @@
 #if defined(_WIN32)
 #include "prototype_canvas.h"
 #include "prototype_model.h"
+#include "../wxwidgets/network_export_files.h"
+
+#include <commdlg.h>
+#include <future>
 #endif
 
 #include <algorithm>
@@ -83,10 +87,19 @@ struct Shell
     bool modelOpen = false;
     bool analysisOpen = false;
     bool resultHistoryOpen = false;
+    bool exchangeOpen = false;
+    bool rfExportOpen = false;
+    std::size_t rfFormatIndex = 0;
+    const char* workspacePath = nullptr;
+    std::future<std::string> rfDelivery;
+    std::string rfDeliveryStatus;
     void drawLiveBoard();
     void drawLiveModel();
+    void drawExchange();
     void drawLiveResult();
     void drawResultHistory();
+    void drawRfExport();
+    void deliverRfExport(SDL_Window* mainWindow);
     void drawAnalysis();
     void panelButton(Control control, const char* label, bool enabled, bool checked = false,
         Control parent = Control::board);
@@ -152,6 +165,14 @@ bool parseOptions(int argc, char** argv, Options& options)
                 return false;
             }
         }
+        else if (argument == "--exchange-python" && index + 1 < argc)
+        {
+            options.service.exchangePython = argv[++index];
+            if (!*options.service.exchangePython)
+            {
+                return false;
+            }
+        }
         else if (argument == "--workspace" && index + 1 < argc)
         {
             options.service.workspace = argv[++index];
@@ -164,7 +185,8 @@ bool parseOptions(int argc, char** argv, Options& options)
     }
 #if defined(_WIN32)
     const bool requested = options.serviceCheck || options.serviceReplay || options.service.python ||
-        options.service.source || options.service.workspace || options.service.cadPython || options.openProject;
+        options.service.source || options.service.workspace || options.service.cadPython ||
+        options.service.exchangePython || options.openProject;
     if (requested && (!options.service.python || !options.service.source || !options.service.workspace ||
         ((options.serviceCheck || options.serviceReplay) && options.smoke) ||
         (options.serviceCheck && options.serviceReplay) ||
@@ -353,6 +375,14 @@ void Shell::activate(Control control)
         case Control::buildModel: project->startCad(PrototypeCadJob::Output::geometry); break;
         case Control::exportStep: project->startCad(PrototypeCadJob::Output::step); break;
         case Control::cancelCad: project->cancelCad(); break;
+        case Control::showExchange: exchangeOpen = !exchangeOpen; break;
+        case Control::priorExchange: project->moveExchangeFormat(-1); break;
+        case Control::nextExchange: project->moveExchangeFormat(1); break;
+        case Control::reviewExchange: project->reviewExchange(); break;
+        case Control::buildExchange: project->approveExchange(); break;
+        case Control::verifyExchange: project->verifyExchange(); break;
+        case Control::cancelExchange: project->cancelExchange(); break;
+        case Control::reloadExchange: project->reloadExchange(); break;
         case Control::reloadResult: project->readResult(); break;
         case Control::showSolver: analysisOpen = !analysisOpen; break;
         case Control::readSolverConditions: project->readSolverConditions(); break;
@@ -372,6 +402,28 @@ void Shell::activate(Control control)
         case Control::priorResult: project->browseResultHistory(-1); break;
         case Control::nextResult: project->browseResultHistory(1); break;
         case Control::openHistoryResult: project->openHistoryResult(); break;
+        case Control::showRfExport: rfExportOpen = !rfExportOpen; break;
+        case Control::previousRfExport:
+            if (rfFormatIndex > 0)
+            {
+                --rfFormatIndex;
+            }
+            break;
+        case Control::nextRfExport:
+        case Control::saveRfExport:
+            if (const auto& series = project->result().series(); series && rfFormatIndex < series->exportFormats.size())
+            {
+                if (control == Control::nextRfExport && rfFormatIndex + 1 < series->exportFormats.size())
+                {
+                    ++rfFormatIndex;
+                }
+                else if (control == Control::saveRfExport && !rfDelivery.valid())
+                {
+                    rfDeliveryStatus.clear();
+                    project->prepareRfExport(series->exportFormats[rfFormatIndex]);
+                }
+            }
+            break;
 #endif
         default: break;
     }
@@ -587,7 +639,8 @@ void Shell::drawBoard()
         requestedFocus == Control::moveRight || requestedFocus == Control::moveDown ||
         requestedFocus == Control::moveUp || requestedFocus == Control::toggleModel ||
         requestedFocus == Control::reloadModel || requestedFocus == Control::buildModel ||
-        requestedFocus == Control::exportStep || requestedFocus == Control::cancelCad)
+        requestedFocus == Control::exportStep || requestedFocus == Control::cancelCad ||
+        (requestedFocus >= Control::showExchange && requestedFocus <= Control::reloadExchange))
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::board)
@@ -667,6 +720,15 @@ void Shell::drawLiveBoard()
     ImGui::TextUnformatted(project->path().c_str());
     panelButton(Control::toggleModel, modelOpen ? "2D 편집" : "3D 형상", project->view() != nullptr, modelOpen);
     ImGui::SameLine();
+    panelButton(Control::showExchange, "출력 도구", project->view() != nullptr, exchangeOpen);
+    if (exchangeOpen)
+    {
+        drawExchange();
+    }
+    else
+    {
+        ImGui::SameLine();
+    }
     if (modelOpen)
     {
         drawLiveModel();
@@ -739,6 +801,83 @@ void Shell::panelButton(Control control, const char* label, bool enabled, bool c
     focusItem(control);
     access.item(control, parent, enabled, checked);
     ImGui::EndDisabled();
+}
+
+/** @brief 선택한 도면 또는 제조 교환 출력을 검토하고 원본 게시 상태를 표시한다. */
+void Shell::drawExchange()
+{
+    const auto& job = project->exchange();
+    const bool ready = project->writable();
+    panelButton(Control::priorExchange, "이전 형식", ready && job.canMove(-1));
+    ImGui::SameLine();
+    panelButton(Control::nextExchange, "다음 형식", ready && job.canMove(1));
+    ImGui::SameLine();
+    ImGui::TextUnformatted(job.name());
+    access.text(Control::exchangeFormat, Control::board, job.name());
+    panelButton(Control::reviewExchange, "출력 검토", project->canReviewExchange());
+    ImGui::SameLine();
+    panelButton(Control::buildExchange, "승인 후 생성", project->canApproveExchange());
+    ImGui::SameLine();
+    panelButton(Control::cancelExchange, "출력 취소", job.canCancel());
+    ImGui::SameLine();
+    panelButton(Control::verifyExchange, "재검수", project->canVerifyExchange());
+    ImGui::SameLine();
+    panelButton(Control::reloadExchange, "기록 다시 읽기", project->canReviewExchange());
+
+    const auto& info = job.review();
+    if (info.is_object())
+    {
+        const auto& options = info.at("options");
+        const auto& omissions = info.at("omissions");
+        const auto revision = info.at("revision_id").get<std::string>();
+        auto summary = "개정 " + revision.substr(0, 12) + " | 검토 " +
+            std::to_string(info.at("pages").size()) + "쪽 | 제외 " + std::to_string(omissions.size()) + "건";
+        if (options.contains("sheet"))
+        {
+            summary += " | " + options.at("sheet").get<std::string>() +
+                (options.at("orientation") == "landscape" ? " 가로" : " 세로") +
+                " | 축척 " + options.at("scale").dump();
+        }
+        else if (options.contains("layer_ids"))
+        {
+            summary += " | 출력 층 " + std::to_string(options.at("layer_ids").size()) + "개";
+        }
+        ImGui::TextWrapped("%s", summary.c_str());
+        access.text(Control::exchangeReview, Control::board, summary);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::BeginTooltip();
+            ImGui::Text("개정 %s", revision.c_str());
+            ImGui::Text("검토 SHA-256 %s", info.at("review_hash").get_ref<const std::string&>().c_str());
+            for (const auto& item : omissions)
+            {
+                ImGui::Text("%s: %s", item.at("label").get_ref<const std::string&>().c_str(),
+                    item.at("reason_label").get_ref<const std::string&>().c_str());
+            }
+            ImGui::EndTooltip();
+        }
+    }
+    if (const auto& record = job.published())
+    {
+        const auto* view = project->view();
+        const auto current = view && view->revision == record->revision;
+        const auto summary = "게시 개정 " + record->revision.substr(0, 12) +
+            (current ? " | 현재 설계" : " | 이전 설계");
+        ImGui::Text("%s", summary.c_str());
+        access.text(Control::exchangePublication, Control::board, summary);
+        if (ImGui::IsItemHovered())
+        {
+            ImGui::SetTooltip("개정 %s\n%s\n파일 SHA-256 %s\nManifest SHA-256 %s", record->revision.c_str(),
+                record->uri.c_str(), record->sha256.c_str(), record->manifest.c_str());
+        }
+    }
+    const std::string status = !job.status().empty() ? job.status() :
+        (!project->exchangeReady() ? "생성 및 재검수를 하려면 출력 Python을 연결하세요." : "");
+    if (!status.empty())
+    {
+        ImGui::TextWrapped("%s", status.c_str());
+        access.text(Control::exchangeStatus, Control::board, status);
+    }
 }
 
 /** @brief 검증한 표시 장면으로만 카메라를 그리고 같은 개정의 원본 선택을 연결한다. */
@@ -888,7 +1027,8 @@ void Shell::drawResult(bool hasViewports)
     }
     if (requestedFocus == Control::result || requestedFocus == Control::reloadResult ||
         (requestedFocus >= Control::showSolver && requestedFocus <= Control::cancelSolver) ||
-        (requestedFocus >= Control::showResultHistory && requestedFocus <= Control::openHistoryResult))
+        (requestedFocus >= Control::showResultHistory && requestedFocus <= Control::openHistoryResult) ||
+        (requestedFocus >= Control::showRfExport && requestedFocus <= Control::saveRfExport))
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::result)
@@ -943,9 +1083,15 @@ void Shell::drawLiveResult()
     ImGui::SameLine();
     panelButton(Control::showResultHistory, "과거 결과",
         resultHistoryOpen || (project->view() && project->writable()), resultHistoryOpen, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::showRfExport, "RF 내보내기", series || rfExportOpen, rfExportOpen, Control::result);
     if (resultHistoryOpen)
     {
         drawResultHistory();
+    }
+    if (rfExportOpen)
+    {
+        drawRfExport();
     }
     if (analysisOpen)
     {
@@ -992,6 +1138,103 @@ void Shell::drawLiveResult()
         plotDrawn = true;
     }
     ImGui::PopID();
+}
+
+/** @brief 실제 서비스가 제공한 형식과 표시 중인 RF 결과를 함께 보여준다. */
+void Shell::drawRfExport()
+{
+    const auto& series = project->result().series();
+    const auto count = series ? series->exportFormats.size() : 0;
+    if (rfFormatIndex >= count)
+    {
+        rfFormatIndex = 0;
+    }
+    const bool allowed = project->writable() && !rfDelivery.valid() && count > 0;
+    panelButton(Control::previousRfExport, "이전 RF 형식", allowed && rfFormatIndex > 0, false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::nextRfExport, "다음 RF 형식", allowed && rfFormatIndex + 1 < count, false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::saveRfExport, "결과와 조건 저장", allowed, false, Control::result);
+    if (count > 0)
+    {
+        const auto& format = series->exportFormats[rfFormatIndex];
+        const char* label = format == "csv" ? "CSV" : format == "touchstone" ? "Touchstone" :
+            format == "hdf5" ? "HDF5" : "보존 원문";
+        ImGui::SameLine();
+        ImGui::TextUnformatted(label);
+        access.text(Control::rfExportFormat, Control::result, label);
+    }
+    const auto status = !rfDeliveryStatus.empty() ? rfDeliveryStatus : project->rfExportStatus();
+    if (!status.empty())
+    {
+        ImGui::TextWrapped("%s", status.c_str());
+        access.text(Control::rfExportStatus, Control::result, status);
+    }
+}
+
+/** @brief 붙잡아 둔 봉인 응답만 사용해 외부 새 파일과 조건 파일을 함께 게시한다. */
+void Shell::deliverRfExport(SDL_Window* mainWindow)
+{
+    using namespace std::chrono_literals;
+    if (rfDelivery.valid() && rfDelivery.wait_for(0ms) == std::future_status::ready)
+    {
+        rfDeliveryStatus = rfDelivery.get();
+    }
+    auto result = project->takeRfExport();
+    if (result.is_null())
+    {
+        return;
+    }
+    try
+    {
+        const auto& utf8 = result.at("file_name").get_ref<const std::string&>();
+        const auto name = std::filesystem::path(std::u8string(utf8.begin(), utf8.end()));
+        if (name.empty() || name != name.filename() || !name.has_extension() || name.native().size() >= 220)
+        {
+            throw std::runtime_error("서비스가 돌려준 교환 파일 이름을 확인할 수 없습니다.");
+        }
+        std::vector<wchar_t> filename(32768, L'\0');
+        std::copy(name.native().begin(), name.native().end(), filename.begin());
+        const auto extension = name.extension().native().substr(1);
+        OPENFILENAMEW dialog{};
+        dialog.lStructSize = sizeof(dialog);
+        dialog.hwndOwner = static_cast<HWND>(SDL_GetPointerProperty(SDL_GetWindowProperties(mainWindow),
+            SDL_PROP_WINDOW_WIN32_HWND_POINTER, nullptr));
+        dialog.lpstrFile = filename.data();
+        dialog.nMaxFile = static_cast<DWORD>(filename.size());
+        dialog.lpstrDefExt = extension.c_str();
+        dialog.lpstrTitle = L"RF 결과와 조건 저장";
+        dialog.Flags = OFN_EXPLORER | OFN_NOCHANGEDIR | OFN_PATHMUSTEXIST | OFN_NOREADONLYRETURN;
+        if (!GetSaveFileNameW(&dialog))
+        {
+            rfDeliveryStatus = CommDlgExtendedError() ? "RF 저장 경로 선택 창을 열지 못했습니다." : "RF 내보내기를 취소했습니다.";
+            return;
+        }
+        const auto target = std::filesystem::path(filename.data());
+        if (CompareStringOrdinal(target.extension().c_str(), -1, name.extension().c_str(), -1, TRUE) != CSTR_EQUAL)
+        {
+            throw std::runtime_error("선택한 RF 형식의 원래 확장자를 유지하세요.");
+        }
+        const std::string_view workspaceText(workspacePath);
+        const auto workspace = std::filesystem::path(std::u8string(workspaceText.begin(), workspaceText.end()));
+        rfDeliveryStatus = "교환 파일과 조건 파일을 저장하는 중";
+        rfDelivery = std::async(std::launch::async, [result = std::move(result), target, workspace]() -> std::string
+        {
+            try
+            {
+                NetworkExportFiles::WriteResult(result, target, workspace);
+                return "RF 교환 파일과 .conditions.json을 저장했습니다.";
+            }
+            catch (const std::exception& error)
+            {
+                return std::string("RF 내보내기 실패. ") + error.what();
+            }
+        });
+    }
+    catch (const std::exception& error)
+    {
+        rfDeliveryStatus = std::string("RF 내보내기 실패. ") + error.what();
+    }
 }
 
 /** @brief 완료된 목록에서 열 항목을 고르고 곡선의 교체를 명시적으로 요청한다. */
@@ -1652,6 +1895,7 @@ int run(SDL_Window* window, const Options& options)
             PrototypeService service;
             PrototypeProject project(options.openProject, options.service.workspace);
             shell.project = &project;
+            shell.workspacePath = options.service.workspace;
             if (options.service.python)
             {
                 service.start(options.service);
@@ -1699,6 +1943,7 @@ int run(SDL_Window* window, const Options& options)
 #if defined(_WIN32)
                     service.poll();
                     project.update(service);
+                    shell.deliverRfExport(window);
                     serviceStatus = service.status().c_str();
 #endif
                     shell.draw(renderer, window, korean, serviceStatus);

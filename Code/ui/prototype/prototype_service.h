@@ -14,6 +14,7 @@ struct PrototypeServiceOptions
     const char* source = nullptr;
     const char* workspace = nullptr;
     const char* cadPython = nullptr;
+    const char* exchangePython = nullptr;
 };
 
 /** @brief 기존 Windows 서비스 전송을 사용하고 공개 계약 응답을 검증한다. */
@@ -33,6 +34,8 @@ public:
     State state() const { return state_; }
     const std::string& status() const { return status_; }
     bool cadReady() const { return state_ == State::connected && cadReady_; }
+    bool exchangeSupported() const { return exchangeSupported_; }
+    bool exchangeReady() const { return exchangeReady_; }
     bool solverReady() const { return state_ == State::connected && solverReady_; }
 
 private:
@@ -47,6 +50,8 @@ private:
     nlohmann::json reply_;
     bool cadReady_ = false;
     bool solverReady_ = false;
+    bool exchangeSupported_ = false;
+    bool exchangeReady_ = false;
 };
 
 /** @brief 한 줄씩 공개 요청을 재생하고 같은 ID의 응답을 표준 출력으로 보낸다. */

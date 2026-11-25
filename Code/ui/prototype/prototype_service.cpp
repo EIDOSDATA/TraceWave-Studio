@@ -40,12 +40,14 @@ bool startTransport(ServiceClient& transport, const PrototypeServiceOptions& opt
     const auto source = widePath(options.source);
     const auto workspace = widePath(options.workspace);
     const auto cad = options.cadPython ? widePath(options.cadPython) : std::wstring{};
-    if (python.empty() || source.empty() || workspace.empty() || (options.cadPython && cad.empty()))
+    const auto exchange = options.exchangePython ? widePath(options.exchangePython) : std::wstring{};
+    if (python.empty() || source.empty() || workspace.empty() || (options.cadPython && cad.empty()) ||
+        (options.exchangePython && exchange.empty()))
     {
         error = "Python 서비스 경로를 읽을 수 없습니다.";
         return false;
     }
-    return transport.Start(python, source, workspace, error, cad);
+    return transport.Start(python, source, workspace, error, cad, false, L"", exchange);
 }
 
 /** @brief 서비스가 수용하는 소문자 UUID 요청 키를 만든다. */
@@ -174,6 +176,10 @@ void PrototypeService::poll()
         cadReady_ = cad != result.end() && cad->is_object() &&
             cad->value("profile", nlohmann::json(nullptr)) == "rfad.step.mechanical/0.1" &&
             cad->value("runtime_configured", nlohmann::json(nullptr)) == true;
+        const auto exchange = result.find("exchange_profile");
+        exchangeSupported_ = exchange != result.end() && exchange->is_object() &&
+            exchange->value("profile", nlohmann::json(nullptr)) == "rfad.exchange.drawing/0.1";
+        exchangeReady_ = exchangeSupported_ && exchange->value("runtime_configured", nlohmann::json(nullptr)) == true;
         const auto solver = result.find("solver_profile");
         solverReady_ = solver != result.end() && solver->is_object() &&
             solver->value("runtime_configured", nlohmann::json(nullptr)) == true &&
