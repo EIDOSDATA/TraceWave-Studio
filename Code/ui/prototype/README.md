@@ -28,6 +28,19 @@ ctest --test-dir Code/build/shell-prototype --output-on-failure -V
 
 패널 위치와 크기는 사용자별 `TraceWave/ShellPrototype/layout.ini`에 저장한다. CTest의 `--smoke` 실행은 메모리에서만 배치를 사용한다. Wayland에서는 ImGui SDL3 백엔드에 따라 기본 창 내부 도킹을 사용한다. Linux와 macOS의 실제 화면 검수 상태는 개발문서에 기록한다.
 
+## Windows Python 서비스 연결
+
+Windows에서는 실행 파일에 세 경로를 지정해 현재 시제품 작업 영역에 기존 Python 서비스를 연결할 수 있다. 명령행에서 연결만 확인하려면 `--service-check`를 추가한다. 상태줄에 연결 상태가 표시되고, 명령행 출력에서 공개 API 계약 버전과 메서드 수를 확인할 수 있다. 작업 영역은 새 시험 폴더 또는 확인할 프로젝트의 작업 사본을 사용한다.
+
+```powershell
+$python = 'C:\검수자료\rf-venv\Scripts\python.exe'
+$source = (Resolve-Path -LiteralPath 'Code/src').Path
+$workspace = 'C:\검수자료\시제품 시험 작업 영역'
+.\Code\build\shell-prototype\tracewave_shell_prototype.exe --python $python --source $source --workspace $workspace
+```
+
+현재 연결은 `capabilities.get`의 공개 계약을 확인한다. 동결 B0 작업 사본의 개정 및 과거 결과 비교는 430의 복원 절차에서 이어간다. [B0 복원과 결과 재생](../../../01_개발문서/07_검증/430_알원_비제로_기준선_확정.md#저장-개정과-결과-재생)
+
 ## Windows 한글 입력과 화면 읽기
 
 1. 본창에서 `F6`으로 메모를 선택한다. 작업 표시줄에서 Microsoft 입력기의 한글 모드를 확인한다. `g k s r m f`를 누르면 끝 글자 `글`이 조합 중인지 확인한다. `Enter`로 확정한 메모의 값은 `한글`이어야 한다.

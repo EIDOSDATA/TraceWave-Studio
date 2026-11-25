@@ -68,7 +68,25 @@ target_include_directories(tracewave_shell_prototype SYSTEM PRIVATE
 )
 target_link_libraries(tracewave_shell_prototype PRIVATE prototype_widgets bgfx bx)
 if(WIN32)
-    target_sources(tracewave_shell_prototype PRIVATE accessibility_windows.cpp)
+    # @brief 기존 Windows 빌드와 동일하게 해시가 고정된 JSON 헤더를 사용한다.
+    set(prototype_json_sha256 aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63)
+    set(prototype_json_dir "${CMAKE_CURRENT_SOURCE_DIR}/../../.local/deps/json-3.12.0")
+    if(EXISTS "${prototype_json_dir}/nlohmann/json.hpp")
+        file(SHA256 "${prototype_json_dir}/nlohmann/json.hpp" prototype_json_actual)
+        if(NOT prototype_json_actual STREQUAL prototype_json_sha256)
+            message(FATAL_ERROR "The existing nlohmann JSON header does not match the fixed SHA256.")
+        endif()
+    else()
+        set(prototype_json_dir "${CMAKE_CURRENT_BINARY_DIR}/_deps/prototype-json")
+        file(MAKE_DIRECTORY "${prototype_json_dir}/nlohmann")
+        file(DOWNLOAD "https://raw.githubusercontent.com/nlohmann/json/v3.12.0/single_include/nlohmann/json.hpp"
+            "${prototype_json_dir}/nlohmann/json.hpp"
+            EXPECTED_HASH "SHA256=${prototype_json_sha256}" TLS_VERIFY ON TIMEOUT 60)
+    endif()
+    target_sources(tracewave_shell_prototype PRIVATE accessibility_windows.cpp prototype_service.cpp
+        ../wxwidgets/service_client.cpp)
+    target_compile_definitions(tracewave_shell_prototype PRIVATE NOMINMAX)
+    target_include_directories(tracewave_shell_prototype SYSTEM PRIVATE "${prototype_json_dir}")
     target_link_libraries(tracewave_shell_prototype PRIVATE comctl32 ole32 oleaut32 uiautomationcore)
 endif()
 

@@ -2,6 +2,10 @@
 #include "b0_samples.h"
 #include "renderer.h"
 
+#if defined(_WIN32)
+#include "prototype_service.h"
+#endif
+
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -36,6 +40,10 @@ struct Options
 {
     bool smoke = false;
     const char* font = nullptr;
+#if defined(_WIN32)
+    PrototypeServiceOptions service;
+    bool serviceCheck = false;
+#endif
 };
 
 struct Shell
@@ -68,7 +76,7 @@ struct Shell
     accessibility::Bridge access;
 
     bool processEvent(const SDL_Event& event);
-    void draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFont);
+    void draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFont, const char* serviceStatus);
     void finishFrame(SDL_Window* mainWindow);
     void drawMenus(bool hasViewports);
     void drawBoard();
@@ -94,11 +102,38 @@ bool parseOptions(int argc, char** argv, Options& options)
         {
             options.font = argv[++index];
         }
+#if defined(_WIN32)
+        else if (argument == "--service-check")
+        {
+            options.serviceCheck = true;
+        }
+        else if (argument == "--python" && index + 1 < argc)
+        {
+            options.service.python = argv[++index];
+        }
+        else if (argument == "--source" && index + 1 < argc)
+        {
+            options.service.source = argv[++index];
+        }
+        else if (argument == "--workspace" && index + 1 < argc)
+        {
+            options.service.workspace = argv[++index];
+        }
+#endif
         else
         {
             return false;
         }
     }
+#if defined(_WIN32)
+    const bool requested = options.serviceCheck || options.service.python || options.service.source ||
+        options.service.workspace;
+    if (requested && (!options.service.python || !options.service.source || !options.service.workspace ||
+        (options.serviceCheck && options.smoke)))
+    {
+        return false;
+    }
+#endif
     return true;
 }
 
@@ -376,7 +411,7 @@ void Shell::drawMenus(bool hasViewports)
     }
 }
 
-void Shell::draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFont)
+void Shell::draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFont, const char* serviceStatus)
 {
     const bool hasViewports = renderer.hasViewports();
     applyActions();
@@ -420,6 +455,11 @@ void Shell::draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFo
         SDL_GetWindowSizeInPixels(mainWindow, &pixelWidth, &pixelHeight);
         ImGui::Text("%s  |  %s  |  %d × %d px  |  %.0f%%", renderer.name(), SDL_GetCurrentVideoDriver(),
             pixelWidth, pixelHeight, 100.0f * SDL_GetWindowDisplayScale(mainWindow));
+        if (serviceStatus && *serviceStatus)
+        {
+            ImGui::SameLine();
+            ImGui::TextUnformatted(serviceStatus);
+        }
         if (!koreanFont)
         {
             ImGui::SameLine();
@@ -1116,6 +1156,13 @@ int run(SDL_Window* window, const Options& options)
             const bool korean = font->FindGlyphNoFallback(static_cast<ImWchar>(U'한')) != nullptr;
             Shell shell;
             Smoke smoke(window, renderer.hasViewports());
+#if defined(_WIN32)
+            PrototypeService service;
+            if (options.service.python)
+            {
+                service.start(options.service);
+            }
+#endif
             if (options.smoke)
             {
                 std::printf("Renderer=%s video=%s device=0x%04x viewports=%s\n", renderer.name(),
@@ -1154,7 +1201,12 @@ int run(SDL_Window* window, const Options& options)
                 {
                     ImGui_ImplSDL3_NewFrame();
                     ImGui::NewFrame();
-                    shell.draw(renderer, window, korean);
+                    const char* serviceStatus = nullptr;
+#if defined(_WIN32)
+                    service.poll();
+                    serviceStatus = service.status().c_str();
+#endif
+                    shell.draw(renderer, window, korean, serviceStatus);
                     ImGui::Render();
                     renderer.renderFrame();
                     shell.finishFrame(window);
@@ -1194,15 +1246,32 @@ int run(SDL_Window* window, const Options& options)
 }
 }
 
-int main(int argc, char** argv)
+/** @brief SDL에서 전달한 UTF-8 실행 인수로 시제품 또는 연결 검수를 실행한다. */
+int runShell(int argc, char** argv)
 {
     Options options;
     if (!parseOptions(argc, argv, options))
     {
         std::fputs("Usage: tracewave_shell_prototype [--smoke] [--font <font-file>]\n", stderr);
+#if defined(_WIN32)
+        std::fputs("       [--service-check] --python <python.exe> --source <Code/src> --workspace <path>\n", stderr);
+#endif
         return 2;
     }
     SDL_SetMainReady();
+#if defined(_WIN32)
+    if (options.serviceCheck)
+    {
+        PrototypeService service;
+        service.start(options.service);
+        while (service.state() == PrototypeService::State::connecting)
+        {
+            service.poll();
+            SDL_Delay(5);
+        }
+        return service.state() == PrototypeService::State::connected ? 0 : 1;
+    }
+#endif
     SDL_SetHint(SDL_HINT_IME_IMPLEMENTED_UI, "composition");
     if (!SDL_Init(SDL_INIT_VIDEO))
     {
@@ -1229,4 +1298,13 @@ int main(int argc, char** argv)
     }
     SDL_Quit();
     return code;
+}
+
+int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
+{
+#if defined(_WIN32)
+    return SDL_RunApp(0, nullptr, runShell, nullptr);
+#else
+    return runShell(argc, argv);
+#endif
 }
