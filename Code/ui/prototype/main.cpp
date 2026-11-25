@@ -102,11 +102,10 @@ bool parseOptions(int argc, char** argv, Options& options)
     return true;
 }
 
+/** @brief 시스템 또는 지정 글꼴에서 메모와 화면의 글자 범위를 읽는다. */
 ImFont* installFont(const char* requested)
 {
     ImGuiIO& io = ImGui::GetIO();
-    ImFontConfig config;
-    config.RasterizerDensity = 2.0f;
     const char* candidates[] = {
 #if defined(_WIN32)
         "C:/Windows/Fonts/malgun.ttf",
@@ -118,25 +117,53 @@ ImFont* installFont(const char* requested)
         "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
 #endif
     };
-    if (requested)
+    const char* filename = requested;
+    if (filename)
     {
         SDL_PathInfo info;
-        if (!SDL_GetPathInfo(requested, &info) || info.type != SDL_PATHTYPE_FILE)
+        if (!SDL_GetPathInfo(filename, &info) || info.type != SDL_PATHTYPE_FILE)
         {
-            std::fprintf(stderr, "Font file is unavailable: %s\n", requested);
+            std::fprintf(stderr, "Font file is unavailable: %s\n", filename);
             return nullptr;
         }
-        return io.Fonts->AddFontFromFileTTF(requested, 18.0f, &config, io.Fonts->GetGlyphRangesKorean());
     }
-    for (const char* candidate : candidates)
+    else
     {
-        SDL_PathInfo info;
-        if (SDL_GetPathInfo(candidate, &info) && info.type == SDL_PATHTYPE_FILE)
+        for (const char* candidate : candidates)
         {
-            return io.Fonts->AddFontFromFileTTF(candidate, 18.0f, &config, io.Fonts->GetGlyphRangesKorean());
+            SDL_PathInfo info;
+            if (SDL_GetPathInfo(candidate, &info) && info.type == SDL_PATHTYPE_FILE)
+            {
+                filename = candidate;
+                break;
+            }
         }
     }
-    return io.Fonts->AddFontDefault();
+    if (!filename)
+    {
+        return io.Fonts->AddFontDefault();
+    }
+
+    ImFontConfig config;
+    config.RasterizerDensity = 2.0f;
+#if defined(_WIN32)
+    /** @brief 텍스처 최대 크기가 4096인 장치에서도 한글과 한자를 함께 올린다. */
+    const bool compactAtlas = bgfx::getCaps()->limits.maxTextureSize <= 4096;
+    config.RasterizerDensity = compactAtlas ? 1.5f : 2.0f;
+#endif
+    ImFont* font = io.Fonts->AddFontFromFileTTF(filename, 18.0f, &config, io.Fonts->GetGlyphRangesKorean());
+#if defined(_WIN32)
+    if (font)
+    {
+        /** @brief 한자 통합 및 호환 범위를 같은 글꼴에 병합하고 텍스처의 빈 행을 줄인다. */
+        static constexpr ImWchar hanjaRanges[] = {0x3400, 0x4dbf, 0x4e00, 0x9fff, 0xf900, 0xfaff, 0};
+        io.Fonts->Flags |= ImFontAtlasFlags_NoPowerOfTwoHeight;
+        config.MergeMode = true;
+        config.RasterizerDensity = compactAtlas ? 1.0f : 1.5f;
+        io.Fonts->AddFontFromFileTTF(filename, 18.0f, &config, hanjaRanges);
+    }
+#endif
+    return font;
 }
 
 SDL_WindowID windowId(const ImGuiViewport* viewport)
@@ -1094,6 +1121,12 @@ int run(SDL_Window* window, const Options& options)
                 std::printf("Renderer=%s video=%s device=0x%04x viewports=%s\n", renderer.name(),
                     SDL_GetCurrentVideoDriver(), bgfx::getCaps()->deviceId, smoke.hasViewports ? "yes" : "no");
                 smoke.check(korean, "Hangul glyph in font atlas");
+                if (Smoke::checkWindowsIme && !options.font)
+                {
+                    smoke.check(font->FindGlyphNoFallback(static_cast<ImWchar>(U'韓'))
+                        && font->FindGlyphNoFallback(static_cast<ImWchar>(U'漢')),
+                        "Hanja conversion glyphs in Windows font atlas");
+                }
             }
 
             const auto mainID = SDL_GetWindowID(window);
