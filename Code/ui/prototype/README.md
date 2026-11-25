@@ -13,7 +13,7 @@ ctest --test-dir Code/build/shell-prototype --output-on-failure -V
 .\Code\build\shell-prototype\tracewave_shell_prototype.exe
 ```
 
-Linux와 macOS는 같은 CMake 명령과 확장자 없는 실행 파일을 사용한다. Linux의 bgfx 빌드에는 X11, OpenGL, Wayland EGL 개발 헤더가 필요하며, 실행에는 Vulkan 로더와 드라이버가 필요하다. macOS에는 Xcode Command Line Tools와 Metal 지원 기기가 필요하다. 테스트에는 접근 가능한 실제 데스크톱 세션과 한글 글꼴이 필요하다. 다른 글꼴을 선택하려면 실행에 `--font <파일>`을 추가한다. Windows는 Malgun Gothic, macOS는 Apple SD Gothic Neo, Linux는 시스템 Noto CJK나 나눔고딕을 우선 탐색한다.
+현재 개발과 검수는 Windows에서 먼저 진행한다. 후속 Linux·macOS 검수에서는 같은 CMake 명령과 확장자 없는 실행 파일을 사용한다. Linux의 bgfx 빌드에는 X11, OpenGL, Wayland EGL 개발 헤더가 필요하며, 실행에는 Vulkan 로더와 드라이버가 필요하다. macOS에는 Xcode Command Line Tools와 Metal 지원 기기가 필요하다. 테스트에는 접근 가능한 실제 데스크톱 세션과 한글 글꼴이 필요하다. 다른 글꼴을 선택하려면 실행에 `--font <파일>`을 추가한다. Windows는 Malgun Gothic, macOS는 Apple SD Gothic Neo, Linux는 시스템 Noto CJK나 나눔고딕을 우선 탐색한다.
 
 | 조작 | 방법 |
 | --- | --- |
