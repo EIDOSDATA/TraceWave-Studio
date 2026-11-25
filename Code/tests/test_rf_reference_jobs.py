@@ -150,7 +150,7 @@ class RFReferenceJobTests(unittest.TestCase):
         completed = host.complete("job.submit", host.analysis_input(prepared))
         source = {"kind": "solver", "artifact_id": completed["artifact_id"]}
         description = self.query("result.describe", {"source": source})
-        self.assertIn("PEC 다이폴 / 격자 수준 1 / 합성 검증 사례", description["label"])
+        self.assertTrue(description["label"].startswith("PEC 다이폴 합성 검증 (격자 수준 1), "), description["label"])
         self.assertEqual(description["reference_scope"], REFERENCE_SCOPE)
         self.assertEqual(description["descriptor"]["sample_count"], 1)
         self.assertEqual(description["states"]["physics"], "not_established")
