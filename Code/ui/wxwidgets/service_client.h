@@ -38,6 +38,8 @@ public:
     std::string Error();
     /** @brief 자신이 시작한 서비스만 종료하고 모든 reader와 handle을 회수한다. */
     void Stop();
+    /** @brief Windows 자식 프로세스에 전달할 단일 명령행 인수를 인용한다. */
+    static std::wstring Quote(const std::wstring& argument);
 
 private:
     void ReadLoop(HANDLE pipe, bool protocol);
@@ -45,7 +47,6 @@ private:
     void Fail(const std::string& message);
     void ReportPipeClosure(const std::string& message);
     bool Push(bool protocol, std::string text);
-    static std::wstring Quote(const std::wstring& argument);
 
     HANDLE m_process = nullptr;
     HANDLE m_job = nullptr;

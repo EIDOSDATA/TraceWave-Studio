@@ -47,6 +47,8 @@ public:
     {
         std::string artifact;
         bool multiport = false;
+        nlohmann::json snapshot;
+        nlohmann::json reference;
     };
 
     std::optional<PublishedResult> takeResult();

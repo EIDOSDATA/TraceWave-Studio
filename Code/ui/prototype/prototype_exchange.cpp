@@ -56,6 +56,11 @@ const char* PrototypeExchange::name() const
     return formats[format_].label;
 }
 
+bool PrototypeExchange::showingBoard() const
+{
+    return formats[format_].kind == Kind::board;
+}
+
 bool PrototypeExchange::canMove(int direction) const
 {
     static_assert(std::tuple_size_v<decltype(published_)> == std::size(formats));
@@ -599,7 +604,7 @@ void PrototypeExchange::acceptPublished(const json& result, const std::string& j
     }
     published_[format_] = Published{job, snapshot.at("revision_id").get<std::string>(),
         primary->at("uri").get<std::string>(), primary->at("sha256").get<std::string>(),
-        manifest->at("sha256").get<std::string>(), snapshot};
+        manifest->at("sha256").get<std::string>(), manifest->at("uri").get<std::string>(), snapshot};
     std::printf("Exchange publication: job=%s revision=%s format=%s\n", job.c_str(),
         published()->revision.c_str(), formatsRow.key);
 }

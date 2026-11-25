@@ -348,17 +348,17 @@ public:
         const HANDLE handle = CreateFileW(path.c_str(), directory ? FILE_READ_ATTRIBUTES : GENERIC_READ,
             directory ? FILE_SHARE_READ | FILE_SHARE_WRITE : FILE_SHARE_READ, nullptr, OPEN_EXISTING,
             FILE_FLAG_OPEN_REPARSE_POINT | (directory ? FILE_FLAG_BACKUP_SEMANTICS : FILE_ATTRIBUTE_NORMAL), nullptr);
-        Require(handle != INVALID_HANDLE_VALUE, "게시된 3D 파일 경로를 열 수 없습니다.");
+        Require(handle != INVALID_HANDLE_VALUE, "게시된 파일 경로를 열 수 없습니다.");
         m_handles.push_back(handle);
         BY_HANDLE_FILE_INFORMATION info{};
         Require(GetFileInformationByHandle(handle, &info) != 0 &&
             (info.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) == 0 &&
             (((info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0) == directory),
-            "3D 파일 경로에 재분석 지점 또는 잘못된 파일이 있습니다.");
+            "게시 경로에 재분석 지점 또는 잘못된 파일이 있습니다.");
         if (!directory)
         {
             Require(info.nNumberOfLinks == 1 && GetFileType(handle) == FILE_TYPE_DISK,
-                "3D 파일은 하나의 일반 파일이어야 합니다.");
+                "게시 파일은 하나의 일반 파일이어야 합니다.");
         }
         return handle;
     }
@@ -368,24 +368,22 @@ private:
 };
 
 /** @brief workspace 밖 경로와 바뀐 파일을 차단하고 닫힌 산출물을 읽는다. */
-inline Scene Load(const std::filesystem::path& workspace, const Json& artifact, const Json& snapshot,
-    const std::string& runId, const std::atomic<bool>* cancelled = nullptr)
+inline std::string ReadVerifiedArtifact(const std::filesystem::path& workspace, const Json& artifact,
+    const std::atomic<bool>* cancelled = nullptr)
 {
-    Require(artifact.value("role", "") == "display_mesh" && artifact.value("run_id", "") == runId &&
-        artifact.value("snapshot_id", "") == snapshot.value("snapshot_id", ""), "3D 파일 참조가 실행과 다릅니다.");
-    Require(artifact.at("bytes").is_number_integer(), "3D 파일 크기가 올바르지 않습니다.");
+    Require(artifact.at("bytes").is_number_integer(), "게시 파일 크기가 올바르지 않습니다.");
     const auto byteCount = artifact.at("bytes").get<std::int64_t>();
-    Require(byteCount > 0 && static_cast<std::uint64_t>(byteCount) <= MaxLargeBytes, "3D 표시 파일은 최대 64 MiB입니다.");
+    Require(byteCount > 0 && static_cast<std::uint64_t>(byteCount) <= MaxLargeBytes, "게시 파일은 최대 64 MiB입니다.");
     const std::string uri = artifact.at("uri").get<std::string>();
     Require(!uri.empty() && uri.size() <= 2048 && uri.find_first_of("\\:\0", 0, 3) == std::string::npos && uri.front() != '/',
-        "3D 파일 경로는 workspace 기준 상대 경로여야 합니다.");
-    const auto relative = std::filesystem::u8path(uri);
-    Require(!relative.is_absolute() && !relative.has_root_name() && !relative.has_root_directory(), "잘못된 3D 파일 경로입니다.");
+        "게시 파일 경로는 workspace 기준 상대 경로여야 합니다.");
+    const auto relative = std::filesystem::path(std::u8string(uri.begin(), uri.end()));
+    Require(!relative.is_absolute() && !relative.has_root_name() && !relative.has_root_directory(), "잘못된 게시 파일 경로입니다.");
     for (const auto& component : relative)
     {
         const auto& name = component.native();
         Require(!name.empty() && component != "." && component != ".." && name.back() != '.' && name.back() != ' ',
-            "3D 파일 경로에 허용하지 않는 요소가 있습니다.");
+            "게시 파일 경로에 허용하지 않는 요소가 있습니다.");
     }
     Handles handles;
     auto path = std::filesystem::absolute(workspace).lexically_normal();
@@ -399,7 +397,7 @@ inline Scene Load(const std::filesystem::path& workspace, const Json& artifact, 
     path /= relative.filename();
     const HANDLE file = handles.Open(path, false);
     LARGE_INTEGER length{};
-    Require(GetFileSizeEx(file, &length) != 0 && length.QuadPart == byteCount, "3D 파일 크기가 게시된 값과 다릅니다.");
+    Require(GetFileSizeEx(file, &length) != 0 && length.QuadPart == byteCount, "파일 크기가 게시된 값과 다릅니다.");
     std::string bytes(static_cast<std::size_t>(byteCount), '\0');
     std::size_t offset = 0;
     while (offset < bytes.size())
@@ -408,10 +406,21 @@ inline Scene Load(const std::filesystem::path& workspace, const Json& artifact, 
         DWORD received = 0;
         const auto request = static_cast<DWORD>(std::min<std::size_t>(65536, bytes.size() - offset));
         Require(ReadFile(file, bytes.data() + offset, request, &received, nullptr) != 0 && received > 0,
-            "3D 파일을 완전히 읽을 수 없습니다.");
+            "게시 파일을 완전히 읽을 수 없습니다.");
         offset += received;
     }
-    Require(Sha256(bytes) == artifact.at("sha256").get<std::string>(), "3D 파일 SHA256이 게시된 값과 다릅니다.");
+    Require(Sha256(bytes) == artifact.at("sha256").get<std::string>(), "파일 SHA256이 게시된 값과 다릅니다.");
+    return bytes;
+}
+
+/** @brief 실행에 결합한 표시 파일만 검증해 3D 장면으로 해석한다. */
+inline Scene Load(const std::filesystem::path& workspace, const Json& artifact, const Json& snapshot,
+    const std::string& runId, const std::atomic<bool>* cancelled = nullptr)
+{
+    Require(artifact.value("role", "") == "display_mesh" && artifact.value("run_id", "") == runId &&
+        artifact.value("snapshot_id", "") == snapshot.value("snapshot_id", ""), "3D 파일 참조가 실행과 다릅니다.");
+    auto bytes = ReadVerifiedArtifact(workspace, artifact, cancelled);
+    const auto byteCount = bytes.size();
     std::vector<Coordinates> coordinates;
     const Json value = ReadPackedMesh(bytes, coordinates, cancelled);
     std::string{}.swap(bytes);

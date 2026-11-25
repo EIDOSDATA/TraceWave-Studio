@@ -22,7 +22,7 @@ std::string errorMessage(const Json& error)
 }
 }
 
-PrototypeProject::PrototypeProject(const char* path, const char* workspace) : cad_(workspace), path_(path ? path : "")
+PrototypeProject::PrototypeProject(const char* path, const char* workspace) : cad_(workspace), result_(workspace), path_(path ? path : "")
 {
     if (configured())
     {
@@ -112,7 +112,7 @@ void PrototypeProject::readResult()
     if (view_ && writable())
     {
         step_ = Step::solverLatest;
-        result_.setStatus("완료된 해석과 S11 표본을 조회하는 중");
+        result_.setStatus("완료된 해석 결과를 조회하는 중");
     }
 }
 
@@ -223,11 +223,19 @@ void PrototypeProject::browseResultHistory(int direction)
 void PrototypeProject::openHistoryResult()
 {
     const auto* selected = result_.historyChoice();
-    if (view_ && writable() && selected && selected->available)
+    if (view_ && writable() && selected)
     {
-        result_.selectArtifact(selected->artifact, selected->revision);
+        if (selected->available)
+        {
+            result_.selectArtifact(selected->artifact, selected->revision);
+            step_ = Step::resultDescribe;
+        }
+        else
+        {
+            result_.selectMatrix(selected->artifact, selected->revision, {}, {}, selected->label);
+            step_ = Step::resultArtifact;
+        }
         result_.setStatus("선택한 해석의 봉인 표본을 조회하는 중");
-        step_ = Step::resultDescribe;
     }
 }
 
@@ -339,16 +347,20 @@ void PrototypeProject::update(PrototypeService& service)
         if (!busy())
         {
             const auto publication = analysis_.takeResult();
-            if (view_ && publication && publication->multiport)
+            if (view_ && publication)
             {
-                result_.showMultiportNotice();
-            }
-            if (view_ && publication && !publication->multiport)
-            {
-                result_.selectArtifact(publication->artifact);
+                if (publication->multiport)
+                {
+                    result_.selectMatrix(publication->artifact, {}, publication->snapshot, publication->reference);
+                    step_ = Step::resultArtifact;
+                }
+                else
+                {
+                    result_.selectArtifact(publication->artifact);
+                    step_ = Step::resultDescribe;
+                }
                 result_.setStatus("완료한 해석의 봉인 표본을 조회하는 중");
                 showingCompletedAnalysis_ = true;
-                step_ = Step::resultDescribe;
             }
             else
             {
@@ -436,6 +448,16 @@ void PrototypeProject::update(PrototypeService& service)
             case Step::resultPage:
                 awaiting_ = service.request("result.page", {{"project_id", view_->id}}, result_.pageInput());
                 break;
+            case Step::resultArtifact:
+                awaiting_ = service.request("result.open", {{"project_id", view_->id}}, result_.artifactInput());
+                break;
+            case Step::resultMatrixLoad:
+                if (result_.pollMatrix())
+                {
+                    finishResult("해석 완료. 봉인된 다중 포트 S 행렬을 읽었습니다.");
+                }
+                sendBackground(service);
+                return;
             case Step::resultExport:
                 awaiting_ = service.request("result.export", {{"project_id", view_->id}}, rfExportInput_);
                 break;
@@ -487,7 +509,12 @@ void PrototypeProject::receive(const Json& reply)
             step_ = Step::finished;
             break;
         case Step::solverLatest:
-            step_ = result_.acceptLatest(result) ? Step::resultDescribe : Step::finished;
+            switch (result_.acceptLatest(result))
+            {
+                case PrototypeResult::Read::none: step_ = Step::finished; break;
+                case PrototypeResult::Read::trace: step_ = Step::resultDescribe; break;
+                case PrototypeResult::Read::matrix: step_ = Step::resultArtifact; break;
+            }
             break;
         case Step::resultHistory:
             result_.acceptHistory(result, view_->id);
@@ -500,13 +527,12 @@ void PrototypeProject::receive(const Json& reply)
         case Step::resultPage:
             if (result_.acceptPage(result))
             {
-                if (showingCompletedAnalysis_)
-                {
-                    analysis_.setStatus("해석 완료. 봉인된 S11 결과를 읽었습니다.");
-                    showingCompletedAnalysis_ = false;
-                }
-                step_ = Step::finished;
+                finishResult("해석 완료. 봉인된 S11 결과를 읽었습니다.");
             }
+            break;
+        case Step::resultArtifact:
+            result_.startMatrix(result, view_->id);
+            step_ = Step::resultMatrixLoad;
             break;
         case Step::resultExport:
         {
@@ -665,6 +691,16 @@ void PrototypeProject::finishView(const Json& editor)
     step_ = Step::finished;
 }
 
+void PrototypeProject::finishResult(const char* status)
+{
+    if (showingCompletedAnalysis_)
+    {
+        analysis_.setStatus(status);
+        showingCompletedAnalysis_ = false;
+    }
+    step_ = Step::finished;
+}
+
 void PrototypeProject::fail(std::string message)
 {
     if (step_ == Step::cad)
@@ -697,14 +733,15 @@ void PrototypeProject::fail(std::string message)
         step_ = Step::finished;
         return;
     }
-    if (step_ == Step::solverLatest || step_ == Step::resultDescribe || step_ == Step::resultPage)
+    if (step_ == Step::solverLatest || step_ == Step::resultDescribe || step_ == Step::resultPage ||
+        step_ == Step::resultArtifact || step_ == Step::resultMatrixLoad)
     {
         if (showingCompletedAnalysis_)
         {
             analysis_.setStatus("해석을 완료했습니다. 결과 조회 상태를 확인하세요.");
             showingCompletedAnalysis_ = false;
         }
-        const auto failure = "S11 결과 조회 실패: " + message;
+        const auto failure = "해석 결과 조회 실패: " + message;
         std::fprintf(stderr, "%s\n", failure.c_str());
         result_.setStatus(failure);
         awaiting_ = false;

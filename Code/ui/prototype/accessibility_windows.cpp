@@ -38,14 +38,14 @@ constexpr Description descriptions[] =
     {L"메뉴 모음", L"menu-bar", UIA_MenuBarControlTypeId},
     {L"창", L"window-menu", UIA_MenuItemControlTypeId, UIA_ExpandCollapsePatternId, L"F10"},
     {L"기판", L"show-board", UIA_MenuItemControlTypeId, UIA_TogglePatternId},
-    {L"S11 결과", L"show-result", UIA_MenuItemControlTypeId, UIA_TogglePatternId, L"F7"},
+    {L"RF 결과", L"show-result", UIA_MenuItemControlTypeId, UIA_TogglePatternId, L"F7"},
     {L"입력에 초점", L"focus-note", UIA_MenuItemControlTypeId, UIA_InvokePatternId, L"F6"},
     {L"결과를 별도 창으로", L"detach-result", UIA_MenuItemControlTypeId, UIA_InvokePatternId, L"F8"},
     {L"입력을 별도 창으로", L"detach-note", UIA_MenuItemControlTypeId, UIA_InvokePatternId, L"Shift+F8"},
     {L"기본 배치 복원", L"reset-layout", UIA_MenuItemControlTypeId, UIA_InvokePatternId, L"F9"},
     {L"기판", L"board", UIA_PaneControlTypeId},
     {L"보기 초기화", L"reset-board", UIA_ButtonControlTypeId, UIA_InvokePatternId},
-    {L"S11 결과", L"result", UIA_PaneControlTypeId},
+    {L"RF 결과", L"result", UIA_PaneControlTypeId},
     {L"입력", L"input", UIA_PaneControlTypeId},
     {L"검수 메모", L"note", UIA_EditControlTypeId, UIA_ValuePatternId, L"F6"},
     {L"메모 지우기", L"clear-note", UIA_ButtonControlTypeId, UIA_InvokePatternId},
@@ -58,7 +58,7 @@ constexpr Description descriptions[] =
     {L"위로 1 mm 이동", L"move-up", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"3D 형상 보기", L"toggle-model", UIA_ButtonControlTypeId, UIA_TogglePatternId},
     {L"3D 형상 다시 읽기", L"reload-model", UIA_ButtonControlTypeId, UIA_InvokePatternId},
-    {L"S11 결과 다시 읽기", L"reload-result", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"RF 결과 다시 읽기", L"reload-result", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"3D 생성", L"build-model", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"STEP 출력", L"export-step", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"CAD 취소", L"cancel-cad", UIA_ButtonControlTypeId, UIA_InvokePatternId},
@@ -102,9 +102,22 @@ constexpr Description descriptions[] =
     {L"다음 RF 내보내기 형식", L"rf-export-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"선택한 RF 결과와 조건 저장", L"rf-export-save", UIA_ButtonControlTypeId, UIA_InvokePatternId},
     {L"", L"rf-export-format", UIA_TextControlTypeId},
-    {L"", L"rf-export-status", UIA_TextControlTypeId}
+    {L"", L"rf-export-status", UIA_TextControlTypeId},
+    {L"이전 수신 포트", L"matrix-row-previous", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 수신 포트", L"matrix-row-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"이전 입사 포트", L"matrix-column-previous", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 입사 포트", L"matrix-column-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"이전 주파수", L"matrix-sample-previous", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"다음 주파수", L"matrix-sample-next", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"행렬 표", L"matrix-table", UIA_ButtonControlTypeId, UIA_TogglePatternId},
+    {L"", L"matrix-axes", UIA_TextControlTypeId},
+    {L"", L"matrix-sample", UIA_TextControlTypeId},
+    {L"제조 교환 형식 변경", L"manufacturing-format", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"제조 교환 후보 ZIP 저장", L"manufacturing-build", UIA_ButtonControlTypeId, UIA_InvokePatternId},
+    {L"", L"manufacturing-choice", UIA_TextControlTypeId},
+    {L"", L"manufacturing-status", UIA_TextControlTypeId}
 };
-static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::rfExportStatus) + 1);
+static_assert(std::size(descriptions) == static_cast<std::size_t>(Control::manufacturingStatus) + 1);
 
 struct Node
 {

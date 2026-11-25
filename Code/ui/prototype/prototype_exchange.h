@@ -18,6 +18,7 @@ public:
         std::string uri;
         std::string sha256;
         std::string manifest;
+        std::string manifestUri;
         nlohmann::json snapshot;
     };
 
@@ -52,6 +53,7 @@ public:
     const std::string& status() const { return status_; }
     const nlohmann::json& review() const { return review_; }
     const std::optional<Published>& published() const { return published_[format_]; }
+    bool showingBoard() const;
 
 private:
     enum class Phase { idle, seal, context, chooseFootprint, preview, approval, build, verify, list, record };

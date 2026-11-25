@@ -4,6 +4,7 @@
 
 #if defined(_WIN32)
 #include "prototype_canvas.h"
+#include "prototype_manufacturing.h"
 #include "prototype_model.h"
 #include "../wxwidgets/network_export_files.h"
 
@@ -31,7 +32,7 @@
 namespace
 {
 constexpr char boardTitle[] = "기판###board";
-constexpr char resultTitle[] = "S11 결과###results";
+constexpr char resultTitle[] = "RF 결과###results";
 constexpr char inputTitle[] = "입력###input";
 constexpr char detachedInputTitle[] = "입력###detached-input";
 constexpr char committedText[] = "한글 검수";
@@ -84,12 +85,18 @@ struct Shell
 #if defined(_WIN32)
     PrototypeProject* project = nullptr;
     PrototypeModel model;
+    PrototypeManufacturing manufacturing;
     bool modelOpen = false;
     bool analysisOpen = false;
     bool resultHistoryOpen = false;
     bool exchangeOpen = false;
     bool rfExportOpen = false;
     std::size_t rfFormatIndex = 0;
+    std::string matrixArtifact;
+    std::size_t matrixRow = 0;
+    std::size_t matrixColumn = 0;
+    std::size_t matrixSample = 0;
+    bool showMatrixTable = false;
     const char* workspacePath = nullptr;
     std::future<std::string> rfDelivery;
     std::string rfDeliveryStatus;
@@ -97,6 +104,8 @@ struct Shell
     void drawLiveModel();
     void drawExchange();
     void drawLiveResult();
+    void drawMatrix(const PrototypeMatrix::Matrix& matrix);
+    void selectMatrixAxis(Control control);
     void drawResultHistory();
     void drawRfExport();
     void deliverRfExport(SDL_Window* mainWindow);
@@ -386,6 +395,14 @@ void Shell::activate(Control control)
         case Control::verifyExchange: project->verifyExchange(); break;
         case Control::cancelExchange: project->cancelExchange(); break;
         case Control::reloadExchange: project->reloadExchange(); break;
+        case Control::manufacturingFormat: manufacturing.chooseFormat(); break;
+        case Control::buildManufacturing:
+            if (project->writable() && !project->exchange().active() && project->exchange().showingBoard() &&
+                project->exchange().published())
+            {
+                manufacturing.select(*project->exchange().published());
+            }
+            break;
         case Control::reloadResult: project->readResult(); break;
         case Control::showSolver: analysisOpen = !analysisOpen; break;
         case Control::readSolverConditions: project->readSolverConditions(); break;
@@ -405,6 +422,13 @@ void Shell::activate(Control control)
         case Control::priorResult: project->browseResultHistory(-1); break;
         case Control::nextResult: project->browseResultHistory(1); break;
         case Control::openHistoryResult: project->openHistoryResult(); break;
+        case Control::matrixPriorRow:
+        case Control::matrixNextRow:
+        case Control::matrixPriorColumn:
+        case Control::matrixNextColumn:
+        case Control::matrixPriorSample:
+        case Control::matrixNextSample: selectMatrixAxis(control); break;
+        case Control::matrixTable: showMatrixTable = !showMatrixTable; break;
         case Control::showRfExport: rfExportOpen = !rfExportOpen; break;
         case Control::previousRfExport:
             if (rfFormatIndex > 0)
@@ -431,6 +455,42 @@ void Shell::activate(Control control)
         default: break;
     }
 }
+
+#if defined(_WIN32)
+void Shell::selectMatrixAxis(Control control)
+{
+    const auto& matrix = project->result().matrix();
+    if (!matrix || matrix->artifact != matrixArtifact)
+    {
+        return;
+    }
+    const auto step = [](std::size_t& index, std::size_t count, bool prior)
+    {
+        if (prior && index > 0)
+        {
+            --index;
+        }
+        else if (!prior && index + 1 < count)
+        {
+            ++index;
+        }
+    };
+    switch (control)
+    {
+        case Control::matrixPriorRow:
+        case Control::matrixNextRow: step(matrixRow, matrix->ports.size(), control == Control::matrixPriorRow); break;
+        case Control::matrixPriorColumn:
+        case Control::matrixNextColumn:
+            step(matrixColumn, matrix->ports.size(), control == Control::matrixPriorColumn);
+            break;
+        case Control::matrixPriorSample:
+        case Control::matrixNextSample:
+            step(matrixSample, matrix->hertz.size(), control == Control::matrixPriorSample);
+            break;
+        default: break;
+    }
+}
+#endif
 
 void Shell::setNote(std::string_view text)
 {
@@ -555,7 +615,7 @@ void Shell::drawMenus(bool hasViewports)
                 access.item(control, Control::windowMenu, enabled, checked && *checked);
             };
             menuItem(Control::showBoard, "기판", nullptr, &boardOpen, true);
-            menuItem(Control::showResult, "S11 결과", "F7", &resultOpen, true);
+            menuItem(Control::showResult, "RF 결과", "F7", &resultOpen, true);
             menuItem(Control::focusNote, "입력에 초점", "F6", nullptr, true);
             menuItem(Control::detachResult, "결과를 별도 창으로", "F8", nullptr, hasViewports);
             menuItem(Control::detachNote, "입력을 별도 창으로", "Shift+F8", nullptr, hasViewports);
@@ -643,7 +703,8 @@ void Shell::drawBoard()
         requestedFocus == Control::moveUp || requestedFocus == Control::toggleModel ||
         requestedFocus == Control::reloadModel || requestedFocus == Control::buildModel ||
         requestedFocus == Control::exportStep || requestedFocus == Control::cancelCad ||
-        (requestedFocus >= Control::showExchange && requestedFocus <= Control::reloadExchange))
+        (requestedFocus >= Control::showExchange && requestedFocus <= Control::reloadExchange) ||
+        requestedFocus == Control::manufacturingFormat || requestedFocus == Control::buildManufacturing)
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::board)
@@ -849,6 +910,21 @@ void Shell::drawExchange()
     panelButton(Control::verifyExchange, "재검수", project->canVerifyExchange());
     ImGui::SameLine();
     panelButton(Control::reloadExchange, "기록 다시 읽기", project->canReadExchange());
+    if (job.showingBoard())
+    {
+        const bool available = ready && !job.active() && job.published() && !manufacturing.active();
+        panelButton(Control::manufacturingFormat, "제조 형식 변경", !manufacturing.active());
+        ImGui::SameLine();
+        ImGui::TextUnformatted(manufacturing.format());
+        access.text(Control::manufacturingChoice, Control::board, manufacturing.format());
+        ImGui::SameLine();
+        panelButton(Control::buildManufacturing, "제조 후보 ZIP 저장", available);
+        if (!manufacturing.status().empty())
+        {
+            ImGui::TextWrapped("%s", manufacturing.status().c_str());
+            access.text(Control::manufacturingStatus, Control::board, manufacturing.status());
+        }
+    }
 
     const auto& info = job.review();
     if (info.is_object())
@@ -1054,7 +1130,8 @@ void Shell::drawResult(bool hasViewports)
     if (requestedFocus == Control::result || requestedFocus == Control::reloadResult ||
         (requestedFocus >= Control::showSolver && requestedFocus <= Control::cancelSolver) ||
         (requestedFocus >= Control::showResultHistory && requestedFocus <= Control::openHistoryResult) ||
-        (requestedFocus >= Control::showRfExport && requestedFocus <= Control::saveRfExport))
+        (requestedFocus >= Control::showRfExport && requestedFocus <= Control::saveRfExport) ||
+        (requestedFocus >= Control::matrixPriorRow && requestedFocus <= Control::matrixTable))
     {
         ImGui::SetNextWindowFocus();
         if (requestedFocus == Control::result)
@@ -1094,12 +1171,12 @@ void Shell::drawResult(bool hasViewports)
 }
 
 #if defined(_WIN32)
-/** @brief 현재 프로젝트에서 선택한 완료 실행의 고정 S11 표본과 출처를 표시한다. */
+/** @brief 현재 프로젝트에서 선택한 완료 실행의 봉인된 S 표본과 출처를 표시한다. */
 void Shell::drawLiveResult()
 {
     const auto& result = project->result();
     const auto& series = result.series();
-    if (!series && result.status().empty())
+    if (!series && !result.matrix() && result.status().empty())
     {
         project->readResult();
     }
@@ -1127,6 +1204,11 @@ void Shell::drawLiveResult()
     {
         ImGui::TextWrapped("%s", result.status().c_str());
         access.text(Control::resultReadStatus, Control::result, result.status());
+    }
+    if (result.matrix())
+    {
+        drawMatrix(*result.matrix());
+        return;
     }
     if (!series)
     {
@@ -1162,6 +1244,139 @@ void Shell::drawLiveResult()
             static_cast<int>(series->total));
         ImPlot::EndPlot();
         plotDrawn = true;
+    }
+    ImGui::PopID();
+}
+
+/** @brief 수신 포트, 입사 포트와 주파수 선택에 맞춰 봉인된 값과 S 곡선을 표시한다. */
+void Shell::drawMatrix(const PrototypeMatrix::Matrix& matrix)
+{
+    if (matrixArtifact != matrix.artifact)
+    {
+        matrixArtifact = matrix.artifact;
+        matrixRow = matrixColumn = matrixSample = 0;
+    }
+    const auto ports = matrix.ports.size();
+    const auto* view = project->view();
+    const auto* relation = view && view->revision == matrix.revision ? "현재 설계" : "이전 설계";
+    char summary[240];
+    std::snprintf(summary, sizeof(summary), "결과 개정 %.12s | %s | %zu x %zu S 행렬 | %zu개 표본",
+        matrix.revision.c_str(), relation, ports, ports, matrix.hertz.size());
+    ImGui::TextUnformatted(summary);
+    access.text(Control::resultSummary, Control::result, summary);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::TextUnformatted(matrix.label.c_str());
+        ImGui::Text("개정 %s", matrix.revision.c_str());
+        ImGui::Text("아티팩트 %s", matrix.artifact.c_str());
+        ImGui::Text("원문 SHA-256 %s", matrix.sha256.c_str());
+        ImGui::Text("파동 %s | 페이저 %s", matrix.wave.c_str(), matrix.phasor.c_str());
+        ImGui::EndTooltip();
+    }
+
+    panelButton(Control::matrixPriorRow, "이전 수신", matrixRow > 0, false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::matrixNextRow, "다음 수신", matrixRow + 1 < ports, false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::matrixPriorColumn, "이전 입사", matrixColumn > 0, false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::matrixNextColumn, "다음 입사", matrixColumn + 1 < ports, false, Control::result);
+    const auto& receive = matrix.ports[matrixRow];
+    const auto& incident = matrix.ports[matrixColumn];
+    const auto portLabel = [&](std::size_t index, const PrototypeMatrix::Port& port)
+    {
+        const auto& z = matrix.impedances[matrixSample * ports + index];
+        char impedance[80] = "";
+        if (z)
+        {
+            std::snprintf(impedance, sizeof(impedance), " | Z0 %.12g %+.12gj ohm", z->real, z->imag);
+        }
+        return std::to_string(index + 1) + " " + (port.name.empty() ? port.id : port.name) +
+            (port.referencePlane.empty() ? "" : " | 기준면 " + port.referencePlane) + impedance;
+    };
+    const auto axes = "수신 " + portLabel(matrixRow, receive) + " / 입사 " + portLabel(matrixColumn, incident);
+    ImGui::TextWrapped("%s", axes.c_str());
+    access.text(Control::matrixAxes, Control::result, axes);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("수신 ID %s\n입사 ID %s", receive.id.c_str(), incident.id.c_str());
+    }
+
+    panelButton(Control::matrixPriorSample, "이전 주파수", matrixSample > 0, false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::matrixNextSample, "다음 주파수", matrixSample + 1 < matrix.hertz.size(), false, Control::result);
+    ImGui::SameLine();
+    panelButton(Control::matrixTable, "행렬 표", true, showMatrixTable, Control::result);
+    const auto name = PrototypeMatrix::ChannelName(matrixRow, matrixColumn);
+    const auto& channel = matrix.channel(matrixRow, matrixColumn);
+    const auto describe = [](char* buffer, std::size_t size, const PrototypeMatrix::Sample& sample, int digits)
+    {
+        if (sample.state == PrototypeMatrix::State::valid)
+        {
+            std::snprintf(buffer, size, "Re %.*g  Im %.*g", digits, sample.value.real, digits, sample.value.imag);
+        }
+        else
+        {
+            std::snprintf(buffer, size, "%s", PrototypeMatrix::StateLabel(sample.state));
+        }
+    };
+    char value[112];
+    describe(value, sizeof(value), channel.samples[matrixSample], 17);
+    char sample[220];
+    std::snprintf(sample, sizeof(sample), "%s  |  %.17g Hz  |  %s", name.c_str(), matrix.hertz[matrixSample], value);
+    ImGui::TextWrapped("%s", sample);
+    access.text(Control::matrixSample, Control::result, sample);
+
+    ImGui::PushID(matrix.artifact.c_str());
+    if (showMatrixTable)
+    {
+        const auto flags = ImGuiTableFlags_Borders | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY;
+        if (ImGui::BeginTable("##matrix", static_cast<int>(ports + 1), flags, {-1.0f, -1.0f}))
+        {
+            ImGui::TableSetupScrollFreeze(1, 1);
+            ImGui::TableSetupColumn("수신 / 입사", ImGuiTableColumnFlags_WidthFixed, 96.0f);
+            for (std::size_t column = 0; column < ports; ++column)
+            {
+                const auto header = "입사 " + std::to_string(column + 1);
+                ImGui::TableSetupColumn(header.c_str(), ImGuiTableColumnFlags_WidthFixed, 185.0f);
+            }
+            ImGui::TableHeadersRow();
+            for (std::size_t row = 0; row < ports; ++row)
+            {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("수신 %zu", row + 1);
+                for (std::size_t column = 0; column < ports; ++column)
+                {
+                    ImGui::TableNextColumn();
+                    const auto& cell = matrix.channel(row, column).samples[matrixSample];
+                    describe(value, sizeof(value), cell, 7);
+                    const auto text = PrototypeMatrix::ChannelName(row, column) + "\n" + value;
+                    if (ImGui::Selectable(text.c_str(), row == matrixRow && column == matrixColumn))
+                    {
+                        matrixRow = row;
+                        matrixColumn = column;
+                    }
+                }
+            }
+            ImGui::EndTable();
+        }
+    }
+    else
+    {
+        // @brief 각 채널은 자신의 축 범위와 확대 상태를 갖는다.
+        const auto plot = "###matrix-" + name;
+        if (ImPlot::BeginPlot(plot.c_str(), {-1.0f, -1.0f}, ImPlotFlags_NoLegend))
+        {
+            const auto ordinate = "|" + name + "| (dB)";
+            ImPlot::SetupAxes("주파수 (GHz)", ordinate.c_str());
+            ImPlot::SetNextLineStyle(ImVec4(0.32f, 0.82f, 0.78f, 1.0f), 2.0f);
+            ImPlot::SetNextMarkerStyle(ImPlotMarker_Circle, 2.5f);
+            ImPlot::PlotLine(name.c_str(), matrix.ghz.data(), channel.db.data(), static_cast<int>(matrix.ghz.size()));
+            ImPlot::EndPlot();
+            plotDrawn = true;
+        }
     }
     ImGui::PopID();
 }
@@ -1275,7 +1490,7 @@ void Shell::drawResultHistory()
     ImGui::SameLine();
     panelButton(Control::nextResult, "다음 결과", ready && result.canBrowseHistory(1), false, Control::result);
     ImGui::SameLine();
-    panelButton(Control::openHistoryResult, "결과 열기", ready && choice && choice->available, false, Control::result);
+    panelButton(Control::openHistoryResult, "결과 열기", ready && choice, false, Control::result);
     if (choice)
     {
         const auto* view = project->view();
@@ -1284,8 +1499,7 @@ void Shell::drawResultHistory()
         ImGui::TextWrapped("%s", summary.c_str());
         access.text(Control::historyChoice, Control::result, summary);
     }
-    const auto status = !result.historyStatus().empty() ? result.historyStatus() :
-        (choice && !choice->available ? "이 결과는 RC10의 원래 해석 결과 보기에서 열 수 있습니다." : "");
+    const auto& status = result.historyStatus();
     if (!status.empty())
     {
         ImGui::TextWrapped("%s", status.c_str());
@@ -1970,6 +2184,7 @@ int run(SDL_Window* window, const Options& options)
                     service.poll();
                     project.update(service);
                     shell.deliverRfExport(window);
+                    shell.manufacturing.update(window, options.service);
                     serviceStatus = service.status().c_str();
 #endif
                     shell.draw(renderer, window, korean, serviceStatus);

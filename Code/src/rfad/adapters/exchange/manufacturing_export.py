@@ -86,7 +86,7 @@ def verify_padstacks(source, summary, format_name):
                 raise ValueError(f"{format_name}: 층별 관통 패드의 {layer} 도형이 원문과 다릅니다.")
 
 
-def export_package(source, destination, executable, formats, *, manifest_sha256=None):
+def export_package(source, destination, executable, formats, *, manifest_sha256=None, workspace=None):
     """! @brief 원본을 재작성하지 않고 두 출력과 추적 기록을 한 ZIP으로 원자 게시한다."""
     if not formats or set(formats) - set(FORMATS) or len(formats) != len(set(formats)):
         raise ValueError("IPC-2581 또는 ODB++를 한 번씩 선택하십시오.")
@@ -97,6 +97,10 @@ def export_package(source, destination, executable, formats, *, manifest_sha256=
         raise ValueError("기존 파일과 다른 새 ZIP 출력 경로를 지정하십시오.")
     if destination.is_relative_to(source):
         raise ValueError("게시 원본 패키지 폴더 밖에 새 ZIP을 저장하십시오.")
+    if workspace is not None:
+        root = workspace.resolve(strict=True)
+        if not source.is_relative_to(root) or destination.is_relative_to(root):
+            raise ValueError("작업 영역 안의 게시 원본과 작업 영역 밖의 새 ZIP을 지정하십시오.")
     manifest, source_files = _input_package(source)
     if manifest_sha256 is not None and pcb._hash(source_files["manifest.json"]) != manifest_sha256:
         raise ValueError("선택한 게시 기록의 manifest 해시와 현재 원본이 다릅니다.")
@@ -153,11 +157,13 @@ def main():
     parser.add_argument("--output", required=True, type=Path, help="새 ZIP 파일")
     parser.add_argument("--kicad-cli", required=True, type=Path, help="설치한 KiCad 실행 파일 경로")
     parser.add_argument("--manifest-sha256", help="선택한 게시 기록의 manifest SHA-256")
+    parser.add_argument("--workspace", type=Path, help="게시 원본이 속한 작업 영역. ZIP은 이 영역 밖에 저장합니다.")
     parser.add_argument("--quiet", action="store_true", help="성공 시 콘솔 출력을 생략합니다.")
     parser.add_argument("--format", choices=FORMATS, action="append", help="선택 출력. 생략하면 두 형식 생성")
     args = parser.parse_args()
     try:
-        result = export_package(args.input, args.output, args.kicad_cli, args.format or FORMATS, manifest_sha256=args.manifest_sha256)
+        result = export_package(args.input, args.output, args.kicad_cli, args.format or FORMATS,
+                                manifest_sha256=args.manifest_sha256, workspace=args.workspace)
     except (OSError, ValueError, KeyError, AttributeError, BadZipFile, ProjectError, subprocess.TimeoutExpired) as error:
         message = str(error).encode("utf-8")[-1600:].decode("utf-8", errors="ignore")
         parser.exit(1, message + "\n")

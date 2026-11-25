@@ -83,11 +83,13 @@ private:
     enum class Step
     {
         idle, open, save, translate, undo, edited, accepted, job, canvas, editor, cad,
-        solverLatest, resultHistory, resultDescribe, resultPage, resultExport, solverConditions, finished, failed
+        solverLatest, resultHistory, resultDescribe, resultPage, resultArtifact, resultMatrixLoad, resultExport,
+        solverConditions, finished, failed
     };
     bool sendBackground(PrototypeService& service);
     void receive(const nlohmann::json& reply);
     void receiveJob(const nlohmann::json& result);
+    void finishResult(const char* status);
     void receiveCanvas(const nlohmann::json& result);
     void finishView(const nlohmann::json& editor);
     void fail(std::string message);

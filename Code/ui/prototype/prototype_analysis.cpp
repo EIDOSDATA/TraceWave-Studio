@@ -423,9 +423,9 @@ void PrototypeAnalysis::complete(const json& result)
     }
     else if (phase == Phase::Analysis)
     {
-        completedResult_ = PublishedResult{result.at("artifact_id").get<std::string>(), multiport_};
-        finish(multiport_ ? "다중 포트 해석 완료. 전체 S 행렬을 저장했습니다."
-                          : "해석 완료. 봉인된 결과를 읽는 중");
+        completedResult_ = PublishedResult{result.at("artifact_id").get<std::string>(), multiport_,
+            result.at("snapshot"), result.at("normalized_result")};
+        finish("해석 완료. 봉인된 결과를 읽는 중");
     }
 }
 

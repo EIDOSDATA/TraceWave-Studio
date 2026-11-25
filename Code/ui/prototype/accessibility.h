@@ -23,7 +23,9 @@ enum class Control
     historyChoice, historyStatus, resultReadStatus, resultSummary,
     showExchange, priorExchange, nextExchange, priorFootprint, nextFootprint, reviewFootprint, reviewExchange, buildExchange, verifyExchange, cancelExchange, reloadExchange,
     exchangeFormat, exchangeFootprint, exchangeStatus, exchangeReview, exchangePublication,
-    showRfExport, previousRfExport, nextRfExport, saveRfExport, rfExportFormat, rfExportStatus
+    showRfExport, previousRfExport, nextRfExport, saveRfExport, rfExportFormat, rfExportStatus,
+    matrixPriorRow, matrixNextRow, matrixPriorColumn, matrixNextColumn, matrixPriorSample, matrixNextSample,
+    matrixTable, matrixAxes, matrixSample, manufacturingFormat, buildManufacturing, manufacturingChoice, manufacturingStatus
 };
 
 enum class Operation { focus, invoke, toggle, expand, collapse, setValue };

@@ -1,6 +1,7 @@
 #include "prototype_result.h"
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <cstdio>
 #include <limits>
@@ -20,6 +21,25 @@ bool hashMatchesFormat(const json& value)
     const auto& string = value.get_ref<const std::string&>();
     return string.size() == 64 && string.find_first_not_of("0123456789abcdef") == std::string::npos;
 }
+}
+
+PrototypeResult::PrototypeResult(const char* workspace)
+{
+    if (workspace)
+    {
+        const std::string_view path(workspace);
+        workspace_ = std::filesystem::path(std::u8string(path.begin(), path.end()));
+    }
+}
+
+/** @brief 결과 읽기를 중단하고 경로와 중단 신호가 작업보다 먼저 사라지지 않도록 한다. */
+PrototypeResult::~PrototypeResult()
+{
+    cancelled_.store(true);
+    if (matrixLoad_.valid())
+    {
+        matrixLoad_.wait();
+    }
 }
 
 void PrototypeResult::setStatus(std::string status)
@@ -131,7 +151,7 @@ const PrototypeResult::SavedResult* PrototypeResult::historyChoice() const
 }
 
 /** @brief 완료된 해석의 아티팩트만 사용한다. */
-bool PrototypeResult::acceptLatest(const json& reply)
+PrototypeResult::Read PrototypeResult::acceptLatest(const json& reply)
 {
     if (reply.at("profile") != "rfad.solver-view/0.1")
     {
@@ -142,21 +162,72 @@ bool PrototypeResult::acceptLatest(const json& reply)
     if (latest.is_null())
     {
         series_.reset();
+        matrix_.reset();
         setStatus("완료된 해석 결과가 없습니다.");
-        return false;
+        return Read::none;
     }
-    if (latest.value("profile", "") == "rfad.openems.pcb-multiport/0.1")
+    const auto artifact = latest.at("artifact_id").get<std::string>();
+    if (latest.value("profile", "") == PrototypeMatrix::profile)
     {
-        showMultiportNotice();
-        return false;
+        selectMatrix(artifact, {}, latest.at("snapshot"), latest.at("normalized_result"));
+        return Read::matrix;
     }
-    selectArtifact(latest.at("artifact_id").get<std::string>());
-    return true;
+    selectArtifact(artifact);
+    return Read::trace;
 }
 
-void PrototypeResult::showMultiportNotice()
+void PrototypeResult::selectMatrix(const std::string& artifact, const std::string& revision,
+    const json& snapshot, const json& reference, const std::string& label)
 {
-    setStatus("최신 해석은 다중 포트 결과입니다. RC10의 네트워크 보기에서 전체 S 행렬을 확인하세요.");
+    selectArtifact(artifact, revision);
+    pending_.label = label;
+    expectedSnapshot_ = snapshot;
+    expectedReference_ = reference;
+}
+
+json PrototypeResult::artifactInput() const
+{
+    return {{"artifact_id", pending_.source.at("artifact_id")}, {"selection", "normalized"}};
+}
+
+/** @brief 완료 기록과 파일 참조를 대조하고 플랫폼 이벤트 처리와 분리해 읽는다. */
+void PrototypeResult::startMatrix(const json& reply, const std::string& project)
+{
+    if (reply.at("artifact_id") != pending_.source.at("artifact_id") ||
+        reply.at("metadata").at("profile") != PrototypeMatrix::profile)
+    {
+        throw std::runtime_error("이 해석의 결과 형식은 현재 화면에 표시할 수 없습니다.");
+    }
+    if (!expectedReference_.is_null())
+    {
+        const auto& file = reply.at("files").at(0);
+        if (file.at("uri") != expectedReference_.at("uri") || file.at("sha256") != expectedReference_.at("sha256") ||
+            file.at("bytes") != expectedReference_.at("bytes"))
+        {
+            throw std::runtime_error("완료 기록과 다중 포트 원문 참조가 다릅니다.");
+        }
+    }
+    setStatus("봉인된 다중 포트 S 행렬을 읽는 중");
+    matrixLoad_ = std::async(std::launch::async, [this, reply, project, label = pending_.label,
+        revision = pending_.revision, snapshot = expectedSnapshot_]()
+    {
+        return PrototypeMatrix::Load(workspace_, reply, project, label, revision, snapshot, cancelled_);
+    });
+}
+
+bool PrototypeResult::pollMatrix()
+{
+    if (matrixLoad_.wait_for(std::chrono::seconds(0)) != std::future_status::ready)
+    {
+        return false;
+    }
+    auto matrix = matrixLoad_.get();
+    std::printf("S matrix display: artifact=%s revision=%s ports=%zu samples=%zu\n",
+        matrix.artifact.c_str(), matrix.revision.c_str(), matrix.ports.size(), matrix.hertz.size());
+    matrix_ = std::move(matrix);
+    series_.reset();
+    status_.clear();
+    return true;
 }
 
 void PrototypeResult::selectArtifact(const std::string& artifact, const std::string& revision)
@@ -263,6 +334,7 @@ bool PrototypeResult::acceptPage(const json& reply)
         pending_.source.at("artifact_id").get_ref<const std::string&>().c_str(),
         pending_.revision.c_str(), pending_.frequenciesGhz.size());
     series_ = std::move(pending_);
+    matrix_.reset();
     status_.clear();
     return true;
 }

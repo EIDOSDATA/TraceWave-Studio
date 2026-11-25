@@ -1,7 +1,9 @@
-/** @file @brief 공개 결과 pin에 결합된 S11 표본을 화면에 전달한다. */
+/** @file @brief 봉인된 해석 표본을 화면에 전달한다. */
 #pragma once
 
-#include <nlohmann/json.hpp>
+#include "prototype_matrix.h"
+
+#include <future>
 
 #include <optional>
 #include <string>
@@ -10,6 +12,11 @@
 class PrototypeResult
 {
 public:
+    enum class Read { none, trace, matrix };
+
+    explicit PrototypeResult(const char* workspace);
+    ~PrototypeResult();
+
     struct Series
     {
         std::string label;
@@ -40,8 +47,12 @@ public:
     const SavedResult* historyChoice() const;
     const std::string& historyStatus() const { return historyStatus_; }
 
-    bool acceptLatest(const nlohmann::json& reply);
-    void showMultiportNotice();
+    Read acceptLatest(const nlohmann::json& reply);
+    void selectMatrix(const std::string& artifact, const std::string& revision,
+        const nlohmann::json& snapshot = {}, const nlohmann::json& reference = {}, const std::string& label = {});
+    nlohmann::json artifactInput() const;
+    void startMatrix(const nlohmann::json& reply, const std::string& project);
+    bool pollMatrix();
     void selectArtifact(const std::string& artifact, const std::string& revision = {});
     void acceptDescription(const nlohmann::json& reply, const std::string& project, const std::string& revision);
     bool acceptPage(const nlohmann::json& reply);
@@ -50,6 +61,7 @@ public:
     void setStatus(std::string status);
 
     const std::optional<Series>& series() const { return series_; }
+    const std::optional<PrototypeMatrix::Matrix>& matrix() const { return matrix_; }
     const std::string& status() const { return status_; }
 
 private:
@@ -65,5 +77,11 @@ private:
     int requestedDirection_ = 0;
     Series pending_;
     std::optional<Series> series_;
+    std::optional<PrototypeMatrix::Matrix> matrix_;
+    std::filesystem::path workspace_;
+    nlohmann::json expectedSnapshot_;
+    nlohmann::json expectedReference_;
+    std::atomic<bool> cancelled_ = false;
+    std::future<PrototypeMatrix::Matrix> matrixLoad_;
     std::string status_;
 };
