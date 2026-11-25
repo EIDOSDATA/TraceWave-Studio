@@ -1,3 +1,4 @@
+#include "accessibility.h"
 #include "b0_samples.h"
 #include "renderer.h"
 
@@ -23,10 +24,13 @@ namespace
 constexpr char boardTitle[] = "기판###board";
 constexpr char resultTitle[] = "S11 결과###results";
 constexpr char inputTitle[] = "입력###input";
+constexpr char detachedInputTitle[] = "입력###detached-input";
 constexpr char committedText[] = "한글 검수";
 constexpr char editingText[] = "한";
 constexpr int initialWidth = 1120;
 constexpr int initialHeight = 720;
+using accessibility::Control;
+using accessibility::Operation;
 
 struct Options
 {
@@ -40,24 +44,41 @@ struct Shell
     bool resultOpen = true;
     bool inputOpen = true;
     bool focusInput = false;
+    bool detachInput = false;
+    bool placeInput = false;
+    bool restoreMainFocus = false;
     bool detachResult = false;
     bool undockNextFrame = false;
     bool resetLayout = false;
     bool noteActive = false;
     bool plotDrawn = false;
     bool boardDrawn = false;
-    std::array<char, 256> note{};
+    std::array<char, accessibility::noteCapacity> note{};
     std::string preedit;
     SDL_WindowID preeditWindow = 0;
+    SDL_WindowID noteWindow = 0;
+    SDL_WindowID detachedResultWindow = 0;
+    SDL_WindowID detachedNoteWindow = 0;
     float zoom = 1.0f;
     ImVec2 pan{};
+    ImGuiID noteId = 0;
+    Control requestedFocus = Control::root;
+    bool openMenu = false;
+    bool closeMenu = false;
+    accessibility::Bridge access;
 
-    void processEvent(const SDL_Event& event);
+    bool processEvent(const SDL_Event& event);
     void draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFont);
+    void finishFrame(SDL_Window* mainWindow);
     void drawMenus(bool hasViewports);
     void drawBoard();
     void drawResult(bool hasViewports);
-    void drawInput();
+    void drawInput(SDL_Window* mainWindow);
+    void drawNote(const ImGuiViewport* mainViewport);
+    void activate(Control control);
+    void applyActions();
+    void setNote(std::string_view text);
+    void focusItem(Control control);
 };
 
 bool parseOptions(int argc, char** argv, Options& options)
@@ -139,10 +160,33 @@ float windowDpiScale(ImGuiViewport* viewport)
     return 1.0f;
 }
 
-void Shell::processEvent(const SDL_Event& event)
+/** @brief 조합과 확정 이벤트를 현재 메모가 속한 SDL 창으로 제한한다. */
+bool Shell::processEvent(const SDL_Event& event)
 {
+    if (event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED
+        && (event.window.windowID == detachedResultWindow || event.window.windowID == detachedNoteWindow))
+    {
+        if (event.window.windowID == detachedNoteWindow)
+        {
+            detachInput = false;
+            focusInput = true;
+        }
+        else if (!detachInput)
+        {
+            focusInput = true;
+        }
+        else
+        {
+            requestedFocus = Control::windowMenu;
+        }
+        restoreMainFocus = true;
+    }
     if (event.type == SDL_EVENT_TEXT_EDITING)
     {
+        if (!noteActive || event.edit.windowID != noteWindow)
+        {
+            return false;
+        }
         preedit = event.edit.text ? event.edit.text : "";
         preeditWindow = preedit.empty() ? 0 : event.edit.windowID;
     }
@@ -152,47 +196,155 @@ void Shell::processEvent(const SDL_Event& event)
         preedit.clear();
         preeditWindow = 0;
     }
+    if (event.type == SDL_EVENT_KEY_DOWN && event.key.scancode == SDL_SCANCODE_ESCAPE
+        && preeditWindow && preeditWindow == event.key.windowID)
+    {
+        if (SDL_Window* window = SDL_GetWindowFromID(preeditWindow))
+        {
+            SDL_ClearComposition(window);
+        }
+        preedit.clear();
+        preeditWindow = 0;
+        return false;
+    }
+    return event.type != SDL_EVENT_TEXT_INPUT || (noteActive && event.text.windowID == noteWindow);
+}
+
+/** @brief 바로 가기, 메뉴 및 UI Automation에서 같은 명령을 사용한다. */
+void Shell::activate(Control control)
+{
+    switch (control)
+    {
+        case Control::showBoard: boardOpen = !boardOpen; break;
+        case Control::showResult: resultOpen = !resultOpen; break;
+        case Control::focusNote: focusInput = true; break;
+        case Control::detachResult: resultOpen = detachResult = undockNextFrame = true; break;
+        case Control::detachNote: detachInput = placeInput = focusInput = true; break;
+        case Control::resetLayout: resetLayout = true; break;
+        case Control::resetBoard: zoom = 1.0f; pan = {}; break;
+        case Control::clearNote: setNote({}); break;
+        default: break;
+    }
+}
+
+void Shell::setNote(std::string_view text)
+{
+    note.fill('\0');
+    std::copy(text.begin(), text.end(), note.begin());
+    if (ImGuiInputTextState* input = ImGui::GetInputTextState(noteId))
+    {
+        input->ReloadUserBufAndMoveToEnd();
+    }
+}
+
+void Shell::applyActions()
+{
+    for (const auto& action : access.takeActions())
+    {
+        switch (action.operation)
+        {
+            case Operation::invoke:
+            case Operation::toggle: activate(action.control); break;
+            case Operation::expand: openMenu = true; break;
+            case Operation::collapse: closeMenu = true; break;
+            case Operation::setValue: setNote(action.value); break;
+            case Operation::focus:
+                if (action.control == Control::note)
+                {
+                    focusInput = true;
+                }
+                else
+                {
+                    requestedFocus = action.control;
+                }
+                break;
+        }
+    }
+}
+
+void Shell::focusItem(Control control)
+{
+    if (requestedFocus == control)
+    {
+        ImGuiWindow* window = ImGui::GetCurrentWindowRead();
+        const ImGuiContext& context = *ImGui::GetCurrentContext();
+        ImGui::FocusWindow(window);
+        ImGui::SetNavID(context.LastItemData.ID, window->DC.NavLayerCurrent, context.CurrentFocusScopeId,
+            ImGui::WindowRectAbsToRel(window, context.LastItemData.NavRect));
+        ImGui::SetNavCursorVisible(true);
+        requestedFocus = Control::root;
+    }
 }
 
 void Shell::drawMenus(bool hasViewports)
 {
     if (ImGui::IsKeyPressed(ImGuiKey_F6, false))
     {
-        focusInput = true;
+        activate(Control::focusNote);
     }
     if (ImGui::IsKeyPressed(ImGuiKey_F7, false))
     {
-        resultOpen = !resultOpen;
+        activate(Control::showResult);
     }
     if (hasViewports && ImGui::IsKeyPressed(ImGuiKey_F8, false))
     {
-        resultOpen = detachResult = undockNextFrame = true;
+        activate(ImGui::GetIO().KeyShift ? Control::detachNote : Control::detachResult);
     }
     if (ImGui::IsKeyPressed(ImGuiKey_F9, false))
     {
-        resetLayout = true;
+        activate(Control::resetLayout);
+    }
+    if (ImGui::IsKeyPressed(ImGuiKey_F10, false))
+    {
+        openMenu = true;
     }
 
     if (ImGui::BeginMainMenuBar())
     {
-        if (ImGui::BeginMenu("창"))
+        const ImGuiViewport* viewport = ImGui::GetWindowViewport();
+        access.panel(Control::menuBar);
+        const bool keyboardOpen = openMenu && !ImGui::IsPopupOpen("창");
+        if (keyboardOpen)
         {
-            ImGui::MenuItem("기판", nullptr, &boardOpen);
-            ImGui::MenuItem("S11 결과", "F7", &resultOpen);
-            if (ImGui::MenuItem("입력에 초점", "F6"))
+            ImGui::OpenPopup("창", ImGuiPopupFlags_NoReopen);
+        }
+        openMenu = false;
+        const bool menuOpen = ImGui::BeginMenu("창");
+        if (!menuOpen)
+        {
+            focusItem(Control::windowMenu);
+        }
+        access.item(Control::windowMenu, Control::menuBar, true, menuOpen, viewport);
+        if (menuOpen)
+        {
+            if (keyboardOpen)
             {
-                focusInput = true;
+                ImGui::NavInitWindow(ImGui::GetCurrentWindowRead(), true);
+                ImGui::SetNavCursorVisible(true);
             }
-            if (ImGui::MenuItem("결과를 별도 창으로", "F8", false, hasViewports))
+            if (closeMenu)
             {
-                resultOpen = detachResult = undockNextFrame = true;
+                ImGui::CloseCurrentPopup();
             }
-            if (ImGui::MenuItem("기본 배치 복원", "F9"))
+            const auto menuItem = [this](Control control, const char* name, const char* key, const bool* checked,
+                bool enabled)
             {
-                resetLayout = true;
-            }
+                if (ImGui::MenuItem(name, key, checked && *checked, enabled))
+                {
+                    activate(control);
+                }
+                focusItem(control);
+                access.item(control, Control::windowMenu, enabled, checked && *checked);
+            };
+            menuItem(Control::showBoard, "기판", nullptr, &boardOpen, true);
+            menuItem(Control::showResult, "S11 결과", "F7", &resultOpen, true);
+            menuItem(Control::focusNote, "입력에 초점", "F6", nullptr, true);
+            menuItem(Control::detachResult, "결과를 별도 창으로", "F8", nullptr, hasViewports);
+            menuItem(Control::detachNote, "입력을 별도 창으로", "Shift+F8", nullptr, hasViewports);
+            menuItem(Control::resetLayout, "기본 배치 복원", "F9", nullptr, true);
             ImGui::EndMenu();
         }
+        closeMenu = false;
         ImGui::EndMainMenuBar();
     }
 }
@@ -200,6 +352,7 @@ void Shell::drawMenus(bool hasViewports)
 void Shell::draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFont)
 {
     const bool hasViewports = renderer.hasViewports();
+    applyActions();
     drawMenus(hasViewports);
     const ImGuiID dockspace = ImHashStr("TraceWavePrototypeDock");
     if (resetLayout || !ImGui::DockBuilderGetNode(dockspace))
@@ -218,13 +371,19 @@ void Shell::draw(const Renderer& renderer, SDL_Window* mainWindow, bool koreanFo
         {
             boardOpen = resultOpen = inputOpen = true;
             detachResult = undockNextFrame = resetLayout = false;
+            if (detachInput)
+            {
+                detachInput = false;
+                focusInput = true;
+                restoreMainFocus = true;
+            }
         }
     }
     ImGui::DockSpaceOverViewport(dockspace);
     plotDrawn = boardDrawn = false;
     drawBoard();
     drawResult(hasViewports);
-    drawInput();
+    drawInput(mainWindow);
 
     if (ImGui::BeginViewportSideBar("###status", ImGui::GetMainViewport(), ImGuiDir_Down,
         ImGui::GetFrameHeight(), ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings))
@@ -254,15 +413,25 @@ void Shell::drawBoard()
     {
         return;
     }
+    if (requestedFocus == Control::board || requestedFocus == Control::resetBoard)
+    {
+        ImGui::SetNextWindowFocus();
+        if (requestedFocus == Control::board)
+        {
+            requestedFocus = Control::root;
+        }
+    }
     if (ImGui::Begin(boardTitle, &boardOpen))
     {
+        access.panel(Control::board);
         ImGui::TextUnformatted("원형 PCB 표시 예제");
         ImGui::SameLine();
         if (ImGui::SmallButton("보기 초기화"))
         {
-            zoom = 1.0f;
-            pan = {};
+            activate(Control::resetBoard);
         }
+        focusItem(Control::resetBoard);
+        access.item(Control::resetBoard, Control::board);
         const ImVec2 origin = ImGui::GetCursorScreenPos();
         const ImVec2 available = ImGui::GetContentRegionAvail();
         if (available.x >= 24.0f && available.y >= 24.0f)
@@ -329,8 +498,14 @@ void Shell::drawResult(bool hasViewports)
         ImGui::SetNextWindowSize({640.0f, 385.0f}, ImGuiCond_Always);
         undockNextFrame = false;
     }
+    if (requestedFocus == Control::result)
+    {
+        ImGui::SetNextWindowFocus();
+        requestedFocus = Control::root;
+    }
     if (ImGui::Begin(resultTitle, &resultOpen))
     {
+        access.panel(Control::result);
         if (ImGui::IsWindowDocked())
         {
             detachResult = false;
@@ -351,49 +526,151 @@ void Shell::drawResult(bool hasViewports)
     ImGui::End();
 }
 
-void Shell::drawInput()
+void Shell::drawInput(SDL_Window* mainWindow)
 {
     noteActive = false;
-    if (focusInput)
+    if (focusInput || requestedFocus == Control::input || requestedFocus == Control::clearNote)
     {
         inputOpen = true;
-        ImGui::SetNextWindowFocus();
     }
     if (!inputOpen)
     {
         return;
     }
+    const bool focusPanel = focusInput || requestedFocus == Control::input || requestedFocus == Control::clearNote;
+    const ImGuiViewport* mainViewport = ImGui::GetMainViewport();
+    if (focusPanel && !detachInput)
+    {
+        ImGui::SetNextWindowFocus();
+    }
     if (ImGui::Begin(inputTitle, &inputOpen))
     {
-        ImGui::TextUnformatted("검수 메모");
-        ImGui::SetNextItemWidth(-1.0f);
-        if (focusInput)
+        if (!detachInput)
         {
-            ImGui::SetKeyboardFocusHere();
-        }
-        ImGui::InputText("###note", note.data(), note.size());
-        noteActive = ImGui::IsItemActive();
-        if (noteActive && !preedit.empty() && preeditWindow == windowId(ImGui::GetWindowViewport()))
-        {
-            ImGui::Text("조합 중  %s", preedit.c_str());
-        }
-        if (ImGui::Button("메모 지우기"))
-        {
-            note.fill('\0');
+            drawNote(mainViewport);
         }
     }
     ImGui::End();
+    if (detachInput)
+    {
+        ImGuiWindowClass windowClass;
+        windowClass.ViewportFlagsOverrideSet = ImGuiViewportFlags_NoAutoMerge;
+        windowClass.ViewportFlagsOverrideClear = ImGuiViewportFlags_NoFocusOnAppearing;
+        ImGui::SetNextWindowClass(&windowClass);
+        if (placeInput)
+        {
+            ImGui::SetNextWindowPos({mainViewport->Pos.x + 96.0f, mainViewport->Pos.y + 110.0f}, ImGuiCond_Always);
+            ImGui::SetNextWindowSize({440.0f, 190.0f}, ImGuiCond_Always);
+            placeInput = false;
+        }
+        if (focusPanel)
+        {
+            ImGui::SetNextWindowFocus();
+        }
+        if (ImGui::Begin(detachedInputTitle, &detachInput, ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoSavedSettings))
+        {
+            drawNote(mainViewport);
+        }
+        ImGui::End();
+        if (!detachInput)
+        {
+            SDL_RaiseWindow(mainWindow);
+            restoreMainFocus = focusInput = true;
+            return;
+        }
+    }
     focusInput = false;
 }
 
-bool queueKey(Uint32 type, SDL_WindowID window, SDL_Scancode scan)
+void Shell::drawNote(const ImGuiViewport* mainViewport)
+{
+    access.panel(Control::input);
+    if (requestedFocus == Control::input)
+    {
+        requestedFocus = Control::root;
+    }
+    ImGui::TextUnformatted("검수 메모");
+    ImGui::SetNextItemWidth(-1.0f);
+    if (focusInput)
+    {
+        if (ImGui::GetWindowViewport() != mainViewport)
+        {
+            if (SDL_Window* window = SDL_GetWindowFromID(windowId(ImGui::GetWindowViewport())))
+            {
+                if (!(SDL_GetWindowFlags(window) & SDL_WINDOW_INPUT_FOCUS))
+                {
+                    SDL_RaiseWindow(window);
+                }
+            }
+        }
+        ImGui::SetKeyboardFocusHere();
+    }
+    ImGui::InputText("###note", note.data(), note.size());
+    noteId = ImGui::GetItemID();
+    noteActive = ImGui::IsItemActive();
+    noteWindow = windowId(ImGui::GetWindowViewport());
+    access.item(Control::note, Control::input);
+    if (noteActive && !preedit.empty() && preeditWindow == noteWindow)
+    {
+        ImGui::Text("조합 중  %s", preedit.c_str());
+    }
+    if (ImGui::Button("메모 지우기"))
+    {
+        activate(Control::clearNote);
+    }
+    focusItem(Control::clearNote);
+    access.item(Control::clearNote, Control::input);
+}
+
+/** @brief 플랫폼 창이 생성 또는 제거된 뒤 HWND에 접근성 정보와 복귀 초점을 적용한다. */
+void Shell::finishFrame(SDL_Window* mainWindow)
+{
+    const auto detachedWindow = [](const char* title)
+    {
+        const ImGuiWindow* window = ImGui::FindWindowByName(title);
+        if (window && window->Viewport != ImGui::GetMainViewport())
+        {
+            return windowId(window->Viewport);
+        }
+        return SDL_WindowID{};
+    };
+    detachedResultWindow = resultOpen ? detachedWindow(resultTitle) : 0;
+    detachedNoteWindow = detachInput ? detachedWindow(detachedInputTitle) : detachedWindow(inputTitle);
+    if (restoreMainFocus)
+    {
+        SDL_RaiseWindow(mainWindow);
+        restoreMainFocus = false;
+    }
+    access.publish(note.data());
+}
+
+bool queueKey(Uint32 type, SDL_WindowID window, SDL_Scancode scan, SDL_Keymod modifiers = SDL_KMOD_NONE)
 {
     SDL_Event event{};
     event.type = type;
     event.key.windowID = window;
     event.key.scancode = scan;
-    event.key.key = SDL_GetKeyFromScancode(scan, SDL_KMOD_NONE, false);
+    event.key.key = SDL_GetKeyFromScancode(scan, modifiers, false);
+    event.key.mod = modifiers;
     event.key.down = type == SDL_EVENT_KEY_DOWN;
+    return SDL_PushEvent(&event);
+}
+
+bool queueComposition(SDL_WindowID window, const char* text)
+{
+    SDL_Event event{};
+    event.type = SDL_EVENT_TEXT_EDITING;
+    event.edit.windowID = window;
+    event.edit.text = text;
+    return SDL_PushEvent(&event);
+}
+
+bool queueCommit(SDL_WindowID window, const char* text)
+{
+    SDL_Event event{};
+    event.type = SDL_EVENT_TEXT_INPUT;
+    event.text.windowID = window;
+    event.text.text = text;
     return SDL_PushEvent(&event);
 }
 
@@ -463,23 +740,11 @@ struct Smoke
                 check(queueKey(SDL_EVENT_KEY_UP, windowID, SDL_SCANCODE_F6), "F6 released");
                 break;
             case 8:
-            {
-                SDL_Event event{};
-                event.type = SDL_EVENT_TEXT_EDITING;
-                event.edit.windowID = windowID;
-                event.edit.text = editingText;
-                check(SDL_PushEvent(&event), "synthetic SDL composition queued");
+                check(queueComposition(windowID, editingText), "synthetic SDL composition queued");
                 break;
-            }
             case 11:
-            {
-                SDL_Event event{};
-                event.type = SDL_EVENT_TEXT_INPUT;
-                event.text.windowID = windowID;
-                event.text.text = committedText;
-                check(SDL_PushEvent(&event), "synthetic SDL UTF-8 commit queued");
+                check(queueCommit(windowID, committedText), "synthetic SDL UTF-8 commit queued");
                 break;
-            }
             case 16:
                 if (hasViewports)
                 {
@@ -519,6 +784,44 @@ struct Smoke
                 check(queueKey(SDL_EVENT_KEY_UP, windowID, SDL_SCANCODE_F9), "restore shortcut released");
                 break;
             case 52:
+                if (hasViewports)
+                {
+                    check(queueKey(SDL_EVENT_KEY_DOWN, windowID, SDL_SCANCODE_F8, SDL_KMOD_LSHIFT),
+                        "detach input requested");
+                }
+                break;
+            case 53:
+                if (hasViewports)
+                {
+                    check(queueKey(SDL_EVENT_KEY_UP, windowID, SDL_SCANCODE_F8), "detach input shortcut released");
+                }
+                break;
+            case 59:
+                if (hasViewports)
+                {
+                    check(queueComposition(detachedNoteID, editingText), "secondary synthetic SDL composition queued");
+                    check(queueCommit(windowID, "discard"), "other-window synthetic SDL commit queued");
+                }
+                break;
+            case 61:
+                if (hasViewports)
+                {
+                    check(queueComposition(detachedNoteID, ""), "secondary synthetic SDL cancellation queued");
+                }
+                break;
+            case 63:
+                if (hasViewports)
+                {
+                    check(queueCommit(detachedNoteID, editingText), "secondary synthetic SDL commit queued");
+                }
+                break;
+            case 66:
+                if (hasViewports)
+                {
+                    check(queueClose(detachedNoteID), "secondary input close queued");
+                }
+                break;
+            case 73:
                 check(queueClose(windowID), "main close queued");
                 break;
             default:
@@ -587,6 +890,43 @@ struct Smoke
                     "dock layout serialized");
                 check(renderer.healthy(), "renderer resources healthy");
                 break;
+            case 57:
+                if (hasViewports)
+                {
+                    detachedNoteID = shell.detachedNoteWindow;
+                    check(detachedNoteID && shell.noteActive && shell.noteWindow == detachedNoteID,
+                        "secondary input is active in its own SDL window");
+                }
+                break;
+            case 59:
+                if (hasViewports)
+                {
+                    check(shell.preedit == editingText && std::string_view(shell.note.data()) == committedText,
+                        "secondary composition kept separate and other-window commit discarded");
+                }
+                break;
+            case 61:
+                if (hasViewports)
+                {
+                    check(shell.preedit.empty() && std::string_view(shell.note.data()) == committedText,
+                        "cancelled secondary composition did not change the note");
+                }
+                break;
+            case 65:
+                if (hasViewports)
+                {
+                    const std::string_view noteValue(shell.note.data());
+                    check(noteValue.ends_with(editingText) && noteValue != committedText,
+                        "synthetic UTF-8 commit reached the secondary input");
+                }
+                break;
+            case 71:
+                if (hasViewports)
+                {
+                    check(!SDL_GetWindowFromID(detachedNoteID) && SDL_GetKeyboardFocus() == window
+                        && shell.noteActive && shell.noteWindow == windowID, "input focus returned to the main window");
+                }
+                break;
             default:
                 break;
         }
@@ -596,6 +936,7 @@ struct Smoke
     SDL_Window* window;
     SDL_WindowID windowID;
     SDL_WindowID secondaryID = 0;
+    SDL_WindowID detachedNoteID = 0;
     SDL_DisplayID movedDisplay = 0;
     float secondaryScale = 0.0f;
     unsigned secondaryFrames = 0;
@@ -666,7 +1007,7 @@ int run(SDL_Window* window, const Options& options)
 
             const auto mainID = SDL_GetWindowID(window);
             bool closing = false;
-            while (!closing && (!options.smoke || smoke.frame < 57) && renderer.healthy())
+            while (!closing && (!options.smoke || smoke.frame < 78) && renderer.healthy())
             {
                 if (options.smoke)
                 {
@@ -675,8 +1016,10 @@ int run(SDL_Window* window, const Options& options)
                 SDL_Event event;
                 while (SDL_PollEvent(&event))
                 {
-                    ImGui_ImplSDL3_ProcessEvent(&event);
-                    shell.processEvent(event);
+                    if (shell.processEvent(event))
+                    {
+                        ImGui_ImplSDL3_ProcessEvent(&event);
+                    }
                     if (event.type == SDL_EVENT_QUIT
                         || (event.type == SDL_EVENT_WINDOW_CLOSE_REQUESTED && event.window.windowID == mainID))
                     {
@@ -690,6 +1033,7 @@ int run(SDL_Window* window, const Options& options)
                     shell.draw(renderer, window, korean);
                     ImGui::Render();
                     renderer.renderFrame();
+                    shell.finishFrame(window);
                     if (options.smoke)
                     {
                         smoke.afterFrame(shell, renderer);
@@ -702,7 +1046,7 @@ int run(SDL_Window* window, const Options& options)
             }
             if (options.smoke)
             {
-                smoke.check(closing && smoke.frame == 52, "normal main window shutdown");
+                smoke.check(closing && smoke.frame == 73, "normal main window shutdown");
             }
             code = renderer.healthy() && (!options.smoke || smoke.passed) ? 0 : 1;
         }

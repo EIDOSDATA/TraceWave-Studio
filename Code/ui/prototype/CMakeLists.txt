@@ -67,6 +67,10 @@ target_include_directories(tracewave_shell_prototype SYSTEM PRIVATE
     "${prototype_bgfx_source}"
 )
 target_link_libraries(tracewave_shell_prototype PRIVATE prototype_widgets bgfx bx)
+if(WIN32)
+    target_sources(tracewave_shell_prototype PRIVATE accessibility_windows.cpp)
+    target_link_libraries(tracewave_shell_prototype PRIVATE comctl32 ole32 oleaut32 uiautomationcore)
+endif()
 
 if(MSVC)
     target_compile_options(tracewave_shell_prototype PRIVATE /utf-8 /W4)
